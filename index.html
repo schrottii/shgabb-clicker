@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
 
     <link href="main.css" rel="stylesheet" type="text/css">
@@ -11,18 +12,32 @@
 
     <progress min="0" max="5" value="0" id="cooldownBar"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br /><br />
-    <span id="shgabbAmount">0 Shgabb</span> <br /> <br />
+    <span id="shgabbAmount">0 Shgabb</span>
+    <br /> <br />
     <hr />
-
+    <h3>Upgrades</h3>
     <span id="upgrades"></span>
 
-    <br /><br /><br /><br /><br /><br /><br /><br />
-    <div style="text-align: right">
-        Shgabb Clicker<br />
-        Developed by Schrottii<br />
-        Beta 0.3<br />
-        New Content:<br />
-        Shgabb upgrades!!! Critical hits!
+    <br /> <br />
+    <hr />
+    <h3>Stats</h3>
+    <span id="stats"></span>
+
+
+    <br /><br /><hr /><br /><br />
+    <div style="position: relative;">
+        <div style="position: absolute; text-align: left; width: 45%;">
+            Notifications <br />
+            <span id="notifications"></span>
+        </div>
+
+        <div style="text-align: right; width: 45%; margin-left: auto; ">
+            Shgabb Clicker<br />
+            Developed by Schrottii<br />
+            Beta 0.4<br />
+            New Content:<br />
+            Stats! Better on mobile! Better UI! Notifications!
+        </div>
     </div>
 
     <script src="code\game.js"></script>
