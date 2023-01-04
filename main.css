@@ -1,0 +1,12 @@
+body {
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.clickButton {
+    background-color: blue;
+    color: white;
+    border-color: black;
+    border-width: 5px;
+}
