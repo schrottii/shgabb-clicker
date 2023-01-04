@@ -21,24 +21,28 @@
     <br /> <br />
     <hr />
     <h3>Stats</h3>
-    <span id="stats"></span>
+    <span id="stats" class="square"></span>
 
 
     <br /><br /><hr /><br /><br />
     <div style="position: relative;">
-        <div style="position: absolute; text-align: left; width: 45%;">
+        <div class="square" style="position: absolute; text-align: left; width: 45%;">
+            <button onclick="toggleMusic()">Music on/off</button><br />
             Notifications <br />
             <span id="notifications"></span>
         </div>
 
-        <div style="text-align: right; width: 45%; margin-left: auto; ">
+        <div  class="square" style="text-align: right; width: 45%; margin-left: auto; ">
             Shgabb Clicker<br />
             Developed by Schrottii<br />
-            Beta 0.4<br />
+            Beta 0.5<br />
             New Content:<br />
-            Stats! Better on mobile! Better UI! Notifications!
+            Music! Background image! Third upgrade! More notifications!
         </div>
     </div>
+    <br /><br /><br /><br /><br /><br />
+
+    <audio src="shgame.mp3" loop muted id="music"></audio>
 
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>

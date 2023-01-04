@@ -10,6 +10,7 @@ var ui = {
     upgrades: document.getElementById("upgrades"),
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
+    music: document.getElementById("music"),
 }
 
 function clickButton() {
@@ -20,6 +21,9 @@ function clickButton() {
         game.stats.shgabb += amount;
         game.clickCooldown = 5;
         game.stats.clicks += 1;
+    }
+    else {
+        createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
     }
 }
 
@@ -32,14 +36,27 @@ function criticalHit() {
     // Critical hit handler, returns multi (default 3)
     if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect()) {
         createNotification("Critical Hit!");
-        return 3;
+        return shgabbUpgrades.critBoost.currentEffect();
     }
     return 1;
 }
 
+function toggleMusic() {
+    if (music.muted == true) {
+        music.muted = false;
+        music.play();
+        createNotification("Music ON");
+    }
+    else {
+        createNotification("Music OFF");
+        music.muted = true;
+    }
+    
+}
+
 function updateUpgrades() {
     // Update upgrades UI
-    ui.upgrades.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.critChance.render();
+    ui.upgrades.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.critChance.render() + shgabbUpgrades.critBoost.render();
 }
 
 function updateUI() {
@@ -71,7 +88,6 @@ function buyUpgrade(id) {
     // Buy an upgrade and update UI
     id.buy();
     updateUpgrades();
-    createNotification("Upgrade bought successfully");
 }
 
 // Notifications

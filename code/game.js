@@ -4,6 +4,7 @@ var game = {
     upgradeLevels: {
         moreShgabb: 0,
         critChance: 0,
+        critBoost: 0,
     },
     stats: {
         shgabb: 0,
