@@ -9,17 +9,20 @@
 <body>
     <h2>Shgabb Clicker</h2>
 
-    <button class="clickButton" onclick="clickButton()">+1 Shgabb</button> <br />
+    <progress min="0" max="5" value="0" id="cooldownBar"></progress><br />
+    <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <span id="shgabbAmount">0 Shgabb</span>
 
     <br /><br /><br /><br /><br /><br /><br /><br />
     <div style="text-align: right">
         Shgabb Clicker<br />
         Developed by Schrottii<br />
-        Beta 0.1
+        Beta 0.2<br />
+        New Content:<br />
+        Click Cooldown, cooldown bar, auto save and auto load!
     </div>
 
-    <script src="code\main.js"></script>
     <script src="code\game.js"></script>
+    <script src="code\main.js"></script>
 </body>
 </html>
