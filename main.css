@@ -6,6 +6,17 @@ body {
     text-align: center;
 }
 
+.settingButton {
+    background-color: gray;
+    color: black;
+    border-color: black;
+}
+
+.settingButton:hover{
+    filter: brightness(120%);
+    transition: 0.3s;
+}
+
 .clickButton {
     background-color: blue;
     color: white;
@@ -31,7 +42,7 @@ progress {
     border: solid;
     border-width: 2px;
     border-color: white;
-    font-size: 18px;
+    font-size: 17px;
     height: 20px;
     background: darkgray;
 }

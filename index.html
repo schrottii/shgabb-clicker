@@ -11,13 +11,21 @@
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br /><br />
-    <span id="shgabbAmount">0 Shgabb</span>
+    <span id="shgabbAmount">0 Shgabb</span><br />
+    <span id="swAmount"></span>
     <br /> <br />
     <hr />
-    <h3>Upgrades</h3>
+    <h3>Shgabb Upgrades</h3>
     <div>
         <span id="upgradesl" style="float: left; width: 50%;"></span>
         <span id="upgradesr" style="float: right; width: 50%;"></span>
+    </div>
+    <hr style="clear:both" />
+    <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
+    <h3>Sandwich Upgrades</h3>
+    <div>
+        <span id="swupgradesl" style="float: left; width: 50%;"></span>
+        <span id="swupgradesr" style="float: right; width: 50%;"></span>
     </div>
 
     <br /> <br />
@@ -26,23 +34,29 @@
     <span id="stats" class="square"></span>
 
 
-    <br /><br /><hr /><br /><br />
+    <br /><hr /><br />
     <div style="position: relative;">
         <div class="square" style="position: absolute; text-align: left; width: 45%;">
-            <button onclick="toggleMusic()">Music on/off</button><br />
-            Notifications <br />
+            <h4>Notifications</h4>
             <span id="notifications"></span>
         </div>
 
         <div class="square" style="text-align: right; width: 45%; margin-left: auto; ">
             Shgabb Clicker<br />
             Developed by Schrottii<br />
-            Beta 0.7<br />
+            Beta 0.8<br />
             New Content:<br />
-            Quotes and improved bar design<br />
-            Beta 0.6<br />
-            New Content:<br />
-            3 new upgrades, better upgrade UI, MAX. display
+            New currency: Sandwiches! Added 2 shgabb upgrades! Added 2 sandwich upgrades! Added exporting and importing! Added a background toggle setting and more quotes!<br />
+        </div>
+
+        <hr style="clear:both" />
+
+        <div class="square">
+            <h4>Settings</h4>
+            <button onclick="toggleMusic()" class="settingButton">Music on/off</button><br />
+            <button onclick="exportGame()" class="settingButton">Export</button>
+            <button onclick="importGame()" class="settingButton">Import</button><br />
+            <button onclick="toggleBG()" class="settingButton">Background on/off</button><br />
         </div>
     </div>
     <br /><br /><br /><br /><br /><br />
