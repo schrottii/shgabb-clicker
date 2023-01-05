@@ -10,17 +10,20 @@ class Upgrade {
             if (config.maxLevel) this.maxLevel = config.maxLevel;
             if (config.prefix) this.prefix = config.prefix;
             if (config.suffix) this.suffix = config.suffix;
+            if (config.unlock) this.unlock = config.unlock;
         }
     }
 
     buy() {
-        if (game.shgabb >= this.currentPrice() && (this.maxLevel == undefined || this.currentLevel() < this.maxLevel)) {
-            game.shgabb -= this.currentPrice();
-            game.upgradeLevels[this.ID] += 1;
-            createNotification("Upgrade bought successfully");
-        }
-        else {
-            createNotification("Not enough shgabb!");
+        if (this.isUnlocked()) {
+            if (game.shgabb >= this.currentPrice() && (this.maxLevel == undefined || this.currentLevel() < this.maxLevel)) {
+                game.shgabb -= this.currentPrice();
+                game.upgradeLevels[this.ID] += 1;
+                createNotification("Upgrade bought successfully");
+            }
+            else {
+                createNotification("Not enough shgabb!");
+            }
         }
     }
 
@@ -36,8 +39,15 @@ class Upgrade {
         return game.upgradeLevels[this.ID];
     }
 
+    isUnlocked() {
+        if (this.unlock == undefined || this.unlock) return true;
+        return false;
+    }
+
     render() {
-        return "<button class='upgrade' onclick='buyUpgrade(shgabbUpgrades." + this.ID + ")'><div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "") + "<br /> Cost: " + this.currentPrice() + "<br />Effect: " + (this.prefix != undefined ? this.prefix : "")  + this.currentEffect() + (this.suffix != undefined ? this.suffix : "") + "</button><br /><br />";
+        let isMax = this.maxLevel == this.currentLevel();
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(shgabbUpgrades." + this.ID + ")'><div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + this.currentPrice()) + "<br />Effect: " + (this.prefix != undefined ? this.prefix : "") + this.currentEffect().toFixed(1) + (this.suffix != undefined ? this.suffix : "") + "</button><br /><br />";
+        else return "";
     }
 }
 
@@ -45,4 +55,7 @@ var shgabbUpgrades = {
     moreShgabb: new Upgrade("moreShgabb", "Get More Shgabb", "Get more shgabb per click", level => level * 5 * Math.max(1, level / 25) + 5, level => level),
     critChance: new Upgrade("critChance", "Crit. Chance", "Increase the chance for critical hits", level => level * 10 * Math.max(1, level / 12) + 25, level => 3 + (level / 10), { maxLevel: 70, suffix: "%" }),
     critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50, level => 3 + (level / 10), { maxLevel: 20, prefix: "x" }),
+    shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 40 * Math.max(1, level / 4) + 60, level => (level / 20), { maxLevel: 40, prefix: "-", suffix: "s", unlock: () => game.upgradeLevels.moreShgabb > 24 }),
+    goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 29 }),
+    bomblike: new Upgrade("bomblike", "Bomblike", "Get even more shgabb per click", level => Math.pow(5, 4 + (level * 2)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 49 }),
 }

@@ -7,7 +7,8 @@ var ui = {
     clickButton: document.getElementById("clickButton"),
     cooldownBar: document.getElementById("cooldownBar"),
     shgabbAmount: document.getElementById("shgabbAmount"),
-    upgrades: document.getElementById("upgrades"),
+    upgradesl: document.getElementById("upgradesl"),
+    upgradesr: document.getElementById("upgradesr"),
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
     music: document.getElementById("music"),
@@ -19,7 +20,7 @@ function clickButton() {
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
-        game.clickCooldown = 5;
+        game.clickCooldown = 5 - shgabbUpgrades.shorterCD.currentEffect();
         game.stats.clicks += 1;
     }
     else {
@@ -29,7 +30,7 @@ function clickButton() {
 
 function getProduction() {
     // Get the current shgabb production per click
-    return 1 + shgabbUpgrades.moreShgabb.currentEffect();
+    return (1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1);
 }
 
 function criticalHit() {
@@ -56,7 +57,8 @@ function toggleMusic() {
 
 function updateUpgrades() {
     // Update upgrades UI
-    ui.upgrades.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.critChance.render() + shgabbUpgrades.critBoost.render();
+    ui.upgradesl.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.shorterCD.render() + shgabbUpgrades.bomblike.render();
+    ui.upgradesr.innerHTML = shgabbUpgrades.critChance.render() + shgabbUpgrades.critBoost.render() + shgabbUpgrades.goodJoke.render();
 }
 
 function updateUI() {
