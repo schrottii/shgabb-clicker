@@ -40,7 +40,7 @@ class Upgrade {
     }
 
     isUnlocked() {
-        if (this.unlock == undefined || this.unlock) return true;
+        if (this.unlock == undefined || this.unlock()) return true;
         return false;
     }
 

@@ -26,3 +26,28 @@ body {
 .square {
     background-color: rgb(128, 128, 128, 0.7);
 }
+
+progress {
+    border: solid;
+    border-width: 2px;
+    border-color: white;
+    font-size: 18px;
+    height: 20px;
+    background: darkgray;
+}
+
+progress {
+    color: deepskyblue;
+}
+
+    progress::-moz-progress-bar {
+        background: deepskyblue;
+    }
+
+    progress::-webkit-progress-value {
+        background: darkgray;
+    }
+
+    progress::-webkit-progress-bar {
+        background: deepskyblue;
+    }

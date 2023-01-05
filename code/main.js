@@ -1,6 +1,7 @@
 // Main JS File
 
 var autoSaveTime = 3;
+var quoteTime = 10;
 var currentNotifications = [];
 
 var ui = {
@@ -12,7 +13,16 @@ var ui = {
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
     music: document.getElementById("music"),
+    quote: document.getElementById("quote"),
 }
+
+const quotes = ["(I am always nice but whatever) - Schrottii",
+    "I merge with my internal organs - K. whale",
+    "how can i get this macdonald coin - Benio",
+    "37 and 48 are basically the same - Topper",
+    "I don't bathe - Schrottii",
+    "Warning!!! I might react with tractor emoji - slowmerger",
+    "im bus - Feline"];
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
@@ -30,7 +40,7 @@ function clickButton() {
 
 function getProduction() {
     // Get the current shgabb production per click
-    return (1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1);
+    return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1));
 }
 
 function criticalHit() {
@@ -53,6 +63,10 @@ function toggleMusic() {
         music.muted = true;
     }
     
+}
+
+function updateQuote() {
+    ui.quote.innerHTML = quotes[Math.ceil(Math.random() * quotes.length - 1)];
 }
 
 function updateUpgrades() {
@@ -109,6 +123,7 @@ function loop() {
     // Main Game Loop
     game.clickCooldown -= 30 / 1000;
     autoSaveTime -= 30 / 1000;
+    quoteTime -= 30 / 1000;
     game.stats.playTime += 30 / 1000;
 
     for (n in currentNotifications) {
@@ -119,6 +134,10 @@ function loop() {
     if (autoSaveTime <= 0) {
         autoSaveTime = 3;
         autoSave();
+    }
+    if (quoteTime <= 0) {
+        quoteTime = 10;
+        updateQuote();
     }
 
     updateUI();
