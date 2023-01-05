@@ -37,7 +37,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
-    let amount = getProduction() * criticalHit();
+    let amount = Math.floor(getProduction() * criticalHit());
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
@@ -230,6 +230,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
+    game.shgabb = Math.ceil(game.shgabb);
+    game.stats.shgabb = Math.ceil(game.stats.shgabb);
 }
 
 // Update upgrades UI
