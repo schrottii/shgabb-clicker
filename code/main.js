@@ -233,7 +233,7 @@ function loop() {
     sandwichTime -= 30 / 1000;
     sandwichFreezeTime -= 30 / 1000;
     game.stats.playTime += 30 / 1000;
-    if(adLoaded) adTime -= 30 / 1000;
+    if(adLoaded && game.stats.sw > 9) adTime -= 30 / 1000;
 
     for (n in currentNotifications) {
         currentNotifications[n][1] -= 30 / 1000;

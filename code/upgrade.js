@@ -16,9 +16,13 @@ class Upgrade {
         }
     }
 
+    canBuy() {
+        return game[this.currency] >= this.currentPrice() && (this.maxLevel == undefined || this.currentLevel() < this.maxLevel);
+    }
+
     buy() {
         if (this.isUnlocked()) {
-            if (game[this.currency] >= this.currentPrice() && (this.maxLevel == undefined || this.currentLevel() < this.maxLevel)) {
+            if (this.canBuy()) {
                 game[this.currency] -= this.currentPrice();
                 game.upgradeLevels[this.ID] += 1;
                 createNotification("Upgrade bought successfully");
@@ -48,7 +52,7 @@ class Upgrade {
 
     render() {
         let isMax = this.maxLevel == this.currentLevel();
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")'><div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + this.currentPrice()) + "<br />Effect: " + (this.prefix != undefined ? this.prefix : "") + this.currentEffect().toFixed(1) + (this.suffix != undefined ? this.suffix : "") + "</button><br /><br />";
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : "whitesmoke") + "'><div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + this.currentPrice()) + "<br />Effect: " + (this.prefix != undefined ? this.prefix : "") + this.currentEffect().toFixed(1) + (this.suffix != undefined ? this.suffix : "") + "</button><br /><br />";
         else return "";
     }
 }
@@ -73,6 +77,6 @@ var shgabbUpgrades = {
 }
 
 var sandwichUpgrades = {
-    autoShgabb: new SandwichUpgrade("autoShgabb", "Get Shgabb Automatically", "Automatically earn shgabb without having to click", level => 2 + level * 2 * Math.max(0.5, Math.sin(level * 0.1)), level => level, { unlock: () => game.upgradeLevels.swChance > 0 }),
-    fridge: new SandwichUpgrade("fridge", "Better Fridge", "Keep the sandwiches cool for longer (More time before they stop making shgabb)", level => 6 + level * 2 * Math.max(0.5, Math.sin(level * 0.3)), level => level * 2, { maxLevel: 60, unlock: () => game.upgradeLevels.swChance > 0 }),
+    autoShgabb: new SandwichUpgrade("autoShgabb", "Get Shgabb Automatically", "Automatically earn shgabb without having to click", level => (2 + level) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.05) * (-1), Math.sin(level * 0.05))) / 8), level => level * 5 + Math.max(0, 5 * (level - 24)) + Math.max(0, 10 * (level - 50)), { unlock: () => game.upgradeLevels.swChance > 0 }),
+    fridge: new SandwichUpgrade("fridge", "Better Fridge", "Keep the sandwiches cool for longer (More time before they stop making shgabb)", level => (6 + level * 2) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.2) * (-1), Math.sin(level * 0.2))) / 6), level => level * 2, { maxLevel: 60, unlock: () => game.upgradeLevels.swChance > 0 }),
 }
