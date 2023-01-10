@@ -257,6 +257,7 @@ function loop() {
         currentBoost = "none";
     }
     else if (currentBoost == "none" && adTime <= -25) {
+        adButton.style.display = "none";
         adTime = 5;
     }
 
