@@ -31,13 +31,13 @@ var currentBoost = "none";
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb"];
 const boostTexts = {
-    strongerClicks: "Stronger Clicks: Get x1.5 shgabb from clicks for 60 seconds",
+    strongerClicks: "Stronger Clicks: Get x1.5 shgabb from clicks for 2 minutes",
     strongerAuto: "Stronger Auto: Get x5 automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches 2x more often for 3 minutes",
     fasterShgabb: "You can click 5x more often for 60 seconds"
 };
 const adTimes = {
-    strongerClicks: 60,
+    strongerClicks: 120,
     strongerAuto: 600,
     moreSandwiches: 180,
     fasterShgabb: 60
