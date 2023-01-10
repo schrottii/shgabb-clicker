@@ -5,12 +5,14 @@ var quoteTime = 10;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
 var adTime = 10;
+var adMax = 10;
 var currentNotifications = [];
 
 var ui = {
     clickButton: document.getElementById("clickButton"),
     cooldownBar: document.getElementById("cooldownBar"),
     sandwichBar: document.getElementById("sandwichBar"),
+    adBar: document.getElementById("adBar"),
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
     upgradesl: document.getElementById("upgradesl"),
@@ -29,18 +31,20 @@ var adLoaded = false;
 var availableBoost = "none";
 var currentBoost = "none";
 
-const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb"];
+const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits"];
 const boostTexts = {
     strongerClicks: "Stronger Clicks: Get x1.5 shgabb from clicks for 2 minutes",
     strongerAuto: "Stronger Auto: Get x5 automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches 2x more often for 3 minutes",
-    fasterShgabb: "You can click 5x more often for 60 seconds"
+    fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
+    moreCrits: "More Crits: 5x critical hit chance for 60 seconds"
 };
 const adTimes = {
     strongerClicks: 120,
     strongerAuto: 600,
     moreSandwiches: 180,
-    fasterShgabb: 60
+    fasterShgabb: 60,
+    moreCrits: 60,
 };
 const quotes = ["(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
@@ -85,7 +89,7 @@ function getProduction() {
 
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
-    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect()) {
+    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) {
         createNotification("Critical Hit!");
         return shgabbUpgrades.critBoost.currentEffect();
     }
@@ -149,6 +153,7 @@ function updateUI() {
     }
     cooldownBar.value = game.clickCooldown;
     sandwichBar.value = sandwichFreezeTime;
+    adBar.value = (adTime / adMax) * 100;
 
     ui.stats.innerHTML = "Total Shgabb: " + game.stats.shgabb
         + "<br />Total Sandwiches: " + game.stats.sw
@@ -217,6 +222,7 @@ function importGame() {
 function showAd() {
     adHandler.style.display = "inline";
     adHandler.play();
+    currentBoost = "wait";
 }
 
 function loop() {
@@ -251,14 +257,22 @@ function loop() {
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         adButton.style.display = "inline";
         adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
+
+        if (Math.random() >= 0.75) adHandler.src = "videos/elm_ad_2.mp4";
+        else if (Math.random() >= 0.75) adHandler.src = "videos/elmenda_bad_as_always.mp4";
+        else if (Math.random() >= 0.75) adHandler.src = "videos/Helmet452_Trailer.mp4";
+        else if (Math.random() >= 0.75) adHandler.src = "videos/Drunk_elmenda_savage.mp4";
+        else adHandler.src = "videos/shgabb_flame.mp4";
     }
     else if (adTime <= 0 && adButton.style.display == "none") {
         adTime = 10;
+        adMax = 10;
         currentBoost = "none";
     }
-    else if (currentBoost == "none" && adTime <= -25) {
+    else if (currentBoost == "none" && adTime <= -15) {
         adButton.style.display = "none";
         adTime = 5;
+        adMax = 5;
     }
 
     updateUI();
@@ -283,6 +297,7 @@ adHandler.onended = () => {
     currentBoost = availableBoost;
     availableBoost = "none";
     adTime = adTimes[currentBoost];
+    adMax = adTimes[currentBoost];
     adHandler.style.display = "none";
     adButton.style.display = "none";
 }
