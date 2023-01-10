@@ -4,6 +4,7 @@ var autoSaveTime = 3;
 var quoteTime = 10;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
+var adTime = 10;
 var currentNotifications = [];
 
 var ui = {
@@ -22,6 +23,25 @@ var ui = {
     quote: document.getElementById("quote"),
 }
 
+var adHandler = document.getElementById("baldad");
+var adButton = document.getElementById("adstartbutton");
+var adLoaded = false;
+var availableBoost = "none";
+var currentBoost = "none";
+
+const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb"];
+const boostTexts = {
+    strongerClicks: "Stronger Clicks: Get x1.5 shgabb from clicks for 60 seconds",
+    strongerAuto: "Stronger Auto: Get x5 automatic shgabb for 10 minutes",
+    moreSandwiches: "More Sandwiches: Get sandwiches 2x more often for 3 minutes",
+    fasterShgabb: "You can click 5x more often for 60 seconds"
+};
+const adTimes = {
+    strongerClicks: 60,
+    strongerAuto: 600,
+    moreSandwiches: 180,
+    fasterShgabb: 60
+};
 const quotes = ["(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
     "how can i get this macdonald coin - Benio",
@@ -37,14 +57,14 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
-    let amount = Math.floor(getProduction() * criticalHit());
+    let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 1.5 : 1));
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
-        game.clickCooldown = 5 - shgabbUpgrades.shorterCD.currentEffect();
+        game.clickCooldown = (5 - shgabbUpgrades.shorterCD.currentEffect()) / (currentBoost == "fasterShgabb" ? 5 : 1);
         game.stats.clicks += 1;
 
-        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect()) {
+        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 2 : 1)) {
             amount = shgabbUpgrades.moreSw.currentEffect() + 1;
             game.sw += amount;
             game.stats.sw += amount;
@@ -142,7 +162,7 @@ function updateUI() {
 }
 
 function sandwich() {
-    let amount = sandwichUpgrades.autoShgabb.currentEffect();
+    let amount = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 5 : 1));
     game.shgabb += amount;
     game.stats.shgabb += amount;
     createNotification("+" + amount + " shgabb");
@@ -194,6 +214,11 @@ function importGame() {
     createNotification("Game imported successfully!");
 }
 
+function showAd() {
+    adHandler.style.display = "inline";
+    adHandler.play();
+}
+
 function loop() {
     // Main Game Loop
     game.clickCooldown -= 30 / 1000;
@@ -202,6 +227,7 @@ function loop() {
     sandwichTime -= 30 / 1000;
     sandwichFreezeTime -= 30 / 1000;
     game.stats.playTime += 30 / 1000;
+    if(adLoaded) adTime -= 30 / 1000;
 
     for (n in currentNotifications) {
         currentNotifications[n][1] -= 30 / 1000;
@@ -221,6 +247,19 @@ function loop() {
         sandwich();
     }
 
+    if (adTime <= 0 && adButton.style.display == "none" && currentBoost == "none") {
+        availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        adButton.style.display = "inline";
+        adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
+    }
+    else if (adTime <= 0) {
+        adTime = 10;
+        currentBoost = "none";
+    }
+    else if (currentBoost == "none" && adTime <= -25) {
+        adTime = 5;
+    }
+
     updateUI();
 }
 
@@ -232,6 +271,19 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
     game.shgabb = Math.ceil(game.shgabb);
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
+}
+
+// Ad init
+adHandler.oncanplay = () => {
+    adLoaded = true;
+}
+
+adHandler.onended = () => {
+    currentBoost = availableBoost;
+    availableBoost = "none";
+    adTime = adTimes[currentBoost];
+    adHandler.style.display = "none";
+    adButton.style.display = "none";
 }
 
 // Update upgrades UI
