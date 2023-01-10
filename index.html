@@ -9,7 +9,7 @@
 <body>
     <h2>Shgabb Clicker</h2>
     <span id="quote"></span><br />
-    <progress min="0" max="5" value="0" id="cooldownBar"></progress><br />
+    <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br /><br />
     <span id="shgabbAmount">0 Shgabb</span><br />
     <span id="swAmount"></span>
@@ -33,7 +33,7 @@
     <hr style="clear:both" />
     <progress min="0" max="100" value="0" id="adBar"></progress><br />
     <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
-    <video volume="0.3" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
+    <video volume="0.2" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
 
@@ -49,14 +49,21 @@
             Shgabb Clicker<br />
             Developed by Schrottii<br />
             <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br />
-            Version 1.1<br />- Added Ads!<br />- Watch short fun ads (made by Barduzzi) to receive strong temporary boosts, unlocked at 10 total sandwiches<br />- Affordable upgrades now have a green background color (also changed default background color)<br />- Massively buffed "Get Shgabb Automatically" effect and changed costs of sandwich upgrades<br /><br /><br />
+            Version 1.1
+            <br />- Added Ads!
+            <br />- Watch short fun ads (made by Barduzzi) to receive strong temporary boosts, unlocked at 10 total sandwiches
+            <br />- Improved design of upgrade buttons and setting buttons
+            <br />- Upgrades that can be bought now have a green background color
+            <br />- Improved bar design and length
+            <br />- Massively buffed "Get Shgabb Automatically" effect and changed costs of sandwich upgrades<br /><br /><br />
         </div>
 
         <hr style="clear:both" />
 
         <div class="square">
             <h4>Settings</h4>
-            <button onclick="toggleMusic()" class="settingButton">Music on/off</button><br />
+            <button onclick="toggleMusic()" class="settingButton">Music on/off</button>
+            <button onclick="toggleAdSound()" class="settingButton">Ad Music on/off</button><br />
             <button onclick="exportGame()" class="settingButton">Export</button>
             <button onclick="importGame()" class="settingButton">Import</button><br />
             <button onclick="toggleBG()" class="settingButton">Background on/off</button><br />

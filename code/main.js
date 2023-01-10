@@ -35,7 +35,7 @@ const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgab
 const boostTexts = {
     strongerClicks: "Stronger Clicks: Get x1.5 shgabb from clicks for 2 minutes",
     strongerAuto: "Stronger Auto: Get x5 automatic shgabb for 10 minutes",
-    moreSandwiches: "More Sandwiches: Get sandwiches 2x more often for 3 minutes",
+    moreSandwiches: "More Sandwiches: Get sandwiches twice as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
     moreCrits: "More Crits: 5x critical hit chance for 60 seconds"
 };
@@ -65,7 +65,7 @@ function clickButton() {
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
-        game.clickCooldown = (5 - shgabbUpgrades.shorterCD.currentEffect()) / (currentBoost == "fasterShgabb" ? 5 : 1);
+        game.clickCooldown = getCooldown();
         game.stats.clicks += 1;
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 2 : 1)) {
@@ -74,6 +74,8 @@ function clickButton() {
             game.stats.sw += amount;
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
         }
+
+        updateUpgrades();
     }
     else {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
@@ -87,6 +89,10 @@ function getProduction() {
     return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1));
 }
 
+function getCooldown() {
+    return (5 - shgabbUpgrades.shorterCD.currentEffect()) / (currentBoost == "fasterShgabb" ? 5 : 1)
+}
+
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
     if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) {
@@ -94,6 +100,15 @@ function criticalHit() {
         return shgabbUpgrades.critBoost.currentEffect();
     }
     return 1;
+}
+
+function sandwich() {
+    let amount = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 5 : 1));
+    game.shgabb += amount;
+    game.stats.shgabb += amount;
+    createNotification("+" + amount + " shgabb");
+
+    updateUpgrades();
 }
 
 function toggleMusic() {
@@ -106,6 +121,17 @@ function toggleMusic() {
     else {
         createNotification("Music OFF");
         music.muted = true;
+    }
+    
+}
+function toggleAdSound() {
+    if (adHandler.muted == true) {
+        adHandler.muted = false;
+        createNotification("Ad Music ON");
+    }
+    else {
+        createNotification("Ad Music OFF");
+        adHandler.muted = true;
     }
     
 }
@@ -151,9 +177,13 @@ function updateUI() {
         ui.clickButton.innerHTML = "+" + getProduction() + " Shgabb";
         ui.clickButton.style["background-color"] = "blue";
     }
-    cooldownBar.value = game.clickCooldown;
-    sandwichBar.value = sandwichFreezeTime;
-    adBar.value = (adTime / adMax) * 100;
+    ui.cooldownBar.value = game.clickCooldown;
+    ui.cooldownBar.max = getCooldown();
+    ui.cooldownBar.className = getCooldown();
+
+    ui.sandwichBar.value = sandwichFreezeTime;
+    ui.adBar.value = (adTime / adMax) * 100;
+    
 
     ui.stats.innerHTML = "Total Shgabb: " + game.stats.shgabb
         + "<br />Total Sandwiches: " + game.stats.sw
@@ -164,13 +194,6 @@ function updateUI() {
     for (n in currentNotifications) {
         ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n][0] + "<br />";
     }
-}
-
-function sandwich() {
-    let amount = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 5 : 1));
-    game.shgabb += amount;
-    game.stats.shgabb += amount;
-    createNotification("+" + amount + " shgabb");
 }
 
 function buyUpgrade(id) {

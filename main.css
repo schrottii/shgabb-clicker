@@ -7,9 +7,10 @@ body {
 }
 
 .settingButton {
-    background-color: gray;
+    background-color: lightgray;
     color: black;
     border-color: black;
+    border: 2px solid darkgray;
 }
 
 .settingButton:hover{
@@ -33,6 +34,13 @@ body {
     width: 90%;
     min-height: 120px;
 }
+    .upgrade:hover {
+        filter: brightness(90%);
+        transition: 0.2s;
+    }
+    .upgrade:active {
+        filter: brightness(80%);
+    }
 
 .square {
     background-color: rgb(128, 128, 128, 0.7);
@@ -42,12 +50,9 @@ progress {
     border: solid;
     border-width: 2px;
     border-color: white;
-    font-size: 17px;
+    width: 75%;
     height: 20px;
     background: darkgray;
-}
-
-progress {
     color: deepskyblue;
 }
 
