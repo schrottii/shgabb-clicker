@@ -252,7 +252,7 @@ function loop() {
         adButton.style.display = "inline";
         adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
     }
-    else if (adTime <= 0) {
+    else if (adTime <= 0 && adButton.style.display == "none") {
         adTime = 10;
         currentBoost = "none";
     }
