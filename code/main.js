@@ -23,6 +23,7 @@ var ui = {
     notifications: document.getElementById("notifications"),
     music: document.getElementById("music"),
     quote: document.getElementById("quote"),
+    swHeader: document.getElementById("swHeader"),
 }
 
 var adHandler = document.getElementById("baldad");
@@ -166,8 +167,15 @@ function updateUpgrades() {
 function updateUI() {
     // Update UI
     ui.shgabbAmount.innerHTML = game.shgabb + " Shgabb";
-    if (game.upgradeLevels.swChance > 0) ui.swAmount.innerHTML = game.sw + " Sandwiches";
-    else ui.swAmount.innerHTML = "";
+    if (game.upgradeLevels.swChance > 0) {
+        ui.swAmount.innerHTML = game.sw + " Sandwiches";
+        ui.sandwichBar.style.display = "inline";
+        ui.sandwichBar.value = sandwichFreezeTime;
+    }
+    else {
+        ui.sandwichBar.style.display = "none";
+        ui.swAmount.innerHTML = "";
+    }
 
     if (game.clickCooldown > 0) {
         ui.clickButton.innerHTML = game.clickCooldown.toFixed(2);
@@ -179,16 +187,23 @@ function updateUI() {
     }
     ui.cooldownBar.value = game.clickCooldown;
     ui.cooldownBar.max = getCooldown();
-    ui.cooldownBar.className = getCooldown();
 
-    ui.sandwichBar.value = sandwichFreezeTime;
-    ui.adBar.value = (adTime / adMax) * 100;
+    if (game.stats.sw > 9) {
+        ui.adBar.style.display = "inline";
+        ui.swHeader.style.display = "block";
+        ui.adBar.value = (adTime / adMax) * 100;
+    }
+    else {
+        ui.adBar.style.display = "none";
+        ui.swHeader.style.display = "none";
+    }
+
     
-
     ui.stats.innerHTML = "Total Shgabb: " + game.stats.shgabb
         + "<br />Total Sandwiches: " + game.stats.sw
         + "<br />Total Clicks: " + game.stats.clicks
-        + "<br />Total Time: " + game.stats.playTime.toFixed(1);
+        + "<br />Total Time: " + game.stats.playTime.toFixed(1)
+        + "<br />Total Ads watched: " + game.stats.ads;
 
     ui.notifications.innerHTML = "";
     for (n in currentNotifications) {
@@ -290,6 +305,14 @@ function loop() {
     else if (adTime <= 0 && adButton.style.display == "none") {
         adTime = 10;
         adMax = 10;
+
+        if (currentBoost == "strongerclicks" || currentBoost == "fastershgabb") {
+            ui.cooldownBar.classList.remove("buffedProgress")
+        }
+        if (currentBoost == "moreSandwiches" || currentBoost == "moreCrits") {
+            ui.cooldownBar.classList.remove("buffedProgress")
+        }
+
         currentBoost = "none";
     }
     else if (currentBoost == "none" && adTime <= -15) {
@@ -318,11 +341,20 @@ adHandler.oncanplay = () => {
 
 adHandler.onended = () => {
     currentBoost = availableBoost;
+    game.stats.ads += 1;
+
     availableBoost = "none";
     adTime = adTimes[currentBoost];
     adMax = adTimes[currentBoost];
     adHandler.style.display = "none";
     adButton.style.display = "none";
+
+    if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
+        ui.cooldownBar.classList.add("buffedProgress")
+    }
+    if (currentBoost == "moreSandwiches" || currentBoost == "moreCrits") {
+        ui.sandwichBar.classList.add("buffedProgress")
+    }
 }
 
 // Update upgrades UI

@@ -54,6 +54,7 @@ progress {
     height: 20px;
     background: darkgray;
     color: deepskyblue;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35) inset;
 }
 
     progress::-moz-progress-bar {
@@ -61,9 +62,58 @@ progress {
     }
 
     progress::-webkit-progress-value {
-        background: darkgray;
+        background: deepskyblue;
     }
 
     progress::-webkit-progress-bar {
-        background: deepskyblue;
+        background: darkgray;
     }
+
+.buffedProgress {
+    animation: change-color 2s infinite;
+    background: darkslategrey;
+    color: red;
+}
+
+    .buffedProgress::-moz-progress-bar {
+        animation: change-color2 2s infinite;
+        background: red;
+    }
+
+    .buffedProgress::-webkit-progress-value {
+        animation: change-color2 2s infinite;
+        background: red;
+    }
+
+    .buffedProgress::-webkit-progress-bar {
+        animation: change-color2 2s infinite;
+        background: darkslategrey;
+    }
+
+/* Bar animations (supporting most browsers) */
+@keyframes change-color {
+    0% {
+        color: red;
+    }
+
+    30% {
+        color: orange;
+    }
+
+    100% {
+        color: red;
+    }
+}
+@keyframes change-color2 {
+    0% {
+        background: red;
+    }
+
+    30% {
+        background: orange;
+    }
+
+    100% {
+        background: red;
+    }
+}

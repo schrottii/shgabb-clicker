@@ -19,5 +19,6 @@ var game = {
         clicks: 0,
         playTime: 0,
         sw: 0,
+        ads: 0,
     },
 }
