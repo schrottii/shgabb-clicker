@@ -102,7 +102,7 @@ function getCooldown() {
 }
 
 function getGoldenShgabb() {
-    return Math.max(10, (1 + Math.floor(Math.log(game.shgabb + 1)) * (1 + Math.log(game.sw + 1))) * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25);
+    return Math.floor(Math.max(10, (1 + Math.log(game.shgabb + 1) * Math.log(game.sw + 1)) * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25));
 }
 
 function criticalHit() {
