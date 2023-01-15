@@ -15,15 +15,19 @@ var ui = {
     adBar: document.getElementById("adBar"),
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
+    gsAmount: document.getElementById("gsAmount"),
     upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
     swupgradesl: document.getElementById("swupgradesl"),
     swupgradesr: document.getElementById("swupgradesr"),
+    gsupgradesl: document.getElementById("gsupgradesl"),
+    gsupgradesr: document.getElementById("gsupgradesr"),
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
     music: document.getElementById("music"),
     quote: document.getElementById("quote"),
     swHeader: document.getElementById("swHeader"),
+    prestigeButton: document.getElementById("prestigebutton"),
 }
 
 var adHandler = document.getElementById("baldad");
@@ -87,11 +91,18 @@ function clickButton() {
 
 function getProduction() {
     // Get the current shgabb production per click
-    return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1));
+    return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+        * goldenShgabbUpgrades.divineShgabb.currentEffect()
+        * goldenShgabbUpgrades.gsBoost1.currentEffect()
+    );
 }
 
 function getCooldown() {
-    return (5 - shgabbUpgrades.shorterCD.currentEffect()) / (currentBoost == "fasterShgabb" ? 5 : 1)
+    return (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect()) / (currentBoost == "fasterShgabb" ? 5 : 1)
+}
+
+function getGoldenShgabb() {
+    return Math.max(10, (1 + Math.floor(Math.log(game.shgabb + 1)) * (1 + Math.log(game.sw + 1))) * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25);
 }
 
 function criticalHit() {
@@ -104,10 +115,15 @@ function criticalHit() {
 }
 
 function sandwich() {
-    let amount = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 5 : 1));
-    game.shgabb += amount;
-    game.stats.shgabb += amount;
-    createNotification("+" + amount + " shgabb");
+    let amount = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 5 : 1)
+        * goldenShgabbUpgrades.divineShgabb.currentEffect()
+        * goldenShgabbUpgrades.gsBoost2.currentEffect()
+    );
+    if (amount > 0) {
+        game.shgabb += amount;
+        game.stats.shgabb += amount;
+        createNotification("+" + amount + " shgabb");
+    }
 
     updateUpgrades();
 }
@@ -151,6 +167,45 @@ function toggleBG() {
     }
 }
 
+function buyUpgrade(id) {
+    // Buy an upgrade and update UI
+    id.buy();
+    updateUpgrades();
+    sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
+}
+
+function prestigeButton() {
+    if (confirm("Do you really want to prestige?")) {
+        let amount = getGoldenShgabb();
+
+        game.shgabb = 0;
+        game.sw = 0;
+
+        for (let u of Object.keys(shgabbUpgrades)) {
+            game.upgradeLevels[u] = 0;
+        }
+        for (let u of Object.keys(sandwichUpgrades)) {
+            game.upgradeLevels[u] = 0;
+        }
+
+        game.gs += amount;
+
+        game.stats.pr += 1;
+        game.stats.gs += amount;
+
+        updateUpgrades();
+        createNotification("Prestiged for " + amount + " golden shgabb!");
+    }
+}
+
+// Notifications
+function createNotification(text) {
+    currentNotifications.push([text, 5]);
+    if (currentNotifications.length > 5) currentNotifications.shift();
+}
+
+// Update functions
+
 function updateQuote() {
     ui.quote.innerHTML = quotes[Math.ceil(Math.random() * quotes.length - 1)];
 }
@@ -162,6 +217,9 @@ function updateUpgrades() {
 
     ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render();
     ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render();
+
+    ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render();
+    ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render();
 }
 
 function updateUI() {
@@ -198,30 +256,32 @@ function updateUI() {
         ui.swHeader.style.display = "none";
     }
 
+    if (game.shgabb >= 1000000) {
+        ui.prestigeButton.style.display = "inline";
+        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + getGoldenShgabb() + " golden shgabb!";
+    }
+    else {
+        ui.prestigeButton.style.display = "none";
+    }
+    if (game.gs > 0) {
+        ui.gsAmount.innerHTML = game.gs + " Golden shgabb";
+    }
+    else {
+        ui.gsAmount.innerHTML = "";
+    }
     
     ui.stats.innerHTML = "Total Shgabb: " + game.stats.shgabb
         + "<br />Total Sandwiches: " + game.stats.sw
         + "<br />Total Clicks: " + game.stats.clicks
         + "<br />Total Time: " + game.stats.playTime.toFixed(1)
-        + "<br />Total Ads watched: " + game.stats.ads;
+        + "<br />Total Ads watched: " + game.stats.ads
+        + "<br />Total Golden Shgabb: " + game.stats.gs
+        + "<br />Total Prestiges: " + game.stats.pr;
 
     ui.notifications.innerHTML = "";
     for (n in currentNotifications) {
         ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n][0] + "<br />";
     }
-}
-
-function buyUpgrade(id) {
-    // Buy an upgrade and update UI
-    id.buy();
-    updateUpgrades();
-    sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
-}
-
-// Notifications
-function createNotification(text) {
-    currentNotifications.push([text, 5]);
-    if (currentNotifications.length > 5) currentNotifications.shift();
 }
 
 // Core
@@ -253,6 +313,9 @@ function importGame() {
     game = Object.assign({}, game, importGame);
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, importGame.upgradeLevels);
     game.stats = Object.assign({}, cache.stats, importGame.stats);
+
+    updateUI();
+    updateUpgrades();
 
     createNotification("Game imported successfully!");
 }
