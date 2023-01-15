@@ -81,17 +81,17 @@ var shgabbUpgrades = {
     goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 24 }),
     bomblike: new Upgrade("bomblike", "Bomblike", "Get even more shgabb per click", level => Math.pow(5, 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 34 }),
     swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 250, level => 0.1 * level, { maxLevel: 250, suffix: "%", unlock: () => game.upgradeLevels.moreShgabb > 49 }),
-    moreSw: new Upgrade("moreSw", "Sandwich Chance", "Get more sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 9, unlock: () => game.upgradeLevels.swChance > 24 }),
+    moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 19, unlock: () => game.upgradeLevels.swChance > 24 }),
 }
 
 var sandwichUpgrades = {
-    autoShgabb: new SandwichUpgrade("autoShgabb", "Get Shgabb Automatically", "Automatically earn shgabb without having to click", level => (2 + level) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.05) * (-1), Math.sin(level * 0.05))) / 8), level => level * 5 + Math.max(0, 5 * (level - 24)) + Math.max(0, 10 * (level - 50)), { unlock: () => game.upgradeLevels.swChance > 0 }),
+    autoShgabb: new SandwichUpgrade("autoShgabb", "Get Shgabb Automatically", "Automatically earn shgabb without having to click", level => (2 + level) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.05) * (-1), Math.sin(level * 0.05))) / 8), level => level * 5 + Math.max(0, 5 * (level - 24)) + Math.max(0, 10 * (level - 50)) + Math.max(0, 5 * (level - 101)), { unlock: () => game.upgradeLevels.swChance > 0 }),
     fridge: new SandwichUpgrade("fridge", "Better Fridge", "Keep the sandwiches cool for longer (More time before they stop making shgabb)", level => (6 + level * 2) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.2) * (-1), Math.sin(level * 0.2))) / 6), level => level * 2, { maxLevel: 60, unlock: () => game.upgradeLevels.swChance > 0 }),
 }
 
 var goldenShgabbUpgrades = {
-    divineShgabb: new GoldenShgabbUpgrade("divineShgabb", "Divine Shgabb", "Get even more shgabb - from clicks and auto!", level => (10 + level * 2) * Math.pow(1.04, level), level => 1 + level * 0.1, { prefix: "x" }),
+    divineShgabb: new GoldenShgabbUpgrade("divineShgabb", "Divine Shgabb", "Get even more shgabb - from clicks and auto!", level => (10 + level * 2) * Math.pow(1.03, level), level => 1 + level * 0.1 + (level > 49 ? 0.1 : 0), { prefix: "x" }),
     shortCD: new GoldenShgabbUpgrade("shortCD", "Even Shorter Cooldown", "Reduces the click cooldown", level => 100 * level + 100, level => level * 0.1, { maxLevel: 5, prefix: "-", suffix: "s" }),
     gsBoost1: new GoldenShgabbUpgrade("gsBoost1", "GS boosts shgabb 1", "Get more shgabb from clicks based on current golden shgabb", level => (20 + level * 5) * Math.pow(1.19, level), level => 1 + level * Math.ceil(Math.log(game.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.shortCD > 4 }),
-    gsBoost2: new GoldenShgabbUpgrade("gsBoost2", "GS boosts shgabb 2", "Get more auto shgabb based on total golden shgabb", level => (20 + level * 5) * Math.pow(1.14, level), level => 1 + level * Math.ceil(Math.log(game.stats.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.stats.gs > 999 }),
+    gsBoost2: new GoldenShgabbUpgrade("gsBoost2", "GS boosts shgabb 2", "Get more auto shgabb based on total golden shgabb", level => (20 + level * 5) * Math.pow(1.14, level), level => 1 + level * Math.ceil(1.3 * Math.log(game.stats.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.stats.gs > 999 }),
 }
