@@ -363,6 +363,7 @@ function loop() {
         else if (Math.random() >= 0.75) adHandler.src = "videos/elmenda_bad_as_always.mp4";
         else if (Math.random() >= 0.75) adHandler.src = "videos/Helmet452_Trailer.mp4";
         else if (Math.random() >= 0.75) adHandler.src = "videos/Drunk_elmenda_savage.mp4";
+        else if (Math.random() >= 0.75) adHandler.src = "videos/Mend_car_crashing_vid.mp4";
         else adHandler.src = "videos/shgabb_flame.mp4";
     }
     else if (adTime <= 0 && adButton.style.display == "none") {
