@@ -7,12 +7,13 @@
     <link href="main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <h2>Shgabb Clicker</h2>
+    <h2 style="color: goldenrod">Shgabb Clicker</h2>
     <span id="quote"></span><br />
-    <progress min="0" max="5" value="0" id="cooldownBar"></progress><br />
+    <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br /><br />
     <span id="shgabbAmount">0 Shgabb</span><br />
     <span id="swAmount"></span>
+    <span id="gsAmount"></span>
     <br /> <br />
     <hr />
     <h3>Shgabb Upgrades</h3>
@@ -22,7 +23,7 @@
     </div>
     <hr style="clear:both" />
     <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
-    <h3>Sandwich Upgrades</h3>
+    <h3 id="swHeader">Sandwich Upgrades</h3>
     <div>
         <span id="swupgradesl" style="float: left; width: 50%;"></span>
         <span id="swupgradesr" style="float: right; width: 50%;"></span>
@@ -30,6 +31,21 @@
 
     <br /> <br />
     <hr style="clear:both" />
+
+    <button id="prestigebutton" class="settingButton" style="display: none" onclick="prestigeButton()">Prestige!</button>
+    <div>
+        <span id="gsupgradesl" style="float: left; width: 50%;"></span>
+        <span id="gsupgradesr" style="float: right; width: 50%;"></span>
+    </div>
+
+    <br />
+    <hr style="clear:both" />
+
+    <progress min="0" max="100" value="0" id="adBar"></progress><br />
+    <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
+    <video volume="0.2" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
+
+    <hr />
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
 
@@ -42,17 +58,33 @@
         </div>
 
         <div class="square" style="text-align: right; width: 45%; margin-left: auto; ">
-            Shgabb Clicker<br />
-            Developed by Schrottii<br />
+            Shgabb Clicker - developed by Schrottii<br />
             <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br />
-            Version 1.0<br /><br /><br /><br /><br /><br /><br />
+            Version 1.1 "Reset And Ad" Update:
+            <br />-> Added Ads!
+            <br />- Watch short fun ads (made by Barduzzi) to receive strong temporary boosts, unlocked at 10 total sandwiches
+            <br />- Added 5 ad boosts
+            <br />-> Added Prestige!
+            <br />- Unlocked at 1000000 shgabb, reset most of your progress to earn...
+            <br />- New currency: Golden shgabb! Added 4 golden shgabb upgrades!
+            <br /><br />-> Balance:
+            <br />- Increased costs of "Get More Shgabb" after level 500
+            <br />- Reduced costs of "Bomblike" (at all levels)
+            <br />- Massively buffed "Get Shgabb Automatically" effect and changed costs of sandwich upgrades
+            <br />- Fixed "Sandwich Amount" being called "Sandwich Chance" and increased max. level from 9 to 19
+            <br /><br />-> Design:
+            <br />- Improved design of upgrade buttons and setting buttons
+            <br />- Upgrades that can be bought now have a green background color
+            <br />- Reworked bar design
+            <br />
         </div>
 
         <hr style="clear:both" />
 
         <div class="square">
             <h4>Settings</h4>
-            <button onclick="toggleMusic()" class="settingButton">Music on/off</button><br />
+            <button onclick="toggleMusic()" class="settingButton">Music on/off</button>
+            <button onclick="toggleAdSound()" class="settingButton">Ad Music on/off</button><br />
             <button onclick="exportGame()" class="settingButton">Export</button>
             <button onclick="importGame()" class="settingButton">Import</button><br />
             <button onclick="toggleBG()" class="settingButton">Background on/off</button><br />

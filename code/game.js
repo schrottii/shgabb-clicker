@@ -2,6 +2,7 @@ var game = {
     shgabb: 0,
     clickCooldown: 0,
     sw: 0,
+    gs: 0,
     upgradeLevels: {
         moreShgabb: 0,
         critChance: 0,
@@ -13,11 +14,18 @@ var game = {
         moreSw: 0,
         autoShgabb: 0,
         fridge: 0,
+        divineShgabb: 0,
+        shortCD: 0,
+        gsBoost1: 0,
+        gsBoost2: 0,
     },
     stats: {
         shgabb: 0,
         clicks: 0,
         playTime: 0,
         sw: 0,
+        ads: 0,
+        gs: 0,
+        pr: 0,
     },
 }
