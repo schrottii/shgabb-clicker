@@ -1,4 +1,4 @@
-class Upgrade {
+﻿class Upgrade {
     constructor(ID, name, description, price, effect, config) {
         this.ID = ID;
         this.name = name;
@@ -54,11 +54,16 @@ class Upgrade {
         return false;
     }
 
+    effectDisplay(level=0) {
+        if(level == 0) return (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.currentEffect()) + (this.suffix != undefined ? this.suffix : "");
+        else return (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.effect(level)) + (this.suffix != undefined ? this.suffix : "");
+    }
+
     render() {
         let isMax = this.maxLevel == this.currentLevel();
         let maxButton = "";
         if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((this.maxLevel > 10 && this.currentLevel() != this.maxLevel) || this.maxLevel == undefined)) maxButton = "<div onclick='buyMax(" + this.type + "." + this.ID + ")' class='maxButton'>MAX</div>";
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : "whitesmoke") + "'>" + maxButton + "<div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.currentEffect()) + (this.suffix != undefined ? this.suffix : "") + "</button><br /><br />";
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : "whitesmoke") + "'>" + maxButton + "<div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(0) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
         else return "";
     }
 }
