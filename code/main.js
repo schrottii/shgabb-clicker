@@ -79,7 +79,7 @@ const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!"];
 
 // format number
 function fn(number) {
-    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + "." + number.toString().substr(number.toString().length % 3, 2) + normalNotation[Math.floor(number.toString().length / 3 - 1) - 1];
+    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + "." + number.toString().substr(number.toString().length % 3, 2) + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
     return number.toFixed(1);
 }
 
@@ -115,7 +115,7 @@ function getProduction() {
     return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
-        * ((sandwichUpgrades.autoShgabb.currentLevel() * sandwichUpgrades.firstBoostsClicks.currentEffect()) + 1)
+        * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
     );
 }
 
