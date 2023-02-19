@@ -122,6 +122,7 @@ function getAutoProduction() {
     return Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 10 : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
+        + getProduction() * sandwichUpgrades.cheese.currentEffect()
     );
 }
 
