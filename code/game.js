@@ -23,6 +23,7 @@ var game = {
         gsBoost2: 0,
         unlockMax: 0,
         firstBoostsClicks: 0,
+        cheese: 0,
     },
     stats: {
         shgabb: 0,
@@ -32,5 +33,7 @@ var game = {
         ads: 0,
         gs: 0,
         pr: 0,
+        shgabbtp: 0,
+        swtp: 0,
     },
 }

@@ -88,6 +88,7 @@ function clickButton() {
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
+        game.stats.shgabbtp += amount;
         game.clickCooldown = getCooldown();
         game.stats.clicks += 1;
 
@@ -95,6 +96,7 @@ function clickButton() {
             amount = shgabbUpgrades.moreSw.currentEffect() + 1;
             game.sw += amount;
             game.stats.sw += amount;
+            game.stats.swtp += amount;
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
@@ -128,7 +130,7 @@ function getCooldown() {
 }
 
 function getGoldenShgabb() {
-    return Math.floor(Math.max(10, (1 + Math.log(game.shgabb + 1) * Math.log(game.sw + 1)) * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25));
+    return Math.floor(Math.max(10, (1 + Math.log(game.stats.shgabbtp + 1) * Math.log(game.stats.swtp + 1)) * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25));
 }
 
 function criticalHit() {
@@ -145,6 +147,7 @@ function sandwich() {
     if (amount > 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
+        game.stats.shgabbtp += amount;
         //createNotification("+" + amount + " shgabb");
     }
 
@@ -435,6 +438,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
     game.shgabb = Math.ceil(game.shgabb);
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
+    game.gs = Math.ceil(game.gs);
 }
 
 // Ad init
