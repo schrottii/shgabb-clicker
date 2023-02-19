@@ -13,6 +13,7 @@ var ui = {
     cooldownBar: document.getElementById("cooldownBar"),
     sandwichBar: document.getElementById("sandwichBar"),
     adBar: document.getElementById("adBar"),
+    adLoaded: document.getElementById("adloaded"),
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
     gsAmount: document.getElementById("gsAmount"),
@@ -78,7 +79,7 @@ const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!"];
 
 // format number
 function fn(number) {
-    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + "." + number.toString().substr(number.toString().length % 3, 2) + normalNotation[Math.floor(number.toString().length / 3) - 2];
+    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + "." + number.toString().substr(number.toString().length % 3, 2) + normalNotation[Math.floor(number.toString().length / 3 - 1) - 1];
     return number.toFixed(1);
 }
 
@@ -445,6 +446,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
 // Ad init
 adHandler.oncanplay = () => {
     adLoaded = true;
+    ui.adLoaded.style.display = "block";
+    createNotification("Ads loaded!");
 }
 
 adHandler.onended = () => {
