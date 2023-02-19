@@ -4,6 +4,7 @@ var game = {
     sw: 0,
     gs: 0,
     upgradeLevels: {
+        // Shgabb
         moreShgabb: 0,
         critChance: 0,
         critBoost: 0,
@@ -12,12 +13,16 @@ var game = {
         bomblike: 0,
         swChance: 0,
         moreSw: 0,
+        // Sandwich
         autoShgabb: 0,
         fridge: 0,
+        // GS
         divineShgabb: 0,
         shortCD: 0,
         gsBoost1: 0,
         gsBoost2: 0,
+        unlockMax: 0,
+        firstBoostsClicks: 0,
     },
     stats: {
         shgabb: 0,
