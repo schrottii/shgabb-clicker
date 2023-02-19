@@ -14,8 +14,17 @@
     <span id="shgabbAmount">0 Shgabb</span><br />
     <span id="swAmount"></span>
     <span id="gsAmount"></span>
-    <br /> <br />
-    <hr />
+    <br />
+
+    <hr style="clear:both" />
+
+    <div id="adloaded" style="display: none">
+        <progress min="0" max="100" value="0" id="adBar"></progress><br />
+        <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
+        <video volume="0.2" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
+        <hr />
+    </div>
+
     <h3>Shgabb Upgrades</h3>
     <div>
         <span id="upgradesl" style="float: left; width: 50%;"></span>
@@ -38,13 +47,6 @@
         <span id="gsupgradesr" style="float: right; width: 50%;"></span>
     </div>
 
-    <br />
-    <hr style="clear:both" />
-
-    <progress min="0" max="100" value="0" id="adBar"></progress><br />
-    <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
-    <video volume="0.2" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
-
     <hr />
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
@@ -59,24 +61,32 @@
 
         <div class="square" style="text-align: right; width: 45%; margin-left: auto; ">
             Shgabb Clicker - developed by Schrottii<br />
-            <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br />
-            Version 1.1 "Reset And Ad" Update:
-            <br />-> Added Ads!
-            <br />- Watch short fun ads (made by Barduzzi) to receive strong temporary boosts, unlocked at 10 total sandwiches
-            <br />- Added 5 ad boosts
-            <br />-> Added Prestige!
-            <br />- Unlocked at 1000000 shgabb, reset most of your progress to earn...
-            <br />- New currency: Golden shgabb! Added 4 golden shgabb upgrades!
-            <br /><br />-> Balance:
-            <br />- Increased costs of "Get More Shgabb" after level 500
-            <br />- Reduced costs of "Bomblike" (at all levels)
-            <br />- Massively buffed "Get Shgabb Automatically" effect and changed costs of sandwich upgrades
-            <br />- Fixed "Sandwich Amount" being called "Sandwich Chance" and increased max. level from 9 to 19
+            <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
+            Version 1.2 Shgbeautiful Update:
+            <br />-> New Upgrades:
+            <br />- New Golden Shgabb Upgrade: Unlock Buy Max
+            <br />- New Golden Shgabb Upgrade: Unlock More Sandwich Upgrades
+            <br />- New Sandwich Upgrade: First upgrade boosts clicks
+            <br />- New Sandwich Upgrade: Auto Shgabb based on clicks
             <br /><br />-> Design:
-            <br />- Improved design of upgrade buttons and setting buttons
-            <br />- Upgrades that can be bought now have a green background color
-            <br />- Reworked bar design
-            <br />
+            <br />- Added a standard notation
+            <br />- Current shgabb, some stats and upgrade costs and effects are now displayed in notation at 1M or higher
+            <br />- Increased max. notifications from 5 to 15 and notification time from 5s to 15s
+            <br />- Added a shgabb/s display to the shgabb amount
+            <br />- You can now see the effect after an upgrade, if you can afford it
+            <br />- Removed shgabb from sandwiches notifications
+            <br />- Moved ads from next to the stats to below the shgabb display / above the upgrades
+            <br /><br />-> Balance:
+            <br />- Golden Shgabb gain is now based on Shgabb and Sandwiches earned in the entire run, instead of current
+            <br />- Increased Stronger Auto ad boost from 5x to 10x
+            <br />- Increased Stronger Clicks ad boost from 1.5x to 3x
+            <br />- Increased More Crits duration from 60 seconds to 120 seconds
+            <br />- Massively reduced cost scaling of GS upgrades 1, 3 and 4
+            <br />- Increased effect of the Better Fridge upgrade from 2/level (3min) to 4/level (5min)
+            <br />- Increased effect of Divine Shgabb from 0.1/level to 0.2/level, 0.3/level after level 50, 0.5/level after level 100
+            <br /><br />-> Other:
+            <br />- Added buy max button (for most upgrades), unlocked with a Golden Shgabb upgrade
+            <br />- Added several new quotes
         </div>
 
         <hr style="clear:both" />
@@ -90,7 +100,7 @@
             <button onclick="toggleBG()" class="settingButton">Background on/off</button><br />
         </div>
     </div>
-    <br /><br /><br /><br /><br /><br />
+    <br /><br /><br />
 
     <audio src="shgame.mp3" loop muted id="music"></audio>
 
