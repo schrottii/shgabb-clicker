@@ -22,6 +22,7 @@ var game = {
         gsBoost1: 0,
         gsBoost2: 0,
         unlockMax: 0,
+        unlockMSW: 0,
         firstBoostsClicks: 0,
         cheese: 0,
     },
