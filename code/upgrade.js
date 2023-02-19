@@ -103,10 +103,10 @@ var sandwichUpgrades = {
 }
 
 var goldenShgabbUpgrades = {
-    divineShgabb: new GoldenShgabbUpgrade("divineShgabb", "Divine Shgabb", "Get even more shgabb - from clicks and auto!", level => (10 + level * 2) * Math.pow(1.03, level), level => 1 + level * 0.2 + (0.1 * Math.max(level - 50, 0)) + (0.2 * Math.max(level - 100, 0)), { prefix: "x" }),
+    divineShgabb: new GoldenShgabbUpgrade("divineShgabb", "Divine Shgabb", "Get even more shgabb - from clicks and auto!", level => (10 + level * 2) * Math.pow(1.02, level), level => 1 + level * 0.2 + (0.1 * Math.max(level - 50, 0)) + (0.2 * Math.max(level - 100, 0)), { prefix: "x" }),
     shortCD: new GoldenShgabbUpgrade("shortCD", "Even Shorter Cooldown", "Reduces the click cooldown", level => 100 * level + 100, level => level * 0.1, { maxLevel: 5, prefix: "-", suffix: "s" }),
-    gsBoost1: new GoldenShgabbUpgrade("gsBoost1", "GS boosts shgabb 1", "Get more shgabb from clicks based on current golden shgabb", level => (20 + level * 5) * Math.pow(1.19, level), level => 1 + level * Math.ceil(Math.log(game.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.shortCD > 4 }),
-    gsBoost2: new GoldenShgabbUpgrade("gsBoost2", "GS boosts shgabb 2", "Get more auto shgabb based on total golden shgabb", level => (20 + level * 5) * Math.pow(1.14, level), level => 1 + level * Math.ceil(1.3 * Math.log(game.stats.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.stats.gs > 999 }),
+    gsBoost1: new GoldenShgabbUpgrade("gsBoost1", "GS boosts shgabb 1", "Get more shgabb from clicks based on current golden shgabb", level => (20 + level * 5) * Math.pow(1.09, level), level => 1 + level * Math.ceil(Math.log(game.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.shortCD > 4 }),
+    gsBoost2: new GoldenShgabbUpgrade("gsBoost2", "GS boosts shgabb 2", "Get more auto shgabb based on total golden shgabb", level => (20 + level * 5) * Math.pow(1.04, level), level => 1 + level * Math.ceil(1.3 * Math.log(game.stats.gs + 1)), { maxLevel: 100, prefix: "x", unlock: () => game.stats.gs > 999 }),
     unlockMax: new GoldenShgabbUpgrade("unlockMax", "Unlock Buy Max", "Unlock buy max buttons for most upgrades", level => 3000, level => level, { maxLevel: 1, unlock: () => game.stats.gs > 2999 }),
     unlockMSW: new GoldenShgabbUpgrade("unlockMSW", "Unlock More Sandwich Upgrades", "Unlock two new sandwich upgrades", level => 2500, level => level, { maxLevel: 2, unlock: () => sandwichUpgrades.autoShgabb.currentLevel() > 79 }),
 }
