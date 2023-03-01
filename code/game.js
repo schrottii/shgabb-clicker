@@ -3,6 +3,7 @@ var game = {
     clickCooldown: 0,
     sw: 0,
     gs: 0,
+    si: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -25,6 +26,8 @@ var game = {
         unlockMSW: 0,
         firstBoostsClicks: 0,
         cheese: 0,
+        moreSilicone: 0,
+        strongerSilicone: 0,
     },
     stats: {
         shgabb: 0,
@@ -36,5 +39,12 @@ var game = {
         pr: 0,
         shgabbtp: 0,
         swtp: 0,
+        si: 0,
     },
+}
+
+var settings = {
+    music: false,
+    adMusic: true,
+    displayCurrent: false,
 }

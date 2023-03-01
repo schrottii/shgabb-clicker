@@ -6,6 +6,13 @@ body {
     text-align: center;
 }
 
+h2 {
+    margin-bottom: 0px;
+}
+h3 {
+    margin-bottom: 0px;
+}
+
 .settingButton {
     background-color: lightgray;
     color: black;
@@ -32,8 +39,8 @@ body {
     margin-right: auto;
     border: 4px solid white;
     width: 90%;
-    min-height: 120px;
-    max-width: 480px;
+    min-height: 108px;
+    max-width: 420px;
 }
     .upgrade:hover {
         filter: brightness(90%);

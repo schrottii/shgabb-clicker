@@ -14,21 +14,32 @@ var ui = {
     sandwichBar: document.getElementById("sandwichBar"),
     adBar: document.getElementById("adBar"),
     adLoaded: document.getElementById("adloaded"),
+
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
     gsAmount: document.getElementById("gsAmount"),
+    shgabbAmount2: document.getElementById("shgabbAmount2"),
+    swAmount2: document.getElementById("swAmount2"),
+    gsAmount2: document.getElementById("gsAmount2"),
+    siAmount: document.getElementById("siAmount"),
+    siAmount2: document.getElementById("siAmount2"),
+
     upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
     swupgradesl: document.getElementById("swupgradesl"),
     swupgradesr: document.getElementById("swupgradesr"),
     gsupgradesl: document.getElementById("gsupgradesl"),
     gsupgradesr: document.getElementById("gsupgradesr"),
+    siupgradesl: document.getElementById("siupgradesl"),
+    siupgradesr: document.getElementById("siupgradesr"),
+
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
     music: document.getElementById("music"),
     quote: document.getElementById("quote"),
     swHeader: document.getElementById("swHeader"),
     prestigeButton: document.getElementById("prestigebutton"),
+    siliconeArea: document.getElementById("siliconeArea"),
 }
 
 var adHandler = document.getElementById("baldad");
@@ -41,7 +52,7 @@ const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgab
 const boostTexts = {
     strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 2 minutes",
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
-    moreSandwiches: "More Sandwiches: Get sandwiches twice as often for 3 minutes",
+    moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
     moreCrits: "More Crits: 5x critical hit chance for 2 minutes"
 };
@@ -75,12 +86,13 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "I am teriffied of this place - slowmerger",
     "You still insulted me, human. - slowmerger",
 ];
-const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!"];
+const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!", "What?!?!", "What?!?!"];
 
 // format number
 function fn(number) {
-    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + "." + number.toString().substr(number.toString().length % 3, 2) + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
-    return number.toFixed(1);
+    let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
+    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(1);
 }
 
 function clickButton() {
@@ -93,7 +105,7 @@ function clickButton() {
         game.clickCooldown = getCooldown();
         game.stats.clicks += 1;
 
-        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 2 : 1)) {
+        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
             amount = shgabbUpgrades.moreSw.currentEffect() + 1;
             game.sw += amount;
             game.stats.sw += amount;
@@ -116,6 +128,7 @@ function getProduction() {
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
+        * Math.log10(game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.currentEffect() * Math.sqrt(game.stats.playTime)))
     );
 }
 
@@ -123,8 +136,12 @@ function getAutoProduction() {
     return Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 10 : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
-        + getProduction() * sandwichUpgrades.cheese.currentEffect()
+        + (getProduction() * sandwichUpgrades.cheese.currentEffect())
     );
+}
+
+function getSiliconeProduction() {
+    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect());
 }
 
 function getCooldown() {
@@ -156,29 +173,32 @@ function sandwich() {
     updateUpgrades();
 }
 
+function silicone() {
+    if (game.shgabb < 1000000000 && game.stats.si < 1) return false;
+
+    let amount = getSiliconeProduction();
+    if (amount > 0) {
+        game.si += amount;
+        game.stats.si += amount;
+    }
+
+    updateUpgrades();
+}
+
 function toggleMusic() {
-    if (music.muted == true) {
-        music.muted = false;
+    settings.music = !settings.music;
+    createNotification("Music " + (settings.music ? "ON" : "OFF"));
+    music.muted = !settings.music;
+    if (!music.muted) {
         music.currentTime = 0;
         music.play();
-        createNotification("Music ON");
     }
-    else {
-        createNotification("Music OFF");
-        music.muted = true;
-    }
-    
 }
+
 function toggleAdSound() {
-    if (adHandler.muted == true) {
-        adHandler.muted = false;
-        createNotification("Ad Music ON");
-    }
-    else {
-        createNotification("Ad Music OFF");
-        adHandler.muted = true;
-    }
-    
+    settings.adMusic = !settings.adMusic;
+    createNotification("Ad Music " + (settings.adMusic ? "ON" : "OFF"));
+    adHandler.muted = !settings.adMusic;
 }
 
 function toggleBG() {
@@ -193,6 +213,12 @@ function toggleBG() {
         body.style.backgroundColor = "none";
         createNotification("Background ON");
     }
+}
+
+function toggleCurrent() {
+    settings.displayCurrent = !settings.displayCurrent;
+    createNotification("Current Effect " + (settings.displayCurrent ? "ON" : "OFF"));
+    updateUpgrades();
 }
 
 function buyUpgrade(id) {
@@ -257,12 +283,15 @@ function updateUpgrades() {
 
     ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render();
     ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render() + goldenShgabbUpgrades.unlockMSW.render();
+
+    ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render();
+    ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render();
 }
 
 function updateUI() {
     // Update UI
     if (game.upgradeLevels.swChance > 0) {
-        ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + getAutoProduction() + "/s)";
+        ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
         ui.swAmount.innerHTML = game.sw + " Sandwiches";
         ui.sandwichBar.style.display = "inline";
         ui.sandwichBar.value = sandwichFreezeTime;
@@ -278,7 +307,7 @@ function updateUI() {
         ui.clickButton.style["background-color"] = "lightblue";
     }
     else {
-        ui.clickButton.innerHTML = "+" + getProduction() + " Shgabb";
+        ui.clickButton.innerHTML = "+" + fn(getProduction()) + " Shgabb";
         ui.clickButton.style["background-color"] = "blue";
     }
     ui.cooldownBar.value = game.clickCooldown;
@@ -307,6 +336,14 @@ function updateUI() {
     else {
         ui.gsAmount.innerHTML = "";
     }
+    // Silicone
+    if (game.shgabb >= 1000000000 || game.stats.si > 0) {
+        ui.siliconeArea.style.display = "inline";
+        ui.siAmount.innerHTML = game.si + " Silicone Shgabb (" + getSiliconeProduction() + "/sec)";
+    }
+    else {
+        ui.siliconeArea.style.display = "none";
+    }
     
     ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + game.stats.sw
@@ -315,7 +352,14 @@ function updateUI() {
         + "<br />Total Ads watched: " + game.stats.ads
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr;
+        + "<br />Total Silicone Shgabb: " + game.stats.si;
 
+    ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
+    ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
+    ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
+    ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
+
+    // Notifications
     ui.notifications.innerHTML = "";
     let n2 = 15;
     for (n in currentNotifications) {
@@ -332,6 +376,7 @@ function updateUI() {
 function autoSave() {
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
+    localStorage.setItem("shgabbSettings", JSON.stringify(settings));
     createNotification("Game saved automatically");
 }
 
@@ -396,6 +441,7 @@ function loop() {
     if (sandwichTime <= 0 && sandwichFreezeTime > 0) {
         sandwichTime = 1;
         sandwich();
+        silicone();
     }
 
     if (adTime <= 0 && adButton.style.display == "none" && currentBoost == "none") {
@@ -441,6 +487,12 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.shgabb = Math.ceil(game.shgabb);
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
+}
+if (localStorage.getItem("shgabbSettings") != undefined) {
+    settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
+
+    music.muted = !settings.music;
+    adHandler.muted = !settings.adMusic;
 }
 
 // Ad init
