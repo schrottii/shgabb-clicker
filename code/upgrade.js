@@ -123,5 +123,5 @@ var goldenShgabbUpgrades = {
 
 var siliconeShgabbUpgrades = {
     moreSilicone: new SiliconeShgabbUpgrade("moreSilicone", "More Silicone", "Get even more silicone", level => (8 + level * 2) * Math.pow(1.025, level), level => 1 + level, { suffix: "/sec" }),
-    strongerSilicone: new SiliconeShgabbUpgrade("strongerSilicone", "Stronger Silicone", "Increase the silicone boost, based on √play time", level => (60 + level * 24) * Math.pow(1.25, level), level => level * 0.001, { maxLevel: 100, current: level => "x" + fn(Math.log10(1 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)))) + " shgabb", effectMulti: 100, suffix: "%" }),
+    strongerSilicone: new SiliconeShgabbUpgrade("strongerSilicone", "Stronger Silicone", "Increase the silicone boost, based on √play time", level => (60 + level * 24) * Math.pow(1.25, level), level => level * 0.001, { maxLevel: 100, current: level => "x" + fn(Math.log10(10 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)))) + " shgabb", effectMulti: 100, suffix: "%" }),
 }

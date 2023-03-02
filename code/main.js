@@ -128,7 +128,7 @@ function getProduction() {
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
-        * Math.log10(1 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.currentEffect() * Math.sqrt(game.stats.playTime)))
+        * Math.log10(10 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.currentEffect() * Math.sqrt(game.stats.playTime)))
     );
 }
 
