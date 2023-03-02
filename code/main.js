@@ -128,15 +128,16 @@ function getProduction() {
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
-        * Math.log10(game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.currentEffect() * Math.sqrt(game.stats.playTime)))
+        * Math.log10(1 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.currentEffect() * Math.sqrt(game.stats.playTime)))
     );
 }
 
 function getAutoProduction() {
-    return Math.ceil(sandwichUpgrades.autoShgabb.currentEffect() * (currentBoost == "strongerAuto" ? 10 : 1)
+    return Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
         + (getProduction() * sandwichUpgrades.cheese.currentEffect())
+        * (currentBoost == "strongerAuto" ? 10 : 1)
     );
 }
 
@@ -485,6 +486,9 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
     game.shgabb = Math.ceil(game.shgabb);
+    if (game.shgabb == "-Infinity") game.shgabb = 0;
+    if (game.stats.shgabb == "-Infinity") game.stats.shgabb = 0;
+    if (game.stats.shgabbtp == "-Infinity") game.stats.shgabbtp = 0;
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
 }
