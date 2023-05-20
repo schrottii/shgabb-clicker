@@ -58,6 +58,8 @@ h3 {
     border: 2px solid black;
     width: 32px;
     height: 16px;
+    background-color: lightgray;
+    font-weight: bold;
 }
 
 progress {
