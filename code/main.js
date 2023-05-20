@@ -8,6 +8,9 @@ var adTime = 10;
 var adMax = 10;
 var currentNotifications = [];
 
+var time = 0;
+var oldTime = 0;
+
 var ui = {
     clickButton: document.getElementById("clickButton"),
     cooldownBar: document.getElementById("cooldownBar"),
@@ -416,18 +419,22 @@ function showAd() {
     currentBoost = "wait";
 }
 
-function loop() {
+function loop(tick) {
     // Main Game Loop
-    game.clickCooldown -= 30 / 1000;
-    autoSaveTime -= 30 / 1000;
-    quoteTime -= 30 / 1000;
-    sandwichTime -= 30 / 1000;
-    sandwichFreezeTime -= 30 / 1000;
-    game.stats.playTime += 30 / 1000;
-    if(adLoaded && game.stats.sw > 9) adTime -= 30 / 1000;
+    let time = (tick - oldTime) / 1000;
+    oldTime = tick;
+
+
+    game.clickCooldown -= time;
+    autoSaveTime -= time;
+    quoteTime -= time;
+    sandwichTime -= time;
+    sandwichFreezeTime -= time;
+    game.stats.playTime += time;
+    if (adLoaded && game.stats.sw > 9) adTime -= time;
 
     for (n in currentNotifications) {
-        currentNotifications[n][1] -= 30 / 1000;
+        currentNotifications[n][1] -= time;
         if (currentNotifications[n][1] < 0) currentNotifications.splice(n, 1);
     }
 
@@ -477,6 +484,7 @@ function loop() {
     }
 
     updateUI();
+    window.requestAnimationFrame(loop);
 }
 
 // Load
@@ -528,4 +536,4 @@ adHandler.onended = () => {
 updateUpgrades();
 
 // Start game loop (30 FPS)
-setInterval("loop()", 1000 / 30); // 30 FPS
+window.requestAnimationFrame(loop);
