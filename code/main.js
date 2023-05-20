@@ -1,3 +1,5 @@
+// Game made by Schrottii - editing or stealing is prohibited!
+
 // Main JS File
 
 var autoSaveTime = 3;
@@ -88,6 +90,10 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "Finally, some not death-threatening message - slowmerger",
     "I am teriffied of this place - slowmerger",
     "You still insulted me, human. - slowmerger",
+    "love - elmenda452",
+    "dong - shgabb",
+    ":fire::dance: cavemen be like - shgabb",
+    "Should I reinstall again because of developers utter degeneracy - slowmerger",
 ];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!", "What?!?!", "What?!?!"];
 
@@ -537,3 +543,6 @@ updateUpgrades();
 
 // Start game loop (30 FPS)
 window.requestAnimationFrame(loop);
+
+console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');

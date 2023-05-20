@@ -1,4 +1,6 @@
-﻿class Upgrade {
+﻿// Game made by Schrottii - editing or stealing is prohibited!
+
+class Upgrade {
     constructor(ID, name, description, price, effect, config) {
         this.ID = ID;
         this.name = name;
