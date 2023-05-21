@@ -1,3 +1,5 @@
+// Game made by Schrottii - editing or stealing is prohibited!
+
 var game = {
     shgabb: 0,
     clickCooldown: 0,

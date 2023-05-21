@@ -1,3 +1,5 @@
+// Game made by Schrottii - editing or stealing is prohibited!
+
 // Main JS File
 
 var autoSaveTime = 3;
@@ -7,6 +9,9 @@ var sandwichFreezeTime = 60;
 var adTime = 10;
 var adMax = 10;
 var currentNotifications = [];
+
+var time = 0;
+var oldTime = 0;
 
 var ui = {
     clickButton: document.getElementById("clickButton"),
@@ -48,13 +53,14 @@ var adLoaded = false;
 var availableBoost = "none";
 var currentBoost = "none";
 
-const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits"];
+const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone"];
 const boostTexts = {
     strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 2 minutes",
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
-    moreCrits: "More Crits: 5x critical hit chance for 2 minutes"
+    moreCrits: "More Crits: 5x critical hit chance for 2 minutes",
+    moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes"
 };
 const adTimes = {
     strongerClicks: 120,
@@ -62,6 +68,7 @@ const adTimes = {
     moreSandwiches: 180,
     fasterShgabb: 60,
     moreCrits: 120,
+    moreSilicone: 180,
 };
 const quotes = ["(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
@@ -85,6 +92,10 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "Finally, some not death-threatening message - slowmerger",
     "I am teriffied of this place - slowmerger",
     "You still insulted me, human. - slowmerger",
+    "love - elmenda452",
+    "dong - shgabb",
+    ":fire::dance: cavemen be like - shgabb",
+    "Should I reinstall again because of developers utter degeneracy - slowmerger",
 ];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!", "What?!?!", "What?!?!"];
 
@@ -142,7 +153,7 @@ function getAutoProduction() {
 }
 
 function getSiliconeProduction() {
-    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect());
+    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1));
 }
 
 function getCooldown() {
@@ -416,18 +427,22 @@ function showAd() {
     currentBoost = "wait";
 }
 
-function loop() {
+function loop(tick) {
     // Main Game Loop
-    game.clickCooldown -= 30 / 1000;
-    autoSaveTime -= 30 / 1000;
-    quoteTime -= 30 / 1000;
-    sandwichTime -= 30 / 1000;
-    sandwichFreezeTime -= 30 / 1000;
-    game.stats.playTime += 30 / 1000;
-    if(adLoaded && game.stats.sw > 9) adTime -= 30 / 1000;
+    let time = (tick - oldTime) / 1000;
+    oldTime = tick;
+
+
+    game.clickCooldown -= time;
+    autoSaveTime -= time;
+    quoteTime -= time;
+    sandwichTime -= time;
+    sandwichFreezeTime -= time;
+    game.stats.playTime += time;
+    if (adLoaded && game.stats.sw > 9) adTime -= time;
 
     for (n in currentNotifications) {
-        currentNotifications[n][1] -= 30 / 1000;
+        currentNotifications[n][1] -= time;
         if (currentNotifications[n][1] < 0) currentNotifications.splice(n, 1);
     }
 
@@ -477,6 +492,7 @@ function loop() {
     }
 
     updateUI();
+    window.requestAnimationFrame(loop);
 }
 
 // Load
@@ -528,4 +544,7 @@ adHandler.onended = () => {
 updateUpgrades();
 
 // Start game loop (30 FPS)
-setInterval("loop()", 1000 / 30); // 30 FPS
+window.requestAnimationFrame(loop);
+
+console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
