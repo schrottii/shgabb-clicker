@@ -1,3 +1,4 @@
+Dates in yyyy/mm/dd format. Dates are release dates.
 All versions:
 1.1
 1.2
@@ -98,7 +99,7 @@ Version 1.3 Silicone Update:
 
 
 
-2023/05/... 1.3.2:
+2023/05/21 1.3.2:
 Version 1.3.2:
 -> Important:
 - Changed the way the game updates, improving performance and fixing in-game seconds being slighty faster/slower than in real life
