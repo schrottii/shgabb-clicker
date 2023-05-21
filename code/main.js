@@ -53,13 +53,14 @@ var adLoaded = false;
 var availableBoost = "none";
 var currentBoost = "none";
 
-const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits"];
+const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone"];
 const boostTexts = {
     strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 2 minutes",
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
-    moreCrits: "More Crits: 5x critical hit chance for 2 minutes"
+    moreCrits: "More Crits: 5x critical hit chance for 2 minutes",
+    moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes"
 };
 const adTimes = {
     strongerClicks: 120,
@@ -67,6 +68,7 @@ const adTimes = {
     moreSandwiches: 180,
     fasterShgabb: 60,
     moreCrits: 120,
+    moreSilicone: 180,
 };
 const quotes = ["(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
@@ -151,7 +153,7 @@ function getAutoProduction() {
 }
 
 function getSiliconeProduction() {
-    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect());
+    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1));
 }
 
 function getCooldown() {
