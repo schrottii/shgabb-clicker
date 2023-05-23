@@ -49,4 +49,5 @@ var settings = {
     music: false,
     adMusic: true,
     displayCurrent: false,
+    hideMaxed: false,
 }

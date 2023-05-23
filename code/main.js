@@ -44,7 +44,12 @@ var ui = {
     quote: document.getElementById("quote"),
     swHeader: document.getElementById("swHeader"),
     prestigeButton: document.getElementById("prestigebutton"),
-    siliconeArea: document.getElementById("siliconeArea"),
+}
+
+var unlocks = {
+    sandwich: document.getElementById("sandwichSection"),
+    goldenShgabb: document.getElementById("goldenShgabbSection"),
+    siliconeShgabb: document.getElementById("siliconeShgabbSection"),
 }
 
 var adHandler = document.getElementById("baldad");
@@ -233,6 +238,12 @@ function toggleCurrent() {
     updateUpgrades();
 }
 
+function hideMaxed() {
+    settings.hideMaxed = !settings.hideMaxed;
+    createNotification("Current Effect " + (settings.hideMaxed ? "SHOW" : "HIDE"));
+    updateUpgrades();
+}
+
 function buyUpgrade(id) {
     // Buy an upgrade and update UI
     id.buy();
@@ -305,12 +316,12 @@ function updateUI() {
     if (game.upgradeLevels.swChance > 0) {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
         ui.swAmount.innerHTML = game.sw + " Sandwiches";
-        ui.sandwichBar.style.display = "inline";
+        unlocks.sandwich.style.display = "unset";
         ui.sandwichBar.value = sandwichFreezeTime;
     }
     else {
-        ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb)";
-        ui.sandwichBar.style.display = "none";
+        ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
+        unlocks.sandwich.style.display = "none";
         ui.swAmount.innerHTML = "";
     }
 
@@ -335,26 +346,30 @@ function updateUI() {
         ui.swHeader.style.display = "none";
     }
 
+    if (game.gs > 0) {
+        unlocks.goldenShgabb.style.display = "unset";
+        ui.gsAmount.innerHTML = game.gs + " Golden shgabb";
+    }
+    else {
+        unlocks.goldenShgabb.style.display = "none";
+        ui.gsAmount.innerHTML = "";
+    }
     if (game.shgabb >= 1000000) {
+        unlocks.goldenShgabb.style.display = "unset";
         ui.prestigeButton.style.display = "inline";
         ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + getGoldenShgabb() + " golden shgabb!";
     }
     else {
         ui.prestigeButton.style.display = "none";
     }
-    if (game.gs > 0) {
-        ui.gsAmount.innerHTML = game.gs + " Golden shgabb";
-    }
-    else {
-        ui.gsAmount.innerHTML = "";
-    }
+
     // Silicone
     if (game.shgabb >= 1000000000 || game.stats.si > 0) {
-        ui.siliconeArea.style.display = "inline";
+        unlocks.siliconeShgabb.style.display = "unset";
         ui.siAmount.innerHTML = game.si + " Silicone Shgabb (" + getSiliconeProduction() + "/sec)";
     }
     else {
-        ui.siliconeArea.style.display = "none";
+        unlocks.siliconeShgabb.style.display = "none";
     }
     
     ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
@@ -363,7 +378,7 @@ function updateUI() {
         + "<br />Total Time: " + game.stats.playTime.toFixed(1)
         + "<br />Total Ads watched: " + game.stats.ads
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
-        + "<br />Total Prestiges: " + game.stats.pr;
+        + "<br />Total Prestiges: " + game.stats.pr
         + "<br />Total Silicone Shgabb: " + game.stats.si;
 
     ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;

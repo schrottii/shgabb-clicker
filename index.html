@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
     <link href="main.css" rel="stylesheet" type="text/css">
+    <link href="unlocks.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <!-- Top -->
     <h2 style="color: goldenrod">Shgabb Clicker</h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br /><br />
-    <span id="shgabbAmount">0 Shgabb</span><br />
-    <span id="swAmount"></span>
-    <span id="gsAmount"></span>
-    <span id="siAmount"></span>
+    <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount">0 Shgabb</span><br />
+    <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount"></span>
+    <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount"></span>
+    <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount"></span>
     <br />
 
     <hr style="clear:both" />
-
+    <!-- Ads -->
     <div id="adloaded" style="display: none">
         <progress min="0" max="100" value="0" id="adBar"></progress><br />
         <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
@@ -26,44 +28,55 @@
         <hr />
     </div>
 
+    <!-- Shgabb -->
     <h3>Shgabb Upgrades</h3>
-    <span id="shgabbAmount2">0 Shgabb</span><br />
+    <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount2">0 Shgabb</span><br />
     <div>
         <span id="upgradesl" style="float: left; width: 50%;"></span>
         <span id="upgradesr" style="float: right; width: 50%;"></span>
     </div>
     <hr style="clear:both" />
-    <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
-    <h3 id="swHeader">Sandwich Upgrades</h3>
-    <span id="swAmount2"></span>
-    <div>
-        <span id="swupgradesl" style="float: left; width: 50%;"></span>
-        <span id="swupgradesr" style="float: right; width: 50%;"></span>
+
+    <!-- Sandwiches -->
+    <div id="sandwichSection"">
+        <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
+        <h3 id="swHeader">Sandwich Upgrades</h3>
+        <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount2"></span>
+        <div>
+            <span id="swupgradesl" style="float: left; width: 50%;"></span>
+            <span id="swupgradesr" style="float: right; width: 50%;"></span>
+        </div>
+        <br /> <br />
+        <hr style="clear:both" />
     </div>
 
-    <br /> <br />
-    <hr style="clear:both" />
+    <!-- Golden Shgabb -->
+    <div id="goldenShgabbSection">
+        <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
+        <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount2"></span>
+        <div>
+            <span id="gsupgradesl" style="float: left; width: 50%;"></span>
+            <span id="gsupgradesr" style="float: right; width: 50%;"></span>
+        </div>
 
-    <button id="prestigebutton" class="settingButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
-    <span id="gsAmount2"></span>
-    <div>
-        <span id="gsupgradesl" style="float: left; width: 50%;"></span>
-        <span id="gsupgradesr" style="float: right; width: 50%;"></span>
+        <hr style="clear:both" />
     </div>
 
-    <hr style="clear:both" />
-
-    <span id="siAmount2"></span><br /> 
-    <div id="siliconeArea">
-        <span id="siupgradesl" style="float: left; width: 50%;"></span>
-        <span id="siupgradesr" style="float: right; width: 50%;"></span>
+    <!-- Silicone Shgabb -->
+    <div id="siliconeShgabbSection">
+        <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount2"></span><br />
+        <div>
+            <span id="siupgradesl" style="float: left; width: 50%;"></span>
+            <span id="siupgradesr" style="float: right; width: 50%;"></span>
+        </div>
+        <hr style="clear:both" />
     </div>
-    <hr style="clear:both" />
 
+    <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
 
-
+    <!-- Other -->
     <br /><hr /><br />
     <div style="position: relative;">
         <div class="square" style="position: absolute; text-align: left; width: 45%;">
@@ -108,6 +121,7 @@
             <button onclick="importGame()" class="settingButton">Import</button><br />
             <button onclick="toggleBG()" class="settingButton">Background on/off</button>
             <button onclick="toggleCurrent()" class="settingButton">Current Effect on/off</button><br />
+            <button onclick="hideMaxed()" class="settingButton">Show/hide maxed</button><br />
         </div>
     </div>
     <br /><br /><br />
