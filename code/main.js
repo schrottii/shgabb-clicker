@@ -144,10 +144,10 @@ function getProduction() {
 }
 
 function getAutoProduction() {
-    return Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
+    return Math.ceil((sandwichUpgrades.autoShgabb.currentEffect()
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
-        + (getProduction() * sandwichUpgrades.cheese.currentEffect())
+        + (getProduction() * sandwichUpgrades.cheese.currentEffect()))
         * (currentBoost == "strongerAuto" ? 10 : 1)
     );
 }
@@ -319,7 +319,7 @@ function updateUI() {
         ui.clickButton.style["background-color"] = "lightblue";
     }
     else {
-        ui.clickButton.innerHTML = "+" + fn(getProduction()) + " Shgabb";
+        ui.clickButton.innerHTML = "+" + fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1)) + " Shgabb";
         ui.clickButton.style["background-color"] = "blue";
     }
     ui.cooldownBar.value = game.clickCooldown;
