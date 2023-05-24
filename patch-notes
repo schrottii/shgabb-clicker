@@ -122,14 +122,38 @@ Version 1.3.2:
 
 
 
-? 1.4:
+2023/05/24 1.4:
 Version 1.4:
+-> Design:
 - Finally! Images!
 - Added images for all currencies: Shgabb, Sandwiches, Golden Shgabb and Silicone Shgabb
 - Added an image for the prestige button
 - Changed the design of the prestige button (gray to gold) and increased its text size
+- Sandwich, GS and Silicone sections are now completely hidden until unlocked
+- Changed Silicone's /sec to /s for consistency
+- Added a short text explaining how Silicone works
+- Game title now has a black background
+- Shgabb and Sandwich amount are now in the same row, and the currency overview now has a background
+
+-> Balance:
+- Reworked the Silicone boost formula
+- Silicone now affects auto (excluding cheese, which is already affected by it)
+- Increased effect of Stronger Silicone from 0.1%/level to 0.5% and made its description more clear
+- Increased max. level of Sandwich Amount from 19 to 24
+- The More Crits ad boost now also increases their strength by 3x on top of the 5x chance
+
+-> Notifications:
+- Notifications text is now aligned to the right, and patch notes to the left
+- The newest notification is now highlighted in bold
+- The newest notification is now also displayed at the top
+
+-> Other:
 - Added setting to hide maxed upgrades
 - Click button now shows x3 if the ad is active
+- Added stats for the individual ads (7 total), when opening the updated game for the first time they are randomly distributed 
+- Added Highest More Shgabb stat
+- Total Silicone Shgabb stat is now visible
+- More things now use the notation
+- Reduced auto save frequency from 3s to 6s
 - Fixed x10 auto shgabb ad not working sometimes
 - Shgabb)
-(and more...)

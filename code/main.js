@@ -40,9 +40,9 @@ var ui = {
 
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
+    newestNotification: document.getElementById("newestnotif"),
     music: document.getElementById("music"),
     quote: document.getElementById("quote"),
-    swHeader: document.getElementById("swHeader"),
     prestigeButton: document.getElementById("prestigebutton"),
 }
 
@@ -64,7 +64,7 @@ const boostTexts = {
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
-    moreCrits: "More Crits: 5x critical hit chance for 2 minutes",
+    moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 2 minutes",
     moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes"
 };
 const adTimes = {
@@ -144,7 +144,7 @@ function getProduction() {
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
-        * Math.log10(10 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.currentEffect() * Math.sqrt(game.stats.playTime)))
+        * getSiliconeBoost()
     );
 }
 
@@ -152,6 +152,7 @@ function getAutoProduction() {
     return Math.ceil((sandwichUpgrades.autoShgabb.currentEffect()
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
+        * getSiliconeBoost()
         + (getProduction() * sandwichUpgrades.cheese.currentEffect()))
         * (currentBoost == "strongerAuto" ? 10 : 1)
     );
@@ -159,6 +160,11 @@ function getAutoProduction() {
 
 function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1));
+}
+
+function getSiliconeBoost(level = "current") {
+    if (level == "current") level = game.upgradeLevels.strongerSilicone;
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)));
 }
 
 function getCooldown() {
@@ -173,7 +179,7 @@ function criticalHit() {
     // Critical hit handler, returns multi (default 3)
     if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) {
         createNotification("Critical Hit!");
-        return shgabbUpgrades.critBoost.currentEffect();
+        return shgabbUpgrades.critBoost.currentEffect() * (currentBoost == "moreCrits" ? 3 : 1);
     }
     return 1;
 }
@@ -249,6 +255,7 @@ function buyUpgrade(id) {
     id.buy();
     updateUpgrades();
     sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
+    game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
 }
 
 function buyMax(id) {
@@ -338,17 +345,15 @@ function updateUI() {
 
     if (game.stats.sw > 9) {
         ui.adBar.style.display = "inline";
-        ui.swHeader.style.display = "block";
         ui.adBar.value = (adTime / adMax) * 100;
     }
     else {
         ui.adBar.style.display = "none";
-        ui.swHeader.style.display = "none";
     }
 
     if (game.gs > 0) {
         unlocks.goldenShgabb.style.display = "unset";
-        ui.gsAmount.innerHTML = game.gs + " Golden shgabb";
+        ui.gsAmount.innerHTML = fn(game.gs) + " Golden Shgabb";
     }
     else {
         unlocks.goldenShgabb.style.display = "none";
@@ -366,7 +371,7 @@ function updateUI() {
     // Silicone
     if (game.shgabb >= 1000000000 || game.stats.si > 0) {
         unlocks.siliconeShgabb.style.display = "unset";
-        ui.siAmount.innerHTML = game.si + " Silicone Shgabb (" + getSiliconeProduction() + "/sec)";
+        ui.siAmount.innerHTML = fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
     }
     else {
         unlocks.siliconeShgabb.style.display = "none";
@@ -376,10 +381,11 @@ function updateUI() {
         + "<br />Total Sandwiches: " + game.stats.sw
         + "<br />Total Clicks: " + game.stats.clicks
         + "<br />Total Time: " + game.stats.playTime.toFixed(1)
-        + "<br />Total Ads watched: " + game.stats.ads
+        + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + ")"
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr
-        + "<br />Total Silicone Shgabb: " + game.stats.si;
+        + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
+        + "<br />Highest More Shgabb: " + fn(game.stats.hms);
 
     ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
     ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
@@ -390,12 +396,17 @@ function updateUI() {
     ui.notifications.innerHTML = "";
     let n2 = 15;
     for (n in currentNotifications) {
-        ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n][0] + "<br />";
+        if (n == currentNotifications.length - 1) ui.notifications.innerHTML = ui.notifications.innerHTML + "<b>" + currentNotifications[n][0] + "</b><br />";
+        else ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n][0] + "<br />";
         n2 -= 1;
     }
     while (n2 > 0) {
         ui.notifications.innerHTML = ui.notifications.innerHTML + "<br />";
         n2 -= 1;
+    }
+    if (currentNotifications[(Object.keys(currentNotifications).length - 1)] != undefined) {
+        if (currentNotifications[Object.keys(currentNotifications).length - 1][1] > 12) ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
+        else ui.newestNotification.innerHTML = "";
     }
 }
 
@@ -462,7 +473,7 @@ function loop(tick) {
     }
 
     if (autoSaveTime <= 0) {
-        autoSaveTime = 3;
+        autoSaveTime = 6;
         autoSave();
     }
     if (quoteTime <= 0) {
@@ -516,6 +527,18 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
+    let allAdsZero = true;
+    for (a in game.stats.wads) {
+        if (game.stats.wads[a] != 0) allAdsZero = false;
+    }
+    if (allAdsZero) {
+        allAdsZero = game.stats.ads;
+        while (allAdsZero > 0) {
+            allAdsZero -= 1;
+            game.stats.wads[Object.keys(game.stats.wads)[Math.floor(Math.random() * Object.keys(game.stats.wads).length)]] += 1;
+        }
+    }
+
     game.shgabb = Math.ceil(game.shgabb);
     if (game.shgabb == "-Infinity") game.shgabb = 0;
     if (game.stats.shgabb == "-Infinity") game.stats.shgabb = 0;
@@ -540,6 +563,26 @@ adHandler.oncanplay = () => {
 adHandler.onended = () => {
     currentBoost = availableBoost;
     game.stats.ads += 1;
+    switch (currentBoost) {
+        case "strongerClicks":
+            game.stats.wads.sc += 1;
+            break;
+        case "strongerAuto":
+            game.stats.wads.sa += 1;
+            break;
+        case "moreSandwiches":
+            game.stats.wads.msw += 1;
+            break;
+        case "fasterShgabb":
+            game.stats.wads.fs += 1;
+            break;
+        case "moreCrits":
+            game.stats.wads.mc += 1;
+            break;
+        case "moreSilicone":
+            game.stats.wads.msi += 1;
+            break;
+    }
 
     availableBoost = "none";
     adTime = adTimes[currentBoost];
