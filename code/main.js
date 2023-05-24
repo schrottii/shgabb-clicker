@@ -405,7 +405,13 @@ function updateUI() {
         n2 -= 1;
     }
     if (currentNotifications[(Object.keys(currentNotifications).length - 1)] != undefined) {
-        if (currentNotifications[Object.keys(currentNotifications).length - 1][1] > 12) ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
+        if (currentNotifications[Object.keys(currentNotifications).length - 1][1] > 12
+            && currentNotifications[Object.keys(currentNotifications).length - 1][0] != "Game saved automatically") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
+        else if (currentNotifications[(Object.keys(currentNotifications).length - 2)] != undefined) {
+            if (currentNotifications[Object.keys(currentNotifications).length - 2][1] > 12
+                && currentNotifications[Object.keys(currentNotifications).length - 2][0] != "Game saved automatically") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 2][0]
+            else ui.newestNotification.innerHTML = "";
+        }
         else ui.newestNotification.innerHTML = "";
     }
 }
@@ -473,7 +479,7 @@ function loop(tick) {
     }
 
     if (autoSaveTime <= 0) {
-        autoSaveTime = 6;
+        autoSaveTime = 3;
         autoSave();
     }
     if (quoteTime <= 0) {

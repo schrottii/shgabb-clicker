@@ -145,7 +145,7 @@ Version 1.4:
 -> Notifications:
 - Notifications text is now aligned to the right, and patch notes to the left
 - The newest notification is now highlighted in bold
-- The newest notification is now also displayed at the top
+- The newest notification is now also displayed at the top (excluding auto save)
 
 -> Other:
 - Added setting to hide maxed upgrades
@@ -154,6 +154,5 @@ Version 1.4:
 - Added Highest More Shgabb stat
 - Total Silicone Shgabb stat is now visible
 - More things now use the notation
-- Reduced auto save frequency from 3s to 6s
 - Fixed x10 auto shgabb ad not working sometimes
 - Shgabb)
