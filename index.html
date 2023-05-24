@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
     <link href="main.css" rel="stylesheet" type="text/css">
+    <link href="unlocks.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <h2 style="color: goldenrod">Shgabb Clicker</h2>
+    <!-- Top -->
+    <h2 style="color: goldenrod; background-color: black">Shgabb Clicker</h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
-    <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br /><br />
-    <span id="shgabbAmount">0 Shgabb</span><br />
-    <span id="swAmount"></span>
-    <span id="gsAmount"></span>
-    <span id="siAmount"></span>
+    <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
+    <span id="newestnotif"></span><br />
+    <!-- Top, currencies -->
+    <div style="background-color: lightslategray">
+        <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount">0 Shgabb</span>
+        <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
+        <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount"></span>
+        <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount"></span>
+    </div>
     <br />
 
     <hr style="clear:both" />
-
+    <!-- Ads -->
     <div id="adloaded" style="display: none">
         <progress min="0" max="100" value="0" id="adBar"></progress><br />
         <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
@@ -26,72 +32,101 @@
         <hr />
     </div>
 
+    <!-- Shgabb -->
     <h3>Shgabb Upgrades</h3>
-    <span id="shgabbAmount2">0 Shgabb</span><br />
+    <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount2">0 Shgabb</span><br />
     <div>
         <span id="upgradesl" style="float: left; width: 50%;"></span>
         <span id="upgradesr" style="float: right; width: 50%;"></span>
     </div>
     <hr style="clear:both" />
-    <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
-    <h3 id="swHeader">Sandwich Upgrades</h3>
-    <span id="swAmount2"></span>
-    <div>
-        <span id="swupgradesl" style="float: left; width: 50%;"></span>
-        <span id="swupgradesr" style="float: right; width: 50%;"></span>
+
+    <!-- Sandwiches -->
+    <div id="sandwichSection">
+        <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
+        <h3>Sandwich Upgrades</h3>
+        <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount2"></span>
+        <div>
+            <span id="swupgradesl" style="float: left; width: 50%;"></span>
+            <span id="swupgradesr" style="float: right; width: 50%;"></span>
+        </div>
+        <br /> <br />
+        <hr style="clear:both" />
     </div>
 
-    <br /> <br />
-    <hr style="clear:both" />
+    <!-- Golden Shgabb -->
+    <div id="goldenShgabbSection">
+        <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
+        <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount2"></span>
+        <div>
+            <span id="gsupgradesl" style="float: left; width: 50%;"></span>
+            <span id="gsupgradesr" style="float: right; width: 50%;"></span>
+        </div>
 
-    <button id="prestigebutton" class="settingButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
-    <span id="gsAmount2"></span>
-    <div>
-        <span id="gsupgradesl" style="float: left; width: 50%;"></span>
-        <span id="gsupgradesr" style="float: right; width: 50%;"></span>
+        <hr style="clear:both" />
     </div>
 
-    <hr style="clear:both" />
-
-    <span id="siAmount2"></span><br /> 
-    <div id="siliconeArea">
-        <span id="siupgradesl" style="float: left; width: 50%;"></span>
-        <span id="siupgradesr" style="float: right; width: 50%;"></span>
+    <!-- Silicone Shgabb -->
+    <div id="siliconeShgabbSection">
+        <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount2"></span><br />
+        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it.
+        <div>
+            <span id="siupgradesl" style="float: left; width: 50%;"></span>
+            <span id="siupgradesr" style="float: right; width: 50%;"></span>
+        </div>
+        <hr style="clear:both" />
     </div>
-    <hr style="clear:both" />
 
+    <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
 
-
+    <!-- Other -->
     <br /><hr /><br />
     <div style="position: relative;">
-        <div class="square" style="position: absolute; text-align: left; width: 45%;">
+        <div class="square" style="position: absolute; text-align: right; width: 45%;">
             <h4>Notifications</h4>
             <span id="notifications"></span>
         </div>
 
-        <div class="square" style="text-align: right; width: 45%; margin-left: auto; ">
+        <div class="square" style="text-align: left; width: 45%; margin-left: auto; ">
             Shgabb Clicker - developed by Schrottii ©2023<br />
             <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
 
 
-            Version 1.3.2:
-            <br />-> Important:
-            <br />- Changed the way the game updates, improving performance and fixing in-game seconds being slighty faster/slower than in real life
-            <br />- Added a file with all patch notes (and a button to view it)
-            <br /><br />- Balance:
-            <br />- Massively reduced cost increase of both Silicone Shgabb upgrades (especially at high levels)
-            <br />- Reduced cheese upgrade cost increase
-            <br /><br />-> Design:
-            <br />- Maxed upgrades now have a gray background (rather than the same white as upgrades you can't afford)
-            <br />- The Buy Max button now has a gray background and bold text
-            <br />- Reduced space at the top of the page
-            <br /><br />-> Other:
-            <br />- New ad boost: More Silicone (10x for 3 minutes)
-            <br />- Increased duration of notifications from 15s to 30s
-            <br />- Added 4 new quotes
-            <br />- Added copyright symbol
+            Version 1.4:
+            <br />-> Design:
+            <br />- Finally! Images!
+            <br />- Added images for all currencies: Shgabb, Sandwiches, Golden Shgabb and Silicone Shgabb
+            <br />- Added an image for the prestige button
+            <br />- Changed the design of the prestige button (gray to gold) and increased its text size
+            <br />- Sandwich, GS and Silicone sections are now completely hidden until unlocked
+            <br />- Changed Silicone's /sec to /s for consistency
+            <br />- Added a short text explaining how Silicone works
+            <br />- Game title now has a black background
+            <br />- Shgabb and Sandwich amount are now in the same row, and the currency overview now has a background
+            <br />
+            <br />-> Balance:
+            <br />- Reworked the Silicone boost formula
+            <br />- Silicone now affects auto (excluding cheese, which is already affected by it)
+            <br />- Increased effect of Stronger Silicone from 0.1%/level to 0.5% and made its description more clear
+            <br />- Increased max. level of Sandwich Amount from 19 to 24
+            <br />- The More Crits ad boost now also increases their strength by 3x on top of the 5x chance
+            <br />
+            <br />-> Notifications:
+            <br />- Notifications text is now aligned to the right, and patch notes to the left
+            <br />- The newest notification is now highlighted in bold
+            <br />- The newest notification is now also displayed at the top (excluding auto save)
+            <br />
+            <br />-> Other:
+            <br />- Added setting to hide maxed upgrades
+            <br />- Click button now shows x3 if the ad is active
+            <br />- Added stats for the individual ads (7 total), when opening the updated game for the first time they are randomly distributed
+            <br />- Added Highest More Shgabb stat
+            <br />- Total Silicone Shgabb stat is now visible
+            <br />- More things now use the notation
+            <br />- Fixed x10 auto shgabb ad not working sometimes
+            - Shgabb)
 
 
             <br />
@@ -108,6 +143,7 @@
             <button onclick="importGame()" class="settingButton">Import</button><br />
             <button onclick="toggleBG()" class="settingButton">Background on/off</button>
             <button onclick="toggleCurrent()" class="settingButton">Current Effect on/off</button><br />
+            <button onclick="hideMaxed()" class="settingButton">Show/hide maxed</button><br />
         </div>
     </div>
     <br /><br /><br />

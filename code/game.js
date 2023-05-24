@@ -42,6 +42,15 @@ var game = {
         shgabbtp: 0,
         swtp: 0,
         si: 0,
+        hms: 0,
+        wads: {
+            sc: 0,
+            sa: 0,
+            msw: 0,
+            fs: 0,
+            mc: 0,
+            msi: 0
+        }
     },
 }
 
@@ -49,4 +58,5 @@ var settings = {
     music: false,
     adMusic: true,
     displayCurrent: false,
+    hideMaxed: false,
 }

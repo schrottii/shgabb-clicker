@@ -11,6 +11,7 @@ h2 {
     margin-bottom: 0px;
 }
 h3 {
+    margin-top: 0px;
     margin-bottom: 0px;
 }
 
@@ -19,6 +20,13 @@ h3 {
     color: black;
     border-color: black;
     border: 2px solid darkgray;
+}
+
+.prestigeButton {
+    background-color: palegoldenrod;
+    color: black;
+    border: 3px solid gold;
+    font-size: 18px;
 }
 
 .settingButton:hover{
@@ -61,6 +69,12 @@ h3 {
     height: 16px;
     background-color: lightgray;
     font-weight: bold;
+
+.currency {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    bottom: -8px;
 }
 
 progress {

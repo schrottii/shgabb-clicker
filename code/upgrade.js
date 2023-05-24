@@ -65,6 +65,7 @@ class Upgrade {
 
     render() {
         let isMax = this.maxLevel == this.currentLevel();
+        if (settings.hideMaxed && isMax) return "";
         let maxButton = "";
         if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((this.maxLevel > 10 && this.currentLevel() != this.maxLevel) || this.maxLevel == undefined)) maxButton = "<div onclick='buyMax(" + this.type + "." + this.ID + ")' class='maxButton'>MAX</div>";
         if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.maxLevel ? "lightgray" : "whitesmoke")) + "'>" + maxButton + "<div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(0) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
@@ -104,7 +105,7 @@ var shgabbUpgrades = {
     goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 24 }),
     bomblike: new Upgrade("bomblike", "Bomblike", "Get even more shgabb per click", level => Math.pow(5, 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 34 }),
     swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 250, level => 0.1 * level, { maxLevel: 250, suffix: "%", unlock: () => game.upgradeLevels.moreShgabb > 49 }),
-    moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 19, unlock: () => game.upgradeLevels.swChance > 24 }),
+    moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 24, unlock: () => game.upgradeLevels.swChance > 24 }),
 }
 
 var sandwichUpgrades = {
@@ -124,6 +125,6 @@ var goldenShgabbUpgrades = {
 }
 
 var siliconeShgabbUpgrades = {
-    moreSilicone: new SiliconeShgabbUpgrade("moreSilicone", "More Silicone", "Get even more silicone", level => (8 + level * 2) * Math.pow(1.005, level), level => 1 + level, { suffix: "/sec" }),
-    strongerSilicone: new SiliconeShgabbUpgrade("strongerSilicone", "Stronger Silicone", "Increase the silicone boost, based on √play time", level => (60 + level * 24) * Math.pow(1.05, level), level => level * 0.001, { maxLevel: 100, current: level => "x" + fn(Math.log10(10 + game.si * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)))) + " shgabb", effectMulti: 100, suffix: "%" }),
+    moreSilicone: new SiliconeShgabbUpgrade("moreSilicone", "More Silicone", "Get even more silicone", level => (8 + level * 2) * Math.pow(1.005, level), level => 1 + level, { suffix: "/s" }),
+    strongerSilicone: new SiliconeShgabbUpgrade("strongerSilicone", "Stronger Silicone", "Increase the silicone boost", level => (60 + level * 24) * Math.pow(1.05, level), level => level * 0.005, { maxLevel: 100, current: level => "x" + fn(getSiliconeBoost(level)) + " shgabb", effectMulti: 100, prefix: "+", suffix: "%" }),
 }
