@@ -20,6 +20,11 @@ class Artifact {
 		return false;
 	}
 
+	isEquipped() {
+		if (game.aeqi.includes(this.ID)) return true;
+		return false;
+	}
+
 	getBoostType() {
 		switch (this.boost) {
 			case "shgabb":
@@ -34,14 +39,14 @@ class Artifact {
 	}
 
 	render() {
-		return "<div style='upgrade'> " + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount - 1) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</div>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'> " + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount - 1) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
 	}
 }
 
 function getArtifactBoost(currency) {
 	let boost = 1;
 	for (a in artifacts) {
-		if (artifacts[a].boost == currency && artifacts[a].isUnlocked()) {
+		if (artifacts[a].boost == currency && artifacts[a].isUnlocked() && artifacts[a].isEquipped()) {
 			boost *= artifacts[a].amount;
 		}
 	}
@@ -93,6 +98,12 @@ function getArtifactByID(id) {
 	for (a in artifacts) {
 		if (artifacts[a].ID == id) return artifacts[a];
 	}
+}
+
+function switchArtifact(id) {
+	if (getArtifactByID(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
+	else if (game.aeqi.length < 3) game.aeqi.push(id);
+	updateArtifacts();
 }
 
 var artifacts = [

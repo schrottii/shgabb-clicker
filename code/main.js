@@ -136,6 +136,9 @@ function clickButton() {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
     }
 
+    if (game.stats.hms >= 1000) getArtifact();
+    updateArtifacts();
+
     sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
 }
 
@@ -161,6 +164,7 @@ function getAutoProduction() {
 
 function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1));
+}
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
@@ -323,6 +327,14 @@ function updateUpgrades() {
     ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render();
 }
 
+function updateArtifacts() {
+    // Artifacts
+    if (game.stats.hms >= 1000) {
+        ui.artifacts.innerHTML = renderArtifacts();
+    }
+    else ui.artifacts.innerHTML = "";
+}
+
 function updateUI() {
     // Update UI
     if (game.upgradeLevels.swChance > 0) {
@@ -381,12 +393,6 @@ function updateUI() {
     else {
         unlocks.siliconeShgabb.style.display = "none";
     }
-
-    // Artifacts
-    if (true) {
-        ui.artifacts.innerHTML = renderArtifacts();
-    }
-    else ui.artifacts.innerHTML = "";
     
     ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + game.stats.sw
@@ -617,6 +623,7 @@ adHandler.onended = () => {
 
 // Update upgrades UI
 updateUpgrades();
+updateArtifacts();
 
 // Start game loop (30 FPS)
 window.requestAnimationFrame(loop);

@@ -53,6 +53,7 @@ var game = {
         }
     },
     a: [],
+    aeqi: [],
 }
 
 var settings = {
