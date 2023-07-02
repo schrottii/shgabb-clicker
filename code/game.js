@@ -52,6 +52,7 @@ var game = {
             msi: 0
         }
     },
+    a: [],
 }
 
 var settings = {

@@ -38,6 +38,7 @@ var ui = {
     siupgradesl: document.getElementById("siupgradesl"),
     siupgradesr: document.getElementById("siupgradesr"),
 
+    artifacts: document.getElementById("artifacts"),
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
@@ -376,6 +377,12 @@ function updateUI() {
     else {
         unlocks.siliconeShgabb.style.display = "none";
     }
+
+    // Artifacts
+    if (true) {
+        ui.artifacts.innerHTML = renderArtifacts();
+    }
+    else ui.artifacts.innerHTML = "";
     
     ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + game.stats.sw
