@@ -49,6 +49,7 @@ function getArtifactBoost(currency) {
 }
 
 function renderArtifacts() {
+	// Render em all
 	let render = "";
 	for (a in artifacts) {
 		if (artifacts[a].isUnlocked()) {
@@ -56,6 +57,42 @@ function renderArtifacts() {
 		}
 	}
 	return render;
+}
+
+function getArtifact() {
+	// (Chance TO GET)
+	// Chance to get an artifact
+	if (Math.random() < 1 / 1000) {
+		gambleArtifact(1);
+	}
+	else if (Math.random() < 1 / 8000) {
+		gambleArtifact(2);
+	}
+	else if (Math.random() < 1 / 32000) {
+		gambleArtifact(3);
+	}
+}
+
+function gambleArtifact(r) {
+	// Used by getArtifact - which one will we get of this rarity?
+	let possibleArtifacts = [];
+	for (a in artifacts) {
+		if (artifacts[a].rarity == r && !artifacts[a].isUnlocked()) {
+			possibleArtifacts.push(artifacts[a].ID);
+		}
+	}
+	if (possibleArtifacts.length > 0) {
+		let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+		game.a.push(gainedID);
+		createNotification("New Artifact: " + getArtifactByID(gainedID).name);
+	}
+}
+
+function getArtifactByID(id) {
+	// Use this to get an artifact using its ID, and then get its name, effect or whatever
+	for (a in artifacts) {
+		if (artifacts[a].ID == id) return artifacts[a];
+	}
 }
 
 var artifacts = [
