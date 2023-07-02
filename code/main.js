@@ -161,6 +161,10 @@ function getAutoProduction() {
 
 function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1));
+
+function getSiliconeBoost(level = "current") {
+    if (level == "current") level = game.upgradeLevels.strongerSilicone;
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)));
 }
 
 function getSiliconeBoost(level = "current") {
