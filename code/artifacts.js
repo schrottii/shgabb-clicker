@@ -47,7 +47,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'> " + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/artifacts/" + this.image + "' width='32px' height='32px'><br>" + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
 	}
 }
 
@@ -132,7 +132,7 @@ var artifacts = [
 	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4, () => true),
 	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", 1.4, () => true),
 	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.5, () => true),
-	new Artifact(200, 2, "Amulet of Paroxysm", "ring.png", "clickspeed", 5, () => true),
-	new Artifact(201, 2, "Amulet of Saving", "ring.png", "resetshgabb", 10000, () => true),
-	new Artifact(202, 2, "Amulet of Quick Snacks", "ring.png", "sw", 5, () => game.sw < 1000),
+	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, () => true),
+	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 10000, () => true),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, () => game.sw < 1000),
 ]
