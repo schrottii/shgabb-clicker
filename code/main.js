@@ -114,7 +114,7 @@ function fn(number) {
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
-    let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 3 : 1));
+    let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 3 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
@@ -123,7 +123,7 @@ function clickButton() {
         game.stats.clicks += 1;
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
-            amount = shgabbUpgrades.moreSw.currentEffect() + 1;
+            amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw"));
             game.sw += amount;
             game.stats.sw += amount;
             game.stats.swtp += amount;
@@ -150,6 +150,7 @@ function getProduction() {
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
         * getSiliconeBoost()
         * getArtifactBoost("shgabb")
+        * getArtifactBoost("clickshgabb")
     );
 }
 
@@ -161,6 +162,7 @@ function getAutoProduction() {
         + (getProduction() * sandwichUpgrades.cheese.currentEffect()))
         * (currentBoost == "strongerAuto" ? 10 : 1)
         * getArtifactBoost("shgabb")
+        * getArtifactBoost("autoshgabb")
     );
 }
 
@@ -181,7 +183,9 @@ function getSiliconeBoost(level = "current") {
 }
 
 function getCooldown() {
-    return (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect()) / (currentBoost == "fasterShgabb" ? 5 : 1)
+    return (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
+        / (currentBoost == "fasterShgabb" ? 5 : 1)
+        / getArtifactBoost("clickspeed")
 }
 
 function getGoldenShgabb() {
@@ -287,7 +291,7 @@ function prestigeButton() {
     if (confirm("Do you really want to prestige?")) {
         let amount = getGoldenShgabb();
 
-        game.shgabb = 0;
+        game.shgabb = 0 + getArtifactBoost("resetshgabb");
         game.sw = 0;
 
         for (let u of Object.keys(shgabbUpgrades)) {

@@ -29,17 +29,25 @@ class Artifact {
 		switch (this.boost) {
 			case "shgabb":
 				return "shgabb";
+			case "clickshgabb":
+				return "shgabb from clicks";
+			case "autoshgabb":
+				return "shgabb from auto";
+			case "resetshgabb":
+				return "shgabb after reset";
 			case "sw":
 				return "sandwiches";
 			case "gs":
 				return "golden shgabb";
 			case "si":
 				return "silicone shgabb";
+			case "clickspeed":
+				return "click cooldown";
 		}
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'> " + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount - 1) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'> " + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
 	}
 }
 
@@ -56,7 +64,7 @@ function handleArtifactsFirstTime() {
 function getArtifactBoost(currency) {
 	let boost = 1;
 	for (a in artifacts) {
-		if (artifacts[a].boost == currency && artifacts[a].isUnlocked() && artifacts[a].isEquipped()) {
+		if (artifacts[a].boost == currency && artifacts[a].isUnlocked() && artifacts[a].isEquipped() && artifacts[a].trigger()) {
 			boost *= artifacts[a].amount;
 		}
 	}
@@ -117,8 +125,14 @@ function switchArtifact(id) {
 }
 
 var artifacts = [
-	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.2, true),
-	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.1, true),
-	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5, true),
-	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.3, true),
+	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.2, () => true),
+	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.1, () => true),
+	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5, () => true),
+	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.3, () => true),
+	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4, () => true),
+	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", 1.4, () => true),
+	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.5, () => true),
+	new Artifact(200, 2, "Amulet of Paroxysm", "ring.png", "clickspeed", 5, () => true),
+	new Artifact(201, 2, "Amulet of Saving", "ring.png", "resetshgabb", 10000, () => true),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "ring.png", "sw", 5, () => game.sw < 1000),
 ]
