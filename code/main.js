@@ -149,6 +149,7 @@ function getProduction() {
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
         * getSiliconeBoost()
+        * getArtifactBoost("shgabb")
     );
 }
 
@@ -159,11 +160,14 @@ function getAutoProduction() {
         * getSiliconeBoost()
         + (getProduction() * sandwichUpgrades.cheese.currentEffect()))
         * (currentBoost == "strongerAuto" ? 10 : 1)
+        * getArtifactBoost("shgabb")
     );
 }
 
 function getSiliconeProduction() {
-    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1));
+    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
+        * getArtifactBoost("si")
+    );
 }
 
 function getSiliconeBoost(level = "current") {
@@ -181,7 +185,10 @@ function getCooldown() {
 }
 
 function getGoldenShgabb() {
-    return Math.floor(Math.max(10, (1 + Math.log(game.stats.shgabbtp + 1) * Math.log(game.stats.swtp + 1)) * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25));
+    return Math.floor(Math.max(10, (1 + Math.log(game.stats.shgabbtp + 1) * Math.log(game.stats.swtp + 1))
+        * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25)
+        * getArtifactBoost("gs")
+    );
 }
 
 function criticalHit() {
@@ -459,13 +466,16 @@ function importGame() {
     importGame = atob(importGame);
     importGame = JSON.parse(importGame);
 
-    let cache = game;
-    game = Object.assign({}, game, importGame);
-    game.upgradeLevels = Object.assign({}, cache.upgradeLevels, importGame.upgradeLevels);
-    game.stats = Object.assign({}, cache.stats, importGame.stats);
+    emptyGame.a = [];
+    game = { };
+    game = Object.assign({}, emptyGame, importGame);
+    game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, importGame.upgradeLevels);
+    game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
+    handleArtifactsFirstTime();
 
     updateUI();
     updateUpgrades();
+    updateArtifacts();
 
     createNotification("Game imported successfully!");
 }
@@ -568,6 +578,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     if (game.stats.shgabbtp == "-Infinity") game.stats.shgabbtp = 0;
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
+
+    handleArtifactsFirstTime();
 }
 if (localStorage.getItem("shgabbSettings") != undefined) {
     settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));

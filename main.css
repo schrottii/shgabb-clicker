@@ -69,12 +69,12 @@ h3 {
     max-width: 420px;
 }
 
-    .upgrade:hover {
+    .artifact:hover {
         filter: brightness(90%);
         transition: 0.2s;
     }
 
-    .upgrade:active {
+    .artifact:active {
         filter: brightness(80%);
     }
 

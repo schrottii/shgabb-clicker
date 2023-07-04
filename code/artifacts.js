@@ -39,8 +39,18 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'> " + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount - 1) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'> " + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount - 1) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
 	}
+}
+
+function handleArtifactsFirstTime() {
+	if (!game.a.includes(0)) {
+		for (i = 0; i < game.stats.clicks; i++) {
+			getArtifact();
+		}
+		game.a.push(0);
+		createNotification("Artifacts awarded for past clicks successfully!");
+    }
 }
 
 function getArtifactBoost(currency) {

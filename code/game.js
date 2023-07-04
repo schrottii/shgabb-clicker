@@ -56,6 +56,8 @@ var game = {
     aeqi: [],
 }
 
+const emptyGame = Object.assign({}, game, {});
+
 var settings = {
     music: false,
     adMusic: true,
