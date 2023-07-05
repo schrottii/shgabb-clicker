@@ -1,14 +1,21 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
 class Artifact {
-	constructor(ID, rarity, name, image, boost, amount, trigger) {
+	constructor(ID, rarity, name, image, boost, amount, config) {
 		this.ID = ID;
 		this.rarity = rarity; // 1 2 3
 		this.name = name;
 		this.image = image;
 		this.boost = boost;
 		this.amount = amount;
-		this.trigger = trigger;
+		this.prefix = "x";
+		this.trigger = () => true;
+
+		if (config) {
+			if (config.trigger) this.trigger = config.trigger;
+			if (config.prefix) this.prefix = config.prefix;
+			if (config.desc) this.desc = config.desc;
+        }
 	}
 
 	getRarity() {
@@ -47,7 +54,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'><br>" + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? ("x" + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'><br>" + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? (this.prefix + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + (this.desc ? "<br/>" + this.desc : "") + "</button>";
 	}
 }
 
@@ -125,14 +132,14 @@ function switchArtifact(id) {
 }
 
 var artifacts = [
-	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.2, () => true),
-	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.1, () => true),
-	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5, () => true),
-	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.3, () => true),
-	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4, () => true),
-	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", 1.4, () => true),
-	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.5, () => true),
-	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, () => true),
-	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 10000, () => true),
-	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, () => game.sw < 1000),
+	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.2,),
+	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.1),
+	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5),
+	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.3),
+	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4),
+	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", 1.4),
+	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.5),
+	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, { prefix: "/", desc: "But no shgabb from clicks" }),
+	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 10000, {prefix: "+"}),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, { trigger: () => game.sw < 1000, desc: "While less than 1000 sandwiches" }),
 ]
