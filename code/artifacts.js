@@ -58,6 +58,10 @@ class Artifact {
 	}
 }
 
+function artifactsUnlocked() {
+	return game.stats.hms >= 1000;
+}
+
 function handleArtifactsFirstTime() {
 	if (!game.a.includes(0)) {
 		for (i = 0; i < Math.ceil(game.stats.clicks / 5); i++) {

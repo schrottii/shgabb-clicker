@@ -105,12 +105,15 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     ":fire::dance: cavemen be like - shgabb",
     "Should I reinstall again because of developers utter degeneracy - slowmerger",
 ];
-const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!", "What?!?!", "What?!?!"];
+const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game"];
 
 // format number
 function fn(number) {
+    if (number.toString().split("e").length > 1) {
+        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
+    }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
-    if (number > 999999) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+    if (number.toString().length > 5) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
     return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(1);
 }
 
@@ -147,7 +150,7 @@ function clickButton() {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
     }
 
-    if (game.stats.hms >= 1000) getArtifact();
+    if (artifactsUnlocked()) getArtifact();
     updateArtifacts();
 
     sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
@@ -368,7 +371,7 @@ function updateUpgrades() {
 
 function updateArtifacts() {
     // Artifacts
-    if (game.stats.hms >= 1000) {
+    if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
     }
     else ui.artifacts.innerHTML = "";
