@@ -60,7 +60,7 @@ class Artifact {
 
 function handleArtifactsFirstTime() {
 	if (!game.a.includes(0)) {
-		for (i = 0; i < game.stats.clicks; i++) {
+		for (i = 0; i < Math.ceil(game.stats.clicks / 5); i++) {
 			getArtifact();
 		}
 		game.a.push(0);
@@ -133,7 +133,7 @@ function switchArtifact(id) {
 
 var artifacts = [
 	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.2,),
-	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.1),
+	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.2),
 	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5),
 	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.3),
 	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4),
@@ -141,9 +141,9 @@ var artifacts = [
 	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.5),
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, { prefix: "/", desc: "But no shgabb from clicks" }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 10000, {prefix: "+"}),
-	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, { trigger: () => game.sw < 1000, desc: "While less than 1000 sandwiches" }),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, { trigger: () => game.sw < 3000, desc: "While less than 3000 sandwiches" }),
 	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", 5, { desc: "But 5x longer click cooldown" }),
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: "Auto Shgabb gain is multiplied by the click cooldown" }),
-	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +10% for every well timed click up to +400%" }),
-	new Artifact(302, 3, "Shgabb seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 1%" }),
+	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +25% for every well timed click up to 1000%" }),
+	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 0.25%" }),
 ]

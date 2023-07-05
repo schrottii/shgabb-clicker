@@ -123,7 +123,7 @@ function clickButton() {
         game.stats.shgabbtp += amount;
 
         if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.25) {
-            knifeBoost = Math.min(knifeBoost + 0.1, 5);
+            knifeBoost = Math.min(knifeBoost + 0.25, 10);
         }
         else knifeBoost = 1;
 
@@ -162,7 +162,7 @@ function getProduction() {
         * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.025 : 1)
     );
 }
 
@@ -177,7 +177,7 @@ function getAutoProduction() {
         * getArtifactBoost("autoshgabb")
         * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.025 : 1)
     );
 }
 
