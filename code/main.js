@@ -13,6 +13,8 @@ var currentNotifications = [];
 var time = 0;
 var oldTime = 0;
 
+var knifeBoost = 1;
+
 var ui = {
     clickButton: document.getElementById("clickButton"),
     cooldownBar: document.getElementById("cooldownBar"),
@@ -119,8 +121,16 @@ function clickButton() {
         game.shgabb += amount;
         game.stats.shgabb += amount;
         game.stats.shgabbtp += amount;
+
+        if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.25) {
+            knifeBoost = Math.min(knifeBoost + 0.1, 5);
+        }
+        else knifeBoost = 1;
+
         game.clickCooldown = getCooldown();
         game.stats.clicks += 1;
+        game.stats.ctp += 1;
+
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
             amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw"));
@@ -151,6 +161,8 @@ function getProduction() {
         * getSiliconeBoost()
         * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
+        * knifeBoost
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
     );
 }
 
@@ -163,6 +175,9 @@ function getAutoProduction() {
         * (currentBoost == "strongerAuto" ? 10 : 1)
         * getArtifactBoost("shgabb")
         * getArtifactBoost("autoshgabb")
+        * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
+        * knifeBoost
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
     );
 }
 
@@ -186,6 +201,7 @@ function getCooldown() {
     return (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
+        * (getArtifactByID(203).isEquipped() ? 5 : 1)
 }
 
 function getGoldenShgabb() {
@@ -305,6 +321,10 @@ function prestigeButton() {
 
         game.stats.pr += 1;
         game.stats.gs += amount;
+
+        game.stats.shgabbtp = 0;
+        game.stats.swtp = 0;
+        game.stats.ctp = 0;
 
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");

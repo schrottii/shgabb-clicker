@@ -54,7 +54,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'><br>" + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.amount > 2 ? (this.prefix + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType() + (this.desc ? "<br/>" + this.desc : "") + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'><br>" + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />" + (this.boost == "complicated" ? "" : (this.amount > 2 ? (this.prefix + this.amount) : ("+" + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
 	}
 }
 
@@ -142,4 +142,8 @@ var artifacts = [
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, { prefix: "/", desc: "But no shgabb from clicks" }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 10000, {prefix: "+"}),
 	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, { trigger: () => game.sw < 1000, desc: "While less than 1000 sandwiches" }),
+	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", 5, { desc: "But 5x longer click cooldown" }),
+	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: "Auto Shgabb gain is multiplied by the click cooldown" }),
+	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +10% for every well timed click up to +400%" }),
+	new Artifact(302, 3, "Shgabb seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 1%" }),
 ]
