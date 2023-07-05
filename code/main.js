@@ -110,11 +110,21 @@ const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!
 // format number
 function fn(number) {
     if (number.toString().split("e").length > 1) {
-        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
+        number = number.toString().split("e")[0].split(".")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
     }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
     if (number.toString().length > 5) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
     return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(1);
+
+    /*
+    number = number.toString();
+    if (number.length < 7) return number;
+    if (number.split("e").length > 1) {
+        number = number.split("e")[0].split(".")[0] + "0".repeat(parseInt(number.split("e")[1]));
+    }
+    let dec = number.split(".")[1] != undefined ? "." + number.split(".")[1].substr(2 - number.length % 3) : "";
+    return number.substr(0, number.length % 3 == 0 ? 3 : number.length % 3) + dec + normalNotation[Math.ceil(number.length / 3) - 3];
+    */
 }
 
 function clickButton() {
