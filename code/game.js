@@ -28,6 +28,8 @@ var game = {
         unlockMSW: 0,
         firstBoostsClicks: 0,
         cheese: 0,
+        formaggi: 0,
+        // Silicone
         moreSilicone: 0,
         strongerSilicone: 0,
     },
@@ -35,6 +37,7 @@ var game = {
         shgabb: 0,
         clicks: 0,
         playTime: 0,
+        pttp: 0,
         sw: 0,
         ads: 0,
         gs: 0,

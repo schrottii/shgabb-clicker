@@ -133,7 +133,8 @@ function clickButton() {
 
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
-            amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw"));
+            amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
+                * goldenShgabbUpgrades.formaggi.currentEffect());
             game.sw += amount;
             game.stats.sw += amount;
             game.stats.swtp += amount;
@@ -159,6 +160,7 @@ function getProduction() {
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
         * getSiliconeBoost()
+        * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
         * knifeBoost
@@ -172,6 +174,7 @@ function getAutoProduction() {
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
         * getSiliconeBoost()
         + (getProduction() * sandwichUpgrades.cheese.currentEffect()))
+        * goldenShgabbUpgrades.formaggi.currentEffect()
         * (currentBoost == "strongerAuto" ? 10 : 1)
         * getArtifactBoost("shgabb")
         * getArtifactBoost("autoshgabb")
@@ -183,6 +186,7 @@ function getAutoProduction() {
 
 function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
+        * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("si")
     );
 }
@@ -207,8 +211,11 @@ function getCooldown() {
 function getGoldenShgabb() {
     return Math.floor(Math.max(10, (1 + Math.log(game.stats.shgabbtp + 1) * Math.log(game.stats.swtp + 1))
         * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25)
+        * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
+        * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("gs")
-    );
+        * (game.stats.hms - game.upgradeLevels.moreShgabb <= 100 ? 3 : 1)
+        );
 }
 
 function criticalHit() {
@@ -325,6 +332,7 @@ function prestigeButton() {
         game.stats.shgabbtp = 0;
         game.stats.swtp = 0;
         game.stats.ctp = 0;
+        game.stats.pttp = 0;
 
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");
@@ -351,7 +359,7 @@ function updateUpgrades() {
     ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render() + sandwichUpgrades.firstBoostsClicks.render();
     ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render() + sandwichUpgrades.cheese.render();
 
-    ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render();
+    ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render() + goldenShgabbUpgrades.formaggi.render();
     ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render() + goldenShgabbUpgrades.unlockMSW.render();
 
     ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render();
@@ -522,6 +530,7 @@ function loop(tick) {
     sandwichTime -= time;
     sandwichFreezeTime -= time;
     game.stats.playTime += time;
+    game.stats.pttp += time;
     if (adLoaded && game.stats.sw > 9) adTime -= time;
 
     for (n in currentNotifications) {
