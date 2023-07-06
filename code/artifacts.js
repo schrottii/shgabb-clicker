@@ -119,6 +119,15 @@ function gambleArtifact(r) {
 		let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
 		game.a.push(gainedID);
 		createNotification("New Artifact: " + getArtifactByID(gainedID).name);
+		updateArtifacts();
+
+		ui.newArtifactImage.src = "images/arti/" + getArtifactByID(gainedID).image;
+		ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
+		ui.newArtifact.style.display = "block";
+
+		setTimeout(() => {
+			ui.newArtifact.style.display = "none";
+        }, 5000)
 	}
 }
 

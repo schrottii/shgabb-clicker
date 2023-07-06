@@ -41,6 +41,10 @@ var ui = {
     siupgradesl: document.getElementById("siupgradesl"),
     siupgradesr: document.getElementById("siupgradesr"),
 
+    newArtifact: document.getElementById("newArtifact"),
+    newArtifactImage: document.getElementById("newArtifactImage"),
+    newArtifactName: document.getElementById("newArtifactName"),
+
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
     stats: document.getElementById("stats"),
