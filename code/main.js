@@ -111,6 +111,7 @@ const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!
 
 // format number
 function fn(number) {
+    number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
         number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
     }
