@@ -6,6 +6,7 @@ var game = {
     sw: 0,
     gs: 0,
     si: 0,
+    gems: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -47,6 +48,7 @@ var game = {
         ctp: 0,
         si: 0,
         hms: 0,
+        tgems: 0,
         wads: {
             sc: 0,
             sa: 0,

@@ -41,6 +41,7 @@ var ui = {
     siupgradesr: document.getElementById("siupgradesr"),
 
     artifacts: document.getElementById("artifacts"),
+    artifactamount: document.getElementById("artifactamount"),
     stats: document.getElementById("stats"),
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
@@ -110,10 +111,10 @@ const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!
 // format number
 function fn(number) {
     if (number.toString().split("e").length > 1) {
-        number = number.toString().split("e")[0].split(".")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
+        number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
     }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
-    if (number.toString().length > 5) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
     return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(1);
 
     /*
@@ -160,7 +161,10 @@ function clickButton() {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
     }
 
-    if (artifactsUnlocked()) getArtifact();
+    if (artifactsUnlocked()) {
+        getGem();
+        getArtifact();
+    }
     updateArtifacts();
 
     sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
@@ -383,8 +387,12 @@ function updateArtifacts() {
     // Artifacts
     if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
+        ui.artifactamount.innerHTML = game.a.length + "/" + artifacts.length + " Artifacts unlocked!";
     }
-    else ui.artifacts.innerHTML = "";
+    else {
+        ui.artifacts.innerHTML = "";
+        ui.artifactamount.innerHTML = "";
+    }
 }
 
 function updateUI() {
