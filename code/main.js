@@ -30,6 +30,7 @@ var ui = {
     gsAmount2: document.getElementById("gsAmount2"),
     siAmount: document.getElementById("siAmount"),
     siAmount2: document.getElementById("siAmount2"),
+    gemAmount: document.getElementById("gemAmount"),
 
     upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
@@ -388,10 +389,12 @@ function updateArtifacts() {
     if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
         ui.artifactamount.innerHTML = game.a.length + "/" + artifacts.length + " Artifacts unlocked!";
+        ui.gemAmount.innerHTML = game.gems + " Gems";
     }
     else {
         ui.artifacts.innerHTML = "";
         ui.artifactamount.innerHTML = "";
+        ui.gemAmount.innerHTML = "";
     }
 }
 

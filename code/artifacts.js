@@ -143,7 +143,7 @@ var artifacts = [
 	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4),
 	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", 1.4),
 	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.5),
-	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, { prefix: "/", desc: "But no shgabb from clicks" }),
+	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, { prefix: "/", desc: "But no shgabb and gems from clicks" }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 10000, {prefix: "+"}),
 	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 5, { trigger: () => game.sw < 3000, desc: "While less than 3000 sandwiches" }),
 	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", 5, { desc: "But 5x longer click cooldown" }),
