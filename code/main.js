@@ -401,7 +401,7 @@ function updateArtifacts() {
     // Artifacts
     if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = game.a.length + "/" + artifacts.length + " Artifacts unlocked!";
+        ui.artifactamount.innerHTML = (game.a.length - 1) + "/" + artifacts.length + " Artifacts unlocked!";
         ui.gemAmount.innerHTML = game.gems + " Gems";
     }
     else {
@@ -472,7 +472,7 @@ function updateUI() {
 
     ui.gemOffer1.innerHTML = "Spend 10 gems to get " + fn(getProduction() * 600) + " Shgabb immediately!";
     ui.gemOffer2.innerHTML = "Spend 25 gems to get 100% more Shgabb this prestige! Current: +" + ((game.gemboost - 1) * 100) + "%";
-    ui.gemOffer3.innerHTML = game.a.length == artifacts.length ? "Not available... you know too much..." : "Spend 50 gems for a high chance to get an artifact!";
+    ui.gemOffer3.innerHTML = (game.a.length - 1) == artifacts.length ? "Not available... you know too much..." : "Spend 50 gems for a high chance to get an artifact!";
     
     ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + game.stats.sw
