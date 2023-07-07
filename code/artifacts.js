@@ -103,10 +103,10 @@ function allArtifactsOfRarity(rarity) {
 function getArtifact(multi = 1) {
 	// (Chance TO GET)
 	// Chance to get an artifact
-	if (!allArtifactsOfRarity(1) && Math.random() < 1 / 1000 * multi) {
+	if (!allArtifactsOfRarity(1) && Math.random() < 1 / 800 * multi) {
 		gambleArtifact(1);
 	}
-	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 8000 * multi) {
+	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 4000 * multi) {
 		gambleArtifact(2);
 	}
 	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi) {
