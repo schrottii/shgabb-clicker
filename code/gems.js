@@ -1,5 +1,9 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
+function gemsUnlocked() {
+    return game.stats.hms >= 500;
+}
+
 function getGem() {
     // Chance to get a gem
     if (Math.random() < 1 / 10 /* CHANGE THIS TO 100 */ && !getArtifactByID(200).isEquipped()) {

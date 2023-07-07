@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Top -->
-    <h2 style="color: goldenrod; background-color: black">Shgabb Clicker</h2>
+    <h2 style="color: deepskyblue; background-color: springgreen">Shgabb Clicker</h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
@@ -83,24 +83,27 @@
     </div>
 
     <!-- Artifacts -->
-    <h3>Artifacts</h3>
-    <span id="artifactamount"></span>
-    <br />
-    <span id="artifacts" class="square" style="width: 50%"></span>
-    <hr style="clear:both" />
+    <div id="artifactSection">
+        <h3>Artifacts</h3>
+        <span id="artifactamount"></span>
+        <br />
+        <span id="artifacts" class="square" style="width: 50%"></span>
+        <hr style="clear:both" />
+    </div>
 
     <!-- Gems -->
-    <h3>Gems</h3>
-    <img class="currency" src="images\currencies\silicone.png" /><span id="gemAmount"></span><br /><br />
-    <button class="upgrade" style="width: 33%" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
-    <button class="upgrade" style="width: 33%" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
-    <button class="upgrade" style="width: 33%" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
-    <hr style="clear:both" />
+    <div id="gemSection">
+        <h3>Gems</h3>
+        <img class="currency" src="images\currencies\silicone.png" /><span id="gemAmount"></span><br /><br />
+        <button class="upgrade" style="width: 33%" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
+        <button class="upgrade" style="width: 33%" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
+        <button class="upgrade" style="width: 33%" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
+        <hr style="clear:both" />
+    </div>
 
     <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
-    <hr style="clear:both" />
 
     <!-- Other -->
     <br /><hr /><br />
@@ -125,16 +128,27 @@
             <br />- Up to 3 artifacts can be equipped at the same time
             <br />- Artifacts can have all kinds of effects, simple or complicated
             <br />- Added 7 common, 5 rare and 3 epic artifacts (15 total)
+            <br /><br />-> Gems:
+            <br />- New feature: Gems!
+            <br />- There is a 1% chance to get a gem from a click
+            <br />- Gems can be spent on three things:
+            <br />- Shgabb worth 600 clicks
+            <br />- +100% Shgabb for this prestige
+            <br />- High chance for a random artifact
             <br /><br />-> Golden Shgabb:
             <br />- New Upgrade: Pizza quattro formaggi! Get more Shgabb, Sandwiches, Golden Shgabb AND Silicone Shgabb
             <br />- GS gain now also increases every 1k More Shgabb levels
-            <br />- GS gain is now tripled if less than 100 More Shgabb levels away from the highest level reached
+            <br />- GS gain is now tripled if less than 100 More Shgabb levels away from the highest level reached (at 1000+)
             <br /><br />-> Other:
+            <br />- Changed the colors of the top / title
+            <br />- Added a hint that Silicone Shgabb is not reset at prestige
+            <br />- Patch notes list is now a txt file
             <br />- Fixed display issues at very high numbers (1s or more)
+            <br />- Fixed some unnecessary lines
 
 
             <br />
-            <a href="patch-notes" target="_blank"><sub>(All patch notes)</sub></a>
+            <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
         </div>
 
         <hr style="clear:both" />

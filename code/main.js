@@ -63,6 +63,8 @@ var unlocks = {
     sandwich: document.getElementById("sandwichSection"),
     goldenShgabb: document.getElementById("goldenShgabbSection"),
     siliconeShgabb: document.getElementById("siliconeShgabbSection"),
+    artifacts: document.getElementById("artifactSection"),
+    gems: document.getElementById("gemSection"),
 }
 
 var adHandler = document.getElementById("baldad");
@@ -243,7 +245,7 @@ function getGoldenShgabb() {
         * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("gs")
-        * (game.stats.hms - game.upgradeLevels.moreShgabb <= 100 ? 3 : 1)
+        * (game.stats.hms - game.upgradeLevels.moreShgabb <= 100 && game.upgradeLevels.moreShgabb >= 1000 ? 3 : 1)
         );
 }
 
@@ -402,12 +404,24 @@ function updateArtifacts() {
     if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
         ui.artifactamount.innerHTML = (game.a.length - 1) + "/" + artifacts.length + " Artifacts unlocked!";
-        ui.gemAmount.innerHTML = game.gems + " Gems";
+
+        unlocks.artifacts.style.display = "unset";
     }
     else {
         ui.artifacts.innerHTML = "";
         ui.artifactamount.innerHTML = "";
+
+        unlocks.artifacts.style.display = "none";
+    }
+    if (gemsUnlocked()) {
+        ui.gemAmount.innerHTML = game.gems + " Gems";
+
+        unlocks.gems.style.display = "unset";
+    }
+    else {
         ui.gemAmount.innerHTML = "";
+
+        unlocks.gems.style.display = "none";
     }
 }
 
