@@ -7,6 +7,7 @@ var game = {
     gs: 0,
     si: 0,
     gems: 0,
+    gemboost: 1,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,

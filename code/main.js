@@ -45,6 +45,10 @@ var ui = {
     newArtifactImage: document.getElementById("newArtifactImage"),
     newArtifactName: document.getElementById("newArtifactName"),
 
+    gemOffer1: document.getElementById("gemOffer1"),
+    gemOffer2: document.getElementById("gemOffer2"),
+    gemOffer3: document.getElementById("gemOffer3"),
+
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
     stats: document.getElementById("stats"),
@@ -188,6 +192,7 @@ function getProduction() {
         * getArtifactBoost("clickshgabb")
         * knifeBoost
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.025 : 1)
+        * game.gemboost
     );
 }
 
@@ -204,6 +209,7 @@ function getAutoProduction() {
         * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
         * knifeBoost
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.025 : 1)
+        * game.gemboost
     );
 }
 
@@ -357,6 +363,8 @@ function prestigeButton() {
         game.stats.ctp = 0;
         game.stats.pttp = 0;
 
+        game.gemboost = 1;
+
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");
     }
@@ -461,6 +469,10 @@ function updateUI() {
     else {
         unlocks.siliconeShgabb.style.display = "none";
     }
+
+    ui.gemOffer1.innerHTML = "Spend 10 gems to get " + fn(getProduction() * 600) + " Shgabb immediately!";
+    ui.gemOffer2.innerHTML = "Spend 25 gems to get 100% more Shgabb this prestige! Current: +" + ((game.gemboost - 1) * 100) + "%";
+    ui.gemOffer3.innerHTML = game.a.length == artifacts.length ? "Not available... you know too much..." : "Spend 50 gems for a high chance to get an artifact!";
     
     ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + game.stats.sw

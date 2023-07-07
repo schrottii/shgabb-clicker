@@ -19,13 +19,12 @@
         <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
         <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount"></span>
         <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount"></span>
-        <img class="currency" src="images\currencies\silicone.png" /><span id="gemAmount"></span>
     </div>
     <br />
 
     <div id="newArtifact" style="display: none">
         <h2>New Artifact!</h2>
-        <img id="newArtifactImage" width="128", height="128" />
+        <img id="newArtifactImage" width="128" , height="128" />
         <h3><span id="newArtifactName"></span></h3>
     </div>
 
@@ -90,9 +89,18 @@
     <span id="artifacts" class="square" style="width: 50%"></span>
     <hr style="clear:both" />
 
+    <!-- Gems -->
+    <h3>Gems</h3>
+    <img class="currency" src="images\currencies\silicone.png" /><span id="gemAmount"></span><br /><br />
+    <button class="upgrade" style="width: 33%" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
+    <button class="upgrade" style="width: 33%" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
+    <button class="upgrade" style="width: 33%" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
+    <hr style="clear:both" />
+
     <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
+    <hr style="clear:both" />
 
     <!-- Other -->
     <br /><hr /><br />

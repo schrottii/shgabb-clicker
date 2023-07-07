@@ -93,16 +93,23 @@ function renderArtifacts() {
 	return render;
 }
 
-function getArtifact() {
+function allArtifactsOfRarity(rarity) {
+	for (a in artifacts) {
+		if (artifacts[a].rarity == rarity && !artifacts[a].isUnlocked()) return false;
+	}
+	return true;
+}
+
+function getArtifact(multi = 1) {
 	// (Chance TO GET)
 	// Chance to get an artifact
-	if (Math.random() < 1 / 1000) {
+	if (!allArtifactsOfRarity(1) && Math.random() < 1 / 1000 * multi) {
 		gambleArtifact(1);
 	}
-	else if (Math.random() < 1 / 8000) {
+	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 8000 * multi) {
 		gambleArtifact(2);
 	}
-	else if (Math.random() < 1 / 32000) {
+	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi) {
 		gambleArtifact(3);
 	}
 }
