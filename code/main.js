@@ -167,17 +167,17 @@ function clickButton() {
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
+        if (artifactsUnlocked()) {
+            getGem();
+            getArtifact();
+        }
+        updateArtifacts();
+
         updateUpgrades();
     }
     else {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
     }
-
-    if (artifactsUnlocked()) {
-        getGem();
-        getArtifact();
-    }
-    updateArtifacts();
 
     sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
 }

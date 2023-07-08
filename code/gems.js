@@ -6,7 +6,7 @@ function gemsUnlocked() {
 
 function getGem() {
     // Chance to get a gem
-    if (Math.random() < 1 / 10 /* CHANGE THIS TO 100 */ && !getArtifactByID(200).isEquipped()) {
+    if (Math.random() < 1 / 100 && !getArtifactByID(200).isEquipped()) {
         game.gems += 1;
         game.stats.tgems += 1;
 
