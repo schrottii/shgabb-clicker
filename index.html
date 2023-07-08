@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Top -->
-    <h2 style="color: goldenrod; background-color: black">Shgabb Clicker</h2>
+    <h2 style="color: deepskyblue; background-color: springgreen">Shgabb Clicker</h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
@@ -21,6 +21,12 @@
         <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount"></span>
     </div>
     <br />
+
+    <div id="newArtifact" style="display: none">
+        <h2>New Artifact!</h2>
+        <img id="newArtifactImage" width="128" , height="128" />
+        <h3><span id="newArtifactName"></span></h3>
+    </div>
 
     <hr style="clear:both" />
     <!-- Ads -->
@@ -68,11 +74,30 @@
     <!-- Silicone Shgabb -->
     <div id="siliconeShgabbSection">
         <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount2"></span><br />
-        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it.
+        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.
         <div>
             <span id="siupgradesl" style="float: left; width: 50%;"></span>
             <span id="siupgradesr" style="float: right; width: 50%;"></span>
         </div>
+        <hr style="clear:both" />
+    </div>
+
+    <!-- Artifacts -->
+    <div id="artifactSection">
+        <h3>Artifacts</h3>
+        <span id="artifactamount"></span>
+        <br />
+        <span id="artifacts" class="square" style="width: 50%"></span>
+        <hr style="clear:both" />
+    </div>
+
+    <!-- Gems -->
+    <div id="gemSection">
+        <h3>Gems</h3>
+        <img class="currency" src="images\currencies\silicone.png" /><span id="gemAmount"></span><br /><br />
+        <button class="upgrade" style="width: 33%" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
+        <button class="upgrade" style="width: 33%" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
+        <button class="upgrade" style="width: 33%" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
         <hr style="clear:both" />
     </div>
 
@@ -93,43 +118,37 @@
             <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
 
 
-            Version 1.4:
-            <br />-> Design:
-            <br />- Finally! Images!
-            <br />- Added images for all currencies: Shgabb, Sandwiches, Golden Shgabb and Silicone Shgabb
-            <br />- Added an image for the prestige button
-            <br />- Changed the design of the prestige button (gray to gold) and increased its text size
-            <br />- Sandwich, GS and Silicone sections are now completely hidden until unlocked
-            <br />- Changed Silicone's /sec to /s for consistency
-            <br />- Added a short text explaining how Silicone works
-            <br />- Game title now has a black background
-            <br />- Shgabb and Sandwich amount are now in the same row, and the currency overview now has a background
-            <br />
-            <br />-> Balance:
-            <br />- Reworked the Silicone boost formula
-            <br />- Silicone now affects auto (excluding cheese, which is already affected by it)
-            <br />- Increased effect of Stronger Silicone from 0.1%/level to 0.5% and made its description more clear
-            <br />- Increased max. level of Sandwich Amount from 19 to 24
-            <br />- The More Crits ad boost now also increases their strength by 3x on top of the 5x chance
-            <br />
-            <br />-> Notifications:
-            <br />- Notifications text is now aligned to the right, and patch notes to the left
-            <br />- The newest notification is now highlighted in bold
-            <br />- The newest notification is now also displayed at the top (excluding auto save)
-            <br />
-            <br />-> Other:
-            <br />- Added setting to hide maxed upgrades
-            <br />- Click button now shows x3 if the ad is active
-            <br />- Added stats for the individual ads (7 total), when opening the updated game for the first time they are randomly distributed
-            <br />- Added Highest More Shgabb stat
-            <br />- Total Silicone Shgabb stat is now visible
-            <br />- More things now use the notation
-            <br />- Fixed x10 auto shgabb ad not working sometimes
-            - Shgabb)
+            Version 1.5:
+            <br />-> Artifacts:
+            <br />- New feature: Artifacts!
+            <br />- Unlocked at More Shgabb level 1000
+            <br />- Can be randomly earned from clicking
+            <br />- Opening the game for the first time after the update will award artifacts based on past clicks, at a 1:5 ratio (5000 pre-update clicks are worth 1000 post-update clicks)
+            <br />- Three rarities: Common, Rare and Epic
+            <br />- Up to 3 artifacts can be equipped at the same time
+            <br />- Artifacts can have all kinds of effects, simple or complicated
+            <br />- Added 7 common, 5 rare and 3 epic artifacts (15 total)
+            <br /><br />-> Gems:
+            <br />- New feature: Gems!
+            <br />- There is a 1% chance to get a gem from a click
+            <br />- Gems can be spent on three things:
+            <br />- Shgabb worth 600 clicks
+            <br />- +100% Shgabb for this prestige
+            <br />- High chance for a random artifact
+            <br /><br />-> Golden Shgabb:
+            <br />- New Upgrade: Pizza quattro formaggi! Get more Shgabb, Sandwiches, Golden Shgabb AND Silicone Shgabb
+            <br />- GS gain now also increases every 1k More Shgabb levels
+            <br />- GS gain is now tripled if less than 100 More Shgabb levels away from the highest level reached (at 1000+)
+            <br /><br />-> Other:
+            <br />- Changed the colors of the top / title
+            <br />- Added a hint that Silicone Shgabb is not reset at prestige
+            <br />- Patch notes list is now a txt file
+            <br />- Fixed display issues at very high numbers (1s or more)
+            <br />- Fixed some unnecessary lines
 
 
             <br />
-            <a href="patch-notes" target="_blank"><sub>(All patch notes)</sub></a>
+            <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
         </div>
 
         <hr style="clear:both" />
@@ -151,6 +170,8 @@
 
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
+    <script src="code\artifacts.js"></script>
+    <script src="code\gems.js"></script>
     <script src="code\main.js"></script>
 </body>
 </html>

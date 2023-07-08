@@ -5,6 +5,8 @@ All versions:
 1.3
 1.3.1
 1.3.2
+1.4
+1.5
 
 
 
@@ -155,3 +157,37 @@ Version 1.4:
 - More things now use the notation
 - Fixed x10 auto shgabb ad not working sometimes
 - Shgabb)
+
+
+
+2023/07/08 1.5:
+Version 1.5:
+-> Artifacts:
+- New feature: Artifacts!
+- Unlocked at More Shgabb level 1000
+- Can be randomly earned from clicking
+- Opening the game for the first time after the update will award artifacts based on past clicks, at a 1:5 ratio (5000 pre-update clicks are worth 1000 post-update clicks)
+- Three rarities: Common, Rare and Epic
+- Up to 3 artifacts can be equipped at the same time
+- Artifacts can have all kinds of effects, simple or complicated
+- Added 7 common, 5 rare and 3 epic artifacts (15 total)
+
+-> Gems:
+- New feature: Gems!
+- There is a 1% chance to get a gem from a click
+- Gems can be spent on three things:
+- Shgabb worth 600 clicks
+- +100% Shgabb for this prestige
+- High chance for a random artifact
+
+-> Golden Shgabb:
+- New Upgrade: Pizza quattro formaggi! Get more Shgabb, Sandwiches, Golden Shgabb AND Silicone Shgabb
+- GS gain now also increases every 1k More Shgabb levels
+- GS gain is now tripled if less than 100 More Shgabb levels away from the highest level reached (at 1000+)
+
+-> Other:
+- Changed the colors of the top / title
+- Added a hint that Silicone Shgabb is not reset at prestige
+- Patch notes list is now a txt file
+- Fixed display issues at very high numbers (1s or more)
+- Fixed some unnecessary lines 

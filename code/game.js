@@ -6,6 +6,8 @@ var game = {
     sw: 0,
     gs: 0,
     si: 0,
+    gems: 0,
+    gemboost: 1,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -28,6 +30,8 @@ var game = {
         unlockMSW: 0,
         firstBoostsClicks: 0,
         cheese: 0,
+        formaggi: 0,
+        // Silicone
         moreSilicone: 0,
         strongerSilicone: 0,
     },
@@ -35,14 +39,17 @@ var game = {
         shgabb: 0,
         clicks: 0,
         playTime: 0,
+        pttp: 0,
         sw: 0,
         ads: 0,
         gs: 0,
         pr: 0,
         shgabbtp: 0,
         swtp: 0,
+        ctp: 0,
         si: 0,
         hms: 0,
+        tgems: 0,
         wads: {
             sc: 0,
             sa: 0,
@@ -52,7 +59,11 @@ var game = {
             msi: 0
         }
     },
+    a: [],
+    aeqi: [],
 }
+
+const emptyGame = Object.assign({}, game, {});
 
 var settings = {
     music: false,
