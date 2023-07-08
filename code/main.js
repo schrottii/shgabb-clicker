@@ -403,7 +403,7 @@ function updateArtifacts() {
     // Artifacts
     if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = (game.a.length - 1) + "/" + artifacts.length + " Artifacts unlocked!";
+        ui.artifactamount.innerHTML = Math.max(0, game.a.length - 1) + "/" + artifacts.length + " Artifacts unlocked!";
 
         unlocks.artifacts.style.display = "unset";
     }

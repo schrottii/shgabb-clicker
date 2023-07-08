@@ -65,7 +65,7 @@ function artifactsUnlocked() {
 function handleArtifactsFirstTime() {
 	if (!game.a.includes(0)) {
 		for (i = 0; i < Math.ceil(game.stats.clicks / 5); i++) {
-			getArtifact();
+			getArtifact(0.5);
 		}
 		game.a.push(0);
 		createNotification("Artifacts awarded for past clicks successfully!");
