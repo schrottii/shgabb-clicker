@@ -49,6 +49,7 @@ var game = {
         ctp: 0,
         si: 0,
         hms: 0,
+        hmstp: 0,
         tgems: 0,
         wads: {
             sc: 0,

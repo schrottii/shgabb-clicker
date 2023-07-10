@@ -117,7 +117,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     ":fire::dance: cavemen be like - shgabb",
     "Should I reinstall again because of developers utter degeneracy - slowmerger",
 ];
-const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game"];
+const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
 
 // format number
 function fn(number) {
@@ -193,7 +193,7 @@ function getProduction() {
         * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.025 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
         * game.gemboost
     );
 }
@@ -210,7 +210,7 @@ function getAutoProduction() {
         * getArtifactBoost("autoshgabb")
         * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.025 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
         * game.gemboost
     );
 }
@@ -240,12 +240,12 @@ function getCooldown() {
 }
 
 function getGoldenShgabb() {
-    return Math.floor(Math.max(10, (1 + Math.log(game.stats.shgabbtp + 1) * Math.log(game.stats.swtp + 1))
-        * Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100) - 25)
+    return Math.floor(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))
+        * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
         * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("gs")
-        * (game.stats.hms - game.upgradeLevels.moreShgabb <= 100 && game.upgradeLevels.moreShgabb >= 1000 ? 3 : 1)
+        * (game.upgradeLevels.moreShgabb - game.stats.hmstp >= 100 && game.upgradeLevels.moreShgabb >= 1000 ? 3 : 1)
         );
 }
 
@@ -364,6 +364,8 @@ function prestigeButton() {
         game.stats.swtp = 0;
         game.stats.ctp = 0;
         game.stats.pttp = 0;
+
+        game.stats.hmstp = game.stats.hms;
 
         game.gemboost = 1;
 
@@ -666,6 +668,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     if (game.stats.shgabbtp == "-Infinity") game.stats.shgabbtp = 0;
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
+    if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
 
     handleArtifactsFirstTime();
 }

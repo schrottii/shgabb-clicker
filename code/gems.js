@@ -6,11 +6,17 @@ function gemsUnlocked() {
 
 function getGem() {
     // Chance to get a gem
-    if (Math.random() < 1 / 100 && !getArtifactByID(200).isEquipped()) {
-        game.gems += 1;
-        game.stats.tgems += 1;
+    if (Math.random() < 1 / 100 * getArtifactBoost("gemchance") && !getArtifactByID(200).isEquipped()) {
+        let amount = 1 * getArtifactBoost("gems");
+        if (amount % 1 != 0) {
+            let bonusChance = amount % 1;
+            amount = Math.floor(amount);
+            if (Math.random() < bonusChance) amount += 1;
+        }
+        game.gems += amount;
+        game.stats.tgems += amount;
 
-        createNotification("+1 gem!");
+        createNotification("+" + amount + " gem" + (amount > 1 ? "s" : "") + "!");
     }
 }
 
@@ -34,7 +40,8 @@ function gemOffer(i) {
         case 3:
             if (game.gems > 49 && (game.a.length - 1) < artifacts.length) {
                 game.gems -= 50;
-                getArtifact(2000);
+                getArtifact(3000);
+                autoSave();
             }
             break;
     }
