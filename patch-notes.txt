@@ -217,6 +217,7 @@ Version 1.5.1:
 -> Other:
 - x3 GS boost now needs More Shgabb to be at least 100 levels higher than the highest More Shgabb in a previous prestige, rather than up to 100 levels less
 - Example: Highest More Shgabb is 1500, at least 1600 is needed to get the 3x boost
+- Expanded the notation past S (6 new)
 - Added an image for gems
 - Game is now saved after buying the 3rd gem offer
 - Fixed GS gain sometimes staying at very low round numbers 
