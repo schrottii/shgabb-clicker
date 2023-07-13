@@ -157,7 +157,6 @@ function clickButton() {
         game.stats.clicks += 1;
         game.stats.ctp += 1;
 
-
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
             amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
                 * goldenShgabbUpgrades.formaggi.currentEffect());
@@ -167,12 +166,9 @@ function clickButton() {
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
-        if (artifactsUnlocked()) {
-            getGem();
-            getArtifact();
-        }
+        if (gemsUnlocked()) getGem();
+        if (artifactsUnlocked()) getArtifact();
         updateArtifacts();
-
         updateUpgrades();
     }
     else {

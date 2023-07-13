@@ -8,6 +8,7 @@ All versions:
 1.4
 1.5
 1.5.1
+1.5.2
 
 
 
@@ -220,4 +221,18 @@ Version 1.5.1:
 - Expanded the notation past S (6 new)
 - Added an image for gems
 - Game is now saved after buying the 3rd gem offer
-- Fixed GS gain sometimes staying at very low round numbers 
+- Fixed GS gain sometimes staying at very low round numbers
+
+
+
+2023/07/13 1.5.2:
+Version 1.5.2:
+-> Balance:
+- Blue Ring: +20% -> +40%
+- Ring of Productivity: +40% -> +60%
+- Ring of Speed: -20% -> -30%
+- Shiny Red Ring: x1.25 -> x1.5
+
+-> Other:
+- The GS Upgrades "Unlock More Sandwich Upgrades" and "Pizza quattro formaggi" now stay unlocked after purchasing one level
+- Fixed not being able to obtain gems (unlocked at lvl 500) until unlocking artifacts (unlocked at lvl 1000)

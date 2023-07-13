@@ -158,14 +158,14 @@ function switchArtifact(id) {
 }
 
 var artifacts = [
-	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.2,),
+	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.4,),
 	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.2),
 	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5),
 	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.5),
-	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.4),
+	new Artifact(150, 1, "Ring of Productivity", "ring.png", "clickshgabb", 1.6),
 	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", 1.4),
-	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.2, { prefix: "-" }),
-	new Artifact(153, 1, "Shiny Red Ring", "ring.png", "gemchance", 1.25, { noPercentage: true, prefix: "x" }),
+	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", 1.3, { prefix: "-" }),
+	new Artifact(153, 1, "Shiny Red Ring", "ring.png", "gemchance", 1.5, { noPercentage: true, prefix: "x" }),
 	new Artifact(154, 1, "Pulsing Red Ring", "ring.png", "gems", 1.5),
 	new Artifact(155, 1, "Ring of Depression", "ring.png", "shgabb", 0.001, { noPercentage: true, prefix: "x" } ),
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 5, { prefix: "/", desc: "But no shgabb and gems from clicks" }),
