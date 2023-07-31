@@ -32,6 +32,7 @@ var ui = {
 
     cheatCurrency: document.getElementById("cheatCurrency"),
     cheatAmount: document.getElementById("cheatAmount"),
+    cheatDisplay: document.getElementById("cheatDisplay"),
 
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
@@ -42,6 +43,10 @@ var ui = {
     siAmount: document.getElementById("siAmount"),
     siAmount2: document.getElementById("siAmount2"),
     gemAmount: document.getElementById("gemAmount"),
+
+    swImage: document.getElementById("swImage"),
+    gsImage: document.getElementById("gsImage"),
+    siImage: document.getElementById("siImage"),
 
     upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
@@ -152,6 +157,10 @@ function cheatEngine(type) {
     else game[cheatCurrency.value] = toCheat;
     updateUI();
     updateArtifacts();
+}
+
+ui.cheatAmount.oninput = () => {
+    ui.cheatDisplay.innerHTML = fn(ui.cheatAmount.value);
 }
 
 // format number
@@ -464,11 +473,13 @@ function updateUI() {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
         ui.swAmount.innerHTML = game.sw + " Sandwiches";
         unlocks.sandwich.style.display = "unset";
+        ui.swImage.style.display = "unset";
         ui.sandwichBar.value = sandwichFreezeTime;
     }
     else {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
         unlocks.sandwich.style.display = "none";
+        ui.swImage.style.display = "none";
         ui.swAmount.innerHTML = "";
     }
 
@@ -493,10 +504,12 @@ function updateUI() {
 
     if (game.gs > 0) {
         unlocks.goldenShgabb.style.display = "unset";
+        ui.gsImage.style.display = "unset";
         ui.gsAmount.innerHTML = fn(game.gs) + " Golden Shgabb";
     }
     else {
         unlocks.goldenShgabb.style.display = "none";
+        ui.gsImage.style.display = "none";
         ui.gsAmount.innerHTML = "";
     }
     if (game.shgabb >= 1000000) {
@@ -511,10 +524,12 @@ function updateUI() {
     // Silicone
     if (game.shgabb >= 1000000000 || game.stats.si > 0) {
         unlocks.siliconeShgabb.style.display = "unset";
+        ui.siImage.style.display = "unset";
         ui.siAmount.innerHTML = fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
     }
     else {
         unlocks.siliconeShgabb.style.display = "none";
+        ui.siImage.style.display = "none";
     }
 
     ui.gemOffer1.innerHTML = "Spend 10 gems to get " + fn(getProduction() * 600) + " Shgabb immediately!";
@@ -569,27 +584,8 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (BETA.isBeta) {
-        alert("You can't export in a beta!");
-        createNotification("Couldn't export: Beta version");
-        return false;
-    }
-    let exportGame = JSON.stringify(game);
-    exportGame = btoa(exportGame);
-    exportGame = exportGame.replace("ey", "shgabb");
-    exportGame = exportGame.replace("x", "pppp");
-    exportGame = exportGame.replace("D", "dpjiopjrdopjh");
-    navigator.clipboard.writeText(exportGame);
-    createNotification("Game exported to clipboard!");
-}
+    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");    importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
 
-function importGame() {
-    let importGame = prompt("Code?");
-    importGame = importGame.replace("shgabb", "ey");
-    importGame = importGame.replace("dpjiopjrdopjh", "D");
-    importGame = importGame.replace("pppp", "x");
-    importGame = atob(importGame);
-    importGame = JSON.parse(importGame);
 
     emptyGame.a = [];
     game = { };

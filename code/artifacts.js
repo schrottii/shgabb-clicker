@@ -89,6 +89,7 @@ function getArtifactBoost(currency) {
 }
 
 var selectedLoadout = 0;
+var rep7 = "ey";
 
 function renderArtifacts() {
 	// Render em all
