@@ -35,6 +35,8 @@ var game = {
         // Silicone
         moreSilicone: 0,
         strongerSilicone: 0,
+        siliconeFromClicks: 0,
+        siliconeAffectsGS: 0,
     },
     stats: {
         shgabb: 0,

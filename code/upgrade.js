@@ -59,8 +59,8 @@ class Upgrade {
 
     effectDisplay(level = 0) {
         let current = (settings.displayCurrent && this.current != undefined) ? " (Current: " + this.current(level == 0 ? this.currentLevel() : level) + ")" : "";
-        if(level == 0) return (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.currentEffect()) + (this.suffix != undefined ? this.suffix : "") + current;
-        else return (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.effect(level)) + (this.suffix != undefined ? this.suffix : "") + current;
+        if(level == 0) return (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.currentEffect()) + (this.suffix != undefined ? (typeof(this.suffix) == "function" ? this.suffix(level) : this.suffix) : "") + current;
+        else return (this.prefix != undefined ? this.prefix : "") + fn(this.effectMulti * this.effect(level)) + (this.suffix != undefined ? (typeof (this.suffix) == "function" ? this.suffix(level) : this.suffix) : "") + current;
     }
 
     render() {
@@ -68,7 +68,7 @@ class Upgrade {
         if (settings.hideMaxed && isMax) return "";
         let maxButton = "";
         if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((this.maxLevel > 10 && this.currentLevel() != this.maxLevel) || this.maxLevel == undefined)) maxButton = "<div onclick='buyMax(" + this.type + "." + this.ID + ")' class='maxButton'>MAX</div>";
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.maxLevel ? "lightgray" : "whitesmoke")) + "'>" + maxButton + "<div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(0) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.maxLevel ? "lightgray" : "whitesmoke")) + "'>" + maxButton + "<div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.maxLevel != undefined ? " (Max: " + this.maxLevel + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
         else return "";
     }
 }
@@ -127,6 +127,8 @@ var goldenShgabbUpgrades = {
 }
 
 var siliconeShgabbUpgrades = {
-    moreSilicone: new SiliconeShgabbUpgrade("moreSilicone", "More Silicone", "Get even more silicone", level => (8 + level * 2) * Math.pow(1.005, level), level => 1 + level, { suffix: "/s" }),
+    moreSilicone: new SiliconeShgabbUpgrade("moreSilicone", "More Silicone", "Get even more silicone", level => (8 + level * 2) * Math.pow(1.005, level), level => 1 + level, { suffix: () => "/s (x" + fn(getSiliconeBoost()) + ")" }),
     strongerSilicone: new SiliconeShgabbUpgrade("strongerSilicone", "Stronger Silicone", "Increase the silicone boost", level => (60 + level * 24) * Math.pow(1.05, level), level => level * 0.005, { maxLevel: 100, current: level => "x" + fn(getSiliconeBoost(level)) + " shgabb", effectMulti: 100, prefix: "+", suffix: "%" }),
+    siliconeFromClicks: new SiliconeShgabbUpgrade("siliconeFromClicks", "Silicone From Clicks", "Chance to get silicone shgabb from clicks", level => 10000 * level, level => 0.1 * level, { maxLevel: 100, suffix: "% chance", unlock: () => siliconeShgabbUpgrades.moreSilicone.currentLevel() > 499 }),
+    siliconeAffectsGS: new SiliconeShgabbUpgrade("siliconeAffectsGS", "Silicone Affects GS", "Silicone also boosts GS on prestige a bit", level => Math.pow(15000, level / 24), level => 0.001 * level, { effectMulti: 100, maxLevel: 100, suffix: (level) => "% (x" + fn(getSiliconeBoost() * level * 0.001) + ")", unlock: () => siliconeShgabbUpgrades.moreSilicone.currentLevel() > 999 }),
 }

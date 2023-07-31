@@ -210,6 +210,11 @@ function clickButton() {
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
+        if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
+            game.si += getSiliconeProduction();
+            game.stats.si += getSiliconeProduction();
+        }
+
         if (gemsUnlocked()) getGem();
         if (artifactsUnlocked()) getArtifact();
         updateArtifacts();
@@ -258,13 +263,9 @@ function getAutoProduction() {
 function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
         * goldenShgabbUpgrades.formaggi.currentEffect()
+        * goldenShgabbUpgrades.moreSilicone2.currentEffect()
         * getArtifactBoost("si")
     );
-}
-
-function getSiliconeBoost(level = "current") {
-    if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)));
 }
 
 function getSiliconeBoost(level = "current") {
@@ -284,6 +285,7 @@ function getGoldenShgabb() {
         * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
         * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
+        * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
         * (game.upgradeLevels.moreShgabb - game.stats.hmstp >= 100 && game.upgradeLevels.moreShgabb >= 1000 ? 3 : 1)
         );
@@ -437,8 +439,8 @@ function updateUpgrades() {
     ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render() + goldenShgabbUpgrades.formaggi.render();
     ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render() + goldenShgabbUpgrades.unlockMSW.render() + goldenShgabbUpgrades.moreSilicone2.render();
 
-    ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render();
-    ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render();
+    ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render() + siliconeShgabbUpgrades.siliconeFromClicks.render();
+    ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render() + siliconeShgabbUpgrades.siliconeAffectsGS.render();
 }
 
 function updateArtifacts() {
