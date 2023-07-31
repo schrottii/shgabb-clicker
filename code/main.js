@@ -2,6 +2,14 @@
 
 // Main JS File
 
+var BETA = {};
+Object.defineProperty(BETA, 'isBeta', {
+    value: true,
+    writable: false,
+    enumerable: true,
+    configurable: false
+});
+
 var autoSaveTime = 3;
 var quoteTime = 10;
 var sandwichTime = 1;
@@ -21,6 +29,9 @@ var ui = {
     sandwichBar: document.getElementById("sandwichBar"),
     adBar: document.getElementById("adBar"),
     adLoaded: document.getElementById("adloaded"),
+
+    cheatCurrency: document.getElementById("cheatCurrency"),
+    cheatAmount: document.getElementById("cheatAmount"),
 
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
@@ -65,6 +76,7 @@ var unlocks = {
     siliconeShgabb: document.getElementById("siliconeShgabbSection"),
     artifacts: document.getElementById("artifactSection"),
     gems: document.getElementById("gemSection"),
+    cheats: document.getElementById("cheatSection"),
 }
 
 var adHandler = document.getElementById("baldad");
@@ -118,6 +130,29 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "Should I reinstall again because of developers utter degeneracy - slowmerger",
 ];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
+
+unlocks.cheats.style.display = BETA.isBeta ? "unset" : "none";
+
+function cheatEngine(type) {
+    let toCheat;
+    if (cheatCurrency.value == "stats.playTime") toCheat = game.stats.playTime;
+    else toCheat = game[cheatCurrency.value];
+    switch (type) {
+        case "add":
+            toCheat += parseInt(cheatAmount.value);
+            break;
+        case "set":
+            toCheat = parseInt(cheatAmount.value);
+            break;
+        case "sub":
+            toCheat -= parseInt(cheatAmount.value);
+            break;
+    }
+    if (cheatCurrency.value == "stats.playTime") game.stats.playTime = toCheat;
+    else game[cheatCurrency.value] = toCheat;
+    updateUI();
+    updateArtifacts();
+}
 
 // format number
 function fn(number) {
@@ -534,6 +569,11 @@ function autoSave() {
 }
 
 function exportGame() {
+    if (BETA.isBeta) {
+        alert("You can't export in a beta!");
+        createNotification("Couldn't export: Beta version");
+        return false;
+    }
     let exportGame = JSON.stringify(game);
     exportGame = btoa(exportGame);
     exportGame = exportGame.replace("ey", "shgabb");

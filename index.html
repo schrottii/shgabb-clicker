@@ -101,12 +101,33 @@
         <hr style="clear:both" />
     </div>
 
+    <!-- Cheating -->
+    <div id="cheatSection">
+        <h3>Cheats [Beta only]</h3>
+
+        <select id="cheatCurrency" name="Currency">
+            <option value="shgabb">Shgabb</option>
+            <option value="sw">Sandwiches</option>
+            <option value="gs">Golden Shgabb</option>
+            <option value="si">Silicone Shgabb</option>
+            <option value="gems">Gems</option>
+            <option value="stats.playTime">Playtime</option>
+        </select>
+
+        <input id="cheatAmount" name="Amount" />
+        <button onclick="cheatEngine('add')">+</button>
+        <button onclick="cheatEngine('set')">Set</button>
+        <button onclick="cheatEngine('sub')">-</button>
+
+        <hr /><br />
+    </div>
+
     <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
+    <br /><hr /><br />
 
     <!-- Other -->
-    <br /><hr /><br />
     <div style="position: relative;">
         <div class="square" style="position: absolute; text-align: right; width: 45%;">
             <h4>Notifications</h4>
