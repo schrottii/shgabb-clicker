@@ -88,15 +88,33 @@ function getArtifactBoost(currency) {
 	return boost;
 }
 
+var selectedLoadout = 0;
+
 function renderArtifacts() {
 	// Render em all
 	let render = "";
+	for (l = 0; l < 3; l++) {
+		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 15%; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>" + (l + 1) + "</button>";
+	}
+	render = render + "<br /><br />";
+
 	for (a in artifacts) {
 		if (artifacts[a].isUnlocked()) {
 			render = render + artifacts[a].render();
 		}
 	}
 	return render;
+}
+
+function artifactLoadout(l) {
+	if (game.alo[l].length > 0) {
+		game.aeqi = game.alo[l];
+	}
+	else {
+		game.aeqi = [];
+	}
+	selectedLoadout = l;
+	updateArtifacts();
 }
 
 function allArtifactsOfRarity(rarity) {
@@ -154,6 +172,7 @@ function getArtifactByID(id) {
 function switchArtifact(id) {
 	if (getArtifactByID(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
 	else if (game.aeqi.length < 3) game.aeqi.push(id);
+	game.alo[selectedLoadout] = game.aeqi;
 	updateArtifacts();
 }
 

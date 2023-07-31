@@ -62,6 +62,7 @@ var game = {
     },
     a: [],
     aeqi: [],
+    alo: [[], [], []]
 }
 
 const emptyGame = Object.assign({}, game, {});
