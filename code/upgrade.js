@@ -123,6 +123,7 @@ var goldenShgabbUpgrades = {
     unlockMax: new GoldenShgabbUpgrade("unlockMax", "Unlock Buy Max", "Unlock buy max buttons for most upgrades", level => 3000, level => level, { maxLevel: 1, unlock: () => game.stats.gs > 2999 }),
     unlockMSW: new GoldenShgabbUpgrade("unlockMSW", "Unlock More Sandwich Upgrades", "Unlock two new sandwich upgrades", level => 2500, level => level, { maxLevel: 2, unlock: () => sandwichUpgrades.autoShgabb.currentLevel() > 79 || game.upgradeLevels.unlockMSW > 0 }),
     formaggi: new GoldenShgabbUpgrade("formaggi", "Pizza quattro formaggi", "Get more Shgabb, Sandwiches, Golden Shgabb and Silicone", level => 5000 * Math.pow(level + 1, level + 1), level => 1 + ((level * level) * 1.2 + (level > 6 ? 0.2 : 0)), { maxLevel: 8, unlock: () => sandwichUpgrades.cheese.currentLevel() > 79 || game.upgradeLevels.formaggi > 0, prefix: "x" }),
+    moreSilicone2: new GoldenShgabbUpgrade("moreSilicone2", "More Silicone 2", "Get more Silicone Shgabb", level => 88000 + (Math.pow(12000, 1 + (level / 12))), level => Math.pow(1.2, level), { unlock: () => siliconeShgabbUpgrades.moreSilicone.currentLevel() > 999 || game.upgradeLevels.moreSilicone2 > 0, prefix: "x" }),
 }
 
 var siliconeShgabbUpgrades = {

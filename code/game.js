@@ -31,6 +31,7 @@ var game = {
         firstBoostsClicks: 0,
         cheese: 0,
         formaggi: 0,
+        moreSilicone2: 0,
         // Silicone
         moreSilicone: 0,
         strongerSilicone: 0,
