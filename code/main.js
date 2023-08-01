@@ -270,7 +270,7 @@ function getSiliconeProduction() {
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime)));
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? 2 : 1);
 }
 
 function getCooldown() {
@@ -314,6 +314,7 @@ function sandwich() {
 
 function silicone() {
     if (game.shgabb < 1000000000 && game.stats.si < 1) return false;
+    if (getArtifactByID(304).isEquipped()) return false;
 
     let amount = getSiliconeProduction();
     if (amount > 0) {
