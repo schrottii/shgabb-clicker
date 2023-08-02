@@ -497,7 +497,7 @@ function updateUI() {
     ui.cooldownBar.value = game.clickCooldown;
     ui.cooldownBar.max = getCooldown();
 
-    if (game.stats.sw > 9) {
+    if (game.stats.sw > 9 && adTime > 0) {
         ui.adBar.style.display = "inline";
         ui.adBar.value = (adTime / adMax) * 100;
     }

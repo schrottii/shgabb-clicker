@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Top -->
-    <h2 style="color: deepskyblue; background-color: springgreen">Shgabb Clicker</h2>
+    <h2 style="color: deepskyblue; background-color: green">Shgabb Clicker</h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
@@ -31,7 +31,7 @@
     <hr style="clear:both" />
     <!-- Ads -->
     <div id="adloaded" style="display: none">
-        <progress min="0" max="100" value="0" id="adBar"></progress><br />
+        <progress min="0" max="100" value="0" id="adBar"></progress>
         <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
         <video volume="0.2" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
         <hr />
@@ -61,6 +61,7 @@
 
     <!-- Golden Shgabb -->
     <div id="goldenShgabbSection">
+        <h3>Golden Shgabb</h3>
         <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
         <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount2"></span>
         <div>
@@ -73,6 +74,7 @@
 
     <!-- Silicone Shgabb -->
     <div id="siliconeShgabbSection">
+        <h3>Silicone Shgabb</h3>
         <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount2"></span><br />
         Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.
         <div>
@@ -151,6 +153,13 @@
             <br />- All 3 gem offers now have names
             <br />- Changed Instant Shgabb from shgabb worth 600 clicks to 1/10 of current or total shgabb (whichever is lower)
             <br />- Instant Shgabb does not increase total shgabb anymore
+            <br /><br />-> Design:
+            <br />- Made the background image darker
+            <br />- Reduced empty space in artifacts and changed the outline
+            <br />- Increased text size of settings and the ad button
+            <br />- The ad bar now disappears when an ad is available
+            <br />- Added headers for the GS and Silicone sections
+            <br />- Changed the color of the title's background (at the top)
             <br /><br />-> Other:
             <br />- Added cheats for beta testing, but exporting is now disabled in betas
             <br />- The sandwich, gs and silicone images are no longer visible before unlocking them
