@@ -23,8 +23,8 @@
     <br />
 
     <div id="newArtifact" style="display: none">
-        <h2>New Artifact!</h2>
-        <img id="newArtifactImage" width="128", height="128" />
+        <h2><span id="newArtifactText"></span></h2>
+        <img id="newArtifactImage" width="128" , height="128" />
         <h3><span id="newArtifactName"></span></h3>
     </div>
 
@@ -121,14 +121,17 @@
         <button onclick="cheatEngine('set')">Set</button>
         <button onclick="cheatEngine('sub')">-</button><br />
         <span id="cheatDisplay"></span>
-
-        <hr /><br />
+        <hr style="clear:both" />
     </div>
 
     <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
-    <br /><hr /><br />
+    <h3>Achievements</h3>
+    <span id="achievementsamount"></span><br />
+    <span id="achievements" class="square"></span>
+    <hr style="clear:both" />
+    <br />
 
     <!-- Other -->
     <div style="position: relative;">
@@ -163,6 +166,7 @@
             <br /><br />-> Other:
             <br />- Added cheats for beta testing, but exporting is now disabled in betas
             <br />- The sandwich, gs and silicone images are no longer visible before unlocking them
+            <br />- GS on prestige now uses the notation
 
 
             <br />
@@ -191,5 +195,6 @@
     <script src="code\artifacts.js"></script>
     <script src="code\gems.js"></script>
     <script src="code\main.js"></script>
+    <script src="code\achievements.js"></script>
 </body>
 </html>

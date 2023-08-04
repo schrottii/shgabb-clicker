@@ -21,7 +21,7 @@ class Artifact {
 	}
 
 	getRarity() {
-		return ["ERROR", "Common", "Rare", "Epic", ""][this.rarity];
+		return ["ERROR", "Common", "Rare", "Epic", "Legendary", ""][this.rarity];
 	}
 
 	isUnlocked() {
@@ -60,7 +60,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")" + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")" + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
 	}
 }
 
@@ -137,6 +137,9 @@ function getArtifact(multi = 1) {
 	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi) {
 		gambleArtifact(3);
 	}
+	else if (!allArtifactsOfRarity(4) && Math.random() < 1 / 10000000 && multi == 1) {
+		gambleArtifact(4);
+	}
 }
 
 function gambleArtifact(r) {
@@ -153,6 +156,7 @@ function gambleArtifact(r) {
 		createNotification("New Artifact: " + getArtifactByID(gainedID).name);
 		updateArtifacts();
 
+		ui.newArtifactText = "New Artifact!";
 		ui.newArtifactImage.src = "images/arti/" + getArtifactByID(gainedID).image;
 		ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
 		ui.newArtifact.style.display = "block";
@@ -205,4 +209,6 @@ var artifacts = [
 	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 0.1%" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", 3, { trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: "Completely stops passive silicone production, but its effects are doubled" }),
+
+	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]

@@ -60,6 +60,7 @@ var ui = {
     newArtifact: document.getElementById("newArtifact"),
     newArtifactImage: document.getElementById("newArtifactImage"),
     newArtifactName: document.getElementById("newArtifactName"),
+    newArtifactText: document.getElementById("newArtifactText"),
 
     gemOffer1: document.getElementById("gemOffer1"),
     gemOffer2: document.getElementById("gemOffer2"),
@@ -67,7 +68,9 @@ var ui = {
 
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
+    achievementsamount: document.getElementById("achievementsamount"),
     stats: document.getElementById("stats"),
+    achievements: document.getElementById("achievements"),
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
     music: document.getElementById("music"),
@@ -167,7 +170,8 @@ ui.cheatAmount.oninput = () => {
 function fn(number) {
     number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
-        number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
+        if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
+        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
     }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
     if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
@@ -448,7 +452,7 @@ function updateArtifacts() {
     // Artifacts
     if (artifactsUnlocked()) {
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = Math.max(0, game.a.length - 1) + "/" + artifacts.length + " Artifacts unlocked!";
+        ui.artifactamount.innerHTML = Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1) + " Artifacts unlocked!";
 
         unlocks.artifacts.style.display = "unset";
     }
@@ -518,7 +522,7 @@ function updateUI() {
     if (game.shgabb >= 1000000) {
         unlocks.goldenShgabb.style.display = "unset";
         ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + getGoldenShgabb() + " golden shgabb!";
+        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
     }
     else {
         ui.prestigeButton.style.display = "none";
@@ -552,6 +556,10 @@ function updateUI() {
     ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
     ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
 
+    // Achievements
+    renderAchievements();
+    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked!";
+
     // Notifications
     ui.notifications.innerHTML = "";
     let n2 = 15;
@@ -581,7 +589,26 @@ function autoSave() {
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
-    createNotification("Game saved automatically");
+
+    let newAch = false;
+    for (a in achievements) {
+        if (achievements[a].unlock() && !game.ach.includes(achievements[a].ID)) {
+            game.ach.push(achievements[a].ID);
+            newAch = true;
+            createNotification("New achievement: " + achievements[a].name);
+
+            ui.newArtifactText = "Achievement Unlocked!";
+            ui.newArtifactImage.src = "images/achievements/" + achievements[a].image;
+            ui.newArtifactName.innerHTML = achievements[a].name;
+            ui.newArtifact.style.display = "block";
+
+            setTimeout(() => {
+                ui.newArtifact.style.display = "none";
+            }, 5000)
+            break;
+        }
+    }
+    if(!newAch) createNotification("Game saved automatically");
 }
 
 function exportGame() {
