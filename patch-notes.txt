@@ -247,6 +247,7 @@ Version 1.6:
 - Added 30 achievements
 - Added 7 achievement images
 - Added new achievement popup, notification and total achievements display
+
 -> New Upgrades:
 - New Golden Shgabb upgrade: More Silicone 2 (unlocked at More Silicone level 1000)
 - New Silicone Shgabb upgrade: Silicone From Clicks (unlocked at More Silicone level 500)
