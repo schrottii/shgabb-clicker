@@ -4,7 +4,7 @@
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: true,
+    value: false,
     writable: false,
     enumerable: true,
     configurable: false
@@ -473,6 +473,15 @@ function updateArtifacts() {
         unlocks.gems.style.display = "none";
     }
 }
+
+window.addEventListener('keydown', function (e) {
+    if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+        if (e.target.nodeName == 'BUTTON' || e.target.nodeName == 'BODY') {
+            e.preventDefault();
+            return false;
+        }
+    }
+}, true);
 
 function updateUI() {
     // Update UI

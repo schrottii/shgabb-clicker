@@ -9,6 +9,7 @@ All versions:
 1.5
 1.5.1
 1.5.2
+1.6
 
 
 
@@ -236,3 +237,42 @@ Version 1.5.2:
 -> Other:
 - The GS Upgrades "Unlock More Sandwich Upgrades" and "Pizza quattro formaggi" now stay unlocked after purchasing one level
 - Fixed not being able to obtain gems (unlocked at lvl 500) until unlocking artifacts (unlocked at lvl 1000)
+
+
+
+2023/08/05 1.6:
+Version 1.6:
+-> Achievements:
+- New feature: Achievements!
+- Added 30 achievements
+- Added 7 achievement images
+- Added new achievement popup, notification and total achievements display
+-> New Upgrades:
+- New Golden Shgabb upgrade: More Silicone 2 (unlocked at More Silicone level 1000)
+- New Silicone Shgabb upgrade: Silicone From Clicks (unlocked at More Silicone level 500)
+- New Silicone Shgabb upgrade: Silicone Affects GS (unlocked at More Silicone level 1000)
+
+-> Artifacts:
+- Added 5 new artifacts (0 common, 4 rare, 1 epic)
+- Added artifact loadouts (3 slots)
+
+-> Gems:
+- All 3 gem offers now have names
+- Changed Instant Shgabb from shgabb worth 600 clicks to 1/10 of current or total shgabb (whichever is lower)
+- Instant Shgabb does not increase total shgabb anymore
+
+-> Design:
+- Made the background image darker
+- Reduced empty space in artifacts and changed the outline
+- Increased text size of settings and the ad button
+- The ad bar now disappears when an ad is available
+- Added headers for the GS and Silicone sections
+- Changed the color of the title's background (at the top)
+
+-> Other:
+- Added cheats for beta testing, but exporting is now disabled in betas
+- Reworked the x3 GS thing, it is now based on current more shgabb level / highest shgabb level (making it possible to get a small multiplier much earlier, but capped at x3)
+- The sandwich, gs and silicone images are no longer visible before unlocking them
+- GS on prestige now uses the notation
+- Fixed enter button cheating
+- Added a secret 
