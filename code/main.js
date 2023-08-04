@@ -291,7 +291,7 @@ function getGoldenShgabb() {
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
-        * (game.upgradeLevels.moreShgabb - game.stats.hmstp >= 100 && game.upgradeLevels.moreShgabb >= 1000 ? 3 : 1)
+        * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
         );
 }
 
