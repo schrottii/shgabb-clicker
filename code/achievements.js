@@ -20,6 +20,7 @@ function renderAchievements() {
     catch (e) {
         console.trace(e);
     }
+
 }
 
 var achievements = [
