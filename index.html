@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Top -->
-    <h2 style="color: deepskyblue; background-color: springgreen">Shgabb Clicker</h2>
+    <h2 style="color: deepskyblue; background-color: green">Shgabb Clicker</h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
@@ -16,14 +16,14 @@
     <!-- Top, currencies -->
     <div style="background-color: lightslategray">
         <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount">0 Shgabb</span>
-        <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
-        <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount"></span>
-        <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount"></span>
+        <img class="currency" id="swImage" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
+        <img class="currency" id="gsImage" src="images\currencies\gs.png" /><span id="gsAmount"></span>
+        <img class="currency" id="siImage" src="images\currencies\silicone.png" /><span id="siAmount"></span>
     </div>
     <br />
 
     <div id="newArtifact" style="display: none">
-        <h2>New Artifact!</h2>
+        <h2><span id="newArtifactText"></span></h2>
         <img id="newArtifactImage" width="128" , height="128" />
         <h3><span id="newArtifactName"></span></h3>
     </div>
@@ -31,7 +31,7 @@
     <hr style="clear:both" />
     <!-- Ads -->
     <div id="adloaded" style="display: none">
-        <progress min="0" max="100" value="0" id="adBar"></progress><br />
+        <progress min="0" max="100" value="0" id="adBar"></progress>
         <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
         <video volume="0.2" src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
         <hr />
@@ -61,6 +61,7 @@
 
     <!-- Golden Shgabb -->
     <div id="goldenShgabbSection">
+        <h3>Golden Shgabb</h3>
         <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
         <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount2"></span>
         <div>
@@ -73,6 +74,7 @@
 
     <!-- Silicone Shgabb -->
     <div id="siliconeShgabbSection">
+        <h3>Silicone Shgabb</h3>
         <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount2"></span><br />
         Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.
         <div>
@@ -101,12 +103,37 @@
         <hr style="clear:both" />
     </div>
 
+    <!-- Cheating -->
+    <div id="cheatSection">
+        <h3>Cheats [Beta only]</h3>
+
+        <select id="cheatCurrency" name="Currency">
+            <option value="shgabb">Shgabb</option>
+            <option value="sw">Sandwiches</option>
+            <option value="gs">Golden Shgabb</option>
+            <option value="si">Silicone Shgabb</option>
+            <option value="gems">Gems</option>
+            <option value="stats.playTime">Playtime</option>
+        </select>
+
+        <input id="cheatAmount" name="Amount" />
+        <button onclick="cheatEngine('add')">+</button>
+        <button onclick="cheatEngine('set')">Set</button>
+        <button onclick="cheatEngine('sub')">-</button><br />
+        <span id="cheatDisplay"></span>
+        <hr style="clear:both" />
+    </div>
+
     <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
+    <h3>Achievements</h3>
+    <span id="achievementsamount"></span><br />
+    <span id="achievements" class="square"></span>
+    <hr style="clear:both" />
+    <br />
 
     <!-- Other -->
-    <br /><hr /><br />
     <div style="position: relative;">
         <div class="square" style="position: absolute; text-align: right; width: 45%;">
             <h4>Notifications</h4>
@@ -117,16 +144,37 @@
             Shgabb Clicker - developed by Schrottii ©2023<br />
             <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
 
-            Version 1.5.2:
-            <br />-> Balance:
-            <br />- Blue Ring: +20% -> +40%
-            <br />- Ring of Productivity: +40% -> +60%
-            <br />- Ring of Speed: -20% -> -30%
-            <br />- Shiny Red Ring: x1.25 -> x1.5
-            <br />
-            <br />-> Other:
-            <br />- The GS Upgrades "Unlock More Sandwich Upgrades" and "Pizza quattro formaggi" now stay unlocked after purchasing one level
-            <br />- Fixed not being able to obtain gems (unlocked at lvl 500) until unlocking artifacts (unlocked at lvl 1000)
+            Version 1.6:
+            <br />-> Achievements:
+            <br />- New feature: Achievements!
+            <br />- Added 30 achievements
+            <br />- Added 7 achievement images
+            <br />- Added new achievement popup, notification and total achievements display
+            <br />-> New Upgrades:
+            <br />- New Golden Shgabb upgrade: More Silicone 2 (unlocked at More Silicone level 1000)
+            <br />- New Silicone Shgabb upgrade: Silicone From Clicks (unlocked at More Silicone level 500)
+            <br />- New Silicone Shgabb upgrade: Silicone Affects GS (unlocked at More Silicone level 1000)
+            <br /><br />-> Artifacts:
+            <br />- Added 5 new artifacts (0 common, 4 rare, 1 epic)
+            <br />- Added artifact loadouts (3 slots)
+            <br /><br />-> Gems:
+            <br />- All 3 gem offers now have names
+            <br />- Changed Instant Shgabb from shgabb worth 600 clicks to 1/10 of current or total shgabb (whichever is lower)
+            <br />- Instant Shgabb does not increase total shgabb anymore
+            <br /><br />-> Design:
+            <br />- Made the background image darker
+            <br />- Reduced empty space in artifacts and changed the outline
+            <br />- Increased text size of settings and the ad button
+            <br />- The ad bar now disappears when an ad is available
+            <br />- Added headers for the GS and Silicone sections
+            <br />- Changed the color of the title's background (at the top)
+            <br /><br />-> Other:
+            <br />- Added cheats for beta testing, but exporting is now disabled in betas
+            <br />- Reworked the x3 GS thing, it is now based on current more shgabb level / highest shgabb level (making it possible to get a small multiplier much earlier, but capped at x3)
+            <br />- The sandwich, gs and silicone images are no longer visible before unlocking them
+            <br />- GS on prestige now uses the notation
+            <br />- Fixed enter button cheating
+            <br />- Added a secret
 
 
             <br />
@@ -155,5 +203,6 @@
     <script src="code\artifacts.js"></script>
     <script src="code\gems.js"></script>
     <script src="code\main.js"></script>
+    <script src="code\achievements.js"></script>
 </body>
 </html>

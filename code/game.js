@@ -31,9 +31,12 @@ var game = {
         firstBoostsClicks: 0,
         cheese: 0,
         formaggi: 0,
+        moreSilicone2: 0,
         // Silicone
         moreSilicone: 0,
         strongerSilicone: 0,
+        siliconeFromClicks: 0,
+        siliconeAffectsGS: 0,
     },
     stats: {
         shgabb: 0,
@@ -62,6 +65,8 @@ var game = {
     },
     a: [],
     aeqi: [],
+    alo: [[], [], []],
+    ach: [],
 }
 
 const emptyGame = Object.assign({}, game, {});
