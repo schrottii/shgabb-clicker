@@ -710,8 +710,13 @@ function loop(tick) {
         adMax = 5;
     }
 
-    updateUI();
-    window.requestAnimationFrame(loop);
+    try {
+        updateUI();
+        window.requestAnimationFrame(loop);
+    }
+    catch (e) {
+        console.trace(e);
+    }
 }
 
 // Load
@@ -799,7 +804,12 @@ updateUpgrades();
 updateArtifacts();
 
 // Start game loop (30 FPS)
-window.requestAnimationFrame(loop);
+try {
+    window.requestAnimationFrame(loop);
+}
+catch (e) {
+    console.trace(e);
+}
 
 console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
 console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
