@@ -9,12 +9,17 @@ class Achievement {
 }
 
 function renderAchievements() {
-    let render = "";
+    try {
+        let render = "";
 
-    for (a in achievements) {
-        render = render + "<div class='artifact' style='color: black; background-color: " + (achievements[a].unlock() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (achievements[a].unlock() ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</div>"
+        for (a in achievements) {
+            render = render + "<div class='artifact' style='color: black; background-color: " + (achievements[a].unlock() ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (achievements[a].unlock() ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</div>"
+        }
+        ui.achievements.innerHTML = render;
     }
-    ui.achievements.innerHTML = render;
+    catch (e) {
+        console.trace(e);
+    }
 }
 
 var achievements = [

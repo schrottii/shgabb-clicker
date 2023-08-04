@@ -292,6 +292,7 @@ function getGoldenShgabb() {
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
         * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
+        * (1 + (game.ach.length / 50))
         );
 }
 
@@ -567,7 +568,7 @@ function updateUI() {
 
     // Achievements
     renderAchievements();
-    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked!";
+    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (game.ach.length * 2) + "% GS!";
 
     // Notifications
     ui.notifications.innerHTML = "";
