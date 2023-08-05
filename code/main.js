@@ -720,6 +720,7 @@ function loop(tick) {
 }
 
 // Load
+try {
 if (localStorage.getItem("shgabbClicker") != undefined) {
     let cache = game;
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
@@ -752,9 +753,14 @@ if (localStorage.getItem("shgabbSettings") != undefined) {
 
     music.muted = !settings.music;
     adHandler.muted = !settings.adMusic;
+    }
+}
+catch (e) {
+    console.trace(e);
 }
 
 // Ad init
+try {
 adHandler.oncanplay = () => {
     adLoaded = true;
     ui.adLoaded.style.display = "block";
@@ -797,6 +803,10 @@ adHandler.onended = () => {
     if (currentBoost == "moreSandwiches" || currentBoost == "moreCrits") {
         ui.sandwichBar.classList.add("buffedProgress")
     }
+    }
+}
+catch (e) {
+    console.trace(e);
 }
 
 // Update upgrades UI
