@@ -486,9 +486,11 @@ window.addEventListener('keydown', function (e) {
 
 function updateUI() {
     // Update UI
+
+    // Sandwiches
     if (game.upgradeLevels.swChance > 0) {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
-        ui.swAmount.innerHTML = game.sw + " Sandwiches";
+        ui.swAmount.innerHTML = fn(game.sw) + " Sandwiches";
         unlocks.sandwich.style.display = "unset";
         ui.swImage.style.display = "unset";
         ui.sandwichBar.value = sandwichFreezeTime;
@@ -511,6 +513,7 @@ function updateUI() {
     ui.cooldownBar.value = game.clickCooldown;
     ui.cooldownBar.max = getCooldown();
 
+    // Ads
     if (game.stats.sw > 9 && adTime > 0) {
         ui.adBar.style.display = "inline";
         ui.adBar.value = (adTime / adMax) * 100;
@@ -519,6 +522,7 @@ function updateUI() {
         ui.adBar.style.display = "none";
     }
 
+    // GS
     if (game.gs > 0) {
         unlocks.goldenShgabb.style.display = "unset";
         ui.gsImage.style.display = "unset";
@@ -710,17 +714,11 @@ function loop(tick) {
         adMax = 5;
     }
 
-    try {
-        updateUI();
-        window.requestAnimationFrame(loop);
-    }
-    catch (e) {
-        console.trace(e);
-    }
+    updateUI();
+    window.requestAnimationFrame(loop);
 }
 
 // Load
-try {
 if (localStorage.getItem("shgabbClicker") != undefined) {
     let cache = game;
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
@@ -754,10 +752,6 @@ if (localStorage.getItem("shgabbSettings") != undefined) {
     music.muted = !settings.music;
     adHandler.muted = !settings.adMusic;
     }
-}
-catch (e) {
-    console.trace(e);
-}
 
 // Ad init
 try {
@@ -814,12 +808,7 @@ updateUpgrades();
 updateArtifacts();
 
 // Start game loop (30 FPS)
-try {
-    window.requestAnimationFrame(loop);
-}
-catch (e) {
-    console.trace(e);
-}
+window.requestAnimationFrame(loop);
 
 console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
 console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');

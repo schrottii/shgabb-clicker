@@ -276,4 +276,13 @@ Version 1.6:
 - The sandwich, gs and silicone images are no longer visible before unlocking them
 - GS on prestige now uses the notation
 - Fixed enter button cheating
-- Added a secret 
+- Added a secret
+
+
+
+2023/08/06 1.6.1:
+Version 1.6.1:
+- Achievements now boost GS (2% for every achievement)
+- Sandwich amount now uses the notation
+- Fixed some unlocked achievements being displayed as locked
+- Fixed freezing
