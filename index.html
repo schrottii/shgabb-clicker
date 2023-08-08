@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Top -->
-    <h2 style="color: deepskyblue; background-color: green">Shgabb Clicker</h2>
+    <h2 style="color: deepskyblue; background-color: green"><span id="gametitle">Shgabb Clicker</span></h2>
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
@@ -127,6 +127,9 @@
     <!-- Stats -->
     <h3>Stats</h3>
     <span id="stats" class="square"></span>
+
+    <!-- Achievements -->
+    <hr style="clear:both" />
     <h3>Achievements</h3>
     <span id="achievementsamount"></span><br />
     <span id="achievements" class="square"></span>
@@ -144,43 +147,7 @@
             Shgabb Clicker - developed by Schrottii ©2023<br />
             <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
 
-            Version 1.6.1:
-            <br />- Achievements now boost GS (2% for every achievement)
-            <br />- Sandwich amount now uses the notation
-            <br />- Fixed some unlocked achievements being displayed as locked
-            <br />- Fixed freezing
-            <br /><br /><br />
-            Version 1.6:
-            <br />-> Achievements:
-            <br />- New feature: Achievements!
-            <br />- Added 30 achievements
-            <br />- Added 7 achievement images
-            <br />- Added new achievement popup, notification and total achievements display
-            <br /><br />-> New Upgrades:
-            <br />- New Golden Shgabb upgrade: More Silicone 2 (unlocked at More Silicone level 1000)
-            <br />- New Silicone Shgabb upgrade: Silicone From Clicks (unlocked at More Silicone level 500)
-            <br />- New Silicone Shgabb upgrade: Silicone Affects GS (unlocked at More Silicone level 1000)
-            <br /><br />-> Artifacts:
-            <br />- Added 5 new artifacts (0 common, 4 rare, 1 epic)
-            <br />- Added artifact loadouts (3 slots)
-            <br /><br />-> Gems:
-            <br />- All 3 gem offers now have names
-            <br />- Changed Instant Shgabb from shgabb worth 600 clicks to 1/10 of current or total shgabb (whichever is lower)
-            <br />- Instant Shgabb does not increase total shgabb anymore
-            <br /><br />-> Design:
-            <br />- Made the background image darker
-            <br />- Reduced empty space in artifacts and changed the outline
-            <br />- Increased text size of settings and the ad button
-            <br />- The ad bar now disappears when an ad is available
-            <br />- Added headers for the GS and Silicone sections
-            <br />- Changed the color of the title's background (at the top)
-            <br /><br />-> Other:
-            <br />- Added cheats for beta testing, but exporting is now disabled in betas
-            <br />- Reworked the x3 GS thing, it is now based on current more shgabb level / highest shgabb level (making it possible to get a small multiplier much earlier, but capped at x3)
-            <br />- The sandwich, gs and silicone images are no longer visible before unlocking them
-            <br />- GS on prestige now uses the notation
-            <br />- Fixed enter button cheating
-            <br />- Added a secret
+            <span id="patchNotes">...</span>
 
 
             <br />

@@ -2,6 +2,37 @@
 
 // Main JS File
 
+const gameVersion = "1.6.2";
+
+const currentPatchNotes = [
+    "-> Balance:",
+    "- Increased costs of the 2 new Silicone Upgrades by 1 level (so level 0 is not free anymore)",
+    "- Decreased costs of Silicone Affects GS",
+    "",
+    "- Amulet of Saving: 1M -> 1B",
+    "- Amulet of Passive Silicone: x1.6 -> x2",
+    "- Amulet of Active Silicone: x2.4 -> x3",
+    "- Amulet of Fast Start: x3 -> x10",
+    "- Amulet of Tides: x3 -> x7",
+    "- Silicone implants: x2 -> x3",
+    "",
+    "- Amulet of Golden Bank: 3 minutes -> 5 minutes",
+    "- Shgabb Seeds: 0.01% -> 0.025%",
+    "-> Quotes and Patch Notes:",
+    "- Added 7 new quotes",
+    "- Increased time before a quote disappears from 10 to 15 seconds",
+    "- Made it easier for me to update the patch notes",
+    "- Added the current game version to the header",
+    "-> Other:",
+    "- Reduced Sandwiches V achievement from 1B to 100M",
+    "- Added a line between Stats and Achievements",
+    "v1.6.1",
+    "- Achievements now boost GS (2% for every achievement)",
+    "- Sandwich amount now uses the notation",
+    "- Fixed some unlocked achievements being displayed as locked",
+    "- Fixed freezing",
+]
+
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
     value: false,
@@ -11,7 +42,7 @@ Object.defineProperty(BETA, 'isBeta', {
 });
 
 var autoSaveTime = 3;
-var quoteTime = 10;
+var quoteTime = 15;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
 var adTime = 10;
@@ -24,6 +55,9 @@ var oldTime = 0;
 var knifeBoost = 1;
 
 var ui = {
+    gameTitle: document.getElementById("gametitle"),
+    patchNotes: document.getElementById("patchNotes"),
+
     clickButton: document.getElementById("clickButton"),
     cooldownBar: document.getElementById("cooldownBar"),
     sandwichBar: document.getElementById("sandwichBar"),
@@ -136,6 +170,13 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "dong - shgabb",
     ":fire::dance: cavemen be like - shgabb",
     "Should I reinstall again because of developers utter degeneracy - slowmerger",
+    "hey shgabb can you send me a cat picture pls - Barduzzi",
+    "Yes, really! If you tap now to watch a short video, you'll receive 30 minutes of ad-free music. - slowmerger",
+    "Bro, this sounds like contract with a satan - DaGame",
+    "When next update - Gjertollinni",
+    "Stop pretending I'm an hamburger - Barduzzi",
+    "touch my buttons :uwu: - shgabb",
+    "onions are literally a mass torture device - elmenda452",
 ];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
 
@@ -242,7 +283,7 @@ function getProduction() {
         * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.0025 : 1)
         * game.gemboost
     );
 }
@@ -259,7 +300,7 @@ function getAutoProduction() {
         * getArtifactBoost("autoshgabb")
         * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.01 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.0025 : 1)
         * game.gemboost
     );
 }
@@ -274,7 +315,7 @@ function getSiliconeProduction() {
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? 2 : 1);
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? 3 : 1);
 }
 
 function getCooldown() {
@@ -806,6 +847,16 @@ catch (e) {
 // Update upgrades UI
 updateUpgrades();
 updateArtifacts();
+
+// Generate Patch Notes
+ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BETA)" : "");
+
+let patchNotesText = "Version " + gameVersion + ":";
+for (p in currentPatchNotes) {
+    if (currentPatchNotes[p].substr(0, 1) == "v") patchNotesText = patchNotesText + "<br /><br /><br />Version " + currentPatchNotes[p].substr(1)  + ":";
+    else patchNotesText = patchNotesText + (currentPatchNotes[p].substr(0, 2) == "->" && p != 0 ? "<br />" : "") + "<br />" + currentPatchNotes[p];
+}
+ui.patchNotes.innerHTML = patchNotesText;
 
 // Start game loop (30 FPS)
 window.requestAnimationFrame(loop);

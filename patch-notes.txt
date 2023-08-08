@@ -286,3 +286,31 @@ Version 1.6.1:
 - Sandwich amount now uses the notation
 - Fixed some unlocked achievements being displayed as locked
 - Fixed freezing
+
+
+
+2023/08/08 1.6.2:
+Version 1.6.2:
+-> Balance:
+- Increased costs of the 2 new Silicone Upgrades by 1 level (so level 0 is not free anymore)
+- Decreased costs of Silicone Affects GS
+
+- Amulet of Saving: 1M -> 1B
+- Amulet of Passive Silicone: x1.6 -> x2
+- Amulet of Active Silicone: x2.4 -> x3
+- Amulet of Fast Start: x3 -> x10
+- Amulet of Tides: x3 -> x7
+- Silicone implants: x2 -> x3
+
+- Amulet of Golden Bank: 3 minutes -> 5 minutes
+- Shgabb Seeds: 0.01% -> 0.025%
+
+-> Quotes and Patch Notes:
+- Added 7 new quotes
+- Increased time before a quote disappears from 10 to 15 seconds
+- Made it easier for me to update the patch notes
+- Added the current game version to the header
+
+-> Other:
+- Reduced Sandwiches V achievement from 1B to 100M
+- Added a line between Stats and Achievements
