@@ -12,7 +12,7 @@ function renderAchievements() {
     let render = "";
 
     for (a in achievements) {
-        render = render + "<div class='artifact' style='color: black; background-color: " + (game.ach.includes(achievements[a].ID) ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (achievements[a].unlock() ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</div>"
+        render = render + "<div class='artifact' style='color: black; background-color: " + (game.ach.includes(achievements[a].ID) ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (game.ach.includes(achievements[a].ID) ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</div>"
     }
     ui.achievements.innerHTML = render;
 }

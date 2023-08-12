@@ -84,6 +84,8 @@ h3 {
 
 .square {
     background-color: rgb(128, 128, 128, 0.7);
+    border-color: black;
+    border: 2px solid burlywood;
 }
 
 .maxButton {

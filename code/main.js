@@ -2,44 +2,30 @@
 
 // Main JS File
 
-const gameVersion = "1.6.2";
+// Game version and patch notes
+
+const gameVersion = "1.7";
 
 const currentPatchNotes = [
-    "-> Balance:",
-    "- Increased costs of the 2 new Silicone Upgrades by 1 level (so level 0 is not free anymore)",
-    "- Decreased costs of Silicone Affects GS",
-    "",
-    "- Amulet of Saving: 1M -> 1B",
-    "- Amulet of Passive Silicone: x1.6 -> x2",
-    "- Amulet of Active Silicone: x2.4 -> x3",
-    "- Amulet of Fast Start: x3 -> x10",
-    "- Amulet of Tides: x3 -> x7",
-    "- Silicone implants: x2 -> x3",
-    "",
-    "- Amulet of Golden Bank: 3 minutes -> 5 minutes",
-    "- Shgabb Seeds: 0.01% -> 0.025%",
-    "-> Quotes and Patch Notes:",
-    "- Added 7 new quotes",
-    "- Increased time before a quote disappears from 10 to 15 seconds",
-    "- Made it easier for me to update the patch notes",
-    "- Added the current game version to the header",
+    "-> Stats:",
+    "- Total Gems stat is now visible",
+    "- In the stats section, you can now also see your critical hit chance, sandwich chance, gem chance and artifact chance",
     "-> Other:",
-    "- Reduced Sandwiches V achievement from 1B to 100M",
-    "- Added a line between Stats and Achievements",
-    "v1.6.1",
-    "- Achievements now boost GS (2% for every achievement)",
-    "- Sandwich amount now uses the notation",
-    "- Fixed some unlocked achievements being displayed as locked",
-    "- Fixed freezing",
+    "- Added a thin border to the notifications, patch notes and settings",
+    "- Fixed some unlocked achievement images being displayed as locked",
 ]
+
+// BETA (cheating)
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false
 });
+
+// Various variables
 
 var autoSaveTime = 3;
 var quoteTime = 15;
@@ -121,6 +107,8 @@ var unlocks = {
     cheats: document.getElementById("cheatSection"),
 }
 
+// Ad variables
+
 var adHandler = document.getElementById("baldad");
 var adButton = document.getElementById("adstartbutton");
 var adLoaded = false;
@@ -144,6 +132,9 @@ const adTimes = {
     moreCrits: 120,
     moreSilicone: 180,
 };
+
+// Quotes
+
 const quotes = ["(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
     "how can i get this macdonald coin - Benio",
@@ -178,7 +169,12 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "touch my buttons :uwu: - shgabb",
     "onions are literally a mass torture device - elmenda452",
 ];
+
+// Notations
+
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
+
+// More beta stuff
 
 unlocks.cheats.style.display = BETA.isBeta ? "unset" : "none";
 
@@ -271,6 +267,8 @@ function clickButton() {
 
     sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
 }
+
+// Various production functions
 
 function getProduction() {
     // Get the current shgabb production per click
@@ -371,6 +369,8 @@ function silicone() {
     updateUpgrades();
 }
 
+// Setting toggle functions
+
 function toggleMusic() {
     settings.music = !settings.music;
     createNotification("Music " + (settings.music ? "ON" : "OFF"));
@@ -412,6 +412,8 @@ function hideMaxed() {
     createNotification("Current Effect " + (settings.hideMaxed ? "SHOW" : "HIDE"));
     updateUpgrades();
 }
+
+// Buy functions
 
 function buyUpgrade(id) {
     // Buy an upgrade and update UI
@@ -604,7 +606,12 @@ function updateUI() {
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
-        + "<br />Highest More Shgabb: " + fn(game.stats.hms);
+        + "<br />Total Gems: " + fn(game.stats.tgems)
+        + "<br />Highest More Shgabb: " + fn(game.stats.hms)
+        + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
+        + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
+        + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "%"
+        + "<br />" + (artifactsUnlocked() ? "Artifact Chances: Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + " Uncommon " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + " Rare " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!");
 
     ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
     ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
