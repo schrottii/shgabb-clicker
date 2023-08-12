@@ -89,6 +89,11 @@ h3 {
     border: 2px solid burlywood;
 }
 
+.square2 {
+    background-color: rgb(128, 128, 128, 0.7);
+    font-size: 18px;
+}
+
 .maxButton {
     border: 2px solid black;
     width: 32px;

@@ -10,6 +10,9 @@ const currentPatchNotes = [
     "-> Stats:",
     "- Total Gems stat is now visible",
     "- In the stats section, you can now also see your critical hit chance, sandwich chance, gem chance and artifact chance",
+    "- Stats are now 2 columns",
+    "- Stats now have 2 big background squares instead of them being around the texts",
+    "- Sorted stats a bit",
     "-> Design:",
     "- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games",
     "- Added a thin border to the notifications and patch notes",
@@ -602,20 +605,24 @@ function updateUI() {
 
     renderGemOffers();
 
-    ui.stats.innerHTML = "Total Shgabb: " + fn(game.stats.shgabb)
-        + "<br />Total Sandwiches: " + game.stats.sw
+    ui.stats.innerHTML = "<div style='float: left; width: 50%;' class='square2'>"
+        + "Highest More Shgabb: " + fn(game.stats.hms)
         + "<br />Total Clicks: " + game.stats.clicks
         + "<br />Total Time: " + game.stats.playTime.toFixed(1)
+        + "<br />Total Shgabb: " + fn(game.stats.shgabb)
+        + "<br />Total Sandwiches: " + game.stats.sw
         + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + ")"
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
         + "<br />Total Gems: " + fn(game.stats.tgems)
-        + "<br />Highest More Shgabb: " + fn(game.stats.hms)
-        + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
+        + "</div><div style='float: right; width: 50%;' class='square2'>"
+        + "Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
         + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "%"
-        + "<br />" + (artifactsUnlocked() ? "Artifact Chances: Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + " Uncommon " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + " Rare " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!");
+        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Uncommon " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Rare " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
+        + "</div>";
+
 
     ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
     ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
