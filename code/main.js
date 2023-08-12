@@ -19,6 +19,8 @@ const currentPatchNotes = [
     "- Moved social and settings into the notifications / patch notes squares",
     "- Added a header for patch notes and increased the size of the headers in that area",
     "-> Other:",
+    "- Knife boost now gets reset on auto save if the click is not well timed",
+    "- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)",
     "- Fixed some unlocked achievement images being displayed as locked",
 ]
 
@@ -298,15 +300,15 @@ function getAutoProduction() {
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
         * getSiliconeBoost()
-        + (getProduction() * sandwichUpgrades.cheese.currentEffect()))
         * goldenShgabbUpgrades.formaggi.currentEffect()
-        * (currentBoost == "strongerAuto" ? 10 : 1)
         * getArtifactBoost("shgabb")
-        * getArtifactBoost("autoshgabb")
-        * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
         * knifeBoost
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.0025 : 1)
         * game.gemboost
+        + (getProduction() * sandwichUpgrades.cheese.currentEffect())) // CHEESE
+        * getArtifactBoost("autoshgabb")
+        * (currentBoost == "strongerAuto" ? 10 : 1)
+        * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
     );
 }
 
@@ -620,7 +622,7 @@ function updateUI() {
         + "Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
         + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "%"
-        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Uncommon " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Rare " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
+        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
         + "</div>";
 
 
@@ -659,6 +661,9 @@ function updateUI() {
 
 // Core
 function autoSave() {
+    // Should this even be here?
+    if (game.clickCooldown < -0.25) knifeBoost = 1;
+
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
