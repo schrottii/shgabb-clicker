@@ -7,6 +7,13 @@
 const gameVersion = "1.7";
 
 const currentPatchNotes = [
+    "-> Balance: ",
+    "- Ring of Laziness: 40% -> 60%",
+    "- Furious Knife: 25%/click -> 50%/click, max. 1000% -> max. 2000%, 0.25s -> 0.33s",
+    "- Shgabb Seeds: 0.025% -> 0.5%",
+    "",
+    "- Ring of Productivity: 60% -> 40%",
+    "- Amulet of Paroxysm: 5x -> 3x",
     "-> Stats:",
     "- Total Gems stat is now visible",
     "- In the stats section, you can now also see your critical hit chance, sandwich chance, gem chance and artifact chance",
@@ -19,6 +26,7 @@ const currentPatchNotes = [
     "- Moved social and settings into the notifications / patch notes squares",
     "- Added a header for patch notes and increased the size of the headers in that area",
     "-> Other:",
+    "- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)",
     "- Knife boost now gets reset on auto save if the click is not well timed",
     "- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)",
     "- Fixed some unlocked achievement images being displayed as locked",
@@ -242,8 +250,8 @@ function clickButton() {
         game.stats.shgabb += amount;
         game.stats.shgabbtp += amount;
 
-        if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.25) {
-            knifeBoost = Math.min(knifeBoost + 0.25, 10);
+        if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.33) {
+            knifeBoost = Math.min(knifeBoost + 0.5, 20);
         }
         else knifeBoost = 1;
 
@@ -274,13 +282,22 @@ function clickButton() {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
     }
 
-    sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
+    freezeTime();
+}
+
+function getFreezeTime() {
+    return getArtifactByID(210).isEquipped() ? 5 : (60 + sandwichUpgrades.fridge.currentEffect());
+}
+
+function freezeTime() {
+    sandwichFreezeTime = getFreezeTime();
 }
 
 // Various production functions
 
-function getProduction() {
+function getProduction(sosnog = false) {
     // Get the current shgabb production per click
+    if (getArtifactByID(305).isEquipped() && sosnog == false) return getAutoProduction(true);
     return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
@@ -290,12 +307,14 @@ function getProduction() {
         * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.0025 : 1)
+        * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
         * game.gemboost
     );
 }
 
-function getAutoProduction() {
+function getAutoProduction(sosnog2 = false) {
+    if (getArtifactByID(305).isEquipped() && sosnog2 == false) return getProduction(true);
     return Math.ceil((sandwichUpgrades.autoShgabb.currentEffect()
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost2.currentEffect()
@@ -303,9 +322,9 @@ function getAutoProduction() {
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("shgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.0025 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
         * game.gemboost
-        + (getProduction() * sandwichUpgrades.cheese.currentEffect())) // CHEESE
+        + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 10 : 1)
         * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
@@ -329,6 +348,7 @@ function getCooldown() {
     return (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
+        * (getArtifactByID(156).isEquipped() ? 1.5 : 1)
         * (getArtifactByID(203).isEquipped() ? 5 : 1)
 }
 
@@ -428,7 +448,7 @@ function buyUpgrade(id) {
     // Buy an upgrade and update UI
     id.buy();
     updateUpgrades();
-    sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
+    freezeTime();
     game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
 }
 
@@ -438,7 +458,7 @@ function buyMax(id) {
         id.buy();
     }
     updateUpgrades();
-    sandwichFreezeTime = 60 + sandwichUpgrades.fridge.currentEffect();
+    freezeTime();
 }
 
 function prestigeButton() {
@@ -546,6 +566,7 @@ function updateUI() {
         unlocks.sandwich.style.display = "unset";
         ui.swImage.style.display = "unset";
         ui.sandwichBar.value = sandwichFreezeTime;
+        ui.sandwichBar.max = getFreezeTime();
     }
     else {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
@@ -662,7 +683,7 @@ function updateUI() {
 // Core
 function autoSave() {
     // Should this even be here?
-    if (game.clickCooldown < -0.25) knifeBoost = 1;
+    if (game.clickCooldown < -0.33) knifeBoost = 1;
 
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));

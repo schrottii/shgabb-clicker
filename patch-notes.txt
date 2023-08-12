@@ -300,7 +300,7 @@ Version 1.6.2:
 
 - Amulet of Saving: 1M -> 1B
 - Amulet of Passive Silicone: x1.6 -> x2
-- Amulet of Active Silicone: x2.4 -> x3
+- Amulet of Active Silicone: x2.5 -> x3
 - Amulet of Fast Start: x3 -> x10
 - Amulet of Tides: x3 -> x7
 - Silicone implants: x2 -> x3
