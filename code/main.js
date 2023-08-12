@@ -10,8 +10,12 @@ const currentPatchNotes = [
     "-> Stats:",
     "- Total Gems stat is now visible",
     "- In the stats section, you can now also see your critical hit chance, sandwich chance, gem chance and artifact chance",
+    "-> Design:",
+    "- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games",
+    "- Added a thin border to the notifications and patch notes",
+    "- Moved social and settings into the notifications / patch notes squares",
+    "- Added a header for patch notes and increased the size of the headers in that area",
     "-> Other:",
-    "- Added a thin border to the notifications, patch notes and settings",
     "- Fixed some unlocked achievement images being displayed as locked",
 ]
 

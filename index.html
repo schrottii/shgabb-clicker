@@ -139,23 +139,31 @@
     <!-- Other -->
     <div style="position: relative;">
         <div class="square" style="position: absolute; text-align: right; width: 45%;">
-            <h4>Notifications</h4>
+            <!-- Notifications -->
+            <h3>Notifications</h3>
             <span id="notifications"></span>
+
+            <hr style="clear:both" />
+
+            <!-- Social -->
+            <h3>Social</h3>
+            Shgabb Clicker - developed by Schrottii ©2023<br />
+            <div class="settingButton" style="float: left; width: 30% "><img src="images/social/discord.png" /><br /><a href="https://discord.gg/3T4CBmh">My Discord Server</a></div>
+            <div class="settingButton" style="float: left; width: 30% "><img src="images/social/wiki.png" /><br /><a href="https://discord.gg/3T4CBmh">Shgabb Clicker Wiki</a></div>
+            <div class="settingButton" style="float: left; width: 30% "><img src="images/social/othergames.png" /><br /><a href="https://sc2fmfr.vercel.app/">Play one of my other games!</a></div>
         </div>
 
-        <div class="square" style="text-align: left; width: 45%; margin-left: auto; ">
-            Shgabb Clicker - developed by Schrottii ©2023<br />
-            <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
-
+        <div class="square" style="text-align: left; width: 45%; margin-left: auto;">
+            <!-- Patch Notes -->
+            <h3>Patch Notes</h3>
             <span id="patchNotes">...</span>
 
             <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
-        </div>
-        <br /><br /><br />
-        <hr style="clear:both" />
 
-        <div class="square">
-            <h4>Settings</h4>
+            <hr style="clear:both" />
+
+            <!-- Settings -->
+            <h3>Settings</h3>
             <button onclick="toggleMusic()" class="settingButton">Music on/off</button>
             <button onclick="toggleAdSound()" class="settingButton">Ad Music on/off</button><br />
             <button onclick="exportGame()" class="settingButton">Export</button>
@@ -164,8 +172,10 @@
             <button onclick="toggleCurrent()" class="settingButton">Current Effect on/off</button><br />
             <button onclick="hideMaxed()" class="settingButton">Show/hide maxed</button><br />
         </div>
+        <hr style="clear:both" />
+
     </div>
-    <br /><br /><br />
+    <br />
 
     <audio src="shgame.mp3" loop muted id="music"></audio>
 
