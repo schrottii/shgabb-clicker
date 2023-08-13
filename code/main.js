@@ -29,9 +29,12 @@ const currentPatchNotes = [
     "- Added a header for patch notes and increased the size of the headers in that area",
     "-> Other:",
     "- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)",
+    "- Added 5 new achievements",
     "- The sandwich bar now correctly adjusts after upgrading the fridge",
     "- Knife boost now gets reset on auto save if the click is not well timed",
+    "-> Bug fixes:",
     "- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)",
+    "- Fixed a slowgemming bug",
     "- Fixed some unlocked achievement images being displayed as locked",
 ]
 
@@ -646,7 +649,7 @@ function updateUI() {
         + "Click Cooldown: " + getCooldown() + "s"
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
-        + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "%"
+        + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "% (+" + getArtifactBoost("gems") + ")"
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)

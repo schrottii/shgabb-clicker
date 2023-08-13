@@ -7,7 +7,7 @@ function gemsUnlocked() {
 function getGem() {
     // Chance to get a gem
     if (Math.random() < 1 / 100 * getArtifactBoost("gemchance") && !getArtifactByID(200).isEquipped()) {
-        let amount = 1 * getArtifactBoost("gems");
+        let amount = getArtifactBoost("gems");
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;
             amount = Math.floor(amount);

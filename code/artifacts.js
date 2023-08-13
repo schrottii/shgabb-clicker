@@ -80,9 +80,9 @@ function handleArtifactsFirstTime() {
 
 function getArtifactBoost(currency) {
 	let boost = 1;
-	for (arti in artifacts) {
+	for (let arti in artifacts) {
 		if (artifacts[arti].boost == currency) {
-			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger() ) boost *= artifacts[arti].amount;
+			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger()) boost *= artifacts[arti].amount;
 		}
 	}
 	return boost;
@@ -208,7 +208,7 @@ var artifacts = [
 	new Artifact(209, 2, "Amulet of Tides", "amulet.png", "shgabb", 7, { prefix: "x", trigger: () => game.stats.pttp % 20 >= 10, desc: "Active for 10 seconds, inactive for 10 seconds" }),
 	new Artifact(210, 2, "Amulet of Thaw", "amulet.png", "autoshgabb", 10, { prefix: "x", desc: "But fridge duration is reduced to 5s" }),
 	new Artifact(211, 2, "Amulet of Condone", "amulet.png", "si", 2, { prefix: "x", desc: "But x0.6 shgabb gain" }),
-	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "autoshgabb", 12, { prefix: "x", trigger: () => game.stats.ctp == 0, desc: "Before the first click in a prestige" }),
+	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "autoshgabb", 8, { prefix: "x", trigger: () => game.stats.ctp < 5, desc: "Before the fifth click in a prestige" }),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: "Auto Shgabb gain is multiplied by the click cooldown" }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% for every well timed click up to 2000%" }),
