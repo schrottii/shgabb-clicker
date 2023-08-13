@@ -522,13 +522,13 @@ function ameliorerUnlocked() {
 function getAmeliorerConvertCosts(type) {
     switch (type) {
         case "shgabb":
-            return Math.ceil(Math.pow(1e9, (game.ameUp[0] / 5) + 1));
+            return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 5) + 1));
         case "sw":
-            return Math.ceil(Math.pow(1000, (game.ameUp[1] / 10) + 1));
+            return Math.ceil(Math.pow(1e5, (game.ameUp[1] / 10) + 1));
         case "gs":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 10) + 1));
+            return Math.ceil(Math.pow(1e7, (game.ameUp[2] / 10) + 1));
         case "si":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[3] / 20) + 1));
+            return Math.ceil(Math.pow(1e6, (game.ameUp[3] / 10) + 1));
     }
 }
 
