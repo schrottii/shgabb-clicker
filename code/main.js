@@ -16,12 +16,13 @@ const currentPatchNotes = [
     "- Amulet of Paroxysm: 5x -> 3x",
     "-> Stats:",
     "- Total Gems stat is now visible",
-    "- In the stats section, you can now also see your critical hit chance, sandwich chance, gem chance and artifact chance",
+    "- In the stats section, you can now also see your click cooldwon, critical hit chance, sandwich chance, gem chance, artifact chances, achievements and artifacts",
     "- Stats are now 2 columns",
     "- Stats now have 2 big background squares instead of them being around the texts",
     "- Sorted stats a bit",
     "-> Design:",
     "- Increased size of artifacts and achievements",
+    "- Increased size of the loadout buttons on small devices (phones)",
     "- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games",
     "- Added a thin border to the notifications and patch notes",
     "- Moved social and settings into the notifications / patch notes squares",
@@ -642,10 +643,13 @@ function updateUI() {
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
         + "<br />Total Gems: " + fn(game.stats.tgems)
         + "</div><div style='float: right; width: 50%;' class='square2'>"
-        + "Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
+        + "Click Cooldown: " + getCooldown() + "s"
+        + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
         + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "%"
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
+        + "<br />Achievements: " + game.ach.length + "/" + achievements.length
+        + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "</div>";
 
 

@@ -95,7 +95,7 @@ function renderArtifacts() {
 	// Render em all
 	let render = "";
 	for (l = 0; l < 3; l++) {
-		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 15%; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>Loadout " + (l + 1) + "</button>";
+		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 15%; min-width: 128px; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>Loadout " + (l + 1) + "</button>";
 	}
 	render = render + "<br /><br />";
 
@@ -211,7 +211,7 @@ var artifacts = [
 	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "autoshgabb", 12, { prefix: "x", trigger: () => game.stats.ctp == 0, desc: "Before the first click in a prestige" }),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: "Auto Shgabb gain is multiplied by the click cooldown" }),
-	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% for every well timed click up to 2000%" }),
+	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% for every well timed click up to 2000%" }),
 	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 0.5%" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", 3, { trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: "Completely stops passive silicone production, but its effects are tripled" }),
