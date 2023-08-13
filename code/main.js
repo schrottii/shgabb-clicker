@@ -552,7 +552,7 @@ function renderAmeConvert() {
     let render = "";
     for (l = 0; l < 4; l++) {
         let thisType = ["shgabb", "sw", "gs", "si"][l];
-        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' style='width: 20%; min-width: 128px; height: 32px; background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") +"'> Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone"][l] + " to +1 Améliorer!</button>";
+        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") +"'> Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone"][l] + "<br>to +1 Améliorer!</button>";
     }
     ui.ameconvert.innerHTML = render;
 }

@@ -84,6 +84,12 @@ h3 {
         filter: brightness(80%);
     }
 
+.ameliorer {
+    width: 20%;
+    min-width: 96px;
+    min-height: 72px;
+}
+
 .square {
     background-color: rgb(128, 128, 128, 0.7);
     border-color: black;
