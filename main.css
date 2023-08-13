@@ -68,7 +68,8 @@ h3 {
     margin-right: auto;
     border: 4px ridge white;
     width: 6%;
-    min-height: 142px;
+    min-height: 160px;
+    max-height: 160px;
     min-width: 160px;
     max-width: 320px;
     float: left;

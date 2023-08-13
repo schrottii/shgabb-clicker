@@ -208,10 +208,10 @@ var artifacts = [
 	new Artifact(209, 2, "Amulet of Tides", "amulet.png", "shgabb", 7, { prefix: "x", trigger: () => game.stats.pttp % 20 >= 10, desc: "Active for 10 seconds, inactive for 10 seconds" }),
 	new Artifact(210, 2, "Amulet of Thaw", "amulet.png", "autoshgabb", 10, { prefix: "x", desc: "But fridge duration is reduced to 5s" }),
 	new Artifact(211, 2, "Amulet of Condone", "amulet.png", "si", 2, { prefix: "x", desc: "But x0.6 shgabb gain" }),
-	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "autoshgabb", 6, { prefix: "x", trigger: () => game.stats.ctp == 0, desc: "Before the first click in a prestige" }),
+	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "autoshgabb", 12, { prefix: "x", trigger: () => game.stats.ctp == 0, desc: "Before the first click in a prestige" }),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: "Auto Shgabb gain is multiplied by the click cooldown" }),
-	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% for every well timed click up to 2000%" }),
+	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% gain increases by +50% for every well timed click up to 2000%" }),
 	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 0.5%" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", 3, { trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: "Completely stops passive silicone production, but its effects are tripled" }),

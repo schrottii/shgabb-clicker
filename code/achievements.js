@@ -37,7 +37,7 @@ var achievements = [
     new Achievement(17, "gs.png", "Golden Shgabb III", () => "Get " + fn(1e6) + " Golden Shgabb", () => game.gs >= 1e6),
     new Achievement(18, "silicone.png", "Silicone III", () => "Get " + fn(5e7) + " Silicone Shgabb", () => game.si >= 5e7),
     new Achievement(19, "sandwich.png", "Sandwiches IV", () => "Get " + fn(1e6) + " Sandwiches", () => game.sw >= 1e6),
-    new Achievement(20, "unlock.png", "Indian Jones", "Get your first artifact!", () => game.a.length > 1),
+    new Achievement(20, "unlock.png", "Indian Jones", "Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your Get your first artifact!", () => game.a.length > 1),
     new Achievement(21, "shgabb.png", "Shgabb V", () => "Get " + fn(1e15) + " Shgabb", () => game.shgabb >= 1e15),
     new Achievement(22, "gs.png", "Golden Shgabb IV", () => "Get " + fn(1e9) + " Golden Shgabb", () => game.gs >= 1e9),
     new Achievement(23, "silicone.png", "Silicone IV", () => "Get " + fn(2e8) + " Silicone Shgabb", () => game.si >= 2e8),
