@@ -8,6 +8,8 @@ const gameVersion = "1.7";
 
 const currentPatchNotes = [
     "-> Balance: ",
+    "- Reduced max. level of Better Fridge from 60 to 30",
+    "",
     "- Ring of Laziness: 40% -> 60%",
     "- Furious Knife: 25%/click -> 50%/click, max. 1000% -> max. 2000%, 0.25s -> 0.33s",
     "- Shgabb Seeds: 0.025% -> 0.5%",
@@ -543,7 +545,7 @@ function convertAmeliorer(type) {
         game[type] -= costs;
         game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3 }[type]] += 1;
         game.ame += 1;
-        updateUI();
+        updateUpgrades();
         renderAmeConvert();
     }
 }
@@ -576,6 +578,9 @@ function updateUpgrades() {
 
     ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render() + siliconeShgabbUpgrades.siliconeFromClicks.render();
     ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render() + siliconeShgabbUpgrades.siliconeAffectsGS.render();
+
+    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEcritBoost.render() + ameliorerUpgrades.AMEgsBoost1.render();
+    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEgsBoost2.render();
 }
 
 function updateArtifacts() {

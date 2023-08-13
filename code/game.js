@@ -39,6 +39,11 @@ var game = {
         strongerSilicone: 0,
         siliconeFromClicks: 0,
         siliconeAffectsGS: 0,
+        // Ame
+        AMEcritBoost: 0,
+        AMEfridge: 0,
+        AMEgsBoost1: 0,
+        AMEgsBoost2: 0,
     },
     stats: {
         shgabb: 0,
