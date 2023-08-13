@@ -1,4 +1,4 @@
-// Game made by Schrottii - editing or stealing is prohibited!
+﻿// Game made by Schrottii - editing or stealing is prohibited!
 
 // Main JS File
 
@@ -32,6 +32,7 @@ const currentPatchNotes = [
     "- Added 5 new achievements",
     "- The sandwich bar now correctly adjusts after upgrading the fridge",
     "- Knife boost now gets reset on auto save if the click is not well timed",
+    "- Moved some achievements a bit",
     "-> Bug fixes:",
     "- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)",
     "- Fixed a slowgemming bug",
@@ -86,10 +87,13 @@ var ui = {
     siAmount: document.getElementById("siAmount"),
     siAmount2: document.getElementById("siAmount2"),
     gemAmount: document.getElementById("gemAmount"),
+    ameAmount: document.getElementById("ameAmount"),
+    ameAmount2: document.getElementById("ameAmount2"),
 
     swImage: document.getElementById("swImage"),
     gsImage: document.getElementById("gsImage"),
     siImage: document.getElementById("siImage"),
+    ameImage: document.getElementById("ameImage"),
 
     upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
@@ -99,6 +103,8 @@ var ui = {
     gsupgradesr: document.getElementById("gsupgradesr"),
     siupgradesl: document.getElementById("siupgradesl"),
     siupgradesr: document.getElementById("siupgradesr"),
+    ameupgradesl: document.getElementById("ameupgradesl"),
+    ameupgradesr: document.getElementById("ameupgradesr"),
 
     newArtifact: document.getElementById("newArtifact"),
     newArtifactImage: document.getElementById("newArtifactImage"),
@@ -111,6 +117,7 @@ var ui = {
 
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
+    ameconvert: document.getElementById("ameconvert"),
     achievementsamount: document.getElementById("achievementsamount"),
     stats: document.getElementById("stats"),
     achievements: document.getElementById("achievements"),
@@ -125,6 +132,7 @@ var unlocks = {
     sandwich: document.getElementById("sandwichSection"),
     goldenShgabb: document.getElementById("goldenShgabbSection"),
     siliconeShgabb: document.getElementById("siliconeShgabbSection"),
+    ameliorer: document.getElementById("ameliorerSection"),
     artifacts: document.getElementById("artifactSection"),
     gems: document.getElementById("gemSection"),
     cheats: document.getElementById("cheatSection"),
@@ -506,6 +514,49 @@ function createNotification(text) {
     if (currentNotifications.length > 15) currentNotifications.shift();
 }
 
+// Ameliorer
+function ameliorerUnlocked() {
+    return game.stats.hms >= 2000;
+}
+
+function getAmeliorerConvertCosts(type) {
+    switch (type) {
+        case "shgabb":
+            return Math.ceil(Math.pow(1e9, (game.ameUp[0] / 5) + 1));
+        case "sw":
+            return Math.ceil(Math.pow(1000, (game.ameUp[1] / 10) + 1));
+        case "gs":
+            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 10) + 1));
+        case "si":
+            return Math.ceil(Math.pow(1e6, (game.ameUp[3] / 20) + 1));
+    }
+}
+
+function canAffordAmeliorer(type) {
+    let costs = getAmeliorerConvertCosts(type);
+    return game[type] >= costs;
+}
+
+function convertAmeliorer(type) {
+    let costs = getAmeliorerConvertCosts(type);
+    if (canAffordAmeliorer(type)) {
+        game[type] -= costs;
+        game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3 }[type]] += 1;
+        game.ame += 1;
+        updateUI();
+        renderAmeConvert();
+    }
+}
+
+function renderAmeConvert() {
+    let render = "";
+    for (l = 0; l < 4; l++) {
+        let thisType = ["shgabb", "sw", "gs", "si"][l];
+        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' style='width: 20%; min-width: 128px; height: 32px; background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") +"'> Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone"][l] + " to +1 Améliorer!</button>";
+    }
+    ui.ameconvert.innerHTML = render;
+}
+
 // Update functions
 
 function updateQuote() {
@@ -632,6 +683,17 @@ function updateUI() {
         ui.siImage.style.display = "none";
     }
 
+    // Ameliorer
+    if (ameliorerUnlocked()) {
+        ui.ameAmount.innerHTML = game.ame + " Améliorer";
+        unlocks.ameliorer.style.display = "unset";
+        ui.ameImage.style.display = "unset";
+    }
+    else {
+        unlocks.ameliorer.style.display = "none";
+        ui.ameImage.style.display = "none";
+    }
+
     renderGemOffers();
 
     ui.stats.innerHTML = "<div style='float: left; width: 50%;' class='square2'>"
@@ -660,6 +722,7 @@ function updateUI() {
     ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
     ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
     ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
+    ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
 
     // Achievements
     renderAchievements();
@@ -693,6 +756,7 @@ function updateUI() {
 function autoSave() {
     // Should this even be here?
     if (game.clickCooldown < -0.33) knifeBoost = 1;
+    renderAmeConvert();
 
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
@@ -900,6 +964,7 @@ catch (e) {
 // Update upgrades UI
 updateUpgrades();
 updateArtifacts();
+renderAmeConvert();
 
 // Generate Patch Notes
 ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BETA)" : "");

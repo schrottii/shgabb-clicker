@@ -6,6 +6,8 @@ var game = {
     sw: 0,
     gs: 0,
     si: 0,
+    ame: 0,
+    ameUp: [0, 0, 0, 0],
     gems: 0,
     gemboost: 1,
     upgradeLevels: {
