@@ -7,7 +7,14 @@
 const gameVersion = "1.7";
 
 const currentPatchNotes = [
-    "-> Balance: ",
+    "-> Améliorer:",
+    "- New feature/currency: Améliorer!",
+    "- Unlocked at More Shgabb 2000",
+    "- Convert Shgabb, Sandwiches, GS and Silicone to Améliorer",
+    "- Améliorer can be spent on 12 upgrades",
+    "-> Balance:",
+    "- Increased duration of the Stronger Clicks ad from 2 minutes to 5 minutes",
+    "- Reduced cost increase of GS boosts shgabb 1",
     "- Reduced max. level of Better Fridge from 60 to 30",
     "",
     "- Ring of Laziness: 40% -> 60%",
@@ -15,22 +22,23 @@ const currentPatchNotes = [
     "- Shgabb Seeds: 0.025% -> 0.5%",
     "",
     "- Ring of Productivity: 60% -> 40%",
-    "- Amulet of Paroxysm: 5x -> 3x",
-    "-> Stats:",
-    "- Total Gems stat is now visible",
-    "- In the stats section, you can now also see your click cooldwon, critical hit chance, sandwich chance, gem chance, artifact chances, achievements and artifacts",
+    "- Amulet of Paroxysm: 5x -> 4x",
+    "-> Stats section:",
+    "- Total Gems and Total Améliorer stats are now visible",
+    "- You can now also see your click cooldown, critical hit chance, sandwich chance, gem chance, artifact chances, achievements, artifacts and améliorer levels",
     "- Stats are now 2 columns",
     "- Stats now have 2 big background squares instead of them being around the texts",
     "- Sandwiches in stats now use the notation",
     "- Sorted stats a bit",
-    "-> Design:",
-    "- Increased size of artifacts and achievements",
-    "- Increased size of the loadout buttons on small devices (phones)",
-    "- Increased size of the buy max button",
+    "-> Social section:",
     "- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games",
     "- Added a thin border to the notifications and patch notes",
     "- Moved social and settings into the notifications / patch notes squares",
     "- Added a header for patch notes and increased the size of the headers in that area",
+    "-> Design:",
+    "- Increased size of artifacts and achievements",
+    "- Increased size of the loadout buttons on small devices (phones)",
+    "- Increased size of the buy max button",
     "-> Other:",
     "- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)",
     "- Added 10 new achievements (30 -> 40)",
@@ -152,7 +160,7 @@ var currentBoost = "none";
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone"];
 const boostTexts = {
-    strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 2 minutes",
+    strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 5 minutes",
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
@@ -160,7 +168,7 @@ const boostTexts = {
     moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes"
 };
 const adTimes = {
-    strongerClicks: 120,
+    strongerClicks: 300,
     strongerAuto: 600,
     moreSandwiches: 180,
     fasterShgabb: 60,
@@ -736,6 +744,7 @@ function updateUI() {
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
+        + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
         + "</div><div style='float: right; width: 50%;' class='square2'>"
         + "Click Cooldown: " + getCooldown() + "s"
@@ -745,6 +754,7 @@ function updateUI() {
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
+        + "<br />Améliorer Levels: " + getTotalAme()
         + "</div>";
 
 
