@@ -31,6 +31,10 @@ class Upgrade {
     }
 
     buy() {
+        if (doesUnlevel == true) {
+            doesUnlevel = false;
+            return false;
+        }
         if (this.isUnlocked()) {
             if (this.canBuy()) {
                 game[this.currency] -= this.currentPrice();
@@ -43,6 +47,13 @@ class Upgrade {
                 return false;
             }
         }
+    }
+
+    unlevel() {
+        doesUnlevel = true;
+        game.upgradeLevels[this.ID] -= 1;
+        createNotification("Upgrade unbought successfully");
+        return true;
     }
 
     currentPrice() {
@@ -58,7 +69,9 @@ class Upgrade {
     }
 
     isUnlocked() {
-        if (this.unlock == undefined || this.unlock()) return true;
+        if (this.ameAmount == undefined || getTotalAme() >= this.ameAmount) {
+            if (this.unlock == undefined || this.unlock()) return true;
+        }
         return false;
     }
 
@@ -71,9 +84,15 @@ class Upgrade {
     render() {
         let isMax = this.getMax() == this.currentLevel();
         if (settings.hideMaxed && isMax) return "";
+
         let maxButton = "";
         if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((this.getMax() > 10 && this.currentLevel() != this.getMax()) || this.getMax() == undefined)) maxButton = "<div onclick='buyMax(" + this.type + "." + this.ID + ")' class='maxButton'>MAX</div>";
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.getMax() ? "lightgray" : "whitesmoke")) + "'>" + maxButton + "<div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.getMax() != undefined ? " (Max: " + this.getMax() + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
+
+
+        let unlevelButton = "";
+        if (this.type != "siliconeShgabbUpgrades" && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>";
+
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.getMax() ? "lightgray" : "whitesmoke")) + "'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.getMax() != undefined ? " (Max: " + this.getMax() + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
         else return "";
     }
 }
@@ -147,8 +166,13 @@ var siliconeShgabbUpgrades = {
 }
 
 var ameliorerUpgrades = {
-    AMEcritBoost: new AmeliorerUpgrade("AMEcritBoost", "Crit. Boost", "Increases max. level of that Shgabb Upgrade", level => 1, level => level * 5, { maxLevel: 6 }),
-    AMEfridge: new AmeliorerUpgrade("AMEfridge", "Better Fridge", "Increases max. level of that Sandwich Upgrade", level => 1, level => level * 5, { maxLevel: 6 }),
     AMEgsBoost1: new AmeliorerUpgrade("AMEgsBoost1", "GS boosts shgabb 1", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16 }),
     AMEgsBoost2: new AmeliorerUpgrade("AMEgsBoost2", "GS boosts shgabb 2", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16 }),
+    AMEcritBoost: new AmeliorerUpgrade("AMEcritBoost", "Crit. Boost", "Increases max. level of that Shgabb Upgrade", level => 2, level => level * 5, { maxLevel: 6 }),
+    shgabbBoost: new AmeliorerUpgrade("shgabbBoost", "Shgabb Boost", "Get more shgabb (clicks and auto)", level => 1, level => 1 + (level * 0.3), { maxLevel: 30, ameAmount: 2 }),
+
+    AMEfridge: new AmeliorerUpgrade("AMEfridge", "Better Fridge", "Increases max. level of that Sandwich Upgrade", level => 2, level => level * 5, { maxLevel: 6, ameAmount: 10 }),
+    AMEmoreSw: new AmeliorerUpgrade("AMEmoreSw", "Sandwich Amount", "Increases max. level of that Shgabb Upgrade", level => 2, level => level * 5, { maxLevel: 15, ameAmount: 10 }),
+    AMEfirstBoostsClicks: new AmeliorerUpgrade("AMEfirstBoostsClicks", "1. Upgrade boosts clicks", "Increases max. level of that Sandwich Upgrade", level => 2, level => level, { maxLevel: 30, ameAmount: 10 }),
+    unlockUnlevel: new AmeliorerUpgrade("unlockUnlevel", "Unlock Unlevel Button", "Getting more levels is good, but less levels is better", level => 10, level => level, { maxLevel: 1, ameAmount: 15 }),
 }

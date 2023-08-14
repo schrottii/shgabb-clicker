@@ -326,6 +326,7 @@ function getProduction(sosnog = false) {
         * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
         * game.gemboost
+        * ameliorerUpgrades.shgabbBoost.currentEffect()
     );
 }
 
@@ -340,6 +341,7 @@ function getAutoProduction(sosnog2 = false) {
         * knifeBoost
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
         * game.gemboost
+        * ameliorerUpgrades.shgabbBoost.currentEffect()
         + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 10 : 1)
@@ -466,6 +468,7 @@ function buyUpgrade(id) {
     updateUpgrades();
     freezeTime();
     game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+
 }
 
 function buyMax(id) {
@@ -473,6 +476,17 @@ function buyMax(id) {
     while (id.canBuy()) {
         id.buy();
     }
+    updateUpgrades();
+    freezeTime();
+}
+
+var doesUnlevel = false;
+
+function unlevel(id) {
+    // Unbuy an upgrade and update UI
+    if (id.type == "goldenShgabbUpgrades") if (!confirm("Do you really want to unlevel?")) return false;
+    id.unlevel();
+
     updateUpgrades();
     freezeTime();
 }
@@ -559,6 +573,14 @@ function renderAmeConvert() {
     ui.ameconvert.innerHTML = render;
 }
 
+function getTotalAme() {
+    let amelvl = 0;
+    for (let ame in ameliorerUpgrades) {
+        amelvl += ameliorerUpgrades[ame].currentLevel();
+    }
+    return amelvl;
+}
+
 // Update functions
 
 function updateQuote() {
@@ -579,8 +601,8 @@ function updateUpgrades() {
     ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render() + siliconeShgabbUpgrades.siliconeFromClicks.render();
     ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render() + siliconeShgabbUpgrades.siliconeAffectsGS.render();
 
-    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEcritBoost.render() + ameliorerUpgrades.AMEgsBoost1.render();
-    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEgsBoost2.render();
+    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.AMEcritBoost.render() + ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEfirstBoostsClicks.render();
+    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.shgabbBoost.render() + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render();
 }
 
 function updateArtifacts() {

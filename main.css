@@ -103,10 +103,16 @@ h3 {
 
 .maxButton {
     border: 2px solid black;
-    width: 32px;
+    width: 48px;
     height: 16px;
     background-color: lightgray;
     font-weight: bold;
+    margin-right: 12px;
+}
+
+.upgradeButtons {
+    display: flex;
+    flex-direction: row;
 }
 
 .currency {

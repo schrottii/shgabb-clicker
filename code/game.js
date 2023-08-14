@@ -40,10 +40,14 @@ var game = {
         siliconeFromClicks: 0,
         siliconeAffectsGS: 0,
         // Ame
-        AMEcritBoost: 0,
-        AMEfridge: 0,
         AMEgsBoost1: 0,
         AMEgsBoost2: 0,
+        AMEcritBoost: 0,
+        shgabbBoost: 0,
+        AMEfridge: 0,
+        AMEmoreSw: 0,
+        AMEfirstBoostsClicks: 0,
+        unlockUnlevel: 0,
     },
     stats: {
         shgabb: 0,
