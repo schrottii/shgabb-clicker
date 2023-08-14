@@ -821,6 +821,7 @@ function exportGame() {
     game = Object.assign({}, emptyGame, importGame);
     game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, importGame.upgradeLevels);
     game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
+    game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
     handleArtifactsFirstTime();
 
     updateUI();
