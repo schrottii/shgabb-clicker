@@ -16,6 +16,7 @@ const currentPatchNotes = [
     "- Increased duration of the Stronger Clicks ad from 2 minutes to 5 minutes",
     "- Reduced cost increase of GS boosts shgabb 1",
     "- Reduced max. level of Better Fridge from 60 to 30",
+    "- Changed Instant Shgabb from 10% of current or 10% of highest (lower) to 50% of current or 20% of highest (lower)",
     "",
     "- Ring of Laziness: 40% -> 60%",
     "- Furious Knife: 25%/click -> 50%/click, max. 1000% -> max. 2000%, 0.25s -> 0.33s",
@@ -55,7 +56,7 @@ const currentPatchNotes = [
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: true,
+    value: false,
     writable: false,
     enumerable: true,
     configurable: false
@@ -747,7 +748,7 @@ function updateUI() {
         + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
         + "</div><div style='float: right; width: 50%;' class='square2'>"
-        + "Click Cooldown: " + getCooldown() + "s"
+        + "Click Cooldown: " + getCooldown().toFixed(2) + "s"
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
         + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "% (+" + getArtifactBoost("gems") + ")"

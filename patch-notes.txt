@@ -317,3 +317,57 @@ Version 1.6.2:
 -> Other:
 - Reduced Sandwiches V achievement from 1B to 100M
 - Added a line between Stats and Achievements
+
+
+
+2023/08/14 1.7:
+Version 1.7:
+-> Améliorer:
+- New feature/currency: Améliorer!
+- Unlocked at More Shgabb 2000
+- Convert Shgabb, Sandwiches, GS and Silicone to Améliorer
+- Améliorer can be spent on 12 upgrades
+
+-> Balance:
+- Increased duration of the Stronger Clicks ad from 2 minutes to 5 minutes
+- Reduced cost increase of GS boosts shgabb 1
+- Reduced max. level of Better Fridge from 60 to 30
+- Changed Instant Shgabb from 10% of current or 10% of highest (lower) to 50% of current or 20% of highest (lower)
+
+- Ring of Laziness: 40% -> 60%
+- Furious Knife: 25%/click -> 50%/click, max. 1000% -> max. 2000%, 0.25s -> 0.33s
+- Shgabb Seeds: 0.025% -> 0.5%
+
+- Ring of Productivity: 60% -> 40%
+- Amulet of Paroxysm: 5x -> 4x
+
+-> Stats section:
+- Total Gems and Total Améliorer stats are now visible
+- You can now also see your click cooldown, critical hit chance, sandwich chance, gem chance, artifact chances, achievements, artifacts and améliorer levels
+- Stats are now 2 columns
+- Stats now have 2 big background squares instead of them being around the texts
+- Sandwiches in stats now use the notation
+- Sorted stats a bit
+
+-> Social section:
+- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games
+- Added a thin border to the notifications and patch notes
+- Moved social and settings into the notifications / patch notes squares
+- Added a header for patch notes and increased the size of the headers in that area
+
+-> Design:
+- Increased size of artifacts and achievements
+- Increased size of the loadout buttons on small devices (phones)
+- Increased size of the buy max button
+
+-> Other:
+- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)
+- Added 10 new achievements (30 -> 40)
+- The sandwich bar now correctly adjusts after upgrading the fridge
+- Knife boost now gets reset on auto save if the click is not well timed
+- Moved some achievements a bit
+
+-> Bug fixes:
+- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)
+- Fixed a slowgemming bug
+- Fixed some unlocked achievement images being displayed as locked
