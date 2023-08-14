@@ -176,7 +176,7 @@ function getArtifactByID(id) {
 
 function switchArtifact(id) {
 	if (getArtifactByID(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
-	else if (game.aeqi.length < 3) game.aeqi.push(id);
+	else if (game.aeqi.length < 3 + ameliorerUpgrades.fourthArtifactSlot.currentEffect()) game.aeqi.push(id);
 	game.alo[selectedLoadout] = game.aeqi;
 
 	freezeTime();

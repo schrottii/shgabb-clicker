@@ -21,10 +21,12 @@ const currentPatchNotes = [
     "- In the stats section, you can now also see your click cooldwon, critical hit chance, sandwich chance, gem chance, artifact chances, achievements and artifacts",
     "- Stats are now 2 columns",
     "- Stats now have 2 big background squares instead of them being around the texts",
+    "- Sandwiches in stats now use the notation",
     "- Sorted stats a bit",
     "-> Design:",
     "- Increased size of artifacts and achievements",
     "- Increased size of the loadout buttons on small devices (phones)",
+    "- Increased size of the buy max button",
     "- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games",
     "- Added a thin border to the notifications and patch notes",
     "- Moved social and settings into the notifications / patch notes squares",
@@ -601,8 +603,8 @@ function updateUpgrades() {
     ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render() + siliconeShgabbUpgrades.siliconeFromClicks.render();
     ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render() + siliconeShgabbUpgrades.siliconeAffectsGS.render();
 
-    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.AMEcritBoost.render() + ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEfirstBoostsClicks.render();
-    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.shgabbBoost.render() + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render();
+    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.AMEcritBoost.render() + ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEfirstBoostsClicks.render() + ameliorerUpgrades.AMEsiliconeFromClicks.render() + ameliorerUpgrades.AMEformaggi.render();
+    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.shgabbBoost.render() + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render() + ameliorerUpgrades.AMEbomblike.render() + ameliorerUpgrades.fourthArtifactSlot.render();
 }
 
 function updateArtifacts() {
@@ -728,7 +730,7 @@ function updateUI() {
         + "<br />Total Clicks: " + game.stats.clicks
         + "<br />Total Time: " + game.stats.playTime.toFixed(1)
         + "<br />Total Shgabb: " + fn(game.stats.shgabb)
-        + "<br />Total Sandwiches: " + game.stats.sw
+        + "<br />Total Sandwiches: " + fn(game.stats.sw)
         + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + ")"
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr

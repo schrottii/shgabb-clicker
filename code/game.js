@@ -48,6 +48,10 @@ var game = {
         AMEmoreSw: 0,
         AMEfirstBoostsClicks: 0,
         unlockUnlevel: 0,
+        AMEsiliconeFromClicks: 0,
+        AMEbomblike: 0,
+        AMEformaggi: 0,
+        fourthArtifactSlot: 0,
     },
     stats: {
         shgabb: 0,
