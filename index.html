@@ -19,6 +19,7 @@
         <img class="currency" id="swImage" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
         <img class="currency" id="gsImage" src="images\currencies\gs.png" /><span id="gsAmount"></span>
         <img class="currency" id="siImage" src="images\currencies\silicone.png" /><span id="siAmount"></span>
+        <img class="currency" id="ameImage" src="images\currencies\ameliorer.png" /><span id="ameAmount"></span>
     </div>
     <br />
 
@@ -84,6 +85,18 @@
         <hr style="clear:both" />
     </div>
 
+    <!-- Ameliorer -->
+    <div id="ameliorerSection">
+        <h3>Améliorer</h3>
+        <img class="currency" src="images\currencies\ameliorer.png" /><span id="ameAmount2"></span><br />
+        <span id="ameconvert" class="square" style="width: 50%"></span>
+        <div>
+            <span id="ameupgradesl" style="float: left; width: 50%;"></span>
+            <span id="ameupgradesr" style="float: right; width: 50%;"></span>
+        </div>
+        <hr style="clear:both" />
+    </div>
+
     <!-- Artifacts -->
     <div id="artifactSection">
         <h3>Artifacts</h3>
@@ -112,6 +125,7 @@
             <option value="sw">Sandwiches</option>
             <option value="gs">Golden Shgabb</option>
             <option value="si">Silicone Shgabb</option>
+            <option value="ame">Améliorer</option>
             <option value="gems">Gems</option>
             <option value="stats.playTime">Playtime</option>
         </select>
@@ -126,7 +140,8 @@
 
     <!-- Stats -->
     <h3>Stats</h3>
-    <span id="stats" class="square"></span>
+    <span id="stats"></span>
+    <hr style="clear:both" />
 
     <!-- Achievements -->
     <hr style="clear:both" />
@@ -139,25 +154,32 @@
     <!-- Other -->
     <div style="position: relative;">
         <div class="square" style="position: absolute; text-align: right; width: 45%;">
-            <h4>Notifications</h4>
+            <!-- Notifications -->
+            <h3>Notifications</h3>
             <span id="notifications"></span>
+
+            <hr style="clear:both" />
+
+            <!-- Social -->
+            <h3>Social</h3>
+            Shgabb Clicker - developed by Schrottii ©2023<br />
+            <div class="settingButton" style="float: left; width: 30% "><img src="images/social/discord.png" /><br /><a href="https://discord.gg/3T4CBmh">My Discord Server</a></div>
+            <div class="settingButton" style="float: left; width: 30% "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
+            <div class="settingButton" style="float: left; width: 30% "><img src="images/social/othergames.png" /><br /><a href="https://sc2fmfr.vercel.app/">Play one of my other games!</a></div>
         </div>
 
-        <div class="square" style="text-align: left; width: 45%; margin-left: auto; ">
-            Shgabb Clicker - developed by Schrottii ©2023<br />
-            <a href="https://discord.gg/3T4CBmh">My Discord Server</a><br /><br />
-
+        <div class="square" style="text-align: left; width: 45%; margin-left: auto;">
+            <!-- Patch Notes -->
+            <h3>Patch Notes</h3>
             <span id="patchNotes">...</span>
-
 
             <br />
             <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
-        </div>
 
-        <hr style="clear:both" />
+            <hr style="clear:both" />
 
-        <div class="square">
-            <h4>Settings</h4>
+            <!-- Settings -->
+            <h3>Settings</h3>
             <button onclick="toggleMusic()" class="settingButton">Music on/off</button>
             <button onclick="toggleAdSound()" class="settingButton">Ad Music on/off</button><br />
             <button onclick="exportGame()" class="settingButton">Export</button>
@@ -166,8 +188,10 @@
             <button onclick="toggleCurrent()" class="settingButton">Current Effect on/off</button><br />
             <button onclick="hideMaxed()" class="settingButton">Show/hide maxed</button><br />
         </div>
+        <hr style="clear:both" />
+
     </div>
-    <br /><br /><br />
+    <br />
 
     <audio src="shgame.mp3" loop muted id="music"></audio>
 

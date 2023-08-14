@@ -7,7 +7,7 @@ function gemsUnlocked() {
 function getGem() {
     // Chance to get a gem
     if (Math.random() < 1 / 100 * getArtifactBoost("gemchance") && !getArtifactByID(200).isEquipped()) {
-        let amount = 1 * getArtifactBoost("gems");
+        let amount = getArtifactBoost("gems");
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;
             amount = Math.floor(amount);
@@ -21,7 +21,7 @@ function getGem() {
 }
 
 function firstGemOfferWorth() {
-    return Math.max(10000, Math.ceil(Math.min(game.shgabb / 10, game.stats.shgabb / 10)));
+    return Math.max(10000, Math.ceil(Math.min(game.shgabb / 2, game.stats.shgabb / 5)));
 }
 
 function gemOffer(i) {
