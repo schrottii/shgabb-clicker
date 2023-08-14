@@ -33,7 +33,7 @@ const currentPatchNotes = [
     "- Added a header for patch notes and increased the size of the headers in that area",
     "-> Other:",
     "- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)",
-    "- Added 5 new achievements",
+    "- Added 10 new achievements (30 -> 40)",
     "- The sandwich bar now correctly adjusts after upgrading the fridge",
     "- Knife boost now gets reset on auto save if the click is not well timed",
     "- Moved some achievements a bit",
@@ -542,9 +542,9 @@ function getAmeliorerConvertCosts(type) {
         case "shgabb":
             return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 5) + 1));
         case "sw":
-            return Math.ceil(Math.pow(1e5, (game.ameUp[1] / 10) + 1));
+            return Math.ceil(Math.pow(1000, (game.ameUp[1] / 10) + 1));
         case "gs":
-            return Math.ceil(Math.pow(1e7, (game.ameUp[2] / 10) + 1));
+            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 10) + 1));
         case "si":
             return Math.ceil(Math.pow(1e6, (game.ameUp[3] / 10) + 1));
     }
@@ -561,6 +561,7 @@ function convertAmeliorer(type) {
         game[type] -= costs;
         game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3 }[type]] += 1;
         game.ame += 1;
+        game.stats.ame += 1;
         updateUpgrades();
         renderAmeConvert();
     }

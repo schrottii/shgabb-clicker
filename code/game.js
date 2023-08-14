@@ -66,6 +66,7 @@ var game = {
         swtp: 0,
         ctp: 0,
         si: 0,
+        ame: 0,
         hms: 0,
         hmstp: 0,
         tgems: 0,

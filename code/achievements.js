@@ -1,4 +1,4 @@
-class Achievement {
+﻿class Achievement {
     constructor(ID, image, name, description, unlock) {
         this.ID = ID;
         this.image = image;
@@ -42,12 +42,17 @@ var achievements = [
     new Achievement(31, "hms.png", "Shgabb Conqueror I", "Reach More Shgabb level 1500", () => game.stats.hms >= 1500),
     new Achievement(22, "gs.png", "Golden Shgabb IV", () => "Get " + fn(1e9) + " Golden Shgabb", () => game.gs >= 1e9),
     new Achievement(23, "silicone.png", "Silicone IV", () => "Get " + fn(2e8) + " Silicone Shgabb", () => game.si >= 2e8),
+    new Achievement(36, "unlock.png", "What language is this?!", "Unlock Améliorer!", () => ameliorerUnlocked()),
     new Achievement(28, "unlock.png", "Treasure Hunter", "Get your 10th artifact!", () => game.a.length > 10),
+    new Achievement(39, "ameliorer.png", "Amé: Part II", "Unlock the second set of Améliorer upgrades", () => getTotalAme() >= 10),
     new Achievement(32, "hms.png", "Shgabb Conqueror II", "Reach More Shgabb level 2500", () => game.stats.hms >= 2500),
     new Achievement(25, "silicone.png", "Silicone V", () => "Get " + fn(1e12) + " Silicone Shgabb", () => game.si >= 1e12),
     new Achievement(26, "gs.png", "Golden Shgabb V", () => "Get " + fn(1e12) + " Golden Shgabb", () => game.gs >= 1e12),
+    new Achievement(37, "ameliorer.png", "Cap Bro I", "Get 50 Amélorier", () => game.stats.ame >= 50),
     new Achievement(24, "sandwich.png", "Sandwiches V", () => "Get " + fn(1e8) + " Sandwiches", () => game.sw >= 1e8),
+    new Achievement(40, "ameliorer.png", "Amé: Part III", "Unlock the third set of Améliorer upgrades", () => getTotalAme() >= 40),
     new Achievement(35, "unlock.png", "Artifactfan", "Get your 25th artifact!", () => game.a.length > 25),
+    new Achievement(38, "ameliorer.png", "Cap Bro II", "Get 100 Améliorer", () => game.stats.ame >= 100),
     new Achievement(33, "hms.png", "Shgabb Conqueror III", "Reach More Shgabb level 5000", () => game.stats.hms >= 5000),
     new Achievement(27, "shgabb.png", "Shgabb VI", () => "Get " + fn(1e21) + " Shgabb", () => game.shgabb >= 1e21),
     new Achievement(29, "shgabb.png", "Shgabb VII", () => "Get " + fn(1e30) + " Shgabb", () => game.shgabb >= 1e30),
