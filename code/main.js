@@ -7,6 +7,7 @@
 const gameVersion = "1.7.1 (fatal racisM)";
 
 const currentPatchNotes = [
+    "-  Reset Améliorer and Upgrades on prestige option",
     "- Amulet of Paroxysm: no longer removes the ability to get gems, it rather decreases it by /10",
     "- Amulet of Active Silicone: x3 -> x3.6",
     "- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3",
@@ -91,6 +92,8 @@ var ui = {
     sandwichBar: document.getElementById("sandwichBar"),
     adBar: document.getElementById("adBar"),
     adLoaded: document.getElementById("adloaded"),
+    ameReset: document.getElementById("amereset"),
+    ameReset2: document.getElementById("amereset2"),
 
     cheatCurrency: document.getElementById("cheatCurrency"),
     cheatAmount: document.getElementById("cheatAmount"),
@@ -535,6 +538,8 @@ function prestigeButton() {
 
         game.gemboost = 1;
 
+        if (ui.ameReset.value == "true") ameReset();
+
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");
     }
@@ -596,6 +601,17 @@ function getTotalAme() {
         amelvl += ameliorerUpgrades[ame].currentLevel();
     }
     return amelvl;
+}
+
+function ameReset() {
+    game.ame = game.stats.ame;
+
+    for (let a in ameliorerUpgrades) {
+        game.upgradeLevels[ameliorerUpgrades[a].ID] = 0;
+    }
+
+    ui.ameReset.checked = false;
+    ui.ameReset.value == "false";
 }
 
 // Update functions
@@ -732,11 +748,16 @@ function updateUI() {
         ui.ameAmount.innerHTML = game.ame + " Améliorer";
         unlocks.ameliorer.style.display = "unset";
         ui.ameImage.style.display = "unset";
+
+        if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
+        else ui.ameReset.style.display = "none";
     }
     else {
         unlocks.ameliorer.style.display = "none";
         ui.ameImage.style.display = "none";
+        ui.ameReset.style.display = "none";
     }
+    ui.ameReset2.style.display = ui.ameReset.style.display;
 
     renderGemOffers();
 
