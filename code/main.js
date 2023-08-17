@@ -7,6 +7,11 @@
 const gameVersion = "1.7.1 (fatal racisM)";
 
 const currentPatchNotes = [
+    "- Amulet of Paroxysm: no longer removes the ability to get gems, it rather decreases it by /10",
+    "- Amulet of Active Silicone: x3 -> x3.6",
+    "- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3",
+    "- Sosnog: Added a x3 shgabb boost",
+    "v1.7",
     "-> Améliorer:",
     "- New feature/currency: Améliorer!",
     "- Unlocked at More Shgabb 2000",
@@ -356,7 +361,7 @@ function getAutoProduction(sosnog2 = false) {
         + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 10 : 1)
-        * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
+        * (getArtifactByID(300).isEquipped() ? Math.max(1, (3 * game.clickCooldown + 1)) : 1)
     );
 }
 
@@ -751,7 +756,7 @@ function updateUI() {
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s"
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
-        + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "% (+" + getArtifactBoost("gems") + ")"
+        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "% (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
