@@ -4,7 +4,7 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.7";
+const gameVersion = "1.7.1 (fatal racisM)";
 
 const currentPatchNotes = [
     "-> Améliorer:",
@@ -56,7 +56,7 @@ const currentPatchNotes = [
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false
