@@ -7,11 +7,20 @@
 const gameVersion = "1.7.1 (fatal racisM)";
 
 const currentPatchNotes = [
-    "-  Reset Améliorer and Upgrades on prestige option",
+    "-> Balance:",
+    "- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter",
+    "- Massively reduced costs of Bomblike after level 10",
+    "- Massively reduced cost increase of Crit. Boost at level 21+",
+    "- Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15",
+    "- Increased effect of Shgabb Boost (AME) from +30%/level to +50%/level",
+    "",
     "- Amulet of Paroxysm: no longer removes the ability to get gems, it rather decreases it by /10",
     "- Amulet of Active Silicone: x3 -> x3.6",
     "- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3",
     "- Sosnog: Added a x3 shgabb boost",
+    "-> Other:",
+    "- Reset Améliorer and Upgrades on prestige option",
+    "- Changed design of the Amé convert buttons",
     "v1.7",
     "-> Améliorer:",
     "- New feature/currency: Améliorer!",
@@ -559,13 +568,13 @@ function ameliorerUnlocked() {
 function getAmeliorerConvertCosts(type) {
     switch (type) {
         case "shgabb":
-            return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 5) + 1));
+            return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 8) + 1));
         case "sw":
             return Math.ceil(Math.pow(1000, (game.ameUp[1] / 10) + 1));
         case "gs":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 10) + 1));
+            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 12) + 1));
         case "si":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[3] / 10) + 1));
+            return Math.ceil(Math.pow(1e5, (game.ameUp[3] / 15) + 1));
     }
 }
 

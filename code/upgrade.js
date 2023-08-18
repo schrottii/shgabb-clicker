@@ -132,10 +132,10 @@ class AmeliorerUpgrade extends Upgrade {
 var shgabbUpgrades = {
     moreShgabb: new Upgrade("moreShgabb", "Get More Shgabb", "Get more shgabb per click", level => (level * 5 * Math.max(1, level / 25) + 5) * Math.max(1, Math.pow(1.01, level - 500)), level => level),
     critChance: new Upgrade("critChance", "Crit. Chance", "Increase the chance for critical hits", level => level * 10 * Math.max(1, level / 12) + 25, level => 3 + (level / 10), { maxLevel: 70, suffix: "%" }),
-    critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50 * (level > 19 ? Math.pow(3, level - 19) : 1), level => 3 + (level / 10), { maxLevel: 20, prefix: "x" }),
+    critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50 * (level > 19 ? Math.pow(1.75, level - 19) : 1), level => 3 + (level / 10), { maxLevel: 20, prefix: "x" }),
     shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 40 * Math.max(1, level / 4) + 60, level => (level / 20), { maxLevel: 40, prefix: "-", suffix: "s", unlock: () => game.upgradeLevels.moreShgabb > 14 }),
     goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 24 }),
-    bomblike: new Upgrade("bomblike", "Bomblike", "Get even more shgabb per click", level => Math.pow(5, 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 34 }),
+    bomblike: new Upgrade("bomblike", "Bomblike", "Get even more shgabb per click", level => Math.pow((level > 10 ? 3 : 5), 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 34 }),
     swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 250, level => 0.1 * level, { maxLevel: 250, suffix: "%", unlock: () => game.upgradeLevels.moreShgabb > 49 }),
     moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 24, unlock: () => game.upgradeLevels.swChance > 24 }),
 }
@@ -168,8 +168,8 @@ var siliconeShgabbUpgrades = {
 var ameliorerUpgrades = {
     AMEgsBoost1: new AmeliorerUpgrade("AMEgsBoost1", "GS boosts shgabb 1", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16 }),
     AMEgsBoost2: new AmeliorerUpgrade("AMEgsBoost2", "GS boosts shgabb 2", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16 }),
-    AMEcritBoost: new AmeliorerUpgrade("AMEcritBoost", "Crit. Boost", "Increases max. level of that Shgabb Upgrade", level => 1, level => level * 5, { maxLevel: 10 }),
-    shgabbBoost: new AmeliorerUpgrade("shgabbBoost", "Shgabb Boost", "Get more shgabb (clicks and auto)", level => 1, level => 1 + (level * 0.3), { maxLevel: 30, ameAmount: 3 }),
+    AMEcritBoost: new AmeliorerUpgrade("AMEcritBoost", "Crit. Boost", "Increases max. level of that Shgabb Upgrade", level => 1, level => level * 10, { maxLevel: 15 }),
+    shgabbBoost: new AmeliorerUpgrade("shgabbBoost", "Shgabb Boost", "Get more shgabb (clicks and auto)", level => 1, level => 1 + (level * 0.5), { maxLevel: 30, ameAmount: 3 }),
 
     AMEfridge: new AmeliorerUpgrade("AMEfridge", "Better Fridge", "Increases max. level of that Sandwich Upgrade", level => 2, level => level * 5, { maxLevel: 6, ameAmount: 10 }),
     AMEmoreSw: new AmeliorerUpgrade("AMEmoreSw", "Sandwich Amount", "Increases max. level of that Shgabb Upgrade", level => level + 1, level => level * 5, { maxLevel: 15, ameAmount: 10 }),
