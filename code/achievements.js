@@ -50,7 +50,7 @@ var achievements = [
     new Achievement(26, "gs.png", "Golden Shgabb V", () => "Get " + fn(1e12) + " Golden Shgabb", () => game.gs >= 1e12),
     new Achievement(37, "ameliorer.png", "Cap Bro I", "Get 50 Amélorier", () => game.stats.ame >= 50),
     new Achievement(24, "sandwich.png", "Sandwiches V", () => "Get " + fn(1e8) + " Sandwiches", () => game.sw >= 1e8),
-    new Achievement(40, "ameliorer.png", "Amé: Part III", "Unlock the third set of Améliorer upgrades", () => getTotalAme() >= 40),
+    new Achievement(40, "ameliorer.png", "Amé: Part III", "Unlock the third set of Améliorer upgrades", () => getTotalAme() >= 25),
     new Achievement(35, "unlock.png", "Artifactfan", "Get your 25th artifact!", () => game.a.length > 25),
     new Achievement(38, "ameliorer.png", "Cap Bro II", "Get 100 Améliorer", () => game.stats.ame >= 100),
     new Achievement(33, "hms.png", "Shgabb Conqueror III", "Reach More Shgabb level 5000", () => game.stats.hms >= 5000),

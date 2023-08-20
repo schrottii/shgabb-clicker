@@ -4,9 +4,32 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.7";
+const gameVersion = "1.7.1";
 
 const currentPatchNotes = [
+    "-> Améliorer:",
+    "- New Améliorer Upgrade: Achievements Become Exponential",
+    "- New Améliorer Upgrade: GS Boosts Shgabb",
+    "- Added the ability to reset Améliorer and Upgrades on prestige (10 minutes)",
+    "- Re-sorted Améliorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)",
+    "-> Balance:",
+    "- Tripled the effect of Silicone From Clicks (3x the passive production now)",
+    "- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter",
+    "- Massively reduced costs of Bomblike after level 10",
+    "- Massively reduced cost increase of Crit. Boost at level 21+",
+    "- Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15",
+    "- Increased effect of Shgabb Boost (AME) from +30%/level to +50%/level",
+    "",
+    "- Amulet of Paroxysm: no longer removes the ability to get gems, rather decreases it by /10",
+    "- Amulet of Active Silicone: x3 -> x3.6",
+    "- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3",
+    "- Sosnog: Added a x3 shgabb boost",
+    "-> Other:",
+    "- Silicone from clicks now triggers before the click cooldown gets reset",
+    "- Updated Silicone Implants artifact description since it disables silicone gain from clicks as well",
+    "- Updated requirement of the Amé: Part III achievement (40 -> 25)",
+    "- Changed design of the Amé convert buttons",
+    "v1.7",
     "-> Améliorer:",
     "- New feature/currency: Améliorer!",
     "- Unlocked at More Shgabb 2000",
@@ -86,6 +109,8 @@ var ui = {
     sandwichBar: document.getElementById("sandwichBar"),
     adBar: document.getElementById("adBar"),
     adLoaded: document.getElementById("adloaded"),
+    ameReset: document.getElementById("amereset"),
+    ameReset2: document.getElementById("amereset2"),
 
     cheatCurrency: document.getElementById("cheatCurrency"),
     cheatAmount: document.getElementById("cheatAmount"),
@@ -282,6 +307,12 @@ function clickButton() {
         }
         else knifeBoost = 1;
 
+        if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
+            let amount = 3 * getSiliconeProduction();
+            game.si += amount;
+            game.stats.si += amount;
+        }
+
         game.clickCooldown = getCooldown();
         game.stats.clicks += 1;
         game.stats.ctp += 1;
@@ -293,11 +324,6 @@ function clickButton() {
             game.stats.sw += amount;
             game.stats.swtp += amount;
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
-        }
-
-        if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
-            game.si += getSiliconeProduction();
-            game.stats.si += getSiliconeProduction();
         }
 
         if (gemsUnlocked()) getGem();
@@ -338,6 +364,7 @@ function getProduction(sosnog = false) {
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
+        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
     );
 }
 
@@ -353,10 +380,12 @@ function getAutoProduction(sosnog2 = false) {
         * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
+        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+
         + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 10 : 1)
-        * (getArtifactByID(300).isEquipped() ? Math.max(1, game.clickCooldown + 1) : 1)
+        * (getArtifactByID(300).isEquipped() ? Math.max(1, (3 * game.clickCooldown + 1)) : 1)
     );
 }
 
@@ -381,6 +410,10 @@ function getCooldown() {
         * (getArtifactByID(203).isEquipped() ? 5 : 1)
 }
 
+function getAchievementBoost() {
+    return (game.upgradeLevels.achBExpo > 0 ? (Math.pow(1.02, game.ach.length)) : (1 + (game.ach.length / 50)));
+}
+
 function getGoldenShgabb() {
     return Math.floor(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))
         * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
@@ -389,7 +422,7 @@ function getGoldenShgabb() {
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
         * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
-        * (1 + (game.ach.length / 50))
+        * getAchievementBoost()
         );
 }
 
@@ -530,6 +563,8 @@ function prestigeButton() {
 
         game.gemboost = 1;
 
+        if (ui.ameReset.value == "true") ameReset();
+
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");
     }
@@ -549,13 +584,13 @@ function ameliorerUnlocked() {
 function getAmeliorerConvertCosts(type) {
     switch (type) {
         case "shgabb":
-            return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 5) + 1));
+            return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 8) + 1));
         case "sw":
             return Math.ceil(Math.pow(1000, (game.ameUp[1] / 10) + 1));
         case "gs":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 10) + 1));
+            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 12) + 1));
         case "si":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[3] / 10) + 1));
+            return Math.ceil(Math.pow(1e5, (game.ameUp[3] / 15) + 1));
     }
 }
 
@@ -593,6 +628,25 @@ function getTotalAme() {
     return amelvl;
 }
 
+function ameReset() {
+    game.ame = game.stats.ame;
+
+    for (let a in ameliorerUpgrades) {
+        game.upgradeLevels[ameliorerUpgrades[a].ID] = 0;
+    }
+
+    for (let a in goldenShgabbUpgrades) {
+        game.upgradeLevels[goldenShgabbUpgrades[a].ID] = Math.min(goldenShgabbUpgrades[a].getMax() != undefined ? goldenShgabbUpgrades[a].getMax() : 0, game.upgradeLevels[goldenShgabbUpgrades[a].ID]);
+    }
+
+    for (let a in siliconeShgabbUpgrades) {
+        game.upgradeLevels[siliconeShgabbUpgrades[a].ID] = Math.min(siliconeShgabbUpgrades[a].getMax() != undefined ? siliconeShgabbUpgrades[a].getMax() : 0, game.upgradeLevels[siliconeShgabbUpgrades[a].ID]);
+    }
+
+    ui.ameReset.checked = false;
+    ui.ameReset.value == "false";
+}
+
 // Update functions
 
 function updateQuote() {
@@ -613,8 +667,14 @@ function updateUpgrades() {
     ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render() + siliconeShgabbUpgrades.siliconeFromClicks.render();
     ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render() + siliconeShgabbUpgrades.siliconeAffectsGS.render();
 
-    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.AMEcritBoost.render() + ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEfirstBoostsClicks.render() + ameliorerUpgrades.AMEsiliconeFromClicks.render() + ameliorerUpgrades.AMEformaggi.render();
-    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.shgabbBoost.render() + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render() + ameliorerUpgrades.AMEbomblike.render() + ameliorerUpgrades.fourthArtifactSlot.render();
+    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.shgabbBoost.render() +
+        ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEcritBoost.render()
+        + ameliorerUpgrades.AMEfirstBoostsClicks.render() + ameliorerUpgrades.AMEbomblike.render()
+        + ameliorerUpgrades.AMEformaggi.render();
+    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.achBExpo.render()
+        + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render()
+        + ameliorerUpgrades.AMEsiliconeFromClicks.render() + ameliorerUpgrades.gsBoostsShgabb.render()
+        + ameliorerUpgrades.fourthArtifactSlot.render();
 }
 
 function updateArtifacts() {
@@ -727,11 +787,16 @@ function updateUI() {
         ui.ameAmount.innerHTML = game.ame + " Améliorer";
         unlocks.ameliorer.style.display = "unset";
         ui.ameImage.style.display = "unset";
+
+        if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
+        else ui.ameReset.style.display = "none";
     }
     else {
         unlocks.ameliorer.style.display = "none";
         ui.ameImage.style.display = "none";
+        ui.ameReset.style.display = "none";
     }
+    ui.ameReset2.style.display = ui.ameReset.style.display;
 
     renderGemOffers();
 
@@ -750,8 +815,8 @@ function updateUI() {
         + "</div><div style='float: right; width: 50%;' class='square2'>"
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s"
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
-        + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) + "%"
-        + "<br />Gem Chance: " + (getArtifactBoost("gemchance")) + "% (+" + getArtifactBoost("gems") + ")"
+        + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
+        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "% (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
@@ -767,7 +832,7 @@ function updateUI() {
 
     // Achievements
     renderAchievements();
-    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (game.ach.length * 2) + "% GS!";
+    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
 
     // Notifications
     ui.notifications.innerHTML = "";

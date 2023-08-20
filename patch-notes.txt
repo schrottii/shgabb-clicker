@@ -13,6 +13,7 @@ All versions:
 1.6.1
 1.6.2
 1.7
+1.7.1
 
 
 
@@ -371,3 +372,32 @@ Version 1.7:
 - Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)
 - Fixed a slowgemming bug
 - Fixed some unlocked achievement images being displayed as locked
+
+
+
+2023/08/20 1.7.1:
+Version 1.7.1:
+-> Améliorer:
+- New Améliorer Upgrade: Achievements Become Exponential
+- New Améliorer Upgrade: GS Boosts Shgabb
+- Added the ability to reset Améliorer and Upgrades on prestige (10 minutes)
+- Re-sorted Améliorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)
+
+-> Balance:
+- Tripled the effect of Silicone From Clicks (3x the passive production now)
+- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter
+- Massively reduced costs of Bomblike after level 10
+- Massively reduced cost increase of Crit. Boost at level 21+
+- Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15
+- Increased effect of Shgabb Boost (AME) from +30%/level to +50%/level
+
+- Amulet of Paroxysm: no longer removes the ability to get gems, rather decreases it by /10
+- Amulet of Active Silicone: x3 -> x3.6
+- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3
+- Sosnog: Added a x3 shgabb boost
+
+-> Other:
+- Silicone from clicks now triggers before the click cooldown gets reset
+- Updated Silicone Implants artifact description since it disables silicone gain from clicks as well
+- Updated requirement of the Amé: Part III achievement (40 -> 25)
+- Changed design of the Amé convert buttons

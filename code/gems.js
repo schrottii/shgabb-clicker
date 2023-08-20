@@ -4,9 +4,13 @@ function gemsUnlocked() {
     return game.stats.hms >= 500;
 }
 
+function getGemChance() {
+    return getArtifactBoost("gemchance") * (getArtifactByID(200).isEquipped() ? 0.1 : 1);
+}
+
 function getGem() {
     // Chance to get a gem
-    if (Math.random() < 1 / 100 * getArtifactBoost("gemchance") && !getArtifactByID(200).isEquipped()) {
+    if (Math.random() < 1 / 100 * getGemChance()) {
         let amount = getArtifactBoost("gems");
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;

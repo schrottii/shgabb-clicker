@@ -84,10 +84,9 @@ h3 {
         filter: brightness(80%);
     }
 
-.ameliorer {
-    width: 20%;
-    min-width: 96px;
-    min-height: 72px;
+.ameliorerButton {
+    width: 24%;
+    min-height: 48px;
 }
 
 .square {
