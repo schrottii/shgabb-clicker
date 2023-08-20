@@ -214,7 +214,7 @@ var artifacts = [
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% for every well timed click up to 2000%" }),
 	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: "Every click in a prestige increases shgabb gain by 0.5%" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", 3, { trigger: () => currentBoost != "none", desc: "While an ad is active" }),
-	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: "Completely stops passive silicone production, but its effects are tripled" }),
+	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: "Completely stops silicone production, but its effects are tripled" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", 3, { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),

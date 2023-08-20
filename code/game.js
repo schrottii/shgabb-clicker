@@ -42,14 +42,19 @@ var game = {
         // Ame
         AMEgsBoost1: 0,
         AMEgsBoost2: 0,
-        AMEcritBoost: 0,
         shgabbBoost: 0,
+        achBExpo: 0,
+
         AMEfridge: 0,
         AMEmoreSw: 0,
-        AMEfirstBoostsClicks: 0,
+        AMEcritBoost: 0,
         unlockUnlevel: 0,
+
+        AMEfirstBoostsClicks: 0,
         AMEsiliconeFromClicks: 0,
         AMEbomblike: 0,
+        gsBoostsShgabb: 0,
+
         AMEformaggi: 0,
         fourthArtifactSlot: 0,
     },
