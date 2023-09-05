@@ -636,11 +636,11 @@ function ameReset() {
     }
 
     for (let a in goldenShgabbUpgrades) {
-        game.upgradeLevels[goldenShgabbUpgrades[a].ID] = Math.min(goldenShgabbUpgrades[a].getMax() != undefined ? goldenShgabbUpgrades[a].getMax() : 0, game.upgradeLevels[goldenShgabbUpgrades[a].ID]);
+        game.upgradeLevels[goldenShgabbUpgrades[a].ID] = Math.min((goldenShgabbUpgrades[a].getMax() != undefined ? goldenShgabbUpgrades[a].getMax() : game.upgradeLevels[goldenShgabbUpgrades[a].ID]), game.upgradeLevels[goldenShgabbUpgrades[a].ID]);
     }
 
     for (let a in siliconeShgabbUpgrades) {
-        game.upgradeLevels[siliconeShgabbUpgrades[a].ID] = Math.min(siliconeShgabbUpgrades[a].getMax() != undefined ? siliconeShgabbUpgrades[a].getMax() : 0, game.upgradeLevels[siliconeShgabbUpgrades[a].ID]);
+        game.upgradeLevels[siliconeShgabbUpgrades[a].ID] = Math.min((siliconeShgabbUpgrades[a].getMax() != undefined ? siliconeShgabbUpgrades[a].getMax() : game.upgradeLevels[siliconeShgabbUpgrades[a].ID]), game.upgradeLevels[siliconeShgabbUpgrades[a].ID]);
     }
 
     ui.ameReset.checked = false;
