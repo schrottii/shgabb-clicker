@@ -4,9 +4,20 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.7.1";
+const gameVersion = "1.7.2";
 
 const currentPatchNotes = [
+    "-> Ads:",
+    "- The least used ad boost is now less likely to appear",
+    "- The videos now all have an equal chance of appearing",
+    "- Fixed an ad exploit",
+    "- Fixed repeated ads loaded messages",
+    "-> Other:",
+    "- Moved the Silicone V and Golden Shgabb V achievements",
+    "- Removed a double line between stats and achievements",
+    "- Fixed not being able to see half of the page before unlocking Amé",
+    "- Fixed show/hide maxed setting using incorrect notifications",
+    "v1.7.1",
     "-> Améliorer:",
     "- New Améliorer Upgrade: Achievements Become Exponential",
     "- New Améliorer Upgrade: GS Boosts Shgabb",
@@ -29,50 +40,6 @@ const currentPatchNotes = [
     "- Updated Silicone Implants artifact description since it disables silicone gain from clicks as well",
     "- Updated requirement of the Amé: Part III achievement (40 -> 25)",
     "- Changed design of the Amé convert buttons",
-    "v1.7",
-    "-> Améliorer:",
-    "- New feature/currency: Améliorer!",
-    "- Unlocked at More Shgabb 2000",
-    "- Convert Shgabb, Sandwiches, GS and Silicone to Améliorer",
-    "- Améliorer can be spent on 12 upgrades",
-    "-> Balance:",
-    "- Increased duration of the Stronger Clicks ad from 2 minutes to 5 minutes",
-    "- Reduced cost increase of GS boosts shgabb 1",
-    "- Reduced max. level of Better Fridge from 60 to 30",
-    "- Changed Instant Shgabb from 10% of current or 10% of highest (lower) to 50% of current or 20% of highest (lower)",
-    "",
-    "- Ring of Laziness: 40% -> 60%",
-    "- Furious Knife: 25%/click -> 50%/click, max. 1000% -> max. 2000%, 0.25s -> 0.33s",
-    "- Shgabb Seeds: 0.025% -> 0.5%",
-    "",
-    "- Ring of Productivity: 60% -> 40%",
-    "- Amulet of Paroxysm: 5x -> 4x",
-    "-> Stats section:",
-    "- Total Gems and Total Améliorer stats are now visible",
-    "- You can now also see your click cooldown, critical hit chance, sandwich chance, gem chance, artifact chances, achievements, artifacts and améliorer levels",
-    "- Stats are now 2 columns",
-    "- Stats now have 2 big background squares instead of them being around the texts",
-    "- Sandwiches in stats now use the notation",
-    "- Sorted stats a bit",
-    "-> Social section:",
-    "- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games",
-    "- Added a thin border to the notifications and patch notes",
-    "- Moved social and settings into the notifications / patch notes squares",
-    "- Added a header for patch notes and increased the size of the headers in that area",
-    "-> Design:",
-    "- Increased size of artifacts and achievements",
-    "- Increased size of the loadout buttons on small devices (phones)",
-    "- Increased size of the buy max button",
-    "-> Other:",
-    "- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)",
-    "- Added 10 new achievements (30 -> 40)",
-    "- The sandwich bar now correctly adjusts after upgrading the fridge",
-    "- Knife boost now gets reset on auto save if the click is not well timed",
-    "- Moved some achievements a bit",
-    "-> Bug fixes:",
-    "- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)",
-    "- Fixed a slowgemming bug",
-    "- Fixed some unlocked achievement images being displayed as locked",
 ]
 
 // BETA (cheating)
@@ -500,7 +467,7 @@ function toggleCurrent() {
 
 function hideMaxed() {
     settings.hideMaxed = !settings.hideMaxed;
-    createNotification("Current Effect " + (settings.hideMaxed ? "SHOW" : "HIDE"));
+    createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
     updateUpgrades();
 }
 
@@ -950,15 +917,11 @@ function loop(tick) {
 
     if (adTime <= 0 && adButton.style.display == "none" && currentBoost == "none") {
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        if (availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         adButton.style.display = "inline";
         adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
 
-        if (Math.random() >= 0.75) adHandler.src = "videos/elmenda_bad_as_always.mp4";
-        else if (Math.random() >= 0.75) adHandler.src = "videos/elm_ad_2.mp4";
-        else if (Math.random() >= 0.75) adHandler.src = "videos/Helmet452_Trailer.mp4";
-        else if (Math.random() >= 0.75) adHandler.src = "videos/Drunk_elmenda_savage.mp4";
-        else if (Math.random() >= 0.75) adHandler.src = "videos/shgabb_flame.mp4";
-        else adHandler.src = "videos/Mend_car_crashing_vid.mp4";
+        selectVideo();
     }
     else if (adTime <= 0 && adButton.style.display == "none") {
         adTime = 10;
@@ -981,6 +944,56 @@ function loop(tick) {
 
     updateUI();
     window.requestAnimationFrame(loop);
+}
+
+function determineLeastUsedBoost() {
+    let least = ["", 1000000000000000000];
+    for (s in game.stats.wads) {
+        if (game.stats.wads[s] < least[1]) {
+            least[0] = s;
+            least[1] = game.stats.wads[s];
+        }
+    }
+
+    switch (least[0]) {
+        case "sc":
+            return "strongerClicks";
+        case "sa":
+            return "strongerAuto";
+        case "msw":
+            return "moreSandwiches";
+        case "fs":
+            return "fasterShgabb";
+        case "mc":
+            return "moreCrits";
+        case "msi":
+            return "moreSilicone";
+    }
+}
+
+function selectVideo() {
+    // Select which video you will see
+    let adVideoPicker = Math.ceil(Math.random() * 6)
+    switch (adVideoPicker) {
+        case 1:
+            adHandler.src = "videos/elmenda_bad_as_always.mp4";
+            break;
+        case 2:
+            adHandler.src = "videos/elm_ad_2.mp4";
+            break;
+        case 3:
+            adHandler.src = "videos/Helmet452_Trailer.mp4";
+            break;
+        case 4:
+            adHandler.src = "videos/Drunk_elmenda_savage.mp4";
+            break;
+        case 5:
+            adHandler.src = "videos/shgabb_flame.mp4";
+            break;
+        case 6:
+            adHandler.src = "videos/Mend_car_crashing_vid.mp4";
+            break;
+    }
 }
 
 // Load
@@ -1021,9 +1034,9 @@ if (localStorage.getItem("shgabbSettings") != undefined) {
 // Ad init
 try {
 adHandler.oncanplay = () => {
+    if (!adLoaded) createNotification("Ads loaded!");
     adLoaded = true;
     ui.adLoaded.style.display = "block";
-    createNotification("Ads loaded!");
 }
 
 adHandler.onended = () => {
@@ -1050,6 +1063,7 @@ adHandler.onended = () => {
             break;
     }
 
+    lastAdTimer = 0;
     availableBoost = "none"; 
     adTime = adTimes[currentBoost];
     adMax = adTimes[currentBoost];
@@ -1067,6 +1081,19 @@ adHandler.onended = () => {
 catch (e) {
     console.trace(e);
 }
+
+let lastAdTimer = 0;
+adHandler.ontimeupdate = () => {
+    if ((adHandler.currentTime > lastAdTimer + 2 && adHandler.currentTime < adHandler.duration) || adHandler.playbackRate > 1) {
+        adHandler.onended();
+        adTime = -50000000000;
+        currentBoost = "screwyou";
+        availableBoost = "noneeeeeee";
+    }
+    else {
+        lastAdTimer = adHandler.currentTime;
+    }
+} 
 
 // Update upgrades UI
 updateUpgrades();
