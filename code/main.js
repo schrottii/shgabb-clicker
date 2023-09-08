@@ -4,9 +4,10 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.7.2";
+const gameVersion = "1.8";
 
 const currentPatchNotes = [
+    "v1.7.2",
     "-> Ads:",
     "- The least used ad boost is now less likely to appear",
     "- The videos now all have an equal chance of appearing",
@@ -46,7 +47,7 @@ const currentPatchNotes = [
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false
