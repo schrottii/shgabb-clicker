@@ -8,6 +8,7 @@ const gameVersion = "1.8";
 
 const currentPatchNotes = [
     "-> Artifact Loadouts:",
+    "- Loadouts can now be given custom names by clicking on the currently selected loadout",
     "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8",
     "- Reduced default loadouts from 3 to 2",
     "- Added support for loadout slots 4 - 8",

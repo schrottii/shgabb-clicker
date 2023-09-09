@@ -95,7 +95,7 @@ function renderArtifacts() {
 	// Render em all
 	let render = "";
 	for (l = 0; l < game.al; l++) {
-		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 12%; min-width: 96px; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>Loadout " + (l + 1) + "</button>";
+		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 12%; min-width: 96px; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>" + (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l] ) + "</button>";
 	}
 	render = render + "<br /><br />";
 
@@ -117,6 +117,13 @@ function artifactLoadout(l) {
 	else {
 		game.aeqi = [];
 	}
+	if (selectedLoadout == l) {
+		while (game.alnames[l] == undefined) {
+			game.alnames.push([""]);
+		}
+		let newName = prompt("Name for this loadout?");
+		game.alnames[l] = newName != undefined && newName != "" ? newName : "";
+    }
 	selectedLoadout = l;
 	updateArtifacts();
 }
