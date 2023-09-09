@@ -7,40 +7,12 @@
 const gameVersion = "1.8";
 
 const currentPatchNotes = [
-    "v1.7.2",
-    "-> Ads:",
-    "- The least used ad boost is now less likely to appear",
-    "- The videos now all have an equal chance of appearing",
-    "- Fixed an ad exploit",
-    "- Fixed repeated ads loaded messages",
-    "-> Other:",
-    "- Moved the Silicone V and Golden Shgabb V achievements",
-    "- Removed a double line between stats and achievements",
-    "- Fixed not being able to see half of the page before unlocking Amé",
-    "- Fixed show/hide maxed setting using incorrect notifications",
-    "v1.7.1",
-    "-> Améliorer:",
-    "- New Améliorer Upgrade: Achievements Become Exponential",
-    "- New Améliorer Upgrade: GS Boosts Shgabb",
-    "- Added the ability to reset Améliorer and Upgrades on prestige (10 minutes)",
-    "- Re-sorted Améliorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)",
-    "-> Balance:",
-    "- Tripled the effect of Silicone From Clicks (3x the passive production now)",
-    "- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter",
-    "- Massively reduced costs of Bomblike after level 10",
-    "- Massively reduced cost increase of Crit. Boost at level 21+",
-    "- Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15",
-    "- Increased effect of Shgabb Boost (AME) from +30%/level to +50%/level",
-    "",
-    "- Amulet of Paroxysm: no longer removes the ability to get gems, rather decreases it by /10",
-    "- Amulet of Active Silicone: x3 -> x3.6",
-    "- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3",
-    "- Sosnog: Added a x3 shgabb boost",
-    "-> Other:",
-    "- Silicone from clicks now triggers before the click cooldown gets reset",
-    "- Updated Silicone Implants artifact description since it disables silicone gain from clicks as well",
-    "- Updated requirement of the Amé: Part III achievement (40 -> 25)",
-    "- Changed design of the Amé convert buttons",
+    "- Updated all 3 social images",
+    "- Changed size of social buttons",
+    "- Artifacts and Achievements are now centered",
+    "- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)",
+    "- Fixed weird brown squares near Artifacts and Achievements",
+    "- Fixed extra line breaks in patch notes",
 ]
 
 // BETA (cheating)
@@ -1107,7 +1079,7 @@ ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BET
 let patchNotesText = "Version " + gameVersion + ":";
 for (p in currentPatchNotes) {
     if (currentPatchNotes[p].substr(0, 1) == "v") patchNotesText = patchNotesText + "<br /><br /><br />Version " + currentPatchNotes[p].substr(1)  + ":";
-    else patchNotesText = patchNotesText + (currentPatchNotes[p].substr(0, 2) == "->" && p != 0 ? "<br />" : "") + "<br />" + currentPatchNotes[p];
+    else patchNotesText = patchNotesText + (p != 0 && currentPatchNotes[p - 1].substr(0, 1) != "v" && currentPatchNotes[p].substr(0, 2) == "->" ? "<br />" : "") + "<br />" + currentPatchNotes[p];
 }
 ui.patchNotes.innerHTML = patchNotesText;
 
