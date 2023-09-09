@@ -87,6 +87,7 @@ var game = {
     a: [],
     aeqi: [],
     alo: [[], [], []],
+    al: 2,
     ach: [],
 }
 

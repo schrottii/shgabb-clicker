@@ -94,8 +94,8 @@ var rep7 = "ey";
 function renderArtifacts() {
 	// Render em all
 	let render = "";
-	for (l = 0; l < 3; l++) {
-		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 15%; min-width: 128px; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>Loadout " + (l + 1) + "</button>";
+	for (l = 0; l < game.al; l++) {
+		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 12%; min-width: 96px; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>Loadout " + (l + 1) + "</button>";
 	}
 	render = render + "<br /><br />";
 
@@ -108,6 +108,9 @@ function renderArtifacts() {
 }
 
 function artifactLoadout(l) {
+	while (game.alo[l] == undefined) {
+		game.alo.push([]);
+    }
 	if (game.alo[l].length > 0) {
 		game.aeqi = game.alo[l];
 	}

@@ -7,6 +7,11 @@
 const gameVersion = "1.8";
 
 const currentPatchNotes = [
+    "-> Artifact Loadouts:",
+    "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8",
+    "- Reduced default loadouts from 3 to 2",
+    "- Added support for loadout slots 4 - 8",
+    "-> Design:",
     "- Updated all 3 social images",
     "- Changed size of social buttons",
     "- Artifacts and Achievements are now centered",
@@ -92,6 +97,7 @@ var ui = {
     gemOffer1: document.getElementById("gemOffer1"),
     gemOffer2: document.getElementById("gemOffer2"),
     gemOffer3: document.getElementById("gemOffer3"),
+    gemOffer4: document.getElementById("gemOffer4"),
 
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
