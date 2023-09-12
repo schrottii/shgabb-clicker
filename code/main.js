@@ -794,6 +794,9 @@ function updateUI() {
     renderAchievements();
     ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
 
+    // Minigame
+    updateMinigameUI();
+
     // Notifications
     ui.notifications.innerHTML = "";
     let n2 = 15;
