@@ -12,7 +12,15 @@ const currentPatchNotes = [
     "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8",
     "- Reduced default loadouts from 3 to 2",
     "- Added support for loadout slots 4 - 8",
+    "-> Balance:",
+    "- Amulet of Quick Snacks: 5k -> 10k (buff)",
+    "- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)",
+    "-> Achievements:",
+    "- Added 5 new achievements",
+    "- Added an image for artifact achievements",
+    "- Changed the image of all unlock related achievements to the unlock image",
     "-> Design:",
+    "- Gem Amount is now also displayed at the top (in a third line with Amé)",
     "- Updated all 3 social images",
     "- Changed size of social buttons",
     "- Artifacts and Achievements are now centered",
@@ -71,12 +79,14 @@ var ui = {
     siAmount: document.getElementById("siAmount"),
     siAmount2: document.getElementById("siAmount2"),
     gemAmount: document.getElementById("gemAmount"),
+    gemAmount2: document.getElementById("gemAmount2"),
     ameAmount: document.getElementById("ameAmount"),
     ameAmount2: document.getElementById("ameAmount2"),
 
     swImage: document.getElementById("swImage"),
     gsImage: document.getElementById("gsImage"),
     siImage: document.getElementById("siImage"),
+    gemImage: document.getElementById("gemImage"),
     ameImage: document.getElementById("ameImage"),
 
     upgradesl: document.getElementById("upgradesl"),
@@ -639,11 +649,13 @@ function updateArtifacts() {
         unlocks.artifacts.style.display = "none";
     }
     if (gemsUnlocked()) {
+        ui.gemImage.style.display = "unset";
         ui.gemAmount.innerHTML = game.gems + " Gems";
 
         unlocks.gems.style.display = "unset";
     }
     else {
+        ui.gemImage.style.display = "unset";
         ui.gemAmount.innerHTML = "";
 
         unlocks.gems.style.display = "none";
@@ -775,6 +787,7 @@ function updateUI() {
     ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
     ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
     ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
+    ui.gemAmount2.innerHTML = ui.gemAmount.innerHTML;
     ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
 
     // Achievements

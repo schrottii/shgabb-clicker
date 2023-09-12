@@ -95,7 +95,7 @@ function renderArtifacts() {
 	// Render em all
 	let render = "";
 	for (l = 0; l < game.al; l++) {
-		render = render + "<button onclick='artifactLoadout(" + l + ")' style='width: 12%; min-width: 96px; height: 32px; background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>" + (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l] ) + "</button>";
+		render = render + "<button onclick='artifactLoadout(" + l + ")' class='artifactLoadoutButton' style='background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>" + (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l] ) + "</button>";
 	}
 	render = render + "<br /><br />";
 
@@ -208,7 +208,7 @@ var artifacts = [
 
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", 4, { prefix: "/", desc: "But no shgabb from clicks and /10 gem chance" }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", 1e9, {prefix: "+"}),
-	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 3, { trigger: () => game.sw < 5000, desc: "While less than 5000 sandwiches" }),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", 3, { trigger: () => game.sw < 10000, desc: "While less than 10000 sandwiches" }),
 	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", 5, { desc: "But 5x longer click cooldown" }),
 	new Artifact(204, 2, "Amulet of Golden Bank", "amulet.png", "gs", 5, { trigger: () => game.stats.pttp >= 300, desc: "If the last prestige was at least 5 minutes ago" }),
 	new Artifact(205, 2, "Amulet of Slowgemming", "amulet.png", "gemchance", 5, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 seconds (not current)" }),
@@ -218,7 +218,7 @@ var artifacts = [
 	new Artifact(209, 2, "Amulet of Tides", "amulet.png", "shgabb", 7, { prefix: "x", trigger: () => game.stats.pttp % 20 >= 10, desc: "Active for 10 seconds, inactive for 10 seconds" }),
 	new Artifact(210, 2, "Amulet of Thaw", "amulet.png", "autoshgabb", 10, { prefix: "x", desc: "But fridge duration is reduced to 5s" }),
 	new Artifact(211, 2, "Amulet of Condone", "amulet.png", "si", 2, { prefix: "x", desc: "But x0.6 shgabb gain" }),
-	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "autoshgabb", 8, { prefix: "x", trigger: () => game.stats.ctp < 5, desc: "Before the fifth click in a prestige" }),
+	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "shgabb", 8, { prefix: "x", trigger: () => game.stats.ctp < 5, desc: "Before the fifth click in a prestige" }),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: "Auto Shgabb gain is multiplied by the click cooldown x 3" }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: "Shgabb gain increases by +50% for every well timed click up to 2000%" }),
