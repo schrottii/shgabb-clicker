@@ -7,10 +7,99 @@ const ctx = canvas.getContext("2d");
 let w = 256;
 let h = 256;
 
+let mousex = 0;
+let mousey = 0;
+
+let drawStartX = w / 3;
+let drawStartY = h / 3;
+
 let minigameField =
     [[0, 0, 0],
     [0, 0, 0],
     [0, 0, 0]];
+
+let hitboxes = [
+    [drawStartX - (w / 8), drawStartY],
+    [drawStartX + (w / 12), drawStartY],
+    [drawStartX + (w / 4), drawStartY],
+    [drawStartX - (w / 8), drawStartY + (h / 5)],
+    [drawStartX + (w / 12), drawStartY + (h / 5)],
+    [drawStartX + (w / 4), drawStartY + (h / 5)],
+    [drawStartX - (w / 8), drawStartY + (h / 2.5)],
+    [drawStartX + (w / 12), drawStartY + (h / 2.5)],
+    [drawStartX + (w / 4), drawStartY + (h / 2.5)]
+]
+
+canvas.addEventListener("click", onCanvasClick);
+canvas.addEventListener("mousemove", onMouseMove);
+
+function onCanvasClick() {
+    for (l in hitboxes) {
+        if (mousex >= hitboxes[l][0] && mousex <= hitboxes[l][0] + (w / 8)
+            && mousey >= hitboxes[l][1] && mousey <= hitboxes[l][1] + (h / 8)
+            && minigameField[Math.floor(l / 3)][l % 3] == 0) {
+            minigameField[Math.floor(l / 3)][l % 3] = 1;
+
+            if (minigameCheckForWinners()) {
+
+                let enemyMove = 0;
+                while (enemyMove == 0) {
+                    let randomPlaced = Math.floor(Math.random() * 9);
+                    if (minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] == 0) {
+                        minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] = 2;
+                        enemyMove = 1;
+                    }
+                }
+
+                minigameCheckForWinners();
+            }
+        }
+    }
+}
+
+function onMouseMove(e) {
+    mousex = e.clientX - canvas.offsetLeft;
+    mousey = e.clientY - canvas.offsetTop;
+}
+
+function minigameCheckForWinners() {
+    let winner = 0;
+
+    let total = 0;
+    for (x in minigameField) {
+        for (y in minigameField) {
+            if (minigameField[y][x] != 0) total += 1;
+        }
+    }
+    if (total == 9) winner = 2;
+    else {
+        for (y in minigameField) {
+            if (minigameField[y][0] == minigameField[y][1] && minigameField[y][0] == minigameField[y][2] && minigameField[y][0] != 0) {
+                winner = minigameField[y][0];
+            }
+            if (minigameField[0][y] == minigameField[1][y] && minigameField[0][y] == minigameField[2][y] && minigameField[0][y] != 0) {
+                winner = minigameField[0][y];
+            }
+        }
+        if (minigameField[0][0] == minigameField[1][1] && minigameField[1][1] == minigameField[2][2] && minigameField[0][0] != 0) {
+            winner = minigameField[0][0];
+        }
+        if (minigameField[2][0] == minigameField[1][1] && minigameField[1][1] == minigameField[0][2] && minigameField[2][0] != 0) {
+            winner = minigameField[2][0];
+        }
+    }
+
+    if (winner == 1) alert("You won!");
+    if (winner == 2) alert("She won!");
+    if (winner != 0) {
+        minigameField =
+            [[0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]];
+        return false;
+    }
+    return true;
+}
 
 function minigameClear() {
     ctx.fillStyle = "black";
@@ -57,14 +146,12 @@ function minigameDrawX(x, y) {
     ctx.stroke();
 }
 
-function minigameRenderPos(x, y, drawX, drawY) {
-    if (minigameField[y][x] == 1) minigameDrawX(drawX, drawY);
-    if (minigameField[y][x] == 2) minigameDrawCircle(drawX, drawY);
+function minigameRenderPos(x, y, X, Y) {
+    if (minigameField[y][x] == 1) minigameDrawX(X, Y);
+    if (minigameField[y][x] == 2) minigameDrawCircle(X, Y);
 }
 
 function minigameDrawField() {
-    let drawStartX = w / 3;
-    let drawStartY = h / 3;
     let drawWidth = w / 32;
 
     ctx.fillStyle = "black";
@@ -73,22 +160,8 @@ function minigameDrawField() {
     ctx.fillRect(drawStartX - (w / 8), drawStartY + (h / 8), w / 2, drawWidth);
     ctx.fillRect(drawStartX - (w / 8), drawStartY + (h / 3), w / 2, drawWidth);
 
-    minigameRenderPos(0, 0, drawStartX - (w / 8), drawStartY);
-    minigameRenderPos(1, 0, drawStartX + (w / 12), drawStartY);
-    minigameRenderPos(2, 0, drawStartX + (w / 4), drawStartY);
-    minigameRenderPos(0, 1, drawStartX - (w / 8), drawStartY + (h / 5));
-    minigameRenderPos(1, 1, drawStartX + (w / 12), drawStartY + (h / 5));
-    minigameRenderPos(2, 1, drawStartX + (w / 4), drawStartY + (h / 5));
-    minigameRenderPos(0, 2, drawStartX - (w / 8), drawStartY + (h / 2.5));
-    minigameRenderPos(1, 2, drawStartX + (w / 12), drawStartY + (h / 2.5));
-    minigameRenderPos(2, 2, drawStartX + (w / 4), drawStartY + (h / 2.5));
-
-    if (Math.random() > 0.95) {
-        for (i in minigameField) {
-            for (j in minigameField) {
-                minigameField[i][j] = Math.floor(Math.random() * 3);
-            }
-        }
+    for (l in hitboxes) {
+        minigameRenderPos(l % 3, Math.floor(l / 3), hitboxes[l][0], hitboxes[l][1]);
     }
 }
 
