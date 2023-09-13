@@ -13,6 +13,9 @@ let mousey = 0;
 let drawStartX = w / 3;
 let drawStartY = h / 3;
 
+let pointsPlayer = 0;
+let pointsHer = 0;
+
 let minigameField =
     [[0, 0, 0],
     [0, 0, 0],
@@ -41,17 +44,7 @@ function onCanvasClick() {
             minigameField[Math.floor(l / 3)][l % 3] = 1;
 
             if (minigameCheckForWinners()) {
-
-                let enemyMove = 0;
-                while (enemyMove == 0) {
-                    let randomPlaced = Math.floor(Math.random() * 9);
-                    if (minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] == 0) {
-                        minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] = 2;
-                        enemyMove = 1;
-                    }
-                }
-
-                minigameCheckForWinners();
+                minigameEnemyMove();
             }
         }
     }
@@ -60,6 +53,19 @@ function onCanvasClick() {
 function onMouseMove(e) {
     mousex = e.clientX - canvas.offsetLeft;
     mousey = e.clientY - canvas.offsetTop;
+}
+
+function minigameEnemyMove() {
+    let enemyMove = 0;
+    while (enemyMove == 0) {
+        let randomPlaced = Math.floor(Math.random() * 9);
+        if (minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] == 0) {
+            minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] = 2;
+            enemyMove = 1;
+        }
+    }
+
+    minigameCheckForWinners();
 }
 
 function minigameCheckForWinners() {
@@ -89,13 +95,26 @@ function minigameCheckForWinners() {
         }
     }
 
-    if (winner == 1) alert("You won!");
-    if (winner == 2) alert("She won!");
+    if (winner == 1) {
+        pointsPlayer += 1;
+        if (pointsPlayer % 3 == 0) {
+            game.ame += 1;
+            game.stats.ame += 1;
+        }
+        alert("You won!");
+    }
+    if (winner == 2) {
+        pointsHer += 1;
+        alert("She won!");
+    }
     if (winner != 0) {
         minigameField =
             [[0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]];
+        if (Math.random() > 0.6) {
+            minigameEnemyMove();
+        }
         return false;
     }
     return true;
@@ -169,7 +188,7 @@ function updateMinigameUI() {
     minigameDrawBackground();
     minigameDrawField();
 
-    minigameUpdateText("Shgic Shgac Shgoe - 0:0");
+    minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
 }
 
 minigameDrawBackground();
