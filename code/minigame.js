@@ -16,6 +16,8 @@ let drawStartY = h / 3;
 let pointsPlayer = 0;
 let pointsHer = 0;
 
+var canPlayTTT = false;
+
 let minigameField =
     [[0, 0, 0],
     [0, 0, 0],
@@ -51,8 +53,20 @@ function onCanvasClick() {
 }
 
 function onMouseMove(e) {
-    mousex = e.clientX - canvas.offsetLeft;
-    mousey = e.clientY - canvas.offsetTop;
+    mousex = e.clientX - canvas.getBoundingClientRect().left;
+    mousey = e.clientY - canvas.getBoundingClientRect().top;
+}
+
+function updateMinigameTime() {
+    let today = new Date();
+    let newTime = parseInt(today.getYear() + "" + (today.getUTCMonth().toString().length == 1 ? "0" + today.getUTCMonth() : today.getUTCMonth()) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate()));
+    game.tttd = newTime;
+}
+
+function compareMinigameTime() {
+    let today = new Date();
+    let newTime = parseInt(today.getYear() + "" + (today.getUTCMonth().toString().length == 1 ? "0" + today.getUTCMonth() : today.getUTCMonth()) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate()));
+    return newTime > game.tttd; // returns true if it's a new day
 }
 
 function minigameEnemyMove() {
@@ -71,6 +85,23 @@ function minigameEnemyMove() {
 function minigameCheckForWinners() {
     let winner = 0;
 
+    // Check for 3 in a row
+    for (y in minigameField) {
+        if (minigameField[y][0] == minigameField[y][1] && minigameField[y][0] == minigameField[y][2] && minigameField[y][0] != 0) {
+            winner = minigameField[y][0];
+        }
+        if (minigameField[0][y] == minigameField[1][y] && minigameField[0][y] == minigameField[2][y] && minigameField[0][y] != 0) {
+            winner = minigameField[0][y];
+        }
+    }
+    if (minigameField[0][0] == minigameField[1][1] && minigameField[1][1] == minigameField[2][2] && minigameField[0][0] != 0) {
+        winner = minigameField[0][0];
+    }
+    if (minigameField[2][0] == minigameField[1][1] && minigameField[1][1] == minigameField[0][2] && minigameField[2][0] != 0) {
+        winner = minigameField[2][0];
+    }
+
+    // Check for board full
     let total = 0;
     for (x in minigameField) {
         for (y in minigameField) {
@@ -78,35 +109,31 @@ function minigameCheckForWinners() {
         }
     }
     if (total == 9) winner = 2;
-    else {
-        for (y in minigameField) {
-            if (minigameField[y][0] == minigameField[y][1] && minigameField[y][0] == minigameField[y][2] && minigameField[y][0] != 0) {
-                winner = minigameField[y][0];
-            }
-            if (minigameField[0][y] == minigameField[1][y] && minigameField[0][y] == minigameField[2][y] && minigameField[0][y] != 0) {
-                winner = minigameField[0][y];
-            }
-        }
-        if (minigameField[0][0] == minigameField[1][1] && minigameField[1][1] == minigameField[2][2] && minigameField[0][0] != 0) {
-            winner = minigameField[0][0];
-        }
-        if (minigameField[2][0] == minigameField[1][1] && minigameField[1][1] == minigameField[0][2] && minigameField[2][0] != 0) {
-            winner = minigameField[2][0];
-        }
-    }
 
+    // Okay, who's the winner
     if (winner == 1) {
         pointsPlayer += 1;
-        if (pointsPlayer % 3 == 0) {
-            game.ame += 1;
-            game.stats.ame += 1;
-        }
-        alert("You won!");
+        game.stats.tttw += 1;
     }
     if (winner == 2) {
         pointsHer += 1;
-        alert("She won!");
+        game.stats.tttl += 1;
     }
+
+    if (pointsPlayer > 2) {
+        game.ame += 1;
+        game.stats.ame += 1;
+
+        updateMinigameTime();
+        canPlayTTT = false;
+        alert("You won!");
+    }
+    if (pointsHer > 2) {
+        updateMinigameTime();
+        canPlayTTT = false;
+        alert("Shgabb won...");
+    }
+
     if (winner != 0) {
         minigameField =
             [[0, 0, 0],
@@ -191,4 +218,5 @@ function updateMinigameUI() {
     minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
 }
 
+minigameEnemyMove();
 minigameDrawBackground();

@@ -75,6 +75,8 @@ var game = {
         hms: 0,
         hmstp: 0,
         tgems: 0,
+        tttw: 0,
+        tttl: 0,
         wads: {
             sc: 0,
             sa: 0,
@@ -90,6 +92,7 @@ var game = {
     al: 2,
     alnames: [""],
     ach: [],
+    tttd: 1,
 }
 
 const emptyGame = Object.assign({}, game, {});

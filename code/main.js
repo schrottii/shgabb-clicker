@@ -131,6 +131,7 @@ var unlocks = {
     artifacts: document.getElementById("artifactSection"),
     gems: document.getElementById("gemSection"),
     cheats: document.getElementById("cheatSection"),
+    minigameSection: document.getElementById("minigameSection"),
 }
 
 // Ad variables
@@ -795,7 +796,13 @@ function updateUI() {
     ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
 
     // Minigame
-    updateMinigameUI();
+    if (ameliorerUnlocked() && canPlayTTT) {
+        unlocks.minigameSection.style.display = "unset";
+        updateMinigameUI();
+    }
+    else {
+        unlocks.minigameSection.style.display = "none";
+    }
 
     // Notifications
     ui.notifications.innerHTML = "";
@@ -1017,7 +1024,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
-
+    canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
 }
 if (localStorage.getItem("shgabbSettings") != undefined) {
