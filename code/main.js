@@ -877,7 +877,7 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");    importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
+    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
 
 
     emptyGame.a = [];
