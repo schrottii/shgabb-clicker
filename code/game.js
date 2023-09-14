@@ -23,6 +23,10 @@ var game = {
         // Sandwich
         autoShgabb: 0,
         fridge: 0,
+        firstBoostsClicks: 0,
+        cheese: 0,
+        twoTwoFive: 0,
+        meaningOfLife: 0,
         // GS
         divineShgabb: 0,
         shortCD: 0,
@@ -30,8 +34,6 @@ var game = {
         gsBoost2: 0,
         unlockMax: 0,
         unlockMSW: 0,
-        firstBoostsClicks: 0,
-        cheese: 0,
         formaggi: 0,
         moreSilicone2: 0,
         // Silicone
@@ -56,6 +58,8 @@ var game = {
         gsBoostsShgabb: 0,
 
         AMEformaggi: 0,
+        unlockMSW2: 0,
+        siliconeBoost: 0,
         fourthArtifactSlot: 0,
     },
     stats: {

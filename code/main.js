@@ -7,11 +7,21 @@
 const gameVersion = "1.8";
 
 const currentPatchNotes = [
+    "-> Minigame:",
+    "- Added a minigame: Shgic Shgac Shgoe!",
+    "- Unlocked together with Améliorer!",
+    "- 1 attempt every day to get to 3 points before shgabb does",
+    "- Get 2 Améliorer for a win",
+    "-> New Upgrades:",
+    "- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain",
+    "- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain",
+    "- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)",
+    "- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)",
     "-> Artifact Loadouts:",
     "- Loadouts can now be given custom names by clicking on the currently selected loadout",
-    "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8",
+    "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8, costs increase",
     "- Reduced default loadouts from 3 to 2",
-    "- Added support for loadout slots 4 - 8",
+    "- Added support for loadouts 4 - 8",
     "-> Balance:",
     "- Amulet of Quick Snacks: 5k -> 10k (buff)",
     "- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)",
@@ -25,6 +35,8 @@ const currentPatchNotes = [
     "- Changed size of social buttons",
     "- Artifacts and Achievements are now centered",
     "- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)",
+    "-> Other:",
+    "- Autosave notifications are now counted",
     "- Fixed weird brown squares near Artifacts and Achievements",
     "- Fixed extra line breaks in patch notes",
 ]
@@ -53,6 +65,7 @@ var time = 0;
 var oldTime = 0;
 
 var knifeBoost = 1;
+var autoNotifications = 0;
 
 var ui = {
     gameTitle: document.getElementById("gametitle"),
@@ -323,6 +336,7 @@ function getProduction(sosnog = false) {
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+        * sandwichUpgrades.meaningOfLife.currentEffect()
     );
 }
 
@@ -351,6 +365,7 @@ function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * goldenShgabbUpgrades.moreSilicone2.currentEffect()
+        * ameliorerUpgrades.siliconeBoost.currentEffect()
         * getArtifactBoost("si")
     );
 }
@@ -377,6 +392,7 @@ function getGoldenShgabb() {
         * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
         * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
+        * sandwichUpgrades.twoTwoFive.currentEffect()
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
         * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
@@ -616,8 +632,8 @@ function updateUpgrades() {
     ui.upgradesl.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.shorterCD.render() + shgabbUpgrades.bomblike.render() + shgabbUpgrades.swChance.render();
     ui.upgradesr.innerHTML = shgabbUpgrades.critChance.render() + shgabbUpgrades.critBoost.render() + shgabbUpgrades.goodJoke.render() + shgabbUpgrades.moreSw.render();
 
-    ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render() + sandwichUpgrades.firstBoostsClicks.render();
-    ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render() + sandwichUpgrades.cheese.render();
+    ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render() + sandwichUpgrades.firstBoostsClicks.render() + sandwichUpgrades.twoTwoFive.render();
+    ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render() + sandwichUpgrades.cheese.render() + sandwichUpgrades.meaningOfLife.render();
 
     ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render() + goldenShgabbUpgrades.formaggi.render();
     ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render() + goldenShgabbUpgrades.unlockMSW.render() + goldenShgabbUpgrades.moreSilicone2.render();
@@ -628,11 +644,11 @@ function updateUpgrades() {
     ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.shgabbBoost.render() +
         ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEcritBoost.render()
         + ameliorerUpgrades.AMEfirstBoostsClicks.render() + ameliorerUpgrades.AMEbomblike.render()
-        + ameliorerUpgrades.AMEformaggi.render();
+        + ameliorerUpgrades.AMEformaggi.render() + ameliorerUpgrades.unlockMSW2.render();
     ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.achBExpo.render()
         + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render()
         + ameliorerUpgrades.AMEsiliconeFromClicks.render() + ameliorerUpgrades.gsBoostsShgabb.render()
-        + ameliorerUpgrades.fourthArtifactSlot.render();
+        + ameliorerUpgrades.siliconeBoost.render() + ameliorerUpgrades.fourthArtifactSlot.render();
 }
 
 function updateArtifacts() {
@@ -856,7 +872,8 @@ function autoSave() {
             break;
         }
     }
-    if(!newAch) createNotification("Game saved automatically");
+    autoNotifications += 1;
+    if (!newAch) createNotification("Game saved automatically " + autoNotifications);
 }
 
 function exportGame() {
