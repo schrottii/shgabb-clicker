@@ -1,4 +1,4 @@
-// Game made by Schrottii - editing or stealing is prohibited!
+﻿// Game made by Schrottii - editing or stealing is prohibited!
 // (both the minigame and the main game, lol)
 
 const canvas = document.getElementById("minigame");
@@ -114,24 +114,29 @@ function minigameCheckForWinners() {
     if (winner == 1) {
         pointsPlayer += 1;
         game.stats.tttw += 1;
+        createNotification("+1 point for you!");
     }
     if (winner == 2) {
         pointsHer += 1;
         game.stats.tttl += 1;
+        createNotification("+1 point for shgabb!");
     }
 
-    if (pointsPlayer > 2) {
-        game.ame += 1;
-        game.stats.ame += 1;
+    if (pointsPlayer > 2 && canPlayTTT) {
+        game.ame += 2;
+        game.stats.ame += 2;
+        createNotification("You won!");
+        createNotification("+2 Améliorer!");
+        createNotification("Come back tomorrow!");
 
         updateMinigameTime();
         canPlayTTT = false;
-        alert("You won!");
     }
-    if (pointsHer > 2) {
+    if (pointsHer > 2 && canPlayTTT) {
         updateMinigameTime();
         canPlayTTT = false;
-        alert("Shgabb won...");
+        createNotification("Shgabb won... no reward...");
+        createNotification("Come back tomorrow!");
     }
 
     if (winner != 0) {
