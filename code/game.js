@@ -106,4 +106,5 @@ var settings = {
     adMusic: true,
     displayCurrent: false,
     hideMaxed: false,
+    hideUnlevel: false,
 }

@@ -102,13 +102,15 @@ function minigameCheckForWinners() {
     }
 
     // Check for board full
-    let total = 0;
-    for (x in minigameField) {
-        for (y in minigameField) {
-            if (minigameField[y][x] != 0) total += 1;
+    if (winner != 1) {
+        let total = 0;
+        for (x in minigameField) {
+            for (y in minigameField) {
+                if (minigameField[y][x] != 0) total += 1;
+            }
         }
+        if (total == 9) winner = 2;
     }
-    if (total == 9) winner = 2;
 
     // Okay, who's the winner
     if (winner == 1) {

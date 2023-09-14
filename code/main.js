@@ -36,6 +36,7 @@ const currentPatchNotes = [
     "- Artifacts and Achievements are now centered",
     "- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)",
     "-> Other:",
+    "- Added a setting to hide the unlevel button",
     "- Autosave notifications are now counted",
     "- Fixed weird brown squares near Artifacts and Achievements",
     "- Fixed extra line breaks in patch notes",
@@ -475,6 +476,12 @@ function toggleCurrent() {
 function hideMaxed() {
     settings.hideMaxed = !settings.hideMaxed;
     createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
+    updateUpgrades();
+}
+
+function toggleUnlevel() {
+    settings.hideUnlevel = !settings.hideUnlevel;
+    createNotification("Unlevel button " + (settings.hideUnlevel ? "ON" : "OFF"));
     updateUpgrades();
 }
 
