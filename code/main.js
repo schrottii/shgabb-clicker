@@ -4,42 +4,42 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.7.2";
+const gameVersion = "1.8";
 
 const currentPatchNotes = [
-    "-> Ads:",
-    "- The least used ad boost is now less likely to appear",
-    "- The videos now all have an equal chance of appearing",
-    "- Fixed an ad exploit",
-    "- Fixed repeated ads loaded messages",
-    "-> Other:",
-    "- Moved the Silicone V and Golden Shgabb V achievements",
-    "- Removed a double line between stats and achievements",
-    "- Fixed not being able to see half of the page before unlocking Amé",
-    "- Fixed show/hide maxed setting using incorrect notifications",
-    "v1.7.1",
-    "-> Améliorer:",
-    "- New Améliorer Upgrade: Achievements Become Exponential",
-    "- New Améliorer Upgrade: GS Boosts Shgabb",
-    "- Added the ability to reset Améliorer and Upgrades on prestige (10 minutes)",
-    "- Re-sorted Améliorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)",
+    "-> Minigame:",
+    "- Added a minigame: Shgic Shgac Shgoe!",
+    "- Unlocked together with Améliorer!",
+    "- 1 attempt every day to get to 3 points before shgabb does",
+    "- Get 2 Améliorer for a win",
+    "-> New Upgrades:",
+    "- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain",
+    "- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain",
+    "- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)",
+    "- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)",
+    "-> Artifact Loadouts:",
+    "- Loadouts can now be given custom names by clicking on the currently selected loadout",
+    "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8, costs increase",
+    "- Reduced default loadouts from 3 to 2",
+    "- Added support for loadouts 4 - 8",
     "-> Balance:",
-    "- Tripled the effect of Silicone From Clicks (3x the passive production now)",
-    "- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter",
-    "- Massively reduced costs of Bomblike after level 10",
-    "- Massively reduced cost increase of Crit. Boost at level 21+",
-    "- Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15",
-    "- Increased effect of Shgabb Boost (AME) from +30%/level to +50%/level",
-    "",
-    "- Amulet of Paroxysm: no longer removes the ability to get gems, rather decreases it by /10",
-    "- Amulet of Active Silicone: x3 -> x3.6",
-    "- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3",
-    "- Sosnog: Added a x3 shgabb boost",
+    "- Amulet of Quick Snacks: 5k -> 10k (buff)",
+    "- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)",
+    "-> Achievements:",
+    "- Added 10 new achievements (40 -> 50)",
+    "- Added images for artifact and minigame achievements",
+    "- Changed the image of all unlock related achievements to the unlock image",
+    "-> Design:",
+    "- Gem Amount is now also displayed at the top (in a third line with Amé)",
+    "- Updated all 3 social images",
+    "- Changed size of social buttons",
+    "- Artifacts and Achievements are now centered",
+    "- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)",
     "-> Other:",
-    "- Silicone from clicks now triggers before the click cooldown gets reset",
-    "- Updated Silicone Implants artifact description since it disables silicone gain from clicks as well",
-    "- Updated requirement of the Amé: Part III achievement (40 -> 25)",
-    "- Changed design of the Amé convert buttons",
+    "- Added a setting to hide the unlevel button",
+    "- Autosave notifications are now counted",
+    "- Fixed weird brown squares near Artifacts and Achievements",
+    "- Fixed extra line breaks in patch notes",
 ]
 
 // BETA (cheating)
@@ -66,6 +66,7 @@ var time = 0;
 var oldTime = 0;
 
 var knifeBoost = 1;
+var autoNotifications = 0;
 
 var ui = {
     gameTitle: document.getElementById("gametitle"),
@@ -92,12 +93,14 @@ var ui = {
     siAmount: document.getElementById("siAmount"),
     siAmount2: document.getElementById("siAmount2"),
     gemAmount: document.getElementById("gemAmount"),
+    gemAmount2: document.getElementById("gemAmount2"),
     ameAmount: document.getElementById("ameAmount"),
     ameAmount2: document.getElementById("ameAmount2"),
 
     swImage: document.getElementById("swImage"),
     gsImage: document.getElementById("gsImage"),
     siImage: document.getElementById("siImage"),
+    gemImage: document.getElementById("gemImage"),
     ameImage: document.getElementById("ameImage"),
 
     upgradesl: document.getElementById("upgradesl"),
@@ -119,6 +122,7 @@ var ui = {
     gemOffer1: document.getElementById("gemOffer1"),
     gemOffer2: document.getElementById("gemOffer2"),
     gemOffer3: document.getElementById("gemOffer3"),
+    gemOffer4: document.getElementById("gemOffer4"),
 
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
@@ -141,6 +145,7 @@ var unlocks = {
     artifacts: document.getElementById("artifactSection"),
     gems: document.getElementById("gemSection"),
     cheats: document.getElementById("cheatSection"),
+    minigameSection: document.getElementById("minigameSection"),
 }
 
 // Ad variables
@@ -332,6 +337,7 @@ function getProduction(sosnog = false) {
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+        * sandwichUpgrades.meaningOfLife.currentEffect()
     );
 }
 
@@ -360,6 +366,7 @@ function getSiliconeProduction() {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * goldenShgabbUpgrades.moreSilicone2.currentEffect()
+        * ameliorerUpgrades.siliconeBoost.currentEffect()
         * getArtifactBoost("si")
     );
 }
@@ -386,6 +393,7 @@ function getGoldenShgabb() {
         * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
         * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
+        * sandwichUpgrades.twoTwoFive.currentEffect()
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
         * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
@@ -468,6 +476,12 @@ function toggleCurrent() {
 function hideMaxed() {
     settings.hideMaxed = !settings.hideMaxed;
     createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
+    updateUpgrades();
+}
+
+function toggleUnlevel() {
+    settings.hideUnlevel = !settings.hideUnlevel;
+    createNotification("Unlevel button " + (settings.hideUnlevel ? "ON" : "OFF"));
     updateUpgrades();
 }
 
@@ -625,8 +639,8 @@ function updateUpgrades() {
     ui.upgradesl.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.shorterCD.render() + shgabbUpgrades.bomblike.render() + shgabbUpgrades.swChance.render();
     ui.upgradesr.innerHTML = shgabbUpgrades.critChance.render() + shgabbUpgrades.critBoost.render() + shgabbUpgrades.goodJoke.render() + shgabbUpgrades.moreSw.render();
 
-    ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render() + sandwichUpgrades.firstBoostsClicks.render();
-    ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render() + sandwichUpgrades.cheese.render();
+    ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render() + sandwichUpgrades.firstBoostsClicks.render() + sandwichUpgrades.twoTwoFive.render();
+    ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render() + sandwichUpgrades.cheese.render() + sandwichUpgrades.meaningOfLife.render();
 
     ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render() + goldenShgabbUpgrades.formaggi.render();
     ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render() + goldenShgabbUpgrades.unlockMSW.render() + goldenShgabbUpgrades.moreSilicone2.render();
@@ -637,11 +651,11 @@ function updateUpgrades() {
     ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.shgabbBoost.render() +
         ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEcritBoost.render()
         + ameliorerUpgrades.AMEfirstBoostsClicks.render() + ameliorerUpgrades.AMEbomblike.render()
-        + ameliorerUpgrades.AMEformaggi.render();
+        + ameliorerUpgrades.AMEformaggi.render() + ameliorerUpgrades.unlockMSW2.render();
     ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.achBExpo.render()
         + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render()
         + ameliorerUpgrades.AMEsiliconeFromClicks.render() + ameliorerUpgrades.gsBoostsShgabb.render()
-        + ameliorerUpgrades.fourthArtifactSlot.render();
+        + ameliorerUpgrades.siliconeBoost.render() + ameliorerUpgrades.fourthArtifactSlot.render();
 }
 
 function updateArtifacts() {
@@ -659,11 +673,13 @@ function updateArtifacts() {
         unlocks.artifacts.style.display = "none";
     }
     if (gemsUnlocked()) {
+        ui.gemImage.style.display = "unset";
         ui.gemAmount.innerHTML = game.gems + " Gems";
 
         unlocks.gems.style.display = "unset";
     }
     else {
+        ui.gemImage.style.display = "unset";
         ui.gemAmount.innerHTML = "";
 
         unlocks.gems.style.display = "none";
@@ -795,11 +811,21 @@ function updateUI() {
     ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
     ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
     ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
+    ui.gemAmount2.innerHTML = ui.gemAmount.innerHTML;
     ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
 
     // Achievements
     renderAchievements();
     ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
+
+    // Minigame
+    if (ameliorerUnlocked() && canPlayTTT) {
+        unlocks.minigameSection.style.display = "unset";
+        updateMinigameUI();
+    }
+    else {
+        unlocks.minigameSection.style.display = "none";
+    }
 
     // Notifications
     ui.notifications.innerHTML = "";
@@ -853,11 +879,12 @@ function autoSave() {
             break;
         }
     }
-    if(!newAch) createNotification("Game saved automatically");
+    autoNotifications += 1;
+    if (!newAch) createNotification("Game saved automatically " + autoNotifications);
 }
 
 function exportGame() {
-    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");    importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
+    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
 
 
     emptyGame.a = [];
@@ -1021,7 +1048,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
-
+    canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
 }
 if (localStorage.getItem("shgabbSettings") != undefined) {
@@ -1106,7 +1133,7 @@ ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BET
 let patchNotesText = "Version " + gameVersion + ":";
 for (p in currentPatchNotes) {
     if (currentPatchNotes[p].substr(0, 1) == "v") patchNotesText = patchNotesText + "<br /><br /><br />Version " + currentPatchNotes[p].substr(1)  + ":";
-    else patchNotesText = patchNotesText + (currentPatchNotes[p].substr(0, 2) == "->" && p != 0 ? "<br />" : "") + "<br />" + currentPatchNotes[p];
+    else patchNotesText = patchNotesText + (p != 0 && currentPatchNotes[p - 1].substr(0, 1) != "v" && currentPatchNotes[p].substr(0, 2) == "->" ? "<br />" : "") + "<br />" + currentPatchNotes[p];
 }
 ui.patchNotes.innerHTML = patchNotesText;
 

@@ -1,5 +1,5 @@
 body {
-/*    background-color: black;*/
+    /*    background-color: black;*/
     background-image: url("images/shgabb-background.png");
     background-size: cover;
     color: white;
@@ -11,6 +11,7 @@ h2 {
     margin-top: 0px;
     margin-bottom: 0px;
 }
+
 h3 {
     margin-top: 0px;
     margin-bottom: 0px;
@@ -25,16 +26,16 @@ h3 {
     text-align: center;
 }
 
+.settingButton:hover {
+    filter: brightness(120%);
+    transition: 0.3s;
+}
+
 .prestigeButton {
     background-color: palegoldenrod;
     color: black;
     border: 3px solid gold;
     font-size: 18px;
-}
-
-.settingButton:hover{
-    filter: brightness(120%);
-    transition: 0.3s;
 }
 
 .clickButton {
@@ -54,10 +55,12 @@ h3 {
     min-height: 108px;
     max-width: 420px;
 }
+
     .upgrade:hover {
         filter: brightness(90%);
         transition: 0.2s;
     }
+
     .upgrade:active {
         filter: brightness(80%);
     }
@@ -68,11 +71,10 @@ h3 {
     margin-right: auto;
     border: 4px ridge white;
     width: 6%;
-    min-height: 160px;
-    max-height: 160px;
-    min-width: 160px;
+    height: 160px;
+    min-width: 140px;
     max-width: 320px;
-    float: left;
+    vertical-align: top;
 }
 
     .artifact:hover {
@@ -83,6 +85,14 @@ h3 {
     .artifact:active {
         filter: brightness(80%);
     }
+
+.artifactLoadoutButton {
+    width: 15%;
+    min-width: 104px;
+    height: 32px;
+    font-size: 12px;
+    white-space: nowrap;
+}
 
 .ameliorerButton {
     width: 24%;
@@ -186,6 +196,7 @@ progress {
         color: red;
     }
 }
+
 @keyframes change-color2 {
     0% {
         background: red;

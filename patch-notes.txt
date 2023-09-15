@@ -15,6 +15,7 @@ All versions:
 1.7
 1.7.1
 1.7.2
+1.8
 
 
 
@@ -418,3 +419,47 @@ Version 1.7.2:
 - Removed a double line between stats and achievements
 - Fixed not being able to see half of the page before unlocking Amé
 - Fixed show/hide maxed setting using incorrect notifications
+
+
+
+2023/09/15 1.8:
+Version 1.8:
+-> Minigame:
+- Added a minigame: Shgic Shgac Shgoe!
+- Unlocked together with Améliorer!
+- 1 attempt every day to get to 3 points before shgabb does
+- Get 2 Améliorer for a win
+
+-> New Upgrades:
+- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain
+- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain
+- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)
+- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)
+
+-> Artifact Loadouts:
+- Loadouts can now be given custom names by clicking on the currently selected loadout
+- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8, costs increase
+- Reduced default loadouts from 3 to 2
+- Added support for loadouts 4 - 8
+
+-> Balance:
+- Amulet of Quick Snacks: 5k -> 10k (buff)
+- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)
+
+-> Achievements:
+- Added 10 new achievements (40 -> 50)
+- Added images for artifact and minigame achievements
+- Changed the image of all unlock related achievements to the unlock image
+
+-> Design:
+- Gem Amount is now also displayed at the top (in a third line with Amé)
+- Updated all 3 social images
+- Changed size of social buttons
+- Artifacts and Achievements are now centered
+- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)
+
+-> Other:
+- Added a setting to hide the unlevel button
+- Autosave notifications are now counted
+- Fixed weird brown squares near Artifacts and Achievements
+- Fixed extra line breaks in patch notes
