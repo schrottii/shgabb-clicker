@@ -46,7 +46,7 @@ const currentPatchNotes = [
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: true,
+    value: false,
     writable: false,
     enumerable: true,
     configurable: false
