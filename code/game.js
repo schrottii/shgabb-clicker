@@ -79,6 +79,8 @@ var game = {
         hms: 0,
         hmstp: 0,
         tgems: 0,
+        tttpw: 0,
+        tttlp: 0,
         tttw: 0,
         tttl: 0,
         wads: {

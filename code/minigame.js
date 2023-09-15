@@ -115,18 +115,19 @@ function minigameCheckForWinners() {
     // Okay, who's the winner
     if (winner == 1) {
         pointsPlayer += 1;
-        game.stats.tttw += 1;
+        game.stats.tttpw += 1;
         createNotification("+1 point for you!");
     }
     if (winner == 2) {
         pointsHer += 1;
-        game.stats.tttl += 1;
+        game.stats.tttpl += 1;
         createNotification("+1 point for shgabb!");
     }
 
     if (pointsPlayer > 2 && canPlayTTT) {
         game.ame += 2;
         game.stats.ame += 2;
+        game.stats.tttw += 1;
         createNotification("You won!");
         createNotification("+2 Améliorer!");
         createNotification("Come back tomorrow!");
@@ -137,6 +138,8 @@ function minigameCheckForWinners() {
     if (pointsHer > 2 && canPlayTTT) {
         updateMinigameTime();
         canPlayTTT = false;
+
+        game.stats.tttl += 1;
         createNotification("Shgabb won... no reward...");
         createNotification("Come back tomorrow!");
     }
