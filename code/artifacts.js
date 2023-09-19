@@ -60,7 +60,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(220, 220, 220)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")" + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
+		return "<button class='artifact' onclick='clickArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
 	}
 }
 
@@ -78,6 +78,11 @@ function handleArtifactsFirstTime() {
 		game.a.push(0);
 		createNotification("Artifacts awarded for past clicks successfully!");
     }
+}
+
+function getArtifactLevel(id) {
+	if (game.alvl[id] == undefined) game.alvl[id] = 1;
+	return game.alvl[id];
 }
 
 function getArtifactBoost(currency) {
@@ -103,9 +108,9 @@ function renderArtifacts() {
 	}
 	render = render + "<br />";
 
-	render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton'>Upgrade</button>";
-	render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton'>Select</button>";
-	render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton'>(soon)</button>";
+	if (artifactMode != "select") render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton'>Select</button>";
+	if (artifactMode != "upgrade") render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton'>Upgrade</button>";
+	if (artifactMode != "destroy") render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton'>(soon)</button>";
 	render = render + "<br />";
 
 	for (a in artifacts) {
@@ -213,6 +218,14 @@ function getArtifactByID(id) {
 
 function getMaxArtifactAmount() {
 	return 3 + ameliorerUpgrades.fourthArtifactSlot.currentEffect();
+}
+
+function clickArtifact(id) {
+	switch (artifactMode) {
+		case "select":
+			switchArtifact(id);
+			break;
+    }
 }
 
 function switchArtifact(id) {

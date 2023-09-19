@@ -10,6 +10,7 @@ const currentPatchNotes = [
     "- Added 7 new quotes",
     "- Increased auto save time from 3 to 5 seconds",
     "- Increased Stronger Clicks ad boost from 3x to 5x",
+    "- Increased brightness of the background of equipped artifacts"
 ]
 
 // BETA (cheating)

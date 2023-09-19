@@ -94,6 +94,7 @@ var game = {
         }
     },
     a: [],
+    alvl: {},
     aeqi: [],
     alo: [[], [], []],
     al: 2,
