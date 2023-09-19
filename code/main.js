@@ -4,9 +4,15 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.8";
+const gameVersion = "1.8.1";
 
 const currentPatchNotes = [
+    "- Improved enemy's decision making in the minigame",
+    "- Fixed Améliorer Upgrades being reset even if the option is not activated",
+    "- Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked",
+    "- Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades",
+    "- Fixed auto save notifications appearing at the top again",
+    "v1.8",
     "-> Minigame:",
     "- Added a minigame: Shgic Shgac Shgoe!",
     "- Unlocked together with Améliorer!",
@@ -544,7 +550,7 @@ function prestigeButton() {
 
         game.gemboost = 1;
 
-        if (ui.ameReset.value == "true") ameReset();
+        if (ui.ameReset.checked == true) ameReset();
 
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");
@@ -622,6 +628,12 @@ function ameReset() {
 
     for (let a in siliconeShgabbUpgrades) {
         game.upgradeLevels[siliconeShgabbUpgrades[a].ID] = Math.min((siliconeShgabbUpgrades[a].getMax() != undefined ? siliconeShgabbUpgrades[a].getMax() : game.upgradeLevels[siliconeShgabbUpgrades[a].ID]), game.upgradeLevels[siliconeShgabbUpgrades[a].ID]);
+    }
+
+    for (let l in game.alo) {
+        while (game.alo[l].length > getMaxArtifactAmount()) {
+            game.alo[l].pop();
+        }
     }
 
     ui.ameReset.checked = false;
@@ -841,10 +853,10 @@ function updateUI() {
     }
     if (currentNotifications[(Object.keys(currentNotifications).length - 1)] != undefined) {
         if (currentNotifications[Object.keys(currentNotifications).length - 1][1] > 12
-            && currentNotifications[Object.keys(currentNotifications).length - 1][0] != "Game saved automatically") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
+            && currentNotifications[Object.keys(currentNotifications).length - 1][0].substr(0, 10) != "Game saved") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
         else if (currentNotifications[(Object.keys(currentNotifications).length - 2)] != undefined) {
             if (currentNotifications[Object.keys(currentNotifications).length - 2][1] > 12
-                && currentNotifications[Object.keys(currentNotifications).length - 2][0] != "Game saved automatically") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 2][0]
+                && currentNotifications[Object.keys(currentNotifications).length - 2][0].substr(0, 10) != "Game saved") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 2][0]
             else ui.newestNotification.innerHTML = "";
         }
         else ui.newestNotification.innerHTML = "";
