@@ -225,6 +225,10 @@ function clickArtifact(id) {
 		case "select":
 			switchArtifact(id);
 			break;
+		case "upgrade":
+			upgradeArtifact(id);
+			updateArtifacts();
+			break;
     }
 }
 
@@ -235,6 +239,14 @@ function switchArtifact(id) {
 
 	freezeTime();
 	updateArtifacts();
+}
+
+function upgradeArtifact(id) {
+	if (game.alvl[id] == undefined) game.alvl[id] = 1;
+	if (game.alvl[id] < 3 && game.artifactScrap >= 100 && confirm("Do you really want to upgrade this?")) {
+		game.artifactScrap -= 100;
+		game.alvl[id] += 1;
+	}
 }
 
 var artifacts = [
