@@ -10,6 +10,7 @@ var game = {
     ameUp: [0, 0, 0, 0],
     gems: 0,
     gemboost: 1,
+    artifactScrap: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
