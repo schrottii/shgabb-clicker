@@ -71,6 +71,40 @@ function compareMinigameTime() {
 
 function minigameEnemyMove() {
     let enemyMove = 0;
+    for (y in minigameField) {
+        if (minigameField[y][0] == 2 && minigameField[y][1] == 2 && minigameField[y][2] == 0) {
+            minigameField[y][2] = 2;
+            enemyMove = 1;
+            break;
+        }
+        if (minigameField[y][0] == 2 && minigameField[y][1] == 0 && minigameField[y][2] == 2) {
+            minigameField[y][1] = 2;
+            enemyMove = 1;
+            break;
+        }
+        if (minigameField[y][0] == 0 && minigameField[y][1] == 2 && minigameField[y][2] == 2) {
+            minigameField[y][0] = 2;
+            enemyMove = 1;
+            break;
+        }
+
+        if (minigameField[0][y] == 2 && minigameField[1][y] == 2 && minigameField[2][y] == 0) {
+            minigameField[2][y] = 2;
+            enemyMove = 1;
+            break;
+        }
+        if (minigameField[0][y] == 2 && minigameField[1][y] == 0 && minigameField[2][y] == 2) {
+            minigameField[1][y] = 2;
+            enemyMove = 1;
+            break;
+        }
+        if (minigameField[0][y] == 0 && minigameField[1][y] == 2 && minigameField[2][y] == 2) {
+            minigameField[0][y] = 2;
+            enemyMove = 1;
+            break;
+        }
+    }
+
     while (enemyMove == 0) {
         let randomPlaced = Math.floor(Math.random() * 9);
         if (minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] == 0) {

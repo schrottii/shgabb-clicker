@@ -16,6 +16,7 @@ All versions:
 1.7.1
 1.7.2
 1.8
+1.8.1
 
 
 
@@ -463,3 +464,13 @@ Version 1.8:
 - Autosave notifications are now counted
 - Fixed weird brown squares near Artifacts and Achievements
 - Fixed extra line breaks in patch notes
+
+
+
+2023/09/19 1.8.1:
+Version 1.8.1:
+- Improved enemy's decision making in the minigame
+- Fixed Améliorer Upgrades being reset even if the option is not activated
+- Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked
+- Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades
+- Fixed auto save notifications appearing at the top again

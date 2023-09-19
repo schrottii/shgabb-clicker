@@ -112,6 +112,9 @@ function artifactLoadout(l) {
 		game.alo.push([]);
     }
 	if (game.alo[l].length > 0) {
+		while (game.alo[l].length > getMaxArtifactAmount()) {
+			game.alo[l].pop();
+        }
 		game.aeqi = game.alo[l];
 	}
 	else {
@@ -184,9 +187,13 @@ function getArtifactByID(id) {
 	}
 }
 
+function getMaxArtifactAmount() {
+	return 3 + ameliorerUpgrades.fourthArtifactSlot.currentEffect();
+}
+
 function switchArtifact(id) {
 	if (getArtifactByID(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
-	else if (game.aeqi.length < 3 + ameliorerUpgrades.fourthArtifactSlot.currentEffect()) game.aeqi.push(id);
+	else if (game.aeqi.length < getMaxArtifactAmount()) game.aeqi.push(id);
 	game.alo[selectedLoadout] = game.aeqi;
 
 	freezeTime();
