@@ -60,9 +60,11 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(190, 190, 190)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")" + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
+		return "<button class='artifact' onclick='switchArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(220, 220, 220)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")" + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
 	}
 }
+
+var artifactMode = "select";
 
 function artifactsUnlocked() {
 	return game.stats.hms >= 1000;
@@ -99,7 +101,12 @@ function renderArtifacts() {
 	for (l = 0; l < game.al; l++) {
 		render = render + "<button onclick='artifactLoadout(" + l + ")' class='artifactLoadoutButton' style='background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>" + (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l] ) + "</button>";
 	}
-	render = render + "<br /><br />";
+	render = render + "<br />";
+
+	render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton'>Upgrade</button>";
+	render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton'>Select</button>";
+	render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton'>(soon)</button>";
+	render = render + "<br />";
 
 	for (a in artifacts) {
 		if (artifacts[a].isUnlocked()) {
@@ -107,6 +114,21 @@ function renderArtifacts() {
 		}
 	}
 	return render;
+}
+
+function changeArtifactMode(nr) {
+	switch (nr) {
+		case 0:
+			artifactMode = "select";
+			break;
+		case 1:
+			artifactMode = "upgrade";
+			break;
+		case 2:
+			artifactMode = "destroy";
+			break;
+	}
+	updateArtifacts();
 }
 
 function artifactLoadout(l) {
