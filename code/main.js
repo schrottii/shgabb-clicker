@@ -4,55 +4,20 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.8.1";
+const gameVersion = "1.9";
 
 const currentPatchNotes = [
-    "- Improved enemy's decision making in the minigame",
-    "- Fixed Améliorer Upgrades being reset even if the option is not activated",
-    "- Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked",
-    "- Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades",
-    "- Fixed auto save notifications appearing at the top again",
-    "v1.8",
-    "-> Minigame:",
-    "- Added a minigame: Shgic Shgac Shgoe!",
-    "- Unlocked together with Améliorer!",
-    "- 1 attempt every day to get to 3 points before shgabb does",
-    "- Get 2 Améliorer for a win",
-    "-> New Upgrades:",
-    "- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain",
-    "- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain",
-    "- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)",
-    "- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)",
-    "-> Artifact Loadouts:",
-    "- Loadouts can now be given custom names by clicking on the currently selected loadout",
-    "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8, costs increase",
-    "- Reduced default loadouts from 3 to 2",
-    "- Added support for loadouts 4 - 8",
-    "-> Balance:",
-    "- Amulet of Quick Snacks: 5k -> 10k (buff)",
-    "- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)",
-    "-> Achievements:",
-    "- Added 10 new achievements (40 -> 50)",
-    "- Added images for artifact and minigame achievements",
-    "- Changed the image of all unlock related achievements to the unlock image",
-    "-> Design:",
-    "- Gem Amount is now also displayed at the top (in a third line with Amé)",
-    "- Updated all 3 social images",
-    "- Changed size of social buttons",
-    "- Artifacts and Achievements are now centered",
-    "- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)",
-    "-> Other:",
-    "- Added a setting to hide the unlevel button",
-    "- Autosave notifications are now counted",
-    "- Fixed weird brown squares near Artifacts and Achievements",
-    "- Fixed extra line breaks in patch notes",
+    "- Added 7 new quotes",
+    "- Increased auto save time from 3 to 5 seconds",
+    "- Increased Stronger Clicks ad boost from 3x to 5x",
+    ".",
 ]
 
 // BETA (cheating)
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false
@@ -60,7 +25,7 @@ Object.defineProperty(BETA, 'isBeta', {
 
 // Various variables
 
-var autoSaveTime = 3;
+var autoSaveTime = 5;
 var quoteTime = 15;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
@@ -102,6 +67,8 @@ var ui = {
     gemAmount2: document.getElementById("gemAmount2"),
     ameAmount: document.getElementById("ameAmount"),
     ameAmount2: document.getElementById("ameAmount2"),
+
+    artifactScrapAmount: document.getElementById("artifactScrapAmount"),
 
     swImage: document.getElementById("swImage"),
     gsImage: document.getElementById("gsImage"),
@@ -164,7 +131,7 @@ var currentBoost = "none";
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone"];
 const boostTexts = {
-    strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 5 minutes",
+    strongerClicks: "Stronger Clicks: Get 5x shgabb from clicks for 5 minutes",
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
@@ -215,6 +182,13 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "Stop pretending I'm an hamburger - Barduzzi",
     "touch my buttons :uwu: - shgabb",
     "onions are literally a mass torture device - elmenda452",
+    "you can just throw your oponion if you want - elmenda452",
+    "Thanks redstone repeater from Minecraft - slowmerger",
+    "my brain cells have disappeared a long time ago - Barduzzi",
+    "My mom feeds me with petroleum - slowmerger",
+    "silicone shgabb is attracting me - shgabb",
+    "nice to become the grim reaper - elmenda452",
+    "but eh it could help them grannies - elmenda452"
 ];
 
 // Notations
@@ -222,7 +196,6 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
 
 // More beta stuff
-
 unlocks.cheats.style.display = BETA.isBeta ? "unset" : "none";
 
 function cheatEngine(type) {
@@ -941,7 +914,7 @@ function loop(tick) {
     }
 
     if (autoSaveTime <= 0) {
-        autoSaveTime = 3;
+        autoSaveTime = 5;
         autoSave();
     }
     if (quoteTime <= 0) {

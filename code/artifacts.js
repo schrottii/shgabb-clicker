@@ -92,6 +92,8 @@ var selectedLoadout = 0;
 var rep7 = "ey";
 
 function renderArtifacts() {
+	ui.artifactScrapAmount.innerHTML = "0 Artifact Scrap";
+
 	// Render em all
 	let render = "";
 	for (l = 0; l < game.al; l++) {
