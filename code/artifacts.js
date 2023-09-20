@@ -60,7 +60,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='clickArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + this.amount) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.amount - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
+		return "<button class='artifact' onclick='clickArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + getArtifactEffect(this.ID)) : ((this.prefix != "x" ? this.prefix : "+") + fn((getArtifactEffect(this.ID) - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.desc ? "<br/>" + this.desc : "") + "</button>";
 	}
 }
 
@@ -85,11 +85,16 @@ function getArtifactLevel(id) {
 	return game.alvl[id];
 }
 
+function getArtifactEffect(id) {
+	if (typeof (getArtifactByID(id).amount) == "function") return getArtifactByID(id).amount(getArtifactLevel(id));
+	return getArtifactByID(id).amount;
+}
+
 function getArtifactBoost(currency) {
 	let boost = 1;
 	for (let arti in artifacts) {
 		if (artifacts[arti].boost == currency) {
-			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger()) boost *= artifacts[arti].amount;
+			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger()) boost *= getArtifactEffect(artifacts[arti].ID);
 		}
 	}
 	return boost;
@@ -250,7 +255,7 @@ function upgradeArtifact(id) {
 }
 
 var artifacts = [
-	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", 1.4,),
+	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", level => 1 + 0.4 * level),
 	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", 1.2),
 	new Artifact(102, 1, "White Ring", "ring.png", "sw", 1.5),
 	new Artifact(103, 1, "Light Blue Ring", "ring.png", "si", 1.5),
