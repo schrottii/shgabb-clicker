@@ -84,6 +84,7 @@ var game = {
         tttlp: 0,
         tttw: 0,
         tttl: 0,
+        artifactScrap: 0,
         wads: {
             sc: 0,
             sa: 0,

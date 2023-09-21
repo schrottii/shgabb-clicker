@@ -75,6 +75,10 @@ function artifactsUnlocked() {
 	return game.stats.hms >= 1000;
 }
 
+function artifactUpgradingUnlocked() {
+	return game.stats.artifactScrap > 0 || game.artifactScrap > 0;
+}
+
 function handleArtifactsFirstTime() {
 	if (!game.a.includes(0)) {
 		for (i = 0; i < Math.ceil(game.stats.clicks / 5); i++) {
@@ -109,8 +113,6 @@ var selectedLoadout = 0;
 var rep7 = "ey";
 
 function renderArtifacts() {
-	ui.artifactScrapAmount.innerHTML = game.artifactScrap + " Artifact Scrap";
-
 	// Render em all
 	let render = "";
 	for (l = 0; l < game.al; l++) {
@@ -118,10 +120,15 @@ function renderArtifacts() {
 	}
 	render = render + "<br />";
 
-	if (artifactMode != "select") render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton'>Select</button>";
-	if (artifactMode != "upgrade") render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton'>Upgrade</button>";
-	if (artifactMode != "destroy") render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton'>(soon)</button>";
-	render = render + "<br />";
+	if (artifactUpgradingUnlocked()) {
+		ui.artifactScrapAmount.innerHTML = `<img class="currency" src="images/currencies/artifactscrap.png" />` + game.artifactScrap + " Artifact Scrap";
+
+		render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";
+		render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "upgrade" ? "white" : "gray") + "'>Upgrade</button>";
+		render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "destroy" ? "white" : "gray") + "'>(soon)</button>";
+		render = render + "<br />";
+	}
+	else ui.artifactScrapAmount.innerHTML = "";
 
 	for (a in artifacts) {
 		if (artifacts[a].isUnlocked()) {
@@ -251,10 +258,20 @@ function switchArtifact(id) {
 	updateArtifacts();
 }
 
+function getScrapCost(level) {
+	switch (level) {
+		case 1:
+			return 100;
+		case 2:
+			return 250;
+	}
+	return 0;
+}
+
 function upgradeArtifact(id) {
 	if (game.alvl[id] == undefined) game.alvl[id] = 1;
-	if (game.alvl[id] < 3 && game.artifactScrap >= 100 && confirm("Do you really want to upgrade this?")) {
-		game.artifactScrap -= 100;
+	if (game.alvl[id] < 3 && game.artifactScrap >= getScrapCost(game.alvl[id]) && confirm("Use " + getScrapCost(game.alvl[id]) + " artifact scrap to upgrade this?")) {
+		game.artifactScrap -= getScrapCost(game.alvl[id]);
 		game.alvl[id] += 1;
 	}
 }
