@@ -254,7 +254,7 @@ function clickButton() {
         game.stats.shgabbtp += amount;
 
         if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.33) {
-            knifeBoost = Math.min(knifeBoost + 0.5, 20);
+            knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 20);
         }
         else knifeBoost = 1;
 
@@ -312,7 +312,7 @@ function getProduction(sosnog = false) {
         * getArtifactBoost("clickshgabb")
         * knifeBoost
         * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.001 * getArtifactLevel(302) : 1)
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
@@ -329,7 +329,7 @@ function getAutoProduction(sosnog2 = false) {
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("shgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.001 * getArtifactLevel(302) : 1)
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
@@ -337,7 +337,7 @@ function getAutoProduction(sosnog2 = false) {
         + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 10 : 1)
-        * (getArtifactByID(300).isEquipped() ? Math.max(1, (3 * game.clickCooldown + 1)) : 1)
+        * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
     );
 }
 
@@ -352,7 +352,7 @@ function getSiliconeProduction() {
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? 3 : 1);
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? (1 + (getArtifactLevel(304) * 2)) : 1);
 }
 
 function getCooldown() {
