@@ -46,7 +46,7 @@ function gemOffer(i) {
             }
             break;
         case 3:
-            if (game.gems > 49 && (game.a.length - 1) < artifacts.length - 1) {
+            if (game.gems > 49 /*&& (game.a.length - 1) < artifacts.length - 1*/) {
                 game.gems -= 50;
                 getArtifact(3000);
                 autoSave();

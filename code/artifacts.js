@@ -187,17 +187,17 @@ function allArtifactsOfRarity(rarity) {
 function getArtifact(multi = 1) {
 	// (Chance TO GET)
 	// Chance to get an artifact
-	if (!allArtifactsOfRarity(1) && Math.random() < 1 / 1200 * multi) {
-		gambleArtifact(1);
+	if (!allArtifactsOfRarity(4) && Math.random() < 1 / 10000000 && multi == 1) {
+		gambleArtifact(4);
 	}
-	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 6000 * multi) {
-		gambleArtifact(2);
-	}
-	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi) {
+	else if (Math.random() < 1 / 32000 * multi) {
 		gambleArtifact(3);
 	}
-	else if (!allArtifactsOfRarity(4) && Math.random() < 1 / 10000000 && multi == 1) {
-		gambleArtifact(4);
+	else if (Math.random() < 1 / 6000 * multi) {
+		gambleArtifact(2);
+	}
+	else if (Math.random() < 1 / 1200 * multi) {
+		gambleArtifact(1);
 	}
 }
 
@@ -205,12 +205,14 @@ function gambleArtifact(r) {
 	// Used by getArtifact - which one will we get of this rarity?
 	let possibleArtifacts = [];
 	for (a in artifacts) {
-		if (artifacts[a].rarity == r && !artifacts[a].isUnlocked()) {
+		if (artifacts[a].rarity == r) {
 			possibleArtifacts.push(artifacts[a].ID);
 		}
 	}
-	if (possibleArtifacts.length > 0) {
-		let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+	let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+
+	if (!getArtifactByID(gainedID).isUnlocked()) {
+		// New artifact!
 		game.a.push(gainedID);
 		createNotification("New Artifact: " + getArtifactByID(gainedID).name);
 		updateArtifacts();
@@ -222,8 +224,15 @@ function gambleArtifact(r) {
 
 		setTimeout(() => {
 			ui.newArtifact.style.display = "none";
-        }, 5000)
+		}, 5000)
 	}
+	else {
+		// Duplicate...
+		let amount = (allArtifactsOfRarity(r) ? 2 : 1) * (getScrapCost(1, r) / 10);
+		createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifactByID(gainedID).name + "!");
+		game.artifactScrap += amount;
+		game.stats.artifactScrap += amount;
+    }
 }
 
 function getArtifactByID(id) {
@@ -258,20 +267,22 @@ function switchArtifact(id) {
 	updateArtifacts();
 }
 
-function getScrapCost(level) {
-	switch (level) {
+function getScrapCost(level, rarity) {
+	switch (rarity) {
 		case 1:
-			return 100;
+			return 100 * level;
 		case 2:
-			return 250;
+			return 250 * level;
+		case 3:
+			return 1000 * level;
 	}
 	return 0;
 }
 
 function upgradeArtifact(id) {
 	if (game.alvl[id] == undefined) game.alvl[id] = 1;
-	if (game.alvl[id] < 3 && game.artifactScrap >= getScrapCost(game.alvl[id]) && confirm("Use " + getScrapCost(game.alvl[id]) + " artifact scrap to upgrade this?")) {
-		game.artifactScrap -= getScrapCost(game.alvl[id]);
+	if (game.alvl[id] < 3 && game.artifactScrap >= getScrapCost(game.alvl[id], getArtifactByID(id).rarity) && confirm("Use " + getScrapCost(game.alvl[id], getArtifactByID(id).rarity) + " artifact scrap to upgrade this?")) {
+		game.artifactScrap -= getScrapCost(game.alvl[id], getArtifactByID(id).rarity);
 		game.alvl[id] += 1;
 	}
 }
