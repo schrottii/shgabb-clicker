@@ -10,7 +10,7 @@ const currentPatchNotes = [
     "- Added 10 new quotes",
     "- Increased auto save time from 3 to 5 seconds",
     "- Increased Stronger Clicks ad boost from 3x to 5x",
-    "- Increased brightness of the background of equipped artifacts"m,
+    "- Increased brightness of the background of equipped artifacts",
     "- Increased chance for common artifacts from 1/1200 to 1/800",
     "- Increased chance for rare artifacts from 1/6000 to 1/4000",
 ]
