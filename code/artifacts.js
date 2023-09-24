@@ -184,20 +184,36 @@ function allArtifactsOfRarity(rarity) {
 	return true;
 }
 
+function anyArtifactOfRarity(rarity) {
+	for (a in artifacts) {
+		if (artifacts[a].rarity == rarity && artifacts[a].isUnlocked()) return true;
+	}
+	return false;
+}
+
 function getArtifact(multi = 1) {
 	// (Chance TO GET)
 	// Chance to get an artifact
 	if (!allArtifactsOfRarity(4) && Math.random() < 1 / 10000000 && multi == 1) {
 		gambleArtifact(4);
 	}
-	else if (Math.random() < 1 / 32000 * multi) {
+	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi) {
 		gambleArtifact(3);
 	}
-	else if (Math.random() < 1 / 6000 * multi) {
+	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 6000 * multi) {
 		gambleArtifact(2);
 	}
-	else if (Math.random() < 1 / 1200 * multi) {
+	else if (!allArtifactsOfRarity(1) && Math.random() < 1 / 1200 * multi) {
 		gambleArtifact(1);
+	}
+	else if (anyArtifactOfRarity(3) && Math.random() < 1 / 32000 * multi) {
+		artifactDuplicate(3);
+	}
+	else if (anyArtifactOfRarity(2) && Math.random() < 1 / 6000 * multi) {
+		artifactDuplicate(2);
+	}
+	else if (anyArtifactOfRarity(1) && Math.random() < 1 / 1200 * multi) {
+		artifactDuplicate(1);
 	}
 }
 
@@ -205,34 +221,41 @@ function gambleArtifact(r) {
 	// Used by getArtifact - which one will we get of this rarity?
 	let possibleArtifacts = [];
 	for (a in artifacts) {
-		if (artifacts[a].rarity == r) {
+		if (artifacts[a].rarity == r && !artifacts[a].isUnlocked()) {
+			possibleArtifacts.push(artifacts[a].ID);
+        }
+    }
+    let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+
+    // New artifact!
+    game.a.push(gainedID);
+    createNotification("New Artifact: " + getArtifactByID(gainedID).name);
+    updateArtifacts();
+
+    ui.newArtifactText = "New Artifact!";
+    ui.newArtifactImage.src = "images/arti/" + getArtifactByID(gainedID).image;
+    ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
+    ui.newArtifact.style.display = "block";
+
+    setTimeout(() => {
+        ui.newArtifact.style.display = "none";
+    }, 5000)
+}
+
+function artifactDuplicate(rarity) {
+	let possibleArtifacts = [];
+	for (a in artifacts) {
+		if (artifacts[a].rarity == rarity && artifacts[a].isUnlocked()) {
 			possibleArtifacts.push(artifacts[a].ID);
 		}
 	}
 	let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
 
-	if (!getArtifactByID(gainedID).isUnlocked()) {
-		// New artifact!
-		game.a.push(gainedID);
-		createNotification("New Artifact: " + getArtifactByID(gainedID).name);
-		updateArtifacts();
-
-		ui.newArtifactText = "New Artifact!";
-		ui.newArtifactImage.src = "images/arti/" + getArtifactByID(gainedID).image;
-		ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
-		ui.newArtifact.style.display = "block";
-
-		setTimeout(() => {
-			ui.newArtifact.style.display = "none";
-		}, 5000)
-	}
-	else {
-		// Duplicate...
-		let amount = (allArtifactsOfRarity(r) ? 2 : 1) * (getScrapCost(1, r) / 10);
-		createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifactByID(gainedID).name + "!");
-		game.artifactScrap += amount;
-		game.stats.artifactScrap += amount;
-    }
+	// Duplicate...
+	let amount = (allArtifactsOfRarity(rarity) ? 2 : 1) * (getScrapCost(1, rarity) / 10);
+	createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifactByID(gainedID).name + "!");
+	game.artifactScrap += amount;
+	game.stats.artifactScrap += amount;
 }
 
 function getArtifactByID(id) {
