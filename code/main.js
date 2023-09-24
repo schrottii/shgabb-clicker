@@ -7,7 +7,7 @@
 const gameVersion = "1.9";
 
 const currentPatchNotes = [
-    "- Added 7 new quotes",
+    "- Added 10 new quotes",
     "- Increased auto save time from 3 to 5 seconds",
     "- Increased Stronger Clicks ad boost from 3x to 5x",
     "- Increased brightness of the background of equipped artifacts"
@@ -188,7 +188,10 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "My mom feeds me with petroleum - slowmerger",
     "silicone shgabb is attracting me - shgabb",
     "nice to become the grim reaper - elmenda452",
-    "but eh it could help them grannies - elmenda452"
+    "but eh it could help them grannies - elmenda452",
+    "I heard your mental state is rotting down my man no offense - elmenda452",
+    "um do we really want to get 1,000,000 sandwiches per click - elmenda452",
+    "congrats on the knowledge - Phazer",
 ];
 
 // Notations
@@ -225,6 +228,7 @@ ui.cheatAmount.oninput = () => {
 
 // format number
 function fn(number) {
+    if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
     number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
         if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
