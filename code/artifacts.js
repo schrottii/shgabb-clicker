@@ -200,10 +200,10 @@ function getArtifact(multi = 1) {
 	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi) {
 		gambleArtifact(3);
 	}
-	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 6000 * multi) {
+	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 4000 * multi) {
 		gambleArtifact(2);
 	}
-	else if (!allArtifactsOfRarity(1) && Math.random() < 1 / 1200 * multi) {
+	else if (!allArtifactsOfRarity(1) && Math.random() < 1 / 800 * multi) {
 		gambleArtifact(1);
 	}
 	else if (anyArtifactOfRarity(3) && Math.random() < 1 / 32000 * multi) {
