@@ -10,6 +10,7 @@ var game = {
     ameUp: [0, 0, 0, 0],
     gems: 0,
     gemboost: 1,
+    artifactScrap: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -80,9 +81,10 @@ var game = {
         hmstp: 0,
         tgems: 0,
         tttpw: 0,
-        tttlp: 0,
+        tttpl: 0,
         tttw: 0,
         tttl: 0,
+        artifactScrap: 0,
         wads: {
             sc: 0,
             sa: 0,
@@ -93,6 +95,7 @@ var game = {
         }
     },
     a: [],
+    alvl: {},
     aeqi: [],
     alo: [[], [], []],
     al: 2,

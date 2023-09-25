@@ -4,48 +4,32 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.8.1";
+const gameVersion = "1.9";
 
 const currentPatchNotes = [
-    "- Improved enemy's decision making in the minigame",
-    "- Fixed Améliorer Upgrades being reset even if the option is not activated",
-    "- Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked",
-    "- Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades",
-    "- Fixed auto save notifications appearing at the top again",
-    "v1.8",
-    "-> Minigame:",
-    "- Added a minigame: Shgic Shgac Shgoe!",
-    "- Unlocked together with Améliorer!",
-    "- 1 attempt every day to get to 3 points before shgabb does",
-    "- Get 2 Améliorer for a win",
-    "-> New Upgrades:",
-    "- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain",
-    "- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain",
-    "- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)",
-    "- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)",
-    "-> Artifact Loadouts:",
-    "- Loadouts can now be given custom names by clicking on the currently selected loadout",
-    "- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8, costs increase",
-    "- Reduced default loadouts from 3 to 2",
-    "- Added support for loadouts 4 - 8",
+    "-> Artifact Leveling:",
+    "- You can now level and destroy artifacts!",
+    "- New currency: Artifact Scrap",
+    "- Unlocked once you get your first duplicate",
+    "- Unlocking many artifacts does not increase the chances for duplicates",
+    "- Artifacts can be leveled to level 2 and 3, granting greater effects",
+    "- Added buttons to switch between selecting, upgrading and destroying",
+    "- Full list of artifact level effects and changes can be found in the patch notes file",
+    "-> Artifact Scrap",
+    "- New currency earned by getting duplicates or destroying artifacts",
+    "- Can be spent to upgrade artifacts to level 2 and 3",
+    "- Duplicates give 1/10 of the scrap required for an upgrade (1/5 if owning all artifacts of that rarity)",
+    "- Destroying gives 1/5",
     "-> Balance:",
-    "- Amulet of Quick Snacks: 5k -> 10k (buff)",
-    "- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)",
-    "-> Achievements:",
-    "- Added 10 new achievements (40 -> 50)",
-    "- Added images for artifact and minigame achievements",
-    "- Changed the image of all unlock related achievements to the unlock image",
-    "-> Design:",
-    "- Gem Amount is now also displayed at the top (in a third line with Amé)",
-    "- Updated all 3 social images",
-    "- Changed size of social buttons",
-    "- Artifacts and Achievements are now centered",
-    "- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)",
+    "- Increased Stronger Clicks ad boost from 3x to 5x",
+    "- Increased chance for common artifacts from 1/1200 to 1/800",
+    "- Increased chance for rare artifacts from 1/6000 to 1/4000",
     "-> Other:",
-    "- Added a setting to hide the unlevel button",
-    "- Autosave notifications are now counted",
-    "- Fixed weird brown squares near Artifacts and Achievements",
-    "- Fixed extra line breaks in patch notes",
+    "- Added 10 new quotes",
+    "- Several changes to the displaying of artifact effects",
+    "- Increased auto save time from 3 to 5 seconds",
+    "- Increased brightness of the background of equipped artifacts",
+    "- Some notation fixes"
 ]
 
 // BETA (cheating)
@@ -60,7 +44,7 @@ Object.defineProperty(BETA, 'isBeta', {
 
 // Various variables
 
-var autoSaveTime = 3;
+var autoSaveTime = 5;
 var quoteTime = 15;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
@@ -102,6 +86,8 @@ var ui = {
     gemAmount2: document.getElementById("gemAmount2"),
     ameAmount: document.getElementById("ameAmount"),
     ameAmount2: document.getElementById("ameAmount2"),
+
+    artifactScrapAmount: document.getElementById("artifactScrapAmount"),
 
     swImage: document.getElementById("swImage"),
     gsImage: document.getElementById("gsImage"),
@@ -164,7 +150,7 @@ var currentBoost = "none";
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone"];
 const boostTexts = {
-    strongerClicks: "Stronger Clicks: Get 3x shgabb from clicks for 5 minutes",
+    strongerClicks: "Stronger Clicks: Get 5x shgabb from clicks for 5 minutes",
     strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
@@ -215,6 +201,16 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "Stop pretending I'm an hamburger - Barduzzi",
     "touch my buttons :uwu: - shgabb",
     "onions are literally a mass torture device - elmenda452",
+    "you can just throw your oponion if you want - elmenda452",
+    "Thanks redstone repeater from Minecraft - slowmerger",
+    "my brain cells have disappeared a long time ago - Barduzzi",
+    "My mom feeds me with petroleum - slowmerger",
+    "silicone shgabb is attracting me - shgabb",
+    "nice to become the grim reaper - elmenda452",
+    "but eh it could help them grannies - elmenda452",
+    "I heard your mental state is rotting down my man no offense - elmenda452",
+    "um do we really want to get 1,000,000 sandwiches per click - elmenda452",
+    "congrats on the knowledge - Phazer",
 ];
 
 // Notations
@@ -222,7 +218,6 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
 
 // More beta stuff
-
 unlocks.cheats.style.display = BETA.isBeta ? "unset" : "none";
 
 function cheatEngine(type) {
@@ -252,10 +247,12 @@ ui.cheatAmount.oninput = () => {
 
 // format number
 function fn(number) {
+    if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "0" && number.toString().split(".")[1].substr(0, 2) == "00") return number.toString();
+    //if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
     number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
         if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
-        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
+        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
     }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
     if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
@@ -281,7 +278,7 @@ function clickButton() {
         game.stats.shgabbtp += amount;
 
         if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.33) {
-            knifeBoost = Math.min(knifeBoost + 0.5, 20);
+            knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 20);
         }
         else knifeBoost = 1;
 
@@ -339,7 +336,7 @@ function getProduction(sosnog = false) {
         * getArtifactBoost("clickshgabb")
         * knifeBoost
         * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.001 * getArtifactLevel(302) : 1)
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
@@ -356,7 +353,7 @@ function getAutoProduction(sosnog2 = false) {
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("shgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.005 : 1)
+        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.001 * getArtifactLevel(302) : 1)
         * game.gemboost
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
@@ -364,7 +361,7 @@ function getAutoProduction(sosnog2 = false) {
         + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 10 : 1)
-        * (getArtifactByID(300).isEquipped() ? Math.max(1, (3 * game.clickCooldown + 1)) : 1)
+        * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
     );
 }
 
@@ -379,7 +376,7 @@ function getSiliconeProduction() {
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? 3 : 1);
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1);
 }
 
 function getCooldown() {
@@ -638,6 +635,8 @@ function ameReset() {
 
     ui.ameReset.checked = false;
     ui.ameReset.value == "false";
+
+    updateArtifacts();
 }
 
 // Update functions
@@ -807,6 +806,9 @@ function updateUI() {
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
         + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
+        + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
+        + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
+        + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
         + "</div><div style='float: right; width: 50%;' class='square2'>"
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s"
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
@@ -941,7 +943,7 @@ function loop(tick) {
     }
 
     if (autoSaveTime <= 0) {
-        autoSaveTime = 3;
+        autoSaveTime = 5;
         autoSave();
     }
     if (quoteTime <= 0) {

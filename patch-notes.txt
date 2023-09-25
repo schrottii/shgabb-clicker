@@ -474,3 +474,68 @@ Version 1.8.1:
 - Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked
 - Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades
 - Fixed auto save notifications appearing at the top again
+
+
+
+2023/09/25 1.9:
+Version 1.9:
+-> Artifact Leveling:
+- You can now level and destroy artifacts!
+- New currency: Artifact Scrap
+- Unlocked once you get your first duplicate
+- Unlocking many artifacts does not increase the chances for duplicates
+- Artifacts can be leveled to level 2 and 3, granting greater effects
+- Added buttons to switch between selecting, upgrading and destroying
+- Full list of artifact level effects and changes can be found in the patch notes file
+
+-> Artifact Scrap
+- New currency earned by getting duplicates or destroying artifacts
+- Can be spent to upgrade artifacts to level 2 and 3
+- Duplicates give 1/10 of the scrap required for an upgrade (1/5 if owning all artifacts of that rarity)
+- Destroying gives 1/5
+
+-> Balance:
+- Increased Stronger Clicks ad boost from 3x to 5x
+- Increased chance for common artifacts from 1/1200 to 1/800
+- Increased chance for rare artifacts from 1/6000 to 1/4000
+
+-> Other:
+- Added 10 new quotes
+- Several changes to the displaying of artifact effects
+- Increased auto save time from 3 to 5 seconds
+- Increased brightness of the background of equipped artifacts
+- Some notation fixes
+
+-> Full list of artifact changes:
+- Blue Ring: x1.4 -> x1.4/x1.8/x2.2
+- Yellow Ring: x1.2 -> x1.2/x1.6/x2
+- White Ring: x1.5 -> x1.5/x1.75/x2
+- Light Blue Ring: x1.5 -> x1.5/x2/x2.5
+- Ring of Productivity: x1.4 -> x1.4/x2/x2.6
+- Ring of Laziness: x1.6 -> x1.2/x1.6/x2
+- Ring of Speed: x1.3 -> x1.2/x1.3/x1.4
+- Shiny Red Ring: x1.5 -> x1.25/x1.5/x1.75
+- Pulsing Red Ring: x1.5 -> x1.25/x1.5/x1.75
+- Ring of Depression: x0.001 -> x0.001/x0.00001/x0.0000001
+- Ring of Slowing: x1.5 -> x1.5/x2/x2.5
+
+- Amulet of Paroxysm: x4 -> x3/x4/x5
+- Amulet of Saving: 1B -> 1B/1T/1q
+- Amulet of Quick Snacks: x3 -> x3/x12/x24
+- Amulet of Sloth: x5 -> x3/x4/x5
+- Amulet of Golden Bank: x5 -> x5/x7.5/x10
+- Amulet of Slowgemming: x5 -> x4/x5/x6
+- Amulet of Passive Silicone: x2 -> x2/x3/x4
+- Amulet of Active Silicone: x3.6 -> x3.6/x5.8/x8
+- Amulet of Fast Start: x10 -> x10/x35/x60
+- Amulet of Tides: x7 -> x7/x10/x13
+- Amulet of Thaw: x10 -> x10/x15/x20
+- Amulet of Condone: x2 -> x2/x4/x6
+- Amulet of Sluggard: x8 -> x8/x16/x24
+
+- Shgabb's handcuffs: x3 -> x2/x4/x6
+- Furious Knife: +50% -> +50%/+100%/+150%
+- Shgabb Seeds: 0.5% -> 0.1%/0.2%/0.3%
+- P2W: x3 -> x2/x3/x4
+- Silicone implants: +200% -> +200%/+300%/+400%
+- Sosnog: x3 -> x3/x14/x25
