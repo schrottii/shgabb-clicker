@@ -494,7 +494,7 @@ etc.
 
 - Amulet of Paroxysm: x4 -> x3/x4/x5
 - Amulet of Saving: 1B -> 1B/1T/1q
-- Amulet of Quick Snacks: x3 -> x3/x12/x18
+- Amulet of Quick Snacks: x3 -> x3/x12/x24
 - Amulet of Sloth: x5 -> x3/x4/x5
 - Amulet of Golden Bank: x5 -> x5/x7.5/x10
 - Amulet of Slowgemming: x5 -> x4/x5/x6

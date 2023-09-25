@@ -18,6 +18,8 @@ const currentPatchNotes = [
     "-> Artifact Scrap",
     "- New currency earned by getting duplicates or destroying artifacts",
     "- Can be spent to upgrade artifacts to level 2 and 3",
+    "- Duplicates give 1/10 of the scrap required for an upgrade (1/5 if owning all artifacts of that rarity)",
+    "- Destroying gives 1/5",
     "-> Balance:",
     "- Increased Stronger Clicks ad boost from 3x to 5x",
     "- Increased chance for common artifacts from 1/1200 to 1/800",
@@ -27,6 +29,7 @@ const currentPatchNotes = [
     "- Several changes to the displaying of artifact effects",
     "- Increased auto save time from 3 to 5 seconds",
     "- Increased brightness of the background of equipped artifacts",
+    "- Some notation fixes"
 ]
 
 // BETA (cheating)
@@ -249,7 +252,7 @@ function fn(number) {
     number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
         if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
-        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
+        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
     }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
     if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
@@ -632,6 +635,8 @@ function ameReset() {
 
     ui.ameReset.checked = false;
     ui.ameReset.value == "false";
+
+    updateArtifacts();
 }
 
 // Update functions
