@@ -488,19 +488,19 @@ etc.
 - Ring of Laziness: x1.6 -> x1.2/x1.6/x2
 - Ring of Speed: x1.3 -> x1.2/x1.3/x1.4
 - Shiny Red Ring: x1.5 -> x1.25/x1.5/x1.75
-- Pulsing Red Ring: x1.5 -> x1.25/x1.5/x1.75 --------------------------changed
+- Pulsing Red Ring: x1.5 -> x1.25/x1.5/x1.75
 - Ring of Depression: x0.001 -> x0.001/x0.00001/x0.0000001
-- Ring of Slowing: x1.5 -> x1.5/x2/x2.5 --------------------------changed
+- Ring of Slowing: x1.5 -> x1.5/x2/x2.5
 
 - Amulet of Paroxysm: x4 -> x3/x4/x5
 - Amulet of Saving: 1B -> 1B/1T/1q
-- Amulet of Quick Snacks: x3 -> x3/x12/x18 --------------------------changed
+- Amulet of Quick Snacks: x3 -> x3/x12/x18
 - Amulet of Sloth: x5 -> x3/x4/x5
 - Amulet of Golden Bank: x5 -> x5/x7.5/x10
 - Amulet of Slowgemming: x5 -> x4/x5/x6
 - Amulet of Passive Silicone: x2 -> x2/x3/x4
-- Amulet of Active Silicone: x3.6 -> x3.6/x5.8/x8 --------------------------changed
-- Amulet of Fast Start: x10 -> x10/x50/x75 --------------------------changed
+- Amulet of Active Silicone: x3.6 -> x3.6/x5.8/x8
+- Amulet of Fast Start: x10 -> x10/x35/x60
 - Amulet of Tides: x7 -> x7/x10/x13
 - Amulet of Thaw: x10 -> x10/x15/x20
 - Amulet of Condone: x2 -> x2/x4/x6
@@ -510,5 +510,5 @@ etc.
 - Furious Knife: +50% -> +50%/+100%/+150%
 - Shgabb Seeds: 0.5% -> 0.1%/0.2%/0.3%
 - P2W: x3 -> x2/x3/x4
-- Silicone implants: +200% -> +200%/+400%/+600%
+- Silicone implants: +200% -> +200%/+300%/+400%
 - Sosnog: x3 -> x3/x14/x25

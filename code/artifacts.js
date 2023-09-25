@@ -315,9 +315,10 @@ function upgradeArtifact(id) {
 }
 
 function destroyArtifact(id) {
-	if (confirm("Do you REALLY want to destroy this artifact?!")) {
-		let rarity = getArtifactByID(id).rarity;
-		let level = game.alvl[id];
+	let rarity = getArtifactByID(id).rarity;
+	let level = game.alvl[id];
+	let amount = Math.floor(getScrapCost(level, rarity) / 5);
+	if (confirm("Do you really want to destroy this artifact for " + amount + " Artifact Scrap?")) {
 
 		game.a.splice(game.a.indexOf(id), 1);
 		delete game.alvl[id];
@@ -327,7 +328,6 @@ function destroyArtifact(id) {
 			if (game.alo[loadout].indexOf(id)  != -1 ) game.alo[loadout].splice(game.alo[loadout].indexOf(id), 1);
         }
 
-		let amount = Math.floor(getScrapCost(level, rarity) / 5);
 		game.artifactScrap += amount;
 		game.stats.artifactScrap += amount;
 
@@ -356,7 +356,7 @@ var artifacts = [
 	new Artifact(205, 2, "Amulet of Slowgemming", "amulet.png", "gemchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 seconds (not current)" }),
 	new Artifact(206, 2, "Amulet of Passive Silicone", "amulet.png", "si", level => 1 + level, { prefix: "x", trigger: () => game.clickCooldown < 0, desc: "When not clicking" }),
 	new Artifact(207, 2, "Amulet of Active Silicone", "amulet.png", "si", level => 1.4 + (level * 2.2), { prefix: "x", trigger: () => game.clickCooldown > 0, desc: "When the click cooldown is active" }),
-	new Artifact(208, 2, "Amulet of Fast Start", "amulet.png", "shgabb", level => 10 * (level * 2.5), { prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),
+	new Artifact(208, 2, "Amulet of Fast Start", "amulet.png", "shgabb", level => 10 * (1 + (level - 1) * 2.5), { noPercentage: true, prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),
 	new Artifact(209, 2, "Amulet of Tides", "amulet.png", "shgabb", level => 4 + 3 * level, { prefix: "x", trigger: () => game.stats.pttp % 20 >= 10, desc: "Active for 10 seconds, inactive for 10 seconds" }),
 	new Artifact(210, 2, "Amulet of Thaw", "amulet.png", "autoshgabb", level => 5 + 5 * level, { prefix: "x", desc: "But fridge duration is reduced to 5s" }),
 	new Artifact(211, 2, "Amulet of Condone", "amulet.png", "si", level => 2 * level, { prefix: "x", desc: "But x0.6 shgabb gain" }),
@@ -366,7 +366,7 @@ var artifacts = [
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 2000%" }),
 	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: level => "Every click in a prestige increases shgabb gain by " + (0.1 * level).toFixed(1) + "% (Current: x" + fn(1 + game.stats.ctp * 0.001 * getArtifactLevel(302)) + ")" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 1 + level, { trigger: () => currentBoost != "none", desc: "While an ad is active" }),
-	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops silicone production, but its effects are +" + (200 * level) + "%" }),
+	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
