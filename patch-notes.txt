@@ -477,9 +477,36 @@ Version 1.8.1:
 
 
 
-etc.
-etc.
+2023/09/25 1.9:
+Version 1.9:
+-> Artifact Leveling:
+- You can now level and destroy artifacts!
+- New currency: Artifact Scrap
+- Unlocked once you get your first duplicate
+- Unlocking many artifacts does not increase the chances for duplicates
+- Artifacts can be leveled to level 2 and 3, granting greater effects
+- Added buttons to switch between selecting, upgrading and destroying
+- Full list of artifact level effects and changes can be found in the patch notes file
 
+-> Artifact Scrap
+- New currency earned by getting duplicates or destroying artifacts
+- Can be spent to upgrade artifacts to level 2 and 3
+- Duplicates give 1/10 of the scrap required for an upgrade (1/5 if owning all artifacts of that rarity)
+- Destroying gives 1/5
+
+-> Balance:
+- Increased Stronger Clicks ad boost from 3x to 5x
+- Increased chance for common artifacts from 1/1200 to 1/800
+- Increased chance for rare artifacts from 1/6000 to 1/4000
+
+-> Other:
+- Added 10 new quotes
+- Several changes to the displaying of artifact effects
+- Increased auto save time from 3 to 5 seconds
+- Increased brightness of the background of equipped artifacts
+- Some notation fixes
+
+-> Full list of artifact changes:
 - Blue Ring: x1.4 -> x1.4/x1.8/x2.2
 - Yellow Ring: x1.2 -> x1.2/x1.6/x2
 - White Ring: x1.5 -> x1.5/x1.75/x2
