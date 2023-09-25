@@ -7,12 +7,25 @@
 const gameVersion = "1.9";
 
 const currentPatchNotes = [
-    "- Added 10 new quotes",
-    "- Increased auto save time from 3 to 5 seconds",
+    "-> Artifact Leveling:",
+    "- You can now level and destroy artifacts!",
+    "- New currency: Artifact Scrap",
+    "- Unlocked once you get your first duplicate",
+    "- Unlocking many artifacts does not increase the chances for duplicates",
+    "- Artifacts can be leveled to level 2 and 3, granting greater effects",
+    "- Added buttons to switch between selecting, upgrading and destroying",
+    "- Full list of artifact level effects and changes can be found in the patch notes file",
+    "-> Artifact Scrap",
+    "- New currency earned by getting duplicates or destroying artifacts",
+    "- Can be spent to upgrade artifacts to level 2 and 3",
+    "-> Balance:",
     "- Increased Stronger Clicks ad boost from 3x to 5x",
-    "- Increased brightness of the background of equipped artifacts",
     "- Increased chance for common artifacts from 1/1200 to 1/800",
     "- Increased chance for rare artifacts from 1/6000 to 1/4000",
+    "-> Other:",
+    "- Added 10 new quotes",
+    "- Increased auto save time from 3 to 5 seconds",
+    "- Increased brightness of the background of equipped artifacts",
 ]
 
 // BETA (cheating)

@@ -327,7 +327,7 @@ function destroyArtifact(id) {
 			if (game.alo[loadout].indexOf(id)  != -1 ) game.alo[loadout].splice(game.alo[loadout].indexOf(id), 1);
         }
 
-		let amount = Math.floor(getScrapCost(level, rarity) / 10);
+		let amount = Math.floor(getScrapCost(level, rarity) / 5);
 		game.artifactScrap += amount;
 		game.stats.artifactScrap += amount;
 
