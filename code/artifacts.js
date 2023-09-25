@@ -65,7 +65,7 @@ class Artifact {
 	}
 
 	render() {
-		return "<button class='artifact' onclick='clickArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((this.amount > 2 || this.noPercentage) ? (this.prefix + fn(getArtifactEffect(this.ID))) : ((this.prefix != "x" ? this.prefix : "+") + fn((getArtifactEffect(this.ID) - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.getDescription() ? "<br/>" + this.getDescription() : "") + "</button>";
+		return "<button class='artifact' onclick='clickArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((getArtifactEffect(this.ID) > 2 || this.noPercentage) ? (this.prefix + fn(getArtifactEffect(this.ID))) : ((this.prefix != "x" ? this.prefix : "+") + fn((getArtifactEffect(this.ID) - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.getDescription() ? "<br/>" + this.getDescription() : "") + "</button>";
 	}
 }
 
