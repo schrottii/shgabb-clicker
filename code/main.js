@@ -786,6 +786,9 @@ function updateUI() {
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
         + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
+        + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
+        + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
+        + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
         + "</div><div style='float: right; width: 50%;' class='square2'>"
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s"
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"

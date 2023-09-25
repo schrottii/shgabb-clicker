@@ -125,7 +125,7 @@ function renderArtifacts() {
 
 		render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";
 		render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "upgrade" ? "white" : "gray") + "'>Upgrade</button>";
-		render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "destroy" ? "white" : "gray") + "'>(soon)</button>";
+		render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "destroy" ? "white" : "gray") + "'>Destroy</button>";
 		render = render + "<br />";
 	}
 	else ui.artifactScrapAmount.innerHTML = "";
@@ -278,6 +278,10 @@ function clickArtifact(id) {
 			upgradeArtifact(id);
 			updateArtifacts();
 			break;
+		case "destroy":
+			destroyArtifact(id);
+			updateArtifacts();
+			break;
     }
 }
 
@@ -310,6 +314,27 @@ function upgradeArtifact(id) {
 	}
 }
 
+function destroyArtifact(id) {
+	if (confirm("Do you REALLY want to destroy this artifact?!")) {
+		let rarity = getArtifactByID(id).rarity;
+		let level = game.alvl[id];
+
+		game.a.splice(game.a.indexOf(id), 1);
+		delete game.alvl[id];
+		game.aeqi.splice(game.aeqi.indexOf(id), 1);
+
+		for (loadout in game.alo) {
+			if (game.alo[loadout].indexOf(id)  != -1 ) game.alo[loadout].splice(game.alo[loadout].indexOf(id), 1);
+        }
+
+		let amount = Math.floor(getScrapCost(level, rarity) / 10);
+		game.artifactScrap += amount;
+		game.stats.artifactScrap += amount;
+
+		createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifactByID(id).name + "!");
+    }
+}
+
 var artifacts = [
 	new Artifact(100, 1, "Blue Ring", "ring.png", "shgabb", level => 1 + 0.4 * level),
 	new Artifact(101, 1, "Yellow Ring", "ring.png", "gs", level => 0.8 + 0.4 * level),
@@ -339,7 +364,7 @@ var artifacts = [
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 2000%" }),
-	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: level => "Every click in a prestige increases shgabb gain by " + (0.1 * level).toFixed(1) + "% (Current: x" + (1 + game.stats.ctp * 0.001 * getArtifactLevel(302)) + ")" }),
+	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: level => "Every click in a prestige increases shgabb gain by " + (0.1 * level).toFixed(1) + "% (Current: x" + fn(1 + game.stats.ctp * 0.001 * getArtifactLevel(302)) + ")" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 1 + level, { trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops silicone production, but its effects are +" + (200 * level) + "%" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),

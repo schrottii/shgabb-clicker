@@ -81,7 +81,7 @@ var game = {
         hmstp: 0,
         tgems: 0,
         tttpw: 0,
-        tttlp: 0,
+        tttpl: 0,
         tttw: 0,
         tttl: 0,
         artifactScrap: 0,
