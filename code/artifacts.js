@@ -322,8 +322,9 @@ function destroyArtifact(id) {
 
 		game.a.splice(game.a.indexOf(id), 1);
 		delete game.alvl[id];
-		game.aeqi.splice(game.aeqi.indexOf(id), 1);
+		if (game.aeqi.indexOf(id) != -1) game.aeqi.splice(game.aeqi.indexOf(id), 1);
 
+		// Unequip
 		for (loadout in game.alo) {
 			if (game.alo[loadout].indexOf(id)  != -1 ) game.alo[loadout].splice(game.alo[loadout].indexOf(id), 1);
         }

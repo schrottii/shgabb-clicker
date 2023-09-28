@@ -4,9 +4,13 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.9";
+const gameVersion = "1.9.1";
 
 const currentPatchNotes = [
+    "v1.9",
+    "-> Bars:",
+    "- Fixed click and sandwich bar keeping the boost effect after an ad is over",
+    "- Fixed sandwich bar gaining the boost effect on More Crits ads",
     "-> Artifact Leveling:",
     "- You can now level and destroy artifacts!",
     "- New currency: Artifact Scrap",
@@ -36,7 +40,7 @@ const currentPatchNotes = [
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false
@@ -59,21 +63,17 @@ var knifeBoost = 1;
 var autoNotifications = 0;
 
 var ui = {
-    gameTitle: document.getElementById("gametitle"),
-    patchNotes: document.getElementById("patchNotes"),
-
-    clickButton: document.getElementById("clickButton"),
+    // Bars
     cooldownBar: document.getElementById("cooldownBar"),
     sandwichBar: document.getElementById("sandwichBar"),
     adBar: document.getElementById("adBar"),
-    adLoaded: document.getElementById("adloaded"),
-    ameReset: document.getElementById("amereset"),
-    ameReset2: document.getElementById("amereset2"),
 
+    // Cheats
     cheatCurrency: document.getElementById("cheatCurrency"),
     cheatAmount: document.getElementById("cheatAmount"),
     cheatDisplay: document.getElementById("cheatDisplay"),
 
+    // Amount displays
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
     gsAmount: document.getElementById("gsAmount"),
@@ -86,15 +86,16 @@ var ui = {
     gemAmount2: document.getElementById("gemAmount2"),
     ameAmount: document.getElementById("ameAmount"),
     ameAmount2: document.getElementById("ameAmount2"),
-
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
 
+    // Images of currencies
     swImage: document.getElementById("swImage"),
     gsImage: document.getElementById("gsImage"),
     siImage: document.getElementById("siImage"),
     gemImage: document.getElementById("gemImage"),
     ameImage: document.getElementById("ameImage"),
 
+    // Upgrades
     upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
     swupgradesl: document.getElementById("swupgradesl"),
@@ -106,16 +107,25 @@ var ui = {
     ameupgradesl: document.getElementById("ameupgradesl"),
     ameupgradesr: document.getElementById("ameupgradesr"),
 
+    // New Artifact display thing
     newArtifact: document.getElementById("newArtifact"),
     newArtifactImage: document.getElementById("newArtifactImage"),
     newArtifactName: document.getElementById("newArtifactName"),
     newArtifactText: document.getElementById("newArtifactText"),
 
+    // Gem offers
     gemOffer1: document.getElementById("gemOffer1"),
     gemOffer2: document.getElementById("gemOffer2"),
     gemOffer3: document.getElementById("gemOffer3"),
     gemOffer4: document.getElementById("gemOffer4"),
 
+    // Other
+    gameTitle: document.getElementById("gametitle"),
+    patchNotes: document.getElementById("patchNotes"),
+    clickButton: document.getElementById("clickButton"),
+    adLoaded: document.getElementById("adloaded"),
+    ameReset: document.getElementById("amereset"),
+    ameReset2: document.getElementById("amereset2"),
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
     ameconvert: document.getElementById("ameconvert"),
@@ -957,6 +967,7 @@ function loop(tick) {
     }
 
     if (adTime <= 0 && adButton.style.display == "none" && currentBoost == "none") {
+        // Hey1 You can get this!
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         if (availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         adButton.style.display = "inline";
@@ -965,19 +976,17 @@ function loop(tick) {
         selectVideo();
     }
     else if (adTime <= 0 && adButton.style.display == "none") {
+        // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
         adTime = 10;
         adMax = 10;
 
-        if (currentBoost == "strongerclicks" || currentBoost == "fastershgabb") {
-            ui.cooldownBar.classList.remove("buffedProgress")
-        }
-        if (currentBoost == "moreSandwiches" || currentBoost == "moreCrits") {
-            ui.cooldownBar.classList.remove("buffedProgress")
-        }
+        ui.cooldownBar.classList.remove("buffedProgress")
+        ui.sandwichBar.classList.remove("buffedProgress")
 
         currentBoost = "none";
     }
     else if (currentBoost == "none" && adTime <= -15) {
+        // Hm, let's wait for next ad (you didn't accept this one)
         adButton.style.display = "none";
         adTime = 5;
         adMax = 5;
@@ -1078,45 +1087,46 @@ adHandler.oncanplay = () => {
     if (!adLoaded) createNotification("Ads loaded!");
     adLoaded = true;
     ui.adLoaded.style.display = "block";
+    adHandler.volume = 0.2;
 }
 
-adHandler.onended = () => {
-    currentBoost = availableBoost;
-    game.stats.ads += 1;
-    switch (currentBoost) {
-        case "strongerClicks":
-            game.stats.wads.sc += 1;
-            break;
-        case "strongerAuto":
-            game.stats.wads.sa += 1;
-            break;
-        case "moreSandwiches":
-            game.stats.wads.msw += 1;
-            break;
-        case "fasterShgabb":
-            game.stats.wads.fs += 1;
-            break;
-        case "moreCrits":
-            game.stats.wads.mc += 1;
-            break;
-        case "moreSilicone":
-            game.stats.wads.msi += 1;
-            break;
-    }
+    adHandler.onended = () => {
+        currentBoost = availableBoost;
+        game.stats.ads += 1;
+        switch (currentBoost) {
+            case "strongerClicks":
+                game.stats.wads.sc += 1;
+                break;
+            case "strongerAuto":
+                game.stats.wads.sa += 1;
+                break;
+            case "moreSandwiches":
+                game.stats.wads.msw += 1;
+                break;
+            case "fasterShgabb":
+                game.stats.wads.fs += 1;
+                break;
+            case "moreCrits":
+                game.stats.wads.mc += 1;
+                break;
+            case "moreSilicone":
+                game.stats.wads.msi += 1;
+                break;
+        }
 
-    lastAdTimer = 0;
-    availableBoost = "none"; 
-    adTime = adTimes[currentBoost];
-    adMax = adTimes[currentBoost];
-    adHandler.style.display = "none";
-    adButton.style.display = "none";
+        lastAdTimer = 0;
+        availableBoost = "none";
+        adTime = adTimes[currentBoost];
+        adMax = adTimes[currentBoost];
+        adHandler.style.display = "none";
+        adButton.style.display = "none";
 
-    if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
-        ui.cooldownBar.classList.add("buffedProgress")
-    }
-    if (currentBoost == "moreSandwiches" || currentBoost == "moreCrits") {
-        ui.sandwichBar.classList.add("buffedProgress")
-    }
+        if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
+            ui.cooldownBar.classList.add("buffedProgress")
+        }
+        if (currentBoost == "moreSandwiches") {
+            ui.sandwichBar.classList.add("buffedProgress")
+        }
     }
 }
 catch (e) {
