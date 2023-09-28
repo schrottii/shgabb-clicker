@@ -7,10 +7,15 @@
 const gameVersion = "1.9.1";
 
 const currentPatchNotes = [
-    "v1.9",
-    "-> Bars:",
+    "-> Ads:",
+    "- Reduced volume of ads",
+    "- More Silicone ad is no longer available before unlocking Silicone",
     "- Fixed click and sandwich bar keeping the boost effect after an ad is over",
     "- Fixed sandwich bar gaining the boost effect on More Crits ads",
+    "-> Other:",
+    "- Added 10 new quotes",
+    "- Fixed destroying an artifact causing random artifacts to get unequipped",
+    "v1.9",
     "-> Artifact Leveling:",
     "- You can now level and destroy artifacts!",
     "- New currency: Artifact Scrap",
@@ -221,6 +226,16 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "I heard your mental state is rotting down my man no offense - elmenda452",
     "um do we really want to get 1,000,000 sandwiches per click - elmenda452",
     "congrats on the knowledge - Phazer",
+    "I will bestow my wrath upon you - elmenda452",
+    "close! those are tires - Phazer",
+    "my son was here earlier - Phazer",
+    "you're bekommen great - Phazer",
+    "schrottii those voices in your head arent real - Phazer",
+    "This feels so awful without the context - slowmerger",
+    "I've seen a dream where I broke SSS and got 2:11 - DaGame",
+    "Quote placeholder - DaGame",
+    "2021 what year was that - slowmerger",
+    "lag was invented in 1855 - Schrottii",
 ];
 
 // Notations
@@ -436,7 +451,7 @@ function sandwich() {
 }
 
 function silicone() {
-    if (game.shgabb < 1000000000 && game.stats.si < 1) return false;
+    if (!siliconeUnlocked()) return false;
     if (getArtifactByID(304).isEquipped()) return false;
 
     let amount = getSiliconeProduction();
@@ -522,7 +537,7 @@ var doesUnlevel = false;
 
 function unlevel(id) {
     // Unbuy an upgrade and update UI
-    if (id.type == "goldenShgabbUpgrades") if (!confirm("Do you really want to unlevel?")) return false;
+    //if (id.type == "goldenShgabbUpgrades") if (!confirm("Do you really want to unlevel?")) return false;
     id.unlevel();
 
     updateUpgrades();
@@ -562,6 +577,10 @@ function prestigeButton() {
         updateUpgrades();
         createNotification("Prestiged for " + amount + " golden shgabb!");
     }
+}
+
+function siliconeUnlocked() {
+    return game.shgabb >= 1000000000 || game.stats.si > 0;
 }
 
 // Notifications
@@ -776,7 +795,7 @@ function updateUI() {
     }
 
     // Silicone
-    if (game.shgabb >= 1000000000 || game.stats.si > 0) {
+    if (siliconeUnlocked()) {
         unlocks.siliconeShgabb.style.display = "unset";
         ui.siImage.style.display = "unset";
         ui.siAmount.innerHTML = fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
@@ -970,6 +989,8 @@ function loop(tick) {
         // Hey1 You can get this!
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         if (availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        while (!siliconeUnlocked() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+
         adButton.style.display = "inline";
         adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
 
@@ -997,7 +1018,7 @@ function loop(tick) {
 }
 
 function determineLeastUsedBoost() {
-    let least = ["", 1000000000000000000];
+    let least = ["", 1000000000000000000000000];
     for (s in game.stats.wads) {
         if (game.stats.wads[s] < least[1]) {
             least[0] = s;
