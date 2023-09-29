@@ -12,8 +12,15 @@ const currentPatchNotes = [
     "- More Silicone ad is no longer available before unlocking Silicone",
     "- Fixed click and sandwich bar keeping the boost effect after an ad is over",
     "- Fixed sandwich bar gaining the boost effect on More Crits ads",
+    "- Fixed an ad issue",
+    "-> Balance:",
+    "- Amulet of Quick Snacks: Sandwich amount now also changes: 10k -> 10k/50k/100k",
+    "- Increased unlock requirement of GS boosts shgabb 1 from 1k GS to 3k GS",
+    "- Decreased unlock requirement of Unlock Buy Max from 3k GS to 1k GS",
+    "- Reduced costs of Unlock Buy Max from 3k GS to 500 GS",
     "-> Other:",
     "- Added 10 new quotes",
+    "- Changed display of artifact chances (as none of them become 0% anymore due to duplicates)",
     "- Fixed destroying an artifact causing random artifacts to get unequipped",
     "v1.9",
     "-> Artifact Leveling:",
@@ -843,7 +850,7 @@ function updateUI() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "% (+" + getArtifactBoost("gems").toFixed(1) + ")"
-        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common " + (allArtifactsOfRarity(0) ? "0%" : "0.08% (1/1200)") + "<br />Rare " + (allArtifactsOfRarity(1) ? "0%" : "0.01% (1/6000)") + "<br />Epic " + (allArtifactsOfRarity(2) ? "0%" : "0.003% (1/32000)") : "Artifacts locked!")
+        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.08% (1/1200)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.01% (1/6000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Améliorer Levels: " + getTotalAme()
@@ -1154,17 +1161,18 @@ catch (e) {
     console.trace(e);
 }
 
-let lastAdTimer = 0;
+//let lastAdTimer = 0;
 adHandler.ontimeupdate = () => {
-    if ((adHandler.currentTime > lastAdTimer + 2 && adHandler.currentTime < adHandler.duration) || adHandler.playbackRate > 1) {
+    if (adHandler.controls == true) { //((adHandler.currentTime > lastAdTimer + 2 && adHandler.currentTime < adHandler.duration) || adHandler.playbackRate > 1) {
         adHandler.onended();
+
         adTime = -50000000000;
         currentBoost = "screwyou";
         availableBoost = "noneeeeeee";
     }
-    else {
+    /*else {
         lastAdTimer = adHandler.currentTime;
-    }
+    }*/
 } 
 
 // Update upgrades UI

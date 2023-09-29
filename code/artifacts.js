@@ -351,7 +351,7 @@ var artifacts = [
 
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", level => 2 + level, { prefix: "/", desc: "But no shgabb from clicks and /10 gem chance", noPercentage: true }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", level => Math.pow(1000, 2 + level), { prefix: "+", noPercentage: true }),
-	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", level => 3 * Math.max(1, (level - 1) * 4), { trigger: () => game.sw < 10000, desc: "While less than 10000 sandwiches" }),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", level => 3 * Math.max(1, (level - 1) * 4), { trigger: level => game.sw < 10000 * Math.max(1, (level - 1) * 5), desc: level => "While less than " + (10000 * Math.max(1, (level - 1) * 5)) + " sandwiches" }),
 	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", level => 2 + level, { desc: "But 5x longer click cooldown" }),
 	new Artifact(204, 2, "Amulet of Golden Bank", "amulet.png", "gs", level => 2.5 + 2.5 * level, { trigger: () => game.stats.pttp >= 300, desc: "If the last prestige was at least 5 minutes ago" }),
 	new Artifact(205, 2, "Amulet of Slowgemming", "amulet.png", "gemchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 seconds (not current)" }),
