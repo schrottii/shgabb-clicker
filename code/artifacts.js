@@ -217,29 +217,36 @@ function getArtifact(multi = 1) {
 	}
 }
 
-function gambleArtifact(r) {
+function setNextArtifact(r) {
 	// Used by getArtifact - which one will we get of this rarity?
 	let possibleArtifacts = [];
 	for (a in artifacts) {
 		if (artifacts[a].rarity == r && !artifacts[a].isUnlocked()) {
 			possibleArtifacts.push(artifacts[a].ID);
-        }
-    }
-    let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+		}
+	}
+	if (possibleArtifacts.length == 0) return 0;
+	return gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+}
 
+function gambleArtifact(r) {
+	if (game.nexgai[r - 1] == 0 || (getArtifactByID(game.nexgai[r - 1]) != undefined && getArtifactByID(game.nexgai[r - 1]).isEquipped())) game.nexgai[r - 1] = setNextArtifact(r);
+	r -= 1;
     // New artifact!
-    game.a.push(gainedID);
-    createNotification("New Artifact: " + getArtifactByID(gainedID).name);
+    game.a.push(game.nexgai[r]);
+	createNotification("New Artifact: " + getArtifactByID(game.nexgai[r]).name);
     updateArtifacts();
 
     ui.newArtifactText = "New Artifact!";
-    ui.newArtifactImage.src = "images/arti/" + getArtifactByID(gainedID).image;
-    ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
+	ui.newArtifactImage.src = "images/arti/" + getArtifactByID(game.nexgai[r]).image;
+	ui.newArtifactName.innerHTML = getArtifactByID(game.nexgai[r]).name + " (" + getArtifactByID(game.nexgai[r]).getRarity() + ")";
     ui.newArtifact.style.display = "block";
 
     setTimeout(() => {
         ui.newArtifact.style.display = "none";
-    }, 5000)
+	}, 5000)
+
+	game.nexgai[r - 1] = setNextArtifact(r);
 }
 
 function artifactDuplicate(rarity) {

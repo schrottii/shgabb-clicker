@@ -14,6 +14,7 @@ const currentPatchNotes = [
     "- Fixed sandwich bar gaining the boost effect on More Crits ads",
     "- Fixed an ad issue",
     "-> Balance:",
+    "- GS gain now also increases every 10k More Shgabb levels",
     "- Amulet of Quick Snacks: Sandwich amount now also changes: 10k -> 10k/50k/100k",
     "- Increased unlock requirement of GS boosts shgabb 1 from 1k GS to 3k GS",
     "- Decreased unlock requirement of Unlock Buy Max from 3k GS to 1k GS",
@@ -21,6 +22,7 @@ const currentPatchNotes = [
     "-> Other:",
     "- Added 10 new quotes",
     "- Changed display of artifact chances (as none of them become 0% anymore due to duplicates)",
+    "- Fixed the Artifact Gift exploit",
     "- Fixed destroying an artifact causing random artifacts to get unequipped",
     "v1.9",
     "-> Artifact Leveling:",
@@ -427,6 +429,7 @@ function getGoldenShgabb() {
     return Math.floor(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))
         * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
         * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
+        * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 10000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * sandwichUpgrades.twoTwoFive.currentEffect()
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
