@@ -1104,6 +1104,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
+
+    checkForZeroNext();
 }
 if (localStorage.getItem("shgabbSettings") != undefined) {
     settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));

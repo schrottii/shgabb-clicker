@@ -229,6 +229,12 @@ function setNextArtifact(r) {
 	return gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
 }
 
+function checkForZeroNext() {
+	for (i in game.nexgai) {
+		if (game.nexgai[i] == 0) game.nexgai[i] = setNextArtifact(i + 1);
+	}
+}
+
 function gambleArtifact(r) {
 	if (game.nexgai[r - 1] == 0 || (getArtifactByID(game.nexgai[r - 1]) != undefined && getArtifactByID(game.nexgai[r - 1]).isEquipped())) game.nexgai[r - 1] = setNextArtifact(r);
 	r -= 1;
@@ -338,6 +344,8 @@ function destroyArtifact(id) {
 
 		game.artifactScrap += amount;
 		game.stats.artifactScrap += amount;
+
+		checkForZeroNext();
 
 		createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifactByID(id).name + "!");
     }
