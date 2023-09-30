@@ -560,6 +560,8 @@ Version 1.9.1:
 
 -> Other:
 - Added 10 new quotes
+- Duplicates now appear at the top of the screen (like new artifacts do)
+- Artifact Scrap amount is now visible at the top
 - Changed display of artifact chances (as none of them become 0% anymore due to duplicates)
 - Fixed the Artifact Gift exploit
 - Fixed destroying an artifact causing random artifacts to get unequipped

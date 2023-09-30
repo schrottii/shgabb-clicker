@@ -103,7 +103,7 @@ function getArtifactBoost(currency) {
 	let boost = 1;
 	for (let arti in artifacts) {
 		if (artifacts[arti].boost == currency) {
-			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger(level)) boost *= getArtifactEffect(artifacts[arti].ID);
+			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger(artifacts[arti].level)) boost *= getArtifactEffect(artifacts[arti].ID);
 		}
 	}
 	return boost;
