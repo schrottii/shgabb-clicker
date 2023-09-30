@@ -101,6 +101,7 @@ var game = {
     al: 2,
     alnames: [""],
     ach: [],
+    nexgai: [0, 0, 0, 0],
     tttd: 1,
 }
 

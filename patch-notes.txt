@@ -539,3 +539,29 @@ Version 1.9:
 - P2W: x3 -> x2/x3/x4
 - Silicone implants: +200% -> +200%/+300%/+400%
 - Sosnog: x3 -> x3/x14/x25
+
+
+
+2023/09/30 1.9.1:
+Version 1.9.1:
+-> Ads:
+- Reduced volume of ads
+- More Silicone ad is no longer available before unlocking Silicone
+- Fixed click and sandwich bar keeping the boost effect after an ad is over
+- Fixed sandwich bar gaining the boost effect on More Crits ads
+- Fixed an ad issue
+
+-> Balance:
+- GS gain now also increases every 10k More Shgabb levels
+- Amulet of Quick Snacks: Sandwich amount now also changes: 10k -> 10k/50k/100k
+- Increased unlock requirement of GS boosts shgabb 1 from 1k GS to 3k GS
+- Decreased unlock requirement of Unlock Buy Max from 3k GS to 1k GS
+- Reduced costs of Unlock Buy Max from 3k GS to 500 GS
+
+-> Other:
+- Added 10 new quotes
+- Duplicates now appear at the top of the screen (like new artifacts do)
+- Artifact Scrap amount is now visible at the top
+- Changed display of artifact chances (as none of them become 0% anymore due to duplicates)
+- Fixed the Artifact Gift exploit
+- Fixed destroying an artifact causing random artifacts to get unequipped

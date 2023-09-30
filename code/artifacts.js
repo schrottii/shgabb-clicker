@@ -103,7 +103,7 @@ function getArtifactBoost(currency) {
 	let boost = 1;
 	for (let arti in artifacts) {
 		if (artifacts[arti].boost == currency) {
-			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger()) boost *= getArtifactEffect(artifacts[arti].ID);
+			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger(game.alvl[artifacts[arti].ID])) boost *= getArtifactEffect(artifacts[arti].ID);
 		}
 	}
 	return boost;
@@ -129,6 +129,8 @@ function renderArtifacts() {
 		render = render + "<br />";
 	}
 	else ui.artifactScrapAmount.innerHTML = "";
+
+	ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
 
 	for (a in artifacts) {
 		if (artifacts[a].isUnlocked()) {
@@ -217,29 +219,42 @@ function getArtifact(multi = 1) {
 	}
 }
 
-function gambleArtifact(r) {
+function setNextArtifact(r) {
 	// Used by getArtifact - which one will we get of this rarity?
 	let possibleArtifacts = [];
 	for (a in artifacts) {
 		if (artifacts[a].rarity == r && !artifacts[a].isUnlocked()) {
 			possibleArtifacts.push(artifacts[a].ID);
-        }
-    }
-    let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+		}
+	}
+	if (possibleArtifacts.length == 0) return 0;
+	return gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+}
 
+function checkForZeroNext() {
+	for (i in game.nexgai) {
+		if (game.nexgai[i] == 0) game.nexgai[i] = setNextArtifact(i + 1);
+	}
+}
+
+function gambleArtifact(r) {
+	if (game.nexgai[r - 1] == 0 || (getArtifactByID(game.nexgai[r - 1]) != undefined && getArtifactByID(game.nexgai[r - 1]).isUnlocked())) game.nexgai[r - 1] = setNextArtifact(r);
+	r -= 1;
     // New artifact!
-    game.a.push(gainedID);
-    createNotification("New Artifact: " + getArtifactByID(gainedID).name);
+    game.a.push(game.nexgai[r]);
+	createNotification("New Artifact: " + getArtifactByID(game.nexgai[r]).name);
     updateArtifacts();
 
     ui.newArtifactText = "New Artifact!";
-    ui.newArtifactImage.src = "images/arti/" + getArtifactByID(gainedID).image;
-    ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
+	ui.newArtifactImage.src = "images/arti/" + getArtifactByID(game.nexgai[r]).image;
+	ui.newArtifactName.innerHTML = getArtifactByID(game.nexgai[r]).name + " (" + getArtifactByID(game.nexgai[r]).getRarity() + ")";
     ui.newArtifact.style.display = "block";
 
     setTimeout(() => {
         ui.newArtifact.style.display = "none";
-    }, 5000)
+	}, 5000)
+
+	game.nexgai[r] = setNextArtifact(r);
 }
 
 function artifactDuplicate(rarity) {
@@ -256,6 +271,15 @@ function artifactDuplicate(rarity) {
 	createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifactByID(gainedID).name + "!");
 	game.artifactScrap += amount;
 	game.stats.artifactScrap += amount;
+
+	ui.newArtifactText = "Duplicate!";
+	ui.newArtifactImage.src = "images/currencies/artifactscrap.png";
+	ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
+	ui.newArtifact.style.display = "block";
+
+	setTimeout(() => {
+		ui.newArtifact.style.display = "none";
+	}, 5000)
 }
 
 function getArtifactByID(id) {
@@ -322,14 +346,17 @@ function destroyArtifact(id) {
 
 		game.a.splice(game.a.indexOf(id), 1);
 		delete game.alvl[id];
-		game.aeqi.splice(game.aeqi.indexOf(id), 1);
+		if (game.aeqi.indexOf(id) != -1) game.aeqi.splice(game.aeqi.indexOf(id), 1);
 
+		// Unequip
 		for (loadout in game.alo) {
 			if (game.alo[loadout].indexOf(id)  != -1 ) game.alo[loadout].splice(game.alo[loadout].indexOf(id), 1);
         }
 
 		game.artifactScrap += amount;
 		game.stats.artifactScrap += amount;
+
+		checkForZeroNext();
 
 		createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifactByID(id).name + "!");
     }
@@ -350,7 +377,7 @@ var artifacts = [
 
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", level => 2 + level, { prefix: "/", desc: "But no shgabb from clicks and /10 gem chance", noPercentage: true }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", level => Math.pow(1000, 2 + level), { prefix: "+", noPercentage: true }),
-	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", level => 3 * Math.max(1, (level - 1) * 4), { trigger: () => game.sw < 10000, desc: "While less than 10000 sandwiches" }),
+	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", level => 3 * Math.max(1, (level - 1) * 4), { trigger: level => game.sw < 10000 * Math.max(1, (level - 1) * 5), desc: level => "While less than " + (10000 * Math.max(1, (level - 1) * 5)) + " sandwiches" }),
 	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", level => 2 + level, { desc: "But 5x longer click cooldown" }),
 	new Artifact(204, 2, "Amulet of Golden Bank", "amulet.png", "gs", level => 2.5 + 2.5 * level, { trigger: () => game.stats.pttp >= 300, desc: "If the last prestige was at least 5 minutes ago" }),
 	new Artifact(205, 2, "Amulet of Slowgemming", "amulet.png", "gemchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 seconds (not current)" }),
