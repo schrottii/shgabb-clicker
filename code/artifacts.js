@@ -103,7 +103,7 @@ function getArtifactBoost(currency) {
 	let boost = 1;
 	for (let arti in artifacts) {
 		if (artifacts[arti].boost == currency) {
-			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger()) boost *= getArtifactEffect(artifacts[arti].ID);
+			if (artifacts[arti].isUnlocked() && artifacts[arti].isEquipped() && artifacts[arti].trigger(level)) boost *= getArtifactEffect(artifacts[arti].ID);
 		}
 	}
 	return boost;
@@ -129,6 +129,8 @@ function renderArtifacts() {
 		render = render + "<br />";
 	}
 	else ui.artifactScrapAmount.innerHTML = "";
+
+	ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
 
 	for (a in artifacts) {
 		if (artifacts[a].isUnlocked()) {
@@ -269,6 +271,15 @@ function artifactDuplicate(rarity) {
 	createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifactByID(gainedID).name + "!");
 	game.artifactScrap += amount;
 	game.stats.artifactScrap += amount;
+
+	ui.newArtifactText = "Duplicate!";
+	ui.newArtifactImage.src = "images/currencies/artifactscrap.png";
+	ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
+	ui.newArtifact.style.display = "block";
+
+	setTimeout(() => {
+		ui.newArtifact.style.display = "none";
+	}, 5000)
 }
 
 function getArtifactByID(id) {

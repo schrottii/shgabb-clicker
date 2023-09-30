@@ -21,6 +21,8 @@ const currentPatchNotes = [
     "- Reduced costs of Unlock Buy Max from 3k GS to 500 GS",
     "-> Other:",
     "- Added 10 new quotes",
+    "- Duplicates now appear at the top of the screen (like new artifacts do)",
+    "- Artifact Scrap amount is now visible at the top",
     "- Changed display of artifact chances (as none of them become 0% anymore due to duplicates)",
     "- Fixed the Artifact Gift exploit",
     "- Fixed destroying an artifact causing random artifacts to get unequipped",
@@ -101,6 +103,7 @@ var ui = {
     ameAmount: document.getElementById("ameAmount"),
     ameAmount2: document.getElementById("ameAmount2"),
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
+    artifactScrapAmount2: document.getElementById("artifactScrapAmount2"),
 
     // Images of currencies
     swImage: document.getElementById("swImage"),
@@ -428,8 +431,8 @@ function getAchievementBoost() {
 function getGoldenShgabb() {
     return Math.floor(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))
         * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
-        * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 1000)
-        * Math.ceil(shgabbUpgrades.moreShgabb.currentLevel() / 10000)
+        * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000)
+        * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * sandwichUpgrades.twoTwoFive.currentEffect()
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
