@@ -236,7 +236,7 @@ function checkForZeroNext() {
 }
 
 function gambleArtifact(r) {
-	if (game.nexgai[r - 1] == 0 || (getArtifactByID(game.nexgai[r - 1]) != undefined && getArtifactByID(game.nexgai[r - 1]).isEquipped())) game.nexgai[r - 1] = setNextArtifact(r);
+	if (game.nexgai[r - 1] == 0 || (getArtifactByID(game.nexgai[r - 1]) != undefined && getArtifactByID(game.nexgai[r - 1]).isUnlocked())) game.nexgai[r - 1] = setNextArtifact(r);
 	r -= 1;
     // New artifact!
     game.a.push(game.nexgai[r]);
@@ -252,7 +252,7 @@ function gambleArtifact(r) {
         ui.newArtifact.style.display = "none";
 	}, 5000)
 
-	game.nexgai[r - 1] = setNextArtifact(r);
+	game.nexgai[r] = setNextArtifact(r);
 }
 
 function artifactDuplicate(rarity) {
