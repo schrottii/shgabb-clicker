@@ -4,59 +4,17 @@
 
 // Game version and patch notes
 
-const gameVersion = "1.9.1";
+const gameVersion = "2.0";
 
 const currentPatchNotes = [
     "-> Ads:",
-    "- Reduced volume of ads",
-    "- More Silicone ad is no longer available before unlocking Silicone",
-    "- Fixed click and sandwich bar keeping the boost effect after an ad is over",
-    "- Fixed sandwich bar gaining the boost effect on More Crits ads",
-    "- Fixed an ad issue",
-    "-> Balance:",
-    "- GS gain now also increases every 10k More Shgabb levels",
-    "- Amulet of Quick Snacks: Sandwich amount now also changes: 10k -> 10k/50k/100k",
-    "- Increased unlock requirement of GS boosts shgabb 1 from 1k GS to 3k GS",
-    "- Decreased unlock requirement of Unlock Buy Max from 3k GS to 1k GS",
-    "- Reduced costs of Unlock Buy Max from 3k GS to 500 GS",
-    "-> Other:",
-    "- Added 10 new quotes",
-    "- Duplicates now appear at the top of the screen (like new artifacts do)",
-    "- Artifact Scrap amount is now visible at the top",
-    "- Changed display of artifact chances (as none of them become 0% anymore due to duplicates)",
-    "- Fixed the Artifact Gift exploit",
-    "- Fixed destroying an artifact causing random artifacts to get unequipped",
-    "v1.9",
-    "-> Artifact Leveling:",
-    "- You can now level and destroy artifacts!",
-    "- New currency: Artifact Scrap",
-    "- Unlocked once you get your first duplicate",
-    "- Unlocking many artifacts does not increase the chances for duplicates",
-    "- Artifacts can be leveled to level 2 and 3, granting greater effects",
-    "- Added buttons to switch between selecting, upgrading and destroying",
-    "- Full list of artifact level effects and changes can be found in the patch notes file",
-    "-> Artifact Scrap",
-    "- New currency earned by getting duplicates or destroying artifacts",
-    "- Can be spent to upgrade artifacts to level 2 and 3",
-    "- Duplicates give 1/10 of the scrap required for an upgrade (1/5 if owning all artifacts of that rarity)",
-    "- Destroying gives 1/5",
-    "-> Balance:",
-    "- Increased Stronger Clicks ad boost from 3x to 5x",
-    "- Increased chance for common artifacts from 1/1200 to 1/800",
-    "- Increased chance for rare artifacts from 1/6000 to 1/4000",
-    "-> Other:",
-    "- Added 10 new quotes",
-    "- Several changes to the displaying of artifact effects",
-    "- Increased auto save time from 3 to 5 seconds",
-    "- Increased brightness of the background of equipped artifacts",
-    "- Some notation fixes"
 ]
 
 // BETA (cheating)
 
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false
