@@ -37,7 +37,7 @@ var oldTime = 0;
 var knifeBoost = 1;
 var autoNotifications = 0;
 
-renderSections();
+renderSections(true);
 var ui = {
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
@@ -255,6 +255,7 @@ function fn(number) {
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
+    renderSections();
     let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 3 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;

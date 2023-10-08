@@ -11,7 +11,8 @@ var render = {
     clickButtonSection: document.getElementById("clickButtonSection"),
     resourcesSection: document.getElementById("resourcesSection"),
     // sel 1
-
+    shgabbSection: document.getElementById("shgabbSection"),
+    sandwichSection: document.getElementById("sandwichSection"),
     // sel 2
 
     // !!!
@@ -25,11 +26,15 @@ var render = {
     minigameSection: document.getElementById("minigameSection"),
 }
 
-function renderSections() {
+function renderSections(all=false) {
     renderTitleSection();
     renderQuoteSection();
     renderClickButtonSection();
     renderResourcesSection();
+
+    let randie = Math.ceil(Math.random() * 2);
+    if(all || randie >= 2) renderShgabbSection();
+    if(all || randie < 2) renderSandwichSection();
 }
 
 // def
@@ -63,4 +68,34 @@ function renderResourcesSection() {
     </div>`;
 
     render.resourcesSection.innerHTML = ren;
+}
+
+// sel 1
+
+function renderShgabbSection() {
+    let ren = `<h3>Shgabb Upgrades</h3>
+    <img class="currency" src="images/currencies/shgabb.png" /><span id="shgabbAmount2">0 Shgabb</span><br />
+    <div>
+        <span id="upgradesl" style="float: left; width: 50%;"></span>
+        <span id="upgradesr" style="float: right; width: 50%;"></span>
+    </div>
+    <hr style="clear:both" />`;
+
+    render.shgabbSection.innerHTML = ren;
+}
+
+function renderSandwichSection() {
+    let ren = `<div id="sandwichSection">
+        <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
+        <h3>Sandwich Upgrades</h3>
+        <img class="currency" src="images/currencies/sandwich.png" /><span id="swAmount2">0 Sandwiches</span>
+        <div>
+            <span id="swupgradesl" style="float: left; width: 50%;"></span>
+            <span id="swupgradesr" style="float: right; width: 50%;"></span>
+        </div>
+        <br /> <br />
+        <hr style="clear:both" />
+    </div>`;
+
+    render.sandwichSection.innerHTML = ren;
 }
