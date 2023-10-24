@@ -29,7 +29,7 @@ var sections = {
     selection3: document.getElementById("selection3"),
 }
 
-function renderSelection(sel) {
+function renderSelectionButtons(sel) {
     let render = ``;
     let sels = [];
 
@@ -47,11 +47,26 @@ function renderSelection(sel) {
     }
 
     for (s in sels) {
-        render = render + `<button class="settingButton" onclick="selectionRender(` + sel + `,` + sels[s] + `)">` + selsDisplay[s] + `</button>`
+        render = render + `<button class="settingButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 }
 
-renderSelection(1);
-renderSelection(2);
-renderSelection(3);
+function renderAllSelectionButtons() {
+    renderSelectionButtons(1);
+    renderSelectionButtons(2);
+    renderSelectionButtons(3);
+}
+
+var selections = ["shgabb", "minigames", "social"];
+
+function changeSelection(sel, sels) {
+    selections[sel - 1] = sels;
+
+    renderAllSelectionButtons();
+}
+
+
+
+
+renderAllSelectionButtons();
