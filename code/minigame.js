@@ -26,13 +26,13 @@ let minigameField =
 let hitboxes = [
     [drawStartX - (w / 8), drawStartY],
     [drawStartX + (w / 12), drawStartY],
-    [drawStartX + (w / 4), drawStartY],
+    [drawStartX + (w / 3.6), drawStartY],
     [drawStartX - (w / 8), drawStartY + (h / 5)],
     [drawStartX + (w / 12), drawStartY + (h / 5)],
-    [drawStartX + (w / 4), drawStartY + (h / 5)],
+    [drawStartX + (w / 3.6), drawStartY + (h / 5)],
     [drawStartX - (w / 8), drawStartY + (h / 2.5)],
     [drawStartX + (w / 12), drawStartY + (h / 2.5)],
-    [drawStartX + (w / 4), drawStartY + (h / 2.5)]
+    [drawStartX + (w / 3.6), drawStartY + (h / 2.5)]
 ]
 
 canvas.addEventListener("click", onCanvasClick);
@@ -198,6 +198,7 @@ function minigameClear() {
 
 function minigameDrawBackground() {
     minigameClear();
+    ctx.lineWidth = 1;
     ctx.fillStyle = "lightblue";
     ctx.fillRect(w / 64, h / 64, w - (w / 32), h - (h / 32));
     ctx.fillStyle = "black";
@@ -210,33 +211,52 @@ function minigameDrawBackground() {
 }
 
 function minigameUpdateText(text) {
-    ctx.font = "12px";
+    ctx.font = "16px Times New Roman";
     ctx.textAlign = "center";
     ctx.fillStyle = "black";
-    ctx.fillText(text, w / 2, h / 24 + h / 64 + (h / 32), w - (w / 64 + (w / 6) * 2));
+    ctx.fillText(text, w / 2, h / 24 + h / 64 + (h / 24), w - (w / 64 + (w / 6) * 2));
 }
 
 function minigameDrawCircle(x, y) {
-    ctx.fillStyle = "red";
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 4;
+
     ctx.beginPath();
-    ctx.arc(x + (w / 16), y + (w / 16), w / 16, 0, 2 * Math.PI);
+    ctx.arc(x + (w / 12) - 2 * Math.PI, y + (w / 12) - 2 * Math.PI, w / 16, 0, 2 * Math.PI);
     ctx.stroke();
+
+    ctx.lineWidth = 1;
 }
 
 function minigameDrawX(x, y) {
-    ctx.fillStyle = "red";
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 4;
+
     ctx.beginPath();
     ctx.moveTo(x, y);
-    ctx.lineTo(x + (w / 16), y + (h / 16));
+    ctx.lineTo(x + (w / 12), y + (h / 12));
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(x + (w / 16), y);
-    ctx.lineTo(x, y + (h / 16));
+    ctx.moveTo(x + (w / 12), y);
+    ctx.lineTo(x, y + (h / 12));
+    ctx.stroke();
+
+    ctx.lineWidth = 1;
+}
+
+function minigameDrawHitbox(x, y) {
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (w / 12), y + (h / 12));
     ctx.stroke();
 }
 
 function minigameRenderPos(x, y, X, Y) {
+    //if (minigameField[y][x] == 0) minigameDrawHitbox(X, Y);
     if (minigameField[y][x] == 1) minigameDrawX(X, Y);
     if (minigameField[y][x] == 2) minigameDrawCircle(X, Y);
 }

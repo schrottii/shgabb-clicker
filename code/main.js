@@ -7,7 +7,13 @@
 const gameVersion = "2.0";
 
 const currentPatchNotes = [
-    "-> Ads:",
+    "-> Selection:",
+    "- ...",
+    "-> Shgic Shgac Shgoe:",
+    "- O is now blue and X yellow (instead of both black)",
+    "- Increased size of O and X",
+    "- Slightly improved hitboxes and positioning",
+    "- Increased header size"
 ]
 
 // BETA (cheating)
