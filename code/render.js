@@ -29,10 +29,11 @@ var sections = {
     selection3: document.getElementById("selection3"),
 }
 
-function renderSelectionButtons(sel) {
+function renderSelection(sel) {
     let render = ``;
     let sels = [];
 
+    // Buttons
     if (sel == 1) {
         sels = ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer"];
         selsDisplay = ["Shgabb", "Sandwich", "Golden Shgabb", "Silicone Shgabb", "Améliorer"];
@@ -50,12 +51,19 @@ function renderSelectionButtons(sel) {
         render = render + `<button class="settingButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
+
+    // Selection
+    for (s in sels) {
+        console.log(selections[sel - 1], sels[s]);
+        if (selections[sel - 1] == sels[s]) sections[sels[s]].style.display = "unset";
+        else sections[sels[s]].style.display = "none";
+    }
 }
 
-function renderAllSelectionButtons() {
-    renderSelectionButtons(1);
-    renderSelectionButtons(2);
-    renderSelectionButtons(3);
+function renderAllSelection() {
+    renderSelection(1);
+    renderSelection(2);
+    renderSelection(3);
 }
 
 var selections = ["shgabb", "minigames", "social"];
@@ -63,10 +71,10 @@ var selections = ["shgabb", "minigames", "social"];
 function changeSelection(sel, sels) {
     selections[sel - 1] = sels;
 
-    renderAllSelectionButtons();
+    renderSelection(sel);
 }
 
 
 
 
-renderAllSelectionButtons();
+renderAllSelection();

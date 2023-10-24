@@ -202,7 +202,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
 
 // More beta stuff
-sections.cheats.style.display = BETA.isBeta ? "unset" : "none";
+// waaaa sections.cheats.style.display = BETA.isBeta ? "unset" : "none";
 
 function cheatEngine(type) {
     let toCheat;
@@ -664,7 +664,7 @@ function updateArtifacts() {
         ui.artifacts.innerHTML = renderArtifacts();
         ui.artifactamount.innerHTML = Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1) + " Artifacts unlocked!";
 
-        sections.artifacts.style.display = "unset";
+        // waaaa sections.artifacts.style.display = "unset";
     }
     else {
         ui.artifacts.innerHTML = "";
@@ -676,7 +676,7 @@ function updateArtifacts() {
         ui.gemImage.style.display = "unset";
         ui.gemAmount.innerHTML = game.gems + " Gems";
 
-        sections.gems.style.display = "unset";
+        // waaaa sections.gems.style.display = "unset";
     }
     else {
         ui.gemImage.style.display = "unset";
@@ -702,7 +702,7 @@ function updateUI() {
     if (game.upgradeLevels.swChance > 0) {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
         ui.swAmount.innerHTML = fn(game.sw) + " Sandwiches";
-        sections.sandwich.style.display = "unset";
+        // waaaa sections.sandwich.style.display = "unset";
         ui.swImage.style.display = "unset";
         ui.sandwichBar.value = sandwichFreezeTime;
         ui.sandwichBar.max = getFreezeTime();
@@ -736,7 +736,7 @@ function updateUI() {
 
     // GS
     if (game.gs > 0) {
-        sections.goldenShgabb.style.display = "unset";
+        // waaaa sections.goldenShgabb.style.display = "unset";
         ui.gsImage.style.display = "unset";
         ui.gsAmount.innerHTML = fn(game.gs) + " Golden Shgabb";
     }
@@ -746,7 +746,7 @@ function updateUI() {
         ui.gsAmount.innerHTML = "";
     }
     if (game.shgabb >= 1000000) {
-        sections.goldenShgabb.style.display = "unset";
+        // waaaa sections.goldenShgabb.style.display = "unset";
         ui.prestigeButton.style.display = "inline";
         ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
     }
@@ -756,7 +756,7 @@ function updateUI() {
 
     // Silicone
     if (siliconeUnlocked()) {
-        sections.siliconeShgabb.style.display = "unset";
+        // waaaa sections.siliconeShgabb.style.display = "unset";
         ui.siImage.style.display = "unset";
         ui.siAmount.innerHTML = fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
     }
@@ -768,7 +768,7 @@ function updateUI() {
     // Ameliorer
     if (ameliorerUnlocked()) {
         ui.ameAmount.innerHTML = game.ame + " Améliorer";
-        sections.ameliorer.style.display = "unset";
+        // waaaa sections.ameliorer.style.display = "unset";
         ui.ameImage.style.display = "unset";
 
         if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
@@ -823,7 +823,7 @@ function updateUI() {
 
     // Minigame
     if (ameliorerUnlocked() && canPlayTTT) {
-        sections.minigames.style.display = "unset";
+        // waaaa sections.minigames.style.display = "unset";
         updateMinigameUI();
     }
     else {
