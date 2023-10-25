@@ -36,7 +36,7 @@ function renderSelection(sel) {
     // Buttons
     if (sel == 1) {
         sels = ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer"];
-        selsDisplay = ["Shgabb", "Sandwich", "Golden Shgabb", "Silicone Shgabb", "Améliorer"];
+        selsDisplay = ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone Shgabb", "Améliorer"];
     }
     if (sel == 2) {
         sels = ["gems", "artifacts", "minigames"];
@@ -54,7 +54,6 @@ function renderSelection(sel) {
 
     // Selection
     for (s in sels) {
-        console.log(selections[sel - 1], sels[s]);
         if (selections[sel - 1] == sels[s]) sections[sels[s]].style.display = "unset";
         else sections[sels[s]].style.display = "none";
     }

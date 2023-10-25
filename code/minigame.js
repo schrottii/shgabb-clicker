@@ -222,7 +222,7 @@ function minigameDrawCircle(x, y) {
     ctx.lineWidth = 4;
 
     ctx.beginPath();
-    ctx.arc(x + (w / 12) - 2 * Math.PI, y + (w / 12) - 2 * Math.PI, w / 16, 0, 2 * Math.PI);
+    ctx.arc(x + (w / 12) - 4 * Math.PI, y + (w / 12) - 2 * Math.PI, w / 16, 0, 2 * Math.PI);
     ctx.stroke();
 
     ctx.lineWidth = 1;

@@ -479,6 +479,12 @@ function toggleUnlevel() {
     updateUpgrades();
 }
 
+function toggleUpgradeColors() {
+    settings.oldUpgradeColors = !settings.oldUpgradeColors;
+    createNotification("Old Upgrade Colors " + (settings.oldUpgradeColors ? "ON" : "OFF"));
+    updateUpgrades();
+}
+
 // Buy functions
 
 function buyUpgrade(id) {

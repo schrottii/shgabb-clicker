@@ -113,4 +113,5 @@ var settings = {
     displayCurrent: false,
     hideMaxed: false,
     hideUnlevel: false,
+    oldUpgradeColors: false,
 }
