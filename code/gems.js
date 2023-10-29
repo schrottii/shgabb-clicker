@@ -40,14 +40,14 @@ function gemOffer(i) {
             }
             break;
         case 2:
-            if (game.gems > 24) {
-                game.gems -= 25;
+            if (game.gems > 19) {
+                game.gems -= 20;
                 game.gemboost += 1;
             }
             break;
         case 3:
-            if (game.gems > 49 /*&& (game.a.length - 1) < artifacts.length - 1*/) {
-                game.gems -= 50;
+            if (game.gems > 29 /*&& (game.a.length - 1) < artifacts.length - 1*/) {
+                game.gems -= 30;
                 getArtifact(3000);
                 autoSave();
             }
@@ -64,7 +64,7 @@ function gemOffer(i) {
 
 function renderGemOffers() {
     ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately!";
-    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 25 gems to get 100% more Shgabb this prestige!<br>Current: +" + ((game.gemboost - 1) * 100) + "%";
-    ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + ((game.a.length - 1) == artifacts.length - 1 ? "Spend 50 gems for some artifact scrap!<br />(3000x chance)" : "Spend 50 gems for a high chance to get an artifact!<br>(3000x chance)");
+    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 gems to get 100% more Shgabb this prestige!<br>Current: +" + ((game.gemboost - 1) * 100) + "%";
+    ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + ((game.a.length - 1) == artifacts.length - 1 ? "Spend 30 gems for some artifact scrap!<br />(3000x chance)" : "Spend 30 gems for a high chance to get an artifact!<br>(3000x chance)");
     ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al > 7 ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25) + " gems for another artifact loadout slot!<br>(Max. 8)");
 }
