@@ -9,6 +9,13 @@ const gameVersion = "2.0";
 const currentPatchNotes = [
     "-> Selection:",
     "- ...",
+    "-> Upgrade design:",
+    "- Reworked colors of upgrades (from white/green to shades of blue)",
+    "- Added a setting to go back to the old upgrade colors",
+    "- Changed border of upgrades from white to black",
+    "- Max. levels are now displayed as /x instead of (Max: x)",
+    "- Upgrade levels are now displayed next to their name",
+    "- Slightly increased height of buttons in upgrades (like max)",
     "-> Shgic Shgac Shgoe:",
     "- O is now blue and X yellow (instead of both black)",
     "- Increased size of O and X",
