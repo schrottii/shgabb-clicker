@@ -114,4 +114,5 @@ var settings = {
     hideMaxed: false,
     hideUnlevel: false,
     oldUpgradeColors: false,
+    notation: "normal",
 }

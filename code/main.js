@@ -22,6 +22,8 @@ const currentPatchNotes = [
     "- Slightly improved hitboxes and positioning",
     "- Increased header size",
     "-> Other:",
+    "- Added more notations: Scientific and Alphabet!",
+    "- Added a setting button to change the notation",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
 ]
 
@@ -214,7 +216,9 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 
 // Notations
 
-const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "What?!?!", "What?!?!2", "What?!?!3", "What?!?!4", "You Broke The Game", "I am crying", "no!!!"];
+const notations = ["normal", "scientific", "alphabet"];
+const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "qD", "QD", "sD", "SD", "OD", "ND", "V", "sV", "Tr", "UTR", "QU", "TQU", "qu", "Se", "Sp", "Oc", "No", "Améliorer", "What?!?!", "What?!?!2", "You Broke The Game", "I am crying", "no!!!", "WhyDoesFranceStillExist", "GodIsWatchingYou"];
+const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 
 // More beta stuff
 // waaaa sections.cheats.style.display = BETA.isBeta ? "unset" : "none";
@@ -254,7 +258,20 @@ function fn(number) {
         number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
     }
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
-    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+    let notiePart = "";
+    switch (settings.notation) {
+        case "normal":
+            notiePart = normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+            break;
+        case "scientific":
+            notiePart = "e" + (number.toString().length - (number.toString().length % 3));
+            break;
+        case "alphabet":
+            notiePart = alphabetNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+            break;
+    }
+    
+    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + notiePart;
     return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(1);
 
     /*
@@ -491,6 +508,12 @@ function toggleUnlevel() {
 function toggleUpgradeColors() {
     settings.oldUpgradeColors = !settings.oldUpgradeColors;
     createNotification("Old Upgrade Colors " + (settings.oldUpgradeColors ? "ON" : "OFF"));
+    updateUpgrades();
+}
+
+function toggleNotation() {
+    settings.notation = (notations[notations.indexOf(settings.notation) + 1] != undefined ? notations[notations.indexOf(settings.notation) + 1] : notations[0]);
+    createNotification("New notation: " + settings.notation);
     updateUpgrades();
 }
 
