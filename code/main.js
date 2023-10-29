@@ -21,6 +21,10 @@ const currentPatchNotes = [
     "- Increased size of O and X",
     "- Slightly improved hitboxes and positioning",
     "- Increased header size",
+    "-> Balance:",
+    "- Capped click cooldown at 0.1s",
+    "- Capped gem chance at 10%",
+    "- Both caps are displayed in the stats once reached",
     "-> Other:",
     "- Added more notations: Scientific and Alphabet!",
     "- Added a setting button to change the notation",
@@ -396,7 +400,8 @@ function getSiliconeBoost(level = "current") {
 }
 
 function getCooldown() {
-    return (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
+    // click cooldown
+    return Math.max(0.1, 5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
         * (getArtifactByID(156).isEquipped() ? 1.5 : 1)
@@ -843,10 +848,10 @@ function updateUI() {
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
         + "</div><div style='float: right; width: 50%;' class='square2'>"
-        + "Click Cooldown: " + getCooldown().toFixed(2) + "s"
+        + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
-        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "% (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.08% (1/1200)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.01% (1/6000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
