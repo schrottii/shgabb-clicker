@@ -91,7 +91,8 @@ var game = {
             msw: 0,
             fs: 0,
             mc: 0,
-            msi: 0
+            msi: 0,
+            mg: 0,
         }
     },
     a: [],

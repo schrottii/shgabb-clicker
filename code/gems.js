@@ -5,7 +5,7 @@ function gemsUnlocked() {
 }
 
 function getGemChance() {
-    return Math.min(10, getArtifactBoost("gemchance") * (getArtifactByID(200).isEquipped() ? 0.1 : 1));
+    return Math.min(10, getArtifactBoost("gemchance") * (getArtifactByID(200).isEquipped() ? 0.1 : 1) * (currentBoost == "moreGems" ? 3 : 1));
 }
 
 function getGem() {

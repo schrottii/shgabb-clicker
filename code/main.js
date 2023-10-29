@@ -26,6 +26,7 @@ const currentPatchNotes = [
     "- Capped gem chance at 10%",
     "- Both caps are displayed in the stats once reached",
     "-> Other:",
+    "- New ad boost: More Gems! 3x gem chance for 8 minutes",
     "- Added more notations: Scientific and Alphabet!",
     "- Added a setting button to change the notation",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
@@ -143,14 +144,15 @@ var adLoaded = false;
 var availableBoost = "none";
 var currentBoost = "none";
 
-const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone"];
+const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
 const boostTexts = {
     strongerClicks: "Stronger Clicks: Get 5x shgabb from clicks for 5 minutes",
-    strongerAuto: "Stronger Auto: Get 10x automatic shgabb for 10 minutes",
+    strongerAuto: "Stronger Auto: Get 5x automatic shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
     moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 2 minutes",
-    moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes"
+    moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes",
+    moreGems: "More Gems: 3x higher gem chance for 8 minutes",
 };
 const adTimes = {
     strongerClicks: 300,
@@ -159,6 +161,7 @@ const adTimes = {
     fasterShgabb: 60,
     moreCrits: 120,
     moreSilicone: 180,
+    moreGems: 480,
 };
 
 // Quotes
@@ -380,7 +383,7 @@ function getAutoProduction(sosnog2 = false) {
 
         + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
         * getArtifactBoost("autoshgabb")
-        * (currentBoost == "strongerAuto" ? 10 : 1)
+        * (currentBoost == "strongerAuto" ? 5 : 1)
         * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
     );
 }
@@ -838,7 +841,7 @@ function updateUI() {
         + "<br />Total Time: " + game.stats.playTime.toFixed(1)
         + "<br />Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + fn(game.stats.sw)
-        + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + ")"
+        + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
@@ -998,6 +1001,7 @@ function loop(tick) {
         // Hey1 You can get this!
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         if (availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        while (!gemsUnlocked() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         while (!siliconeUnlocked() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
 
         adButton.style.display = "inline";
@@ -1048,6 +1052,8 @@ function determineLeastUsedBoost() {
             return "moreCrits";
         case "msi":
             return "moreSilicone";
+        case "mg":
+            return "moreGems";
     }
 }
 
@@ -1143,6 +1149,9 @@ adHandler.oncanplay = () => {
                 break;
             case "moreSilicone":
                 game.stats.wads.msi += 1;
+                break;
+            case "moreGems":
+                game.stats.wads.mg += 1;
                 break;
         }
 
