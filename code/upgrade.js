@@ -49,10 +49,16 @@ class Upgrade {
         }
     }
 
-    unlevel() {
+    unlevel(isMax) {
         doesUnlevel = true;
-        game.upgradeLevels[this.ID] -= 1;
-        createNotification("Upgrade unbought successfully");
+        if (isMax) {
+            game.upgradeLevels[this.ID] = 0;
+            createNotification("Upgrade completely unbought successfully");
+        }
+        else {
+            game.upgradeLevels[this.ID] -= 1;
+            createNotification("Upgrade unbought successfully");
+        }
         return true;
     }
 
@@ -90,7 +96,7 @@ class Upgrade {
 
 
         let unlevelButton = "";
-        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>";
+        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div><div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>";
 
         let levelDisplay = (isMax ? " MAX." : " Lvl. " + this.currentLevel() + (this.getMax() != undefined ? "/" + this.getMax() : ""));
         let myColor = settings.oldUpgradeColors ? (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.getMax() ? "lightgray" : "whitesmoke"))

@@ -20,7 +20,9 @@ const currentPatchNotes = [
     "- O is now blue and X yellow (instead of both black)",
     "- Increased size of O and X",
     "- Slightly improved hitboxes and positioning",
-    "- Increased header size"
+    "- Increased header size",
+    "-> Other:",
+    "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
 ]
 
 // BETA (cheating)
@@ -514,10 +516,10 @@ function buyMax(id) {
 
 var doesUnlevel = false;
 
-function unlevel(id) {
+function unlevel(id, isMax=false) {
     // Unbuy an upgrade and update UI
     //if (id.type == "goldenShgabbUpgrades") if (!confirm("Do you really want to unlevel?")) return false;
-    id.unlevel();
+    if(!isMax || confirm("Do you really want to unlevel this to level 0?")) id.unlevel(isMax);
 
     updateUpgrades();
     freezeTime();
