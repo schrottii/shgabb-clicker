@@ -211,10 +211,10 @@ function getArtifact(multi = 1) {
 	else if (anyArtifactOfRarity(3) && Math.random() < 1 / 32000 * multi) {
 		artifactDuplicate(3);
 	}
-	else if (anyArtifactOfRarity(2) && Math.random() < 1 / 6000 * multi) {
+	else if (anyArtifactOfRarity(2) && Math.random() < 1 / 4000 * multi) {
 		artifactDuplicate(2);
 	}
-	else if (anyArtifactOfRarity(1) && Math.random() < 1 / 1200 * multi) {
+	else if (anyArtifactOfRarity(1) && Math.random() < 1 / 800 * multi) {
 		artifactDuplicate(1);
 	}
 }
@@ -371,7 +371,7 @@ var artifacts = [
 	new Artifact(151, 1, "Ring of Laziness", "ring.png", "autoshgabb", level => 0.8 + 0.4 * level),
 	new Artifact(152, 1, "Ring of Speed", "ring.png", "clickspeed", level => 1.1 + 0.1 * level, { prefix: "-" }),
 	new Artifact(153, 1, "Shiny Red Ring", "ring.png", "gemchance", level => 1 + 0.25 * level, { noPercentage: true, prefix: "x" }),
-	new Artifact(154, 1, "Pulsing Red Ring", "ring.png", "gems", level => 1 + 0.25 * level, { noPercentage: true }),
+	new Artifact(154, 1, "Pulsing Red Ring", "ring.png", "gems", level => [1, 1.5, 1.65, 1.75][level], { noPercentage: true }),
 	new Artifact(155, 1, "Ring of Depression", "ring.png", "shgabb", level => 0.1 / Math.pow(100, level), { noPercentage: true, prefix: "x" }),
 	new Artifact(156, 1, "Ring of Slowing", "ring.png", "clickspeed", level => 1 + 0.5 * level, { noPercentage: true, trigger: () => false, prefix: "x" }),
 
@@ -392,7 +392,7 @@ var artifacts = [
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 2000%" }),
 	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: level => "Every click in a prestige increases shgabb gain by " + (0.1 * level).toFixed(1) + "% (Current: x" + fn(1 + game.stats.ctp * 0.001 * getArtifactLevel(302)) + ")" }),
-	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 1 + level, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active" }),
+	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 2.5 + level * 0.5, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
 

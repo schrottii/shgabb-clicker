@@ -22,14 +22,19 @@ const currentPatchNotes = [
     "- Slightly improved hitboxes and positioning",
     "- Increased header size",
     "-> Balance:",
+    "- Increased base gem chance from 1% to 2%",
     "- Capped click cooldown at 0.1s",
     "- Capped gem chance at 10%",
     "- Both caps are displayed in the stats once reached",
+    "",
+    "- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75",
+    "- P2W: x2/x3/x4 -> x2.5/x3/x4",
     "-> Other:",
     "- New ad boost: More Gems! 3x gem chance for 8 minutes",
     "- Added more notations: Scientific and Alphabet!",
     "- Added a setting button to change the notation",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
+    "- Fixed duplicates and stats still using the old chances"
 ]
 
 // BETA (cheating)
@@ -259,7 +264,7 @@ ui.cheatAmount.oninput = () => {
 function fn(number) {
     if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "0" && number.toString().split(".")[1].substr(0, 2) == "00") return number.toString();
     //if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
-    number = Math.round(number * 10) / 10;
+    if(number > 2) number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
         if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
         number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
@@ -279,7 +284,7 @@ function fn(number) {
     }
     
     if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + notiePart;
-    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(1);
+    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(2);
 
     /*
     number = number.toString();
@@ -855,7 +860,7 @@ function updateUI() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
-        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.08% (1/1200)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.01% (1/6000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
+        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.125% (1/800)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.025% (1/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Améliorer Levels: " + getTotalAme()
