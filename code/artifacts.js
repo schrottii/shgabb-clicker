@@ -395,6 +395,9 @@ var artifacts = [
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 2.5 + level * 0.5, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
+	new Artifact(306, 3, "Shgabb's sleeves", "sleeves.png", "complicated", 0, { desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 2) + "<br>(Current: x" + ((level * 2) * (1 / getCooldown())).toFixed(2) + ")" }),
+	new Artifact(307, 3, "Shgabb's Dice", "dice-3.png", "complicated", 0, { desc: level => "Boosts shgabb, sandwiches by x" + diceAmount + " (" + level + "-6)" }),
+	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration, { desc: level => "Increases gem chance and cap by " + level + "% for every click without gems<br>(Current: +" + (level * frustration) + "%)" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]

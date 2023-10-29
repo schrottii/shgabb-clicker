@@ -5,7 +5,10 @@ function gemsUnlocked() {
 }
 
 function getGemChance() {
-    return Math.min(10, getArtifactBoost("gemchance") * (getArtifactByID(200).isEquipped() ? 0.1 : 1) * (currentBoost == "moreGems" ? 3 : 1));
+    return Math.min(10, getArtifactBoost("gemchance")
+        * (getArtifactByID(200).isEquipped() ? 0.1 : 1)
+        * (currentBoost == "moreGems" ? 3 : 1)
+    ) + (getArtifactByID(308).isEquipped() ? getArtifactEffect(308) : 0);
 }
 
 function getGem() {
@@ -20,7 +23,12 @@ function getGem() {
         game.gems += amount;
         game.stats.tgems += amount;
 
+        frustration = 0;
+
         createNotification("+" + amount + " gem" + (amount > 1 ? "s" : "") + "!");
+    }
+    else if (getArtifactByID(308).isEquipped()) {
+        frustration += 1;
     }
 }
 

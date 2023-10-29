@@ -323,13 +323,15 @@ function clickButton() {
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
             amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
-                * goldenShgabbUpgrades.formaggi.currentEffect());
+                * goldenShgabbUpgrades.formaggi.currentEffect())
+                * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
             game.sw += amount;
             game.stats.sw += amount;
             game.stats.swtp += amount;
             createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
+        changeDiceAmount();
         if (gemsUnlocked()) getGem();
         if (artifactsUnlocked()) getArtifact();
         updateArtifacts();
@@ -349,6 +351,14 @@ function getFreezeTime() {
 function freezeTime() {
     sandwichFreezeTime = getFreezeTime();
 }
+
+var diceAmount = 1;
+function changeDiceAmount() {
+    diceAmount = Math.max(getArtifactLevel(307), Math.ceil(Math.random() * 6));
+    if (getArtifactByID(307).isEquipped()) updateArtifacts();
+}
+
+var frustration = 0;
 
 // Various production functions
 
@@ -370,6 +380,8 @@ function getProduction(sosnog = false) {
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
         * sandwichUpgrades.meaningOfLife.currentEffect()
+        * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
     );
 }
 
@@ -391,6 +403,7 @@ function getAutoProduction(sosnog2 = false) {
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 5 : 1)
         * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
     );
 }
 
@@ -773,11 +786,12 @@ function updateUI() {
     }
 
     if (game.clickCooldown > 0) {
-        ui.clickButton.innerHTML = game.clickCooldown.toFixed(2);
+        ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
         ui.clickButton.style["background-color"] = "lightblue";
     }
     else {
-        ui.clickButton.innerHTML = "+" + fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1)) + " Shgabb";
+        let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
+        ui.clickButton.innerHTML = diceRender + "+" + fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1)) + " Shgabb" + diceRender;
         ui.clickButton.style["background-color"] = "blue";
     }
     ui.cooldownBar.value = game.clickCooldown;
@@ -860,7 +874,7 @@ function updateUI() {
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
-        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.125% (1/800)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.025% (1/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
