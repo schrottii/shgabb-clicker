@@ -21,6 +21,11 @@ const currentPatchNotes = [
     "- Increased size of O and X",
     "- Slightly improved hitboxes and positioning",
     "- Increased header size",
+    "-> Artifacts:",
+    "- Added 6 new artifacts (3 rare, 3 epic)",
+    "- Moved rarity from name to level",
+    "- Changed text size, name is bigger, description smaller if it is long",
+    "- Changed seconds to sec in Amulet of Slowgemming description",
     "-> Balance:",
     "- Capped click cooldown at 0.1s",
     "- Capped gem chance at 10%",
@@ -31,6 +36,7 @@ const currentPatchNotes = [
     "- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75",
     "- P2W: x2/x3/x4 -> x2/x2.5/x3",
     "-> Other:",
+    "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
     "- New ad boost: More Gems! 3x gem chance for 8 minutes",
     "- Added more notations: Scientific and Alphabet!",
     "- Added a setting button to change the notation",
@@ -121,6 +127,7 @@ var ui = {
     gemOffer2: document.getElementById("gemOffer2"),
     gemOffer3: document.getElementById("gemOffer3"),
     gemOffer4: document.getElementById("gemOffer4"),
+    gemOffer5: document.getElementById("gemOffer5"),
 
     // Other
     gameTitle: document.getElementById("gametitle"),

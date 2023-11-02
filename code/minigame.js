@@ -61,6 +61,18 @@ function updateMinigameTime() {
     let today = new Date();
     let newTime = parseInt(today.getYear() + "" + (today.getUTCMonth().toString().length == 1 ? "0" + today.getUTCMonth() : today.getUTCMonth()) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate()));
     game.tttd = newTime;
+
+    let newDailyArtifact = 100;
+    let dgoRar = 3;
+
+    while (newDailyArtifact == 100 && dgoRar > 0) {
+        for (a in artifacts) {
+            if (artifacts[a].rarity == dgoRar && !getArtifactByID(artifacts[a].ID).isUnlocked() && Math.random() > 0.7) newDailyArtifact = artifacts[a].ID;
+        }
+        dgoRar -= 1;
+    }
+    console.log(game.dgo, getArtifactByID(game.dgo).name);
+    game.dgo = newDailyArtifact;
 }
 
 function compareMinigameTime() {

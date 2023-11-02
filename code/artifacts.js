@@ -69,8 +69,8 @@ class Artifact {
 		}
 	}
 
-	render() {
-		return "<button class='artifact' onclick='clickArtifact(" + this.ID + ")' style='background-color: " + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/>" + this.name + " (" + this.getRarity() + ")<br />Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((getArtifactEffect(this.ID) > 2 || this.noPercentage) ? (this.prefix + fn(getArtifactEffect(this.ID))) : ((this.prefix != "x" ? this.prefix : "+") + fn((getArtifactEffect(this.ID) - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.getDescription() ? "<br/>" + this.getDescription() : "") + "</button>";
+	render(clickable=true) {
+		return `<button class='artifact' ` + (clickable ? `onclick = 'clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />" + this.getRarity() + " Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((getArtifactEffect(this.ID) > 2 || this.noPercentage) ? (this.prefix + fn(getArtifactEffect(this.ID))) : ((this.prefix != "x" ? this.prefix : "+") + fn((getArtifactEffect(this.ID) - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.getDescription() ? ("<br/><span style='font-size: " + (this.getDescription().length > 40 ? "10" : "12") + "px'>" + this.getDescription() + "</span>") : "") + "</button>";
 	}
 }
 
@@ -385,7 +385,7 @@ var artifacts = [
 	new Artifact(202, 2, "Amulet of Quick Snacks", "amulet.png", "sw", level => 3 * Math.max(1, (level - 1) * 4), { trigger: level => game.sw < 10000 * Math.max(1, (level - 1) * 5), desc: level => "While less than " + (10000 * Math.max(1, (level - 1) * 5)) + " sandwiches" }),
 	new Artifact(203, 2, "Amulet of Sloth", "amulet.png", "autoshgabb", level => 2 + level, { desc: "But 5x longer click cooldown" }),
 	new Artifact(204, 2, "Amulet of Golden Bank", "amulet.png", "gs", level => 2.5 + 2.5 * level, { trigger: () => game.stats.pttp >= 300, desc: "If the last prestige was at least 5 minutes ago" }),
-	new Artifact(205, 2, "Amulet of Slowgemming", "amulet.png", "gemchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 seconds (not current)" }),
+	new Artifact(205, 2, "Amulet of Slowgemming", "amulet.png", "gemchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
 	new Artifact(206, 2, "Amulet of Passive Silicone", "amulet.png", "si", level => 1 + level, { noPercentage: true, prefix: "x", trigger: () => game.clickCooldown < 0, desc: "When not clicking" }),
 	new Artifact(207, 2, "Amulet of Active Silicone", "amulet.png", "si", level => 1.4 + (level * 2.2), { prefix: "x", trigger: () => game.clickCooldown > 0, desc: "When the click cooldown is active" }),
 	new Artifact(208, 2, "Amulet of Fast Start", "amulet.png", "shgabb", level => 10 * (1 + (level - 1) * 2.5), { noPercentage: true, prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),

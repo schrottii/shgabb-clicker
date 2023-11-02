@@ -104,6 +104,7 @@ var game = {
     ach: [],
     nexgai: [0, 0, 0, 0],
     tttd: 1,
+    dgo: 100,
 }
 
 const emptyGame = Object.assign({}, game, {});

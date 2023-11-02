@@ -67,8 +67,7 @@ h3 {
 
 .artifact {
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0px 0px 0px 0px;
     border: 4px ridge white;
     width: 6%;
     height: 160px;
