@@ -38,7 +38,7 @@ const currentPatchNotes = [
     "-> Other:",
     "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
     "- New ad boost: More Gems! 3x gem chance for 8 minutes",
-    "- Added more notations: Scientific and Alphabet!",
+    "- Added more notations: Scientific, Engineering and Alphabet!",
     "- Added a setting button to change the notation",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
     "- Fixed duplicates and stats still using the old chances"
@@ -236,7 +236,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 
 // Notations
 
-const notations = ["normal", "scientific", "alphabet"];
+const notations = ["normal", "scientific", "engineering", "alphabet"];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "qD", "QD", "sD", "SD", "OD", "ND", "V", "sV", "Tr", "UTR", "QU", "TQU", "qu", "Se", "Sp", "Oc", "No", "Améliorer", "What?!?!", "What?!?!2", "You Broke The Game", "I am crying", "no!!!", "WhyDoesFranceStillExist", "GodIsWatchingYou"];
 const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 
@@ -284,7 +284,10 @@ function fn(number) {
             notiePart = normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
             break;
         case "scientific":
-            notiePart = "e" + (number.toString().length - (number.toString().length % 3));
+            if (number.toString().length > 6) return number.toString().substr(0, 1) + "." + number.toString().substr(1, 2) + "e" + (number.toString().length - 1);
+            break;
+        case "engineering":
+            notiePart = "E" + (3 * Math.floor((number.toString().length - 1) / 3));
             break;
         case "alphabet":
             notiePart = alphabetNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];

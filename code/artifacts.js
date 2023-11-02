@@ -405,7 +405,7 @@ var artifacts = [
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
 	new Artifact(306, 3, "Shgabb's sleeves", "sleeves.png", "complicated", 0, { desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 2) + "<br>(Current: x" + ((level * 2) * (1 / getCooldown())).toFixed(2) + ")" }),
 	new Artifact(307, 3, "Shgabb's Dice", "dice-3.png", "complicated", 0, { desc: level => "Boosts shgabb, sandwiches by x" + diceAmount + " (" + level + "-6)" }),
-	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactEffect(200).isEquipped() ? 0.1 : 1), { desc: level => "Increases gem chance and cap by " + level + "% for every click without gems<br>(Current: +" + (level * frustration) + "%)" }),
+	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactByID(200).isEquipped() ? 0.1 : 1), { desc: level => "Increases gem chance and cap by " + level + "% for every click without gems<br>(Current: +" + (level * frustration) + "%)" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]
