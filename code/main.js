@@ -29,7 +29,7 @@ const currentPatchNotes = [
     "- Reduced costs of the Artifact Gift gem offer from 50 to 30",
     "",
     "- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75",
-    "- P2W: x2/x3/x4 -> x3/x3.5/x4",
+    "- P2W: x2/x3/x4 -> x2/x2.5/x3",
     "-> Other:",
     "- New ad boost: More Gems! 3x gem chance for 8 minutes",
     "- Added more notations: Scientific and Alphabet!",
@@ -310,6 +310,7 @@ function clickButton() {
             knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 20);
         }
         else knifeBoost = 1;
+        if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction();
@@ -342,6 +343,12 @@ function clickButton() {
     }
 
     freezeTime();
+}
+
+function increaseGS(multi) {
+    let amount = getGoldenShgabb() * multi;
+    game.gs += amount;
+    game.stats.gs += amount;
 }
 
 function getFreezeTime() {
@@ -464,6 +471,8 @@ function sandwich() {
         game.stats.shgabb += amount;
         game.stats.shgabbtp += amount;
         //createNotification("+" + amount + " shgabb");
+
+        if (getArtifactByID(214).isEquipped()) increaseGS(getArtifactEffect(214) / 100);
     }
 
     updateUpgrades();
@@ -577,8 +586,6 @@ function unlevel(id, isMax=false) {
 
 function prestigeButton() {
     if (confirm("Do you really want to prestige?")) {
-        let amount = getGoldenShgabb();
-
         game.shgabb = 0 + getArtifactBoost("resetshgabb");
         game.sw = 0;
 
@@ -589,10 +596,9 @@ function prestigeButton() {
             game.upgradeLevels[u] = 0;
         }
 
-        game.gs += amount;
+        increaseGS(1);
 
         game.stats.pr += 1;
-        game.stats.gs += amount;
 
         game.stats.shgabbtp = 0;
         game.stats.swtp = 0;
