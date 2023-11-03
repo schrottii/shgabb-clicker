@@ -7,7 +7,16 @@ body {
     background-size: cover;
     color: white;
     text-align: center;
-    font-size: 16px;
+    font-size: 12px;
+}
+
+@font-face {
+    font-family: Qarmic;
+    src: url(Qarmic.ttf) format('truetype');
+}
+
+* {
+    font-family: Qarmic;
 }
 
 h2 {
@@ -143,9 +152,8 @@ progress {
     margin-left: auto;
     margin-right: auto;
     border: 4px solid black;
-    width: 90%;
+    width: 98%;
     min-height: 108px;
-    max-width: 420px;
 }
 
     .upgrade:hover {
@@ -157,21 +165,43 @@ progress {
         filter: brightness(80%);
     }
 
+@media only screen and (min-width: 768px) {
+    .upgrade {
+        max-width: 420px;
+    }
+}
+
+.upgradeHeader{
+    font-size: 14px;
+}
+
+@media only screen and (min-width: 768px) {
+    .upgradeHeader {
+        font-size: 20px;
+    }
+}
+
 .maxButton {
     border: 2px solid black;
     width: 48px;
     height: 20px;
     background-color: lightgray;
     font-weight: bold;
-    margin-right: 12px;
+    margin-right: 2px;
     color: black;
+}
+
+@media only screen and (min-width: 768px) {
+    .maxButton {
+        margin-right: 12px;
+    }
 }
 
 .prestigeButton {
     background-color: palegoldenrod;
     color: black;
     border: 3px solid gold;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .ameliorerButton {
@@ -206,7 +236,7 @@ progress {
     width: 15%;
     min-width: 104px;
     height: 32px;
-    font-size: 12px;
+    font-size: 10px;
     white-space: nowrap;
 }
 
@@ -215,7 +245,7 @@ progress {
     color: black;
     border-color: black;
     border: 2px solid darkgray;
-    font-size: 20px;
+    font-size: 16px;
     text-align: center;
 }
 
@@ -237,5 +267,5 @@ progress {
 
 .square2 {
     background-color: rgb(128, 128, 128, 0.7);
-    font-size: 18px;
+    font-size: 14px;
 }

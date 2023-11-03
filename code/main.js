@@ -14,6 +14,8 @@ const currentPatchNotes = [
     "-> Device design:",
     "- PC: The background of the currencies (top) is shorter",
     "- Mobile: The click button is much taller (and easier to click)",
+    "- Mobile: Upgrade names are smaller, upgrades are longer",
+    "- Mobile: Upgrade buttons (like MAX) are closer to each other",
     "-> Upgrade design:",
     "- Reworked colors of upgrades (from white/green to shades of blue)",
     "- Added a setting to go back to the old upgrade colors",
