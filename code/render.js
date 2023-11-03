@@ -43,8 +43,12 @@ function renderSelection(sel) {
         selsDisplay = ["Gems", "Artifacts", "Minigames"];
     }
     if (sel == 3) {
-        sels = ["cheats", "stats", "achievements", "social"];
-        selsDisplay = ["Cheats", "Stats", "Achievements", "Social"];
+        sels = ["stats", "achievements", "social"];
+        selsDisplay = ["Stats", "Achievements", "Social"];
+        if (BETA.isBeta) {
+            sels.unshift("cheats");
+            selsDisplay.unshift("Cheats");
+        }
     }
 
     for (s in sels) {
@@ -68,7 +72,8 @@ function renderAllSelection() {
 var selections = ["shgabb", "minigames", "social"];
 
 function changeSelection(sel, sels) {
-    selections[sel - 1] = sels;
+    if (selections[sel - 1] == sels) selections[sel - 1] = "none";
+    else selections[sel - 1] = sels;
 
     renderSelection(sel);
 }

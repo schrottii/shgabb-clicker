@@ -9,6 +9,11 @@ const gameVersion = "2.0";
 const currentPatchNotes = [
     "-> Selection:",
     "- ...",
+    "-> Design:",
+    "- Changed the design of the game to be different on small devices (phone) than on big devices (PC) (listed under Device design)",
+    "-> Device design:",
+    "- PC: The background of the currencies (top) is shorter",
+    "- Mobile: The click button is much taller (and easier to click)",
     "-> Upgrade design:",
     "- Reworked colors of upgrades (from white/green to shades of blue)",
     "- Added a setting to go back to the old upgrade colors",
