@@ -1,5 +1,7 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
+// GAME
+
 var game = {
     shgabb: 0,
     clickCooldown: 0,
@@ -109,6 +111,8 @@ var game = {
 
 const emptyGame = Object.assign({}, game, {});
 
+// SETTINGS
+
 var settings = {
     music: false,
     adMusic: true,
@@ -118,3 +122,13 @@ var settings = {
     oldUpgradeColors: false,
     notation: "normal",
 }
+
+// BETA (cheating)
+
+var BETA = {};
+Object.defineProperty(BETA, 'isBeta', {
+    value: true,
+    writable: false,
+    enumerable: true,
+    configurable: false
+});

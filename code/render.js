@@ -57,6 +57,7 @@ function renderSelection(sel) {
     sections["selection" + sel].innerHTML = render;
 
     // Selection
+    sections["cheats"].style.display = "none";
     for (s in sels) {
         if (selections[sel - 1] == sels[s]) sections[sels[s]].style.display = "unset";
         else sections[sels[s]].style.display = "none";

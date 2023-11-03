@@ -49,16 +49,6 @@ const currentPatchNotes = [
     "- Fixed duplicates and stats still using the old chances"
 ]
 
-// BETA (cheating)
-
-var BETA = {};
-Object.defineProperty(BETA, 'isBeta', {
-    value: true,
-    writable: false,
-    enumerable: true,
-    configurable: false
-});
-
 // Various variables
 
 var autoSaveTime = 5;

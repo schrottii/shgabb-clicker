@@ -1,3 +1,6 @@
+/* ===================================================== */
+/* BASICS. ESSENTIALS. */
+/* ===================================================== */
 body {
     /*    background-color: black;*/
     background-image: url("images/shgabb-background.png");
@@ -15,144 +18,6 @@ h2 {
 h3 {
     margin-top: 0px;
     margin-bottom: 0px;
-}
-
-.settingButton {
-    background-color: lightgray;
-    color: black;
-    border-color: black;
-    border: 2px solid darkgray;
-    font-size: 20px;
-    text-align: center;
-}
-
-.settingButton:hover {
-    filter: brightness(120%);
-    transition: 0.3s;
-}
-
-.prestigeButton {
-    background-color: palegoldenrod;
-    color: black;
-    border: 3px solid gold;
-    font-size: 18px;
-}
-
-.topSquare {
-    background-color: lightslategray;
-    margin-left: auto;
-    margin-right: auto;
-}
-@media only screen and (min-width: 768px) {
-    .topSquare {
-        max-width: 60%;
-    }
-}
-
-.clickButton {
-    background-color: blue;
-    color: white;
-    border-color: black;
-    border-width: 5px;
-    font-size: 24px;
-    min-height: 80px;
-}
-@media only screen and (min-width: 768px) {
-    .clickButton {
-        min-height: auto;
-    }
-}
-
-.upgrade {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    border: 4px solid black;
-    width: 90%;
-    min-height: 108px;
-    max-width: 420px;
-}
-
-    .upgrade:hover {
-        filter: brightness(90%);
-        transition: 0.2s;
-    }
-
-    .upgrade:active {
-        filter: brightness(80%);
-    }
-
-.artifact {
-    text-align: center;
-    margin: 0px 0px 0px 0px;
-    border: 4px ridge white;
-    width: 6%;
-    height: 160px;
-    min-width: 140px;
-    max-width: 320px;
-    vertical-align: top;
-}
-
-    .artifact:hover {
-        filter: brightness(90%);
-        transition: 0.2s;
-    }
-
-    .artifact:active {
-        filter: brightness(80%);
-    }
-
-.artifactLoadoutButton {
-    width: 15%;
-    min-width: 104px;
-    height: 32px;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-.ameliorerButton {
-    width: 24%;
-    min-height: 48px;
-}
-
-.square {
-    background-color: rgb(128, 128, 128, 0.7);
-    border-color: black;
-    border: 2px solid burlywood;
-}
-
-.square2 {
-    background-color: rgb(128, 128, 128, 0.7);
-    font-size: 18px;
-}
-
-.maxButton {
-    border: 2px solid black;
-    width: 48px;
-    height: 20px;
-    background-color: lightgray;
-    font-weight: bold;
-    margin-right: 12px;
-    color: black;
-}
-
-.upgradeButtons {
-    display: flex;
-    flex-direction: row;
-}
-
-.currency {
-    width: 32px;
-    height: 32px;
-    position: relative;
-    bottom: -8px;
-}
-
-.currency {
-    width: 32px;
-    height: 32px;
-    position: relative;
-    bottom: -8px;
 }
 
 progress {
@@ -226,4 +91,151 @@ progress {
     100% {
         background: red;
     }
+}
+
+/* ===================================================== */
+/* TOP */
+/* ===================================================== */
+.topSquare {
+    background-color: lightslategray;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media only screen and (min-width: 768px) {
+    .topSquare {
+        max-width: 60%;
+    }
+}
+
+.clickButton {
+    background-color: blue;
+    color: white;
+    border-color: black;
+    border-width: 5px;
+    font-size: 24px;
+    min-height: 72px;
+}
+
+@media only screen and (min-width: 768px) {
+    .clickButton {
+        min-height: auto;
+    }
+}
+
+.currency {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    bottom: -8px;
+}
+
+/* ===================================================== */
+/* UPGRADES */
+/* ===================================================== */
+.upgradeButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.upgrade {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border: 4px solid black;
+    width: 90%;
+    min-height: 108px;
+    max-width: 420px;
+}
+
+    .upgrade:hover {
+        filter: brightness(90%);
+        transition: 0.2s;
+    }
+
+    .upgrade:active {
+        filter: brightness(80%);
+    }
+
+.maxButton {
+    border: 2px solid black;
+    width: 48px;
+    height: 20px;
+    background-color: lightgray;
+    font-weight: bold;
+    margin-right: 12px;
+    color: black;
+}
+
+.prestigeButton {
+    background-color: palegoldenrod;
+    color: black;
+    border: 3px solid gold;
+    font-size: 18px;
+}
+
+.ameliorerButton {
+    width: 24%;
+    min-height: 48px;
+}
+
+/* ===================================================== */
+/* GEMS / ARTIFACTS / MINIGAMES */
+/* ===================================================== */
+.artifact {
+    text-align: center;
+    margin: 0px 0px 0px 0px;
+    border: 4px ridge white;
+    width: 6%;
+    height: 160px;
+    min-width: 140px;
+    max-width: 320px;
+    vertical-align: top;
+}
+
+    .artifact:hover {
+        filter: brightness(90%);
+        transition: 0.2s;
+    }
+
+    .artifact:active {
+        filter: brightness(80%);
+    }
+
+.artifactLoadoutButton {
+    width: 15%;
+    min-width: 104px;
+    height: 32px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.settingButton {
+    background-color: lightgray;
+    color: black;
+    border-color: black;
+    border: 2px solid darkgray;
+    font-size: 20px;
+    text-align: center;
+}
+
+.settingButton:hover {
+    filter: brightness(120%);
+    transition: 0.3s;
+}
+
+/* ===================================================== */
+/* STATS / ACHIEVEMENTS / SOCIAL */
+/* ===================================================== */
+
+/* sq1 social sq2 stats apparently */
+.square {
+    background-color: rgb(128, 128, 128, 0.7);
+    border-color: black;
+    border: 2px solid burlywood;
+}
+
+.square2 {
+    background-color: rgb(128, 128, 128, 0.7);
+    font-size: 18px;
 }
