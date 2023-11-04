@@ -11,6 +11,7 @@ const currentPatchNotes = [
     "- ...",
     "-> Design:",
     "- Changed the design of the game to be different on small devices (phone) than on big devices (PC) (listed under Device design)",
+    "- New game font!",
     "-> Device design:",
     "- PC: The background of the currencies (top) is shorter",
     "- Mobile: The click button is much taller (and easier to click)",
@@ -48,6 +49,8 @@ const currentPatchNotes = [
     "- Added more notations: Scientific, Engineering and Alphabet!",
     "- Added a setting button to change the notation",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
+    "- The currencies display can now be hidden by double clicking",
+    "- Added a setting button to toggle the currencies display",
     "- Fixed duplicates and stats still using the old chances"
 ]
 
@@ -144,6 +147,7 @@ var ui = {
     music: document.getElementById("music"),
     quote: document.getElementById("quote"),
     prestigeButton: document.getElementById("prestigebutton"),
+    topSquare: document.getElementById("topSquare"),
 }
 
 // Ad variables
@@ -558,6 +562,18 @@ function toggleNotation() {
     settings.notation = (notations[notations.indexOf(settings.notation) + 1] != undefined ? notations[notations.indexOf(settings.notation) + 1] : notations[0]);
     createNotification("New notation: " + settings.notation);
     updateUpgrades();
+}
+
+var doubleClick = 0;
+function toggleTopSquare(directlyDo = true) {
+    if (directlyDo || doubleClick > 0) {
+        settings.topSquare = !settings.topSquare;
+        createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
+        ui.topSquare.style.display = (settings.topSquare ? "" : "none");
+    }
+    else {
+        doubleClick = 0.3;
+    }
 }
 
 // Buy functions
@@ -1001,7 +1017,7 @@ function loop(tick) {
     let time = (tick - oldTime) / 1000;
     oldTime = tick;
 
-
+    doubleClick -= time;
     game.clickCooldown -= time;
     autoSaveTime -= time;
     quoteTime -= time;
@@ -1219,7 +1235,9 @@ adHandler.ontimeupdate = () => {
     /*else {
         lastAdTimer = adHandler.currentTime;
     }*/
-} 
+}
+
+ui.topSquare.style.display = (settings.topSquare ? "" : "none");
 
 // Update upgrades UI
 updateUpgrades();

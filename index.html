@@ -12,9 +12,9 @@
     <span id="quote"></span><br />
     <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
-    <span id="newestnotif"></span><br />
+    <span id="newestnotif"></span>
     <!-- Top, currencies -->
-    <div class="topSquare">
+    <div class="topSquare" onclick="toggleTopSquare(false)" id="topSquare">
         <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount">0 Shgabb</span>
         <img class="currency" id="swImage" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
         <img class="currency" id="gsImage" src="images\currencies\gs.png" /><span id="gsAmount"></span>
@@ -23,7 +23,6 @@
         <img class="currency" id="ameImage" src="images\currencies\ameliorer.png" /><span id="ameAmount"></span>
         <span id="artifactScrapAmount"></span>
     </div>
-    <br />
     <!-- New artifact / achievement popup -->
     <div id="newArtifact" style="display: none">
         <h2><span id="newArtifactText"></span></h2>
@@ -227,6 +226,7 @@
                 <button onclick="toggleUnlevel()" class="settingButton">Show/hide unlevel</button><br />
                 <button onclick="toggleUpgradeColors()" class="settingButton">Toggle upgrade colors</button><br />
                 <button onclick="toggleNotation()" class="settingButton">Toggle notation</button><br />
+                <button onclick="toggleTopSquare()" class="settingButton">Toggle Currencies Display</button><br />
             </div>
             <hr style="clear:both" />
         </div>

@@ -7,26 +7,30 @@ body {
     background-size: cover;
     color: white;
     text-align: center;
-    font-size: 12px;
+    font-size: 16px;
+    font-family: Rw;
 }
 
 @font-face {
-    font-family: Qarmic;
-    src: url(Qarmic.ttf) format('truetype');
+    font-family: Rw;
+    src: url(Raleway-Light.ttf) format('truetype');
 }
 
-* {
-    font-family: Qarmic;
+@font-face {
+    font-family: Rw-title;
+    src: url(Raleway-SemiBold.ttf) format('truetype');
 }
 
 h2 {
     margin-top: 0px;
     margin-bottom: 0px;
+    font-family: Rw-title;
 }
 
 h3 {
     margin-top: 0px;
     margin-bottom: 0px;
+    font-family: Rw-title;
 }
 
 progress {
@@ -109,6 +113,7 @@ progress {
     background-color: lightslategray;
     margin-left: auto;
     margin-right: auto;
+    font-family: Rw-title;
 }
 
 @media only screen and (min-width: 768px) {
@@ -123,7 +128,8 @@ progress {
     border-color: black;
     border-width: 5px;
     font-size: 24px;
-    min-height: 72px;
+    min-height: 64px;
+    font-family: Rw-title;
 }
 
 @media only screen and (min-width: 768px) {
@@ -154,6 +160,7 @@ progress {
     border: 4px solid black;
     width: 98%;
     min-height: 108px;
+    font-family: Rw;
 }
 
     .upgrade:hover {
@@ -171,8 +178,9 @@ progress {
     }
 }
 
-.upgradeHeader{
+.upgradeHeader {
     font-size: 14px;
+    font-family: Rw-title;
 }
 
 @media only screen and (min-width: 768px) {
@@ -189,6 +197,7 @@ progress {
     font-weight: bold;
     margin-right: 2px;
     color: black;
+    font-family: Rw-title;
 }
 
 @media only screen and (min-width: 768px) {
@@ -201,7 +210,7 @@ progress {
     background-color: palegoldenrod;
     color: black;
     border: 3px solid gold;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .ameliorerButton {
@@ -221,6 +230,7 @@ progress {
     min-width: 140px;
     max-width: 320px;
     vertical-align: top;
+    font-family: Rw;
 }
 
     .artifact:hover {
@@ -236,8 +246,9 @@ progress {
     width: 15%;
     min-width: 104px;
     height: 32px;
-    font-size: 10px;
+    font-size: 12px;
     white-space: nowrap;
+    font-family: Rw;
 }
 
 .settingButton {
@@ -245,8 +256,9 @@ progress {
     color: black;
     border-color: black;
     border: 2px solid darkgray;
-    font-size: 16px;
+    font-size: 18px;
     text-align: center;
+    font-family: Rw;
 }
 
 .settingButton:hover {
@@ -267,5 +279,5 @@ progress {
 
 .square2 {
     background-color: rgb(128, 128, 128, 0.7);
-    font-size: 14px;
+    font-size: 18px;
 }

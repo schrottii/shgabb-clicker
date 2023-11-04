@@ -121,6 +121,7 @@ var settings = {
     hideUnlevel: false,
     oldUpgradeColors: false,
     notation: "normal",
+    topSquare: true,
 }
 
 // BETA (cheating)
