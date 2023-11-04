@@ -119,7 +119,8 @@ var settings = {
     displayCurrent: false,
     hideMaxed: false,
     hideUnlevel: false,
-    oldUpgradeColors: false,
+    upgradeColors: "normal",
+    customColors: [[0, 0, 0, 255], [100, 100, 100, 255], [255, 255, 255, 0]],
     notation: "normal",
     topSquare: true,
 }

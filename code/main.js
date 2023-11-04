@@ -18,8 +18,9 @@ const currentPatchNotes = [
     "- Mobile: Upgrade names are smaller, upgrades are longer",
     "- Mobile: Upgrade buttons (like MAX) are closer to each other",
     "-> Upgrade design:",
-    "- Reworked colors of upgrades (from white/green to shades of blue)",
-    "- Added a setting to go back to the old upgrade colors",
+    "- Reworked colors of upgrades (from white/green to shades of blue/green/gray)",
+    "- Added a setting to toggle between normal, old and custom colors",
+    "- Custom colors: for all 3 types of upgrades (affordable, too expensive and maxed), RGB values and text color can be set",
     "- Changed border of upgrades from white to black",
     "- Max. levels are now displayed as /x instead of (Max: x)",
     "- Upgrade levels are now displayed next to their name",
@@ -148,6 +149,7 @@ var ui = {
     quote: document.getElementById("quote"),
     prestigeButton: document.getElementById("prestigebutton"),
     topSquare: document.getElementById("topSquare"),
+    upgradeColors: document.getElementById("upgradeColors"),
 }
 
 // Ad variables
@@ -237,6 +239,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
 
 // Notations
 
+const upgradeColors = ["normal", "old", "custom"]
 const notations = ["normal", "scientific", "engineering", "alphabet"];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "qD", "QD", "sD", "SD", "OD", "ND", "V", "sV", "Tr", "UTR", "QU", "TQU", "qu", "Se", "Sp", "Oc", "No", "Améliorer", "What?!?!", "What?!?!2", "You Broke The Game", "I am crying", "no!!!", "WhyDoesFranceStillExist", "GodIsWatchingYou"];
 const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
@@ -553,9 +556,43 @@ function toggleUnlevel() {
 }
 
 function toggleUpgradeColors() {
-    settings.oldUpgradeColors = !settings.oldUpgradeColors;
-    createNotification("Old Upgrade Colors " + (settings.oldUpgradeColors ? "ON" : "OFF"));
+    settings.upgradeColors = (upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] != undefined ? upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] : upgradeColors[0]);
+    createNotification("Upgrade Colors: " + settings.upgradeColors);
+
+    updateUpgradeColors();
+
     updateUpgrades();
+}
+
+function changeCustomColor(i, j) {
+    let amount = prompt("New RGB value? (0-255)");
+    if (parseInt(amount) > -1 && parseInt(amount) < 256) {
+        settings.customColors[i][j] = parseInt(amount);
+    }
+
+    updateUpgradeColors();
+    updateUpgrades();
+}
+
+function updateUpgradeColors() {
+    if (settings.upgradeColors == "custom") {
+        let ihText = "";
+
+        ihText = "Custom colors: <br>";
+
+        for (i = 0; i < 3; i++) {
+            ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
+            for (j = 0; j < 4; j++) {
+                ihText = ihText + "<button onclick=changeCustomColor(" + i + "," + j + ")>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
+            }
+            ihText = ihText + "<br />";
+        }
+
+        ui.upgradeColors.innerHTML = ihText;
+    }
+    else {
+        ui.upgradeColors.innerHTML = "";
+    }
 }
 
 function toggleNotation() {
@@ -1243,6 +1280,7 @@ ui.topSquare.style.display = (settings.topSquare ? "" : "none");
 updateUpgrades();
 updateArtifacts();
 renderAmeConvert();
+updateUpgradeColors();
 
 // Generate Patch Notes
 ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BETA)" : "");
