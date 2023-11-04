@@ -21,6 +21,8 @@ const currentPatchNotes = [
     "- Reworked colors of upgrades (from white/green to shades of blue/green/gray)",
     "- Added a setting to toggle between normal, old and custom colors",
     "- Custom colors: for all 3 types of upgrades (affordable, too expensive and maxed), RGB values and text color can be set",
+    "- Added buttons to adjust the RGB values and text color of the custom colors",
+    "- Added an export/import system for custom colors",
     "- Changed border of upgrades from white to black",
     "- Max. levels are now displayed as /x instead of (Max: x)",
     "- Upgrade levels are now displayed next to their name",
@@ -52,7 +54,8 @@ const currentPatchNotes = [
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
     "- The currencies display can now be hidden by double clicking",
     "- Added a setting button to toggle the currencies display",
-    "- Fixed duplicates and stats still using the old chances"
+    "- Fixed duplicates and stats still using the old chances",
+    "- Fixed gem icon being visible before unlocking gems"
 ]
 
 // Various variables
@@ -574,6 +577,27 @@ function changeCustomColor(i, j) {
     updateUpgrades();
 }
 
+function importCustomColors() {
+    let importGame = prompt("Import custom colors...");
+
+    importGame = importGame.replace("colorshgabb", "W1");
+    importGame = atob(importGame);
+    importGame = JSON.parse(importGame);
+    settings.customColors = importGame;
+    updateUpgradeColors();
+
+    createNotification("Custom colors imported!");
+}
+
+function exportCustomColors() {
+    let exportGame = JSON.stringify(settings.customColors);
+    exportGame = btoa(exportGame);
+    exportGame = exportGame.replace("W1", "colorshgabb");
+
+    navigator.clipboard.writeText(exportGame);
+    createNotification("Custom colors exported to clipboard!");
+}
+
 function updateUpgradeColors() {
     if (settings.upgradeColors == "custom") {
         let ihText = "";
@@ -583,10 +607,12 @@ function updateUpgradeColors() {
         for (i = 0; i < 3; i++) {
             ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
             for (j = 0; j < 4; j++) {
-                ihText = ihText + "<button onclick=changeCustomColor(" + i + "," + j + ")>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
+                ihText = ihText + "<button onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
             }
             ihText = ihText + "<br />";
         }
+        ihText = ihText + "<button onclick='importCustomColors()'>Import</button>";
+        ihText = ihText + "<button onclick='exportCustomColors()'>Export</button><br />";
 
         ui.upgradeColors.innerHTML = ihText;
     }
@@ -816,7 +842,7 @@ function updateArtifacts() {
         // waaaa sections.gems.style.display = "unset";
     }
     else {
-        ui.gemImage.style.display = "unset";
+        ui.gemImage.style.display = "none";
         ui.gemAmount.innerHTML = "";
 
         sections.gems.style.display = "none";
