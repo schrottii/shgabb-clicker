@@ -251,21 +251,6 @@ progress {
     font-family: Rw;
 }
 
-.settingButton {
-    background-color: lightgray;
-    color: black;
-    border-color: black;
-    border: 2px solid darkgray;
-    font-size: 18px;
-    text-align: center;
-    font-family: Rw;
-}
-
-.settingButton:hover {
-    filter: brightness(120%);
-    transition: 0.3s;
-}
-
 /* ===================================================== */
 /* STATS / ACHIEVEMENTS / SOCIAL */
 /* ===================================================== */
@@ -281,3 +266,35 @@ progress {
     background-color: rgb(128, 128, 128, 0.7);
     font-size: 18px;
 }
+
+.grayButton {
+    background-color: lightgray;
+    color: black;
+    border-color: black;
+    border: 2px solid darkgray;
+    font-size: 18px;
+    text-align: center;
+    font-family: Rw;
+}
+
+    .grayButton:hover {
+        filter: brightness(120%);
+        transition: 0.3s;
+    }
+
+.settingButton {
+    background-color: deepskyblue;
+    color: black;
+    border-color: darkblue;
+    border: 2px solid darkgray;
+    font-size: 20px;
+    text-align: center;
+    font-family: Rw;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+    .settingButton:hover {
+        filter: brightness(120%);
+        transition: 0.3s;
+    }

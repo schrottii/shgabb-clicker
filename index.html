@@ -14,7 +14,7 @@
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <span id="newestnotif"></span>
     <!-- Top, currencies -->
-    <div class="topSquare" onclick="toggleTopSquare(false)" id="topSquare">
+    <div class="topSquare" onclick="toggleCurrenciesDisplay(false)" id="topSquare">
         <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount">0 Shgabb</span>
         <img class="currency" id="swImage" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
         <img class="currency" id="gsImage" src="images\currencies\gs.png" /><span id="gsAmount"></span>
@@ -33,7 +33,7 @@
     <!-- Ads -->
     <div id="adloaded" style="display: none">
         <progress min="0" max="100" value="0" id="adBar"></progress>
-        <button id="adstartbutton" class="settingButton" style="display: none" onclick="showAd()">Start Ad</button>
+        <button id="adstartbutton" class="grayButton" style="display: none" onclick="showAd()">Start Ad</button>
         <video playsinline src="videos/elm_ad_2.mp4" style="width:75%; display: none" id="baldad"></video>
         <hr />
     </div>
@@ -186,6 +186,13 @@
         <hr style="clear:both" />
     </div>
 
+    <!-- Settings -->
+    <div id="settingsSection">
+        <h3>Settings</h3>
+        <span id="settings"></span>
+        <hr style="clear:both" />
+    </div>
+
     <!-- Other -->
     <div id="socialSection">
         <div style="position: relative;">
@@ -199,9 +206,9 @@
                 <!-- Social -->
                 <h3>Social</h3>
                 Shgabb Clicker - developed by Schrottii ©2023<br />
-                <div class="settingButton" style="float: left; width: 32%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/3T4CBmh">My Discord Server</a></div>
-                <div class="settingButton" style="float: left; width: 32%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
-                <div class="settingButton" style="float: left; width: 32%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://sc2fmfr.vercel.app/">Play one of my other games!</a></div>
+                <div class="grayButton" style="float: left; width: 32%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/3T4CBmh">My Discord Server</a></div>
+                <div class="grayButton" style="float: left; width: 32%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
+                <div class="grayButton" style="float: left; width: 32%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://sc2fmfr.vercel.app/">Play one of my other games!</a></div>
             </div>
 
             <div class="square" style="text-align: left; width: 48%; margin-left: auto;">
@@ -213,21 +220,6 @@
                 <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
 
                 <hr style="clear:both" />
-
-                <!-- Settings -->
-                <h3>Settings</h3>
-                <button onclick="toggleMusic()" class="settingButton">Music on/off</button>
-                <button onclick="toggleAdSound()" class="settingButton">Ad Music on/off</button><br />
-                <button onclick="exportGame()" class="settingButton">Export</button>
-                <button onclick="importGame()" class="settingButton">Import</button><br />
-                <button onclick="toggleBG()" class="settingButton">Background on/off</button>
-                <button onclick="toggleCurrent()" class="settingButton">Current Effect on/off</button><br />
-                <button onclick="hideMaxed()" class="settingButton">Show/hide maxed</button><br />
-                <button onclick="toggleUnlevel()" class="settingButton">Show/hide unlevel</button><br />
-                <button onclick="toggleNotation()" class="settingButton">Toggle notation</button><br />
-                <button onclick="toggleTopSquare()" class="settingButton">Toggle Currencies Display</button><br />
-                <button onclick="toggleUpgradeColors()" class="settingButton">Toggle upgrade colors</button><br />
-                <span id="upgradeColors"></span>
             </div>
             <hr style="clear:both" />
         </div>
@@ -239,6 +231,7 @@
     <!-- Scripts -->
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
+    <script src="code\settings.js"></script>
     <script src="code\achievements.js"></script>
     <script src="code\artifacts.js"></script>
     <script src="code\gems.js"></script>

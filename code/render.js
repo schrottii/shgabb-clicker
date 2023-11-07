@@ -21,6 +21,7 @@ var sections = {
     cheats: document.getElementById("cheatSection"),
     stats: document.getElementById("statsSection"),
     achievements: document.getElementById("achievementsSection"),
+    settings: document.getElementById("settingsSection"),
     social: document.getElementById("socialSection"),
 
     // sels
@@ -43,8 +44,8 @@ function renderSelection(sel) {
         selsDisplay = ["Gems", "Artifacts", "Minigames"];
     }
     if (sel == 3) {
-        sels = ["stats", "achievements", "social"];
-        selsDisplay = ["Stats", "Achievements", "Social"];
+        sels = ["stats", "achievements", "settings", "social"];
+        selsDisplay = ["Stats", "Achievements", "Settings", "Social"];
         if (BETA.isBeta) {
             sels.unshift("cheats");
             selsDisplay.unshift("Cheats");
@@ -52,7 +53,7 @@ function renderSelection(sel) {
     }
 
     for (s in sels) {
-        render = render + `<button class="settingButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
+        render = render + `<button class="grayButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 
@@ -70,7 +71,7 @@ function renderAllSelection() {
     renderSelection(3);
 }
 
-var selections = ["shgabb", "minigames", "social"];
+var selections = ["shgabb", "minigames", "settings"];
 
 function changeSelection(sel, sels) {
     if (selections[sel - 1] == sels) selections[sel - 1] = "none";

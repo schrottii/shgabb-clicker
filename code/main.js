@@ -54,11 +54,14 @@ const currentPatchNotes = [
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
     "- The currencies display can now be hidden by double clicking",
     "- Added a setting button to toggle the currencies display",
+    "- Added 4 new quotes",
     "- Fixed duplicates and stats still using the old chances",
     "- Fixed gem icon being visible before unlocking gems"
 ]
 
 // Various variables
+
+var doubleClick = 0;
 
 var autoSaveTime = 5;
 var quoteTime = 15;
@@ -152,7 +155,7 @@ var ui = {
     quote: document.getElementById("quote"),
     prestigeButton: document.getElementById("prestigebutton"),
     topSquare: document.getElementById("topSquare"),
-    upgradeColors: document.getElementById("upgradeColors"),
+    settings: document.getElementById("settings"),
 }
 
 // Ad variables
@@ -238,6 +241,10 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "Quote placeholder - DaGame",
     "2021 what year was that - slowmerger",
     "lag was invented in 1855 - Schrottii",
+    "im gonna outrun elken - schrotttv",
+    "my brain isnt braining - schrotttv",
+    "but because toilet has an o in it that could lead to infinite recursion - K. whale",
+    "meh thats not the true kelp experience - Phazer",
 ];
 
 // Notations
@@ -508,135 +515,30 @@ function silicone() {
     updateUpgrades();
 }
 
-// Setting toggle functions
-
-function toggleMusic() {
-    settings.music = !settings.music;
-    createNotification("Music " + (settings.music ? "ON" : "OFF"));
-    music.muted = !settings.music;
-    if (!music.muted) {
-        music.currentTime = 0;
-        music.play();
-    }
-}
-
-function toggleAdSound() {
-    settings.adMusic = !settings.adMusic;
-    createNotification("Ad Music " + (settings.adMusic ? "ON" : "OFF"));
-    adHandler.muted = !settings.adMusic;
-}
-
-function toggleBG() {
-    var body = document.getElementsByTagName('body')[0];
-    if (body.style.backgroundImage != "none") {
-        body.style.backgroundImage = "none";
-        body.style.backgroundColor = "black";
-        createNotification("Background OFF");
-    }
-    else {
-        body.style.backgroundImage = "url(images/shgabb-background.png)";
-        body.style.backgroundColor = "none";
-        createNotification("Background ON");
-    }
-}
-
-function toggleCurrent() {
-    settings.displayCurrent = !settings.displayCurrent;
-    createNotification("Current Effect " + (settings.displayCurrent ? "ON" : "OFF"));
-    updateUpgrades();
-}
-
-function hideMaxed() {
-    settings.hideMaxed = !settings.hideMaxed;
-    createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
-    updateUpgrades();
-}
-
-function toggleUnlevel() {
-    settings.hideUnlevel = !settings.hideUnlevel;
-    createNotification("Unlevel button " + (settings.hideUnlevel ? "ON" : "OFF"));
-    updateUpgrades();
-}
-
-function toggleUpgradeColors() {
-    settings.upgradeColors = (upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] != undefined ? upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] : upgradeColors[0]);
-    createNotification("Upgrade Colors: " + settings.upgradeColors);
-
-    updateUpgradeColors();
-
-    updateUpgrades();
-}
-
-function changeCustomColor(i, j) {
-    let amount = prompt("New RGB value? (0-255)");
-    if (parseInt(amount) > -1 && parseInt(amount) < 256) {
-        settings.customColors[i][j] = parseInt(amount);
-    }
-
-    updateUpgradeColors();
-    updateUpgrades();
-}
-
-function importCustomColors() {
-    let importGame = prompt("Import custom colors...");
-
-    importGame = importGame.replace("colorshgabb", "W1");
-    importGame = atob(importGame);
-    importGame = JSON.parse(importGame);
-    settings.customColors = importGame;
-    updateUpgradeColors();
-
-    createNotification("Custom colors imported!");
-}
-
-function exportCustomColors() {
-    let exportGame = JSON.stringify(settings.customColors);
-    exportGame = btoa(exportGame);
-    exportGame = exportGame.replace("W1", "colorshgabb");
-
-    navigator.clipboard.writeText(exportGame);
-    createNotification("Custom colors exported to clipboard!");
-}
+var upgradeColorsRender = "";
 
 function updateUpgradeColors() {
     if (settings.upgradeColors == "custom") {
         let ihText = "";
 
-        ihText = "Custom colors: <br>";
+        ihText = "<div class='settingButton'> Custom colors: <br>";
 
         for (i = 0; i < 3; i++) {
             ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
             for (j = 0; j < 4; j++) {
-                ihText = ihText + "<button onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
+                ihText = ihText + "<button class='grayButton' style='margin-left: 8px' onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
             }
             ihText = ihText + "<br />";
         }
-        ihText = ihText + "<button onclick='importCustomColors()'>Import</button>";
-        ihText = ihText + "<button onclick='exportCustomColors()'>Export</button><br />";
+        ihText = ihText + "<br /><button class='grayButton' onclick='importCustomColors()'>Import</button>";
+        ihText = ihText + "<button class='grayButton' onclick='exportCustomColors()'>Export</button></div>";
 
-        ui.upgradeColors.innerHTML = ihText;
+        upgradeColorsRender = ihText;
     }
     else {
-        ui.upgradeColors.innerHTML = "";
+        upgradeColorsRender = "";
     }
-}
-
-function toggleNotation() {
-    settings.notation = (notations[notations.indexOf(settings.notation) + 1] != undefined ? notations[notations.indexOf(settings.notation) + 1] : notations[0]);
-    createNotification("New notation: " + settings.notation);
-    updateUpgrades();
-}
-
-var doubleClick = 0;
-function toggleTopSquare(directlyDo = true) {
-    if (directlyDo || doubleClick > 0) {
-        settings.topSquare = !settings.topSquare;
-        createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
-        ui.topSquare.style.display = (settings.topSquare ? "" : "none");
-    }
-    else {
-        doubleClick = 0.3;
-    }
+    renderSettings();
 }
 
 // Buy functions
@@ -1308,6 +1210,8 @@ updateArtifacts();
 renderAmeConvert();
 updateUpgradeColors();
 
+renderSettings();
+
 // Generate Patch Notes
 ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BETA)" : "");
 
@@ -1321,5 +1225,5 @@ ui.patchNotes.innerHTML = patchNotesText;
 // Start game loop (30 FPS)
 window.requestAnimationFrame(loop);
 
-console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+if(!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
 console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');

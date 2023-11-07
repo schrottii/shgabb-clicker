@@ -116,6 +116,7 @@ const emptyGame = Object.assign({}, game, {});
 var settings = {
     music: false,
     adMusic: true,
+    background: false,
     displayCurrent: false,
     hideMaxed: false,
     hideUnlevel: false,
