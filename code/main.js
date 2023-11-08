@@ -32,6 +32,14 @@ const currentPatchNotes = [
     "- Increased size of O and X",
     "- Slightly improved hitboxes and positioning",
     "- Increased header size",
+    "-> Settings:",
+    "- Moved settings into their own section",
+    "- Reworked setting button code and all texts and displays",
+    "- Changed setting button design",
+    "- Added more notations: Scientific, Engineering and Alphabet!",
+    "- Added a setting to change the notation",
+    "- Added a setting to toggle the currencies display",
+    "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
     "-> Artifacts:",
     "- Added 6 new artifacts (3 rare, 3 epic)",
     "- Moved rarity from name to level",
@@ -49,12 +57,9 @@ const currentPatchNotes = [
     "-> Other:",
     "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
     "- New ad boost: More Gems! 3x gem chance for 8 minutes",
-    "- Added more notations: Scientific, Engineering and Alphabet!",
-    "- Added a setting button to change the notation",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
+    "- Added 5 new quotes",
     "- The currencies display can now be hidden by double clicking",
-    "- Added a setting button to toggle the currencies display",
-    "- Added 4 new quotes",
     "- Fixed duplicates and stats still using the old chances",
     "- Fixed gem icon being visible before unlocking gems"
 ]
@@ -245,6 +250,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "my brain isnt braining - schrotttv",
     "but because toilet has an o in it that could lead to infinite recursion - K. whale",
     "meh thats not the true kelp experience - Phazer",
+    "finally, smoking ciguretos is economically profitable - elmenda452",
 ];
 
 // Notations
