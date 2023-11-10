@@ -41,7 +41,7 @@ const currentPatchNotes = [
     "- Added a setting to toggle the currencies display",
     "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
     "-> Artifacts:",
-    "- Added 6 new artifacts (3 rare, 3 epic)",
+    "- Added 12 new artifacts (3 common, 4 rare, 5 epic)",
     "- Moved rarity from name to level",
     "- Changed text size, name is bigger, description smaller if it is long",
     "- Changed seconds to sec in Amulet of Slowgemming description",
@@ -53,6 +53,7 @@ const currentPatchNotes = [
     "- Reduced costs of the Artifact Gift gem offer from 50 to 30",
     "",
     "- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75",
+    "- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36",
     "- P2W: x2/x3/x4 -> x2/x2.5/x3",
     "-> Other:",
     "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
@@ -80,6 +81,7 @@ var time = 0;
 var oldTime = 0;
 
 var knifeBoost = 1;
+var trashCanBoost = 1;
 var autoNotifications = 0;
 
 var ui = {
@@ -340,6 +342,10 @@ function clickButton() {
             knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 20);
         }
         else knifeBoost = 1;
+        if (getArtifactByID(310).isEquipped() && trashCanBoost > 1) {
+            trashCanBoost -= 0.1;
+        }
+        else trashCanBoost = 1;
         if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
@@ -875,6 +881,7 @@ function updateUI() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />" + getArtifactBoost("artifactchance")
         + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.125% (1/800)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.025% (1/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)

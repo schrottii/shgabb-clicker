@@ -5,6 +5,8 @@ function gemsUnlocked() {
 }
 
 function getGemChance() {
+    if (getArtifactByID(159).isEquipped()) return 0;
+
     return Math.min(10, getArtifactBoost("gemchance")
         * (getArtifactByID(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
