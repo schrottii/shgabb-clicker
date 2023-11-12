@@ -51,6 +51,7 @@ var settingButtons = [
     new ToggleSetting("design", "toggleUnlevel", "hideUnlevel", "Hide Unlevel Button"),
     new Setting("design", "toggleNotation", "Change Notation", () => "Current: " + settings.notation),
     new ToggleSetting("design", "toggleCurrenciesDisplay", "topSquare", "Toggle Currencies Display"),
+    new ToggleSetting("design", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
 ]
 
@@ -135,6 +136,13 @@ function toggleCurrenciesDisplay(directlyDo = true) {
         doubleClick = 0.3;
     }
 }
+
+function toggleLeastAd() {
+    createNotification("Least watched ad appears less often " + (settings.leastAdLess ? "ON" : "OFF"));
+    updateUpgrades();
+}
+
+// eh
 
 function toggleUpgradeColors() {
     settings.upgradeColors = (upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] != undefined ? upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] : upgradeColors[0]);

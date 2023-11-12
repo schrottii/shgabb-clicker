@@ -418,7 +418,7 @@ var artifacts = [
 	new Artifact(307, 3, "Shgabb's Dice", "dice-3.png", "complicated", 0, { desc: level => "Boosts shgabb, sandwiches by x" + diceAmount + " (" + level + "-6)" }),
 	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactByID(200).isEquipped() ? 0.1 : 1), { desc: level => "Increases gem chance and cap by " + (level * (getArtifactByID(200).isEquipped() ? 0.1 : 1)) + "% for every click without gems<br>(Current: +" + getArtifactEffect(308) + "%)" }),
 	new Artifact(309, 3, "Sarah's Collection", "sarah.png", "gemchance", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => (game.a.length - 1 == artifacts.length - 1), desc: "If you own all artifacts" }),
-	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => trashCanBoost, { noPercentage: true, desc: "Increases after destroying, goes down by clicking" }),
+	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.min(4 * level, (1 + trashCanBoost * (level / 2 + 0.5))), { noPercentage: true, desc: level => "Increases after destroying, goes down by clicking<br>" + ((1 + trashCanBoost * (level / 2 + 0.5)) > 4 * level ? ("Capped for " + Math.round(5 + ((1 + trashCanBoost * (level / 2 + 0.5)) - 4 * level) * 5) + " clicks") : ("Max: x" + 4 * level)) }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]

@@ -40,6 +40,7 @@ const currentPatchNotes = [
     "- Added a setting to change the notation",
     "- Added a setting to toggle the currencies display",
     "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
+    "- Added a setting to make the least watched ad appear as often as all others",
     "-> Artifacts:",
     "- Added 12 new artifacts (3 common, 4 rare, 5 epic)",
     "- Moved rarity from name to level",
@@ -59,6 +60,7 @@ const currentPatchNotes = [
     "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
     "- New ad boost: More Gems! 3x gem chance for 8 minutes",
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
+    "- Reduced file size of ads",
     "- Added 5 new quotes",
     "- The currencies display can now be hidden by double clicking",
     "- Fixed duplicates and stats still using the old chances",
@@ -81,7 +83,7 @@ var time = 0;
 var oldTime = 0;
 
 var knifeBoost = 1;
-var trashCanBoost = 1;
+var trashCanBoost = 0;
 var autoNotifications = 0;
 
 var ui = {
@@ -342,11 +344,15 @@ function clickButton() {
             knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 20);
         }
         else knifeBoost = 1;
+
         if (getArtifactByID(310).isEquipped() && trashCanBoost > 1) {
             trashCanBoost -= 0.1;
         }
-        else trashCanBoost = 1;
+        else trashCanBoost = 0;
+
         if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
+
+
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction();
@@ -1027,7 +1033,7 @@ function loop(tick) {
     if (adTime <= 0 && adButton.style.display == "none" && currentBoost == "none") {
         // Hey1 You can get this!
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-        if (availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        if (settings.leastAdLess && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         while (!gemsUnlocked() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         while (!siliconeUnlocked() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
 
