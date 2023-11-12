@@ -292,9 +292,16 @@ progress {
     font-family: Rw;
     margin-right: 4px;
     margin-bottom: 4px;
+    max-width: 75%;
 }
 
     .settingButton:hover {
         filter: brightness(120%);
         transition: 0.3s;
     }
+
+@media only screen and (min-width: 768px) {
+    .settingButton {
+        max-width: 25%;
+    }
+}

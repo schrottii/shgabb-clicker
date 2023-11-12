@@ -37,6 +37,7 @@ const currentPatchNotes = [
     "- Reworked setting button code and all texts and displays",
     "- Changed setting button design",
     "- Added more notations: Scientific, Engineering and Alphabet!",
+    "- Expanded normal notation",
     "- Added a setting to change the notation",
     "- Added a setting to toggle the currencies display",
     "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
@@ -64,7 +65,8 @@ const currentPatchNotes = [
     "- Added 5 new quotes",
     "- The currencies display can now be hidden by double clicking",
     "- Fixed duplicates and stats still using the old chances",
-    "- Fixed gem icon being visible before unlocking gems"
+    "- Fixed gem icon being visible before unlocking gems",
+    "- Fixed ad button still being visible when an ad is playing"
 ]
 
 // Various variables
@@ -991,6 +993,7 @@ function exportGame() {
 }
 
 function showAd() {
+    adButton.style.display = "none";
     adHandler.style.display = "inline";
     adHandler.play();
     currentBoost = "wait";
@@ -1030,7 +1033,7 @@ function loop(tick) {
         silicone();
     }
 
-    if (adTime <= 0 && adButton.style.display == "none" && currentBoost == "none") {
+    if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none" && currentBoost == "none") {
         // Hey1 You can get this!
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         if (settings.leastAdLess && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
@@ -1042,7 +1045,7 @@ function loop(tick) {
 
         selectVideo();
     }
-    else if (adTime <= 0 && adButton.style.display == "none") {
+    else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
         // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
         adTime = 10;
         adMax = 10;
