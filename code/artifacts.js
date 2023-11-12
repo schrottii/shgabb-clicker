@@ -405,9 +405,10 @@ var artifacts = [
 	new Artifact(212, 2, "Amulet of Sluggard", "amulet.png", "shgabb", level => 12 * level, { prefix: "x", trigger: () => game.stats.ctp < 5, desc: "Before the fifth click in a prestige" }),
 	new Artifact(213, 2, "Amulet of Golden Clicks", "amulet.png", "complicated", level => 0.01 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(213) + "% of your GS every click" }),
 	new Artifact(214, 2, "Amulet of Golden Idle", "amulet.png", "complicated", level => 0.01 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(214) + "% of your GS every second" }),
-	new Artifact(215, 2, "Amulet of Golden Upgrades", "amulet.png", "complicated", level => 0.01 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(215) + "% of your GS every upgrade" }),
+	new Artifact(215, 2, "Amulet of Golden Upgrades", "amulet.png", "complicated", level => 0.001 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(215) + "% of your GS every upgrade" }),
 	new Artifact(216, 2, "Amulet of Dinosaurs", "amulet.png", "artifactchance", level => 2 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
-	new Artifact(217, 2, "Amulet of Condone", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: () => game.stats.swtp > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " sandwiches this prestige" }),
+	new Artifact(217, 2, "Amulet of Well Fed Resets", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: () => game.stats.swtp > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " sandwiches this prestige" }),
+	new Artifact(218, 1, "Amulet of Some Patience", "amulet.png", "gs", level => 0.7 + 0.6 * level, { trigger: () => game.clickCooldown < 0, desc: "If clicking isn't on cooldown"}),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 2000%" }),
@@ -420,6 +421,7 @@ var artifacts = [
 	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactByID(200).isEquipped() ? 0.1 : 1), { desc: level => "Increases gem chance and cap by " + (level * (getArtifactByID(200).isEquipped() ? 0.1 : 1)) + "% for every click without gems<br>(Current: +" + getArtifactEffect(308) + "%)" }),
 	new Artifact(309, 3, "Sarah's Collection", "sarah.png", "gemchance", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => (game.a.length - 1 == artifacts.length - 1), desc: "If you own all artifacts" }),
 	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.min(4 * level, (1 + trashCanBoost * (level / 2 + 0.5))), { noPercentage: true, desc: level => "Increases after destroying, goes down by clicking<br>" + ((1 + trashCanBoost * (level / 2 + 0.5)) > 4 * level ? ("Capped for " + Math.round(5 + ((1 + trashCanBoost * (level / 2 + 0.5)) - 4 * level) * 5) + " clicks") : ("Max: x" + 4 * level)) }),
+	new Artifact(311, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "gs", level => Math.max(1, Math.log10(game.si) - 7 + level * 2), { noPercentage: true, desc: level => "Lose silicone (not upgs) on prestige, but get more GS" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]

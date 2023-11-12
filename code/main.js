@@ -43,7 +43,7 @@ const currentPatchNotes = [
     "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
     "- Added a setting to make the least watched ad appear as often as all others",
     "-> Artifacts:",
-    "- Added 12 new artifacts (3 common, 4 rare, 5 epic)",
+    "- Added 15 new artifacts (3 common, 6 rare, 6 epic)",
     "- Moved rarity from name to level",
     "- Changed text size, name is bigger, description smaller if it is long",
     "- Changed seconds to sec in Amulet of Slowgemming description",
@@ -347,24 +347,22 @@ function clickButton() {
         }
         else knifeBoost = 1;
 
+        game.clickCooldown = getCooldown();
+        game.stats.clicks += 1;
+        game.stats.ctp += 1;
+
         if (getArtifactByID(310).isEquipped() && trashCanBoost > 1) {
             trashCanBoost -= 0.1;
         }
         else trashCanBoost = 0;
 
-        if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
-
-
+        if (getArtifactByID(213).isEquipped()) increaseGS((getArtifactEffect(213) / 100) / (getArtifactByID(311).isEquipped() ? getArtifactEffect(311): 1));
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction();
             game.si += amount;
             game.stats.si += amount;
         }
-
-        game.clickCooldown = getCooldown();
-        game.stats.clicks += 1;
-        game.stats.ctp += 1;
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
             amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
@@ -516,7 +514,7 @@ function sandwich() {
         game.stats.shgabbtp += amount;
         //createNotification("+" + amount + " shgabb");
 
-        if (getArtifactByID(214).isEquipped()) increaseGS(getArtifactEffect(214) / 100);
+        if (getArtifactByID(214).isEquipped()) increaseGS((getArtifactEffect(214) / 100) / (getArtifactByID(311).isEquipped() ? getArtifactEffect(311) : 1));
     }
 
     updateUpgrades();

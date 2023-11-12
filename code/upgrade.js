@@ -40,7 +40,7 @@ class Upgrade {
                 game[this.currency] -= this.currentPrice();
                 game.upgradeLevels[this.ID] += 1;
 
-                if (getArtifactByID(215).isEquipped()) increaseGS(getArtifactEffect(215) / 100);
+                if (getArtifactByID(215).isEquipped()) increaseGS((getArtifactEffect(215) / 100) / (getArtifactByID(311).isEquipped() ? getArtifactEffect(311) : 1));
 
                 createNotification("Upgrade bought successfully");
                 return true;
