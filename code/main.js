@@ -70,8 +70,10 @@ const currentPatchNotes = [
     "- Reduced file size of ads",
     "- Sandwiches now stay unlocked after prestige / getting them without the sandwich chance upgrade",
     "- The currencies display can now be hidden by double clicking",
+    "-> Bug fixes:",
     "- Added 250 new bugs",
     "- Fixed duplicates and stats still using the old chances",
+    "- Fixed the 99.9 bug",
     "- Fixed gem icon being visible before unlocking gems",
     "- Fixed ad button still being visible when an ad is playing"
 ]
@@ -305,7 +307,7 @@ ui.cheatAmount.oninput = () => {
 function fn(number) {
     if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "0" && number.toString().split(".")[1].substr(0, 2) == "00") return number.toString();
     //if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
-    if(number > 2) number = Math.round(number * 10) / 10;
+    if(number < 1000000) number = Math.round(number * 10) / 10;
     if (number.toString().split("e").length > 1) {
         if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
         number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
@@ -339,6 +341,11 @@ function fn(number) {
     let dec = number.split(".")[1] != undefined ? "." + number.split(".")[1].substr(2 - number.length % 3) : "";
     return number.substr(0, number.length % 3 == 0 ? 3 : number.length % 3) + dec + normalNotation[Math.ceil(number.length / 3) - 3];
     */
+}
+
+// currency image
+function cImg(imgname) {
+    return '<img class="currency" src="images/currencies/' + imgname + '.png" />';
 }
 
 function clickButton() {
@@ -852,10 +859,6 @@ function updateStats() {
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Améliorer Levels: " + getTotalAme()
         + "</div>";
-}
-
-function cImg(imgname) {
-    return '<img class="currency" src="images/currencies/' + imgname + '.png" />';
 }
 
 function updateUI() {
