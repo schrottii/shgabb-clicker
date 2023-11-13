@@ -15,13 +15,13 @@
     <span id="newestnotif"></span>
     <!-- Top, currencies -->
     <div class="topSquare" onclick="toggleCurrenciesDisplay(false)" id="topSquare">
-        <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount">0 Shgabb</span>
-        <img class="currency" id="swImage" src="images\currencies\sandwich.png" /><span id="swAmount"></span><br />
-        <img class="currency" id="gsImage" src="images\currencies\gs.png" /><span id="gsAmount"></span>
-        <img class="currency" id="siImage" src="images\currencies\silicone.png" /><span id="siAmount"></span><br />
-        <img class="currency" id="gemImage" src="images\currencies\gem.png" /><span id="gemAmount"></span>
-        <img class="currency" id="ameImage" src="images\currencies\ameliorer.png" /><span id="ameAmount"></span>
-        <span id="artifactScrapAmount"></span>
+        <span id="shgabbAmount2">0 Shgabb</span>
+        <span id="swAmount2"></span><br />
+        <span id="gsAmount2"></span>
+        <span id="siAmount2"></span><br />
+        <span id="gemAmount2"></span>
+        <span id="ameAmount2"></span>
+        <span id="artifactScrapAmount2"></span>
     </div>
     <!-- New artifact / achievement popup -->
     <div id="newArtifact" style="display: none">
@@ -48,7 +48,7 @@
     <!-- Shgabb -->
     <div id="shgabbSection">
         <h3>Shgabb Upgrades</h3>
-        <img class="currency" src="images\currencies\shgabb.png" /><span id="shgabbAmount2">0 Shgabb</span><br />
+        <span id="shgabbAmount">0 Shgabb</span><br />
         <div>
             <span id="upgradesl" style="float: left; width: 50%;"></span>
             <span id="upgradesr" style="float: right; width: 50%;"></span>
@@ -59,7 +59,7 @@
     <div id="sandwichSection">
         <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
         <h3>Sandwich Upgrades</h3>
-        <img class="currency" src="images\currencies\sandwich.png" /><span id="swAmount2"></span>
+        <span id="swAmount"></span>
         <div>
             <span id="swupgradesl" style="float: left; width: 50%;"></span>
             <span id="swupgradesr" style="float: right; width: 50%;"></span>
@@ -71,7 +71,7 @@
     <div id="goldenShgabbSection">
         <h3>Golden Shgabb</h3>
         <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
-        <img class="currency" src="images\currencies\gs.png" /><span id="gsAmount2"></span>
+        <span id="gsAmount"></span>
         <div>
             <span id="gsupgradesl" style="float: left; width: 50%;"></span>
             <span id="gsupgradesr" style="float: right; width: 50%;"></span>
@@ -81,7 +81,7 @@
     <!-- Silicone Shgabb -->
     <div id="siliconeShgabbSection">
         <h3>Silicone Shgabb</h3>
-        <img class="currency" src="images\currencies\silicone.png" /><span id="siAmount2"></span><br />
+        <span id="siAmount"></span><br />
         Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.
         <div>
             <span id="siupgradesl" style="float: left; width: 50%;"></span>
@@ -92,7 +92,7 @@
     <!-- Ameliorer -->
     <div id="ameliorerSection">
         <h3>Améliorer</h3>
-        <img class="currency" src="images\currencies\ameliorer.png" /><span id="ameAmount2"></span><br />
+        <span id="ameAmount"></span><br />
         <span id="ameconvert" class="square" style="width: 50%"></span>
         <div>
             <span id="ameupgradesl" style="float: left; width: 50%;"></span>
@@ -115,7 +115,7 @@
     <!-- Gems -->
     <div id="gemSection">
         <h3>Gems</h3>
-        <img class="currency" src="images\currencies\gem.png" /><span id="gemAmount2"></span><br /><br />
+        <span id="gemAmount"></span><br /><br />
         <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
         <button class="upgrade" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
         <button class="upgrade" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
@@ -126,7 +126,7 @@
     <!-- Artifacts -->
     <div id="artifactSection">
         <h3>Artifacts</h3>
-        <span id="artifactScrapAmount2"></span><br />
+        <span id="artifactScrapAmount"></span><br />
         <span id="artifactamount"></span>
         <br />
         <span id="artifacts" style="width: 80%"></span>

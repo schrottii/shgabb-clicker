@@ -27,11 +27,6 @@ const currentPatchNotes = [
     "- Max. levels are now displayed as /x instead of (Max: x)",
     "- Upgrade levels are now displayed next to their name",
     "- Slightly increased height of buttons in upgrades (like max)",
-    "-> Shgic Shgac Shgoe:",
-    "- O is now blue and X yellow (instead of both black)",
-    "- Increased size of O and X",
-    "- Slightly improved hitboxes and positioning",
-    "- Increased header size",
     "-> Settings:",
     "- Moved settings into their own section",
     "- Reworked setting button code and all texts and displays",
@@ -42,6 +37,15 @@ const currentPatchNotes = [
     "- Added a setting to toggle the currencies display",
     "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
     "- Added a setting to make the least watched ad appear as often as all others",
+    "-> Shgic Shgac Shgoe:",
+    "- O is now blue and X yellow (instead of both black)",
+    "- Increased size of O and X",
+    "- Slightly improved hitboxes and positioning",
+    "- Increased header size",
+    "-> New content:",
+    "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
+    "- New ad boost: More Gems! 3x gem chance for 8 minutes",
+    "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
     "-> Artifacts:",
     "- Added 15 new artifacts (3 common, 6 rare, 6 epic)",
     "- Moved rarity from name to level",
@@ -59,15 +63,14 @@ const currentPatchNotes = [
     "- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36",
     "- P2W: x2/x3/x4 -> x2/x2.5/x3",
     "-> Other:",
-    "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
-    "- New ad boost: More Gems! 3x gem chance for 8 minutes",
-    "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
-    "- Reduced file size of ads",
     "- Added 5 new quotes",
     "- Huge code improvements",
+    "- Reworked rendering, especially for currency amounts and images",
+    "- Several performance improvements",
+    "- Reduced file size of ads",
     "- Sandwiches now stay unlocked after prestige / getting them without the sandwich chance upgrade",
-    "- Golden Shgabb now stay unlocked if you somehow get back to 0",
     "- The currencies display can now be hidden by double clicking",
+    "- Added 250 new bugs",
     "- Fixed duplicates and stats still using the old chances",
     "- Fixed gem icon being visible before unlocking gems",
     "- Fixed ad button still being visible when an ad is playing"
@@ -291,6 +294,7 @@ function cheatEngine(type) {
     else game[cheatCurrency.value] = toCheat;
     updateUI();
     updateArtifacts();
+    updateGems();
 }
 
 ui.cheatAmount.oninput = () => {
@@ -381,6 +385,7 @@ function clickButton() {
         if (unlockedGems()) getGem();
         if (unlockedArtifacts()) getArtifact();
         updateArtifacts();
+        updateGems();
         updateUpgrades();
     }
     else {
@@ -634,7 +639,7 @@ function unlockedSandwiches() {
 }
 
 function unlockedGS() {
-    return game.gs > 0 || game.stats.gs > 0;
+    return game.shgabb >= 1000000;
 }
 
 // Notifications
@@ -762,13 +767,11 @@ function updateArtifacts() {
         ui.artifacts.innerHTML = "";
         ui.artifactamount.innerHTML = "";
     }
+}
+
+function updateGems() {
     if (unlockedGems()) {
-        ui.gemImage.style.display = "unset";
-        ui.gemAmount.innerHTML = game.gems + " Gems";
-    }
-    else {
-        ui.gemImage.style.display = "none";
-        ui.gemAmount.innerHTML = "";
+        renderGemOffers();
     }
 }
 
@@ -781,86 +784,48 @@ window.addEventListener('keydown', function (e) {
     }
 }, true);
 
-function updateUI() {
-    // Update UI
+function updateTopSquare() {
+    if (settings.topSquare) {
+        ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
 
-    // Sandwiches
-    if (selection("sandwich")) {
-        ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
-        ui.swAmount.innerHTML = fn(game.sw) + " Sandwiches";
-        ui.swImage.style.display = "unset";
-        ui.sandwichBar.value = sandwichFreezeTime;
-        ui.sandwichBar.max = getFreezeTime();
-    }
-    else {
-        ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
-        ui.swImage.style.display = "none";
-        ui.swAmount.innerHTML = "";
-    }
+        if (unlockedSandwiches()) ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
+        else ui.swAmount2.innerHTML = "";
 
-    if (game.clickCooldown > 0) {
-        ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
-        ui.clickButton.style["background-color"] = "lightblue";
-    }
-    else {
-        let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
-        ui.clickButton.innerHTML = diceRender + "+" + fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1)) + " Shgabb" + diceRender;
-        ui.clickButton.style["background-color"] = "blue";
-    }
-    ui.cooldownBar.value = game.clickCooldown;
-    ui.cooldownBar.max = getCooldown();
+        if (unlockedGS()) ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
+        else ui.gsAmount2.innerHTML = "";
 
-    // Ads
-    if (game.stats.sw > 9 && adTime > 0) {
-        ui.adBar.style.display = "inline";
-        ui.adBar.value = (adTime / adMax) * 100;
-    }
-    else {
-        ui.adBar.style.display = "none";
-    }
+        if (unlockedSilicone()) ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
+        else ui.siAmount2.innerHTML = "";
 
-    // GS
-    if (selection("goldenShgabb")) {
-        ui.gsImage.style.display = "unset";
-        ui.gsAmount.innerHTML = fn(game.gs) + " Golden Shgabb";
-    }
-    else {
-        ui.gsImage.style.display = "none";
-        ui.gsAmount.innerHTML = "";
-    }
-    if (game.shgabb >= 1000000) {
-        ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
-    }
-    else {
-        ui.prestigeButton.style.display = "none";
-    }
+        if (unlockedGems()) ui.gemAmount2.innerHTML = ui.gemAmount.innerHTML;
+        else ui.gemAmount2.innerHTML = "";
 
-    // Silicone
-    if (unlockedSilicone()) {
-        ui.siImage.style.display = "unset";
-        ui.siAmount.innerHTML = fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
+        if (unlockedAmeliorer()) ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
+        else ui.ameAmount2.innerHTML = "";
     }
-    else {
-        ui.siImage.style.display = "none";
-    }
+}
 
-    // Ameliorer
-    if (unlockedAmeliorer()) {
-        ui.ameAmount.innerHTML = game.ame + " Améliorer";
-        ui.ameImage.style.display = "unset";
+function updateCurrencies() {
+    if (unlockedSandwiches()) ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
+    else ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
 
-        if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
-        else ui.ameReset.style.display = "none";
-    }
-    else {
-        ui.ameImage.style.display = "none";
-        ui.ameReset.style.display = "none";
-    }
-    ui.ameReset2.style.display = ui.ameReset.style.display;
+    if (unlockedSandwiches()) ui.swAmount.innerHTML = cImg("sandwich") + fn(game.sw) + " Sandwiches";
+    else ui.swAmount.innerHTML = "";
 
-    renderGemOffers();
+    if (unlockedGS()) ui.gsAmount.innerHTML = cImg("gs") + fn(game.gs) + " Golden Shgabb";
+    else ui.gsAmount.innerHTML = "";
 
+    if (unlockedSilicone()) ui.siAmount.innerHTML = cImg("silicone") + fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
+    else ui.siAmount.innerHTML = "";
+
+    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + game.gems + " Gems";
+    else ui.gemAmount.innerHTML = "";
+
+    if (unlockedAmeliorer()) ui.ameAmount.innerHTML = cImg("ameliorer") + game.ame + " Améliorer";
+    else ui.ameAmount.innerHTML = "";
+}
+
+function updateStats() {
     ui.stats.innerHTML = "<div style='float: left; width: 50%;' class='square2'>"
         + "Highest More Shgabb: " + fn(game.stats.hms)
         + "<br />Total Clicks: " + game.stats.clicks
@@ -887,21 +852,75 @@ function updateUI() {
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Améliorer Levels: " + getTotalAme()
         + "</div>";
+}
 
+function cImg(imgname) {
+    return '<img class="currency" src="images/currencies/' + imgname + '.png" />';
+}
 
-    ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
-    ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
-    ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
-    ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
-    ui.gemAmount2.innerHTML = ui.gemAmount.innerHTML;
-    ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
+function updateUI() {
+    // Update UI
+
+    // Click Button
+    if (game.clickCooldown > 0) {
+        ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
+        ui.clickButton.style["background-color"] = "lightblue";
+    }
+    else {
+        let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
+        ui.clickButton.innerHTML = diceRender + "+" + fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1)) + " Shgabb" + diceRender;
+        ui.clickButton.style["background-color"] = "blue";
+    }
+    ui.cooldownBar.value = game.clickCooldown;
+    ui.cooldownBar.max = getCooldown();
+
+    // Sandwiches
+    if (selection("sandwich")) {
+        ui.sandwichBar.value = sandwichFreezeTime;
+        ui.sandwichBar.max = getFreezeTime();
+    }
+
+    // Ads
+    if (game.stats.sw > 9 && adTime > 0) {
+        ui.adBar.style.display = "inline";
+        ui.adBar.value = (adTime / adMax) * 100;
+    }
+    else {
+        ui.adBar.style.display = "none";
+    }
+
+    // GS
+    if (unlockedGS()) {
+        ui.prestigeButton.style.display = "inline";
+        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
+    }
+    else {
+        ui.prestigeButton.style.display = "none";
+    }
+
+    // Ameliorer
+    if (unlockedAmeliorer()) {
+        if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
+        else ui.ameReset.style.display = "none";
+        ui.ameReset2.style.display = ui.ameReset.style.display;
+    }
+    else {
+        ui.ameReset.style.display = "none";
+    }
+
+    updateTopSquare();
+    updateCurrencies();
+
+    if (selection("stats")) updateStats();
 
     // Achievements
-    renderAchievements();
-    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
+    if (selection("achievements")) {
+        renderAchievements();
+        ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
+    }
 
     // Minigame
-    if (unlockedAmeliorer() && canPlayTTT) {
+    if (selection("minigames") && canPlayTTT) {
         updateMinigameUI();
     }
 
@@ -917,6 +936,7 @@ function updateUI() {
         ui.notifications.innerHTML = ui.notifications.innerHTML + "<br />";
         n2 -= 1;
     }
+    // wtf is this below, help
     if (currentNotifications[(Object.keys(currentNotifications).length - 1)] != undefined) {
         if (currentNotifications[Object.keys(currentNotifications).length - 1][1] > 12
             && currentNotifications[Object.keys(currentNotifications).length - 1][0].substr(0, 10) != "Game saved") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
@@ -1217,6 +1237,9 @@ ui.topSquare.style.display = (settings.topSquare ? "" : "none");
 // Update upgrades UI
 updateUpgrades();
 updateArtifacts();
+updateGems();
+updateTopSquare();
+updateCurrencies();
 renderAmeConvert();
 updateUpgradeColors();
 
@@ -1235,5 +1258,5 @@ ui.patchNotes.innerHTML = patchNotesText;
 // Start game loop (30 FPS)
 window.requestAnimationFrame(loop);
 
-if(!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
 console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');

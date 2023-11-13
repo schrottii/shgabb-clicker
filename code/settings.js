@@ -131,6 +131,8 @@ function toggleCurrenciesDisplay(directlyDo = true) {
         if (!directlyDo) settings.topSquare = !settings.topSquare;
         createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
         ui.topSquare.style.display = (settings.topSquare ? "" : "none");
+
+        updateTopSquare();
     }
     else {
         doubleClick = 0.3;

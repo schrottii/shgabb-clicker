@@ -73,13 +73,12 @@ function gemOffer(i) {
                 game.gems -= 50;
                 game.a.push(game.dgo)
                 createNotification("New Artifact: " + getArtifactByID(game.dgo).name);
-                updateArtifacts();
 
                 game.nexgai[getArtifactByID(game.dgo).rarity - 1] = setNextArtifact(getArtifactByID(game.dgo).rarity - 1);
             }
             break;
     }
-    updateArtifacts();
+    updateGems();
 }
 
 function renderGemOffers() {
