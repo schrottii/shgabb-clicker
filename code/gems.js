@@ -1,6 +1,6 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
-function gemsUnlocked() {
+function unlockedGems() {
     return game.stats.hms >= 500;
 }
 

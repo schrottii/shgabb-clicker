@@ -97,11 +97,11 @@ class Artifact {
 
 var artifactMode = "select";
 
-function artifactsUnlocked() {
+function unlockedArtifacts() {
 	return game.stats.hms >= 1000;
 }
 
-function artifactUpgradingUnlocked() {
+function unlockedArtifactUpgrading() {
 	return game.stats.artifactScrap > 0 || game.artifactScrap > 0;
 }
 
@@ -146,7 +146,7 @@ function renderArtifacts() {
 	}
 	render = render + "<br />";
 
-	if (artifactUpgradingUnlocked()) {
+	if (unlockedArtifactUpgrading()) {
 		ui.artifactScrapAmount.innerHTML = `<img class="currency" src="images/currencies/artifactscrap.png" />` + game.artifactScrap + " Artifact Scrap";
 
 		render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";

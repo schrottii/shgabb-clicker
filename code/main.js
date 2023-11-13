@@ -64,6 +64,9 @@ const currentPatchNotes = [
     "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
     "- Reduced file size of ads",
     "- Added 5 new quotes",
+    "- Huge code improvements",
+    "- Sandwiches now stay unlocked after prestige / getting them without the sandwich chance upgrade",
+    "- Golden Shgabb now stay unlocked if you somehow get back to 0",
     "- The currencies display can now be hidden by double clicking",
     "- Fixed duplicates and stats still using the old chances",
     "- Fixed gem icon being visible before unlocking gems",
@@ -268,7 +271,6 @@ const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", 
 const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 
 // More beta stuff
-// waaaa sections.cheats.style.display = BETA.isBeta ? "unset" : "none";
 
 function cheatEngine(type) {
     let toCheat;
@@ -376,8 +378,8 @@ function clickButton() {
         }
 
         changeDiceAmount();
-        if (gemsUnlocked()) getGem();
-        if (artifactsUnlocked()) getArtifact();
+        if (unlockedGems()) getGem();
+        if (unlockedArtifacts()) getArtifact();
         updateArtifacts();
         updateUpgrades();
     }
@@ -522,7 +524,7 @@ function sandwich() {
 }
 
 function silicone() {
-    if (!siliconeUnlocked()) return false;
+    if (!unlockedSilicone()) return false;
     if (getArtifactByID(304).isEquipped()) return false;
 
     let amount = getSiliconeProduction();
@@ -623,8 +625,16 @@ function prestigeButton() {
     }
 }
 
-function siliconeUnlocked() {
+function unlockedSilicone() {
     return game.shgabb >= 1000000000 || game.stats.si > 0;
+}
+
+function unlockedSandwiches() {
+    return game.upgradeLevels.swChance > 0 || game.stats.sw > 0;
+}
+
+function unlockedGS() {
+    return game.gs > 0 || game.stats.gs > 0;
 }
 
 // Notifications
@@ -634,7 +644,7 @@ function createNotification(text) {
 }
 
 // Ameliorer
-function ameliorerUnlocked() {
+function unlockedAmeliorer() {
     return game.stats.hms >= 2000;
 }
 
@@ -744,29 +754,21 @@ function updateUpgrades() {
 
 function updateArtifacts() {
     // Artifacts
-    if (artifactsUnlocked()) {
+    if (unlockedArtifacts()) {
         ui.artifacts.innerHTML = renderArtifacts();
         ui.artifactamount.innerHTML = Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1) + " Artifacts unlocked!";
-
-        // waaaa sections.artifacts.style.display = "unset";
     }
     else {
         ui.artifacts.innerHTML = "";
         ui.artifactamount.innerHTML = "";
-
-        sections.artifacts.style.display = "none";
     }
-    if (gemsUnlocked()) {
+    if (unlockedGems()) {
         ui.gemImage.style.display = "unset";
         ui.gemAmount.innerHTML = game.gems + " Gems";
-
-        // waaaa sections.gems.style.display = "unset";
     }
     else {
         ui.gemImage.style.display = "none";
         ui.gemAmount.innerHTML = "";
-
-        sections.gems.style.display = "none";
     }
 }
 
@@ -783,17 +785,15 @@ function updateUI() {
     // Update UI
 
     // Sandwiches
-    if (game.upgradeLevels.swChance > 0) {
+    if (selection("sandwich")) {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
         ui.swAmount.innerHTML = fn(game.sw) + " Sandwiches";
-        // waaaa sections.sandwich.style.display = "unset";
         ui.swImage.style.display = "unset";
         ui.sandwichBar.value = sandwichFreezeTime;
         ui.sandwichBar.max = getFreezeTime();
     }
     else {
         ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
-        sections.sandwich.style.display = "none";
         ui.swImage.style.display = "none";
         ui.swAmount.innerHTML = "";
     }
@@ -820,18 +820,15 @@ function updateUI() {
     }
 
     // GS
-    if (game.gs > 0) {
-        // waaaa sections.goldenShgabb.style.display = "unset";
+    if (selection("goldenShgabb")) {
         ui.gsImage.style.display = "unset";
         ui.gsAmount.innerHTML = fn(game.gs) + " Golden Shgabb";
     }
     else {
-        sections.goldenShgabb.style.display = "none";
         ui.gsImage.style.display = "none";
         ui.gsAmount.innerHTML = "";
     }
     if (game.shgabb >= 1000000) {
-        // waaaa sections.goldenShgabb.style.display = "unset";
         ui.prestigeButton.style.display = "inline";
         ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
     }
@@ -840,27 +837,23 @@ function updateUI() {
     }
 
     // Silicone
-    if (siliconeUnlocked()) {
-        // waaaa sections.siliconeShgabb.style.display = "unset";
+    if (unlockedSilicone()) {
         ui.siImage.style.display = "unset";
         ui.siAmount.innerHTML = fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
     }
     else {
-        sections.siliconeShgabb.style.display = "none";
         ui.siImage.style.display = "none";
     }
 
     // Ameliorer
-    if (ameliorerUnlocked()) {
+    if (unlockedAmeliorer()) {
         ui.ameAmount.innerHTML = game.ame + " Améliorer";
-        // waaaa sections.ameliorer.style.display = "unset";
         ui.ameImage.style.display = "unset";
 
         if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
         else ui.ameReset.style.display = "none";
     }
     else {
-        sections.ameliorer.style.display = "none";
         ui.ameImage.style.display = "none";
         ui.ameReset.style.display = "none";
     }
@@ -889,7 +882,7 @@ function updateUI() {
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + "<br />" + getArtifactBoost("artifactchance")
-        + "<br />" + (artifactsUnlocked() ? "Artifact Chances:<br />Common 0.125% (1/800)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.025% (1/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
+        + "<br />" + (unlockedArtifacts() ? "Artifact Chances:<br />Common 0.125% (1/800)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.025% (1/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Améliorer Levels: " + getTotalAme()
@@ -908,12 +901,8 @@ function updateUI() {
     ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
 
     // Minigame
-    if (ameliorerUnlocked() && canPlayTTT) {
-        // waaaa sections.minigames.style.display = "unset";
+    if (unlockedAmeliorer() && canPlayTTT) {
         updateMinigameUI();
-    }
-    else {
-        sections.minigames.style.display = "none";
     }
 
     // Notifications
@@ -1036,8 +1025,8 @@ function loop(tick) {
         // Hey1 You can get this!
         availableBoost = boosts[Math.floor(boosts.length * Math.random())];
         if (settings.leastAdLess && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-        while (!gemsUnlocked() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-        while (!siliconeUnlocked() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        while (!unlockedGems() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+        while (!unlockedSilicone() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
 
         adButton.style.display = "inline";
         adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];

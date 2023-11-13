@@ -44,12 +44,8 @@ function renderSelection(sel) {
         selsDisplay = ["Gems", "Artifacts", "Minigames"];
     }
     if (sel == 3) {
-        sels = ["stats", "achievements", "settings", "social"];
-        selsDisplay = ["Stats", "Achievements", "Settings", "Social"];
-        if (BETA.isBeta) {
-            sels.unshift("cheats");
-            selsDisplay.unshift("Cheats");
-        }
+        sels = ["cheats", "stats", "achievements", "settings", "social"];
+        selsDisplay = ["Cheats", "Stats", "Achievements", "Settings", "Social"];
     }
 
     for (s in sels) {
@@ -62,6 +58,39 @@ function renderSelection(sel) {
     for (s in sels) {
         if (selections[sel - 1] == sels[s]) sections[sels[s]].style.display = "unset";
         else sections[sels[s]].style.display = "none";
+    }
+}
+
+function selection(name) {
+    if (selections[0] == name || selections[1] == name || selections[2] == name) return true;
+    return false;
+}
+
+function isSelectionUnlocked(name) {
+    switch (name) {
+        case "shgabb":
+            return true;
+        case "sandwich":
+            return unlockedSandwiches();
+        case "goldenShgabb":
+            return unlockedGS();
+        case "siliconeShgabb":
+            return unlockedSilicone();
+        case "ameliorer":
+            return unlockedAmeliorer();
+        case "gems":
+            return unlockedGems();
+        case "artifacts":
+            return unlockedArtifacts();
+        case "minigames":
+            return unlockedAmeliorer();
+        case "cheats":
+            return BETA.isBeta;
+        case "stats":
+        case "achievements":
+        case "settings":
+        case "social":
+            return true;
     }
 }
 
