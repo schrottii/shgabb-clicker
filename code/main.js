@@ -46,6 +46,7 @@ const currentPatchNotes = [
     "- Added 15 new artifacts (3 common, 6 rare, 6 epic)",
     "- Moved rarity from name to level",
     "- Changed text size, name is bigger, description smaller if it is long",
+    "- When upgrading artifacts, the costs and effects of the next level are now displayed",
     "- Changed seconds to sec in Amulet of Slowgemming description",
     "-> Balance:",
     "- Capped click cooldown at 0.1s",

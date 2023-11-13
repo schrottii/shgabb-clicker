@@ -1,4 +1,4 @@
-// Game made by Schrottii - editing or stealing is prohibited!
+﻿// Game made by Schrottii - editing or stealing is prohibited!
 
 class Artifact {
 	constructor(ID, rarity, name, image, boost, amount, config) {
@@ -24,13 +24,13 @@ class Artifact {
 		return ["ERROR", "Common", "Rare", "Epic", "Legendary", ""][this.rarity];
 	}
 
-	getDescription() {
-		if (typeof (this.desc) == "function") return this.desc(getArtifactLevel(this.ID));
+	getDescription(level = false) {
+		if (typeof (this.desc) == "function") return level == false ? this.desc(getArtifactLevel(this.ID)) : this.desc(level);
 		return this.desc;
 	}
 
-	getEffect() {
-		if (typeof (this.amount) == "function") return this.amount(this.level);
+	getEffect(level = false) {
+		if (typeof (this.amount) == "function") return level == false ? this.amount(getArtifactLevel(this.ID)) : this.amount(level);
 		return this.amount;
 	}
 
@@ -41,6 +41,11 @@ class Artifact {
 
 	isEquipped() {
 		if (game.aeqi.includes(this.ID)) return true;
+		return false;
+	}
+
+	isUpgradable() {
+		if (artifactMode == "upgrade" && getArtifactLevel(this.ID) < 3) return true;
 		return false;
 	}
 
@@ -57,7 +62,7 @@ class Artifact {
 			case "sw":
 				return "sandwiches";
 			case "gs":
-				return "golden shgabb";
+				return "GS";
 			case "si":
 				return "silicone shgabb";
 			case "clickspeed":
@@ -71,8 +76,22 @@ class Artifact {
 		}
 	}
 
+	renderEffect() {
+		let render = (this.boost == "complicated" ? "" : "<br />" + ((this.getEffect() > 2 || this.noPercentage) ? (this.prefix + fn(this.getEffect())) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.getEffect() - 1) * 100) + "%")) + " " + this.getBoostType());
+		if (this.isUpgradable()) render = render + " → " + (this.boost == "complicated" ? "" : "<br />" + ((this.getEffect(getArtifactLevel(this.ID) + 1) > 2 || this.noPercentage) ? (this.prefix + fn(this.getEffect(getArtifactLevel(this.ID) + 1))) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.getEffect(getArtifactLevel(this.ID) + 1) - 1) * 100) + "%")) + " " + this.getBoostType());
+		return render;
+	}
+
+	renderDescription() {
+		if (this.isUpgradable()) return (this.getDescription(getArtifactLevel(this.ID)) ? ("<br/><span style='font-size: " + (this.getDescription(getArtifactLevel(this.ID)).length > 40 ? "10" : "12") + "px'>" + this.getDescription(getArtifactLevel(this.ID)) + "</span>") : "");
+		else return (this.getDescription() ? ("<br/><span style='font-size: " + (this.getDescription().length > 40 ? "10" : "12") + "px'>" + this.getDescription() + "</span>") : "");
+	}
+
 	render(clickable=true) {
-		return `<button class='artifact' ` + (clickable ? `onclick = 'clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>" + (this.isEquipped() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />" + this.getRarity() + " Level " + getArtifactLevel(this.ID) + (this.boost == "complicated" ? "" : "<br />" + ((getArtifactEffect(this.ID) > 2 || this.noPercentage) ? (this.prefix + fn(getArtifactEffect(this.ID))) : ((this.prefix != "x" ? this.prefix : "+") + fn((getArtifactEffect(this.ID) - 1) * 100) + "%")) + " " + this.getBoostType()) + (this.getDescription() ? ("<br/><span style='font-size: " + (this.getDescription().length > 40 ? "10" : "12") + "px'>" + this.getDescription() + "</span>") : "") + "</button>";
+		return `<button class='artifact' ` + (clickable ? `onclick = 'clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>"
+			+ (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
+			+ (!this.isUpgradable() ? (this.getRarity() + " Level " + getArtifactLevel(this.ID)) : getScrapCost(getArtifactLevel(this.ID) + 1, this.rarity) + " Artifact Scrap")
+			+ this.renderEffect() + this.renderDescription() + "</button>";
 	}
 }
 
@@ -418,7 +437,7 @@ var artifacts = [
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
 	new Artifact(306, 3, "Shgabb's sleeves", "sleeves.png", "complicated", 0, { desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 2) + "<br>(Current: x" + ((level * 2) * (1 / getCooldown())).toFixed(2) + ")" }),
 	new Artifact(307, 3, "Shgabb's Dice", "dice-3.png", "complicated", 0, { desc: level => "Boosts shgabb, sandwiches by x" + diceAmount + " (" + level + "-6)" }),
-	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactByID(200).isEquipped() ? 0.1 : 1), { desc: level => "Increases gem chance and cap by " + (level * (getArtifactByID(200).isEquipped() ? 0.1 : 1)) + "% for every click without gems<br>(Current: +" + getArtifactEffect(308) + "%)" }),
+	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5), { desc: level => "Increases gem chance and cap by " + (level * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5)) + "% for every click without gems<br>(Current: +" + getArtifactEffect(308) + "%)" }),
 	new Artifact(309, 3, "Sarah's Collection", "sarah.png", "gemchance", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => (game.a.length - 1 == artifacts.length - 1), desc: "If you own all artifacts" }),
 	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.min(4 * level, (1 + trashCanBoost * (level / 2 + 0.5))), { noPercentage: true, desc: level => "Increases after destroying, goes down by clicking<br>" + ((1 + trashCanBoost * (level / 2 + 0.5)) > 4 * level ? ("Capped for " + Math.round(5 + ((1 + trashCanBoost * (level / 2 + 0.5)) - 4 * level) * 5) + " clicks") : ("Max: x" + 4 * level)) }),
 	new Artifact(311, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "gs", level => Math.max(1, Math.log10(game.si) - 7 + level * 2), { noPercentage: true, desc: level => "Lose silicone (not upgs) on prestige, but get more GS" }),
