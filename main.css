@@ -282,7 +282,7 @@ progress {
         transition: 0.3s;
     }
 
-.settingButton {
+.settingButton, .settingButton2 {
     background-color: deepskyblue;
     color: black;
     border-color: darkblue;
@@ -299,6 +299,10 @@ progress {
         filter: brightness(120%);
         transition: 0.3s;
     }
+
+.settingButton2 {
+    max-width: 100%;
+}
 
 @media only screen and (min-width: 768px) {
     .settingButton {

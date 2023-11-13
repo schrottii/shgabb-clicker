@@ -37,8 +37,8 @@ class ToggleSetting extends Setting {
     }
 }
 
-const settingSections = ["design", "audio", "save"];
-const settingSectionsDisplay = ["Design", "Audio", "Savefile"];
+const settingSections = ["gameplay", "design", "audio", "save"];
+const settingSectionsDisplay = ["Gameplay", "Design", "Audio", "Savefile"];
 
 var settingButtons = [
     new ToggleSetting("audio", "toggleMusic", "music", "Music"),
@@ -47,11 +47,11 @@ var settingButtons = [
     new Setting("save", "importGame", "Import Game", "Import a savefile"),
     new ToggleSetting("design", "toggleBG", "background", "No Background"),
     new ToggleSetting("design", "toggleCurrent", "displayCurrent", "Current Effect Display"),
-    new ToggleSetting("design", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades"),
-    new ToggleSetting("design", "toggleUnlevel", "hideUnlevel", "Hide Unlevel Button"),
-    new Setting("design", "toggleNotation", "Change Notation", () => "Current: " + settings.notation),
+    new ToggleSetting("gameplay", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades"),
+    new ToggleSetting("gameplay", "toggleUnlevel", "hideUnlevel", "Hide Unlevel Button"),
+    new Setting("gameplay", "toggleNotation", "Change Notation", () => "Current: " + settings.notation),
     new ToggleSetting("design", "toggleCurrenciesDisplay", "topSquare", "Toggle Currencies Display"),
-    new ToggleSetting("design", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
+    new ToggleSetting("gameplay", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
 ]
 

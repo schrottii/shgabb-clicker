@@ -540,7 +540,7 @@ function updateUpgradeColors() {
     if (settings.upgradeColors == "custom") {
         let ihText = "";
 
-        ihText = "<div class='settingButton'> Custom colors: <br>";
+        ihText = "<div class='settingButton2'> Custom colors: <br>";
 
         for (i = 0; i < 3; i++) {
             ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
