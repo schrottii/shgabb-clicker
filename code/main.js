@@ -59,8 +59,13 @@ const currentPatchNotes = [
     "- Reduced costs of the Shgabb Boost gem offer from 25 to 20",
     "- Reduced costs of the Artifact Gift gem offer from 50 to 30",
     "",
+    "- Ring of Productivity: x1.4/x2/x2.6 -> x1.5/x2/x2.5",
+    "- Ring of Laziness: x1.2/x1.6/x2 -> x1.5/x2/x2.5",
     "- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75",
+    "- Amulet of Quick Snacks: x3/x12/x24 -> , x4/x8/x12",
+    "- Amulet of Fast Start: x10/x35/x60 -> x10/x30/x100",
     "- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36",
+    "- Furious Knife: 2000% -> 3000%",
     "- P2W: x2/x3/x4 -> x2/x2.5/x3",
     "-> Other:",
     "- Added 5 new quotes",
@@ -357,7 +362,7 @@ function clickButton() {
         game.stats.shgabbtp += amount;
 
         if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.33) {
-            knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 20);
+            knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 30);
         }
         else knifeBoost = 1;
 
@@ -853,8 +858,13 @@ function updateStats() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
-        + "<br />" + getArtifactBoost("artifactchance")
-        + "<br />" + (unlockedArtifacts() ? "Artifact Chances:<br />Common 0.125% (1/800)" + (allArtifactsOfRarity(0) ? " ALL" : "") + "<br />Rare 0.025% (1/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "") + "<br />Epic 0.003% (1/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "") : "Artifacts locked!")
+
+        + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
+        + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance") + "/800)" + (allArtifactsOfRarity(0) ? " ALL" : "")
+        + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance") + "/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "")
+        + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance") + "/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "")
+            : "Artifacts locked!")
+
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Améliorer Levels: " + getTotalAme()
