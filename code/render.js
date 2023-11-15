@@ -100,7 +100,7 @@ function renderAllSelection() {
     renderSelection(3);
 }
 
-var selections = ["shgabb", "minigames", "settings"];
+var selections = ["shgabb", "minigames", "social"];
 
 function changeSelection(sel, sels) {
     if (selections[sel - 1] == sels) selections[sel - 1] = "none";
