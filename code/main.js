@@ -66,6 +66,7 @@ const currentPatchNotes = [
     "- Both caps are displayed in the stats once reached",
     "- Reduced costs of the Shgabb Boost gem offer from 25 to 20",
     "- Reduced costs of the Artifact Gift gem offer from 50 to 30",
+    "- - Decreased Stronger Auto ad boost from 10x to 5x",
     "",
     "- Ring of Productivity: x1.4/x2/x2.6 -> x1.5/x2/x2.5",
     "- Ring of Laziness: x1.2/x1.6/x2 -> x1.5/x2/x2.5",
