@@ -59,6 +59,7 @@ const currentPatchNotes = [
     "- Changed text size, name is bigger, description smaller if it is long",
     "- When upgrading artifacts, the costs and effects of the next level are now displayed",
     "- Changed seconds to sec in Amulet of Slowgemming description",
+    "- Added a cool clicking animation for one of the new epics; Dice",
     "-> Balance:",
     "- Capped click cooldown at 0.1s",
     "- Capped gem chance at 10%",
@@ -79,6 +80,7 @@ const currentPatchNotes = [
     "- Added two new achievement images",
     "- Increased Sarah's Gems from 250 to 500 gems",
     "-> Other:",
+    "- Added a link (in social) to my (new!) website!",
     "- Added 5 new quotes",
     "- Huge code improvements",
     "- Reworked rendering, especially for currency amounts and images",
@@ -982,6 +984,7 @@ function autoSave() {
     // Should this even be here?
     if (game.clickCooldown < -0.33) knifeBoost = 1;
     renderAmeConvert();
+    renderAllSelection();
 
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
@@ -1270,6 +1273,7 @@ updateTopSquare();
 updateCurrencies();
 renderAmeConvert();
 updateUpgradeColors();
+renderAllSelection();
 
 renderSettings();
 

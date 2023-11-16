@@ -49,7 +49,7 @@ function renderSelection(sel) {
     }
 
     for (s in sels) {
-        render = render + `<button class="grayButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
+        if (isSelectionUnlocked(sels[s])) render = render + `<button class="grayButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 
@@ -67,6 +67,7 @@ function selection(name) {
 }
 
 function isSelectionUnlocked(name) {
+    if (typeof (knifeBoost) == "undefined") return false;
     switch (name) {
         case "shgabb":
             return true;
@@ -100,7 +101,7 @@ function renderAllSelection() {
     renderSelection(3);
 }
 
-var selections = ["shgabb", "minigames", "social"];
+var selections = ["shgabb", "none", "social"];
 
 function changeSelection(sel, sels) {
     if (selections[sel - 1] == sels) selections[sel - 1] = "none";
@@ -108,8 +109,3 @@ function changeSelection(sel, sels) {
 
     renderSelection(sel);
 }
-
-
-
-
-renderAllSelection();
