@@ -1,5 +1,7 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
+// GAME
+
 var game = {
     shgabb: 0,
     clickCooldown: 0,
@@ -91,7 +93,8 @@ var game = {
             msw: 0,
             fs: 0,
             mc: 0,
-            msi: 0
+            msi: 0,
+            mg: 0,
         }
     },
     a: [],
@@ -103,14 +106,33 @@ var game = {
     ach: [],
     nexgai: [0, 0, 0, 0],
     tttd: 1,
+    dgo: 100,
 }
 
 const emptyGame = Object.assign({}, game, {});
 
+// SETTINGS
+
 var settings = {
     music: false,
     adMusic: true,
+    background: false,
     displayCurrent: false,
     hideMaxed: false,
     hideUnlevel: false,
+    upgradeColors: "normal",
+    customColors: [[0, 0, 0, 255], [100, 100, 100, 255], [255, 255, 255, 0]],
+    notation: "normal",
+    topSquare: true,
+    leastAdLess: true,
 }
+
+// BETA (cheating)
+
+var BETA = {};
+Object.defineProperty(BETA, 'isBeta', {
+    value: false,
+    writable: false,
+    enumerable: true,
+    configurable: false
+});

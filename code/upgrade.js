@@ -39,6 +39,9 @@ class Upgrade {
             if (this.canBuy()) {
                 game[this.currency] -= this.currentPrice();
                 game.upgradeLevels[this.ID] += 1;
+
+                if (getArtifactByID(215).isEquipped()) increaseGS((getArtifactEffect(215) / 100) / (getArtifactByID(311).isEquipped() ? getArtifactEffect(311) : 1));
+
                 createNotification("Upgrade bought successfully");
                 return true;
             }
@@ -49,10 +52,16 @@ class Upgrade {
         }
     }
 
-    unlevel() {
+    unlevel(isMax) {
         doesUnlevel = true;
-        game.upgradeLevels[this.ID] -= 1;
-        createNotification("Upgrade unbought successfully");
+        if (isMax) {
+            game.upgradeLevels[this.ID] = 0;
+            createNotification("Upgrade completely unbought successfully");
+        }
+        else {
+            game.upgradeLevels[this.ID] -= 1;
+            createNotification("Upgrade unbought successfully");
+        }
         return true;
     }
 
@@ -90,9 +99,16 @@ class Upgrade {
 
 
         let unlevelButton = "";
-        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>";
+        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div><div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>";
 
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.getMax() ? "lightgray" : "whitesmoke")) + "'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div style='font-size: 20px'>" + this.name + "</div>" + this.description + "<br />" + (isMax ? "MAX." : "Level: " + this.currentLevel() + (this.getMax() != undefined ? " (Max: " + this.getMax() + ")" : "")) + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
+        let levelDisplay = (isMax ? " MAX." : " Lvl. " + this.currentLevel() + (this.getMax() != undefined ? "/" + this.getMax() : ""));
+        let myColor = settings.upgradeColors == "old" ? (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.getMax() ? "lightgray" : "whitesmoke"))
+            : settings.upgradeColors == "normal" ? (this.canBuy() ? "rgb(90, 200, 120)" : (this.currentLevel() == this.getMax() ? "rgb(45, 45, 45)" : "rgb(120, 160, 255)"))
+                : (this.canBuy() ? "rgb(" + settings.customColors[0][0] + ", " + settings.customColors[0][1] + ", " + settings.customColors[0][2] + ")" : (this.currentLevel() == this.getMax() ? "rgb(" + settings.customColors[2][0] + ", " + settings.customColors[2][1] + ", " + settings.customColors[2][2] + ")" : "rgb(" + settings.customColors[1][0] + ", " + settings.customColors[1][1] + ", " + settings.customColors[1][2] + ")"));
+        let textColor = settings.upgradeColors == "old" ? 0
+            : settings.upgradeColors == "normal" ? 255
+            : (this.canBuy() ? settings.customColors[0][3] : (this.currentLevel() == this.getMax() ? settings.customColors[2][3] : settings.customColors[1][3]));
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div class='upgradeHeader'>" + this.name + levelDisplay + "</div>" + this.description + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
         else return "";
     }
 }
