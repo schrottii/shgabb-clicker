@@ -74,6 +74,10 @@ const currentPatchNotes = [
     "- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36",
     "- Furious Knife: max. 2000% -> max. 3000%",
     "- P2W: x2/x3/x4 -> x2/x2.5/x3",
+    "-> Achievements:",
+    "- Added 20 new achievements",
+    "- Added two new achievement images",
+    "- Increased Sarah's Gems from 250 to 500 gems",
     "-> Other:",
     "- Added 5 new quotes",
     "- Huge code improvements",
@@ -498,13 +502,16 @@ function getSiliconeBoost(level = "current") {
     return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1);
 }
 
+var clickCooldown = 5;
 function getCooldown() {
     // click cooldown
-    return Math.max(0.1, 5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
+    let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
         * (getArtifactByID(156).isEquipped() ? 1.5 : 1)
-        * (getArtifactByID(203).isEquipped() ? 5 : 1)
+        * (getArtifactByID(203).isEquipped() ? 5 : 1))
+    clickCooldown = CD; // Why T_T
+    return CD;
 }
 
 function getAchievementBoost() {
