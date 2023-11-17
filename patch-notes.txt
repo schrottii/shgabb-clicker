@@ -1,4 +1,4 @@
-Dates in yyyy/mm/dd format. Dates are release dates.
+ï»¿Dates in yyyy/mm/dd format. Dates are release dates.
 All versions:
 1.1
 1.2
@@ -19,6 +19,7 @@ All versions:
 1.8.1
 1.9
 1.9.1
+2.0
 
 
 
@@ -328,11 +329,11 @@ Version 1.6.2:
 
 2023/08/14 1.7:
 Version 1.7:
--> Améliorer:
-- New feature/currency: Améliorer!
+-> AmÃ©liorer:
+- New feature/currency: AmÃ©liorer!
 - Unlocked at More Shgabb 2000
-- Convert Shgabb, Sandwiches, GS and Silicone to Améliorer
-- Améliorer can be spent on 12 upgrades
+- Convert Shgabb, Sandwiches, GS and Silicone to AmÃ©liorer
+- AmÃ©liorer can be spent on 12 upgrades
 
 -> Balance:
 - Increased duration of the Stronger Clicks ad from 2 minutes to 5 minutes
@@ -348,8 +349,8 @@ Version 1.7:
 - Amulet of Paroxysm: 5x -> 4x
 
 -> Stats section:
-- Total Gems and Total Améliorer stats are now visible
-- You can now also see your click cooldown, critical hit chance, sandwich chance, gem chance, artifact chances, achievements, artifacts and améliorer levels
+- Total Gems and Total AmÃ©liorer stats are now visible
+- You can now also see your click cooldown, critical hit chance, sandwich chance, gem chance, artifact chances, achievements, artifacts and amÃ©liorer levels
 - Stats are now 2 columns
 - Stats now have 2 big background squares instead of them being around the texts
 - Sandwiches in stats now use the notation
@@ -382,15 +383,15 @@ Version 1.7:
 
 2023/08/20 1.7.1:
 Version 1.7.1:
--> Améliorer:
-- New Améliorer Upgrade: Achievements Become Exponential
-- New Améliorer Upgrade: GS Boosts Shgabb
-- Added the ability to reset Améliorer and Upgrades on prestige (10 minutes)
-- Re-sorted Améliorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)
+-> AmÃ©liorer:
+- New AmÃ©liorer Upgrade: Achievements Become Exponential
+- New AmÃ©liorer Upgrade: GS Boosts Shgabb
+- Added the ability to reset AmÃ©liorer and Upgrades on prestige (10 minutes)
+- Re-sorted AmÃ©liorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)
 
 -> Balance:
 - Tripled the effect of Silicone From Clicks (3x the passive production now)
-- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter
+- Reduced cost increase of the shgabb, gs and silicone amÃ© converters, as well as the base costs for silicone converter
 - Massively reduced costs of Bomblike after level 10
 - Massively reduced cost increase of Crit. Boost at level 21+
 - Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15
@@ -404,8 +405,8 @@ Version 1.7.1:
 -> Other:
 - Silicone from clicks now triggers before the click cooldown gets reset
 - Updated Silicone Implants artifact description since it disables silicone gain from clicks as well
-- Updated requirement of the Amé: Part III achievement (40 -> 25)
-- Changed design of the Amé convert buttons
+- Updated requirement of the AmÃ©: Part III achievement (40 -> 25)
+- Changed design of the AmÃ© convert buttons
 
 
 
@@ -420,7 +421,7 @@ Version 1.7.2:
 -> Other:
 - Moved the Silicone V and Golden Shgabb V achievements
 - Removed a double line between stats and achievements
-- Fixed not being able to see half of the page before unlocking Amé
+- Fixed not being able to see half of the page before unlocking AmÃ©
 - Fixed show/hide maxed setting using incorrect notifications
 
 
@@ -429,15 +430,15 @@ Version 1.7.2:
 Version 1.8:
 -> Minigame:
 - Added a minigame: Shgic Shgac Shgoe!
-- Unlocked together with Améliorer!
+- Unlocked together with AmÃ©liorer!
 - 1 attempt every day to get to 3 points before shgabb does
-- Get 2 Améliorer for a win
+- Get 2 AmÃ©liorer for a win
 
 -> New Upgrades:
-- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain
-- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain
-- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)
-- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)
+- New Sandwich upgrade: 2+2=5: Unlocked with AmÃ©, increases gs gain
+- New Sandwich upgrade: Meaning Of Life: Unlocked with AmÃ©, increases shgabb gain
+- New AmÃ©liorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)
+- New AmÃ©liorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)
 
 -> Artifact Loadouts:
 - Loadouts can now be given custom names by clicking on the currently selected loadout
@@ -455,7 +456,7 @@ Version 1.8:
 - Changed the image of all unlock related achievements to the unlock image
 
 -> Design:
-- Gem Amount is now also displayed at the top (in a third line with Amé)
+- Gem Amount is now also displayed at the top (in a third line with AmÃ©)
 - Updated all 3 social images
 - Changed size of social buttons
 - Artifacts and Achievements are now centered
@@ -472,9 +473,9 @@ Version 1.8:
 2023/09/19 1.8.1:
 Version 1.8.1:
 - Improved enemy's decision making in the minigame
-- Fixed Améliorer Upgrades being reset even if the option is not activated
-- Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked
-- Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades
+- Fixed AmÃ©liorer Upgrades being reset even if the option is not activated
+- Fixed the new AmÃ©liorer Upgrade More Silicone not requiring 40 AmÃ© to get unlocked
+- Fixed being able to equip more than 3 artifacts by resetting AmÃ©liorer Upgrades
 - Fixed auto save notifications appearing at the top again
 
 
@@ -567,3 +568,107 @@ Version 1.9.1:
 - Changed display of artifact chances (as none of them become 0% anymore due to duplicates)
 - Fixed the Artifact Gift exploit
 - Fixed destroying an artifact causing random artifacts to get unequipped
+
+
+
+2023/11/16 2.0:
+Version 2.0:
+-> Sections:
+- Split the game's UI into many sections!
+- There are three rows of buttons to pick one of several sections to display (currencies / useful / not so useful)
+- Only one of each is shown at the same time, massively reducing the page length (it's incredible)
+- Click on the already shown section to not show any
+- Currencies: Shgabb / Sandwiches / Golden Shgabb / Silicone Shgabb / AmÃ©liorer
+- Useful: Gems / Artifacts / Minigames
+- Not so useful: Stats / Achievements / Settings / Social
+
+-> Design:
+- LOTS of design changes
+- Changed the design of the game to be different on small devices (phone) than on big devices (PC) (listed under Device design)
+- New game font!
+
+-> Device design:
+- PC: The background of the currencies (top) is shorter
+- Mobile: The click button is much taller (and easier to click)
+- Mobile: Upgrade names are smaller, upgrades are longer
+- Mobile: Upgrade buttons (like MAX) are closer to each other
+
+-> Upgrade design:
+- Reworked colors of upgrades (from white/green to shades of blue/green/gray)
+- Added a setting to toggle between normal, old and custom colors
+- Custom colors: for all 3 types of upgrades (affordable, too expensive and maxed), RGB values and text color can be set
+- Added buttons to adjust the RGB values and text color of the custom colors
+- Added an export/import system for custom colors
+- Changed border of upgrades from white to black
+- Max. levels are now displayed as /x instead of (Max: x)
+- Upgrade levels are now displayed next to their name
+- Slightly increased height of buttons in upgrades (like max)
+
+-> Settings:
+- Moved settings into their own section
+- Reworked setting button code and all texts and displays
+- Changed setting button design
+- Added more notations: Scientific, Engineering and Alphabet!
+- Expanded normal notation
+- Added a setting to change the notation
+- Added a setting to toggle the currencies display
+- Added a setting to change the upgrade button colors (more info in Upgrade design above)
+- Added a setting to make the least watched ad appear as often as all others
+
+-> Shgic Shgac Shgoe:
+- O is now blue and X yellow (instead of both black)
+- Increased size of O and X
+- Slightly improved hitboxes and positioning
+- Increased header size
+
+-> New content:
+- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!
+- New ad boost: More Gems! 3x gem chance for 8 minutes
+- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel
+
+-> Artifacts:
+- Added 15 new artifacts (3 common, 6 rare, 6 epic)
+- Moved rarity from name to level
+- Changed text size, name is bigger, description smaller if it is long
+- When upgrading artifacts, the costs and effects of the next level are now displayed
+- Changed seconds to sec in Amulet of Slowgemming description
+- Added a cool clicking animation for one of the new epics; Dice
+
+-> Balance:
+- Capped click cooldown at 0.1s
+- Capped gem chance at 10%
+- Both caps are displayed in the stats once reached
+- Reduced costs of the Shgabb Boost gem offer from 25 to 20
+- Reduced costs of the Artifact Gift gem offer from 50 to 30
+
+- Ring of Productivity: x1.4/x2/x2.6 -> x1.5/x2/x2.5
+- Ring of Laziness: x1.2/x1.6/x2 -> x1.5/x2/x2.5
+- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75
+- Amulet of Quick Snacks: x3/x12/x24 -> , x4/x8/x12
+- Amulet of Fast Start: x10/x35/x60 -> x10/x30/x100
+- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36
+- Furious Knife: max. 2000% -> max. 3000%
+- P2W: x2/x3/x4 -> x2/x2.5/x3
+
+-> Achievements:
+- Added 20 new achievements
+- Added two new achievement images
+- Increased Sarah's Gems from 250 to 500 gems
+
+-> Other:
+- Added a link (in social) to my (new!) website!
+- Added 5 new quotes
+- Huge code improvements
+- Reworked rendering, especially for currency amounts and images
+- Several performance improvements
+- Reduced file size of ads
+- The currencies display can now be hidden by double clicking
+- Sandwiches now stay unlocked after prestige / getting them without the sandwich chance upgrade
+- Added text for shgabb, elmenda452 and DaGame in the social section
+
+-> Bug fixes:
+- Added 250 new bugs
+- Fixed duplicates and stats still using the old chances
+- Fixed the 99.9 bug
+- Fixed gem icon being visible before unlocking gems
+- Fixed ad button still being visible when an ad is playing

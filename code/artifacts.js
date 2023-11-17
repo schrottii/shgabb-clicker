@@ -147,7 +147,7 @@ function renderArtifacts() {
 	render = render + "<br />";
 
 	if (unlockedArtifactUpgrading()) {
-		ui.artifactScrapAmount.innerHTML = cImg("artifactScrap") + game.artifactScrap + " Artifact Scrap";
+		ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
 
 		render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";
 		render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "upgrade" ? "white" : "gray") + "'>Upgrade</button>";
