@@ -248,7 +248,6 @@ progress {
     width: 15%;
     min-width: 104px;
     height: 32px;
-    font-size: 12px;
     white-space: nowrap;
     font-family: Rw;
 }

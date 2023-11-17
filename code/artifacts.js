@@ -142,19 +142,17 @@ function renderArtifacts() {
 	// Render em all
 	let render = "";
 	for (l = 0; l < game.al; l++) {
-		render = render + "<button onclick='artifactLoadout(" + l + ")' class='artifactLoadoutButton' style='background-color: " + (l == selectedLoadout ? "yellow" : "white") + "'>" + (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l] ) + "</button>";
+		let thisLoadoutName = (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l]);
+		render = render + "<button onclick='artifactLoadout(" + l + ")' class='artifactLoadoutButton' style='background-color: " + (l == selectedLoadout ? "yellow" : "white") + "; font-size: " + (thisLoadoutName.length > 25 ? 12 : 16) + "px;'>" + thisLoadoutName + "</button>";
 	}
 	render = render + "<br />";
 
 	if (unlockedArtifactUpgrading()) {
-		ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
-
 		render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";
 		render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "upgrade" ? "white" : "gray") + "'>Upgrade</button>";
 		render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "destroy" ? "white" : "gray") + "'>Destroy</button>";
 		render = render + "<br />";
 	}
-	else ui.artifactScrapAmount.innerHTML = "";
 
 	ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
 
@@ -198,7 +196,7 @@ function artifactLoadout(l) {
 		while (game.alnames[l] == undefined) {
 			game.alnames.push([""]);
 		}
-		let newName = prompt("Name for this loadout?");
+		let newName = prompt("Name for this loadout?").substr(0, 40);
 		game.alnames[l] = newName != undefined && newName != "" ? newName : "";
     }
 	selectedLoadout = l;
@@ -283,10 +281,7 @@ function gambleArtifact(r) {
 	ui.newArtifactImage.src = "images/arti/" + getArtifactByID(game.nexgai[r]).image;
 	ui.newArtifactName.innerHTML = getArtifactByID(game.nexgai[r]).name + " (" + getArtifactByID(game.nexgai[r]).getRarity() + ")";
     ui.newArtifact.style.display = "block";
-
-    setTimeout(() => {
-        ui.newArtifact.style.display = "none";
-	}, 5000)
+	newArtifactDisplayTimer = 5;
 
 	game.nexgai[r] = setNextArtifact(r);
 }
@@ -310,10 +305,7 @@ function artifactDuplicate(rarity) {
 	ui.newArtifactImage.src = "images/currencies/artifactscrap.png";
 	ui.newArtifactName.innerHTML = getArtifactByID(gainedID).name + " (" + getArtifactByID(gainedID).getRarity() + ")";
 	ui.newArtifact.style.display = "block";
-
-	setTimeout(() => {
-		ui.newArtifact.style.display = "none";
-	}, 5000)
+	newArtifactDisplayTimer = 5;
 }
 
 function getArtifactByID(id) {
@@ -433,7 +425,7 @@ var artifacts = [
 	new Artifact(214, 2, "Amulet of Golden Idle", "amulet.png", "complicated", level => 0.01 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(214) + "% of your GS every second" }),
 	new Artifact(215, 2, "Amulet of Golden Upgrades", "amulet.png", "complicated", level => 0.001 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(215) + "% of your GS every upgrade" }),
 	new Artifact(216, 2, "Amulet of Dinosaurs", "amulet.png", "artifactchance", level => 2 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
-	new Artifact(217, 2, "Amulet of Well Fed Resets", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: () => game.stats.swtp > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " sandwiches this prestige" }),
+	new Artifact(217, 2, "Amulet of Well Fed Resets", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: level => game.stats.swtp > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " sandwiches this prestige" }),
 	new Artifact(218, 1, "Amulet of Some Patience", "amulet.png", "gs", level => 0.7 + 0.6 * level, { trigger: () => game.clickCooldown < 0, desc: "If clicking isn't on cooldown"}),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
