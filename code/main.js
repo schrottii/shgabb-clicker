@@ -1216,8 +1216,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
 
-    if (game.stats.wads.mg.toString() == "NaN") game.stats.wads.mg = 1;
     if (typeof (game.stats.wads.mg) == "undefined") game.stats.wads.mg = 0;
+    else if (game.stats.wads.mg.toString() == "NaN") game.stats.wads.mg = 1;
 
     for (l in game.alo) {
         if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
