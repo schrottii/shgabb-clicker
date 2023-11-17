@@ -1216,9 +1216,14 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
 
-    if (typeof (game.stats.wads.mg) == "undefined") game.stats.wads.mg = 0;
-    else if (game.stats.wads.mg.toString() == "NaN") game.stats.wads.mg = 1;
-
+    try {
+        if (typeof (game.stats.wads.mg) == "undefined") game.stats.wads.mg = 0;
+        else if (game.stats.wads.mg != undefined && game.stats.wads.mg.toString() == "NaN") game.stats.wads.mg = 1;
+    }
+    catch (e) {
+        console.trace(e);
+    }
+    
     for (l in game.alo) {
         if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
     }
