@@ -88,8 +88,11 @@ function isSelectionUnlocked(name) {
         case "cheats":
             return BETA.isBeta;
         case "stats":
+            return true;
         case "achievements":
+            return true;
         case "settings":
+            return true;
         case "social":
             return true;
     }

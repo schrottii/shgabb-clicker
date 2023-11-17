@@ -4,9 +4,28 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.0";
+const gameVersion = "2.0.1";
 
 const currentPatchNotes = [
+    "-> Artifact Loadouts:",
+    "- When opening the game, the correct loadout will now be loaded (instead of the first loadout)",
+    "- Loadout names are now limited to 40 characters",
+    "- Loadout names are now bigger if 25 characters or less",
+    "-> Other:",
+    "- Shgic Shgac Shgoe text now changes when either side has won (to not make it look like it froze)",
+    "- The currencies display can no longer be turned off by double clicking it (because apparently people accidentally click it all the time, but the setting still exists)",
+    "- New artifact/duplicate/achievement display's disappear timer (5 seconds) now refreshes when getting another thing",
+    "- Bought actual dice with only 5/4 (level 2/3) sides rather than painting over 1/2 sides",
+    "-> Bug fixes:",
+    "- Fixed Shgic Shgac Shgoe board not resetting when importing a save",
+    "- Fixed displayed Artifact Scrap costs being one level too high (when upgrading artifacts)",
+    "- Fixed More Gems ad stat not working",
+    "- Fixed Well Fed Resets artifact not working",
+    "- Fixed a frustration artifact rounding issue",
+    "- Fixed Artifact Scrap amount not always updating",
+    "- Fixed horizontal scrollbar surprise attacks",
+    "- Fixed some missing patch notes",
+    "v2.0",
     "-> Sections:",
     "- Split the game's UI into many sections!",
     "- There are three rows of buttons to pick one of several sections to display (currencies / useful / not so useful)",
@@ -438,7 +457,7 @@ function freezeTime() {
 
 var diceAmount = 1;
 function changeDiceAmount() {
-    diceAmount = Math.max(getArtifactLevel(307), Math.ceil(Math.random() * 6));
+    diceAmount = Math.ceil(Math.random() * (7 - getArtifactLevel(307))) + (getArtifactLevel(307) - 1);
     if (getArtifactByID(307).isEquipped()) updateArtifacts();
 }
 
@@ -832,6 +851,9 @@ function updateTopSquare() {
 
         if (unlockedAmeliorer()) ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
         else ui.ameAmount2.innerHTML = "";
+
+        if (unlockedArtifactUpgrading()) ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
+        else ui.artifactScrapAmount2.innerHTML = "";
     }
 }
 
@@ -853,6 +875,9 @@ function updateCurrencies() {
 
     if (unlockedAmeliorer()) ui.ameAmount.innerHTML = cImg("ameliorer") + game.ame + " Améliorer";
     else ui.ameAmount.innerHTML = "";
+
+    if (unlockedArtifactUpgrading()) ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
+    else ui.artifactScrapAmount.innerHTML = "";
 }
 
 function updateStats() {
@@ -951,7 +976,7 @@ function updateUI() {
     }
 
     // Minigame
-    if (selection("minigames") && canPlayTTT) {
+    if (selection("minigames") && (canPlayTTT || pointsHer > 0 || pointsPlayer > 0)) {
         updateMinigameUI();
     }
 
@@ -980,6 +1005,8 @@ function updateUI() {
     }
 }
 
+var newArtifactDisplayTimer = 0;
+
 // Core
 function autoSave() {
     // Should this even be here?
@@ -1002,10 +1029,7 @@ function autoSave() {
             ui.newArtifactImage.src = "images/achievements/" + achievements[a].image;
             ui.newArtifactName.innerHTML = achievements[a].name;
             ui.newArtifact.style.display = "block";
-
-            setTimeout(() => {
-                ui.newArtifact.style.display = "none";
-            }, 5000)
+            newArtifactDisplayTimer = 5;
             break;
         }
     }
@@ -1014,7 +1038,7 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
+    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  resetMinigameField(); importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
 
 
     emptyGame.a = [];
@@ -1024,7 +1048,9 @@ function exportGame() {
     game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
     game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
     handleArtifactsFirstTime();
-
+        canPlayTTT = compareMinigameTime();
+        pointsPlayer = 0;
+        pointsHer = 0;
     updateUI();
     updateUpgrades();
     updateArtifacts();
@@ -1050,6 +1076,7 @@ function loop(tick) {
     quoteTime -= time;
     sandwichTime -= time;
     sandwichFreezeTime -= time;
+    newArtifactDisplayTimer -= time;
     game.stats.playTime += time;
     game.stats.pttp += time;
     if (adLoaded && game.stats.sw > 9) adTime -= time;
@@ -1059,6 +1086,9 @@ function loop(tick) {
         if (currentNotifications[n][1] < 0) currentNotifications.splice(n, 1);
     }
 
+    if (newArtifactDisplayTimer <= 0 && newArtifactDisplayTimer > -15) {
+        ui.newArtifact.style.display = "none";
+    }
     if (autoSaveTime <= 0) {
         autoSaveTime = 5;
         autoSave();
@@ -1185,6 +1215,13 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
+
+    if (game.stats.wads.mg.toString() == "NaN") game.stats.wads.mg = 1;
+    if (typeof (game.stats.wads.mg) == "undefined") game.stats.wads.mg = 0;
+
+    for (l in game.alo) {
+        if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
+    }
 
     checkForZeroNext();
 }

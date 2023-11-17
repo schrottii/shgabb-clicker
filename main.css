@@ -9,6 +9,8 @@ body {
     text-align: center;
     font-size: 16px;
     font-family: Rw;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 @font-face {
@@ -246,7 +248,6 @@ progress {
     width: 15%;
     min-width: 104px;
     height: 32px;
-    font-size: 12px;
     white-space: nowrap;
     font-family: Rw;
 }

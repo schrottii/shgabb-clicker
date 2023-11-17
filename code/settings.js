@@ -126,17 +126,13 @@ function toggleNotation() {
     updateUpgrades();
 }
 
-function toggleCurrenciesDisplay(directlyDo = true) {
-    if (directlyDo || doubleClick > 0) {
-        if (!directlyDo) settings.topSquare = !settings.topSquare;
-        createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
-        ui.topSquare.style.display = (settings.topSquare ? "" : "none");
+function toggleCurrenciesDisplay() {
+    settings.topSquare = !settings.topSquare;
+    createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
+    ui.topSquare.style.display = (settings.topSquare ? "" : "none");
 
-        updateTopSquare();
-    }
-    else {
-        doubleClick = 0.3;
-    }
+    updateTopSquare();
+
 }
 
 function toggleLeastAd() {
