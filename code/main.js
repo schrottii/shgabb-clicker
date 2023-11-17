@@ -4,9 +4,20 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.0";
+const gameVersion = "2.0.1";
 
 const currentPatchNotes = [
+    "-> Other:",
+    "- Shgic Shgac Shgoe text now changes when either side has won (to not make it look like it froze)",
+    "",
+    "-> Bug fixes:",
+    "- Fixed Shgic Shgac Shgoe board not resetting when importing a save",
+    "- Fixed displayed Artifact Scrap costs being one level too high (when upgrading artifacts)",
+    "- Fixed More Gems ad stat not working",
+    "- Fixed horizontal scrollbar surprise attacks",
+    "- Fixed a frustration artifact rounding issue",
+    "",
+    "v2.0",
     "-> Sections:",
     "- Split the game's UI into many sections!",
     "- There are three rows of buttons to pick one of several sections to display (currencies / useful / not so useful)",
@@ -951,7 +962,7 @@ function updateUI() {
     }
 
     // Minigame
-    if (selection("minigames") && canPlayTTT) {
+    if (selection("minigames") && (canPlayTTT || pointsHer > 0 || pointsPlayer > 0)) {
         updateMinigameUI();
     }
 
@@ -1014,7 +1025,7 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
+    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  resetMinigameField(); importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
 
 
     emptyGame.a = [];
@@ -1024,7 +1035,9 @@ function exportGame() {
     game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
     game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
     handleArtifactsFirstTime();
-
+        canPlayTTT = compareMinigameTime();
+        pointsPlayer = 0;
+        pointsHer = 0;
     updateUI();
     updateUpgrades();
     updateArtifacts();
@@ -1185,6 +1198,9 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
+
+    if (game.wads.mg.toString() == "NaN") game.wads.mg = 1;
+    if (typeof(game.wads.mg) == "undefined") game.wads.mg = 0;
 
     checkForZeroNext();
 }

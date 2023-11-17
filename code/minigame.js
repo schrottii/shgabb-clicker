@@ -39,14 +39,16 @@ canvas.addEventListener("click", onCanvasClick);
 canvas.addEventListener("mousemove", onMouseMove);
 
 function onCanvasClick() {
-    for (l in hitboxes) {
-        if (mousex >= hitboxes[l][0] && mousex <= hitboxes[l][0] + (w / 8)
-            && mousey >= hitboxes[l][1] && mousey <= hitboxes[l][1] + (h / 8)
-            && minigameField[Math.floor(l / 3)][l % 3] == 0) {
-            minigameField[Math.floor(l / 3)][l % 3] = 1;
+    if (canPlayTTT) {
+        for (l in hitboxes) {
+            if (mousex >= hitboxes[l][0] && mousex <= hitboxes[l][0] + (w / 8)
+                && mousey >= hitboxes[l][1] && mousey <= hitboxes[l][1] + (h / 8)
+                && minigameField[Math.floor(l / 3)][l % 3] == 0) {
+                minigameField[Math.floor(l / 3)][l % 3] = 1;
 
-            if (minigameCheckForWinners()) {
-                minigameEnemyMove();
+                if (minigameCheckForWinners()) {
+                    minigameEnemyMove();
+                }
             }
         }
     }
@@ -181,27 +183,32 @@ function minigameCheckForWinners() {
 
         updateMinigameTime();
         canPlayTTT = false;
+        return false;
     }
-    if (pointsHer > 2 && canPlayTTT) {
+    else if (pointsHer > 2 && canPlayTTT) {
         updateMinigameTime();
         canPlayTTT = false;
 
         game.stats.tttl += 1;
         createNotification("Shgabb won... no reward...");
         createNotification("Come back tomorrow!");
+        return false;
     }
-
-    if (winner != 0) {
-        minigameField =
-            [[0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]];
+    else if (winner != 0) {
+        resetMinigameField();
         if (Math.random() > 0.6) {
             minigameEnemyMove();
         }
         return false;
     }
     return true;
+}
+
+function resetMinigameField() {
+    minigameField =
+        [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]];
 }
 
 function minigameClear() {
@@ -292,7 +299,9 @@ function updateMinigameUI() {
     minigameDrawBackground();
     minigameDrawField();
 
-    minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
+    if (pointsPlayer > 2) minigameUpdateText("You won!");
+    else if (pointsHer > 2) minigameUpdateText("Shgabb won!");
+    else minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
 }
 
 minigameEnemyMove();
