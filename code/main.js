@@ -21,6 +21,7 @@ const currentPatchNotes = [
     "-> Bug fixes:",
     "- Fixed Stronger Clicks ad boost being x3 instead of x5",
     "- Fixed Toggle Currencies Display setting not working",
+    "- Fixed the artifact chances display pretending you own all artifacts of a rarity when you really don't",
     "- Fixed the other frustration artifact rounding issue"
 ]
 
@@ -816,9 +817,9 @@ function updateStats() {
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
-        + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance") + "/800)" + (allArtifactsOfRarity(0) ? " ALL" : "")
-        + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance") + "/4000)" + (allArtifactsOfRarity(1) ? " ALL" : "")
-        + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance") + "/32000)" + (allArtifactsOfRarity(2) ? " ALL" : "")
+        + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/800)" + (allArtifactsOfRarity(1) ? " ALL" : "")
+        + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/4000)" + (allArtifactsOfRarity(2) ? " ALL" : "")
+        + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/32000)" + (allArtifactsOfRarity(3) ? " ALL" : "")
             : "Artifacts locked!")
 
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length

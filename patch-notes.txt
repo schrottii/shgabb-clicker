@@ -721,4 +721,5 @@ Version 2.0.2:
 -> Bug fixes:
 - Fixed Stronger Clicks ad boost being x3 instead of x5
 - Fixed Toggle Currencies Display setting not working
+- Fixed the artifact chances display pretending you own all artifacts of a rarity when you really don't
 - Fixed the other frustration artifact rounding issue
