@@ -26,7 +26,8 @@ class Artifact {
 
 	getDescription(level = false) {
 		if (typeof (this.desc) == "function") return level == false ? this.desc(getArtifactLevel(this.ID)) : this.desc(level);
-		return this.desc;
+		else if (this.desc != undefined) return this.desc;
+		return "";
 	}
 
 	getEffect(level = false) {
@@ -76,6 +77,13 @@ class Artifact {
 		}
 	}
 
+	renderBG() {
+		if (artifactMode == "select") return this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)";
+		if (artifactMode == "upgrade") return this.isUpgradable() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)";
+		if (artifactMode == "destroy") return getArtifactLevel(this.ID) == 1 && !this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)";
+		return "rgb(0, 0, 0)";
+    }
+
 	renderEffect() {
 		let render = (this.boost == "complicated" ? "" : "<br />" + ((this.getEffect() > 2 || this.noPercentage) ? (this.prefix + fn(this.getEffect())) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.getEffect() - 1) * 100) + "%")) + " " + this.getBoostType());
 		if (this.isUpgradable()) render = render + " → " + (this.boost == "complicated" ? "" : "<br />" + ((this.getEffect(getArtifactLevel(this.ID) + 1) > 2 || this.noPercentage) ? (this.prefix + fn(this.getEffect(getArtifactLevel(this.ID) + 1))) : ((this.prefix != "x" ? this.prefix : "+") + fn((this.getEffect(getArtifactLevel(this.ID) + 1) - 1) * 100) + "%")) + " " + this.getBoostType());
@@ -88,7 +96,7 @@ class Artifact {
 	}
 
 	render(clickable=true) {
-		return `<button class='artifact' ` + (clickable ? `onclick = 'clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + (this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)") + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>"
+		return `<button class='artifact' ` + (clickable ? `onclick = 'clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>"
 			+ (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
 			+ (!this.isUpgradable() ? (this.getRarity() + " Level " + getArtifactLevel(this.ID)) : getScrapCost(getArtifactLevel(this.ID), this.rarity) + " Artifact Scrap")
 			+ this.renderEffect() + this.renderDescription() + "</button>";
@@ -157,7 +165,8 @@ function renderArtifacts() {
 	ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
 
 	for (a in artifacts) {
-		if (artifacts[a].isUnlocked()) {
+		if (artifacts[a].isUnlocked() && artifacts[a].render().toUpperCase().includes(ui.artifactSearch.value.toUpperCase())
+		) {
 			render = render + artifacts[a].render();
 		}
 	}
@@ -352,6 +361,8 @@ function getScrapCost(level, rarity) {
 			return 250 * level;
 		case 3:
 			return 1000 * level;
+		case 4:
+			return 10000 * level;
 	}
 	return 0;
 }

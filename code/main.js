@@ -4,25 +4,17 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.0.2";
+const gameVersion = "2.1";
 
 const currentPatchNotes = [
-    "-> Technical:",
-    "- Changed host",
-    "- Updated link to SC2FMFR",
-    "- Added support for rescue codes",
-    "<img src='images/arti/frustration.png'>",
-    "-> Other:",
-    "- Changed the way ad videos get loaded, massively reducing traffic",
-    "- The game now checks if a new round of Shgic is available every 50 auto saves",
-    "- If you already have completed the daily Shgic it tells you to come back tomorrow",
-    "- and there's a simple animation of X and O kissing",
-    "- Added 5 new quotes",
-    "-> Bug fixes:",
-    "- Fixed Stronger Clicks ad boost being x3 instead of x5",
-    "- Fixed Toggle Currencies Display setting not working",
-    "- Fixed the artifact chances display pretending you own all artifacts of a rarity when you really don't",
-    "- Fixed the other frustration artifact rounding issue"
+    "-> Artifacts:",
+    "- Added the artifact search!",
+    "- Type the name, effect, rarity, level or anything else, and only those artifacts will be shown",
+    "- Previously, equipped artifacts were always highlighted in every mode. Now:",
+    "- Select mode: equipped artifacts",
+    "- Upgrade mode: level 1 and 2 artifacts",
+    "- Destroy mode: level 1 artifacts that are not equipped",
+    "- Artifact Scrap and amount of artifacts unlocked are now in the same row",
 ]
 
 // Various variables
@@ -112,6 +104,7 @@ var ui = {
     ameReset2: document.getElementById("amereset2"),
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
+    artifactSearch: document.getElementById("artifactSearch"),
     ameconvert: document.getElementById("ameconvert"),
     achievementsamount: document.getElementById("achievementsamount"),
     stats: document.getElementById("stats"),
@@ -254,6 +247,10 @@ function cheatEngine(type) {
 
 ui.cheatAmount.oninput = () => {
     ui.cheatDisplay.innerHTML = fn(ui.cheatAmount.value);
+}
+
+ui.artifactSearch.oninput = () => {
+    updateArtifacts();
 }
 
 // format number
