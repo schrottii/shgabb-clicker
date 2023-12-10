@@ -107,6 +107,7 @@ var game = {
     nexgai: [0, 0, 0, 0],
     tttd: 1,
     dgo: 100,
+    cheated: false,
 }
 
 const emptyGame = Object.assign({}, game, {});

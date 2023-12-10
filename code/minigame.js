@@ -296,12 +296,20 @@ function minigameDrawField() {
 }
 
 function updateMinigameUI() {
-    minigameDrawBackground();
-    minigameDrawField();
+    if (canPlayTTT || pointsHer > 0 || pointsPlayer > 0) {
+        minigameDrawBackground();
+        minigameDrawField();
 
-    if (pointsPlayer > 2) minigameUpdateText("You won!");
-    else if (pointsHer > 2) minigameUpdateText("Shgabb won!");
-    else minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
+        if (pointsPlayer > 2) minigameUpdateText("You won!");
+        else if (pointsHer > 2) minigameUpdateText("Shgabb won!");
+        else minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
+    }
+    else {
+        minigameDrawBackground();
+        minigameDrawCircle(70 + (autoNotifications % 50), 128);
+        minigameDrawX(255 - (70 + (autoNotifications % 50)), 132);
+        minigameUpdateText(autoNotifications % 50 == 49 ? "Kiss! <3" : "Come back tomorrow!");
+    }
 }
 
 minigameEnemyMove();

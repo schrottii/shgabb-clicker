@@ -127,12 +127,10 @@ function toggleNotation() {
 }
 
 function toggleCurrenciesDisplay() {
-    settings.topSquare = !settings.topSquare;
     createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
     ui.topSquare.style.display = (settings.topSquare ? "" : "none");
 
     updateTopSquare();
-
 }
 
 function toggleLeastAd() {

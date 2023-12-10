@@ -1,11 +1,13 @@
 ﻿Dates in yyyy/mm/dd format. Dates are release dates.
 All versions:
+January - June 2023:
 1.1
 1.2
 1.3
 1.3.1
 1.3.2
 1.4
+July - December 2023:
 1.5
 1.5.1
 1.5.2
@@ -21,6 +23,7 @@ All versions:
 1.9.1
 2.0
 2.0.1
+2.0.2
 
 
 
@@ -677,6 +680,7 @@ Version 2.0:
 
 
 2023/11/17 2.0.1:
+Version 2.0.1:
 -> Artifact Loadouts:
 - When opening the game, the correct loadout will now be loaded (instead of the first loadout)
 - Loadout names are now limited to 40 characters
@@ -697,3 +701,24 @@ Version 2.0:
 - Fixed Artifact Scrap amount not always updating
 - Fixed horizontal scrollbar surprise attacks
 - Fixed some missing patch notes
+
+
+
+2023/12/10 2.0.2:
+Version 2.0.2:
+-> Technical:
+- Changed host
+- Updated link to SC2FMFR
+- Added support for rescue codes
+
+-> Other:
+- Changed the way ad videos get loaded, massively reducing traffic
+- The game now checks if a new round of Shgic is available every 50 auto saves
+- If you already have completed the daily Shgic it tells you to come back tomorrow
+- and there's a simple animation of X and O kissing
+- Added 5 new quotes
+
+-> Bug fixes:
+- Fixed Stronger Clicks ad boost being x3 instead of x5
+- Fixed Toggle Currencies Display setting not working
+- Fixed the other frustration artifact rounding issue

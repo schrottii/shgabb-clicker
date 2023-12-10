@@ -4,117 +4,24 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.0.1";
+const gameVersion = "2.0.2";
 
 const currentPatchNotes = [
-    "-> Artifact Loadouts:",
-    "- When opening the game, the correct loadout will now be loaded (instead of the first loadout)",
-    "- Loadout names are now limited to 40 characters",
-    "- Loadout names are now bigger if 25 characters or less",
+    "-> Technical:",
+    "- Changed host",
+    "- Updated link to SC2FMFR",
+    "- Added support for rescue codes",
+    "<img src='images/arti/frustration.png'>",
     "-> Other:",
-    "- Shgic Shgac Shgoe text now changes when either side has won (to not make it look like it froze)",
-    "- The currencies display can no longer be turned off by double clicking it (because apparently people accidentally click it all the time, but the setting still exists)",
-    "- New artifact/duplicate/achievement display's disappear timer (5 seconds) now refreshes when getting another thing",
-    "- Bought actual dice with only 5/4 (level 2/3) sides rather than painting over 1/2 sides",
-    "-> Bug fixes:",
-    "- Fixed Shgic Shgac Shgoe board not resetting when importing a save",
-    "- Fixed displayed Artifact Scrap costs being one level too high (when upgrading artifacts)",
-    "- Fixed More Gems ad stat not working",
-    "- Fixed Well Fed Resets artifact not working",
-    "- Fixed a frustration artifact rounding issue",
-    "- Fixed Artifact Scrap amount not always updating",
-    "- Fixed horizontal scrollbar surprise attacks",
-    "- Fixed some missing patch notes",
-    "v2.0",
-    "-> Sections:",
-    "- Split the game's UI into many sections!",
-    "- There are three rows of buttons to pick one of several sections to display (currencies / useful / not so useful)",
-    "- Only one of each is shown at the same time, massively reducing the page length (it's incredible)",
-    "- Click on the already shown section to not show any",
-    "- Currencies: Shgabb / Sandwiches / Golden Shgabb / Silicone Shgabb / Améliorer",
-    "- Useful: Gems / Artifacts / Minigames",
-    "- Not so useful: Stats / Achievements / Settings / Social",
-    "-> Design:",
-    "- LOTS of design changes",
-    "- Changed the design of the game to be different on small devices (phone) than on big devices (PC) (listed under Device design)",
-    "- New game font!",
-    "-> Device design:",
-    "- PC: The background of the currencies (top) is shorter",
-    "- Mobile: The click button is much taller (and easier to click)",
-    "- Mobile: Upgrade names are smaller, upgrades are longer",
-    "- Mobile: Upgrade buttons (like MAX) are closer to each other",
-    "-> Upgrade design:",
-    "- Reworked colors of upgrades (from white/green to shades of blue/green/gray)",
-    "- Added a setting to toggle between normal, old and custom colors",
-    "- Custom colors: for all 3 types of upgrades (affordable, too expensive and maxed), RGB values and text color can be set",
-    "- Added buttons to adjust the RGB values and text color of the custom colors",
-    "- Added an export/import system for custom colors",
-    "- Changed border of upgrades from white to black",
-    "- Max. levels are now displayed as /x instead of (Max: x)",
-    "- Upgrade levels are now displayed next to their name",
-    "- Slightly increased height of buttons in upgrades (like max)",
-    "-> Settings:",
-    "- Moved settings into their own section",
-    "- Reworked setting button code and all texts and displays",
-    "- Changed setting button design",
-    "- Added more notations: Scientific, Engineering and Alphabet!",
-    "- Expanded normal notation",
-    "- Added a setting to change the notation",
-    "- Added a setting to toggle the currencies display",
-    "- Added a setting to change the upgrade button colors (more info in Upgrade design above)",
-    "- Added a setting to make the least watched ad appear as often as all others",
-    "-> Shgic Shgac Shgoe:",
-    "- O is now blue and X yellow (instead of both black)",
-    "- Increased size of O and X",
-    "- Slightly improved hitboxes and positioning",
-    "- Increased header size",
-    "-> New content:",
-    "- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!",
-    "- New ad boost: More Gems! 3x gem chance for 8 minutes",
-    "- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel",
-    "-> Artifacts:",
-    "- Added 15 new artifacts (3 common, 6 rare, 6 epic)",
-    "- Moved rarity from name to level",
-    "- Changed text size, name is bigger, description smaller if it is long",
-    "- When upgrading artifacts, the costs and effects of the next level are now displayed",
-    "- Changed seconds to sec in Amulet of Slowgemming description",
-    "- Added a cool clicking animation for one of the new epics; Dice",
-    "-> Balance:",
-    "- Capped click cooldown at 0.1s",
-    "- Capped gem chance at 10%",
-    "- Both caps are displayed in the stats once reached",
-    "- Reduced costs of the Shgabb Boost gem offer from 25 to 20",
-    "- Reduced costs of the Artifact Gift gem offer from 50 to 30",
-    "- - Decreased Stronger Auto ad boost from 10x to 5x",
-    "",
-    "- Ring of Productivity: x1.4/x2/x2.6 -> x1.5/x2/x2.5",
-    "- Ring of Laziness: x1.2/x1.6/x2 -> x1.5/x2/x2.5",
-    "- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75",
-    "- Amulet of Quick Snacks: x3/x12/x24 -> , x4/x8/x12",
-    "- Amulet of Fast Start: x10/x35/x60 -> x10/x30/x100",
-    "- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36",
-    "- Furious Knife: max. 2000% -> max. 3000%",
-    "- P2W: x2/x3/x4 -> x2/x2.5/x3",
-    "-> Achievements:",
-    "- Added 20 new achievements",
-    "- Added two new achievement images",
-    "- Increased Sarah's Gems from 250 to 500 gems",
-    "-> Other:",
-    "- Added a link (in social) to my (new!) website!",
+    "- Changed the way ad videos get loaded, massively reducing traffic",
+    "- The game now checks if a new round of Shgic is available every 50 auto saves",
+    "- If you already have completed the daily Shgic it tells you to come back tomorrow",
+    "- and there's a simple animation of X and O kissing",
     "- Added 5 new quotes",
-    "- Huge code improvements",
-    "- Reworked rendering, especially for currency amounts and images",
-    "- Several performance improvements",
-    "- Reduced file size of ads",
-    "- The currencies display can now be hidden by double clicking",
-    "- Sandwiches now stay unlocked after prestige / getting them without the sandwich chance upgrade",
-    "- Added text for shgabb, elmenda452 and DaGame in the social section",
     "-> Bug fixes:",
-    "- Added 250 new bugs",
-    "- Fixed duplicates and stats still using the old chances",
-    "- Fixed the 99.9 bug",
-    "- Fixed gem icon being visible before unlocking gems",
-    "- Fixed ad button still being visible when an ad is playing"
+    "- Fixed Stronger Clicks ad boost being x3 instead of x5",
+    "- Fixed Toggle Currencies Display setting not working",
+    "- Fixed the other frustration artifact rounding issue"
 ]
 
 // Various variables
@@ -305,6 +212,11 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "but because toilet has an o in it that could lead to infinite recursion - K. whale",
     "meh thats not the true kelp experience - Phazer",
     "finally, smoking ciguretos is economically profitable - elmenda452",
+    "You caught a Bass! Weight: 1.46e73 kilos - DaGame",
+    "yo fish is almost as fat as yo momma - elmenda452",
+    "You caught a rare golden fish! Rain of pure gold appears! - DaGame",
+    "You have 0.0001 second to click this quote and get Obama right now! Oops, you're late! - DaGame",
+    "elken bad person no sharo statto - schrotttv",
 ];
 
 // Notations
@@ -331,6 +243,7 @@ function cheatEngine(type) {
             toCheat -= parseInt(cheatAmount.value);
             break;
     }
+    game.cheated = true;
     if (cheatCurrency.value == "stats.playTime") game.stats.playTime = toCheat;
     else game[cheatCurrency.value] = toCheat;
     updateUI();
@@ -389,7 +302,7 @@ function cImg(imgname) {
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
-    let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 3 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
+    let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 5 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
@@ -976,7 +889,7 @@ function updateUI() {
     }
 
     // Minigame
-    if (selection("minigames") && (canPlayTTT || pointsHer > 0 || pointsPlayer > 0)) {
+    if (selection("minigames")) {
         updateMinigameUI();
     }
 
@@ -1009,10 +922,19 @@ var newArtifactDisplayTimer = 0;
 
 // Core
 function autoSave() {
-    // Should this even be here?
+    autoNotifications += 1;
+
+    // Kill knife if yo slow
     if (game.clickCooldown < -0.33) knifeBoost = 1;
+
+    // Le rare renderes
     renderAmeConvert();
     renderAllSelection();
+
+    // Every 50 saves, check for shgic
+    if (autoNotifications % 50 == 0) {
+        canPlayTTT = compareMinigameTime();
+    }
 
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
@@ -1033,24 +955,31 @@ function autoSave() {
             break;
         }
     }
-    autoNotifications += 1;
+
     if (!newAch) createNotification("Game saved automatically " + autoNotifications);
 }
 
 function exportGame() {
-    if (BETA.isBeta) {        alert("You can't export in a beta!");        createNotification("Couldn't export: Beta version");        return false;    }    let exportGame = JSON.stringify(game);    exportGame = btoa(exportGame);    exportGame = exportGame.replace(rep7, "shgabb");    exportGame = exportGame.replace("x", "pppp");    exportGame = exportGame.replace("D", "dpjiopjrdopjh");    navigator.clipboard.writeText(exportGame);    createNotification("Game exported to clipboard!");}function importGame() {    let importGame = prompt("Code?");  if(importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; }  resetMinigameField(); importGame = importGame.replace("shgabb", rep7);    importGame = importGame.replace("dpjiopjrdopjh", "D");    importGame = importGame.replace("pppp", "x");    importGame = atob(importGame);    importGame = JSON.parse(importGame);
+    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
 
-
+    // Empty the game first. Make it completely empty
     emptyGame.a = [];
-    game = { };
+    game = {};
+    // Now import. it's done this way to support old saves
     game = Object.assign({}, emptyGame, importGame);
+
+    // Take care of arrays
     game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, importGame.upgradeLevels);
     game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
     game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
+
+    // Some adjustments
+    canPlayTTT = compareMinigameTime();
+    pointsPlayer = 0;
+    pointsHer = 0;
+
+    // Execute some stuff
     handleArtifactsFirstTime();
-        canPlayTTT = compareMinigameTime();
-        pointsPlayer = 0;
-        pointsHer = 0;
     updateUI();
     updateUpgrades();
     updateArtifacts();
@@ -1059,6 +988,8 @@ function exportGame() {
 }
 
 function showAd() {
+    selectVideo();
+
     adButton.style.display = "none";
     adHandler.style.display = "inline";
     adHandler.play();
@@ -1112,8 +1043,6 @@ function loop(tick) {
 
         adButton.style.display = "inline";
         adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
-
-        selectVideo();
     }
     else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
         // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
