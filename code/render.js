@@ -2,7 +2,7 @@
 
 // sel 1: shgabb - sandwiches - gs - silicone - amé
 // sel 2: gems - artifacts - shgic
-// sel 3: cheats - stats - achievements - other(social, patch notes)
+// sel 3: cheats - stats - achievements - other (social, patch notes)
 
 var sections = {
     // sel 1
