@@ -1,8 +1,8 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 // (both the minigame and the main game, lol)
 
-const canvas = document.getElementById("minigame");
-const ctx = canvas.getContext("2d");
+const gameCanvas = document.getElementById("minigame");
+const ctx = gameCanvas.getContext("2d");
 
 let w = 256;
 let h = 256;
@@ -35,10 +35,10 @@ let hitboxes = [
     [drawStartX + (w / 3.6), drawStartY + (h / 2.5)]
 ]
 
-canvas.addEventListener("click", onCanvasClick);
-canvas.addEventListener("mousemove", onMouseMove);
+gameCanvas.addEventListener("click", ongameCanvasClick);
+gameCanvas.addEventListener("mousemove", onMouseMove);
 
-function onCanvasClick() {
+function ongameCanvasClick() {
     if (canPlayTTT) {
         for (l in hitboxes) {
             if (mousex >= hitboxes[l][0] && mousex <= hitboxes[l][0] + (w / 8)
@@ -55,8 +55,8 @@ function onCanvasClick() {
 }
 
 function onMouseMove(e) {
-    mousex = e.clientX - canvas.getBoundingClientRect().left;
-    mousey = e.clientY - canvas.getBoundingClientRect().top;
+    mousex = e.clientX - gameCanvas.getBoundingClientRect().left;
+    mousey = e.clientY - gameCanvas.getBoundingClientRect().top;
 }
 
 function updateMinigameTime() {

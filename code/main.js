@@ -828,7 +828,7 @@ function updateStats() {
 
 function updateUI() {
     // Update UI
-
+    renderPlayerProfile();
     // Click Button
     if (game.clickCooldown > 0) {
         ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
