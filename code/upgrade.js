@@ -99,7 +99,7 @@ class Upgrade {
 
 
         let unlevelButton = "";
-        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div><div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>";
+        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>" + (this.currentLevel() == this.getMax() ? "<div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>" : "");
 
         let levelDisplay = (isMax ? " MAX." : " Lvl. " + this.currentLevel() + (this.getMax() != undefined ? "/" + this.getMax() : ""));
         let myColor = settings.upgradeColors == "old" ? (this.canBuy() ? "rgb(180, 255, 200)" : (this.currentLevel() == this.getMax() ? "lightgray" : "whitesmoke"))
@@ -108,7 +108,7 @@ class Upgrade {
         let textColor = settings.upgradeColors == "old" ? 0
             : settings.upgradeColors == "normal" ? 255
             : (this.canBuy() ? settings.customColors[0][3] : (this.currentLevel() == this.getMax() ? settings.customColors[2][3] : settings.customColors[1][3]));
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div class='upgradeHeader'>" + this.name + levelDisplay + "</div>" + this.description + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button><br /><br />";
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div class='upgradeHeader'>" + this.name + levelDisplay + "</div>" + this.description + (isMax ? "" : "<br /> Cost: " + fn(this.currentPrice())) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button>";
         else return "";
     }
 }

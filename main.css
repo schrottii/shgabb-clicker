@@ -150,19 +150,38 @@ progress {
 /* ===================================================== */
 /* UPGRADES */
 /* ===================================================== */
+/* this contains the upgrade buttons */
 .upgradeButtons {
     display: flex;
     flex-direction: row;
+    text-align: center;
+}
+
+/* this is for a single upgrade button */
+.maxButton {
+    width: 32%;
+    height: 20px;
+    margin: 0px 1px 1px 1px;
+    border: 2px solid black;
+    background-color: lightgray;
+    font-weight: bold;
+    color: black;
+    font-family: Rw-title;
+}
+
+@media only screen and (min-width: 768px) {
+    .maxButton {
+    }
 }
 
 .upgrade {
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0px 2px 4px 2px;
     border: 4px solid black;
-    width: 98%;
-    min-height: 108px;
+    width: 48%;
+    min-height: 98px;
     font-family: Rw;
+    vertical-align: top;
 }
 
     .upgrade:hover {
@@ -176,7 +195,13 @@ progress {
 
 @media only screen and (min-width: 768px) {
     .upgrade {
-        max-width: 420px;
+        width: 32%;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+    .upgrade {
+        width: 24%;
     }
 }
 
@@ -188,23 +213,6 @@ progress {
 @media only screen and (min-width: 768px) {
     .upgradeHeader {
         font-size: 20px;
-    }
-}
-
-.maxButton {
-    border: 2px solid black;
-    width: 48px;
-    height: 20px;
-    background-color: lightgray;
-    font-weight: bold;
-    margin-right: 2px;
-    color: black;
-    font-family: Rw-title;
-}
-
-@media only screen and (min-width: 768px) {
-    .maxButton {
-        margin-right: 12px;
     }
 }
 
@@ -291,9 +299,10 @@ progress {
     font-size: 20px;
     text-align: center;
     font-family: Rw;
-    margin-right: 4px;
-    margin-bottom: 4px;
-    max-width: 75%;
+    margin: 2px 2px 2px 2px;
+    width: 48%;
+    vertical-align: top;
+    min-height: 78px;
 }
 
     .settingButton:hover {
@@ -307,6 +316,6 @@ progress {
 
 @media only screen and (min-width: 768px) {
     .settingButton {
-        max-width: 25%;
+        width: 24%;
     }
 }

@@ -15,6 +15,15 @@ const currentPatchNotes = [
     "- Upgrade mode: level 1 and 2 artifacts",
     "- Destroy mode: level 1 artifacts that are not equipped",
     "- Artifact Scrap and amount of artifacts unlocked are now in the same row",
+    "-> Upgrade design:",
+    "- Reworked upgrade rendering",
+    "- Removed the left/right seperation (which made each upgrade always appear on the left or the right side)",
+    "- On wide screens there can now be up to 4 upgrades per row (instead of 2)",
+    "- Made upgrade buttons longer",
+    "- Some other small changes",
+    "-> Other:",
+    "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
+    "- -MAX is now only available for maxed upgrades",
 ]
 
 // Various variables
@@ -71,15 +80,10 @@ var ui = {
     ameImage: document.getElementById("ameImage"),
 
     // Upgrades
-    upgradesl: document.getElementById("upgradesl"),
     upgradesr: document.getElementById("upgradesr"),
-    swupgradesl: document.getElementById("swupgradesl"),
     swupgradesr: document.getElementById("swupgradesr"),
-    gsupgradesl: document.getElementById("gsupgradesl"),
     gsupgradesr: document.getElementById("gsupgradesr"),
-    siupgradesl: document.getElementById("siupgradesl"),
     siupgradesr: document.getElementById("siupgradesr"),
-    ameupgradesl: document.getElementById("ameupgradesl"),
     ameupgradesr: document.getElementById("ameupgradesr"),
 
     // New Artifact display thing
@@ -693,28 +697,25 @@ function updateQuote() {
     ui.quote.innerHTML = quotes[Math.ceil(Math.random() * quotes.length - 1)];
 }
 
+function renderUpgrades(object){
+    let render = "";
+    for (o in object) {
+        render = render + object[o].render();
+    }
+    return render;
+}
+
 function updateUpgrades() {
     // Update upgrades UI
-    ui.upgradesl.innerHTML = shgabbUpgrades.moreShgabb.render() + shgabbUpgrades.shorterCD.render() + shgabbUpgrades.bomblike.render() + shgabbUpgrades.swChance.render();
-    ui.upgradesr.innerHTML = shgabbUpgrades.critChance.render() + shgabbUpgrades.critBoost.render() + shgabbUpgrades.goodJoke.render() + shgabbUpgrades.moreSw.render();
+    ui.upgradesr.innerHTML = renderUpgrades(shgabbUpgrades);
 
-    ui.swupgradesl.innerHTML = sandwichUpgrades.autoShgabb.render() + sandwichUpgrades.firstBoostsClicks.render() + sandwichUpgrades.twoTwoFive.render();
-    ui.swupgradesr.innerHTML = sandwichUpgrades.fridge.render() + sandwichUpgrades.cheese.render() + sandwichUpgrades.meaningOfLife.render();
+    ui.swupgradesr.innerHTML = renderUpgrades(sandwichUpgrades);
 
-    ui.gsupgradesl.innerHTML = goldenShgabbUpgrades.divineShgabb.render() + goldenShgabbUpgrades.gsBoost1.render() + goldenShgabbUpgrades.unlockMax.render() + goldenShgabbUpgrades.formaggi.render();
-    ui.gsupgradesr.innerHTML = goldenShgabbUpgrades.shortCD.render() + goldenShgabbUpgrades.gsBoost2.render() + goldenShgabbUpgrades.unlockMSW.render() + goldenShgabbUpgrades.moreSilicone2.render();
+    ui.gsupgradesr.innerHTML = renderUpgrades(goldenShgabbUpgrades);
 
-    ui.siupgradesl.innerHTML = siliconeShgabbUpgrades.moreSilicone.render() + siliconeShgabbUpgrades.siliconeFromClicks.render();
-    ui.siupgradesr.innerHTML = siliconeShgabbUpgrades.strongerSilicone.render() + siliconeShgabbUpgrades.siliconeAffectsGS.render();
+    ui.siupgradesr.innerHTML = renderUpgrades(siliconeShgabbUpgrades);
 
-    ui.ameupgradesl.innerHTML = ameliorerUpgrades.AMEgsBoost1.render() + ameliorerUpgrades.shgabbBoost.render() +
-        ameliorerUpgrades.AMEfridge.render() + ameliorerUpgrades.AMEcritBoost.render()
-        + ameliorerUpgrades.AMEfirstBoostsClicks.render() + ameliorerUpgrades.AMEbomblike.render()
-        + ameliorerUpgrades.AMEformaggi.render() + ameliorerUpgrades.unlockMSW2.render();
-    ui.ameupgradesr.innerHTML = ameliorerUpgrades.AMEgsBoost2.render() + ameliorerUpgrades.achBExpo.render()
-        + ameliorerUpgrades.AMEmoreSw.render() + ameliorerUpgrades.unlockUnlevel.render()
-        + ameliorerUpgrades.AMEsiliconeFromClicks.render() + ameliorerUpgrades.gsBoostsShgabb.render()
-        + ameliorerUpgrades.siliconeBoost.render() + ameliorerUpgrades.fourthArtifactSlot.render();
+    ui.ameupgradesr.innerHTML = renderUpgrades(ameliorerUpgrades);
 }
 
 function updateArtifacts() {
