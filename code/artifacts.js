@@ -96,7 +96,7 @@ class Artifact {
 	}
 
 	render(clickable=true) {
-		return `<button class='artifact' ` + (clickable ? `onclick = 'clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>"
+		return `<button class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>"
 			+ (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
 			+ (!this.isUpgradable() ? (this.getRarity() + " Level " + getArtifactLevel(this.ID)) : getScrapCost(getArtifactLevel(this.ID), this.rarity) + " Artifact Scrap")
 			+ this.renderEffect() + this.renderDescription() + "</button>";

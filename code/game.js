@@ -3,6 +3,12 @@
 // GAME
 
 var game = {
+    profile: {
+        name: "",
+        id: "",
+        startVer: "",
+        pfp: 100,
+    },
     shgabb: 0,
     clickCooldown: 0,
     sw: 0,

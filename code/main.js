@@ -113,6 +113,7 @@ var ui = {
     achievementsamount: document.getElementById("achievementsamount"),
     stats: document.getElementById("stats"),
     achievements: document.getElementById("achievements"),
+    pfps: document.getElementById("pfpsSel"),
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
     music: document.getElementById("music"),
@@ -829,6 +830,12 @@ function updateStats() {
 function updateUI() {
     // Update UI
     renderPlayerProfile();
+    if (game.profile.id == "") {
+        game.profile.id = Math.random().toString(16).slice(2);
+        game.profile.startVer = gameVersion;
+        game.profile.name = "Name";
+    }
+
     // Click Button
     if (game.clickCooldown > 0) {
         ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
@@ -929,6 +936,7 @@ function autoSave() {
     // Le rare renderes
     renderAmeConvert();
     renderAllSelection();
+    renderPFPs();
 
     // Every 50 saves, check for shgic
     if (autoNotifications % 50 == 0) {
@@ -971,6 +979,7 @@ function exportGame() {
     game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, importGame.upgradeLevels);
     game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
     game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
+    game.profile = Object.assign({}, emptyGame.profile, importGame.profile);
 
     // Some adjustments
     canPlayTTT = compareMinigameTime();
@@ -1122,6 +1131,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
+    game.profile = Object.assign({}, cache.profile, JSON.parse(localStorage.getItem("shgabbClicker")).profile);
+
     let allAdsZero = true;
     for (a in game.stats.wads) {
         if (game.stats.wads[a] != 0) allAdsZero = false;
@@ -1245,6 +1256,7 @@ updateCurrencies();
 renderAmeConvert();
 updateUpgradeColors();
 renderAllSelection();
+renderPFPs();
 
 renderSettings();
 
