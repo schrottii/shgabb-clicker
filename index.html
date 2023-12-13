@@ -38,13 +38,6 @@
         <hr />
     </div>
 
-    <!-- Minigame -->
-    <h3>Player Profile</h3>
-    <canvas id="profileCanvas" class="playerProfile"></canvas><br />
-    <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
-    <span id="pfpsSel" style="width: 80%"></span>
-    <br />
-
     <!--
         /////////////////////////////////////////////
         //         Selection      1                //
@@ -65,16 +58,14 @@
         <h3>Sandwich Upgrades</h3>
         <span id="swAmount"></span><br />
         <span id="swupgradesr"></span>
-        <br /> <br />
     </div>
 
     <!-- Golden Shgabb -->
     <div id="goldenShgabbSection">
         <h3>Golden Shgabb</h3>
-        <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
+        <button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
         <span id="gsAmount"></span><br />
         <span id="gsupgradesr"></span>
-
     </div>
 
     <!-- Silicone Shgabb -->
@@ -83,7 +74,6 @@
         <span id="siAmount"></span><br />
         Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.<br />
         <span id="siupgradesr"></span>
-
     </div>
 
     <!-- Ameliorer -->
@@ -166,6 +156,15 @@
         <button onclick="cheatEngine('sub')">-</button><br />
         <span id="cheatDisplay"></span>
         <hr style="clear:both" />
+    </div>
+
+    <!-- Player Profile -->
+    <div id="playerprofileSection">
+        <h3>Player Profile</h3>
+        <canvas id="profileCanvas" class="playerProfile"></canvas><br />
+        <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
+        <h3>PFPs</h3>
+        <span id="pfpsSel" style="width: 80%"></span>
     </div>
 
     <!-- Stats -->

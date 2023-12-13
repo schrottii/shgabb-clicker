@@ -8,7 +8,7 @@ var profileCanvasHeight = 10;
 var profileTextSizeMulti = 1;
 
 let pfp = new Image();
-pfp.src = "images/arti/sosnog.png";
+pfp.src = "images/shgabbicon.png";
 
 let pfpbg = new Image();
 pfpbg.src = "images/achievements/empty.png";
@@ -27,7 +27,7 @@ function renderPFPs() {
     let render = "";
 
     for (p in pfps) {
-        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230)'><img src='" + pfps[p].image + "'></button>"
+        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230)'><img src='" + pfps[p].image + "' style='width: 50%'></button>"
     }
     ui.pfps.innerHTML = render;
 }
@@ -46,8 +46,16 @@ function getPFPByID(id) {
 }
 
 var pfps = [
-    new PFP(100, "images/currencies/shgabb.png", () => true),
-    new PFP(101, "images/currencies/sandwich.png", () => true),
+    // 100 - 299 | Normal/Generic/Random PFPs
+    new PFP(100, "images/shgabbicon.png", () => true),
+
+    // 300 - 399 | Currency PFPs
+    new PFP(300, "images/currencies/shgabb.png", () => getAchievementByName("Shgabb V").unlock()),
+    new PFP(301, "images/currencies/sandwich.png", () => getAchievementByName("Sandwiches V").unlock()),
+    new PFP(302, "images/currencies/gs.png", () => getAchievementByName("Golden Shgabb V").unlock()),
+    new PFP(303, "images/currencies/silicone.png", () => getAchievementByName("Silicone V").unlock()),
+    new PFP(304, "images/currencies/ameliorer.png", () => getAchievementByName("Cap Bro III").unlock()),
+    new PFP(305, "images/currencies/gem.png", () => getAchievementByName("The Red Gems V").unlock()),
 ]
 
 function calculateProfileCanvasSize() {

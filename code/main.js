@@ -7,23 +7,53 @@
 const gameVersion = "2.1";
 
 const currentPatchNotes = [
+    "-> Player Profile: ",
+    "- Added the Player Profile!",
+    "- The section can be found in the third selection, unlocked at More Shgabb 100",
+    "- This practical card shows your hms, artifacts and achievements all in one place",
+    "- Very useful for sharing and bragging!",
+    "- Added player IDs, start version and name",
+    "- Added a button to set/change the player name",
+    "- Added player profile pictures (PFPs)",
+    "-> PFPs:",
+    "- Added a default PFP (shgabb), unlocked by default",
+    "- Added 6 more PFPs, of currencies, that can be unlocked by getting the fifth Achievement",
+    "- Added UI to change PFP",
     "-> Artifacts:",
-    "- Added the artifact search!",
-    "- Type the name, effect, rarity, level or anything else, and only those artifacts will be shown",
-    "- Previously, equipped artifacts were always highlighted in every mode. Now:",
-    "- Select mode: equipped artifacts",
-    "- Upgrade mode: level 1 and 2 artifacts",
-    "- Destroy mode: level 1 artifacts that are not equipped",
-    "- Artifact Scrap and amount of artifacts unlocked are now in the same row",
+    "- Added the Artifact search!",
+    "- Type the name, effect, rarity, level or anything else, and only those Artifacts will be shown",
+    "- Previously, equipped Artifacts were always highlighted in every mode. Now:",
+    "- Select mode: equipped Artifacts",
+    "- Upgrade mode: level 1 and 2 Artifacts",
+    "- Destroy mode: level 1 Artifacts that are not equipped",
+    "- Artifact Scrap and amount of Artifacts unlocked are now in the same row",
+    "-> Design:",
+    "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
+    "- Reworked design of the prestige button: removed the icons at the sides, added an image within the button, text closer to center",
+    "- Removed unnecessary space after the sandwiches section",
     "-> Upgrade design:",
     "- Reworked upgrade rendering",
     "- Removed the left/right seperation (which made each upgrade always appear on the left or the right side)",
     "- On wide screens there can now be up to 4 upgrades per row (instead of 2)",
     "- Made upgrade buttons longer",
     "- Some other small changes",
+    "-> Capitalization:",
+    "- Capitalized the names of all currencies and features, see affected texts below",
+    "- Shgabb: Prestige Button, Stronger Clicks ad, Stronger Auto ad, Bomblike, Auto Shgabb (Get Shgabb Automatically), Fridge, 1. Upgrade boosts clicks, Meaning Of Life, Divine Shgabb, GS boosts Shgabb 1 & 2 (and their Amé upgrades), Cheese, Shgabb Boost (Amé), Artifact boosts, Paroxysm, Condone, Seeds, Dice",
+    "- Sandwiches: Prestige Button, notification, More Sandwiches ad, Sandwich Chance, Sandwich Amount, Fridge, 1. Upgrade boosts clicks, Unlock More Sandwich Upgrades & 2, Artifact boosts, Quick Snacks, Well Fed Resets, Dice",
+    "- Golden Shgabb: Prestige Button, notification, GS boosts Shgabb 1 & 2, 2+2=5",
+    "- Silicone Shgabb: More Silicone ad, More Silicone, Stronger Silicone, Silicone From Clicks, Artifact boosts, Silicone implants, Surgeon's Sacrifice",
+    "- Améliorer: (none)",
+    "- Gems: All Gem offers, More Gems ad, Shiny, The Red Gems I - V, Sarah's Gems Achievements, Artifact boosts, Bloody Gray Ring, Paroxysm, Gem Frustration",
+    "- Artifact Scrap: Artifact Gift Gem offer, upgrading an Artifact",
+    "- Artifacts: All Artifact related Achievements except Do we have dinosaurs???, destroying an Artifact, Artifact Gift & Loadout & Offer Gem offers, Artifact boosts, Bloody Red Ring, Sarah's Collection, Fourth Artifact Slot (Amé)",
+    "- Achievements: Achievements Become Exponential",
+    "- Changed Shgabb to shgabb (the person) in Shgic",
     "-> Other:",
-    "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
     "- -MAX is now only available for maxed upgrades",
+    "- Renamed the first upgrade, Get More Shgabb to More Shgabb",
+    "- Renamed the first Sandwich upgrade, Get Shgabb Automatically to Auto Shgabb",
+    "- Removed evil warning from the Golden Shgabb II Achievement"
 ]
 
 // Various variables
@@ -133,13 +163,13 @@ var currentBoost = "none";
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
 const boostTexts = {
-    strongerClicks: "Stronger Clicks: Get 5x shgabb from clicks for 5 minutes",
-    strongerAuto: "Stronger Auto: Get 5x automatic shgabb for 10 minutes",
-    moreSandwiches: "More Sandwiches: Get sandwiches four times as often for 3 minutes",
+    strongerClicks: "Stronger Clicks: Get 5x Shgabb from clicks for 5 minutes",
+    strongerAuto: "Stronger Auto: Get 5x automatic Shgabb for 10 minutes",
+    moreSandwiches: "More Sandwiches: Get Sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
     moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 2 minutes",
-    moreSilicone: "More Silicone: Get 10x silicone shgabb for 3 minutes",
-    moreGems: "More Gems: 3x higher gem chance for 8 minutes",
+    moreSilicone: "More Silicone: Get 10x Silicone shgabb for 3 minutes",
+    moreGems: "More Gems: 3x higher Gem chance for 8 minutes",
 };
 const adTimes = {
     strongerClicks: 300,
@@ -340,7 +370,7 @@ function clickButton() {
             game.sw += amount;
             game.stats.sw += amount;
             game.stats.swtp += amount;
-            createNotification("+" + amount + " sandwich" + (amount > 1 ? "es" : "") + "!");
+            createNotification("+" + amount + " Sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
         changeDiceAmount();
@@ -591,7 +621,7 @@ function prestigeButton() {
         if (ui.ameReset.checked == true) ameReset();
 
         updateUpgrades();
-        createNotification("Prestiged for " + amount + " golden shgabb!");
+        createNotification("Prestiged for " + amount + " Golden Shgabb!");
     }
 }
 
@@ -867,7 +897,7 @@ function updateUI() {
     // GS
     if (unlockedGS()) {
         ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your shgabb and sandwiches, as well as their upgrades, but keep stats and get golden shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
+        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
     }
     else {
         ui.prestigeButton.style.display = "none";

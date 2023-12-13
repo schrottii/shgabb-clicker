@@ -217,10 +217,14 @@ progress {
 }
 
 .prestigeButton {
-    background-color: palegoldenrod;
-    color: black;
+    /* background-color: palegoldenrod; */
+    background-image: url("images/prestigebutton.png");
+    background-size: 100% 100%;
+    padding: 0px 16% 0px 16%;
     border: 3px solid gold;
     font-size: 18px;
+    min-height: 120px;
+    max-width: 1080px;
 }
 
 .ameliorerButton {

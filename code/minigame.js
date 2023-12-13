@@ -190,7 +190,7 @@ function minigameCheckForWinners() {
         canPlayTTT = false;
 
         game.stats.tttl += 1;
-        createNotification("Shgabb won... no reward...");
+        createNotification("shgabb won... no reward...");
         createNotification("Come back tomorrow!");
         return false;
     }
@@ -301,7 +301,7 @@ function updateMinigameUI() {
         minigameDrawField();
 
         if (pointsPlayer > 2) minigameUpdateText("You won!");
-        else if (pointsHer > 2) minigameUpdateText("Shgabb won!");
+        else if (pointsHer > 2) minigameUpdateText("shgabb won!");
         else minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
     }
     else {

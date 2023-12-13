@@ -19,6 +19,7 @@ var sections = {
 
     // sel 3
     cheats: document.getElementById("cheatSection"),
+    playerprofile: document.getElementById("playerprofileSection"),
     stats: document.getElementById("statsSection"),
     achievements: document.getElementById("achievementsSection"),
     settings: document.getElementById("settingsSection"),
@@ -44,8 +45,8 @@ function renderSelection(sel) {
         selsDisplay = ["Gems", "Artifacts", "Minigames"];
     }
     if (sel == 3) {
-        sels = ["cheats", "stats", "achievements", "settings", "social"];
-        selsDisplay = ["Cheats", "Stats", "Achievements", "Settings", "Social"];
+        sels = ["cheats", "playerprofile", "stats", "achievements", "settings", "social"];
+        selsDisplay = ["Cheats", "Player Profile", "Stats", "Achievements", "Settings", "Social"];
     }
 
     for (s in sels) {
@@ -89,6 +90,8 @@ function isSelectionUnlocked(name) {
             return BETA.isBeta;
         case "stats":
             return true;
+        case "playerprofile":
+            return game.stats.hms >= 100;
         case "achievements":
             return true;
         case "settings":

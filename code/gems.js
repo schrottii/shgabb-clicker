@@ -82,9 +82,9 @@ function gemOffer(i) {
 }
 
 function renderGemOffers() {
-    ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately!";
-    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 gems to get 100% more Shgabb this prestige!<br>Current: +" + ((game.gemboost - 1) * 100) + "%";
-    ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + ((game.a.length - 1) == artifacts.length - 1 ? "Spend 30 gems for some artifact scrap!<br />(3000x chance)" : "Spend 30 gems for a high chance to get an artifact!<br>(3000x chance)");
-    ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al > 7 ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25) + " gems for another artifact loadout slot!<br>(Max. 8)");
-    ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifactByID(game.dgo).isUnlocked() ? "You already own today's artifact! Check back tomorrow!" : "Spend 50 gems to get the following artifact:<br>" + getArtifactByID(game.dgo).render(false));
+    ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately!";
+    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 100% more Shgabb this prestige!<br>Current: +" + ((game.gemboost - 1) * 100) + "%";
+    ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + ((game.a.length - 1) == artifacts.length - 1 ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
+    ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al > 7 ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25) + " Gems for another Artifact loadout slot!<br>(Max. 8)");
+    ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifactByID(game.dgo).isUnlocked() ? "You already own today's artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifactByID(game.dgo).render(false));
 }
