@@ -15,7 +15,7 @@ var game = {
     gs: 0,
     si: 0,
     ame: 0,
-    ameUp: [0, 0, 0, 0],
+    ameUp: [0, 0, 0, 0, 0],
     gems: 0,
     gemboost: 1,
     artifactScrap: 0,
@@ -70,6 +70,11 @@ var game = {
         unlockMSW2: 0,
         siliconeBoost: 0,
         fourthArtifactSlot: 0,
+
+        sandwichBoost: 0,
+        critsAffectSW: 0,
+        gems2ame: 0,
+        keepSWU: 0,
     },
     stats: {
         shgabb: 0,

@@ -27,6 +27,13 @@ const currentPatchNotes = [
     "- Upgrade mode: level 1 and 2 Artifacts",
     "- Destroy mode: level 1 Artifacts that are not equipped",
     "- Artifact Scrap and amount of Artifacts unlocked are now in the same row",
+    "-> Améliorer:",
+    "- Added the 5th set of Améliorer Upgrades (100 and 120 Amé)",
+    "- Added 4 new Améliorer Upgrades (5th set):",
+    "- New Améliorer Upgrade: Sandwich Boost",
+    "- New Améliorer Upgrade: Crits Affect Sandwiches",
+    "- New Améliorer Upgrade: Gems To Amé",
+    "- New Améliorer Upgrade: Keep Sandwich Upgrades",
     "-> Design:",
     "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
     "- Reworked design of the prestige button: removed the icons at the sides, added an image within the button, text closer to center",
@@ -335,7 +342,8 @@ function cImg(imgname) {
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
-    let amount = Math.floor(getProduction() * criticalHit() * (currentBoost == "strongerClicks" ? 5 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
+    let critMulti = criticalHit();
+    let amount = Math.floor(getProduction() * critMulti * (currentBoost == "strongerClicks" ? 5 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
     if (game.clickCooldown <= 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
@@ -366,6 +374,8 @@ function clickButton() {
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
             amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
                 * goldenShgabbUpgrades.formaggi.currentEffect())
+                * ameliorerUpgrades.sandwichBoost.currentEffect()
+                * (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())
                 * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
             game.sw += amount;
             game.stats.sw += amount;
@@ -601,8 +611,9 @@ function prestigeButton() {
         for (let u of Object.keys(shgabbUpgrades)) {
             game.upgradeLevels[u] = 0;
         }
+        let keepSWU = ["", "Better Fridge", "1. Upgrade boosts clicks", "Cheese", "Auto Shgabb", "2+2=5", "Meaning Of Life"]
         for (let u of Object.keys(sandwichUpgrades)) {
-            game.upgradeLevels[u] = 0;
+            if (ameliorerUpgrades.keepSWU.currentLevel() < keepSWU.indexOf(sandwichUpgrades[u].name)) game.upgradeLevels[u] = 0;
         }
 
         increaseGS(1);
@@ -658,6 +669,8 @@ function getAmeliorerConvertCosts(type) {
             return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 12) + 1));
         case "si":
             return Math.ceil(Math.pow(1e5, (game.ameUp[3] / 15) + 1));
+        case "gems":
+            return 500;
     }
 }
 
@@ -670,7 +683,7 @@ function convertAmeliorer(type) {
     let costs = getAmeliorerConvertCosts(type);
     if (canAffordAmeliorer(type)) {
         game[type] -= costs;
-        game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3 }[type]] += 1;
+        game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3, "gems": 4 }[type]] += 1;
         game.ame += 1;
         game.stats.ame += 1;
         updateUpgrades();
@@ -680,9 +693,9 @@ function convertAmeliorer(type) {
 
 function renderAmeConvert() {
     let render = "";
-    for (l = 0; l < 4; l++) {
-        let thisType = ["shgabb", "sw", "gs", "si"][l];
-        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") +"'> Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone"][l] + "<br>to +1 Améliorer!</button>";
+    for (l = 0; l < 4 + ameliorerUpgrades.gems2ame.currentLevel(); l++) {
+        let thisType = ["shgabb", "sw", "gs", "si", "gems"][l];
+        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") +"'> Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone", "Gems"][l] + "<br>to +1 Améliorer!</button>";
     }
     ui.ameconvert.innerHTML = render;
 }
@@ -1161,6 +1174,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
+    game.ameUp = Object.assign({}, cache.ameUp, JSON.parse(localStorage.getItem("shgabbClicker")).ameUp);
     game.profile = Object.assign({}, cache.profile, JSON.parse(localStorage.getItem("shgabbClicker")).profile);
 
     let allAdsZero = true;
