@@ -64,6 +64,8 @@ class Artifact {
 				return "Sandwiches";
 			case "gs":
 				return "GS";
+			case "prestigegs":
+				return "Prestige GS";
 			case "si":
 				return "Silicone shgabb";
 			case "clickspeed":
@@ -235,28 +237,39 @@ function getArtifact(multi = 1) {
 	let multi2 = 1;
 	if (multi == 1) multi2 = getArtifactBoost("artifactchance"); // Artifact chance artifacts only work from clicks, not the gem offer
 
-	// legendary, epic, rare, common arti
-	if (!allArtifactsOfRarity(4) && Math.random() < 1 / 10000000 * multi2 && multi == 1) {
-		gambleArtifact(4);
+	let chance = Math.random();
+
+	if (chance < 1 / 10000000 * multi * multi2) {
+		if (!allArtifactsOfRarity(4) && Math.random() < 0.5 * anyArtifactOfRarity(4)) {
+			gambleArtifact(4);
+		}
+		else if (anyArtifactsOfRarity(4)) {
+			artifactDuplicate(4);
+		}
 	}
-	else if (!allArtifactsOfRarity(3) && Math.random() < 1 / 32000 * multi * multi2) {
-		gambleArtifact(3);
+	else if (chance < 1 / 32000 * multi * multi2) {
+		if (!allArtifactsOfRarity(3) && Math.random() < 0.5 * anyArtifactOfRarity(3)) {
+			gambleArtifact(3);
+		}
+		else if (anyArtifactsOfRarity(3)) {
+			artifactDuplicate(3);
+		}
 	}
-	else if (!allArtifactsOfRarity(2) && Math.random() < 1 / 4000 * multi * multi2) {
-		gambleArtifact(2);
+	else if (chance < 1 / 4000 * multi * multi2) {
+		if (!allArtifactsOfRarity(2) && Math.random() < 0.5 * anyArtifactOfRarity(2)) {
+			gambleArtifact(2);
+		}
+		else if (anyArtifactsOfRarity(2)) {
+			artifactDuplicate(2);
+		}
 	}
-	else if (!allArtifactsOfRarity(1) && Math.random() < 1 / 800 * multi * multi2) {
-		gambleArtifact(1);
-	}
-	// epic, rare, common arti dupli
-	else if (anyArtifactOfRarity(3) && Math.random() < 1 / 32000 * multi) {
-		artifactDuplicate(3);
-	}
-	else if (anyArtifactOfRarity(2) && Math.random() < 1 / 4000 * multi) {
-		artifactDuplicate(2);
-	}
-	else if (anyArtifactOfRarity(1) && Math.random() < 1 / 800 * multi) {
-		artifactDuplicate(1);
+	else if (chance < 1 / 800 * multi * multi2) {
+		if (!allArtifactsOfRarity(1) && Math.random() < 0.5 * anyArtifactOfRarity(1)) {
+			gambleArtifact(1);
+		}
+		else if (anyArtifactsOfRarity(1)) {
+			artifactDuplicate(1);
+		}
 	}
 }
 
@@ -450,7 +463,7 @@ var artifacts = [
 	new Artifact(308, 3, "Gem Frustration", "frustration.png", "complicated", level => level * frustration * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5), { desc: level => "Increases Gem chance and cap by " + (level * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5)).toFixed(2) + "% for every click without gems<br>(Current: +" + getArtifactEffect(308).toFixed(2) + "%)" }),
 	new Artifact(309, 3, "Sarah's Collection", "sarah.png", "gemchance", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => (game.a.length - 1 == artifacts.length - 1), desc: "If you own all Artifacts" }),
 	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.min(4 * level, (1 + trashCanBoost * (level / 2 + 0.5))), { noPercentage: true, desc: level => "Increases after destroying, goes down by clicking<br>" + ((1 + trashCanBoost * (level / 2 + 0.5)) > 4 * level ? ("Capped for " + Math.round(5 + ((1 + trashCanBoost * (level / 2 + 0.5)) - 4 * level) * 5) + " clicks") : ("Max: x" + 4 * level)) }),
-	new Artifact(311, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "gs", level => Math.max(1, Math.log10(game.si) - 7 + level * 2), { noPercentage: true, desc: level => "Lose Silicone (not upgs) on prestige, but get more GS" }),
+	new Artifact(311, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "prestigegs", level => Math.max(1, Math.log10(game.si) - 7 + level * 2), { noPercentage: true, desc: level => "Lose Silicone (not upgs) on prestige, but get more GS" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]

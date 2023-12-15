@@ -20,6 +20,7 @@ const currentPatchNotes = [
     "- Added 6 more PFPs, of currencies, that can be unlocked by getting the fifth Achievement",
     "- Added UI to change PFP",
     "-> Artifacts:",
+    "- Reworked the mechanism to get artifacts, it was quite off from the intended/promised chances before, special thanks to elmenda452",
     "- Added the Artifact search!",
     "- Type the name, effect, rarity, level or anything else, and only those Artifacts will be shown",
     "- Previously, equipped Artifacts were always highlighted in every mode. Now:",
@@ -27,12 +28,13 @@ const currentPatchNotes = [
     "- Upgrade mode: level 1 and 2 Artifacts",
     "- Destroy mode: level 1 Artifacts that are not equipped",
     "- Artifact Scrap and amount of Artifacts unlocked are now in the same row",
+    "- Added proper support for artifacts that only boost GS from prestiges (Surgeon's Sacrifice)",
     "-> Améliorer:",
     "- Added the 5th set of Améliorer Upgrades (100 and 120 Amé)",
     "- Added 4 new Améliorer Upgrades (5th set):",
     "- New Améliorer Upgrade: Sandwich Boost",
     "- New Améliorer Upgrade: Crits Affect Sandwiches",
-    "- New Améliorer Upgrade: Gems To Amé",
+    "- New Améliorer Upgrade: Gems To Amé (limited by the other 4 convert options)",
     "- New Améliorer Upgrade: Keep Sandwich Upgrades",
     "-> Design:",
     "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
@@ -363,7 +365,7 @@ function clickButton() {
         }
         else trashCanBoost = 0;
 
-        if (getArtifactByID(213).isEquipped()) increaseGS((getArtifactEffect(213) / 100) / (getArtifactByID(311).isEquipped() ? getArtifactEffect(311): 1));
+        if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction();
@@ -375,7 +377,7 @@ function clickButton() {
             amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
                 * goldenShgabbUpgrades.formaggi.currentEffect())
                 * ameliorerUpgrades.sandwichBoost.currentEffect()
-                * (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())
+                * (1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
                 * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
             game.sw += amount;
             game.stats.sw += amount;
@@ -527,7 +529,7 @@ function sandwich() {
         game.stats.shgabbtp += amount;
         //createNotification("+" + amount + " shgabb");
 
-        if (getArtifactByID(214).isEquipped()) increaseGS((getArtifactEffect(214) / 100) / (getArtifactByID(311).isEquipped() ? getArtifactEffect(311) : 1));
+        if (getArtifactByID(214).isEquipped()) increaseGS(getArtifactEffect(214) / 100);
     }
 
     updateUpgrades();
@@ -616,7 +618,7 @@ function prestigeButton() {
             if (ameliorerUpgrades.keepSWU.currentLevel() < keepSWU.indexOf(sandwichUpgrades[u].name)) game.upgradeLevels[u] = 0;
         }
 
-        increaseGS(1);
+        increaseGS(1 * getArtifactBoost("prestigegs"));
 
         game.stats.pr += 1;
 
@@ -676,7 +678,18 @@ function getAmeliorerConvertCosts(type) {
 
 function canAffordAmeliorer(type) {
     let costs = getAmeliorerConvertCosts(type);
-    return game[type] >= costs;
+    if (type != "gems") return game[type] >= costs;
+    else {
+        return game[type] >= costs && highestAmeConvert() > game.ameUp[4];
+    }
+}
+
+function highestAmeConvert() {
+    let highest = game.ameUp[0];
+    if (game.ameUp[1] > highest) highest = game.ameUp[1];
+    if (game.ameUp[2] > highest) highest = game.ameUp[2];
+    if (game.ameUp[3] > highest) highest = game.ameUp[3];
+    return highest;
 }
 
 function convertAmeliorer(type) {
@@ -695,7 +708,7 @@ function renderAmeConvert() {
     let render = "";
     for (l = 0; l < 4 + ameliorerUpgrades.gems2ame.currentLevel(); l++) {
         let thisType = ["shgabb", "sw", "gs", "si", "gems"][l];
-        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") +"'> Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone", "Gems"][l] + "<br>to +1 Améliorer!</button>";
+        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") + "'>[" + game.ameUp[l] + (thisType == "gems" ? ("/" + highestAmeConvert()) : "") + "] Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone", "Gems"][l] + "<br>to +1 Améliorer!</button>";
     }
     ui.ameconvert.innerHTML = render;
 }
