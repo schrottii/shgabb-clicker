@@ -49,12 +49,12 @@ var pfps = [
     new PFP(100, "images/shgabbicon.png", () => true),
 
     // 300 - 399 | Currency PFPs
-    new PFP(300, "images/currencies/shgabb.png", () => getAchievementByName("Shgabb V").unlock()),
-    new PFP(301, "images/currencies/sandwich.png", () => getAchievementByName("Sandwiches V").unlock()),
-    new PFP(302, "images/currencies/gs.png", () => getAchievementByName("Golden Shgabb V").unlock()),
-    new PFP(303, "images/currencies/silicone.png", () => getAchievementByName("Silicone V").unlock()),
-    new PFP(304, "images/currencies/ameliorer.png", () => getAchievementByName("Cap Bro III").unlock()),
-    new PFP(305, "images/currencies/gem.png", () => getAchievementByName("The Red Gems V").unlock()),
+    new PFP(300, "images/currencies/shgabb.png", () => game.ach.includes(21)),
+    new PFP(301, "images/currencies/sandwich.png", () => game.ach.includes(24)),
+    new PFP(302, "images/currencies/gs.png", () => game.ach.includes(26)),
+    new PFP(303, "images/currencies/silicone.png", () => game.ach.includes(25)),
+    new PFP(304, "images/currencies/ameliorer.png", () => game.ach.includes(58)),
+    new PFP(305, "images/currencies/gem.png", () => game.ach.includes(55)),
 
     // 400 - 599 | Event PFPs
     new PFP(400, "images/currencies/gift.png", () => game.evpfps.includes(400)),

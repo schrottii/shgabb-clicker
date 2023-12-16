@@ -420,7 +420,7 @@ function clickButton() {
 }
 
 function increaseGS(multi) {
-    let amount = getGoldenShgabb() * multi;
+    let amount = getGoldenShgabb() * Math.floor(multi);
     game.gs += amount;
     game.stats.gs += amount;
 }
