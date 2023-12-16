@@ -180,6 +180,11 @@ function minigameCheckForWinners() {
         game.stats.tttw += 1;
         createNotification("You won!");
         createNotification("+2 Améliorer!");
+        if (isEvent("christmas")) {
+            game.gifts += 10;
+            game.stats.gifts += 10;
+            createNotification("+10 Gifts!");
+        }
         createNotification("Come back tomorrow!");
 
         updateMinigameTime();

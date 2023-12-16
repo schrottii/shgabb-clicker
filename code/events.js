@@ -6,8 +6,8 @@ function isEvent(eventName, all=false) {
 
     if (all) eventName = "christmas"; //first event whatever it is
     switch (eventName) {
-        case "christmas": //1216
-            if (today >= 1215 && today <= 1230 && game.stats.hms >= 2000) return true;
+        case "christmas":
+            if (today >= 1216 && today <= 1230 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "nextEvent";
     }
