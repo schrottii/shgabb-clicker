@@ -19,6 +19,7 @@ var game = {
     gems: 0,
     gemboost: 1,
     artifactScrap: 0,
+    gifts: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -93,6 +94,7 @@ var game = {
         hms: 0,
         hmstp: 0,
         tgems: 0,
+        gifts: 0,
         tttpw: 0,
         tttpl: 0,
         tttw: 0,
@@ -118,6 +120,7 @@ var game = {
     nexgai: [0, 0, 0, 0],
     tttd: 1,
     dgo: 100,
+    evpfps: [],
     cheated: false,
 }
 

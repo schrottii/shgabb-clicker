@@ -56,6 +56,11 @@ var pfps = [
     new PFP(303, "images/currencies/silicone.png", () => getAchievementByName("Silicone V").unlock()),
     new PFP(304, "images/currencies/ameliorer.png", () => getAchievementByName("Cap Bro III").unlock()),
     new PFP(305, "images/currencies/gem.png", () => getAchievementByName("The Red Gems V").unlock()),
+
+    // 400 - 599 | Event PFPs
+    new PFP(400, "images/currencies/gift.png", () => game.evpfps.includes(400)),
+    new PFP(401, "images/gift2.png", () => game.evpfps.includes(401)),
+    new PFP(402, "images/ball.png", () => game.evpfps.includes(402)),
 ]
 
 function calculateProfileCanvasSize() {

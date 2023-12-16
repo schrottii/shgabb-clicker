@@ -7,7 +7,17 @@
 const gameVersion = "2.1";
 
 const currentPatchNotes = [
-    "-> Player Profile: ",
+    "-> Events:",
+    "- New feature: Events!",
+    "- The section can be found in the second selection, unlocked at More Shgabb 2000",
+    "- Sometimes an event is active, with various unique features and rewards",
+    "- New event: Christmas Event!",
+    "-> Christmas Event:",
+    "- Active from December 16th - December 30th",
+    "- Get Gifts by clicking! Faster click cooldown reduces gift chance",
+    "- Open gifts to get Shgabb, Sandwiches, Gems and 3 event PFPs!",
+    "- 1, 10 or 100 gifts can be opened at once",
+    "-> Player Profile:",
     "- Added the Player Profile!",
     "- The section can be found in the third selection, unlocked at More Shgabb 100",
     "- This practical card shows your hms, artifacts and achievements all in one place",
@@ -18,6 +28,7 @@ const currentPatchNotes = [
     "-> PFPs:",
     "- Added a default PFP (shgabb), unlocked by default",
     "- Added 6 more PFPs, of currencies, that can be unlocked by getting the fifth Achievement",
+    "- Another 3 PFPs can be earned in the Christmas event, for a total of 10 PFPs",
     "- Added UI to change PFP",
     "-> Artifacts:",
     "- Reworked the mechanism to get artifacts, it was quite off from the intended/promised chances before, special thanks to elmenda452",
@@ -59,6 +70,7 @@ const currentPatchNotes = [
     "- Achievements: Achievements Become Exponential",
     "- Changed Shgabb to shgabb (the person) in Shgic",
     "-> Other:",
+    "- Added 5 new achievements (75 total)",
     "- -MAX is now only available for maxed upgrades",
     "- Renamed the first upgrade, Get More Shgabb to More Shgabb",
     "- Renamed the first Sandwich upgrade, Get Shgabb Automatically to Auto Shgabb",
@@ -160,6 +172,7 @@ var ui = {
     prestigeButton: document.getElementById("prestigebutton"),
     topSquare: document.getElementById("topSquare"),
     settings: document.getElementById("settings"),
+    eventRender: document.getElementById("eventRender"),
 }
 
 // Ad variables
@@ -367,6 +380,14 @@ function clickButton() {
 
         if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
 
+        if (isEvent("christmas")) {
+            if (Math.random() < 1 / (500 / getCooldown())) {
+                game.gifts += 1;
+                game.stats.gifts += 1;
+                createNotification("+1 Gift!");
+            }
+        }
+
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction();
             game.si += amount;
@@ -374,11 +395,7 @@ function clickButton() {
         }
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
-            amount = Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
-                * goldenShgabbUpgrades.formaggi.currentEffect())
-                * ameliorerUpgrades.sandwichBoost.currentEffect()
-                * (1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
-                * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
+            amount = getSandwich(critMulti);
             game.sw += amount;
             game.stats.sw += amount;
             game.stats.swtp += amount;
@@ -510,6 +527,14 @@ function getGoldenShgabb() {
         * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
         * getAchievementBoost()
         );
+}
+
+function getSandwich(critMulti = 1) {
+    return Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
+        * goldenShgabbUpgrades.formaggi.currentEffect())
+        * ameliorerUpgrades.sandwichBoost.currentEffect()
+        * (1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
 }
 
 function criticalHit() {
@@ -862,6 +887,7 @@ function updateStats() {
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
         + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
+        + "<br />Total Gifts: " + fn(game.stats.gifts)
         + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
@@ -870,6 +896,7 @@ function updateStats() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />Gift Chance: 1/" + Math.ceil(500 / getCooldown())
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
         + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/800)" + (allArtifactsOfRarity(1) ? " ALL" : "")
@@ -885,7 +912,6 @@ function updateStats() {
 
 function updateUI() {
     // Update UI
-    renderPlayerProfile();
     if (game.profile.id == "") {
         game.profile.id = Math.random().toString(16).slice(2);
         game.profile.startVer = gameVersion;
@@ -954,6 +980,17 @@ function updateUI() {
     if (selection("minigames")) {
         updateMinigameUI();
     }
+
+    // Plaj Provif
+    if (selection("playerprofile")) {
+        renderPlayerProfile();
+    }
+
+    // Eventzzz
+    if (selection("events")) {
+        renderCurrentEvent();
+    }
+
 
     // Notifications
     ui.notifications.innerHTML = "";
@@ -1314,6 +1351,8 @@ renderAmeConvert();
 updateUpgradeColors();
 renderAllSelection();
 renderPFPs();
+if (isEvent("christmas")) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
+else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
 
 renderSettings();
 

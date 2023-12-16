@@ -243,7 +243,7 @@ function getArtifact(multi = 1) {
 		if (!allArtifactsOfRarity(4) && Math.random() < 0.5 * anyArtifactOfRarity(4)) {
 			gambleArtifact(4);
 		}
-		else if (anyArtifactsOfRarity(4)) {
+		else if (anyArtifactOfRarity(4)) {
 			artifactDuplicate(4);
 		}
 	}
@@ -251,7 +251,7 @@ function getArtifact(multi = 1) {
 		if (!allArtifactsOfRarity(3) && Math.random() < 0.5 * anyArtifactOfRarity(3)) {
 			gambleArtifact(3);
 		}
-		else if (anyArtifactsOfRarity(3)) {
+		else if (anyArtifactOfRarity(3)) {
 			artifactDuplicate(3);
 		}
 	}
@@ -259,7 +259,7 @@ function getArtifact(multi = 1) {
 		if (!allArtifactsOfRarity(2) && Math.random() < 0.5 * anyArtifactOfRarity(2)) {
 			gambleArtifact(2);
 		}
-		else if (anyArtifactsOfRarity(2)) {
+		else if (anyArtifactOfRarity(2)) {
 			artifactDuplicate(2);
 		}
 	}
@@ -267,7 +267,7 @@ function getArtifact(multi = 1) {
 		if (!allArtifactsOfRarity(1) && Math.random() < 0.5 * anyArtifactOfRarity(1)) {
 			gambleArtifact(1);
 		}
-		else if (anyArtifactsOfRarity(1)) {
+		else if (anyArtifactOfRarity(1)) {
 			artifactDuplicate(1);
 		}
 	}

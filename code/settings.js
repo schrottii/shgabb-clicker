@@ -105,7 +105,8 @@ function toggleBG() {
         createNotification("Background OFF");
     }
     else {
-        body.style.backgroundImage = "url(images/shgabb-background.png)";
+        if (isEvent("christmas")) body.style.backgroundImage = "url(images/shgabb-background-christmas.png)";
+        else body.style.backgroundImage = "url(images/shgabb-background.png)";
         body.style.backgroundColor = "none";
         createNotification("Background ON");
     }

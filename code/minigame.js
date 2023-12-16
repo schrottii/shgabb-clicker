@@ -79,8 +79,9 @@ function updateMinigameTime() {
 }
 
 function compareMinigameTime() {
-    let today = new Date();
-    let newTime = parseInt(today.getYear() + "" + (today.getUTCMonth().toString().length == 1 ? "0" + today.getUTCMonth() : today.getUTCMonth()) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate()));
+    let date = new Date();
+    // yyymmdd
+    let newTime = parseInt(date.getYear() + "" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() : date.getUTCMonth()) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     return newTime > game.tttd; // returns true if it's a new day
 }
 
