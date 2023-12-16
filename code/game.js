@@ -3,16 +3,23 @@
 // GAME
 
 var game = {
+    profile: {
+        name: "",
+        id: "",
+        startVer: "",
+        pfp: 100,
+    },
     shgabb: 0,
     clickCooldown: 0,
     sw: 0,
     gs: 0,
     si: 0,
     ame: 0,
-    ameUp: [0, 0, 0, 0],
+    ameUp: [0, 0, 0, 0, 0],
     gems: 0,
     gemboost: 1,
     artifactScrap: 0,
+    gifts: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -64,6 +71,11 @@ var game = {
         unlockMSW2: 0,
         siliconeBoost: 0,
         fourthArtifactSlot: 0,
+
+        sandwichBoost: 0,
+        critsAffectSW: 0,
+        gems2ame: 0,
+        keepSWU: 0,
     },
     stats: {
         shgabb: 0,
@@ -82,6 +94,7 @@ var game = {
         hms: 0,
         hmstp: 0,
         tgems: 0,
+        gifts: 0,
         tttpw: 0,
         tttpl: 0,
         tttw: 0,
@@ -107,6 +120,7 @@ var game = {
     nexgai: [0, 0, 0, 0],
     tttd: 1,
     dgo: 100,
+    evpfps: [],
     cheated: false,
 }
 

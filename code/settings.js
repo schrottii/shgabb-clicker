@@ -61,12 +61,18 @@ function onSettingClick(toggle) {
 
 function renderSettings() {
     let render = "";
+    let sortedSettings;
 
     for (se in settingSections) {
+        sortedSettings = [];
         render = render + "<h3>" + settingSectionsDisplay[se] + "</h3>";
 
         for (b in settingButtons) {
-            if (settingButtons[b].category == settingSections[se]) render = render + settingButtons[b].render();
+            if (settingButtons[b].category == settingSections[se]) sortedSettings.push(settingButtons[b]);
+        }
+        for (b in sortedSettings) {
+            render = render + sortedSettings[b].render();
+            if ((b - 1) % (window.innerWidth >= 768 ? 4 : 2) == 0 && b != 1) render = render + "<br />";
         }
 
         if (settingSections[se] == "design") render = render + "<br />" + upgradeColorsRender;
@@ -99,7 +105,8 @@ function toggleBG() {
         createNotification("Background OFF");
     }
     else {
-        body.style.backgroundImage = "url(images/shgabb-background.png)";
+        if (isEvent("christmas")) body.style.backgroundImage = "url(images/shgabb-background-christmas.png)";
+        else body.style.backgroundImage = "url(images/shgabb-background.png)";
         body.style.backgroundColor = "none";
         createNotification("Background ON");
     }

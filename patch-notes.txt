@@ -24,6 +24,7 @@ July - December 2023:
 2.0
 2.0.1
 2.0.2
+2.1
 
 
 
@@ -723,3 +724,88 @@ Version 2.0.2:
 - Fixed Toggle Currencies Display setting not working
 - Fixed the artifact chances display pretending you own all artifacts of a rarity when you really don't
 - Fixed the other frustration artifact rounding issue
+
+
+
+2023/12/16 2.1:
+Version 2.1:
+-> Events:
+- New feature: Events!
+- The section can be found in the second selection, unlocked at More Shgabb 2000
+- Sometimes an event is active, with various unique features and rewards
+- New event: Christmas Event!
+
+-> Christmas Event:
+- Active from December 16th - December 30th
+- Get Gifts by clicking! Faster click cooldown reduces gift chance
+- Shgic also gives 10 Gifts per day!
+- Open Gifts to get Shgabb, Sandwiches, Gems and 3 event PFPs!
+- 1, 10 or 100 Gifts can be opened at once
+
+-> Player Profile:
+- Added the Player Profile!
+- The section can be found in the third selection, unlocked at More Shgabb 100
+- This practical card shows your hms, artifacts and achievements all in one place
+- Very useful for sharing and bragging!
+- Added player IDs, start version and name
+- Added a button to set/change the player name
+- Added player profile pictures (PFPs)
+
+-> PFPs:
+- Added a default PFP (shgabb), unlocked by default
+- Added 6 more PFPs, of currencies, that can be unlocked by getting the fifth Achievement
+- Another 3 PFPs can be earned in the Christmas event, for a total of 10 PFPs
+- Added UI to change PFP
+
+-> Artifacts:
+- Reworked the mechanism to get artifacts, it was quite off from the intended/promised chances before, special thanks to elmenda452
+- Added the Artifact search!
+- Type the name, effect, rarity, level or anything else, and only those Artifacts will be shown
+- Previously, equipped Artifacts were always highlighted in every mode. Now:
+- Select mode: equipped Artifacts
+- Upgrade mode: level 1 and 2 Artifacts
+- Destroy mode: level 1 Artifacts that are not equipped
+- Artifact Scrap and amount of Artifacts unlocked are now in the same row
+- Added proper support for artifacts that only boost GS from prestiges (Surgeon's Sacrifice)
+
+-> Améliorer:
+- Added the 5th set of Améliorer Upgrades (100 and 120 Amé)
+- Added 4 new Améliorer Upgrades (5th set):
+- New Améliorer Upgrade: Sandwich Boost
+- New Améliorer Upgrade: Crits Affect Sandwiches
+- New Améliorer Upgrade: Gems To Amé (limited by the other 4 convert options)
+- New Améliorer Upgrade: Keep Sandwich Upgrades
+- The amount of times each currency has been converted to Amé is now visible
+
+-> Design:
+- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height
+- Reworked design of the prestige button: removed the icons at the sides, added an image within the button, text closer to center
+- Removed unnecessary space after the sandwiches section
+
+-> Upgrade design:
+- Reworked upgrade rendering
+- Removed the left/right seperation (which made each upgrade always appear on the left or the right side)
+- On wide screens there can now be up to 4 upgrades per row (instead of 2)
+- Made upgrade buttons longer
+- Some other small changes
+
+-> Capitalization:
+- Capitalized the names of all currencies and features, see affected texts below
+- Shgabb: Prestige Button, Stronger Clicks ad, Stronger Auto ad, Bomblike, Auto Shgabb (Get Shgabb Automatically), Fridge, 1. Upgrade boosts clicks, Meaning Of Life, Divine Shgabb, GS boosts Shgabb 1 & 2 (and their Amé upgrades), Cheese, Shgabb Boost (Amé), Artifact boosts, Paroxysm, Condone, Seeds, Dice
+- Sandwiches: Prestige Button, notification, More Sandwiches ad, Sandwich Chance, Sandwich Amount, Fridge, 1. Upgrade boosts clicks, Unlock More Sandwich Upgrades & 2, Artifact boosts, Quick Snacks, Well Fed Resets, Dice
+- Golden Shgabb: Prestige Button, notification, GS boosts Shgabb 1 & 2, 2+2=5
+- Silicone Shgabb: More Silicone ad, More Silicone, Stronger Silicone, Silicone From Clicks, Artifact boosts, Silicone implants, Surgeon's Sacrifice
+- Améliorer: (none)
+- Gems: All Gem offers, More Gems ad, Shiny, The Red Gems I - V, Sarah's Gems Achievements, Artifact boosts, Bloody Gray Ring, Paroxysm, Gem Frustration
+- Artifact Scrap: Artifact Gift Gem offer, upgrading an Artifact
+- Artifacts: All Artifact related Achievements except Do we have dinosaurs???, destroying an Artifact, Artifact Gift & Loadout & Offer Gem offers, Artifact boosts, Bloody Red Ring, Sarah's Collection, Fourth Artifact Slot (Amé)
+- Achievements: Achievements Become Exponential
+- Changed Shgabb to shgabb (the person) in Shgic
+
+-> Other:
+- Added favicon
+- Added 5 new achievements (75 total)
+- -MAX is now only available for maxed upgrades
+- Renamed the first upgrade, Get More Shgabb to More Shgabb
+- Renamed the first Sandwich upgrade, Get Shgabb Automatically to Auto Shgabb
+- Removed evil warning from the Golden Shgabb II Achievement

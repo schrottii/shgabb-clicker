@@ -1,8 +1,8 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 // (both the minigame and the main game, lol)
 
-const canvas = document.getElementById("minigame");
-const ctx = canvas.getContext("2d");
+const gameCanvas = document.getElementById("minigame");
+const ctx = gameCanvas.getContext("2d");
 
 let w = 256;
 let h = 256;
@@ -35,10 +35,10 @@ let hitboxes = [
     [drawStartX + (w / 3.6), drawStartY + (h / 2.5)]
 ]
 
-canvas.addEventListener("click", onCanvasClick);
-canvas.addEventListener("mousemove", onMouseMove);
+gameCanvas.addEventListener("click", ongameCanvasClick);
+gameCanvas.addEventListener("mousemove", onMouseMove);
 
-function onCanvasClick() {
+function ongameCanvasClick() {
     if (canPlayTTT) {
         for (l in hitboxes) {
             if (mousex >= hitboxes[l][0] && mousex <= hitboxes[l][0] + (w / 8)
@@ -55,8 +55,8 @@ function onCanvasClick() {
 }
 
 function onMouseMove(e) {
-    mousex = e.clientX - canvas.getBoundingClientRect().left;
-    mousey = e.clientY - canvas.getBoundingClientRect().top;
+    mousex = e.clientX - gameCanvas.getBoundingClientRect().left;
+    mousey = e.clientY - gameCanvas.getBoundingClientRect().top;
 }
 
 function updateMinigameTime() {
@@ -79,8 +79,9 @@ function updateMinigameTime() {
 }
 
 function compareMinigameTime() {
-    let today = new Date();
-    let newTime = parseInt(today.getYear() + "" + (today.getUTCMonth().toString().length == 1 ? "0" + today.getUTCMonth() : today.getUTCMonth()) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate()));
+    let date = new Date();
+    // yyymmdd
+    let newTime = parseInt(date.getYear() + "" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() : date.getUTCMonth()) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     return newTime > game.tttd; // returns true if it's a new day
 }
 
@@ -179,6 +180,11 @@ function minigameCheckForWinners() {
         game.stats.tttw += 1;
         createNotification("You won!");
         createNotification("+2 Améliorer!");
+        if (isEvent("christmas")) {
+            game.gifts += 10;
+            game.stats.gifts += 10;
+            createNotification("+10 Gifts!");
+        }
         createNotification("Come back tomorrow!");
 
         updateMinigameTime();
@@ -190,7 +196,7 @@ function minigameCheckForWinners() {
         canPlayTTT = false;
 
         game.stats.tttl += 1;
-        createNotification("Shgabb won... no reward...");
+        createNotification("shgabb won... no reward...");
         createNotification("Come back tomorrow!");
         return false;
     }
@@ -301,7 +307,7 @@ function updateMinigameUI() {
         minigameDrawField();
 
         if (pointsPlayer > 2) minigameUpdateText("You won!");
-        else if (pointsHer > 2) minigameUpdateText("Shgabb won!");
+        else if (pointsHer > 2) minigameUpdateText("shgabb won!");
         else minigameUpdateText("Shgic Shgac Shgoe - " + pointsPlayer + ":" + pointsHer);
     }
     else {

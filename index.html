@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
     <link href="main.css" rel="stylesheet" type="text/css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body>
     <!-- Top, Quote, Click Button, Notifs -->
@@ -49,55 +53,39 @@
     <div id="shgabbSection">
         <h3>Shgabb Upgrades</h3>
         <span id="shgabbAmount">0 Shgabb</span><br />
-        <div>
-            <span id="upgradesl" style="float: left; width: 50%;"></span>
-            <span id="upgradesr" style="float: right; width: 50%;"></span>
-        </div>
+        <span id="upgradesr"></span>
     </div>
 
     <!-- Sandwiches -->
     <div id="sandwichSection">
         <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
         <h3>Sandwich Upgrades</h3>
-        <span id="swAmount"></span>
-        <div>
-            <span id="swupgradesl" style="float: left; width: 50%;"></span>
-            <span id="swupgradesr" style="float: right; width: 50%;"></span>
-        </div>
-        <br /> <br />
+        <span id="swAmount"></span><br />
+        <span id="swupgradesr"></span>
     </div>
 
     <!-- Golden Shgabb -->
     <div id="goldenShgabbSection">
         <h3>Golden Shgabb</h3>
-        <img src="images\prestige.png" /><button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><img src="images\prestige.png" /><br />
-        <span id="gsAmount"></span>
-        <div>
-            <span id="gsupgradesl" style="float: left; width: 50%;"></span>
-            <span id="gsupgradesr" style="float: right; width: 50%;"></span>
-        </div>
+        <button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
+        <span id="gsAmount"></span><br />
+        <span id="gsupgradesr"></span>
     </div>
 
     <!-- Silicone Shgabb -->
     <div id="siliconeShgabbSection">
         <h3>Silicone Shgabb</h3>
         <span id="siAmount"></span><br />
-        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.
-        <div>
-            <span id="siupgradesl" style="float: left; width: 50%;"></span>
-            <span id="siupgradesr" style="float: right; width: 50%;"></span>
-        </div>
+        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.<br />
+        <span id="siupgradesr"></span>
     </div>
 
     <!-- Ameliorer -->
     <div id="ameliorerSection">
         <h3>Améliorer</h3>
         <span id="ameAmount"></span><br />
-        <span id="ameconvert" class="square" style="width: 50%"></span>
-        <div>
-            <span id="ameupgradesl" style="float: left; width: 50%;"></span>
-            <span id="ameupgradesr" style="float: right; width: 50%;"></span>
-        </div>
+        <span id="ameconvert" class="square" style="width: 50%"></span><br />
+        <span id="ameupgradesr"></span>
         <br style="clear:both" />
         <input type="checkbox" id="amereset" value="true">
         <label for="amereset" id="amereset2">Reset Améliorer and Upgrades on prestige</label>
@@ -126,8 +114,11 @@
     <!-- Artifacts -->
     <div id="artifactSection">
         <h3>Artifacts</h3>
-        <span id="artifactScrapAmount"></span><br />
-        <span id="artifactamount"></span>
+        <span id="artifactScrapAmount"></span>    <span id="artifactamount"></span> <br />
+
+        <label for="artifactSearch">Search:</label>
+        <input type="text" id="artifactSearch" name="artifactSearch">
+
         <br />
         <span id="artifacts" style="width: 80%"></span>
     </div>
@@ -137,6 +128,15 @@
         <h3>Shgic Shgac Shgoe Minigame</h3>
         Every day you have the chance to win 2 Améliorer by getting to 3 points before shgabb does! <br />
         <canvas id="minigame" width=256 height=256></canvas>
+    </div>
+
+    <!-- Event -->
+    <div id="eventsSection">
+        <span id="eventRender"></span>
+        <br /><br />
+        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
+        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
+        <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>
     </div>
 
     <hr style="clear:both" />
@@ -169,6 +169,15 @@
         <button onclick="cheatEngine('sub')">-</button><br />
         <span id="cheatDisplay"></span>
         <hr style="clear:both" />
+    </div>
+
+    <!-- Player Profile -->
+    <div id="playerprofileSection">
+        <h3>Player Profile</h3>
+        <canvas id="profileCanvas" class="playerProfile"></canvas><br />
+        <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
+        <h3>PFPs</h3>
+        <span id="pfpsSel" style="width: 80%"></span>
     </div>
 
     <!-- Stats -->
@@ -239,6 +248,8 @@
     <script src="code\artifacts.js"></script>
     <script src="code\gems.js"></script>
     <script src="code\minigame.js"></script>
+    <script src="code\playerprofile.js"></script>
+    <script src="code\events.js"></script>
     <script src="code\render.js"></script>
     <script src="code\main.js"></script>
 </body>
