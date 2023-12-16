@@ -402,7 +402,7 @@ function clickButton() {
             game.sw += amount;
             game.stats.sw += amount;
             game.stats.swtp += amount;
-            createNotification("+" + amount + " Sandwich" + (amount > 1 ? "es" : "") + "!");
+            createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
         }
 
         changeDiceAmount();
