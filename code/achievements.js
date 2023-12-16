@@ -105,4 +105,8 @@ var achievements = [
     new Achievement(64, "clicks.png", "Clicker V", "Click 1M times", () => game.stats.clicks >= 1000000),
     new Achievement(51, "hms.png", "Shgabb Conqueror V", "Reach More Shgabb level 15000", () => game.stats.hms >= 15000),
     new Achievement(71, "gift.png", "Gifted Kid", "Receive the rarest prize", () => game.evpfps.includes(400) || game.evpfps.includes(401)),
+    new Achievement(72, "gift.png", "Merry Christmas", "Open a gift!", () => false),
+    new Achievement(73, "gift.png", "Milk And Cookies I", "Get 25 Gifts total", () => game.stats.gifts >= 25),
+    new Achievement(74, "gift.png", "Milk And Cookies II", "Get 1000 Gifts total", () => game.stats.gifts >= 1000),
+    new Achievement(75, "artifact.png", "Milk And Cookies II", "Find the secret artifact", () => getArtifactByID(400).isUnlocked()),
 ]

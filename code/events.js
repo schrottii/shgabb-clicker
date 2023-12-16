@@ -33,6 +33,7 @@ function openGifts(amount) {
         return false;
     }
     game.gifts -= amount;
+    if (!game.ach.includes(72)) game.ach.push(72);
 
     // PFP 0.1% - Gems 10% - SW 40% - Shgabb 60%
     let giftContents = [0, 0, 0];

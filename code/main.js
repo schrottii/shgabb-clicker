@@ -70,6 +70,7 @@ const currentPatchNotes = [
     "- Achievements: Achievements Become Exponential",
     "- Changed Shgabb to shgabb (the person) in Shgic",
     "-> Other:",
+    "- Added favicon",
     "- Added 5 new achievements (75 total)",
     "- -MAX is now only available for maxed upgrades",
     "- Renamed the first upgrade, Get More Shgabb to More Shgabb",
