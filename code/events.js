@@ -35,7 +35,7 @@ function openGifts(amount) {
     game.gifts -= amount;
     if (!game.ach.includes(72)) game.ach.push(72);
 
-    // PFP 0.1% - Gems 10% - SW 40% - Shgabb 60%
+    // PFP 0.1% - Gems 19.9% - SW 40% - Shgabb 40%
     let giftContents = [0, 0, 0];
 
     for (ogi = 0; ogi < amount; ogi++) {
@@ -52,13 +52,13 @@ function openGifts(amount) {
             createNotification("Received a Christmas PFP!");
             game.evpfps.push(402);
         }
-        else if (random < 0.1) giftContents[0] += 1;
-        else if (random < 0.4) giftContents[1] += 1;
+        else if (random < 0.2) giftContents[0] += 2;
+        else if (random < 0.6) giftContents[1] += 1;
         else giftContents[2] += 1;
     }
 
-    let sandwichAmount = giftContents[1] * Math.ceil((getSandwich()) * 5);
-    let shgabbAmount = giftContents[2] * Math.ceil(firstGemOfferWorth() / 5);
+    let sandwichAmount = giftContents[1] * Math.ceil((getSandwich()) * 50);
+    let shgabbAmount = giftContents[2] * Math.ceil(firstGemOfferWorth() * 2);
 
     if (sandwichAmount > 0) {
         game.sw += sandwichAmount;

@@ -33,7 +33,6 @@ function renderPFPs() {
 }
 
 function setPFP(id) {
-    console.log(id);
     game.profile.pfp = id;
 }
 

@@ -48,6 +48,7 @@ const currentPatchNotes = [
     "- New Améliorer Upgrade: Crits Affect Sandwiches",
     "- New Améliorer Upgrade: Gems To Amé (limited by the other 4 convert options)",
     "- New Améliorer Upgrade: Keep Sandwich Upgrades",
+    "- The amount of times each currency has been converted to Amé is now visible",
     "-> Design:",
     "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
     "- Reworked design of the prestige button: removed the icons at the sides, added an image within the button, text closer to center",
@@ -383,7 +384,7 @@ function clickButton() {
         if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
 
         if (isEvent("christmas")) {
-            if (Math.random() < 1 / (500 / getCooldown())) {
+            if (Math.random() < 1 / (250 / getCooldown())) {
                 game.gifts += 1;
                 game.stats.gifts += 1;
                 createNotification("+1 Gift!");
@@ -535,7 +536,7 @@ function getSandwich(critMulti = 1) {
     return Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
         * goldenShgabbUpgrades.formaggi.currentEffect())
         * ameliorerUpgrades.sandwichBoost.currentEffect()
-        * (1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
+        * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
 }
 
@@ -898,7 +899,7 @@ function updateStats() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
-        + "<br />Gift Chance: 1/" + Math.ceil(500 / getCooldown())
+        + "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown())
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
         + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/800)" + (allArtifactsOfRarity(1) ? " ALL" : "")
