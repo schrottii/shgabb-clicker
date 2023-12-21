@@ -25,6 +25,7 @@ July - December 2023:
 2.0.1
 2.0.2
 2.1
+2.1.1
 
 
 
@@ -809,3 +810,38 @@ Version 2.1:
 - Renamed the first upgrade, Get More Shgabb to More Shgabb
 - Renamed the first Sandwich upgrade, Get Shgabb Automatically to Auto Shgabb
 - Removed evil warning from the Golden Shgabb II Achievement
+
+
+
+2023/12/21 2.1.1:
+Version 2.1.1:
+-> Silicone Shgabb:
+- Boost from playtime is now capped at 3,000,000 seconds (833.3 hours, previously uncapped)
+- Buffed More Silicone ad and added new Silicone Artifacts (see below)
+- Capitalized Shgabb in Stronger Silicone's current effect display
+
+-> Balance:
+- Increased chance to get PFPs from Gifts by +400% (5x, 0.1% -> 0.5%)
+- Increased More Crits ad boost duration from 2 to 3 minutes
+- Increased More Silicone ad boost duration from 3 to 5 minutes
+
+-> Design:
+- Changed images of the epic Artiacts Sarah's Gems, Furious Knife, Shgabb's handcuffs and Shgabb Seeds (4)
+- Changed images of Gifts, the other 2 Event PFPs and Gift Achievements (4)
+- Changed images of Unlock, Shgic Shgac Shgoe and Highest More Shgabb Achievements (3)
+- Total Clicks stat now uses notations
+- Total Time stat is now displayed in hours if the playtime is 5 hours or more
+- Removed two weird lines behind the social stuff
+
+-> Other:
+- Added 5 new Artifacts (45 -> 50, 2 common, 2 rare, 1 epic)
+- Improved Artifact search, making it possible to search for "Artifact" and "Click"
+- The Gem Offers Artifact Gift, Loadout and Offer are now locked until Artifacts are unlocked
+- Buying Artifact Loadout or Offer now refreshes Artifacts
+
+-> Bug fixes:
+- Fixed the 3 GS artifacts not working
+- Fixed Mr. President achievement not having the correct name and not working
+- Fixed Ring Of Slowing's effect not increasing on level 2 and 3
+- Fixed issues with Sandwiches and notations
+- Fixed a Trash Can exploit

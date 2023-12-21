@@ -381,6 +381,7 @@ function increaseGS(multi) {
     let amount = Math.floor(getGoldenShgabb() * multi);
     game.gs += amount;
     game.stats.gs += amount;
+    return amount;
 }
 
 function getFreezeTime() {
@@ -491,7 +492,7 @@ function getGoldenShgabb() {
 }
 
 function getSandwich(critMulti = 1) {
-    return Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1 * getArtifactBoost("sw")
+    return Math.floor(((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
         * goldenShgabbUpgrades.formaggi.currentEffect())
         * ameliorerUpgrades.sandwichBoost.currentEffect()
         * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
@@ -594,9 +595,18 @@ function unlevel(id, isMax=false) {
 
 function prestigeButton() {
     if (confirm("Do you really want to prestige?")) {
+        let amount = increaseGS(1 * getArtifactBoost("prestigegs"));
+
+        // Reset Shgabb, Sandwiches, some stat stuff
         game.shgabb = 0 + getArtifactBoost("resetshgabb");
         game.sw = 0;
+        game.gemboost = 1; // 2nd Gem offer
+        game.stats.shgabbtp = 0;
+        game.stats.swtp = 0;
+        game.stats.ctp = 0;
+        game.stats.pttp = 0;
 
+        // Shgabb and Sandwich Upgrades
         for (let u of Object.keys(shgabbUpgrades)) {
             game.upgradeLevels[u] = 0;
         }
@@ -605,20 +615,10 @@ function prestigeButton() {
             if (ameliorerUpgrades.keepSWU.currentLevel() < keepSWU.indexOf(sandwichUpgrades[u].name)) game.upgradeLevels[u] = 0;
         }
 
-        increaseGS(1 * getArtifactBoost("prestigegs"));
+        if (ui.ameReset.checked == true) ameReset();
 
         game.stats.pr += 1;
-
-        game.stats.shgabbtp = 0;
-        game.stats.swtp = 0;
-        game.stats.ctp = 0;
-        game.stats.pttp = 0;
-
         game.stats.hmstp = game.stats.hms;
-
-        game.gemboost = 1;
-
-        if (ui.ameReset.checked == true) ameReset();
 
         updateUpgrades();
         createNotification("Prestiged for " + amount + " Golden Shgabb!");
