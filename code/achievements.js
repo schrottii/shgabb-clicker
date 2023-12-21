@@ -108,5 +108,5 @@ var achievements = [
     new Achievement(72, "gift.png", "Merry Christmas", "Open a gift!", () => false),
     new Achievement(73, "gift.png", "Milk And Cookies I", "Get 25 Gifts total", () => game.stats.gifts >= 25),
     new Achievement(74, "gift.png", "Milk And Cookies II", "Get 1000 Gifts total", () => game.stats.gifts >= 1000),
-    new Achievement(75, "artifact.png", "Mr. President", "Find the secret artifact", () => getArtifactByID(400).isUnlocked()),
+    new Achievement(75, "artifact.png", "Mr. President", "Find the secret artifact", () => game.a.includes(400)),
 ]

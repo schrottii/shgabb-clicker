@@ -4,100 +4,56 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.1";
+const gameVersion = "2.1.1";
 
 const currentPatchNotes = [
-    "-> Events:",
-    "- New feature: Events!",
-    "- The section can be found in the second selection, unlocked at More Shgabb 2000",
-    "- Sometimes an event is active, with various unique features and rewards",
-    "- New event: Christmas Event!",
-    "-> Christmas Event:",
-    "- Active from December 16th - December 30th",
-    "- Get Gifts by clicking! Faster click cooldown reduces gift chance",
-    "- Shgic also gives 10 Gifts per day!",
-    "- Open Gifts to get Shgabb, Sandwiches, Gems and 3 event PFPs!",
-    "- 1, 10 or 100 Gifts can be opened at once",
-    "-> Player Profile:",
-    "- Added the Player Profile!",
-    "- The section can be found in the third selection, unlocked at More Shgabb 100",
-    "- This practical card shows your hms, artifacts and achievements all in one place",
-    "- Very useful for sharing and bragging!",
-    "- Added player IDs, start version and name",
-    "- Added a button to set/change the player name",
-    "- Added player profile pictures (PFPs)",
-    "-> PFPs:",
-    "- Added a default PFP (shgabb), unlocked by default",
-    "- Added 6 more PFPs, of currencies, that can be unlocked by getting the fifth Achievement",
-    "- Another 3 PFPs can be earned in the Christmas event, for a total of 10 PFPs",
-    "- Added UI to change PFP",
-    "-> Artifacts:",
-    "- Reworked the mechanism to get artifacts, it was quite off from the intended/promised chances before, special thanks to elmenda452",
-    "- Added the Artifact search!",
-    "- Type the name, effect, rarity, level or anything else, and only those Artifacts will be shown",
-    "- Previously, equipped Artifacts were always highlighted in every mode. Now:",
-    "- Select mode: equipped Artifacts",
-    "- Upgrade mode: level 1 and 2 Artifacts",
-    "- Destroy mode: level 1 Artifacts that are not equipped",
-    "- Artifact Scrap and amount of Artifacts unlocked are now in the same row",
-    "- Added proper support for artifacts that only boost GS from prestiges (Surgeon's Sacrifice)",
-    "-> Améliorer:",
-    "- Added the 5th set of Améliorer Upgrades (100 and 120 Amé)",
-    "- Added 4 new Améliorer Upgrades (5th set):",
-    "- New Améliorer Upgrade: Sandwich Boost",
-    "- New Améliorer Upgrade: Crits Affect Sandwiches",
-    "- New Améliorer Upgrade: Gems To Amé (limited by the other 4 convert options)",
-    "- New Améliorer Upgrade: Keep Sandwich Upgrades",
-    "- The amount of times each currency has been converted to Amé is now visible",
+    "-> Silicone Shgabb:",
+    "- Boost from playtime is now capped at 3,000,000 seconds (833.3 hours, previously uncapped)",
+    "- Buffed More Silicone ad and added new Silicone Artifacts (see below)",
+    "- Capitalized Shgabb in Stronger Silicone's current effect display",
+    "-> Balance:",
+    "- Increased chance to get PFPs from Gifts by +400% (5x, 0.1% -> 0.5%)",
+    "- Increased More Crits ad boost duration from 2 to 3 minutes",
+    "- Increased More Silicone ad boost duration from 3 to 5 minutes",
     "-> Design:",
-    "- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height",
-    "- Reworked design of the prestige button: removed the icons at the sides, added an image within the button, text closer to center",
-    "- Removed unnecessary space after the sandwiches section",
-    "-> Upgrade design:",
-    "- Reworked upgrade rendering",
-    "- Removed the left/right seperation (which made each upgrade always appear on the left or the right side)",
-    "- On wide screens there can now be up to 4 upgrades per row (instead of 2)",
-    "- Made upgrade buttons longer",
-    "- Some other small changes",
-    "-> Capitalization:",
-    "- Capitalized the names of all currencies and features, see affected texts below",
-    "- Shgabb: Prestige Button, Stronger Clicks ad, Stronger Auto ad, Bomblike, Auto Shgabb (Get Shgabb Automatically), Fridge, 1. Upgrade boosts clicks, Meaning Of Life, Divine Shgabb, GS boosts Shgabb 1 & 2 (and their Amé upgrades), Cheese, Shgabb Boost (Amé), Artifact boosts, Paroxysm, Condone, Seeds, Dice",
-    "- Sandwiches: Prestige Button, notification, More Sandwiches ad, Sandwich Chance, Sandwich Amount, Fridge, 1. Upgrade boosts clicks, Unlock More Sandwich Upgrades & 2, Artifact boosts, Quick Snacks, Well Fed Resets, Dice",
-    "- Golden Shgabb: Prestige Button, notification, GS boosts Shgabb 1 & 2, 2+2=5",
-    "- Silicone Shgabb: More Silicone ad, More Silicone, Stronger Silicone, Silicone From Clicks, Artifact boosts, Silicone implants, Surgeon's Sacrifice",
-    "- Améliorer: (none)",
-    "- Gems: All Gem offers, More Gems ad, Shiny, The Red Gems I - V, Sarah's Gems Achievements, Artifact boosts, Bloody Gray Ring, Paroxysm, Gem Frustration",
-    "- Artifact Scrap: Artifact Gift Gem offer, upgrading an Artifact",
-    "- Artifacts: All Artifact related Achievements except Do we have dinosaurs???, destroying an Artifact, Artifact Gift & Loadout & Offer Gem offers, Artifact boosts, Bloody Red Ring, Sarah's Collection, Fourth Artifact Slot (Amé)",
-    "- Achievements: Achievements Become Exponential",
-    "- Changed Shgabb to shgabb (the person) in Shgic",
+    "- Changed images of the epic Artiacts Sarah's Gems, Furious Knife, Shgabb's handcuffs and Shgabb Seeds (4)",
+    "- Changed images of Gifts, the other 2 Event PFPs and Gift Achievements (4)",
+    "- Changed images of Unlock, Shgic Shgac Shgoe and Highest More Shgabb Achievements (3)",
+    "- Total Clicks stat now uses notations",
+    "- Total Time stat is now displayed in hours if the playtime is 5 hours or more",
+    "- Removed two weird lines behind the social stuff",
     "-> Other:",
-    "- Added favicon",
-    "- Added 5 new achievements (75 total)",
-    "- -MAX is now only available for maxed upgrades",
-    "- Renamed the first upgrade, Get More Shgabb to More Shgabb",
-    "- Renamed the first Sandwich upgrade, Get Shgabb Automatically to Auto Shgabb",
-    "- Removed evil warning from the Golden Shgabb II Achievement"
+    "- Added 5 new Artifacts (45 -> 50, 2 common, 2 rare, 1 epic)",
+    '- Improved Artifact search, making it possible to search for "Artifact" and "Click"',
+    "- The Gem Offers Artifact Gift, Loadout and Offer are now locked until Artifacts are unlocked",
+    "- Buying Artifact Loadout or Offer now refreshes Artifacts",
+    "-> Bug fixes:",
+    "- Fixed the 3 GS artifacts not working",
+    "- Fixed Mr. President achievement not having the correct name and not working",
+    "- Fixed Ring Of Slowing's effect not increasing on level 2 and 3",
+    "- Fixed issues with Sandwiches and notations",
+    "- Fixed a Trash Can exploit",
 ]
 
 // Various variables
 
-var doubleClick = 0;
+//var doubleClick = 0;
 
+// some timers
 var autoSaveTime = 5;
 var quoteTime = 15;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
-var adTime = 10;
-var adMax = 10;
-var currentNotifications = [];
-
 var time = 0;
 var oldTime = 0;
 
+// notifications
+var currentNotifications = [];
+var autoNotifications = 0;
+
+// artifacts
 var knifeBoost = 1;
 var trashCanBoost = 0;
-var autoNotifications = 0;
 
 var ui = {
     // Bars
@@ -179,12 +135,13 @@ var ui = {
 }
 
 // Ad variables
-
 var adHandler = document.getElementById("baldad");
 var adButton = document.getElementById("adstartbutton");
 var adLoaded = false;
 var availableBoost = "none";
 var currentBoost = "none";
+var adTime = 10;
+var adMax = 10;
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
 const boostTexts = {
@@ -192,8 +149,8 @@ const boostTexts = {
     strongerAuto: "Stronger Auto: Get 5x automatic Shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get Sandwiches four times as often for 3 minutes",
     fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
-    moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 2 minutes",
-    moreSilicone: "More Silicone: Get 10x Silicone shgabb for 3 minutes",
+    moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 3 minutes",
+    moreSilicone: "More Silicone: Get 10x Silicone shgabb for 5 minutes",
     moreGems: "More Gems: 3x higher Gem chance for 8 minutes",
 };
 const adTimes = {
@@ -201,8 +158,8 @@ const adTimes = {
     strongerAuto: 600,
     moreSandwiches: 180,
     fasterShgabb: 60,
-    moreCrits: 120,
-    moreSilicone: 180,
+    moreCrits: 180,
+    moreSilicone: 300,
     moreGems: 480,
 };
 
@@ -392,9 +349,10 @@ function clickButton() {
         }
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
-            let amount = 3 * getSiliconeProduction();
+            let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi");
             game.si += amount;
             game.stats.si += amount;
+            if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
         }
 
         if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
@@ -420,7 +378,7 @@ function clickButton() {
 }
 
 function increaseGS(multi) {
-    let amount = getGoldenShgabb() * Math.floor(multi);
+    let amount = Math.floor(getGoldenShgabb() * multi);
     game.gs += amount;
     game.stats.gs += amount;
 }
@@ -488,18 +446,18 @@ function getAutoProduction(sosnog2 = false) {
     );
 }
 
-function getSiliconeProduction() {
+function getSiliconeProduction(isClicks = false) {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * goldenShgabbUpgrades.moreSilicone2.currentEffect()
         * ameliorerUpgrades.siliconeBoost.currentEffect()
-        * getArtifactBoost("si")
-    );
+        * getArtifactBoost("si"))
+        * (getArtifactByID(161).isEquipped() && !isClicks ? 0 : 1);
 }
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(game.stats.playTime))) * (getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1);
+    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(Math.min(game.stats.playTime, 3000000)))) * (getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1);
 }
 
 var clickCooldown = 5;
@@ -508,7 +466,7 @@ function getCooldown() {
     let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
-        * (getArtifactByID(156).isEquipped() ? 1.5 : 1)
+        * (getArtifactByID(156).isEquipped() ? getArtifactByID(156).getEffect() : 1)
         * (getArtifactByID(203).isEquipped() ? 5 : 1))
     clickCooldown = CD; // Why T_T
     return CD;
@@ -533,11 +491,11 @@ function getGoldenShgabb() {
 }
 
 function getSandwich(critMulti = 1) {
-    return Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
+    return Math.floor((shgabbUpgrades.moreSw.currentEffect() + 1 * getArtifactBoost("sw")
         * goldenShgabbUpgrades.formaggi.currentEffect())
         * ameliorerUpgrades.sandwichBoost.currentEffect()
         * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1);
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1));
 }
 
 function criticalHit() {
@@ -571,6 +529,7 @@ function silicone() {
     if (amount > 0) {
         game.si += amount;
         game.stats.si += amount;
+        if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
     }
 
     updateUpgrades();
@@ -880,8 +839,8 @@ function updateCurrencies() {
 function updateStats() {
     ui.stats.innerHTML = "<div style='float: left; width: 50%;' class='square2'>"
         + "Highest More Shgabb: " + fn(game.stats.hms)
-        + "<br />Total Clicks: " + game.stats.clicks
-        + "<br />Total Time: " + game.stats.playTime.toFixed(1)
+        + "<br />Total Clicks: " + fn(game.stats.clicks)
+        + "<br />Total Time: " + (game.stats.playTime > 18000 ? (game.stats.playTime / 3600).toFixed(1) + " hours" : game.stats.playTime.toFixed(1))
         + "<br />Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + fn(game.stats.sw)
         + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
@@ -1063,7 +1022,7 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
+    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
 
     // Empty the game first. Make it completely empty
     emptyGame.a = [];
@@ -1105,7 +1064,7 @@ function loop(tick) {
     let time = (tick - oldTime) / 1000;
     oldTime = tick;
 
-    doubleClick -= time;
+    //doubleClick -= time;
     game.clickCooldown -= time;
     autoSaveTime -= time;
     quoteTime -= time;
