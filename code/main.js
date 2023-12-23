@@ -23,7 +23,7 @@ const currentPatchNotes = [
     "- GS boosts Shgabb 1 now stays unlocked after unleveling Even Shorter Cooldown",
     "-> Other:",
     "- New Setting: Allow custom BG in events (enabled by default)",
-    "- On PC, patch notes are now below notifications and social rather than next to them (and 100% width)",
+    "- On mobile, patch notes are now below notifications and social rather than next to them (and 100% width)",
     "- Auto Shgabb and Better Fridge now stay unlocked when unleveling Sandwich Chance if at least level 1",
     "- Fixed Prestiges giving less GS than they should",
     "- Fixed issues with Sandwiches and notations",
