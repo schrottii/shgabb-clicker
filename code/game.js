@@ -140,6 +140,7 @@ var settings = {
     notation: "normal",
     topSquare: true,
     leastAdLess: true,
+    eventBG: true,
 }
 
 // BETA (cheating)

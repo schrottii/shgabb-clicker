@@ -280,6 +280,50 @@ progress {
     font-size: 18px;
 }
 
+.socsquare1 {
+    background-color: rgb(128, 128, 128, 0.7);
+    border-color: black;
+    border: 2px solid burlywood;
+    position: absolute;
+    text-align: right;
+    width: 48%;
+}
+
+@media only screen and (min-width: 768px) {
+    .socsquare1 {
+        text-align: left;
+        width: 100%;
+        position: static;
+    }
+}
+
+.socsquare2 {
+    background-color: rgb(128, 128, 128, 0.7);
+    border-color: black;
+    border: 2px solid burlywood;
+    text-align: left;
+    width: 48%;
+    margin-left: auto;
+}
+
+@media only screen and (min-width: 768px) {
+    .socsquare2 {
+        text-align: left;
+        width: 100%;
+        position: static;
+    }
+}
+
+.socheader {
+    position: relative;
+}
+
+@media only screen and (min-width: 768px) {
+    .socheader {
+        position: inherit;
+    }
+}
+
 .grayButton {
     background-color: lightgray;
     color: black;

@@ -4,35 +4,30 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.1.1";
+const gameVersion = "2.1.2";
 
 const currentPatchNotes = [
-    "-> Silicone Shgabb:",
-    "- Boost from playtime is now capped at 3,000,000 seconds (833.3 hours, previously uncapped)",
-    "- Buffed More Silicone ad and added new Silicone Artifacts (see below)",
-    "- Capitalized Shgabb in Stronger Silicone's current effect display",
     "-> Balance:",
-    "- Increased chance to get PFPs from Gifts by +400% (5x, 0.1% -> 0.5%)",
-    "- Increased More Crits ad boost duration from 2 to 3 minutes",
-    "- Increased More Silicone ad boost duration from 3 to 5 minutes",
-    "-> Design:",
-    "- Changed images of the epic Artiacts Sarah's Gems, Furious Knife, Shgabb's handcuffs and Shgabb Seeds (4)",
-    "- Changed images of Gifts, the other 2 Event PFPs and Gift Achievements (4)",
-    "- Changed images of Unlock, Shgic Shgac Shgoe and Highest More Shgabb Achievements (3)",
-    "- Total Clicks stat now uses notations",
-    "- Total Time stat is now displayed in hours if the playtime is 5 hours or more",
-    "- Removed two weird lines behind the social stuff",
+    "- Reduced costs of Keep Sandwich Upgrades from 10 to 2 for the first 3 levels (total: 60 -> 36)",
+    "- Increased time for the first ad after loading from 10s to 20s",
+    "- Reduced time to get another ad after a boost is over from 10s to 5s",
+    "- The time after not accepting a boost is still 5s",
+    "",
+    "- Light Blue Ring: x1.5/x2/x2.5 -> x1.5/x1.75/x2",
+    "- Plastic Ring: x1.2/x1.6/x2 -> x2/x2.5/x3",
+    "- Amulet of Sluggard: 5 clicks -> 10 clicks",
+    "- Amulet of Golden Clicks: 0.01% -> 0.02%",
+    "-> Golden Shgabb:",
+    "- GS now stays unlocked after the first Prestige (rather than having to get to 1M Shgabb again, making it possible to get the upgrades immediately)",
+    "- Prestige button still requires 1M Shgabb, and now 15 seconds spent in the run as well",
+    "- GS boosts Shgabb 1 now stays unlocked after unleveling Even Shorter Cooldown",
     "-> Other:",
-    "- Added 5 new Artifacts (45 -> 50, 2 common, 2 rare, 1 epic)",
-    '- Improved Artifact search, making it possible to search for "Artifact" and "Click"',
-    "- The Gem Offers Artifact Gift, Loadout and Offer are now locked until Artifacts are unlocked",
-    "- Buying Artifact Loadout or Offer now refreshes Artifacts",
-    "-> Bug fixes:",
-    "- Fixed the 3 GS artifacts not working",
-    "- Fixed Mr. President achievement not having the correct name and not working",
-    "- Fixed Ring Of Slowing's effect not increasing on level 2 and 3",
+    "- New Setting: Allow custom BG in events (enabled by default)",
+    "- On PC, patch notes are now below notifications and social rather than next to them (and 100% width)",
+    "- Auto Shgabb and Better Fridge now stay unlocked when unleveling Sandwich Chance if at least level 1",
+    "- Fixed Prestiges giving less GS than they should",
     "- Fixed issues with Sandwiches and notations",
-    "- Fixed a Trash Can exploit",
+    "- Fixed favicon issue",
 ]
 
 // Various variables
@@ -140,8 +135,8 @@ var adButton = document.getElementById("adstartbutton");
 var adLoaded = false;
 var availableBoost = "none";
 var currentBoost = "none";
-var adTime = 10;
-var adMax = 10;
+var adTime = 20;
+var adMax = 20;
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
 const boostTexts = {
@@ -634,7 +629,7 @@ function unlockedSandwiches() {
 }
 
 function unlockedGS() {
-    return game.shgabb >= 1000000;
+    return game.shgabb >= 1000000 || game.stats.pr > 0;
 }
 
 // Notifications
@@ -909,7 +904,7 @@ function updateUI() {
     }
 
     // GS
-    if (unlockedGS()) {
+    if (game.shgabb >= 1000000 && game.stats.pttp >= 15) {
         ui.prestigeButton.style.display = "inline";
         ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
     }
@@ -1022,7 +1017,7 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
+    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; knifeBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
 
     // Empty the game first. Make it completely empty
     emptyGame.a = [];
@@ -1046,6 +1041,7 @@ function exportGame() {
     updateUI();
     updateUpgrades();
     updateArtifacts();
+    updateBG();
 
     createNotification("Game imported successfully!");
 }
@@ -1109,8 +1105,8 @@ function loop(tick) {
     }
     else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
         // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
-        adTime = 10;
-        adMax = 10;
+        adTime = 5;
+        adMax = 5;
 
         ui.cooldownBar.classList.remove("buffedProgress")
         ui.sandwichBar.classList.remove("buffedProgress")
@@ -1287,6 +1283,11 @@ catch (e) {
     console.trace(e);
 }
 
+function updateBG() {
+    if (isEvent("christmas") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
+    else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
+}
+
 //let lastAdTimer = 0;
 adHandler.ontimeupdate = () => {
     if (adHandler.controls == true) { //((adHandler.currentTime > lastAdTimer + 2 && adHandler.currentTime < adHandler.duration) || adHandler.playbackRate > 1) {
@@ -1313,8 +1314,7 @@ renderAmeConvert();
 updateUpgradeColors();
 renderAllSelection();
 renderPFPs();
-if (isEvent("christmas")) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
-else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
+updateBG();
 
 renderSettings();
 

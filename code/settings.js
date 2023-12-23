@@ -53,6 +53,7 @@ var settingButtons = [
     new ToggleSetting("design", "toggleCurrenciesDisplay", "topSquare", "Toggle Currencies Display"),
     new ToggleSetting("gameplay", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
+    new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events"),
 ]
 
 function onSettingClick(toggle) {
@@ -143,6 +144,12 @@ function toggleCurrenciesDisplay() {
 function toggleLeastAd() {
     createNotification("Least watched ad appears less often " + (settings.leastAdLess ? "ON" : "OFF"));
     updateUpgrades();
+}
+
+function allowEventBG() {
+    createNotification("Custom background in events " + (settings.eventBG ? "ON" : "OFF"));
+
+    updateBG();
 }
 
 // eh
