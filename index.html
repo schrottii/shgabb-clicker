@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
     <link href="main.css" rel="stylesheet" type="text/css">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body>
     <!-- Top, Quote, Click Button, Notifs -->
@@ -58,6 +58,7 @@
 
     <!-- Sandwiches -->
     <div id="sandwichSection">
+        <br />
         <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
         <h3>Sandwich Upgrades</h3>
         <span id="swAmount"></span><br />
@@ -76,7 +77,7 @@
     <div id="siliconeShgabbSection">
         <h3>Silicone Shgabb</h3>
         <span id="siAmount"></span><br />
-        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time and upgrades that increase it. It is not reset when doing a prestige.<br />
+        Silicone boosts Shgabb from clicks and auto! The boost is based on current Silicone, total play time (up to 3M) and upgrades that increase it. It is not reset when doing a prestige.<br />
         <span id="siupgradesr"></span>
     </div>
 
@@ -204,8 +205,8 @@
 
     <!-- Other -->
     <div id="socialSection">
-        <div style="position: relative;">
-            <div class="square" style="position: absolute; text-align: right; width: 48%;">
+        <div class="socheader">
+            <div class="socsquare1">
                 <!-- Notifications -->
                 <h3>Notifications</h3>
                 <span id="notifications"></span>
@@ -221,19 +222,16 @@
                 <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
                 <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
                 <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+                <hr style="clear:both" />
             </div>
-
-            <div class="square" style="text-align: left; width: 48%; margin-left: auto;">
+            <div class="socsquare2">
                 <!-- Patch Notes -->
                 <h3>Patch Notes</h3>
                 <span id="patchNotes">...</span>
 
                 <br />
                 <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
-
-                <hr style="clear:both" />
             </div>
-            <hr style="clear:both" />
         </div>
     </div>
 

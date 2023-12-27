@@ -35,20 +35,20 @@ function openGifts(amount) {
     game.gifts -= amount;
     if (!game.ach.includes(72)) game.ach.push(72);
 
-    // PFP 0.1% - Gems 19.9% - SW 40% - Shgabb 40%
+    // PFP 0.5% - Gems 19.5% - SW 40% - Shgabb 40%
     let giftContents = [0, 0, 0];
 
     for (ogi = 0; ogi < amount; ogi++) {
         let random = Math.random();
-        if (random < 0.001 && !game.evpfps.includes(400)) {
+        if (random < 0.005 && !game.evpfps.includes(400)) {
             createNotification("Received a Christmas PFP!");
             game.evpfps.push(400);
         }
-        else if (random < 0.001 && !game.evpfps.includes(401)) {
+        else if (random < 0.005 && !game.evpfps.includes(401)) {
             createNotification("Received a Christmas PFP!");
             game.evpfps.push(401);
         }
-        else if (random < 0.001 && !game.evpfps.includes(402)) {
+        else if (random < 0.005 && !game.evpfps.includes(402)) {
             createNotification("Received a Christmas PFP!");
             game.evpfps.push(402);
         }
