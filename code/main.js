@@ -11,9 +11,15 @@ const currentPatchNotes = [
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
     "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
+    "-> Player Profile:",
+    "- Locked PFPs are now displayed (in gray, images not visible)",
+    "- The types of each PFP are now displayed (Normal, Currency, Event)",
+    "- The start date is now saved (on top of the start version)",
+    "- The start version and start date are now visible in the Player Profile",
     "-> Other:",
     "- Added 2 new Artifacts (2 epic)",
     "- Added 5 new quotes",
+    "- Added support for formatting dates",
     "- Gem Offers now appear after importing",
 ]
 
@@ -371,6 +377,7 @@ function clickButton() {
         updateArtifacts();
         updateGems();
         updateUpgrades();
+        renderCurrentEvent();
     }
     else {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
@@ -887,8 +894,11 @@ function updateUI() {
     if (game.profile.id == "") {
         game.profile.id = Math.random().toString(16).slice(2);
         game.profile.startVer = gameVersion;
+        game.profile.startDay = today();
         game.profile.name = "Name";
     }
+    if (game.profile.startVer == "") game.profile.startVer = gameVersion;
+    if (game.profile.startDay == "") game.profile.startDay = today();
 
     // Click Button
     if (game.clickCooldown > 0) {
@@ -960,9 +970,9 @@ function updateUI() {
     }
 
     // Eventzzz
-    if (selection("events")) {
-        renderCurrentEvent();
-    }
+    //if (selection("events")) {
+        //renderCurrentEvent();
+    //}
 
 
     // Notifications
@@ -1333,6 +1343,7 @@ updateUpgradeColors();
 renderAllSelection();
 renderPFPs();
 updateBG();
+renderCurrentEvent();
 
 renderSettings();
 

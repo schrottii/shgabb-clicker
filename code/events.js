@@ -45,6 +45,10 @@ function renderCurrentEvent() {
 function renderChristmas() {
     let render = "<h3>Christmas Event</h3><br /><b>December 16th - December 30th</b>";
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
+    render = render + `<br /><br />
+        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
+        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
+        <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>`;
     ui.eventRender.innerHTML = render;
 }
 
@@ -101,5 +105,6 @@ function openGifts(amount) {
         game.stats.gems += giftContents[0];
     }
 
+    renderCurrentEvent();
     createNotification("Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb, " : "") + (sandwichAmount != 0 ? fn(sandwichAmount) + " Sandwiches, " : "") + (giftContents[0] != 0 ? giftContents[0] + " Gems, " : ""));
 }

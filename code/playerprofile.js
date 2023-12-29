@@ -21,13 +21,20 @@ class PFP {
         this.image = image;
         this.unlock = unlock;
     }
+
+    getType() {
+        if (this.ID >= 400) return "Event";
+        if (this.ID >= 300) return "Currency";
+        if (this.ID >= 100) return "Normal";
+    }
 }
 
 function renderPFPs() {
     let render = "";
 
     for (p in pfps) {
-        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230)'><img src='" + pfps[p].image + "' style='width: 50%'></button>"
+        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230)'><img src='" + pfps[p].image + "' style='width: 50%'><br />" + pfps[p].getType() + "</button>"
+        else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130)'>"/*<img src='" + pfps[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + pfps[p].getType() + "</button>"
     }
     ui.pfps.innerHTML = render;
 }
@@ -98,6 +105,10 @@ function renderPlayerProfile() {
     pctx.font = (20 * profileTextSizeMulti) + "px Times New Roman";
     ctx.textAlign = "left";
     pctx.fillText(game.profile.name, w * 0.4, w * 0.1)
+
+    // Start
+    pctx.font = (12 * profileTextSizeMulti) + "px Times New Roman";
+    pctx.fillText("Started in: v" + game.profile.startVer + " / "+ formatDate(game.profile.startDay), w * 0.025, w * 0.475)
 
     // Stats
     pctx.font = (16 * profileTextSizeMulti) + "px Times New Roman";

@@ -7,6 +7,7 @@ var game = {
         name: "",
         id: "",
         startVer: "",
+        startDay: "",
         pfp: 100,
     },
     shgabb: 0,
