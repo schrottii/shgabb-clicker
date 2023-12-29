@@ -3,10 +3,22 @@
 function isEvent(eventName, all=false) {
     let date = new Date();
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() + 1 : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
+    if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
 
-    if (all) eventName = "christmas"; //first event whatever it is
+    /*
+    if (eventName == "anniversary") return true; // used to force event
+    else return false;
+    */
+
+    // Events below in order (January -> December)
     switch (eventName) {
+        case "anniversary":
+            // Anniversary Event | Jan 6 - Jan 13
+            if (today >= 0106 && today <= 0113 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
+            else eventName = "christmas";
         case "christmas":
+            // Christmas Event | Dec 16 - Dec 30
             if (today >= 1216 && today <= 1230 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "nextEvent";
@@ -14,9 +26,17 @@ function isEvent(eventName, all=false) {
     return false; // none
 }
 
+function eventValue(eventName, trueValue, falseValue) {
+    if (isEvent(eventName)) return trueValue;
+    else return falseValue;
+}
+
 function renderCurrentEvent() {
     if (isEvent("christmas")) {
         renderChristmas();
+    }
+    else if (isEvent("anniversary")) {
+        renderAnniversary();
     }
 }
 
@@ -25,6 +45,13 @@ function renderCurrentEvent() {
 function renderChristmas() {
     let render = "<h3>Christmas Event</h3><br /><b>December 16th - December 30th</b>";
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
+    ui.eventRender.innerHTML = render;
+}
+
+function renderAnniversary() {
+    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 13th</b>";
+    render = render + "<br />x10 Shgabb production! 50% more Artifacts!";
+    //render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
     ui.eventRender.innerHTML = render;
 }
 

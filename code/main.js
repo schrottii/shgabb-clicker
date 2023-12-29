@@ -4,30 +4,17 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.1.2";
+const gameVersion = "2.2";
 
 const currentPatchNotes = [
     "-> Balance:",
-    "- Reduced costs of Keep Sandwich Upgrades from 10 to 2 for the first 3 levels (total: 60 -> 36)",
-    "- Increased time for the first ad after loading from 10s to 20s",
-    "- Reduced time to get another ad after a boost is over from 10s to 5s",
-    "- The time after not accepting a boost is still 5s",
-    "",
-    "- Light Blue Ring: x1.5/x2/x2.5 -> x1.5/x1.75/x2",
-    "- Plastic Ring: x1.2/x1.6/x2 -> x2/x2.5/x3",
-    "- Amulet of Sluggard: 5 clicks -> 10 clicks",
-    "- Amulet of Golden Clicks: 0.01% -> 0.02%",
-    "-> Golden Shgabb:",
-    "- GS now stays unlocked after the first Prestige (rather than having to get to 1M Shgabb again, making it possible to get the upgrades immediately)",
-    "- Prestige button still requires 1M Shgabb, and now 15 seconds spent in the run as well",
-    "- GS boosts Shgabb 1 now stays unlocked after unleveling Even Shorter Cooldown",
+    "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
+    "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
+    "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
     "-> Other:",
-    "- New Setting: Allow custom BG in events (enabled by default)",
-    "- On mobile, patch notes are now below notifications and social rather than next to them (and 100% width)",
-    "- Auto Shgabb and Better Fridge now stay unlocked when unleveling Sandwich Chance if at least level 1",
-    "- Fixed Prestiges giving less GS than they should",
-    "- Fixed issues with Sandwiches and notations",
-    "- Fixed favicon issue",
+    "- Added 2 new Artifacts (2 epic)",
+    "- Added 5 new quotes",
+    "- Gem Offers now appear after importing",
 ]
 
 // Various variables
@@ -49,6 +36,7 @@ var autoNotifications = 0;
 // artifacts
 var knifeBoost = 1;
 var trashCanBoost = 0;
+var hoodGoo = 0;
 
 var ui = {
     // Bars
@@ -223,6 +211,12 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "You caught a rare golden fish! Rain of pure gold appears! - DaGame",
     "You have 0.0001 second to click this quote and get Obama right now! Oops, you're late! - DaGame",
     "elken bad person no sharo statto - schrotttv",
+
+    "my brain isnt mathing rn i need ciguretos - schrotttv",
+    "i avoid plants - elmenda452",
+    "are seeds still trash - slowmerger",
+    "You hate them just because you're not an endgame player :puke: - DaGame",
+    "i AGRHARH - Schrottii",
 ];
 
 // Notations
@@ -312,9 +306,11 @@ function cImg(imgname) {
 
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
-    let critMulti = criticalHit();
-    let amount = Math.floor(getProduction() * critMulti * (currentBoost == "strongerClicks" ? 5 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
     if (game.clickCooldown <= 0) {
+        let critMulti = criticalHit();
+        let amount = Math.floor(getProduction() * critMulti * (currentBoost == "strongerClicks" ? 5 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
+        if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
+
         game.shgabb += amount;
         game.stats.shgabb += amount;
         game.stats.shgabbtp += amount;
@@ -334,6 +330,17 @@ function clickButton() {
         else trashCanBoost = 0;
 
         if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
+
+        if (getArtifactByID(314).isEquipped()) {
+            if (Math.random() < 0.05 && hoodGoo > 0) {
+                hoodGoo = 0;
+                createNotification("Goo is gone...");
+            }
+            if (Math.random() < getArtifactLevel(314) / 10 && amount > hoodGoo) {
+                hoodGoo = amount;
+                createNotification("Goo: " + fn(amount));
+            }
+        }
 
         if (isEvent("christmas")) {
             if (Math.random() < 1 / (250 / getCooldown())) {
@@ -410,13 +417,13 @@ function getProduction(sosnog = false) {
         * getArtifactBoost("clickshgabb")
         * knifeBoost
         * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.001 * getArtifactLevel(302) : 1)
-        * game.gemboost
+        * (1 + game.gemboost / 4)
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
         * sandwichUpgrades.meaningOfLife.currentEffect()
         * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        * eventValue("anniversary", 10, 1)
     );
 }
 
@@ -429,8 +436,7 @@ function getAutoProduction(sosnog2 = false) {
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("shgabb")
         * knifeBoost
-        * (getArtifactByID(302).isEquipped() ? 1 + game.stats.ctp * 0.001 * getArtifactLevel(302) : 1)
-        * game.gemboost
+        * (1 + game.gemboost / 4)
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
 
@@ -505,6 +511,14 @@ function criticalHit() {
 
 function sandwich() {
     let amount = getAutoProduction();
+    if (getArtifactByID(314).isEquipped()) {
+        if (hoodGoo > amount) amount = hoodGoo;
+        if (Math.random() < 0.05) {
+            hoodGoo = 0;
+            createNotification("Goo is gone...");
+        }
+    }
+
     if (amount > 0) {
         game.shgabb += amount;
         game.stats.shgabb += amount;
@@ -595,11 +609,12 @@ function prestigeButton() {
         // Reset Shgabb, Sandwiches, some stat stuff
         game.shgabb = 0 + getArtifactBoost("resetshgabb");
         game.sw = 0;
-        game.gemboost = 1; // 2nd Gem offer
+        //game.gemboost = 1; // 2nd Gem offer
         game.stats.shgabbtp = 0;
         game.stats.swtp = 0;
         game.stats.ctp = 0;
         game.stats.pttp = 0;
+        hoodGoo = 0;
 
         // Shgabb and Sandwich Upgrades
         for (let u of Object.keys(shgabbUpgrades)) {
@@ -882,7 +897,8 @@ function updateUI() {
     }
     else {
         let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
-        ui.clickButton.innerHTML = diceRender + "+" + fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1)) + " Shgabb" + diceRender;
+        let gooRender = (getArtifactByID(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
+        ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
         ui.clickButton.style["background-color"] = "blue";
     }
     ui.cooldownBar.value = game.clickCooldown;
@@ -1042,6 +1058,7 @@ function exportGame() {
     updateUpgrades();
     updateArtifacts();
     updateBG();
+    renderGemOffers();
 
     createNotification("Game imported successfully!");
 }
@@ -1285,6 +1302,7 @@ catch (e) {
 
 function updateBG() {
     if (isEvent("christmas") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
+    else if (isEvent("anniversary") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/anniversary-background.png)";
     else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
 }
 

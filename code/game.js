@@ -17,7 +17,7 @@ var game = {
     ame: 0,
     ameUp: [0, 0, 0, 0, 0],
     gems: 0,
-    gemboost: 1,
+    gemboost: 0,
     artifactScrap: 0,
     gifts: 0,
     upgradeLevels: {

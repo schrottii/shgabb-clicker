@@ -241,8 +241,9 @@ function getArtifact(multi = 1) {
 
 	if (getArtifactByID(158).isEquipped()) return 0; // the no artifacts artifact
 
+	// multi1 = gem offer. multi2 = gem artis, events
 	let multi2 = 1;
-	if (multi == 1) multi2 = getArtifactBoost("artifactchance"); // Artifact chance artifacts only work from clicks, not the gem offer
+	if (multi == 1) multi2 = getArtifactBoost("artifactchance") * eventValue("anniversary", 1.5, 1); // Artifact chance artifacts only work from clicks, not the gem offer
 
 	let chance = Math.random();
 
@@ -465,7 +466,7 @@ var artifacts = [
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 3000%" }),
-	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "complicated", 0, { desc: level => "Every click in a prestige increases Shgabb gain by " + (0.1 * level).toFixed(1) + "% (Current: x" + fn(1 + game.stats.ctp * 0.001 * getArtifactLevel(302)) + ")" }),
+	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "shgabb", level => 1 + ((game.stats.ctp % 1000) * 0.01 * level), { desc: level => "+" + level + "% per click, resets every 1000 clicks (" + game.stats.ctp % 1000 + "/1000)" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops Silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
@@ -476,7 +477,8 @@ var artifacts = [
 	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.min(4 * level, (1 + trashCanBoost * (level / 2 + 0.5))), { noPercentage: true, desc: level => "Increases after destroying, goes down by clicking<br>" + ((1 + trashCanBoost * (level / 2 + 0.5)) > 4 * level ? ("Capped for " + Math.round(5 + ((1 + trashCanBoost * (level / 2 + 0.5)) - 4 * level) * 5) + " clicks") : ("Max: x" + 4 * level)) }),
 	new Artifact(311, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "prestigegs", level => Math.max(1, Math.log10(game.si) - 7 + level * 2), { noPercentage: true, desc: level => "Lose Silicone (not upgs) on prestige, but get more GS" }),
 	new Artifact(312, 3, "Semicone", "semicone.png", "si", level => 10 + 5 * level, { trigger: () => game.gems > 0, noPercentage: true, desc: level => "10% chance of consuming a gem every time Silicone is produced" }),
-	// 313: Hood Goo
+	new Artifact(313, 3, "Furious Fork", "fork.png", "clickspeed", level => 1.4 + 0.2 * level, { prefix: "-", trigger: () => game.clickCooldown >= -0.33, desc: "For well timed clicks" }),
+	new Artifact(314, 3, "Hood Goo", "hoodgoo.png", "complicated", 0, { desc: level => 10 * level + "% chance to save your Shgabb production after a click, 5% to stop saving it" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]
