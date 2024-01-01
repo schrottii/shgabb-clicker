@@ -29,13 +29,7 @@ body {
     src: url(Raleway-SemiBold.ttf) format('truetype');
 }
 
-h2 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-family: Rw-title;
-}
-
-h3 {
+h2, h3 {
     margin-top: 0px;
     margin-bottom: 0px;
     font-family: Rw-title;
@@ -114,6 +108,17 @@ progress {
     }
 }
 
+/* ad bar */
+.adBar {
+    background-image: linear-gradient(to right, #2D2D2D, #636363); /* Replace with your desired colors */
+}
+
+@media only screen and (min-width: 768px) {
+    .adBar {
+        height: 44px;
+    }
+}
+
 /* ===================================================== */
 /* TOP */
 /* ===================================================== */
@@ -131,12 +136,18 @@ progress {
 }
 
 .clickButton {
-    background-color: blue;
+    /*background-color: blue; */
+    background-color: white;
+    background: linear-gradient(to right, #1db5bf, #2581b0);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+
     color: white;
     border-color: black;
     border-width: 5px;
     font-size: 24px;
     min-height: 64px;
+    min-width: 128px;
     font-family: Rw-title;
 }
 
@@ -163,7 +174,7 @@ progress {
     text-align: center;
 }
 
-/* this is for a single upgrade button */
+/* this is for a the upgrade buttons, the buttons inside the upgrades, such as MAX */
 .maxButton {
     width: 32%;
     height: 20px;
@@ -180,6 +191,7 @@ progress {
     }
 }
 
+/* an upgrade (like More Shgabb) */
 .upgrade {
     text-align: center;
     margin: 0px 2px 4px 2px;

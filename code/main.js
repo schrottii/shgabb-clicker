@@ -16,11 +16,18 @@ const currentPatchNotes = [
     "- The types of each PFP are now displayed (Normal, Currency, Event)",
     "- The start date is now saved (on top of the start version)",
     "- The start version and start date are now visible in the Player Profile",
+    "-> Design:",
+    "- Removed the cooldown bar and moved it into the click button instead",
+    "- The cooldown is now visible in the click button",
+    "- Ad Bar now has a gray gradient background",
+    "- PC: Ad Bar now has the same width as the button",
+    "- Changed description of the Silicone Boosts GS Upgrade",
+    "- Améliorer Convert Buttons are now a bit more consistent in height",
     "-> Other:",
     "- Added 2 new Artifacts (2 epic)",
     "- Added 5 new quotes",
-    "- Added support for formatting dates",
-    "- Gem Offers now appear after importing",
+    "- Added support for formatted dates",
+    "- Fixed Gem Offers not appearing after importing",
 ]
 
 // Various variables
@@ -712,7 +719,7 @@ function renderAmeConvert() {
     let render = "";
     for (l = 0; l < 4 + ameliorerUpgrades.gems2ame.currentLevel(); l++) {
         let thisType = ["shgabb", "sw", "gs", "si", "gems"][l];
-        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") + "'>[" + game.ameUp[l] + (thisType == "gems" ? ("/" + highestAmeConvert()) : "") + "] Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone", "Gems"][l] + "<br>to +1 Améliorer!</button>";
+        render = render + "<button onclick='convertAmeliorer(`" + thisType + "`)' class='ameliorerButton' style='background-color: " + (canAffordAmeliorer(thisType) ? "rgb(180, 255, 200)" : "white") + "'>[" + game.ameUp[l] + (thisType == "gems" ? ("/" + highestAmeConvert()) : "") + "] Convert " + fn(getAmeliorerConvertCosts(thisType)) + " " + ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone", "Gems"][l] + " to<br />+1 Améliorer!</button>";
     }
     ui.ameconvert.innerHTML = render;
 }
@@ -904,15 +911,17 @@ function updateUI() {
     if (game.clickCooldown > 0) {
         ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
         ui.clickButton.style["background-color"] = "lightblue";
+        ui.clickButton.style.backgroundSize = 100 * (game.clickCooldown / clickCooldown) + "% 100%";
     }
     else {
         let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
         let gooRender = (getArtifactByID(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
         ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
         ui.clickButton.style["background-color"] = "blue";
+        ui.clickButton.style.backgroundSize = "0% 100%";
     }
-    ui.cooldownBar.value = game.clickCooldown;
-    ui.cooldownBar.max = getCooldown();
+    //ui.cooldownBar.value = game.clickCooldown;
+    //ui.cooldownBar.max = getCooldown();
 
     // Sandwiches
     if (selection("sandwich")) {

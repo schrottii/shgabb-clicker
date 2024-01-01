@@ -14,7 +14,7 @@
     <!-- Top, Quote, Click Button, Notifs -->
     <h2 style="color: deepskyblue; background-color: green"><span id="gametitle">Shgabb Clicker</span></h2>
     <span id="quote"></span><br />
-    <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
+    <!-- <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br /> -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <span id="newestnotif"></span>
     <!-- Top, currencies -->
@@ -36,7 +36,7 @@
     <hr style="clear:both" />
     <!-- Ads -->
     <div id="adloaded" style="display: none">
-        <progress min="0" max="100" value="0" id="adBar"></progress>
+        <progress min="0" max="100" value="0" id="adBar" class="adBar"></progress>
         <button id="adstartbutton" class="grayButton" style="display: none" onclick="showAd()">Start Ad</button><br />
         <video playsinline src="videos/Helmet452_Trailer.mp4" style="width:75%; display: none" id="baldad"></video>
         <hr />
@@ -85,7 +85,7 @@
     <div id="ameliorerSection">
         <h3>Améliorer</h3>
         <span id="ameAmount"></span><br />
-        <span id="ameconvert" class="square" style="width: 50%"></span><br />
+        <span id="ameconvert"></span><br />
         <span id="ameupgradesr"></span>
         <br style="clear:both" />
         <input type="checkbox" id="amereset" value="true">
