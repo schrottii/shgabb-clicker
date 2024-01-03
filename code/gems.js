@@ -7,9 +7,10 @@ function unlockedGems() {
 function getGemChance() {
     if (getArtifactByID(159).isEquipped()) return 0;
 
-    return Math.min(10, getArtifactBoost("gemchance")
+    return /*Math.min(10, */(2 * getArtifactBoost("gemchance")
         * (getArtifactByID(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
+        * cakeValue(3, 1)
     ) + (getArtifactByID(308).isEquipped() ? (getArtifactEffect(308) * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5) ): 0);
 }
 

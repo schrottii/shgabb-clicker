@@ -21,6 +21,7 @@ var game = {
     gemboost: 0,
     artifactScrap: 0,
     gifts: 0,
+    cakeProgress: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -96,6 +97,8 @@ var game = {
         hmstp: 0,
         tgems: 0,
         gifts: 0,
+        cakes: 0,
+
         tttpw: 0,
         tttpl: 0,
         tttw: 0,

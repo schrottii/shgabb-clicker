@@ -5,10 +5,10 @@ function isEvent(eventName, all=false) {
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() + 1 : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
 
-    /*
+    
     if (eventName == "anniversary") return true; // used to force event
     else return false;
-    */
+    
 
     // Events below in order (January -> December)
     switch (eventName) {
@@ -52,11 +52,18 @@ function renderChristmas() {
     ui.eventRender.innerHTML = render;
 }
 
+var cakeDuration = 0;
+
 function renderAnniversary() {
     let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 13th</b>";
-    render = render + "<br />x10 Shgabb production! 50% more Artifacts!";
-    //render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
+    render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
+    render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
+    if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + "/10000";
+    else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
+    if (game.cakeProgress == 10000) render = render + "<button class='grayButton' onclick='eatCake()'>Eat Cake</buttons>";
+
     ui.eventRender.innerHTML = render;
+    document.getElementById("eventCake").style.filter = "brightness(" + (game.cakeProgress / 100) + "%)";
 }
 
 function openGifts(amount) {
@@ -107,4 +114,16 @@ function openGifts(amount) {
 
     renderCurrentEvent();
     createNotification("Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb, " : "") + (sandwichAmount != 0 ? fn(sandwichAmount) + " Sandwiches, " : "") + (giftContents[0] != 0 ? giftContents[0] + " Gems, " : ""));
+}
+
+function eatCake() {
+    if (game.cakeProgress != 10000) return false;
+    game.cakeProgress = 0;
+    cakeDuration = 180;
+    game.stats.cakes += 1;
+}
+
+function cakeValue(trueValue, falseValue) {
+    if (cakeDuration > 0) return trueValue;
+    else return falseValue;
 }

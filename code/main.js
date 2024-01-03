@@ -7,10 +7,34 @@
 const gameVersion = "2.2";
 
 const currentPatchNotes = [
+    "-> Anniversary Event:",
+    "- New event: Anniversary Event!",
+    "- Active from January 6th - January 13th",
+    "- During the Event, Shgabb production is tripled and Artifacts from clicks are 50% more common",
+    "- Click to bake a Cake!",
+    "- After 10,000 clicks, the cake is done and can be eaten",
+    "- After eating a Cake, Shgabb production is x10, click speed x5, Gem chance x3 and new Ad offers appear extremely fast!",
+    "- The Cake effects last for 3 minutes",
+    "- Added Cakes eaten stat",
     "-> Balance:",
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
     "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
+    "- Rebalanced Gem Artifacts",
+    "-> Gem Artifacts:",
+    "- Gem amount and Gem chance artifacts are now additive rather than multiplicative (but still multiplied with other boosts)",
+    "- Adjusted values to represent this change (e.g. x3 -> +2)",
+    "- Increased base Gem chance from 1% to 2%",
+    "- Removed Gem chance cap of 10%",
+    "- Shiny Red Ring: x1.25/x1.5/x1.75 chance -> +0.4%/+0.5%/+0.6% chance (nerf)",
+    "- Pulsing Red Ring: x1.5/x1.65/x1.75 amount -> +0.3/+0.4/+0.5 amount (nerf)",
+    "- Bloody Red Ring: x1.5/x1.75/x2 chance -> +0.5%/+0.75%/+1% chance (equal)",
+    "- Amulet of Slowgemming: x4/x5/x6 chance -> +1/+2/+3 amount (rework)",
+    "- P2W: x2/x2.5/x3 amount -> +1/+1.5/+2 amount (equal)",
+    "- Sarah's Collection: x2/x2.5/x3 chance -> +2%/+2.5%/+3% chance (buff)",
+    "- New artifact Quickgemming is +0.4/+0.6/+0.8 amount",
+    "- New artifact Gem Mines is +0.2/+0.4/+0.6 amount",
+    "- The performance of Gem Artifacts after these changes will be spectated and they will be buffed if needed",
     "-> Player Profile:",
     "- Locked PFPs are now displayed (in gray, images not visible)",
     "- The types of each PFP are now displayed (Normal, Currency, Event)",
@@ -23,10 +47,14 @@ const currentPatchNotes = [
     "- PC: Ad Bar now has the same width as the button",
     "- Changed description of the Silicone Boosts GS Upgrade",
     "- Améliorer Convert Buttons are now a bit more consistent in height",
+    "- Changed how the background image is displayed",
     "-> Other:",
-    "- Added 2 new Artifacts (2 epic)",
+    "- Added 5 new Artifacts (3 rare, 2 epic)",
     "- Added 5 new quotes",
     "- Added support for formatted dates",
+    "- Gift chance is no longer visible outside of the Christmas Event",
+    '- Changed Faster Shgabb description from "You can click 5x more often" to "5x shorter click cooldown"',
+    "- Fixed missing capitalization in the More Silicone ad description",
     "- Fixed Gem Offers not appearing after importing",
 ]
 
@@ -144,9 +172,9 @@ const boostTexts = {
     strongerClicks: "Stronger Clicks: Get 5x Shgabb from clicks for 5 minutes",
     strongerAuto: "Stronger Auto: Get 5x automatic Shgabb for 10 minutes",
     moreSandwiches: "More Sandwiches: Get Sandwiches four times as often for 3 minutes",
-    fasterShgabb: "Faster Shgabb: You can click 5x more often for 60 seconds",
+    fasterShgabb: "Faster Shgabb: 5x shorter click cooldown for 60 seconds",
     moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 3 minutes",
-    moreSilicone: "More Silicone: Get 10x Silicone shgabb for 5 minutes",
+    moreSilicone: "More Silicone: Get 10x Silicone Shgabb for 5 minutes",
     moreGems: "More Gems: 3x higher Gem chance for 8 minutes",
 };
 const adTimes = {
@@ -363,6 +391,8 @@ function clickButton() {
             }
         }
 
+        if (isEvent("anniversary")) game.cakeProgress = Math.min(10000, game.cakeProgress + 1);
+
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi");
             game.si += amount;
@@ -437,7 +467,8 @@ function getProduction(sosnog = false) {
         * sandwichUpgrades.meaningOfLife.currentEffect()
         * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * eventValue("anniversary", 10, 1)
+        * eventValue("anniversary", 3, 1)
+        * cakeValue(10, 1)
     );
 }
 
@@ -482,6 +513,7 @@ function getCooldown() {
     let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
+        / cakeValue(5, 1)
         * (getArtifactByID(156).isEquipped() ? getArtifactByID(156).getEffect() : 1)
         * (getArtifactByID(203).isEquipped() ? 5 : 1))
     clickCooldown = CD; // Why T_T
@@ -874,6 +906,7 @@ function updateStats() {
         + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
         + "<br />Total Gifts: " + fn(game.stats.gifts)
+        + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
         + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
@@ -881,8 +914,8 @@ function updateStats() {
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
-        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
-        + "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown())
+        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + /*(getGemChance() == 10 + frustration ? " [MAX]" : "") + */" (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
         + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/800)" + (allArtifactsOfRarity(1) ? " ALL" : "")
@@ -1103,6 +1136,7 @@ function loop(tick) {
     sandwichTime -= time;
     sandwichFreezeTime -= time;
     newArtifactDisplayTimer -= time;
+    cakeDuration -= time;
     game.stats.playTime += time;
     game.stats.pttp += time;
     if (adLoaded && game.stats.sw > 9) adTime -= time;
@@ -1141,18 +1175,18 @@ function loop(tick) {
     }
     else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
         // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
-        adTime = 5;
+        adTime = cakeValue(1, 5);
         adMax = 5;
 
-        ui.cooldownBar.classList.remove("buffedProgress")
+        //ui.cooldownBar.classList.remove("buffedProgress")
         ui.sandwichBar.classList.remove("buffedProgress")
 
         currentBoost = "none";
     }
-    else if (currentBoost == "none" && adTime <= -15) {
+    else if (currentBoost == "none" && adTime <= cakeValue(-4, -15)) {
         // Hm, let's wait for next ad (you didn't accept this one)
         adButton.style.display = "none";
-        adTime = 5;
+        adTime = cakeValue(1, 5);
         adMax = 5;
     }
 
@@ -1308,7 +1342,7 @@ adHandler.oncanplay = () => {
         adButton.style.display = "none";
 
         if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
-            ui.cooldownBar.classList.add("buffedProgress")
+            //ui.cooldownBar.classList.add("buffedProgress")
         }
         if (currentBoost == "moreSandwiches") {
             ui.sandwichBar.classList.add("buffedProgress")
