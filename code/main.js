@@ -23,21 +23,7 @@ const currentPatchNotes = [
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
     "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
-    "- Rebalanced Gem Artifacts",
-    "-> Gem Artifacts:",
-    "- Gem amount and Gem chance artifacts are now additive rather than multiplicative (but still multiplied with other boosts)",
-    "- Adjusted values to represent this change (e.g. x3 -> +2)",
-    "- Increased base Gem chance from 1% to 2%",
-    "- Removed Gem chance cap of 10%",
-    "- Shiny Red Ring: x1.25/x1.5/x1.75 chance -> +0.4%/+0.5%/+0.6% chance (nerf)",
-    "- Pulsing Red Ring: x1.5/x1.65/x1.75 amount -> +0.3/+0.4/+0.5 amount (nerf)",
-    "- Bloody Red Ring: x1.5/x1.75/x2 chance -> +0.5%/+0.75%/+1% chance (equal)",
-    "- Amulet of Slowgemming: x4/x5/x6 chance -> +1/+2/+3 amount (rework)",
-    "- P2W: x2/x2.5/x3 amount -> +1/+1.5/+2 amount (equal)",
-    "- Sarah's Collection: x2/x2.5/x3 chance -> +2%/+2.5%/+3% chance (buff)",
-    "- New artifact Quickgemming is +0.4/+0.6/+0.8 amount",
-    "- New artifact Gem Mines is +0.2/+0.4/+0.6 amount",
-    "- The performance of Gem Artifacts after these changes will be spectated and they will be buffed if needed",
+    "- Trash Can: reworked code, reduced default boost from x1 to x0, but minimum is x1 (x1 -> x4 instead of x1 -> x5 at lvl 3)",
     "-> Player Profile:",
     "- 3 new PFPs!",
     "- Locked PFPs are now displayed (in gray, images not visible)",
@@ -372,7 +358,7 @@ function clickButton() {
         game.stats.clicks += 1;
         game.stats.ctp += 1;
 
-        if (getArtifactByID(310).isEquipped() && trashCanBoost > 1) {
+        if (getArtifactByID(310).isEquipped()) {
             trashCanBoost -= 0.1;
         }
         else trashCanBoost = 0;
@@ -921,7 +907,7 @@ function updateStats() {
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
-        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + /*(getGemChance() == 10 + frustration ? " [MAX]" : "") + */" (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
