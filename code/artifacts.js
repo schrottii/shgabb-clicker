@@ -467,8 +467,8 @@ var artifacts = [
 	new Artifact(219, 2, "Amulet of Plastic Start", "amulet.png", "si", level => 1 + 3 * level, { noPercentage: true, prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),
 	new Artifact(220, 2, "Amulet of Baked Silica", "amulet.png", "clicksi", level => 2 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
 	new Artifact(221, 2, "Amulet of Molten Food", "amulet.png", "sw", level => 4 + 2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
-	new Artifact(222, 2, "Amulet of Quickgemming", "amulet.png", "gems", level => 0.2 + 0.2 * level, { prefix: "+", trigger: () => clickCooldown == 0.1, desc: "If the click cooldown is 0.1s" }),
-	new Artifact(223, 2, "Amulet of Gem Mines", "amulet.png", "gems", level => 0.2 * level, { prefix: "+", trigger: () => game.gems < 200, desc: "If owning less than 200 Gems" }),
+	new Artifact(222, 2, "Amulet of Quickgemming", "amulet.png", "gems", level => 0.2 + 0.2 * level, { noPercentage: true, prefix: "+", trigger: () => clickCooldown == 0.1, desc: "If the click cooldown is 0.1s" }),
+	new Artifact(223, 2, "Amulet of Gem Mines", "amulet.png", "gems", level => 0.2 * level, { noPercentage: true, prefix: "+", trigger: () => game.gems < 200, desc: "If owning less than 200 Gems" }),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 3000%" }),

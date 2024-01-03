@@ -67,6 +67,9 @@ var pfps = [
     new PFP(400, "images/currencies/gift.png", () => game.evpfps.includes(400)),
     new PFP(401, "images/gift2.png", () => game.evpfps.includes(401)),
     new PFP(402, "images/ball.png", () => game.evpfps.includes(402)),
+    new PFP(403, "images/party-pfp1.png", () => game.ach.includes(77)),
+    new PFP(404, "images/party-pfp2.png", () => game.ach.includes(78)),
+    new PFP(405, "images/cake.png", () => game.ach.includes(79)),
 ]
 
 function calculateProfileCanvasSize() {

@@ -8,6 +8,8 @@ const gameVersion = "2.2";
 
 const currentPatchNotes = [
     "-> Anniversary Event:",
+    "Not showing you this yet!!!",
+    /*
     "- New event: Anniversary Event!",
     "- Active from January 6th - January 13th",
     "- During the Event, Shgabb production is tripled and Artifacts from clicks are 50% more common",
@@ -15,7 +17,8 @@ const currentPatchNotes = [
     "- After 10,000 clicks, the cake is done and can be eaten",
     "- After eating a Cake, Shgabb production is x10, click speed x5, Gem chance x3 and new Ad offers appear extremely fast!",
     "- The Cake effects last for 3 minutes",
-    "- Added Cakes eaten stat",
+    "- 3 new event PFPs and 4 event achievements can be earned",
+    "- Added Cakes eaten stat", */
     "-> Balance:",
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
@@ -36,6 +39,7 @@ const currentPatchNotes = [
     "- New artifact Gem Mines is +0.2/+0.4/+0.6 amount",
     "- The performance of Gem Artifacts after these changes will be spectated and they will be buffed if needed",
     "-> Player Profile:",
+    "- 3 new PFPs!",
     "- Locked PFPs are now displayed (in gray, images not visible)",
     "- The types of each PFP are now displayed (Normal, Currency, Event)",
     "- The start date is now saved (on top of the start version)",
@@ -45,15 +49,18 @@ const currentPatchNotes = [
     "- The cooldown is now visible in the click button",
     "- Ad Bar now has a gray gradient background",
     "- PC: Ad Bar now has the same width as the button",
-    "- Changed description of the Silicone Boosts GS Upgrade",
+    "- Patch notes background is no longer a bit transparent, to make it more readable",
     "- Améliorer Convert Buttons are now a bit more consistent in height",
     "- Changed how the background image is displayed",
     "-> Other:",
     "- Added 5 new Artifacts (3 rare, 2 epic)",
-    "- Added 5 new quotes",
+    "- Added 5 new Achievements (80 total)",
+    "- Added 5 new Quotes",
     "- Added support for formatted dates",
     "- Gift chance is no longer visible outside of the Christmas Event",
+    "- Changed description of the Silicone Boosts GS Upgrade",
     '- Changed Faster Shgabb description from "You can click 5x more often" to "5x shorter click cooldown"',
+    "- Fixed Gems being called rubies in the description of Gems To Amé",
     "- Fixed missing capitalization in the More Silicone ad description",
     "- Fixed Gem Offers not appearing after importing",
 ]
