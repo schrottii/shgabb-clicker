@@ -125,6 +125,8 @@ var game = {
     tttd: 1,
     dgo: 100,
     evpfps: [],
+    clg: [],
+    aclg: 0,
     cheated: false,
 }
 

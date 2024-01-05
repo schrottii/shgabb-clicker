@@ -7,9 +7,11 @@
 const gameVersion = "2.2";
 
 const currentPatchNotes = [
+    "-> Challenges:",
+    "- New feature: Challenges!",
+    "- Unlocked at More Shgabb 6000",
+    "- Added 4 Challenges, unlocked at 6000, 6000, 8000, 10k",
     "-> Anniversary Event:",
-    "Not showing you this yet!!!",
-    /*
     "- New event: Anniversary Event!",
     "- Active from January 6th - January 13th",
     "- During the Event, Shgabb production is tripled and Artifacts from clicks are 50% more common",
@@ -18,7 +20,7 @@ const currentPatchNotes = [
     "- After eating a Cake, Shgabb production is x10, click speed x5, Gem chance x3 and new Ad offers appear extremely fast!",
     "- The Cake effects last for 3 minutes",
     "- 3 new event PFPs and 4 event achievements can be earned",
-    "- Added Cakes eaten stat", */
+    "- Added Cakes eaten stat",
     "-> Balance:",
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
@@ -149,6 +151,7 @@ var ui = {
     topSquare: document.getElementById("topSquare"),
     settings: document.getElementById("settings"),
     eventRender: document.getElementById("eventRender"),
+    challengeRender: document.getElementById("challengeRender"),
 }
 
 // Ad variables
@@ -999,6 +1002,11 @@ function updateUI() {
         updateMinigameUI();
     }
 
+    // Challenges
+    if (selection("challenges")) {
+        renderChallenges();
+    }
+
     // Plaj Provif
     if (selection("playerprofile")) {
         renderPlayerProfile();
@@ -1368,7 +1376,7 @@ adHandler.ontimeupdate = () => {
 
 ui.topSquare.style.display = (settings.topSquare ? "" : "none");
 
-// Update upgrades UI
+// Update UI
 updateUpgrades();
 updateArtifacts();
 updateGems();

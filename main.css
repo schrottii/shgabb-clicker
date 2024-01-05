@@ -251,7 +251,7 @@ progress {
 }
 
 /* ===================================================== */
-/* GEMS / ARTIFACTS / MINIGAMES */
+/* GEMS / ARTIFACTS / CHALLENGES / MINIGAMES */
 /* ===================================================== */
 .artifact {
     text-align: center;
@@ -281,6 +281,28 @@ progress {
     white-space: nowrap;
     font-family: Rw;
 }
+
+
+.challenge {
+    text-align: center;
+    margin: 0px 0px 0px 0px;
+    border: 4px ridge white;
+    width: 50%;
+    color: black;
+    background-color: rgb(200, 200, 200);
+    min-height: 220px;
+    vertical-align: top;
+    font-family: Rw;
+}
+
+    .challenge:hover {
+        filter: brightness(90%);
+        transition: 0.2s;
+    }
+
+    .challenge:active {
+        filter: brightness(80%);
+    }
 
 /* ===================================================== */
 /* STATS / ACHIEVEMENTS / SOCIAL */
