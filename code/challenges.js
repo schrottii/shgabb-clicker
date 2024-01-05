@@ -55,7 +55,17 @@ function unlockedChallenges() {
 
 var enableThisChallenge = 0;
 function startChallenge(ID) {
-    if (!isChallenge(0)) return false; // already in challenge
+    if (!isChallenge(0)) {
+        alert("Already in a Challenge! Use Prestige to leave!");
+        return false;
+    }
+
+    if (game.gems <= getChallenge(ID - 1).getPrice()) {
+        alert("Not enough Gems!");
+        return false;
+    }
+
+    game.gems -= getChallenge(ID - 1).getPrice();
 
     enableThisChallenge = ID;
     prestigeButton();
@@ -67,7 +77,8 @@ function renderChallenges() {
     let render = "";
 
     for (c in challenges) {
-        render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge'><img src='images/challenge" + (parseInt(c % 2) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + getChallenge(c).name + "<br />Tier " + getChallenge(c).getTier() + "</b><br>" + getChallenge(c).description + "<br />Goal: " + getChallenge(c).getGoal() + " More Shgabb<br />" + getChallenge(c).getPrice() + " Gems to start" + "</button>"
+        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge'><img src='images/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + getChallenge(c).name + "<br />Tier " + getChallenge(c).getTier() + "</b><br>" + getChallenge(c).description + "<br />Goal: " + getChallenge(c).getGoal() + " More Shgabb<br />" + getChallenge(c).getPrice() + " Gems to start" + "</button>"
+        else render = render + "<button class='challenge'><b>" + getChallenge(c).name + "</b><br>Unlocked at " + getChallenge(c).unlock + " More Shgabb</button>"
     }
     ui.challengeRender.innerHTML = render;
 }

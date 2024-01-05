@@ -302,18 +302,27 @@ ui.artifactSearch.oninput = () => {
 
 // format number
 function fn(number) {
+    // format number function
+
+    // this one is for very low numbers like 0.00000000001
     if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "0" && number.toString().split(".")[1].substr(0, 2) == "00") return number.toString();
+
     //if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
-    if(number < 1000000) number = Math.round(number * 10) / 10;
+    if (number < 1000000) number = Math.round(number * 10) / 10;
+    else number = Math.floor(number);
+
     if (number.toString().split("e").length > 1) {
         if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
         number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
     }
+
+    // define variables for decimals (dec) and the notation part (notiePart, such as e6 or M)
     let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
     let notiePart = "";
     switch (settings.notation) {
         case "normal":
             notiePart = normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+            if (notiePart == undefined) notiePart = "";
             break;
         case "scientific":
             if (number.toString().length > 6) return number.toString().substr(0, 1) + "." + number.toString().substr(1, 2) + "e" + (number.toString().length - 1);
@@ -325,19 +334,12 @@ function fn(number) {
             notiePart = alphabetNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
             break;
     }
-    
-    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + notiePart;
-    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(2);
 
-    /*
-    number = number.toString();
-    if (number.length < 7) return number;
-    if (number.split("e").length > 1) {
-        number = number.split("e")[0].split(".")[0] + "0".repeat(parseInt(number.split("e")[1]));
-    }
-    let dec = number.split(".")[1] != undefined ? "." + number.split(".")[1].substr(2 - number.length % 3) : "";
-    return number.substr(0, number.length % 3 == 0 ? 3 : number.length % 3) + dec + normalNotation[Math.ceil(number.length / 3) - 3];
-    */
+    // if at least one million, return it yes
+    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + notiePart;
+
+    // no notation below one million
+    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(2);
 }
 
 // currency image

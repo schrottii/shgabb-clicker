@@ -60,7 +60,7 @@ function renderAnniversary() {
     render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
     if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + "/10000";
     else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
-    if (game.cakeProgress == 10000) render = render + "<button class='grayButton' onclick='eatCake()'>Eat Cake</buttons>";
+    /*if (game.cakeProgress == 10000)*/ render = render + "<button class='grayButton' onclick='eatCake()'>Eat Cake</buttons>";
 
     ui.eventRender.innerHTML = render;
     document.getElementById("eventCake").style.filter = "brightness(" + (game.cakeProgress / 100) + "%)";
@@ -117,7 +117,7 @@ function openGifts(amount) {
 }
 
 function eatCake() {
-    if (game.cakeProgress != 10000) return false;
+    //if (game.cakeProgress != 10000) return false;
     game.cakeProgress = 0;
     cakeDuration = 180;
     game.stats.cakes += 1;
