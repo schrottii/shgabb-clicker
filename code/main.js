@@ -11,6 +11,10 @@ const currentPatchNotes = [
     "- New feature: Challenges!",
     "- Unlocked at More Shgabb 6000",
     "- Added 4 Challenges, unlocked at 6000, 6000, 8000, 10k",
+    "- After completing a Challenge, its tier is increased",
+    "- Higher tiers have higher goals and are often more difficult",
+    "- Challenges give boosts for each tier completed",
+    "- In Challenges, Upgrades that are not unlocked are disabled",
     "-> Anniversary Event:",
     "- New event: Anniversary Event!",
     "- Active from January 6th - January 13th",
@@ -447,7 +451,7 @@ var frustration = 0;
 function getProduction(sosnog = false) {
     // Get the current shgabb production per click
     if (getArtifactByID(305).isEquipped() && sosnog == false) return getAutoProduction(true);
-    return Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+    let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
@@ -466,9 +470,12 @@ function getProduction(sosnog = false) {
         * eventValue("anniversary", 3, 1)
         * cakeValue(10, 1)
     );
+    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
+    return prod;
 }
 
 function getAutoProduction(sosnog2 = false) {
+    if (isChallenge(3)) return 0;
     if (getArtifactByID(305).isEquipped() && sosnog2 == false) return getProduction(true);
     return Math.ceil((sandwichUpgrades.autoShgabb.currentEffect()
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
@@ -480,12 +487,15 @@ function getAutoProduction(sosnog2 = false) {
         * (1 + game.gemboost / 4)
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        * eventValue("anniversary", 3, 1)
+        * cakeValue(10, 1)
 
-        + (getProduction(true) * sandwichUpgrades.cheese.currentEffect())) // CHEESE
+        // CHEESE
+        + (getProduction(true) * sandwichUpgrades.cheese.currentEffect()))
         * getArtifactBoost("autoshgabb")
         * (currentBoost == "strongerAuto" ? 5 : 1)
         * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
     );
 }
 
@@ -512,6 +522,7 @@ function getCooldown() {
         / cakeValue(5, 1)
         * (getArtifactByID(156).isEquipped() ? getArtifactByID(156).getEffect() : 1)
         * (getArtifactByID(203).isEquipped() ? 5 : 1))
+    if (isChallenge(3)) CD = 20;
     clickCooldown = CD; // Why T_T
     return CD;
 }
@@ -645,6 +656,11 @@ function unlevel(id, isMax=false) {
 }
 
 function prestigeButton() {
+    if (!isChallenge(0)) {
+        if (game.upgradeLevels.moreShgabb < getChallenge(game.aclg - 1).getGoal()) {
+            alert("The Challenge is not completed yet! If you prestige, it will be cancelled!");
+        }
+    }
     if (confirm("Do you really want to prestige?")) {
         let amount = increaseGS(1 * getArtifactBoost("prestigegs"));
 
@@ -657,6 +673,11 @@ function prestigeButton() {
         game.stats.ctp = 0;
         game.stats.pttp = 0;
         hoodGoo = 0;
+
+        if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg - 1).getGoal()) {
+            // Challenge completed
+            game.clg[game.aclg] += 1; // increase tier aka reward n shd
+        }
 
         // Shgabb and Sandwich Upgrades
         for (let u of Object.keys(shgabbUpgrades)) {
@@ -672,7 +693,14 @@ function prestigeButton() {
         game.stats.pr += 1;
         game.stats.hmstp = game.stats.hms;
 
+        game.aclg = 0;
+        if (enableThisChallenge != 0) {
+            game.aclg = enableThisChallenge;
+            enableThisChallenge = 0;
+        }
+
         updateUpgrades();
+        renderChallenges();
         createNotification("Prestiged for " + amount + " Golden Shgabb!");
     }
 }
@@ -969,8 +997,13 @@ function updateUI() {
 
     // GS
     if (game.shgabb >= 1000000 && game.stats.pttp >= 15) {
+        let challengeText = "";
+        if (!isChallenge(0)) {
+            challengeText = "<br />Challenge Goal: " + game.upgradeLevels.moreShgabb + "/" + getChallenge(game.aclg - 1).getGoal();
+        }
+
         ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " golden shgabb!";
+        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " GS!" + challengeText;
     }
     else {
         ui.prestigeButton.style.display = "none";
@@ -1000,11 +1033,6 @@ function updateUI() {
     // Minigame
     if (selection("minigames")) {
         updateMinigameUI();
-    }
-
-    // Challenges
-    if (selection("challenges")) {
-        renderChallenges();
     }
 
     // Plaj Provif
@@ -1157,6 +1185,18 @@ function loop(tick) {
     if (quoteTime <= 0) {
         quoteTime = 10;
         updateQuote();
+    }
+    if (sandwichTime <= 0) {
+        if (isChallenge(4)) {
+            for (u in shgabbUpgrades) {
+                game.upgradeLevels[shgabbUpgrades[u].ID] = Math.max(0, game.upgradeLevels[shgabbUpgrades[u].ID] - (getChallenge(3).getTier() + 1));
+            }
+            game.upgradeLevels.moreShgabb = Math.max(0, game.upgradeLevels.moreShgabb - (4 * (getChallenge(3).getTier() + 1)));
+            if (sandwichFreezeTime < 0) {
+                sandwichTime = 1;
+                updateUpgrades();
+            }
+        }
     }
     if (sandwichTime <= 0 && sandwichFreezeTime > 0) {
         sandwichTime = 1;
@@ -1388,6 +1428,7 @@ renderAllSelection();
 renderPFPs();
 updateBG();
 renderCurrentEvent();
+renderChallenges();
 
 renderSettings();
 

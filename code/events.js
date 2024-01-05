@@ -5,10 +5,10 @@ function isEvent(eventName, all=false) {
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() + 1 : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
 
-    /*
+    
     if (eventName == "anniversary") return true; // used to force event
     else return false;
-    */
+    
 
     // Events below in order (January -> December)
     switch (eventName) {
