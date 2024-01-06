@@ -16,7 +16,7 @@ function isEvent(eventName, all = false) {
     switch (eventName) {
         case "anniversary":
             // Anniversary Event | Jan 6 - Jan 13
-            if (today >= 0106 && today <= 0113 && game.stats.hms >= 2000) return true;
+            if (today >= 106 && today <= 113 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
