@@ -109,9 +109,9 @@ var achievements = [
     new Achievement(72, "gift.png", "Merry Christmas", "Open a gift!", () => false),
     new Achievement(73, "gift.png", "Milk And Cookies I", "Get 25 Gifts total", () => game.stats.gifts >= 25),
     new Achievement(74, "gift.png", "Milk And Cookies II", "Get 1000 Gifts total", () => game.stats.gifts >= 1000),
-    new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
+    new Achievement(75, "shgabb.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
     new Achievement(76, "gift.png", "Happy Birthday!", "Play during the Anniversary Event", () => isEvent("anniversary")),
-    new Achievement(77, "gift.png", "Make Some Cake I", "Eat 1 Cake", () => game.stats.cake >= 1),
-    new Achievement(78, "gift.png", "Make Some Cake II", "Eat 5 Cakes", () => game.stats.cake >= 5),
-    new Achievement(79, "gift.png", "Make Some Cake III", "Eat 25 Cakes", () => game.stats.cake >= 25),
+    new Achievement(77, "cake.png", "Make Some Cake I", "Eat 1 Cake", () => game.stats.cake >= 1),
+    new Achievement(78, "cake.png", "Make Some Cake II", "Eat 5 Cakes", () => game.stats.cake >= 5),
+    new Achievement(79, "cake.png", "Make Some Cake III", "Eat 25 Cakes", () => game.stats.cake >= 25),
 ]

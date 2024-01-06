@@ -11,7 +11,7 @@ const currentPatchNotes = [
     "- New feature: Challenges! Unlocked at More Shgabb 6000",
     "- Added 4 Challenges, unlocked at 6000, 6000, 8000, 10k",
     "- Each Challenge have different conditions that make upgrading More Shgabb harder",
-    "- After completing a Challenge, its tier is increased",
+    "- After completing a Challenge, its tier is increased and an Artifact is awarded (8000x)",
     "- Higher tiers have higher goals and are often more difficult",
     "- Challenges give boosts for each tier completed",
     "- Entering and leaving a Challenge causes a Prestige",
@@ -27,7 +27,6 @@ const currentPatchNotes = [
     "- 3 new event PFPs and 4 event achievements can be earned",
     "- Added Cakes eaten stat",
     "-> Balance:",
-    "- Cheese is now also affected by GS boosts Shgabb 2 (as it boosts auto)",
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
     "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
@@ -480,10 +479,10 @@ function getProduction(sosnog = false) {
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
         * eventValue("anniversary", 3, 1)
         * cakeValue(10, 1)
-        * getChallenge(1).getBoost()
         * getChallenge(2).getBoost()
+        * getChallenge(3).getBoost()
     );
-    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(1).getTier() - 1)));
+    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
     return prod;
 }
 
@@ -498,6 +497,7 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
     if (returnType != "cheese") {
         prod = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
             * goldenShgabbUpgrades.divineShgabb.currentEffect()
+            * goldenShgabbUpgrades.gsBoost2.currentEffect()
             * getSiliconeBoost()
             * goldenShgabbUpgrades.formaggi.currentEffect()
             * getArtifactBoost("shgabb")
@@ -508,7 +508,8 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
             * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
             * eventValue("anniversary", 3, 1)
             * cakeValue(10, 1)
-            * getChallenge(1).getBoost()
+            * getChallenge(2).getBoost()
+            * getChallenge(4).getBoost()
         );
         if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
         if (returnType == "auto") return prod;
@@ -519,10 +520,8 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
         prod = prod + Math.ceil((getProduction(true) * sandwichUpgrades.cheese.currentEffect()));
     }
 
-    // things that boost auto shgabb (-> normal auto AND cheese)
+    // TEMPORARY auto boosts (-> normal auto AND cheese)
     prod = prod
-        * goldenShgabbUpgrades.gsBoost2.currentEffect()
-        * getChallenge(3).getBoost()
         * getArtifactBoost("autoshgabb")
         * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
         * (currentBoost == "strongerAuto" ? 5 : 1);
@@ -581,7 +580,7 @@ function getSandwich(critMulti = 1) {
         * ameliorerUpgrades.sandwichBoost.currentEffect()
         * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * getChallenge(0).getBoost()
+        * getChallenge(1).getBoost()
         );
 }
 
@@ -689,7 +688,7 @@ function unlevel(id, isMax=false) {
 
 function prestigeButton() {
     if (!isChallenge(0)) {
-        if (game.upgradeLevels.moreShgabb < getChallenge(game.aclg - 1).getGoal()) {
+        if (game.upgradeLevels.moreShgabb < getChallenge(game.aclg).getGoal()) {
             alert("The Challenge is not completed yet! If you prestige, it will be cancelled!");
         }
     }
@@ -706,9 +705,10 @@ function prestigeButton() {
         game.stats.pttp = 0;
         hoodGoo = 0;
 
-        if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg - 1).getGoal()) {
+        if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg).getGoal()) {
             // Challenge completed
             game.clg[game.aclg] += 1; // increase tier aka reward n shd
+            getArtifact(8000);
         }
 
         // Shgabb and Sandwich Upgrades
@@ -1036,7 +1036,7 @@ function updateUI() {
     if (game.shgabb >= 1000000 && game.stats.pttp >= 15) {
         let challengeText = "";
         if (!isChallenge(0)) {
-            challengeText = "<br />Challenge Goal: " + game.upgradeLevels.moreShgabb + "/" + getChallenge(game.aclg - 1).getGoal();
+            challengeText = "<br />Challenge Goal: " + game.upgradeLevels.moreShgabb + "/" + getChallenge(game.aclg).getGoal();
         }
 
         ui.prestigeButton.style.display = "inline";
@@ -1226,9 +1226,9 @@ function loop(tick) {
     if (sandwichTime <= 0) {
         if (isChallenge(4)) {
             for (u in shgabbUpgrades) {
-                game.upgradeLevels[shgabbUpgrades[u].ID] = Math.max(0, game.upgradeLevels[shgabbUpgrades[u].ID] - (getChallenge(3).getTier() + 1));
+                game.upgradeLevels[shgabbUpgrades[u].ID] = Math.max(0, game.upgradeLevels[shgabbUpgrades[u].ID] - (getChallenge(4).getTier() + 1));
             }
-            game.upgradeLevels.moreShgabb = Math.max(0, game.upgradeLevels.moreShgabb - (4 * (getChallenge(3).getTier() + 1)));
+            game.upgradeLevels.moreShgabb = Math.max(0, game.upgradeLevels.moreShgabb - (4 * (getChallenge(4).getTier() + 1)));
             if (sandwichFreezeTime < 0) {
                 sandwichTime = 1;
                 updateUpgrades();

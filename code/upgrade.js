@@ -66,7 +66,7 @@ class Upgrade {
     }
 
     currentPrice() {
-        return Math.floor(this.price(game.upgradeLevels[this.ID] + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats.pttp * (getChallenge(3).getTier() + 1) * 5) : (game.stats.pttp * (getChallenge(3).getTier() + 1))) : 0)));
+        return Math.floor(this.price(game.upgradeLevels[this.ID] + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats.pttp * (getChallenge(4).getTier() + 1) * 5) : (game.stats.pttp * (getChallenge(4).getTier() + 1))) : 0)));
     }
 
     currentEffect() {

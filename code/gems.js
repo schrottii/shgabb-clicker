@@ -42,7 +42,7 @@ function firstGemOfferWorth() {
 function gemOffer(i) {
     switch (i) {
         case 1:
-            if (game.gems > 9) {
+            if (game.gems > 9 && isChallenge(0)) {
                 game.gems -= 10;
                 let amount = firstGemOfferWorth();
                 game.shgabb += amount;
