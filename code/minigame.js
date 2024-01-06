@@ -59,10 +59,28 @@ function onMouseMove(e) {
     mousey = e.clientY - gameCanvas.getBoundingClientRect().top;
 }
 
-function updateMinigameTime() {
+function today() {
     let today = new Date();
-    let newTime = parseInt(today.getYear() + "" + (today.getUTCMonth().toString().length == 1 ? "0" + today.getUTCMonth() : today.getUTCMonth()) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate()));
-    game.tttd = newTime;
+    return (1900 + today.getYear()) + "" + (today.getUTCMonth().toString().length == 1 ? "0" + (today.getUTCMonth() + 1) : (today.getUTCMonth() + 1)) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate());
+}
+
+function formatDate(date) {
+    date = date.toString();
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let postDay = "th";
+
+    if (date.substr(6, 1) != "1") { // <-- 11, 12, 13
+        if (date.substr(7, 1) == "1") postDay = "st";
+        if (date.substr(7, 1) == "2") postDay = "nd";
+        if (date.substr(7, 1) == "3") postDay = "rd";
+    }
+
+
+    return months[date.substr(4, 2) - 1] + " " + date.substr(6, 2) + postDay + " " + date.substr(0, 4);
+}
+
+function updateMinigameTime() {
+    game.tttd = parseInt(today());
 
     // update artifact offer
     let newDailyArtifact = 100;
@@ -79,10 +97,8 @@ function updateMinigameTime() {
 }
 
 function compareMinigameTime() {
-    let date = new Date();
     // yyymmdd
-    let newTime = parseInt(date.getYear() + "" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() : date.getUTCMonth()) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
-    return newTime > game.tttd; // returns true if it's a new day
+    return parseInt(today()) > game.tttd; // returns true if it's a new day
 }
 
 function minigameEnemyMove() {

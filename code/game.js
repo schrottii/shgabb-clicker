@@ -7,6 +7,7 @@ var game = {
         name: "",
         id: "",
         startVer: "",
+        startDay: "",
         pfp: 100,
     },
     shgabb: 0,
@@ -17,9 +18,10 @@ var game = {
     ame: 0,
     ameUp: [0, 0, 0, 0, 0],
     gems: 0,
-    gemboost: 1,
+    gemboost: 0,
     artifactScrap: 0,
     gifts: 0,
+    cakeProgress: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -95,6 +97,8 @@ var game = {
         hmstp: 0,
         tgems: 0,
         gifts: 0,
+        cakes: 0,
+
         tttpw: 0,
         tttpl: 0,
         tttw: 0,
@@ -121,6 +125,8 @@ var game = {
     tttd: 1,
     dgo: 100,
     evpfps: [],
+    clg: [],
+    aclg: 0,
     cheated: false,
 }
 

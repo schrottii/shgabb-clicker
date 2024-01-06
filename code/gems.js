@@ -10,6 +10,7 @@ function getGemChance() {
     return Math.min(10, getArtifactBoost("gemchance")
         * (getArtifactByID(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
+        * cakeValue(3, 1)
     ) + (getArtifactByID(308).isEquipped() ? (getArtifactEffect(308) * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5) ): 0);
 }
 
@@ -41,7 +42,7 @@ function firstGemOfferWorth() {
 function gemOffer(i) {
     switch (i) {
         case 1:
-            if (game.gems > 9) {
+            if (game.gems > 9 && isChallenge(0)) {
                 game.gems -= 10;
                 let amount = firstGemOfferWorth();
                 game.shgabb += amount;
@@ -85,7 +86,7 @@ function gemOffer(i) {
 
 function renderGemOffers() {
     ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately!";
-    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 100% more Shgabb this Prestige!<br>Current: +" + ((game.gemboost - 1) * 100) + "%";
+    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 25% more Shgabb!<br>Current: +" + ((game.gemboost - 1) * 25) + "%";
     if (unlockedArtifacts()) {
         ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + ((game.a.length - 1) == artifacts.length - 1 ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
         ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al > 7 ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25) + " Gems for another Artifact loadout slot!<br>(Max. 8)");

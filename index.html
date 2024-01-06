@@ -14,7 +14,7 @@
     <!-- Top, Quote, Click Button, Notifs -->
     <h2 style="color: deepskyblue; background-color: green"><span id="gametitle">Shgabb Clicker</span></h2>
     <span id="quote"></span><br />
-    <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br />
+    <!-- <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br /> -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <span id="newestnotif"></span>
     <!-- Top, currencies -->
@@ -36,7 +36,7 @@
     <hr style="clear:both" />
     <!-- Ads -->
     <div id="adloaded" style="display: none">
-        <progress min="0" max="100" value="0" id="adBar"></progress>
+        <progress min="0" max="100" value="0" id="adBar" class="adBar"></progress>
         <button id="adstartbutton" class="grayButton" style="display: none" onclick="showAd()">Start Ad</button><br />
         <video playsinline src="videos/Helmet452_Trailer.mp4" style="width:75%; display: none" id="baldad"></video>
         <hr />
@@ -59,6 +59,7 @@
     <!-- Sandwiches -->
     <div id="sandwichSection">
         <br />
+        <span id="autoInfo"></span><br />
         <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
         <h3>Sandwich Upgrades</h3>
         <span id="swAmount"></span><br />
@@ -85,7 +86,7 @@
     <div id="ameliorerSection">
         <h3>Améliorer</h3>
         <span id="ameAmount"></span><br />
-        <span id="ameconvert" class="square" style="width: 50%"></span><br />
+        <span id="ameconvert"></span><br />
         <span id="ameupgradesr"></span>
         <br style="clear:both" />
         <input type="checkbox" id="amereset" value="true">
@@ -124,6 +125,12 @@
         <span id="artifacts" style="width: 80%"></span>
     </div>
 
+    <!-- Challenges -->
+    <div id="challengeSection" class="square2">
+        <h3>Challenges</h3>
+        <span id="challengeRender"></span>
+    </div>
+
     <!-- Minigame -->
     <div id="minigamesSection">
         <h3>Shgic Shgac Shgoe Minigame</h3>
@@ -132,12 +139,8 @@
     </div>
 
     <!-- Event -->
-    <div id="eventsSection">
+    <div id="eventsSection" class="square2">
         <span id="eventRender"></span>
-        <br /><br />
-        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
-        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
-        <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>
     </div>
 
     <hr style="clear:both" />
@@ -245,6 +248,7 @@
     <script src="code\achievements.js"></script>
     <script src="code\artifacts.js"></script>
     <script src="code\gems.js"></script>
+    <script src="code\challenges.js"></script>
     <script src="code\minigame.js"></script>
     <script src="code\playerprofile.js"></script>
     <script src="code\events.js"></script>

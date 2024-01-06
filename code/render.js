@@ -15,6 +15,7 @@ var sections = {
     // sel 2
     gems: document.getElementById("gemSection"),
     artifacts: document.getElementById("artifactSection"),
+    challenges: document.getElementById("challengeSection"),
     minigames: document.getElementById("minigamesSection"),
     events: document.getElementById("eventsSection"),
 
@@ -42,8 +43,8 @@ function renderSelection(sel) {
         selsDisplay = ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone Shgabb", "Améliorer"];
     }
     if (sel == 2) {
-        sels = ["gems", "artifacts", "minigames", "events"];
-        selsDisplay = ["Gems", "Artifacts", "Minigames", "Events"];
+        sels = ["gems", "artifacts", "challenges", "minigames", "events"];
+        selsDisplay = ["Gems", "Artifacts", "Challenges", "Minigames", "Events"];
     }
     if (sel == 3) {
         sels = ["cheats", "playerprofile", "stats", "achievements", "settings", "social"];
@@ -81,20 +82,24 @@ function isSelectionUnlocked(name) {
             return unlockedSilicone();
         case "ameliorer":
             return unlockedAmeliorer();
+
         case "gems":
             return unlockedGems();
         case "artifacts":
             return unlockedArtifacts();
+        case "challenges":
+            return unlockedChallenges();
         case "minigames":
             return unlockedAmeliorer();
         case "events":
             return isEvent("", true);
+
         case "cheats":
             return BETA.isBeta;
-        case "stats":
-            return true;
         case "playerprofile":
             return game.stats.hms >= 100;
+        case "stats":
+            return true;
         case "achievements":
             return true;
         case "settings":

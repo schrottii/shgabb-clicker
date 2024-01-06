@@ -1,12 +1,26 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
-function isEvent(eventName, all=false) {
+function isEvent(eventName, all = false) {
+    if (game.stats.hms < 2000) return false; // not unlocked
+
     let date = new Date();
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? "0" + date.getUTCMonth() + 1 : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
+    if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
 
-    if (all) eventName = "christmas"; //first event whatever it is
+    /*
+    if (eventName == "anniversary") return true; // used to force event
+    else return false;
+    */
+
+    // Events below in order (January -> December)
     switch (eventName) {
+        case "anniversary":
+            // Anniversary Event | Jan 6 - Jan 13
+            if (today >= 0106 && today <= 0113 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
+            else eventName = "christmas";
         case "christmas":
+            // Christmas Event | Dec 16 - Dec 30
             if (today >= 1216 && today <= 1230 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "nextEvent";
@@ -14,9 +28,17 @@ function isEvent(eventName, all=false) {
     return false; // none
 }
 
+function eventValue(eventName, trueValue, falseValue) {
+    if (isEvent(eventName)) return trueValue;
+    else return falseValue;
+}
+
 function renderCurrentEvent() {
     if (isEvent("christmas")) {
         renderChristmas();
+    }
+    else if (isEvent("anniversary")) {
+        renderAnniversary();
     }
 }
 
@@ -25,7 +47,25 @@ function renderCurrentEvent() {
 function renderChristmas() {
     let render = "<h3>Christmas Event</h3><br /><b>December 16th - December 30th</b>";
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
+    render = render + `<br /><br />
+        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
+        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
+        <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>`;
     ui.eventRender.innerHTML = render;
+}
+
+var cakeDuration = 0;
+
+function renderAnniversary() {
+    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 13th</b>";
+    render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
+    render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
+    if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + "/10000";
+    else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
+    if (game.cakeProgress == 10000) render = render + "<br /><button class='grayButton' onclick='eatCake()'>Eat Cake</buttons>";
+
+    ui.eventRender.innerHTML = render;
+    document.getElementById("eventCake").style.filter = "brightness(" + (game.cakeProgress / 100) + "%)";
 }
 
 function openGifts(amount) {
@@ -74,5 +114,19 @@ function openGifts(amount) {
         game.stats.gems += giftContents[0];
     }
 
+    renderCurrentEvent();
     createNotification("Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb, " : "") + (sandwichAmount != 0 ? fn(sandwichAmount) + " Sandwiches, " : "") + (giftContents[0] != 0 ? giftContents[0] + " Gems, " : ""));
+}
+
+function eatCake() {
+    if (game.cakeProgress != 10000) return false;
+    game.cakeProgress = 0;
+    cakeDuration = 180;
+    game.stats.cakes += 1;
+    renderCurrentEvent();
+}
+
+function cakeValue(trueValue, falseValue) {
+    if (cakeDuration > 0) return trueValue;
+    else return falseValue;
 }

@@ -4,13 +4,19 @@
 body {
     /*    background-color: black;*/
     background-image: url("images/shgabb-background.png");
-    background-size: cover;
+    background-size: 100vw 100vh;
     color: white;
     text-align: center;
     font-size: 16px;
     font-family: Rw;
     max-width: 100%;
     overflow-x: hidden;
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        background-size: cover;
+    }
 }
 
 @font-face {
@@ -23,13 +29,7 @@ body {
     src: url(Raleway-SemiBold.ttf) format('truetype');
 }
 
-h2 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    font-family: Rw-title;
-}
-
-h3 {
+h2, h3 {
     margin-top: 0px;
     margin-bottom: 0px;
     font-family: Rw-title;
@@ -108,6 +108,17 @@ progress {
     }
 }
 
+/* ad bar */
+.adBar {
+    background-image: linear-gradient(to right, #2D2D2D, #636363); /* Replace with your desired colors */
+}
+
+@media only screen and (min-width: 768px) {
+    .adBar {
+        height: 44px;
+    }
+}
+
 /* ===================================================== */
 /* TOP */
 /* ===================================================== */
@@ -125,12 +136,18 @@ progress {
 }
 
 .clickButton {
-    background-color: blue;
+    /*background-color: blue; */
+    background-color: white;
+    background: linear-gradient(to right, #1db5bf, #2581b0);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+
     color: white;
     border-color: black;
     border-width: 5px;
     font-size: 24px;
     min-height: 64px;
+    min-width: 128px;
     font-family: Rw-title;
 }
 
@@ -157,7 +174,7 @@ progress {
     text-align: center;
 }
 
-/* this is for a single upgrade button */
+/* this is for a the upgrade buttons, the buttons inside the upgrades, such as MAX */
 .maxButton {
     width: 32%;
     height: 20px;
@@ -174,6 +191,7 @@ progress {
     }
 }
 
+/* an upgrade (like More Shgabb) */
 .upgrade {
     text-align: center;
     margin: 0px 2px 4px 2px;
@@ -233,7 +251,7 @@ progress {
 }
 
 /* ===================================================== */
-/* GEMS / ARTIFACTS / MINIGAMES */
+/* GEMS / ARTIFACTS / CHALLENGES / MINIGAMES */
 /* ===================================================== */
 .artifact {
     text-align: center;
@@ -263,6 +281,28 @@ progress {
     white-space: nowrap;
     font-family: Rw;
 }
+
+
+.challenge {
+    text-align: center;
+    margin: 0px 0px 0px 0px;
+    border: 4px ridge white;
+    width: 50%;
+    color: black;
+    background-color: rgb(200, 200, 200);
+    min-height: 220px;
+    vertical-align: top;
+    font-family: Rw;
+}
+
+    .challenge:hover {
+        filter: brightness(90%);
+        transition: 0.2s;
+    }
+
+    .challenge:active {
+        filter: brightness(80%);
+    }
 
 /* ===================================================== */
 /* STATS / ACHIEVEMENTS / SOCIAL */
@@ -298,7 +338,7 @@ progress {
 }
 
 .socsquare2 {
-    background-color: rgb(128, 128, 128, 0.7);
+    background-color: rgb(128, 128, 128, 1);
     border-color: black;
     border: 2px solid burlywood;
     text-align: left;
@@ -383,4 +423,12 @@ progress {
     .playerProfile {
         width: 50%;
     }
+}
+
+.cake {
+    width: 50%;
+    max-width: 256px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

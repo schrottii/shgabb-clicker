@@ -91,6 +91,7 @@ var achievements = [
     new Achievement(65, "shgabb.png", "Build builder I", "Buy another Artifact loadout!", () => game.al >= 3),
     new Achievement(70, "clicks2.png", "Slowest Clicks", "Increase the click cooldown to 25s or more", () => clickCooldown >= 25),
     new Achievement(45, "gem.png", "Sarah's Gems", "Have 500 Gems at the same time", () => game.gems >= 2000),
+    new Achievement(80, "ameliorer.png", "Amé: Part V", "Unlock the fifth set of Améliorer upgrades", () => getTotalAme() >= 100),
     new Achievement(59, "shgabb.png", "eolm terrible headache", "it hurts", () => autoNotifications >= 5000),
     new Achievement(49, "ttt.png", "Shgiccer III", "Win Shgic Shgac Shgoe 14 times", () => game.stats.tttw >= 14),
     new Achievement(46, "gem.png", "The Red Gems III", "Get your 1000th Gem!", () => game.stats.tgems >= 1000),
@@ -108,5 +109,9 @@ var achievements = [
     new Achievement(72, "gift.png", "Merry Christmas", "Open a gift!", () => false),
     new Achievement(73, "gift.png", "Milk And Cookies I", "Get 25 Gifts total", () => game.stats.gifts >= 25),
     new Achievement(74, "gift.png", "Milk And Cookies II", "Get 1000 Gifts total", () => game.stats.gifts >= 1000),
-    new Achievement(75, "artifact.png", "Mr. President", "Find the secret artifact", () => game.a.includes(400)),
+    new Achievement(75, "shgabb.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
+    new Achievement(76, "gift.png", "Happy Birthday!", "Play during the Anniversary Event", () => isEvent("anniversary")),
+    new Achievement(77, "cake.png", "Make Some Cake I", "Eat 1 Cake", () => game.stats.cake >= 1),
+    new Achievement(78, "cake.png", "Make Some Cake II", "Eat 5 Cakes", () => game.stats.cake >= 5),
+    new Achievement(79, "cake.png", "Make Some Cake III", "Eat 25 Cakes", () => game.stats.cake >= 25),
 ]
