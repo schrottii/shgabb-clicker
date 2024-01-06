@@ -482,7 +482,7 @@ function getProduction(sosnog = false) {
         * getChallenge(2).getBoost()
         * getChallenge(3).getBoost()
     );
-    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
+    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
     return prod;
 }
 
@@ -511,7 +511,7 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
             * getChallenge(2).getBoost()
             * getChallenge(4).getBoost()
         );
-        if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
+        if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
         if (returnType == "auto") return prod;
     }
 
