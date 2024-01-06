@@ -8,12 +8,13 @@ const gameVersion = "2.2";
 
 const currentPatchNotes = [
     "-> Challenges:",
-    "- New feature: Challenges!",
-    "- Unlocked at More Shgabb 6000",
+    "- New feature: Challenges! Unlocked at More Shgabb 6000",
     "- Added 4 Challenges, unlocked at 6000, 6000, 8000, 10k",
+    "- Each Challenge have different conditions that make upgrading More Shgabb harder",
     "- After completing a Challenge, its tier is increased",
     "- Higher tiers have higher goals and are often more difficult",
     "- Challenges give boosts for each tier completed",
+    "- Entering and leaving a Challenge causes a Prestige",
     "- In Challenges, Upgrades that are not unlocked are disabled",
     "-> Anniversary Event:",
     "- New event: Anniversary Event!",
@@ -26,6 +27,7 @@ const currentPatchNotes = [
     "- 3 new event PFPs and 4 event achievements can be earned",
     "- Added Cakes eaten stat",
     "-> Balance:",
+    "- Cheese is now also affected by GS boosts Shgabb 2 (as it boosts auto)",
     "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
     "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
     "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
@@ -48,13 +50,17 @@ const currentPatchNotes = [
     "- Added 5 new Artifacts (3 rare, 2 epic)",
     "- Added 5 new Achievements (80 total)",
     "- Added 5 new Quotes",
+    "- The current fridge duration, auto prod and cheese prod can now be seen above the Sandwich Upgrades",
     "- Added support for formatted dates",
     "- Gift chance is no longer visible outside of the Christmas Event",
     "- Changed description of the Silicone Boosts GS Upgrade",
     '- Changed Faster Shgabb description from "You can click 5x more often" to "5x shorter click cooldown"',
+    "- Some other small improvements",
+    "-> Bug fixes:",
     "- Fixed Gems being called rubies in the description of Gems To Amé",
     "- Fixed missing capitalization in the More Silicone ad description",
     "- Fixed Gem Offers not appearing after importing",
+    "- Fixed some notation stuff",
 ]
 
 // Various variables
@@ -156,6 +162,7 @@ var ui = {
     settings: document.getElementById("settings"),
     eventRender: document.getElementById("eventRender"),
     challengeRender: document.getElementById("challengeRender"),
+    autoInfo: document.getElementById("autoInfo"),
 }
 
 // Ad variables
@@ -453,6 +460,8 @@ var frustration = 0;
 function getProduction(sosnog = false) {
     // Get the current shgabb production per click
     if (getArtifactByID(305).isEquipped() && sosnog == false) return getAutoProduction(true);
+
+    // things that boost Shgabb and Click Shgabb
     let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
@@ -471,34 +480,53 @@ function getProduction(sosnog = false) {
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
         * eventValue("anniversary", 3, 1)
         * cakeValue(10, 1)
+        * getChallenge(1).getBoost()
+        * getChallenge(2).getBoost()
     );
-    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
+    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(1).getTier() - 1)));
     return prod;
 }
 
-function getAutoProduction(sosnog2 = false) {
+function getAutoProduction(sosnog2 = false, returnType = "all") {
     if (isChallenge(3)) return 0;
-    if (getArtifactByID(305).isEquipped() && sosnog2 == false) return getProduction(true);
-    return Math.ceil((sandwichUpgrades.autoShgabb.currentEffect()
-        * goldenShgabbUpgrades.divineShgabb.currentEffect()
-        * goldenShgabbUpgrades.gsBoost2.currentEffect()
-        * getSiliconeBoost()
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * getArtifactBoost("shgabb")
-        * knifeBoost
-        * (1 + game.gemboost / 4)
-        * ameliorerUpgrades.shgabbBoost.currentEffect()
-        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * eventValue("anniversary", 3, 1)
-        * cakeValue(10, 1)
+    if (getArtifactByID(305).isEquipped() && sosnog2 == false && returnType != "cheese") return getProduction(true);
+    if (returnType == "cheese") {
+        if (getArtifactByID(305).isEquipped()) return 0;
+    }
+    // NORMAL AUTO PROD, things that boost Shgabb in general (do not add these to Cheese then it would be boosted twice)
+    let prod = 0;
+    if (returnType != "cheese") {
+        prod = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
+            * goldenShgabbUpgrades.divineShgabb.currentEffect()
+            * getSiliconeBoost()
+            * goldenShgabbUpgrades.formaggi.currentEffect()
+            * getArtifactBoost("shgabb")
+            * knifeBoost
+            * (1 + game.gemboost / 4)
+            * ameliorerUpgrades.shgabbBoost.currentEffect()
+            * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+            * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
+            * eventValue("anniversary", 3, 1)
+            * cakeValue(10, 1)
+            * getChallenge(1).getBoost()
+        );
+        if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * (getChallenge(2).getTier() - 1)));
+        if (returnType == "auto") return prod;
+    }
 
-        // CHEESE
-        + (getProduction(true) * sandwichUpgrades.cheese.currentEffect()))
+    // CHEESE
+    if (sandwichUpgrades.cheese.currentLevel() > 0) {
+        prod = prod + Math.ceil((getProduction(true) * sandwichUpgrades.cheese.currentEffect()));
+    }
+
+    // things that boost auto shgabb (-> normal auto AND cheese)
+    prod = prod
+        * goldenShgabbUpgrades.gsBoost2.currentEffect()
+        * getChallenge(3).getBoost()
         * getArtifactBoost("autoshgabb")
-        * (currentBoost == "strongerAuto" ? 5 : 1)
         * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
-    );
+        * (currentBoost == "strongerAuto" ? 5 : 1);
+    return prod;
 }
 
 function getSiliconeProduction(isClicks = false) {
@@ -552,7 +580,9 @@ function getSandwich(critMulti = 1) {
         * goldenShgabbUpgrades.formaggi.currentEffect())
         * ameliorerUpgrades.sandwichBoost.currentEffect()
         * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1));
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        * getChallenge(0).getBoost()
+        );
 }
 
 function criticalHit() {
@@ -986,6 +1016,11 @@ function updateUI() {
     if (selection("sandwich")) {
         ui.sandwichBar.value = sandwichFreezeTime;
         ui.sandwichBar.max = getFreezeTime();
+
+        ui.autoInfo.innerHTML = "Fridge Time: " + getFreezeTime().toFixed(0)
+            + "<br />Normal Auto Prod.: " + fn(getAutoProduction(false, "auto"))
+            + "<br />Cheese Prod.: " + fn(getAutoProduction(false, "cheese"))
+            + "<br />Total Prod.: " + fn(getAutoProduction());
     }
 
     // Ads
