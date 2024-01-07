@@ -98,7 +98,7 @@ var achievements = [
     new Achievement(49, "ttt.png", "Shgiccer III", "Win Shgic Shgac Shgoe 14 times", () => game.stats.tttw >= 14),
     new Achievement(46, "gem.png", "The Red Gems III", "Get your 1000th Gem!", () => game.stats.tgems >= 1000),
     new Achievement(66, "shgabb.png", "Build builder II", "Buy all Artifact loadouts!", () => game.al >= 8),
-    new Achievement(80, "unlock.png", "Challenge Me!", "Unlock Challenges", () => unlockedChallenges()),
+    new Achievement(90, "unlock.png", "Challenge Me!", "Unlock Challenges", () => unlockedChallenges()),
     new Achievement(54, "gem.png", "The Red Gems IV", "Get your 2500th Gem!", () => game.stats.tgems >= 2500),
     new Achievement(56, "challenge.png", "Shgabb VIII", () => "Get " + fn(1e60) + " Shgabb", () => game.shgabb >= 1e60),
     new Achievement(81, "challenge.png", "The Tallest Ladder", "Complete Challenge 1", () => game.clg[1] >= 1),
