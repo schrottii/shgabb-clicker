@@ -4,62 +4,27 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.2";
+const gameVersion = "2.2.1";
 
 const currentPatchNotes = [
-    "-> Challenges:",
-    "- New feature: Challenges! Unlocked at More Shgabb 6000",
-    "- Added 4 Challenges, unlocked at 6000, 6000, 8000, 10k",
-    "- Each Challenge have different conditions that make upgrading More Shgabb harder",
-    "- After completing a Challenge, its tier is increased and an Artifact is awarded (8000x)",
-    "- Higher tiers have higher goals and are often more difficult",
-    "- Challenges give boosts for each tier completed",
-    "- Entering and leaving a Challenge causes a Prestige",
-    "- In Challenges, Upgrades that are not unlocked are disabled",
-    "-> Anniversary Event:",
-    "- New event: Anniversary Event!",
-    "- Active from January 6th - January 13th",
-    "- During the Event, Shgabb production is tripled and Artifacts from clicks are 50% more common",
-    "- Click to bake a Cake!",
-    "- After 10,000 clicks, the cake is done and can be eaten",
-    "- After eating a Cake, Shgabb production is x10, click speed x5, Gem chance x3 and new Ad offers appear extremely fast!",
-    "- The Cake effects last for 3 minutes",
-    "- 3 new event PFPs and 4 event achievements can be earned",
-    "- Added Cakes eaten stat",
+    "-> Achievements:",
+    "- Added 10 new Achievements (90 total)",
+    "- Added 2 new Achievement images",
+    "- Moved some Achievements",
     "-> Balance:",
-    "- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks",
-    "- Shgabb Boost Gem Offer now permanent (stays after Prestige)",
-    "- Shgabb Boost Gem Offer boost reduced from +100% to +25%",
-    "- Trash Can: reworked code, reduced default boost from x1 to x0, but minimum is x1 (x1 -> x4 instead of x1 -> x5 at lvl 3)",
-    "-> Player Profile:",
-    "- 3 new PFPs!",
-    "- Locked PFPs are now displayed (in gray, images not visible)",
-    "- The types of each PFP are now displayed (Normal, Currency, Event)",
-    "- The start date is now saved (on top of the start version)",
-    "- The start version and start date are now visible in the Player Profile",
-    "-> Design:",
-    "- Removed the cooldown bar and moved it into the click button instead",
-    "- The cooldown is now visible in the click button",
-    "- Ad Bar now has a gray gradient background",
-    "- PC: Ad Bar now has the same width as the button",
-    "- Patch notes background is no longer a bit transparent, to make it more readable",
-    "- Améliorer Convert Buttons are now a bit more consistent in height",
-    "- Changed how the background image is displayed",
+    "- Increased max. level of the Améliorer Upgrade Sandwich Boost from 20 to 30",
+    "- Amulet of Quickgemming: x1.3/x1.4/x1.5 -> x1.4/x1.6/x1.8",
+    "- Amulet of Slowgemming: x4/x5/x6 -> x6/x7/x8",
+    "- P2W: x2/x2.5/x3 -> x3/x3.5/x4",
     "-> Other:",
-    "- Added 5 new Artifacts (3 rare, 2 epic)",
-    "- Added 5 new Achievements (80 total)",
-    "- Added 5 new Quotes",
-    "- The current fridge duration, auto prod and cheese prod can now be seen above the Sandwich Upgrades",
-    "- Added support for formatted dates",
-    "- Gift chance is no longer visible outside of the Christmas Event",
-    "- Changed description of the Silicone Boosts GS Upgrade",
-    '- Changed Faster Shgabb description from "You can click 5x more often" to "5x shorter click cooldown"',
-    "- Some other small improvements",
+    "- Increased the max. Cake progress from 10k to 15k, making it possible to save a bit for the next Cake",
+    "- Baking a single Cake still takes 10k clicks",
+    '- Artifacts: changed "Shgabb from clicks" to "Click Shgabb", "Shgabb from auto" to "Auto Shgabb" and "Shgabb after reset" to "Reset Shgabb"',
     "-> Bug fixes:",
-    "- Fixed Gems being called rubies in the description of Gems To Amé",
-    "- Fixed missing capitalization in the More Silicone ad description",
-    "- Fixed Gem Offers not appearing after importing",
-    "- Fixed some notation stuff",
+    "- Fixed Trash Can boost not increasing after clicking for too long at x1",
+    "- Fixed Make Some Cake Achievements not working (-> the PFPs as well)",
+    "- Fixed missing capitalizations in the Silicone Shgabb text and Semicone description",
+    "- Fixed the boosts of Amulet of Quickgemming and Amulet of Gem Mines being displayed as a percentage",
 ]
 
 // Various variables
@@ -374,7 +339,7 @@ function clickButton() {
         game.stats.ctp += 1;
 
         if (getArtifactByID(310).isEquipped()) {
-            trashCanBoost -= 0.1;
+            trashCanBoost = Math.max(0, trashCanBoost - 0.1);
         }
         else trashCanBoost = 0;
 
@@ -399,7 +364,7 @@ function clickButton() {
             }
         }
 
-        if (isEvent("anniversary")) game.cakeProgress = Math.min(10000, game.cakeProgress + 1);
+        if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + 1);
 
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi");

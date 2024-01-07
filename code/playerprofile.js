@@ -85,6 +85,7 @@ function changePlayerName() {
     let newName = prompt("New name? (Max. 16 characters)");
     if (newName != "" && newName != undefined && newName != false) {
         game.profile.name = newName.substr(0, 16);
+        if (!game.ach.includes(87)) game.ach.push(87);
     }
 }
 
