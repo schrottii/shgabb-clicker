@@ -93,7 +93,7 @@ var achievements = [
     new Achievement(70, "clicks2.png", "Slowest Clicks", "Increase the click cooldown to 25s or more", () => clickCooldown >= 25),
     new Achievement(45, "gem.png", "Sarah's Gems", "Have 500 Gems at the same time", () => game.gems >= 2000),
     new Achievement(80, "ameliorer.png", "Amé: Part V", "Unlock the fifth set of Améliorer upgrades", () => getTotalAme() >= 100),
-    new Achievement(88, "ame.png", "French equality", "Have the Améliorer currency boost upgrades on the same level", () => game.upgradeLevels.shgabbBoost == game.upgradeLevels.sandwichBoost),
+    new Achievement(88, "ameliorer.png", "French equality", "Have the Améliorer currency boost upgrades on the same level", () => game.upgradeLevels.shgabbBoost > 0 && game.upgradeLevels.shgabbBoost == game.upgradeLevels.sandwichBoost),
     new Achievement(59, "shgabb.png", "eolm terrible headache", "it hurts", () => autoNotifications >= 5000),
     new Achievement(49, "ttt.png", "Shgiccer III", "Win Shgic Shgac Shgoe 14 times", () => game.stats.tttw >= 14),
     new Achievement(46, "gem.png", "The Red Gems III", "Get your 1000th Gem!", () => game.stats.tgems >= 1000),

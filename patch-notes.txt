@@ -29,6 +29,7 @@ July - December 2023:
 January - March 2024:
 2.2
 2.2.1
+2.2.2
 
 
 
@@ -966,3 +967,22 @@ Version 2.2.1:
 - Fixed Make Some Cake Achievements not working (-> the PFPs as well)
 - Fixed missing capitalizations in the Silicone Shgabb text and Semicone description
 - Fixed the boosts of Amulet of Quickgemming and Amulet of Gem Mines being displayed as a percentage
+
+
+
+2024/01/09 2.2.2:
+Version 2.2.2:
+-> Stats:
+- Added a dynamic display of boosts from Artifacts (such as Auto Shgabb boost, below the Artifact Chances)
+- Moved Artifacts from below to above Achievements
+- Moved Total Ads watched from below Total Sandwiches to below Total Time and split it into two rows
+- Moved Total Artifact Scrap from below Total Cakes eaten to below Total Silicone Shgabb
+- Moved Total Gems from below Total Améliorer to below Total Prestiges
+
+-> Other:
+- Extended Anniversary Event duration from 1 week to 2 weeks (6th-13th -> 6th-20th)
+- The auto production display now has a background to make it easier to read
+- Capitalized descriptions: Shgabb in Auto Shgabb (sw) and Upgrades in Unlock More Sandwich Upgrades 2 (Amé)
+- Fixed Meaning Of Life not affecting auto Shgabb production
+- Fixed French quality Achievement also being unlocked at level 0
+- Fixed missing French quality Achievement image

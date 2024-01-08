@@ -4,27 +4,22 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.2.1";
+const gameVersion = "2.2.2";
 
 const currentPatchNotes = [
-    "-> Achievements:",
-    "- Added 10 new Achievements (90 total)",
-    "- Added 2 new Achievement images",
-    "- Moved some Achievements",
-    "-> Balance:",
-    "- Increased max. level of the Améliorer Upgrade Sandwich Boost from 20 to 30",
-    "- Amulet of Quickgemming: x1.3/x1.4/x1.5 -> x1.4/x1.6/x1.8",
-    "- Amulet of Slowgemming: x4/x5/x6 -> x6/x7/x8",
-    "- P2W: x2/x2.5/x3 -> x3/x3.5/x4",
+    "-> Stats:",
+    "- Added a dynamic display of boosts from Artifacts (such as Auto Shgabb boost, below the Artifact Chances)",
+    "- Moved Artifacts from below to above Achievements",
+    "- Moved Total Ads watched from below Total Sandwiches to below Total Time and split it into two rows",
+    "- Moved Total Artifact Scrap from below Total Cakes eaten to below Total Silicone Shgabb",
+    "- Moved Total Gems from below Total Améliorer to below Total Prestiges",
     "-> Other:",
-    "- Increased the max. Cake progress from 10k to 15k, making it possible to save a bit for the next Cake",
-    "- Baking a single Cake still takes 10k clicks",
-    '- Artifacts: changed "Shgabb from clicks" to "Click Shgabb", "Shgabb from auto" to "Auto Shgabb" and "Shgabb after reset" to "Reset Shgabb"',
-    "-> Bug fixes:",
-    "- Fixed Trash Can boost not increasing after clicking for too long at x1",
-    "- Fixed Make Some Cake Achievements not working (-> the PFPs as well)",
-    "- Fixed missing capitalizations in the Silicone Shgabb text and Semicone description",
-    "- Fixed the boosts of Amulet of Quickgemming and Amulet of Gem Mines being displayed as a percentage",
+    "- Extended Anniversary Event duration from 1 week to 2 weeks (6th-13th -> 6th-20th)",
+    "- The auto production display now has a background to make it easier to read",
+    "- Capitalized descriptions: Shgabb in Auto Shgabb (sw) and Upgrades in Unlock More Sandwich Upgrades 2 (Amé)",
+    "- Fixed Meaning Of Life not affecting auto Shgabb production",
+    "- Fixed French quality Achievement also being unlocked at level 0",
+    "- Fixed missing French quality Achievement image",
 ]
 
 // Various variables
@@ -470,6 +465,7 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
             * (1 + game.gemboost / 4)
             * ameliorerUpgrades.shgabbBoost.currentEffect()
             * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+            * sandwichUpgrades.meaningOfLife.currentEffect()
             * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
             * eventValue("anniversary", 3, 1)
             * cakeValue(10, 1)
@@ -918,20 +914,25 @@ function updateStats() {
         + "Highest More Shgabb: " + fn(game.stats.hms)
         + "<br />Total Clicks: " + fn(game.stats.clicks)
         + "<br />Total Time: " + (game.stats.playTime > 18000 ? (game.stats.playTime / 3600).toFixed(1) + " hours" : game.stats.playTime.toFixed(1))
+        + "<br />Total Ads watched: " + game.stats.ads
+        + "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
         + "<br />Total Shgabb: " + fn(game.stats.shgabb)
         + "<br />Total Sandwiches: " + fn(game.stats.sw)
-        + "<br />Total Ads watched: " + game.stats.ads + " (SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
         + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
         + "<br />Total Prestiges: " + game.stats.pr
-        + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
-        + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gems: " + fn(game.stats.tgems)
+        + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
+        + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
+        + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Total Gifts: " + fn(game.stats.gifts)
         + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
-        + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
+
+
         + "</div><div style='float: right; width: 50%;' class='square2'>"
+
+
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
@@ -944,8 +945,22 @@ function updateStats() {
         + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/32000)" + (allArtifactsOfRarity(3) ? " ALL" : "")
             : "Artifacts locked!")
 
-        + "<br />Achievements: " + game.ach.length + "/" + achievements.length
+        + (getArtifactBoost("shgabb") > 1 ? ("<br />x" + getArtifactBoost("shgabb") + " Shgabb") : "")
+        + (getArtifactBoost("clickshgabb") > 1 ? ("<br />x" + getArtifactBoost("clickshgabb") + " Click Shgabb") : "")
+        + (getArtifactBoost("autoshgabb") > 1 ? ("<br />x" + getArtifactBoost("autoshgabb") + " Auto Shgabb") : "")
+        + (getArtifactBoost("resetshgabb") > 1 ? ("<br />x" + getArtifactBoost("resetshgabb") + " Reset Shgabb") : "")
+        + (getArtifactBoost("sw") > 1 ? ("<br />x" + getArtifactBoost("sw") + " Sandwiches") : "")
+        + (getArtifactBoost("gs") > 1 ? ("<br />x" + getArtifactBoost("gs") + " Golden Shgabb") : "")
+        + (getArtifactBoost("prestigegs") > 1 ? ("<br />x" + getArtifactBoost("prestigegs") + " Prestige GS") : "")
+        + (getArtifactBoost("si") > 1 ? ("<br />x" + getArtifactBoost("si") + " Silicone Shgabb") : "")
+        + (getArtifactBoost("clicksi") > 1 ? ("<br />x" + getArtifactBoost("clicksi") + " Click Silicone") : "")
+        + (getArtifactBoost("clickspeed") > 1 ? ("<br />x" + getArtifactBoost("clickspeed") + " click cooldown") : "")
+        + (getArtifactBoost("gemchance") > 1 ? ("<br />x" + getArtifactBoost("gemchance") + " Gem chance") : "")
+        + (getArtifactBoost("gems") > 1 ? ("<br />x" + getArtifactBoost("gems") + " Gem amount") : "")
+        + (getArtifactBoost("artifactchance") > 1 ? ("<br />x" + getArtifactBoost("artifactchance") + " Artifact chance") : "")
+
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
+        + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Améliorer Levels: " + getTotalAme()
         + "</div>";
 }
@@ -982,10 +997,10 @@ function updateUI() {
         ui.sandwichBar.value = sandwichFreezeTime;
         ui.sandwichBar.max = getFreezeTime();
 
-        ui.autoInfo.innerHTML = "Fridge Time: " + getFreezeTime().toFixed(0)
+        ui.autoInfo.innerHTML = "<span class='square'>Fridge Time: " + getFreezeTime().toFixed(0)
             + "<br />Normal Auto Prod.: " + fn(getAutoProduction(false, "auto"))
             + "<br />Cheese Prod.: " + fn(getAutoProduction(false, "cheese"))
-            + "<br />Total Prod.: " + fn(getAutoProduction());
+            + "<br />Total Prod.: " + fn(getAutoProduction()) + "</span>";
     }
 
     // Ads

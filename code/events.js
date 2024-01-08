@@ -15,8 +15,8 @@ function isEvent(eventName, all = false) {
     // Events below in order (January -> December)
     switch (eventName) {
         case "anniversary":
-            // Anniversary Event | Jan 6 - Jan 13
-            if (today >= 106 && today <= 113 && game.stats.hms >= 2000) return true;
+            // Anniversary Event | Jan 6 - Jan 20
+            if (today >= 106 && today <= 120 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -57,7 +57,7 @@ function renderChristmas() {
 var cakeDuration = 0;
 
 function renderAnniversary() {
-    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 13th</b>";
+    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 20th</b>";
     render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
     render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
     if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + (game.cakeProgress >= 10000 ? "/15000" : "/10000");

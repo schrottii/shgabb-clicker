@@ -201,7 +201,7 @@ var ameliorerUpgrades = {
     gsBoostsShgabb: new AmeliorerUpgrade("gsBoostsShgabb", "GS Boosts Shgabb", "Increases Shgabb production based on GS (^0.5)", level => 10, level => level == 1 ? (Math.pow(game.gs, 0.5) + 1) : 1, { prefix: "x", maxLevel: 1, ameAmount: 30 }),
 
     AMEformaggi: new AmeliorerUpgrade("AMEformaggi", "Pizza quattro formaggi", "Increases max. level of that Golden Shgabb Upgrade", level => 8 * (level + 1), level => level * 8, { maxLevel: 7, ameAmount: 40 }),
-    unlockMSW2: new AmeliorerUpgrade("unlockMSW2", "Unlock More Sandwich Upgrades 2", "Unlock two new Sandwich upgrades", level => 10, level => level, { maxLevel: 2, ameAmount: 40 }),
+    unlockMSW2: new AmeliorerUpgrade("unlockMSW2", "Unlock More Sandwich Upgrades 2", "Unlock two new Sandwich Upgrades", level => 10, level => level, { maxLevel: 2, ameAmount: 40 }),
     siliconeBoost: new AmeliorerUpgrade("siliconeBoost", "Silicone Boost", "Get more Silicone Shgabb", level => 1, level => 1 + (level * 0.2), { maxLevel: 50, ameAmount: 40 }),
     fourthArtifactSlot: new AmeliorerUpgrade("fourthArtifactSlot", "Fourth Artifact Slot", "Makes it possible to equip 4 Artifacts at once", level => 10, level => level, { maxLevel: 1, ameAmount: 50 }),
 
