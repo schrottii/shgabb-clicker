@@ -54,6 +54,7 @@ var settingButtons = [
     new ToggleSetting("gameplay", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events"),
+    new Setting("save", "redeemCode", "Redeem Code", "Use this to import a special gift from Schrottii"),
 ]
 
 function onSettingClick(toggle) {
@@ -192,4 +193,39 @@ function exportCustomColors() {
 
     navigator.clipboard.writeText(exportGame);
     createNotification("Custom colors exported to clipboard!");
+}
+
+function redeemCode() {
+    let importGame = prompt("Import code...");
+
+    importGame = importGame.replace("RED-", "ey");
+    importGame = atob(importGame);
+    importGame = JSON.parse(importGame);
+
+    if (importGame.for == game.profile.id.substr(0, 6)) {
+        switch (importGame.type) {
+            case "startVer":
+                game.profile.startVer = importGame.data;
+                break;
+            case "startDay":
+                game.profile.startDay = importGame.data;
+                break;
+        }
+        createNotification("Redeemed successfully!");
+    }
+    else {
+        createNotification("This is not for you!");
+    }
+}
+
+function createRedeemCode(){
+    var redeemCode = {};
+    redeemCode.for = prompt("123456");
+    redeemCode.type = prompt("type");
+    redeemCode.data = prompt("data 20230106");
+    redeemCode = JSON.stringify(redeemCode);
+    redeemCode = btoa(redeemCode);
+    redeemCode = redeemCode.replace("ey", "RED-");
+
+    return redeemCode;
 }

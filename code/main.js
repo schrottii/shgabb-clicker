@@ -4,22 +4,25 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.2.2";
+const gameVersion = "2.2.3";
 
 const currentPatchNotes = [
+    "-> Player Profile:",
+    "- Player ID is now visible on the profile",
+    "- Added redeem codes, and a button in settings to import them",
+    "- They can be created by Schrottii and be used to adjust your start day and version",
     "-> Stats:",
-    "- Added a dynamic display of boosts from Artifacts (such as Auto Shgabb boost, below the Artifact Chances)",
-    "- Moved Artifacts from below to above Achievements",
-    "- Moved Total Ads watched from below Total Sandwiches to below Total Time and split it into two rows",
-    "- Moved Total Artifact Scrap from below Total Cakes eaten to below Total Silicone Shgabb",
-    "- Moved Total Gems from below Total Améliorer to below Total Prestiges",
+    "- Formatted the Artifact boosts displays",
+    "- The Artifact chances are now displayed as 1/x rather than x/y (e. g. 20/800 -> 1/40)",
+    "- Moved Améliorer Levels to below Total Améliorer",
+    "-> Balance:",
+    "- Amulet of Baked Silica: x3/x4/x5 -> x4/x5/x6",
+    "- Amulet of Molten Food: x6/x8/x10 -> x8/x10/x12",
+    "- Amulet of Quickgemming: Gem chance -> Gem amount (x1.8)",
     "-> Other:",
-    "- Extended Anniversary Event duration from 1 week to 2 weeks (6th-13th -> 6th-20th)",
-    "- The auto production display now has a background to make it easier to read",
-    "- Capitalized descriptions: Shgabb in Auto Shgabb (sw) and Upgrades in Unlock More Sandwich Upgrades 2 (Amé)",
-    "- Fixed Meaning Of Life not affecting auto Shgabb production",
-    "- Fixed French quality Achievement also being unlocked at level 0",
-    "- Fixed missing French quality Achievement image",
+    "- Reset Shgabb Artifacts are now disabled in Challenge 2",
+    "- Fixed Shgabb VIII Achievement having the Challenges image",
+    "- Fixed Amulet of Some Patience being Common",
 ]
 
 // Various variables
@@ -657,7 +660,7 @@ function prestigeButton() {
         let amount = increaseGS(1 * getArtifactBoost("prestigegs"));
 
         // Reset Shgabb, Sandwiches, some stat stuff
-        game.shgabb = 0 + getArtifactBoost("resetshgabb");
+        game.shgabb = 0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb"));
         game.sw = 0;
         //game.gemboost = 1; // 2nd Gem offer
         game.stats.shgabbtp = 0;
@@ -924,6 +927,7 @@ function updateStats() {
         + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
         + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
         + "<br />Total Améliorer: " + fn(game.stats.ame)
+        + "<br />Améliorer Levels: " + getTotalAme()
         + "<br />Total Gifts: " + fn(game.stats.gifts)
         + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
@@ -936,32 +940,31 @@ function updateStats() {
         + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
-        + "<br />Gem Chance: " + getGemChance().toFixed(2) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
-        + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/800)" + (allArtifactsOfRarity(1) ? " ALL" : "")
-        + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/4000)" + (allArtifactsOfRarity(2) ? " ALL" : "")
-        + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (" + getArtifactBoost("artifactchance").toFixed(3) + "/32000)" + (allArtifactsOfRarity(3) ? " ALL" : "")
+        + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(1) ? " ALL" : "")
+        + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(2) ? " ALL" : "")
+            + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(32000 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(3) ? " ALL" : "")
             : "Artifacts locked!")
 
-        + (getArtifactBoost("shgabb") > 1 ? ("<br />x" + getArtifactBoost("shgabb") + " Shgabb") : "")
-        + (getArtifactBoost("clickshgabb") > 1 ? ("<br />x" + getArtifactBoost("clickshgabb") + " Click Shgabb") : "")
-        + (getArtifactBoost("autoshgabb") > 1 ? ("<br />x" + getArtifactBoost("autoshgabb") + " Auto Shgabb") : "")
-        + (getArtifactBoost("resetshgabb") > 1 ? ("<br />x" + getArtifactBoost("resetshgabb") + " Reset Shgabb") : "")
-        + (getArtifactBoost("sw") > 1 ? ("<br />x" + getArtifactBoost("sw") + " Sandwiches") : "")
-        + (getArtifactBoost("gs") > 1 ? ("<br />x" + getArtifactBoost("gs") + " Golden Shgabb") : "")
-        + (getArtifactBoost("prestigegs") > 1 ? ("<br />x" + getArtifactBoost("prestigegs") + " Prestige GS") : "")
-        + (getArtifactBoost("si") > 1 ? ("<br />x" + getArtifactBoost("si") + " Silicone Shgabb") : "")
-        + (getArtifactBoost("clicksi") > 1 ? ("<br />x" + getArtifactBoost("clicksi") + " Click Silicone") : "")
-        + (getArtifactBoost("clickspeed") > 1 ? ("<br />x" + getArtifactBoost("clickspeed") + " click cooldown") : "")
-        + (getArtifactBoost("gemchance") > 1 ? ("<br />x" + getArtifactBoost("gemchance") + " Gem chance") : "")
-        + (getArtifactBoost("gems") > 1 ? ("<br />x" + getArtifactBoost("gems") + " Gem amount") : "")
-        + (getArtifactBoost("artifactchance") > 1 ? ("<br />x" + getArtifactBoost("artifactchance") + " Artifact chance") : "")
+        + (getArtifactBoost("shgabb") > 1 ? ("<br />x" + fn(getArtifactBoost("shgabb")) + " Shgabb") : "")
+        + (getArtifactBoost("clickshgabb") > 1 ? ("<br />x" + fn(getArtifactBoost("clickshgabb")) + " Click Shgabb") : "")
+        + (getArtifactBoost("autoshgabb") > 1 ? ("<br />x" + fn(getArtifactBoost("autoshgabb")) + " Auto Shgabb") : "")
+        + (getArtifactBoost("resetshgabb") > 1 ? ("<br />x" + fn(getArtifactBoost("resetshgabb")) + " Reset Shgabb") : "")
+        + (getArtifactBoost("sw") > 1 ? ("<br />x" + fn(getArtifactBoost("sw")) + " Sandwiches") : "")
+        + (getArtifactBoost("gs") > 1 ? ("<br />x" + fn(getArtifactBoost("gs")) + " Golden Shgabb") : "")
+        + (getArtifactBoost("prestigegs") > 1 ? ("<br />x" + fn(getArtifactBoost("prestigegs")) + " Prestige GS") : "")
+        + (getArtifactBoost("si") > 1 ? ("<br />x" + fn(getArtifactBoost("si")) + " Silicone Shgabb") : "")
+        + (getArtifactBoost("clicksi") > 1 ? ("<br />x" + fn(getArtifactBoost("clicksi")) + " Click Silicone") : "")
+        + (getArtifactBoost("clickspeed") > 1 ? ("<br />x" + fn(getArtifactBoost("clickspeed")) + " click cooldown") : "")
+        + (getArtifactBoost("gemchance") > 1 ? ("<br />x" + fn(getArtifactBoost("gemchance")) + " Gem chance") : "")
+        + (getArtifactBoost("gems") > 1 ? ("<br />x" + fn(getArtifactBoost("gems")) + " Gem amount") : "")
+        + (getArtifactBoost("artifactchance") > 1 ? ("<br />x" + fn(getArtifactBoost("artifactchance")) + " Artifact chance") : "")
 
         + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
-        + "<br />Améliorer Levels: " + getTotalAme()
         + "</div>";
 }
 

@@ -112,7 +112,11 @@ function renderPlayerProfile() {
 
     // Start
     pctx.font = (12 * profileTextSizeMulti) + "px Times New Roman";
-    pctx.fillText("Started in: v" + game.profile.startVer + " / "+ formatDate(game.profile.startDay), w * 0.025, w * 0.475)
+    pctx.fillText("Started in: v" + game.profile.startVer + " / " + formatDate(game.profile.startDay), w * 0.025, w * 0.475)
+
+    // ID
+    ctx.textAlign = "right";
+    pctx.fillText("#" + game.profile.id.substr(0, 6), w * 0.85, w * 0.475)
 
     // Stats
     pctx.font = (16 * profileTextSizeMulti) + "px Times New Roman";
