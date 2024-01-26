@@ -87,7 +87,7 @@ function renderChallenges() {
 
     for (c in challenges) {
         let cha = getChallenge(parseInt(c) + 1);
-        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge'><img src='images/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + cha.name + "<br />Tier " + cha.getTier() + "</b><br>" + cha.description + "<br />Goal: " + cha.getGoal() + " More Shgabb<br />" + cha.getPrice() + " Gems to start<br />Boost: x" + cha.getBoost() + " " + cha.boostTypeDisplay + "</button>"
+        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge'" + (game.aclg == cha.ID ? " style='background-color: rgb(225, 225, 225)'" : "") + "><img src='images/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + cha.name + "<br />Tier " + cha.getTier() + "</b><br>" + cha.description + "<br />Goal: " + cha.getGoal() + " More Shgabb<br />" + cha.getPrice() + " Gems to start<br />Boost: x" + cha.getBoost() + " " + cha.boostTypeDisplay + "</button>"
         else render = render + "<button class='challenge'><b>" + cha.name + "</b><br>Unlocked at " + cha.unlock + " More Shgabb</button>"
     }
     ui.challengeRender.innerHTML = render;
@@ -95,7 +95,7 @@ function renderChallenges() {
 
 var challenges = [
     new Challenge(1, 6000, t => 4000 + 1000 * t, "Basic Climb", "Only the first two Shgabb Upgrades are available, and no Sandwich Upgrades!", t => 4 * Math.pow(1.5, t), "Sandwiches"),
-    new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t => 6 * Math.pow(3, t), "Shgabb"),
+    new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t => 6 * Math.pow(6, t), "Shgabb"),
     new Challenge(3, 8000, t => 6000 + 2000 * t, "Manual Grind", "Click cooldown is fixed at 20s and auto is disabled", t => 5 * Math.pow(2.2, t), "Click Shgabb"),
     new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", "Shgabb Upgrades lose levels all the time", t => 5 * Math.pow(2.2, t), "Auto Shgabb"),
 ];

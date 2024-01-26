@@ -4,25 +4,26 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.2.3";
+const gameVersion = "2.2.4";
 
 const currentPatchNotes = [
-    "-> Player Profile:",
-    "- Player ID is now visible on the profile",
-    "- Added redeem codes, and a button in settings to import them",
-    "- They can be created by Schrottii and be used to adjust your start day and version",
-    "-> Stats:",
-    "- Formatted the Artifact boosts displays",
-    "- The Artifact chances are now displayed as 1/x rather than x/y (e. g. 20/800 -> 1/40)",
-    "- Moved Améliorer Levels to below Total Améliorer",
-    "-> Balance:",
-    "- Amulet of Baked Silica: x3/x4/x5 -> x4/x5/x6",
-    "- Amulet of Molten Food: x6/x8/x10 -> x8/x10/x12",
-    "- Amulet of Quickgemming: Gem chance -> Gem amount (x1.8)",
+    "-> Notifications:",
+    "- Added a setting to adjust how many notifications are shown at the top (0 - 5, default/current is 1)",
+    "- Notifications no longer automatically disappear after 15 seconds, only when the limit is reached",
+    "- Increased limit from 15 to 20",
+    "- Improved notifications performance",
+    "-> Auto Shgabb rework:",
+    "- Reworked Auto Shgabb Upgrade cost formula (no more sinuses, and it's now exponential, level closer to More Shgabb's)",
+    "- Players with a high level have this Upgrade reset (to prevent insane numbers), with refunds (l ^ 2 / 2)",
+    "- Increased its base effect from 5 to 10, and buffed the increase after level 100 from +5 to +75 (+25 -> +100)",
+    "- Reworked Cheese to be truly 50% of Clicks, it is no longer affected by temporary auto boosts (Ad, Artifacts)",
+    "- Bomblike and Good Joke now affect Auto Shgabb",
+    "- Slightly buffed GS boosts Shgabb 2's effect",
+    "- Blue Cuts Challenge: increased Shgabb boost",
     "-> Other:",
-    "- Reset Shgabb Artifacts are now disabled in Challenge 2",
-    "- Fixed Shgabb VIII Achievement having the Challenges image",
-    "- Fixed Amulet of Some Patience being Common",
+    "- Changed auto production display background (no more outline, easier to read)",
+    "- The current active Challenge is now highlighted",
+    `- Added "Shgabb" at the end of Good Joke's description to make it clear what it affects`,
 ]
 
 // Various variables
@@ -320,7 +321,7 @@ function clickButton() {
     // Click button handler (the button that gives you shgabb)
     if (game.clickCooldown <= 0) {
         let critMulti = criticalHit();
-        let amount = Math.floor(getProduction() * critMulti * (currentBoost == "strongerClicks" ? 5 : 1) * (getArtifactByID(200).isEquipped() ? 0 : 1));
+        let amount = Math.floor(getProduction() * critMulti);
         if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
 
         game.shgabb += amount;
@@ -424,7 +425,9 @@ function getProduction(sosnog = false) {
     if (getArtifactByID(305).isEquipped() && sosnog == false) return getAutoProduction(true);
 
     // things that boost Shgabb and Click Shgabb
-    let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect()) * shgabbUpgrades.bomblike.currentEffect() * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+    let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect())
+        * shgabbUpgrades.bomblike.currentEffect()
+        * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         * goldenShgabbUpgrades.divineShgabb.currentEffect()
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
@@ -444,6 +447,8 @@ function getProduction(sosnog = false) {
         * cakeValue(10, 1)
         * getChallenge(2).getBoost()
         * getChallenge(3).getBoost()
+        * (currentBoost == "strongerClicks" ? 5 : 1)
+        * (getArtifactByID(200).isEquipped() ? 0 : 1)
     );
     if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
     return prod;
@@ -455,10 +460,12 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
     if (returnType == "cheese") {
         if (getArtifactByID(305).isEquipped()) return 0;
     }
-    // NORMAL AUTO PROD, things that boost Shgabb in general (do not add these to Cheese then it would be boosted twice)
+    // NORMAL AUTO PROD, things that boost Shgabb in general
     let prod = 0;
     if (returnType != "cheese") {
         prod = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
+            * shgabbUpgrades.bomblike.currentEffect()
+            * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
             * goldenShgabbUpgrades.divineShgabb.currentEffect()
             * goldenShgabbUpgrades.gsBoost2.currentEffect()
             * getSiliconeBoost()
@@ -474,6 +481,10 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
             * cakeValue(10, 1)
             * getChallenge(2).getBoost()
             * getChallenge(4).getBoost()
+            // TEMPORARY auto boosts (-> normal auto AND cheese)
+            * getArtifactBoost("autoshgabb")
+            * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
+            * (currentBoost == "strongerAuto" ? 5 : 1)
         );
         if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
         if (returnType == "auto") return prod;
@@ -484,11 +495,6 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
         prod = prod + Math.ceil((getProduction(true) * sandwichUpgrades.cheese.currentEffect()));
     }
 
-    // TEMPORARY auto boosts (-> normal auto AND cheese)
-    prod = prod
-        * getArtifactBoost("autoshgabb")
-        * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
-        * (currentBoost == "strongerAuto" ? 5 : 1);
     return prod;
 }
 
@@ -715,8 +721,8 @@ function unlockedGS() {
 
 // Notifications
 function createNotification(text) {
-    currentNotifications.push([text, 15]);
-    if (currentNotifications.length > 15) currentNotifications.shift();
+    currentNotifications.push(text);
+    if (currentNotifications.length > 20) currentNotifications.shift();
 }
 
 // Ameliorer
@@ -1000,7 +1006,7 @@ function updateUI() {
         ui.sandwichBar.value = sandwichFreezeTime;
         ui.sandwichBar.max = getFreezeTime();
 
-        ui.autoInfo.innerHTML = "<span class='square'>Fridge Time: " + getFreezeTime().toFixed(0)
+        ui.autoInfo.innerHTML = "<span class='square2'>Fridge Time: " + getFreezeTime().toFixed(0)
             + "<br />Normal Auto Prod.: " + fn(getAutoProduction(false, "auto"))
             + "<br />Cheese Prod.: " + fn(getAutoProduction(false, "cheese"))
             + "<br />Total Prod.: " + fn(getAutoProduction()) + "</span>";
@@ -1070,25 +1076,22 @@ function updateUI() {
     ui.notifications.innerHTML = "";
     let n2 = 15;
     for (n in currentNotifications) {
-        if (n == currentNotifications.length - 1) ui.notifications.innerHTML = ui.notifications.innerHTML + "<b>" + currentNotifications[n][0] + "</b><br />";
-        else ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n][0] + "<br />";
+        if (n == currentNotifications.length - 1) ui.notifications.innerHTML = ui.notifications.innerHTML + "<b>" + currentNotifications[n] + "</b><br />";
+        else ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n] + "<br />";
         n2 -= 1;
     }
     while (n2 > 0) {
         ui.notifications.innerHTML = ui.notifications.innerHTML + "<br />";
         n2 -= 1;
     }
-    // wtf is this below, help
-    if (currentNotifications[(Object.keys(currentNotifications).length - 1)] != undefined) {
-        if (currentNotifications[Object.keys(currentNotifications).length - 1][1] > 12
-            && currentNotifications[Object.keys(currentNotifications).length - 1][0].substr(0, 10) != "Game saved") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 1][0]
-        else if (currentNotifications[(Object.keys(currentNotifications).length - 2)] != undefined) {
-            if (currentNotifications[Object.keys(currentNotifications).length - 2][1] > 12
-                && currentNotifications[Object.keys(currentNotifications).length - 2][0].substr(0, 10) != "Game saved") ui.newestNotification.innerHTML = currentNotifications[Object.keys(currentNotifications).length - 2][0]
-            else ui.newestNotification.innerHTML = "";
+
+    let topNotifsRender = "";
+    for (i = 1; i < settings.topNotifs + 1; i++) {
+        if (currentNotifications[(Object.keys(currentNotifications).length - i)] != undefined && currentNotifications[Object.keys(currentNotifications).length - i].substr(0, 10) != "Game saved") {
+            topNotifsRender = topNotifsRender + currentNotifications[Object.keys(currentNotifications).length - i] + (i != settings.topNotifs ? "<br />" : "");
         }
-        else ui.newestNotification.innerHTML = "";
     }
+    ui.newestNotification.innerHTML = topNotifsRender;
 }
 
 var newArtifactDisplayTimer = 0;
@@ -1153,6 +1156,13 @@ function exportGame() {
     pointsPlayer = 0;
     pointsHer = 0;
 
+
+        if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
+            // Auto Shgabb was reworked
+            game.sw += Math.pow(game.upgradeLevels.autoShgabb, 2) / 2;
+            game.upgradeLevels.autoShgabb = 0;
+        }
+
     // Execute some stuff
     handleArtifactsFirstTime();
     updateUI();
@@ -1189,11 +1199,6 @@ function loop(tick) {
     game.stats.playTime += time;
     game.stats.pttp += time;
     if (adLoaded && game.stats.sw > 9) adTime -= time;
-
-    for (n in currentNotifications) {
-        currentNotifications[n][1] -= time;
-        if (currentNotifications[n][1] < 0) currentNotifications.splice(n, 1);
-    }
 
     if (newArtifactDisplayTimer <= 0 && newArtifactDisplayTimer > -15) {
         ui.newArtifact.style.display = "none";
@@ -1337,6 +1342,12 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
+
+    if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
+        // Auto Shgabb was reworked
+        game.sw += Math.pow(game.upgradeLevels.autoShgabb, 2) / 2;
+        game.upgradeLevels.autoShgabb = 0;
+    }
 
     try {
         if (typeof (game.stats.wads.mg) == "undefined") game.stats.wads.mg = 0;

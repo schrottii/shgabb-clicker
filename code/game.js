@@ -147,6 +147,7 @@ var settings = {
     topSquare: true,
     leastAdLess: true,
     eventBG: true,
+    topNotifs: 1,
 }
 
 // BETA (cheating)

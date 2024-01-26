@@ -31,6 +31,7 @@ January - March 2024:
 2.2.1
 2.2.2
 2.2.3
+2.2.4
 
 
 
@@ -1011,3 +1012,27 @@ Version 2.2.3:
 - Reset Shgabb Artifacts are now disabled in Challenge 2
 - Fixed Shgabb VIII Achievement having the Challenges image
 - Fixed Amulet of Some Patience being Common
+
+
+
+2024/01/26 2.2.4:
+Version 2.2.4:
+-> Notifications:
+- Added a setting to adjust how many notifications are shown at the top (0 - 5, default/current is 1)
+- Notifications no longer automatically disappear after 15 seconds, only when the limit is reached
+- Increased limit from 15 to 20
+- Improved notifications performance
+
+-> Auto Shgabb rework:
+- Reworked Auto Shgabb Upgrade cost formula (no more sinuses, and it's now exponential, level closer to More Shgabb's)
+- Players with a high level have this Upgrade reset (to prevent insane numbers), with refunds (l ^ 2 / 2)
+- Increased its base effect from 5 to 10, and buffed the increase after level 100 from +5 to +75 (+25 -> +100)
+- Reworked Cheese to be truly 50% of Clicks, it is no longer affected by temporary auto boosts (Ad, Artifacts)
+- Bomblike and Good Joke now affect Auto Shgabb
+- Slightly buffed GS boosts Shgabb 2's effect
+- Blue Cuts Challenge: increased Shgabb boost
+
+-> Other:
+- Changed auto production display background (no more outline, easier to read)
+- The current active Challenge is now highlighted
+- Added "Shgabb" at the end of Good Joke's description to make it clear what it affects

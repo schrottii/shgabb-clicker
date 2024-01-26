@@ -55,6 +55,7 @@ var settingButtons = [
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events"),
     new Setting("save", "redeemCode", "Redeem Code", "Use this to import a special gift from Schrottii"),
+    new Setting("design", "topNotifs", "Top Notification Amount", () => "Current: " + settings.topNotifs),
 ]
 
 function onSettingClick(toggle) {
@@ -151,6 +152,11 @@ function allowEventBG() {
     createNotification("Custom background in events " + (settings.eventBG ? "ON" : "OFF"));
 
     updateBG();
+}
+
+function topNotifs() {
+    settings.topNotifs = (settings.topNotifs + 1) % 6;
+    createNotification("Amount of notifications shown: " + settings.topNotifs);
 }
 
 // eh
