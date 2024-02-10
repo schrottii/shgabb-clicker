@@ -247,7 +247,7 @@ function getArtifact(multi = 1) {
 	let multi2 = 1;
 	if (multi == 1) multi2 = getArtifactBoost("artifactchance") * eventValue("anniversary", 1.5, 1); // Artifact chance artifacts only work from clicks, not the gem offer
 
-	let chance = Math.random();
+	let chance = Math.random() * applyLuck(100);
 
 	if (chance < 1 / 10000000 * multi2) {
 		if (!allArtifactsOfRarity(4) && Math.random() < 0.5 * !allArtifactsOfRarity(4)) {
@@ -482,7 +482,7 @@ var artifacts = [
 	new Artifact(310, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.max(1, Math.min(level * 4, trashCanBoost)), { noPercentage: true, desc: level => "+x" + (level + 1) + " per destroy, goes down by clicking<br>" + ((Math.max(1, trashCanBoost) > level * 4) ? ("Capped for " + Math.round(10 * trashCanBoost - level * 4) + " clicks") : ("Max: x" + (level * 4))) }),
 	new Artifact(311, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "prestigegs", level => Math.max(1, Math.log10(game.si) - 7 + level * 2), { noPercentage: true, desc: level => "Lose Silicone (not upgs) on prestige, but get more GS" }),
 	new Artifact(312, 3, "Semicone", "semicone.png", "si", level => 10 + 5 * level, { trigger: () => game.gems > 0, noPercentage: true, desc: level => "10% chance of consuming a Gem every time Silicone is produced" }),
-	new Artifact(313, 3, "Furious Fork", "fork.png", "clickspeed", level => 1.2 + 0.2 * level, { prefix: "-", trigger: () => game.clickCooldown >= -0.33, desc: "For well timed clicks" }),
+	new Artifact(313, 3, "Furious Fork", "fork.png", "clickspeed", level => 1.2 + 0.2 * level, { prefix: "-", trigger: () => game.clickCooldown >= -0.33 || lunarAntiCooldown > 0, desc: "For well timed clicks" }),
 	new Artifact(314, 3, "Hood Goo", "hoodgoo.png", "complicated", 0, { desc: level => 10 * level + "% chance to save your Shgabb production after a click, 5% to stop saving it" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),

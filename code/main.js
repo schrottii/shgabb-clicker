@@ -4,26 +4,28 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.2.4";
+const gameVersion = "2.2.5";
 
 const currentPatchNotes = [
-    "-> Notifications:",
-    "- Added a setting to adjust how many notifications are shown at the top (0 - 5, default/current is 1)",
-    "- Notifications no longer automatically disappear after 15 seconds, only when the limit is reached",
-    "- Increased limit from 15 to 20",
-    "- Improved notifications performance",
-    "-> Auto Shgabb rework:",
-    "- Reworked Auto Shgabb Upgrade cost formula (no more sinuses, and it's now exponential, level closer to More Shgabb's)",
-    "- Players with a high level have this Upgrade reset (to prevent insane numbers), with refunds (l ^ 2 / 2)",
-    "- Increased its base effect from 5 to 10, and buffed the increase after level 100 from +5 to +75 (+25 -> +100)",
-    "- Reworked Cheese to be truly 50% of Clicks, it is no longer affected by temporary auto boosts (Ad, Artifacts)",
-    "- Bomblike and Good Joke now affect Auto Shgabb",
-    "- Slightly buffed GS boosts Shgabb 2's effect",
-    "- Blue Cuts Challenge: increased Shgabb boost",
+    "-> Lunar New Year Event:",
+    "- New event: Lunar New Year Event!",
+    "- Active from February 10th - February 24th",
+    "- During the Event, get x8 Shgabb and earn Qian!",
+    "- Qian, the event-exclusive currency, can be earned by clicking",
+    "- Qian can be spent on 8 offers!",
+    "- 3 new event PFPs and 4 event achievements can be earned",
+    "- Added Lunar New Year Event background image",
+    "-> Qian offers:",
+    "- Offer 1: Buy a Chinese PFP! (888 Qian)",
+    "- Offer 2: Permanent x2 Qian! (96 Qian)",
+    "- Offers 3-5: Instant Faster Shgabb (26), Instant More Crits (8), Instant Stronger Auto (8)",
+    "- Offer 6: Get 3 Gems! (3 Qian)",
+    "- Offer 7: Reset the click cooldown and the next 8 clicks have no cooldown! (6 Qian)",
+    "- Offer 8: Luck! (36 Qian)",
     "-> Other:",
-    "- Changed auto production display background (no more outline, easier to read)",
-    "- The current active Challenge is now highlighted",
-    `- Added "Shgabb" at the end of Good Joke's description to make it clear what it affects`,
+    "- Added 5 new Achievements (95 total)",
+    "- Added an experimental new luck feature",
+    "- Added total Qian and luck to stats",
 ]
 
 // Various variables
@@ -328,7 +330,7 @@ function clickButton() {
         game.stats.shgabb += amount;
         game.stats.shgabbtp += amount;
 
-        if (getArtifactByID(301).isEquipped() && game.clickCooldown > -0.33) {
+        if (getArtifactByID(301).isEquipped() && (game.clickCooldown > -0.33 || lunarAntiCooldown > 0)) {
             knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 30);
         }
         else knifeBoost = 1;
@@ -345,7 +347,7 @@ function clickButton() {
         if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
 
         if (getArtifactByID(314).isEquipped()) {
-            if (Math.random() < 0.05 && hoodGoo > 0) {
+            if (Math.random() * applyLuck(50) < 0.05 && hoodGoo > 0) {
                 hoodGoo = 0;
                 createNotification("Goo is gone...");
             }
@@ -365,6 +367,21 @@ function clickButton() {
 
         if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + 1);
 
+        if (isEvent("lunar")) {
+            lunarAntiCooldown -= 1;
+            luck -= 1; // reduce luck
+
+            if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
+                // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian
+                let amount = game.ach.includes(92) ? 2 : 1;
+                if (Math.random() > (1 / 8)) amount = 8;
+                if ((game.qian + amount) % 10 == 4) amount += 1;
+
+                game.qian += amount;
+                game.stats.qian += amount;
+            }
+        }
+
         if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
             let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi");
             game.si += amount;
@@ -372,7 +389,7 @@ function clickButton() {
             if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
         }
 
-        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)) {
+        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {
             amount = getSandwich(critMulti);
             game.sw += amount;
             game.stats.sw += amount;
@@ -444,6 +461,7 @@ function getProduction(sosnog = false) {
         * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
         * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
         * eventValue("anniversary", 3, 1)
+        * eventValue("lunar", 8, 1)
         * cakeValue(10, 1)
         * getChallenge(2).getBoost()
         * getChallenge(3).getBoost()
@@ -478,6 +496,7 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
             * sandwichUpgrades.meaningOfLife.currentEffect()
             * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
             * eventValue("anniversary", 3, 1)
+            * eventValue("lunar", 8, 1)
             * cakeValue(10, 1)
             * getChallenge(2).getBoost()
             * getChallenge(4).getBoost()
@@ -515,6 +534,7 @@ function getSiliconeBoost(level = "current") {
 var clickCooldown = 5;
 function getCooldown() {
     // click cooldown
+    if (lunarAntiCooldown > 0) return 0;
     let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
@@ -556,7 +576,7 @@ function getSandwich(critMulti = 1) {
 
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
-    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) {
+    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1) * applyLuck(100)) {
         createNotification("Critical Hit!");
         return shgabbUpgrades.critBoost.currentEffect() * (currentBoost == "moreCrits" ? 3 : 1);
     }
@@ -593,7 +613,7 @@ function silicone() {
     if (amount > 0) {
         game.si += amount;
         game.stats.si += amount;
-        if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
+        if (getArtifactByID(312).isEquipped() && Math.random() * applyLuck(100) > 0.9 && game.gems > 0) game.gems -= 1;
     }
 
     updateUpgrades();
@@ -936,6 +956,7 @@ function updateStats() {
         + "<br />Améliorer Levels: " + getTotalAme()
         + "<br />Total Gifts: " + fn(game.stats.gifts)
         + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
+        + "<br />Total Qian: " + fn(game.stats.qian)
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
 
@@ -947,6 +968,7 @@ function updateStats() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
+        + "<br />Luck: " + Math.floor(luck)
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
@@ -1101,7 +1123,7 @@ function autoSave() {
     autoNotifications += 1;
 
     // Kill knife if yo slow
-    if (game.clickCooldown < -0.33) knifeBoost = 1;
+    if (game.clickCooldown < -0.33 || lunarAntiCooldown > 0) knifeBoost = 1;
 
     // Le rare renderes
     renderAmeConvert();
@@ -1428,6 +1450,7 @@ catch (e) {
 function updateBG() {
     if (isEvent("christmas") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
     else if (isEvent("anniversary") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/anniversary-background.png)";
+    else if (isEvent("lunar") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-chinese.png)";
     else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
 }
 

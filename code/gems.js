@@ -16,7 +16,7 @@ function getGemChance() {
 
 function getGem() {
     // Chance to get a gem
-    if (Math.random() < 1 / 100 * getGemChance()) {
+    if (Math.random() < 1 / 100 * getGemChance() * applyLuck(100)) {
         let amount = getArtifactBoost("gems");
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;

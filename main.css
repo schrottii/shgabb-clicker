@@ -304,6 +304,29 @@ progress {
         filter: brightness(80%);
     }
 
+.chineseOffer {
+    text-align: center;
+    margin: 0px 2px 4px 2px;
+    border: 4px solid gold;
+    min-width: 200px;
+    min-height: 98px;
+    font-family: Rw-title;
+    vertical-align: top;
+
+    color: gold;
+    background-color: red;
+    font-size: 20px;
+}
+
+    .chineseOffer:hover {
+        filter: brightness(90%);
+        transition: 0.2s;
+    }
+
+    .chineseOffer:active {
+        filter: brightness(80%);
+    }
+
 /* ===================================================== */
 /* STATS / ACHIEVEMENTS / SOCIAL */
 /* ===================================================== */

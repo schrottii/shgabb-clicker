@@ -32,6 +32,7 @@ January - March 2024:
 2.2.2
 2.2.3
 2.2.4
+2.2.5
 
 
 
@@ -1036,3 +1037,29 @@ Version 2.2.4:
 - Changed auto production display background (no more outline, easier to read)
 - The current active Challenge is now highlighted
 - Added "Shgabb" at the end of Good Joke's description to make it clear what it affects
+
+
+
+2024/02/10 2.2.5:
+Version 2.2.5:
+-> Lunar New Year Event:
+- New event: Lunar New Year Event!
+- Active from February 10th - February 24th
+- During the Event, get x8 Shgabb and earn Qian!
+- Qian, the event-exclusive currency, can be earned by clicking
+- Qian can be spent on 8 offers!
+- 3 new event PFPs and 4 event achievements can be earned
+- Added Lunar New Year Event background image
+
+-> Qian offers:
+- Offer 1: Buy a Chinese PFP! (888 Qian)
+- Offer 2: Permanent x2 Qian! (96 Qian)
+- Offers 3-5: Instant Faster Shgabb (26), Instant More Crits (8), Instant Stronger Auto (8)
+- Offer 6: Get 3 Gems! (3 Qian)
+- Offer 7: Reset the click cooldown and the next 8 clicks have no cooldown! (6 Qian)
+- Offer 8: Luck! (36 Qian)
+
+-> Other:
+- Added 5 new Achievements (95 total)
+- Added an experimental new luck feature
+- Added total Qian and luck to stats
