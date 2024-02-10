@@ -374,7 +374,7 @@ function clickButton() {
             if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
                 // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian
                 let amount = game.ach.includes(92) ? 2 : 1;
-                if (Math.random() > (1 / 8)) amount = 8;
+                if (Math.random() < (1 / 8)) amount = 8;
                 if ((game.qian + amount) % 10 == 4) amount += 1;
 
                 game.qian += amount;
