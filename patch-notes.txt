@@ -33,6 +33,7 @@ January - March 2024:
 2.2.3
 2.2.4
 2.2.5
+2.3
 
 
 
@@ -1063,3 +1064,28 @@ Version 2.2.5:
 - Added 5 new Achievements (95 total)
 - Added an experimental new luck feature
 - Added total Qian and luck to stats
+
+
+
+2024/03/06 2.3:
+Version 2.3:
+-> Bags:
+- New currency: Bags!
+- Unlocked at HMS 8000
+- Earned by pushing More Shgabb
+- Added 4 Bags Upgrades
+- Bags image & original idea by Barduzzi
+
+-> Améliorer:
+- Added the 6th set of Améliorer Upgrades (150 Amé)
+- Added 2 new Améliorer Upgrades (6th set):
+- New Améliorer Upgrade: Golden Shgabb Boost
+- New Améliorer Upgrade: Tiers Boost Bags
+- Reduced max. level of Silicone Boost from 50 to 30 to be in line with the other boosts
+
+-> Other:
+- Added 5 new Achievements (100 total)
+- Added 5 new Quotes (73 total)
+- Added total Bags stat
+- Added total tiers stat
+- Changed Discord Server link from Toast to the new games server

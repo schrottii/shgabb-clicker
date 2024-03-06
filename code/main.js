@@ -4,28 +4,27 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.2.5";
+const gameVersion = "2.3";
 
 const currentPatchNotes = [
-    "-> Lunar New Year Event:",
-    "- New event: Lunar New Year Event!",
-    "- Active from February 10th - February 24th",
-    "- During the Event, get x8 Shgabb and earn Qian!",
-    "- Qian, the event-exclusive currency, can be earned by clicking",
-    "- Qian can be spent on 8 offers!",
-    "- 3 new event PFPs and 4 event achievements can be earned",
-    "- Added Lunar New Year Event background image",
-    "-> Qian offers:",
-    "- Offer 1: Buy a Chinese PFP! (888 Qian)",
-    "- Offer 2: Permanent x2 Qian! (96 Qian)",
-    "- Offers 3-5: Instant Faster Shgabb (26), Instant More Crits (8), Instant Stronger Auto (8)",
-    "- Offer 6: Get 3 Gems! (3 Qian)",
-    "- Offer 7: Reset the click cooldown and the next 8 clicks have no cooldown! (6 Qian)",
-    "- Offer 8: Luck! (36 Qian)",
+    "-> Bags:",
+    "- New currency: Bags!",
+    "- Unlocked at HMS 8000",
+    "- Earned by pushing More Shgabb",
+    "- Added 4 Bags Upgrades",
+    "- Bags image & original idea by Barduzzi",
+    "-> Améliorer:",
+    "- Added the 6th set of Améliorer Upgrades (150 Amé)",
+    "- Added 2 new Améliorer Upgrades (6th set):",
+    "- New Améliorer Upgrade: Golden Shgabb Boost",
+    "- New Améliorer Upgrade: Tiers Boost Bags",
+    "- Reduced max. level of Silicone Boost from 50 to 30 to be in line with the other boosts",
     "-> Other:",
-    "- Added 5 new Achievements (95 total)",
-    "- Added an experimental new luck feature",
-    "- Added total Qian and luck to stats",
+    "- Added 5 new Achievements (100 total)",
+    "- Added 5 new Quotes (73 total)",
+    "- Added total Bags stat",
+    "- Added total tiers stat",
+    "- Changed Discord Server link from Toast to the new games server",
 ]
 
 // Various variables
@@ -75,6 +74,8 @@ var ui = {
     ameAmount2: document.getElementById("ameAmount2"),
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
     artifactScrapAmount2: document.getElementById("artifactScrapAmount2"),
+    bagAmount: document.getElementById("bagAmount"),
+    bagAmount2: document.getElementById("bagAmount2"),
 
     // Images of currencies
     swImage: document.getElementById("swImage"),
@@ -89,6 +90,7 @@ var ui = {
     gsupgradesr: document.getElementById("gsupgradesr"),
     siupgradesr: document.getElementById("siupgradesr"),
     ameupgradesr: document.getElementById("ameupgradesr"),
+    bagupgrades: document.getElementById("bagupgrades"),
 
     // New Artifact display thing
     newArtifact: document.getElementById("newArtifact"),
@@ -230,6 +232,12 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "are seeds still trash - slowmerger",
     "You hate them just because you're not an endgame player :puke: - DaGame",
     "i AGRHARH - Schrottii",
+
+    "schronter you need to play more - schrotttv",
+    "You won't guess my qians amount :excellent: - DaGame",
+    "them fresh green rectangles - elmenda452",
+    "schrottii so good we made a second schrottii - Phazer",
+    "elmenda is a latin teacher irl leaked? - Barduzzi",
 ];
 
 // Notations
@@ -463,6 +471,8 @@ function getProduction(sosnog = false) {
         * eventValue("anniversary", 3, 1)
         * eventValue("lunar", 8, 1)
         * cakeValue(10, 1)
+        * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
+        * bagUpgrades.gemsBoostShgabb.currentEffect()
         * getChallenge(2).getBoost()
         * getChallenge(3).getBoost()
         * (currentBoost == "strongerClicks" ? 5 : 1)
@@ -498,6 +508,8 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
             * eventValue("anniversary", 3, 1)
             * eventValue("lunar", 8, 1)
             * cakeValue(10, 1)
+            * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
+            * bagUpgrades.gemsBoostShgabb.currentEffect()
             * getChallenge(2).getBoost()
             * getChallenge(4).getBoost()
             // TEMPORARY auto boosts (-> normal auto AND cheese)
@@ -521,6 +533,7 @@ function getSiliconeProduction(isClicks = false) {
     return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * goldenShgabbUpgrades.moreSilicone2.currentEffect()
+        * bagUpgrades.moreSilicone3.currentEffect()
         * ameliorerUpgrades.siliconeBoost.currentEffect()
         * getArtifactBoost("si"))
         * (getArtifactByID(161).isEquipped() && !isClicks ? 0 : 1);
@@ -556,6 +569,7 @@ function getGoldenShgabb() {
         * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000)
         * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000)
         * goldenShgabbUpgrades.formaggi.currentEffect()
+        * ameliorerUpgrades.amegsBoost.currentEffect()
         * sandwichUpgrades.twoTwoFive.currentEffect()
         * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
         * getArtifactBoost("gs")
@@ -652,8 +666,25 @@ function buyUpgrade(id) {
     id.buy();
     updateUpgrades();
     freezeTime();
-    game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
 
+    if (id.ID == "moreShgabb") {
+        game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+
+        if (game.upgradeLevels.moreShgabb > game.stats.hmstp) {
+            let previousHms = game.stats.hmstp;
+            if (game.upgradeLevels.moreShgabb > game.stats.hmstp) game.stats.hmstp = game.upgradeLevels.moreShgabb;
+
+            if (unlockedBags()) {
+                let bagi = (ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1) * (Math.floor(game.stats.hmstp / 1000) - Math.floor(previousHms / 1000));
+
+                if (bagi > 0) {
+                    game.bags += bagi;
+                    game.stats.bags += bagi;
+                    createNotification("+" + bagi + " Bags!");
+                }
+            }
+        }
+    }
 }
 
 function buyMax(id) {
@@ -712,8 +743,15 @@ function prestigeButton() {
 
         if (ui.ameReset.checked == true) ameReset();
 
+        if (bagUpgrades.prestigeGems.currentLevel() > 0) {
+            let amount = Math.floor(game.stats.hmstp / 1000);
+            game.gems += amount;
+            game.stats.gems += amount;
+            createNotification("+" + amount + " Gems!");
+        }
+
         game.stats.pr += 1;
-        game.stats.hmstp = game.stats.hms;
+        game.stats.hmstp = 0;
 
         game.aclg = 0;
         if (enableThisChallenge != 0) {
@@ -737,6 +775,10 @@ function unlockedSandwiches() {
 
 function unlockedGS() {
     return game.shgabb >= 1000000 || game.stats.pr > 0;
+}
+
+function unlockedBags() {
+    return game.stats.hms >= 8000;
 }
 
 // Notifications
@@ -862,6 +904,8 @@ function updateUpgrades() {
     ui.siupgradesr.innerHTML = renderUpgrades(siliconeShgabbUpgrades);
 
     ui.ameupgradesr.innerHTML = renderUpgrades(ameliorerUpgrades);
+
+    ui.bagupgrades.innerHTML = renderUpgrades(bagUpgrades);
 }
 
 function updateArtifacts() {
@@ -912,6 +956,9 @@ function updateTopSquare() {
 
         if (unlockedArtifactUpgrading()) ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
         else ui.artifactScrapAmount2.innerHTML = "";
+
+        if (unlockedBags()) ui.bagAmount2.innerHTML = ui.bagAmount.innerHTML;
+        else ui.bagAmount2.innerHTML = "";
     }
 }
 
@@ -936,6 +983,9 @@ function updateCurrencies() {
 
     if (unlockedArtifactUpgrading()) ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
     else ui.artifactScrapAmount.innerHTML = "";
+
+    if (unlockedBags()) ui.bagAmount.innerHTML = cImg("bag") + game.bags + " Bags";
+    else ui.bagAmount.innerHTML = "";
 }
 
 function updateStats() {
@@ -954,9 +1004,11 @@ function updateStats() {
         + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
         + "<br />Total Améliorer: " + fn(game.stats.ame)
         + "<br />Améliorer Levels: " + getTotalAme()
+        + "<br />Total Bags: " + fn(game.stats.bags)
         + "<br />Total Gifts: " + fn(game.stats.gifts)
         + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
         + "<br />Total Qian: " + fn(game.stats.qian)
+        + "<br />Total Tiers: " + fn(getTotalTiers())
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
 

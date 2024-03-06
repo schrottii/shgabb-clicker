@@ -11,6 +11,7 @@ var sections = {
     goldenShgabb: document.getElementById("goldenShgabbSection"),
     siliconeShgabb: document.getElementById("siliconeShgabbSection"),
     ameliorer: document.getElementById("ameliorerSection"),
+    bags: document.getElementById("bagSection"),
 
     // sel 2
     gems: document.getElementById("gemSection"),
@@ -39,8 +40,8 @@ function renderSelection(sel) {
 
     // Buttons
     if (sel == 1) {
-        sels = ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer"];
-        selsDisplay = ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone Shgabb", "Améliorer"];
+        sels = ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags"];
+        selsDisplay = ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone Shgabb", "Améliorer", "Bags"];
     }
     if (sel == 2) {
         sels = ["gems", "artifacts", "challenges", "minigames", "events"];
@@ -82,6 +83,8 @@ function isSelectionUnlocked(name) {
             return unlockedSilicone();
         case "ameliorer":
             return unlockedAmeliorer();
+        case "bags":
+            return unlockedBags();
 
         case "gems":
             return unlockedGems();

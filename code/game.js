@@ -17,6 +17,7 @@ var game = {
     si: 0,
     ame: 0,
     ameUp: [0, 0, 0, 0, 0],
+    bags: 0,
     gems: 0,
     gemboost: 0,
     artifactScrap: 0,
@@ -33,6 +34,7 @@ var game = {
         bomblike: 0,
         swChance: 0,
         moreSw: 0,
+
         // Sandwich
         autoShgabb: 0,
         fridge: 0,
@@ -40,6 +42,7 @@ var game = {
         cheese: 0,
         twoTwoFive: 0,
         meaningOfLife: 0,
+
         // GS
         divineShgabb: 0,
         shortCD: 0,
@@ -49,11 +52,13 @@ var game = {
         unlockMSW: 0,
         formaggi: 0,
         moreSilicone2: 0,
+
         // Silicone
         moreSilicone: 0,
         strongerSilicone: 0,
         siliconeFromClicks: 0,
         siliconeAffectsGS: 0,
+
         // Ame
         AMEgsBoost1: 0,
         AMEgsBoost2: 0,
@@ -79,6 +84,15 @@ var game = {
         critsAffectSW: 0,
         gems2ame: 0,
         keepSWU: 0,
+
+        amegsBoost: 0,
+        tiersBoostBags: 0,
+
+        // Bag
+        challengeShgabb: 0,
+        moreSilicone3: 0,
+        prestigeGems: 0,
+        gemsBoostShgabb: 0,
     },
     stats: {
         shgabb: 0,
@@ -94,6 +108,8 @@ var game = {
         ctp: 0,
         si: 0,
         ame: 0,
+        bags: 0,
+
         hms: 0,
         hmstp: 0,
         tgems: 0,

@@ -93,6 +93,14 @@ function renderChallenges() {
     ui.challengeRender.innerHTML = render;
 }
 
+function getTotalTiers() {
+    let totalTiers = 0;
+    for (c in challenges) {
+        totalTiers += challenges[c].getTier();
+    }
+    return totalTiers;
+}
+
 var challenges = [
     new Challenge(1, 6000, t => 4000 + 1000 * t, "Basic Climb", "Only the first two Shgabb Upgrades are available, and no Sandwich Upgrades!", t => 4 * Math.pow(1.5, t), "Sandwiches"),
     new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t => 6 * Math.pow(6, t), "Shgabb"),

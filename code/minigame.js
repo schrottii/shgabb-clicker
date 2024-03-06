@@ -176,6 +176,12 @@ function minigameCheckForWinners() {
             }
         }
         if (total == 9) winner = 2;
+
+        if (minigameField[0][0] == 0 && minigameField[0][1] != 0 && minigameField[0][2] == 0
+            && minigameField[1][0] == 0 && minigameField[1][1] != 0 && minigameField[1][2] == 0
+            && minigameField[2][0] != 0 && minigameField[2][1] != 0 && minigameField[2][2] != 0) {
+            if (!game.ach.includes(100)) game.ach.push(100);
+        }
     }
 
     // Okay, who's the winner
