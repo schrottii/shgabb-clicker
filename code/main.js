@@ -4,9 +4,24 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.3";
+const gameVersion = "2.3.1";
 
 const currentPatchNotes = [
+    "-> New content:",
+    "- Added 5 new Quotes (78 total)",
+    "- Added a new PFP of a Bag",
+    "- Temporarily unlocked at 10k total Bags, will be moved to an Achievement later",
+    "-> Other:",
+    "- Amount of GS gained from a Prestige now uses notations",
+    "- Increased PFP text size",
+    "- Increased space below currency displays to avoid overlapping, and reduced space above to avoid empty spaces",
+    "- Some code improvements",
+    "-> Bug fixes:",
+    "- Fixed Phallic Plays Achievement not being awarded when winning",
+    "- Fixed Prestige Gems not increasing total Gems stat, and the lost total Gems are automatically added",
+    "- Fixed Prestige Gems description saying HMS instead of More Shgabb (it is based on current)",
+
+    "v2.3",
     "-> Bags:",
     "- New currency: Bags!",
     "- Unlocked at HMS 8000",
@@ -46,8 +61,11 @@ var autoNotifications = 0;
 // artifacts
 var knifeBoost = 1;
 var trashCanBoost = 0;
+var diceAmount = 1;
+var frustration = 0;
 var hoodGoo = 0;
 
+// UI, display, render stuf
 var ui = {
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
@@ -85,12 +103,12 @@ var ui = {
     ameImage: document.getElementById("ameImage"),
 
     // Upgrades
-    upgradesr: document.getElementById("upgradesr"),
-    swupgradesr: document.getElementById("swupgradesr"),
-    gsupgradesr: document.getElementById("gsupgradesr"),
-    siupgradesr: document.getElementById("siupgradesr"),
-    ameupgradesr: document.getElementById("ameupgradesr"),
-    bagupgrades: document.getElementById("bagupgrades"),
+    upgradesrender: document.getElementById("upgradesrender"),
+    swupgradesrender: document.getElementById("swupgradesrender"),
+    gsupgradesrender: document.getElementById("gsupgradesrender"),
+    siupgradesrender: document.getElementById("siupgradesrender"),
+    ameupgradesrender: document.getElementById("ameupgradesrender"),
+    bagupgradesrender: document.getElementById("bagupgradesrender"),
 
     // New Artifact display thing
     newArtifact: document.getElementById("newArtifact"),
@@ -162,7 +180,6 @@ const adTimes = {
 };
 
 // Quotes
-
 const quotes = ["(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
     "how can i get this macdonald coin - Benio",
@@ -227,28 +244,33 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "You have 0.0001 second to click this quote and get Obama right now! Oops, you're late! - DaGame",
     "elken bad person no sharo statto - schrotttv",
 
+    // 2.2 (5)
     "my brain isnt mathing rn i need ciguretos - schrotttv",
     "i avoid plants - elmenda452",
     "are seeds still trash - slowmerger",
     "You hate them just because you're not an endgame player :puke: - DaGame",
     "i AGRHARH - Schrottii",
 
+    // 2.3 (5) & 2.3.1 (5)
     "schronter you need to play more - schrotttv",
     "You won't guess my qians amount :excellent: - DaGame",
     "them fresh green rectangles - elmenda452",
     "schrottii so good we made a second schrottii - Phazer",
     "elmenda is a latin teacher irl leaked? - Barduzzi",
+    "i cheated my way into your heart - schrotttv",
+    "1 am... really the time ? - shgabb",
+    "i slowed you in dms - elmenda452",
+    "I sacrifice myself to keep this chat alive because no one will dare send anything after this - shgabb",
+    "If you would add player gifts, I'd be able to send you my 168035 scraps - DaGame",
 ];
 
 // Notations
-
 const upgradeColors = ["normal", "old", "custom"]
 const notations = ["normal", "scientific", "engineering", "alphabet"];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "qD", "QD", "sD", "SD", "OD", "ND", "V", "sV", "Tr", "UTR", "QU", "TQU", "qu", "Se", "Sp", "Oc", "No", "Améliorer", "What?!?!", "What?!?!2", "You Broke The Game", "I am crying", "no!!!", "WhyDoesFranceStillExist", "GodIsWatchingYou"];
 const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 
 // More beta stuff
-
 function cheatEngine(type) {
     let toCheat;
     if (cheatCurrency.value == "stats.playTime") toCheat = game.stats.playTime;
@@ -435,15 +457,37 @@ function freezeTime() {
     sandwichFreezeTime = getFreezeTime();
 }
 
-var diceAmount = 1;
 function changeDiceAmount() {
     diceAmount = Math.ceil(Math.random() * (7 - getArtifactLevel(307))) + (getArtifactLevel(307) - 1);
     if (getArtifactByID(307).isEquipped()) updateArtifacts();
 }
 
-var frustration = 0;
-
 // Various production functions
+function getGlobalProduction() {
+    // these will be applied to auto AND clicks
+
+    let prod = 1
+        * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+        * shgabbUpgrades.bomblike.currentEffect()
+        * goldenShgabbUpgrades.divineShgabb.currentEffect()
+        * getSiliconeBoost()
+        * goldenShgabbUpgrades.formaggi.currentEffect()
+        * getArtifactBoost("shgabb")
+        * knifeBoost
+        * (1 + game.gemboost / 4)
+        * ameliorerUpgrades.shgabbBoost.currentEffect()
+        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
+        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        * sandwichUpgrades.meaningOfLife.currentEffect()
+        * cakeValue(10, 1)
+        * getChallenge(2).getBoost()
+        * bagUpgrades.gemsBoostShgabb.currentEffect()
+        * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
+        * eventValue("anniversary", 3, 1)
+        * eventValue("lunar", 8, 1);
+
+    return prod;
+}
 
 function getProduction(sosnog = false) {
     // Get the current shgabb production per click
@@ -451,69 +495,41 @@ function getProduction(sosnog = false) {
 
     // things that boost Shgabb and Click Shgabb
     let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect())
-        * shgabbUpgrades.bomblike.currentEffect()
-        * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
-        * goldenShgabbUpgrades.divineShgabb.currentEffect()
+        * getGlobalProduction()
+
         * goldenShgabbUpgrades.gsBoost1.currentEffect()
         * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
-        * getSiliconeBoost()
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * getArtifactBoost("shgabb")
         * getArtifactBoost("clickshgabb")
-        * knifeBoost
         * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
-        * (1 + game.gemboost / 4)
-        * ameliorerUpgrades.shgabbBoost.currentEffect()
-        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
-        * sandwichUpgrades.meaningOfLife.currentEffect()
         * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * eventValue("anniversary", 3, 1)
-        * eventValue("lunar", 8, 1)
-        * cakeValue(10, 1)
-        * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
-        * bagUpgrades.gemsBoostShgabb.currentEffect()
-        * getChallenge(2).getBoost()
         * getChallenge(3).getBoost()
         * (currentBoost == "strongerClicks" ? 5 : 1)
         * (getArtifactByID(200).isEquipped() ? 0 : 1)
     );
+
     if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
     return prod;
 }
 
 function getAutoProduction(sosnog2 = false, returnType = "all") {
+    // Get auto prod
+
     if (isChallenge(3)) return 0;
     if (getArtifactByID(305).isEquipped() && sosnog2 == false && returnType != "cheese") return getProduction(true);
+
     if (returnType == "cheese") {
         if (getArtifactByID(305).isEquipped()) return 0;
     }
+
     // NORMAL AUTO PROD, things that boost Shgabb in general
     let prod = 0;
     if (returnType != "cheese") {
         prod = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
-            * shgabbUpgrades.bomblike.currentEffect()
-            * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
-            * goldenShgabbUpgrades.divineShgabb.currentEffect()
+            * getGlobalProduction()
+
             * goldenShgabbUpgrades.gsBoost2.currentEffect()
-            * getSiliconeBoost()
-            * goldenShgabbUpgrades.formaggi.currentEffect()
-            * getArtifactBoost("shgabb")
-            * knifeBoost
-            * (1 + game.gemboost / 4)
-            * ameliorerUpgrades.shgabbBoost.currentEffect()
-            * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
-            * sandwichUpgrades.meaningOfLife.currentEffect()
-            * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-            * eventValue("anniversary", 3, 1)
-            * eventValue("lunar", 8, 1)
-            * cakeValue(10, 1)
-            * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
-            * bagUpgrades.gemsBoostShgabb.currentEffect()
-            * getChallenge(2).getBoost()
-            * getChallenge(4).getBoost()
-            // TEMPORARY auto boosts (-> normal auto AND cheese)
             * getArtifactBoost("autoshgabb")
+            * getChallenge(4).getBoost()
             * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
             * (currentBoost == "strongerAuto" ? 5 : 1)
         );
@@ -660,7 +676,6 @@ function updateUpgradeColors() {
 }
 
 // Buy functions
-
 function buyUpgrade(id) {
     // Buy an upgrade and update UI
     id.buy();
@@ -746,7 +761,7 @@ function prestigeButton() {
         if (bagUpgrades.prestigeGems.currentLevel() > 0) {
             let amount = Math.floor(game.stats.hmstp / 1000);
             game.gems += amount;
-            game.stats.gems += amount;
+            game.stats.tgems += amount;
             createNotification("+" + amount + " Gems!");
         }
 
@@ -761,7 +776,7 @@ function prestigeButton() {
 
         updateUpgrades();
         renderChallenges();
-        createNotification("Prestiged for " + amount + " Golden Shgabb!");
+        createNotification("Prestiged for " + fn(amount) + " Golden Shgabb!");
     }
 }
 
@@ -880,7 +895,6 @@ function ameReset() {
 }
 
 // Update functions
-
 function updateQuote() {
     ui.quote.innerHTML = quotes[Math.ceil(Math.random() * quotes.length - 1)];
 }
@@ -895,17 +909,17 @@ function renderUpgrades(object){
 
 function updateUpgrades() {
     // Update upgrades UI
-    ui.upgradesr.innerHTML = renderUpgrades(shgabbUpgrades);
+    ui.upgradesrender.innerHTML = renderUpgrades(shgabbUpgrades);
 
-    ui.swupgradesr.innerHTML = renderUpgrades(sandwichUpgrades);
+    ui.swupgradesrender.innerHTML = renderUpgrades(sandwichUpgrades);
 
-    ui.gsupgradesr.innerHTML = renderUpgrades(goldenShgabbUpgrades);
+    ui.gsupgradesrender.innerHTML = renderUpgrades(goldenShgabbUpgrades);
 
-    ui.siupgradesr.innerHTML = renderUpgrades(siliconeShgabbUpgrades);
+    ui.siupgradesrender.innerHTML = renderUpgrades(siliconeShgabbUpgrades);
 
-    ui.ameupgradesr.innerHTML = renderUpgrades(ameliorerUpgrades);
+    ui.ameupgradesrender.innerHTML = renderUpgrades(ameliorerUpgrades);
 
-    ui.bagupgrades.innerHTML = renderUpgrades(bagUpgrades);
+    ui.bagupgradesrender.innerHTML = renderUpgrades(bagUpgrades);
 }
 
 function updateArtifacts() {
@@ -1414,6 +1428,10 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
     game.gs = Math.ceil(game.gs);
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
+    if (game.stats.gems != undefined) {
+        game.stats.tgems += game.stats.gems;
+        delete game.stats.gems;
+    }
     canPlayTTT = compareMinigameTime();
     handleArtifactsFirstTime();
 

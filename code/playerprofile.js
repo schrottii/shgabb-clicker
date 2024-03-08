@@ -33,8 +33,8 @@ function renderPFPs() {
     let render = "";
 
     for (p in pfps) {
-        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230)'><img src='" + pfps[p].image + "' style='width: 50%'><br />" + pfps[p].getType() + "</button>"
-        else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130)'>"/*<img src='" + pfps[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + pfps[p].getType() + "</button>"
+        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px'><img src='" + pfps[p].image + "' style='width: 50%'><br />" + pfps[p].getType() + "</button>"
+        else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + pfps[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + pfps[p].getType() + "</button>"
     }
     ui.pfps.innerHTML = render;
 }
@@ -62,6 +62,7 @@ var pfps = [
     new PFP(303, "images/currencies/silicone.png", () => game.ach.includes(25)),
     new PFP(304, "images/currencies/ameliorer.png", () => game.ach.includes(58)),
     new PFP(305, "images/currencies/gem.png", () => game.ach.includes(55)),
+    new PFP(306, "images/currencies/bag.png", () => game.stats.bags >= 10000),
 
     // 400 - 599 | Event PFPs
     new PFP(400, "images/currencies/gift.png", () => game.evpfps.includes(400)),

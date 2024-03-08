@@ -225,6 +225,6 @@ var ameliorerUpgrades = {
 var bagUpgrades = {
     challengeShgabb: new BagUpgrade("challengeShgabb", "Challenge Shgabb", "Get even more Shgabb - in Challenges", level => 10 * Math.floor(1 + level / 10), level => Math.pow(1 + level, 1.25), { prefix: "x" }),
     moreSilicone3: new BagUpgrade("moreSilicone3", "More Silicone 3", "Get even more Silicone Shgabb", level => 20 * Math.floor(1 + level / 3), level => Math.pow(1 + (level / 10), 1.15), { prefix: "x" }),
-    prestigeGems: new BagUpgrade("prestigeGems", "Prestige Gems", "Get 1 Gem for every 1000 HMS on Prestige", level => 1000, level => level, { prefix: "+", maxLevel: 1 }),
+    prestigeGems: new BagUpgrade("prestigeGems", "Prestige Gems", "Get 1 Gem for every 1000 More Shgabb on Prestige", level => 1000, level => level, { prefix: "+", maxLevel: 1 }),
     gemsBoostShgabb: new BagUpgrade("gemsBoostShgabb", "Gems Boost Shgabb", "Boosts Shgabb based on current Gems", level => 1000 * (level + 1), level => 1 + Math.floor((level * game.gems) / 100), { prefix: "x", maxLevel: 10 }),
 }

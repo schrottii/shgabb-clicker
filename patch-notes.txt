@@ -34,6 +34,7 @@ January - March 2024:
 2.2.4
 2.2.5
 2.3
+2.3.1
 
 
 
@@ -1089,3 +1090,23 @@ Version 2.3:
 - Added total Bags stat
 - Added total tiers stat
 - Changed Discord Server link from Toast to the new games server
+
+
+
+2024/03/08 2.3.1:
+Version 2.3.1:
+-> New content:
+- Added 5 new Quotes (78 total)
+- Added a new PFP of a Bag
+- Temporarily unlocked at 10k total Bags, will be moved to an Achievement later
+
+-> Other:
+- Amount of GS gained from a Prestige now uses notations
+- Increased PFP text size
+- Increased space below currency displays to avoid overlapping, and reduced space above to avoid empty spaces
+- Some code improvements
+
+-> Bug fixes:
+- Fixed Phallic Plays Achievement not being awarded when winning
+- Fixed Prestige Gems not increasing total Gems stat, and the lost total Gems are automatically added
+- Fixed Prestige Gems description saying HMS instead of More Shgabb (it is based on current)
