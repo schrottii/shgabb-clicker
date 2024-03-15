@@ -62,7 +62,7 @@ var pfps = [
     new PFP(303, "images/currencies/silicone.png", () => game.ach.includes(25)),
     new PFP(304, "images/currencies/ameliorer.png", () => game.ach.includes(58)),
     new PFP(305, "images/currencies/gem.png", () => game.ach.includes(55)),
-    new PFP(306, "images/currencies/bag.png", () => game.stats.bags >= 10000),
+    new PFP(306, "images/currencies/bag.png", () => game.ach.includes(109)),
 
     // 400 - 599 | Event PFPs
     new PFP(400, "images/currencies/gift.png", () => game.evpfps.includes(400)),
@@ -113,7 +113,7 @@ function renderPlayerProfile() {
 
     // Name
     pctx.font = (20 * profileTextSizeMulti) + "px Times New Roman";
-    ctx.textAlign = "left";
+    pctx.textAlign = "left";
     pctx.fillText(game.profile.name, w * 0.4, w * 0.1)
 
     // Start
@@ -121,10 +121,14 @@ function renderPlayerProfile() {
     pctx.fillText("Started in: v" + game.profile.startVer + " / " + formatDate(game.profile.startDay), w * 0.025, w * 0.475)
 
     // ID
-    ctx.textAlign = "right";
-    pctx.fillText("#" + game.profile.id.substr(0, 6), w * 0.85, w * 0.475)
+    pctx.textAlign = "right";
+    pctx.fillText("#" + game.profile.id.substr(0, 6), w * 0.975, w * 0.475)
+
+    // Current version
+    pctx.fillText(gameVersion, w * 0.975, w * 0.05)
 
     // Stats
+    pctx.textAlign = "left";
     pctx.font = (16 * profileTextSizeMulti) + "px Times New Roman";
     pctx.fillText("Highest More Shgabb: " + game.stats.hms, w * 0.4, w * 0.2)
     pctx.fillText("Artifacts Unlocked: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1), w * 0.4, w * 0.25)

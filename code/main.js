@@ -4,9 +4,19 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.3.1";
+const gameVersion = "2.3.2";
 
 const currentPatchNotes = [
+    "-> Achievements:",
+    "- Added 10 new Achievements (110 total, 6 Bags, 4 meta)",
+    "- Moved Event Achievements to the end",
+    "- Added image for the meta/achievement Achievements",
+    "-> Other:",
+    "- The Bag PFP is now unlocked with Playing DaGame V instead",
+    "- Added current game version to the Player Profile",
+    "- Moved Player ID a bit to the right",
+
+    "v2.3.1",
     "-> New content:",
     "- Added 5 new Quotes (78 total)",
     "- Added a new PFP of a Bag",
