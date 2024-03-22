@@ -261,11 +261,9 @@ progress {
     border: 4px ridge white;
     height: 160px;
     width: 6%;
-    min-width: 128px;
-    max-width: 160px;
+    width: 116px;
     vertical-align: top;
     font-family: Rw;
-    font-size: 12px;
 }
 
     .artifact:hover {
@@ -276,6 +274,12 @@ progress {
     .artifact:active {
         filter: brightness(80%);
     }
+
+@media only screen and (min-width: 768px) {
+    .artifact {
+        width: 140px;
+    }
+}
 
 .artifactLoadoutButton {
     width: 15%;
