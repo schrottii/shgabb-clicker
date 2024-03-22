@@ -259,12 +259,13 @@ progress {
     text-align: center;
     margin: 0px 0px 0px 0px;
     border: 4px ridge white;
-    width: 6%;
     height: 160px;
-    min-width: 140px;
-    max-width: 320px;
+    width: 6%;
+    min-width: 128px;
+    max-width: 172px;
     vertical-align: top;
     font-family: Rw;
+    font-size: 12px;
 }
 
     .artifact:hover {

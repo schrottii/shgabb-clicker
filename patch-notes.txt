@@ -35,6 +35,8 @@ January - March 2024:
 2.2.5
 2.3
 2.3.1
+2.3.2
+2.3.3
 
 
 
@@ -1110,3 +1112,35 @@ Version 2.3.1:
 - Fixed Phallic Plays Achievement not being awarded when winning
 - Fixed Prestige Gems not increasing total Gems stat, and the lost total Gems are automatically added
 - Fixed Prestige Gems description saying HMS instead of More Shgabb (it is based on current)
+
+
+
+2024/03/15 2.3.2:
+Version 2.3.2:
+-> Achievements:
+- Added 10 new Achievements (110 total, 6 Bags, 4 meta)
+- Moved Event Achievements to the end
+- Added image for the meta/achievement Achievements
+
+-> Other:
+- The Bag PFP is now unlocked with Playing DaGame V instead
+- Added current game version to the Player Profile
+- Moved Player ID a bit to the right
+
+
+
+2024/03/22 2.3.3:
+Version 2.3.3:
+-> Artifacts:
+- Added 5 new Artifacts (60 total, 1 common, 3 rare, 1 epic)
+- Artifacts can now boost Bags (rounded up)
+- Reduced width of Artifacts and Achievements (to fit 3/row on mobile)
+- Reduced text size
+- Changed Level to L
+
+-> Balance:
+- Playing DaGame IV: 1M -> 250k
+- Playing DaGame V: 16M -> 1M
+- Amulet of Dinosaurs: x3/x4/x5 -> x4/x5/x6
+- Amulet of Gem Mines: 200 Gems -> 300 Gems
+- Shgabb Seeds: 1%/2%/3% -> 2%/4%/6%

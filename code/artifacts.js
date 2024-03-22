@@ -78,6 +78,8 @@ class Artifact {
 				return "Artifact chance";
 			case "clicksi":
 				return "Click Silicone";
+			case "bags":
+				return "Bags";
 		}
 	}
 
@@ -107,7 +109,7 @@ class Artifact {
 	render(clickable=true) {
 		return `<button class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'><image src='images/arti/" + this.image + "' width='32px' height='32px'>"
 			+ (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
-			+ (!this.isUpgradable() ? (this.getRarity() + " Level " + getArtifactLevel(this.ID)) : getScrapCost(getArtifactLevel(this.ID), this.rarity) + " Artifact Scrap")
+			+ (!this.isUpgradable() ? (this.getRarity() + " L" + getArtifactLevel(this.ID)) : getScrapCost(getArtifactLevel(this.ID), this.rarity) + " Artifact Scrap")
 			+ this.renderEffect() + "<br/>" + this.renderDescription() + "</button>";
 	}
 }
@@ -443,6 +445,7 @@ var artifacts = [
 	new Artifact(159, 1, "Bloody Gray Ring", "ring.png", "artifactchance", level => 1.1 + 0.3 * level, { desc: "But no Gems", noPercentage: true, prefix: "x" }),
 	new Artifact(160, 1, "Plastic Ring", "ring.png", "clicksi", level => 1.5 + 0.5 * level),
 	new Artifact(161, 1, "Bloody Plastic Ring", "ring.png", "clicksi", level => 2 + level, { desc: "But no passive Silicone", noPercentage: true, prefix: "x" }),
+	new Artifact(162, 1, "Purple Ring", "ring.png", "bags", level => 1.15 + 0.05 * level, { noPercentage: true, prefix: "x" }),
 
 	new Artifact(200, 2, "Amulet of Paroxysm", "amulet.png", "clickspeed", level => 2 + level, { prefix: "/", desc: "But no Shgabb from clicks and /10 Gem chance", noPercentage: true }),
 	new Artifact(201, 2, "Amulet of Saving", "amulet.png", "resetshgabb", level => Math.pow(1000, 2 + level), { prefix: "+", noPercentage: true }),
@@ -460,18 +463,21 @@ var artifacts = [
 	new Artifact(213, 2, "Amulet of Golden Clicks", "amulet.png", "complicated", level => 0.02 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(213) + "% of your GS every click" }),
 	new Artifact(214, 2, "Amulet of Golden Idle", "amulet.png", "complicated", level => 0.01 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(214) + "% of your GS every second" }),
 	new Artifact(215, 2, "Amulet of Golden Upgrades", "amulet.png", "complicated", level => 0.001 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(215) + "% of your GS every upgrade" }),
-	new Artifact(216, 2, "Amulet of Dinosaurs", "amulet.png", "artifactchance", level => 2 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
+	new Artifact(216, 2, "Amulet of Dinosaurs", "amulet.png", "artifactchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
 	new Artifact(217, 2, "Amulet of Well Fed Resets", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: level => game.stats.swtp > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " Sandwiches this prestige" }),
 	new Artifact(218, 2, "Amulet of Some Patience", "amulet.png", "gs", level => 0.7 + 0.6 * level, { trigger: () => game.clickCooldown < 0, desc: "If clicking isn't on cooldown" }),
 	new Artifact(219, 2, "Amulet of Plastic Start", "amulet.png", "si", level => 1 + 3 * level, { noPercentage: true, prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),
 	new Artifact(220, 2, "Amulet of Baked Silica", "amulet.png", "clicksi", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
 	new Artifact(221, 2, "Amulet of Molten Food", "amulet.png", "sw", level => 6 + 2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
 	new Artifact(222, 2, "Amulet of Quickgemming", "amulet.png", "gems", level => 1.2 + 0.2 * level, { noPercentage: true, trigger: () => clickCooldown == 0.1, desc: "If the click cooldown is 0.1s" }),
-	new Artifact(223, 2, "Amulet of Gem Mines", "amulet.png", "gemchance", level => 1.3 + 0.1 * level, { noPercentage: true, trigger: () => game.gems < 200, desc: "If owning less than 200 Gems" }),
+	new Artifact(223, 2, "Amulet of Gem Mines", "amulet.png", "gemchance", level => 1.3 + 0.1 * level, { noPercentage: true, trigger: () => game.gems < 300, desc: "If owning less than 300 Gems" }),
+	new Artifact(224, 2, "Amulet of Molten Bags", "amulet.png", "bags", level => 1 + 0.2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
+	new Artifact(225, 2, "Amulet of Lazy Bags", "amulet.png", "bags", level => 1 + 0.2 * level, { desc: "But 5x longer click cooldown" }),
+	new Artifact(226, 2, "Amulet of Bag Bank", "amulet.png", "bags", level => 2.5 + 0.5 * level, { trigger: () => game.stats.pttp >= 900, desc: "If the last prestige was at least 15 minutes ago" }),
 
 	new Artifact(300, 3, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, "Furious Knife", "knife.png", "complicated", 0, { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 3000%" }),
-	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "shgabb", level => 1 + ((game.stats.ctp % 1000) * 0.01 * level), { desc: level => "+" + level + "% per click, resets every 1000 clicks (" + game.stats.ctp % 1000 + "/1000)" }),
+	new Artifact(302, 3, "Shgabb Seeds", "seeds.png", "shgabb", level => 1 + ((game.stats.ctp % 1000) * 0.02 * level), { desc: level => "+" + 2 * level + "% per click, resets every 1000 clicks (" + game.stats.ctp % 1000 + "/1000)" }),
 	new Artifact(303, 3, "P2W", "p2w.png", "gems", level => 2.5 + level * 0.5, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active" }),
 	new Artifact(304, 3, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops Silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
@@ -484,6 +490,7 @@ var artifacts = [
 	new Artifact(312, 3, "Semicone", "semicone.png", "si", level => 10 + 5 * level, { trigger: () => game.gems > 0, noPercentage: true, desc: level => "10% chance of consuming a Gem every time Silicone is produced" }),
 	new Artifact(313, 3, "Furious Fork", "fork.png", "clickspeed", level => 1.2 + 0.2 * level, { prefix: "-", trigger: () => game.clickCooldown >= -0.33 || lunarAntiCooldown > 0, desc: "For well timed clicks" }),
 	new Artifact(314, 3, "Hood Goo", "hoodgoo.png", "complicated", 0, { desc: level => 10 * level + "% chance to save your Shgabb production after a click, 5% to stop saving it" }),
+	new Artifact(315, 3, "DaGame", "dagame.png", "complicated", 0, { desc: level => 25 * level + "% chance to autoclick every second, consuming 10 Bags" }),
 
 	new Artifact(400, 4, "Obama", "handcuffs.png", "complicated", 1, { desc: "It would give you additional slots based on your prestige playtime, but not in this universe for now" }),
 ]

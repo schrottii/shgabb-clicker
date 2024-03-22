@@ -4,9 +4,23 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.3.2";
+const gameVersion = "2.3.3";
 
 const currentPatchNotes = [
+    "-> Artifacts:",
+    "- Added 5 new Artifacts (60 total, 1 common, 3 rare, 1 epic)",
+    "- Artifacts can now boost Bags (rounded up)",
+    "- Reduced width of Artifacts and Achievements (to fit 3/row on mobile)",
+    "- Reduced text size",
+    "- Changed Level to L",
+    "-> Balance:",
+    "- Playing DaGame IV: 1M -> 250k",
+    "- Playing DaGame V: 16M -> 1M",
+    "- Amulet of Dinosaurs: x3/x4/x5 -> x4/x5/x6",
+    "- Amulet of Gem Mines: 200 Gems -> 300 Gems",
+    "- Shgabb Seeds: 1%/2%/3% -> 2%/4%/6%",
+
+    "v2.3.2",
     "-> Achievements:",
     "- Added 10 new Achievements (110 total, 6 Bags, 4 meta)",
     "- Moved Event Achievements to the end",
@@ -642,6 +656,16 @@ function sandwich() {
         if (getArtifactByID(214).isEquipped()) increaseGS(getArtifactEffect(214) / 100);
     }
 
+    if (getArtifactByID(315).isEquipped() && game.bags >= 10 && game.clickCooldown <= 0) {
+        // DaGame
+        if (Math.random() * 100 <= 25 * getArtifactLevel(315)) {
+            game.bags -= 10;
+            createNotification("DaGame clicked!");
+
+            clickButton();
+        }
+    }
+
     updateUpgrades();
 }
 
@@ -700,7 +724,8 @@ function buyUpgrade(id) {
             if (game.upgradeLevels.moreShgabb > game.stats.hmstp) game.stats.hmstp = game.upgradeLevels.moreShgabb;
 
             if (unlockedBags()) {
-                let bagi = (ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1) * (Math.floor(game.stats.hmstp / 1000) - Math.floor(previousHms / 1000));
+                let bagi = Math.ceil((ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1) * (Math.floor(game.stats.hmstp / 1000) - Math.floor(previousHms / 1000))
+                    * getArtifactBoost("bags"));
 
                 if (bagi > 0) {
                     game.bags += bagi;
