@@ -592,7 +592,8 @@ function getCooldown() {
         / getArtifactBoost("clickspeed")
         / cakeValue(5, 1)
         * (getArtifactByID(156).isEquipped() ? getArtifactByID(156).getEffect() : 1)
-        * (getArtifactByID(203).isEquipped() ? 5 : 1))
+        * (getArtifactByID(203).isEquipped() ? 5 : 1)
+        * (getArtifactByID(225).isEquipped() ? 5 : 1))
     if (isChallenge(3)) CD = 20;
     clickCooldown = CD; // Why T_T
     return CD;
