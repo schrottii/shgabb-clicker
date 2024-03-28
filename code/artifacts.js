@@ -299,7 +299,7 @@ function setNextArtifact(r) {
 
 function checkForZeroNext() {
 	for (i in game.nexgai) {
-		if (game.nexgai[i] == 0) game.nexgai[i] = setNextArtifact(i + 1);
+		if (game.nexgai[i] == 0) game.nexgai[i] = setNextArtifact(parseInt(i) + 1);
 	}
 }
 
@@ -307,7 +307,7 @@ function gambleArtifact(r) {
 	if (game.nexgai[r - 1] == 0 || (getArtifactByID(game.nexgai[r - 1]) != undefined && getArtifactByID(game.nexgai[r - 1]).isUnlocked())) game.nexgai[r - 1] = setNextArtifact(r);
 	r -= 1;
     // New artifact!
-    game.a.push(game.nexgai[r]);
+	game.a.push(game.nexgai[r]);
 	createNotification("New Artifact: " + getArtifactByID(game.nexgai[r]).name);
     updateArtifacts();
 

@@ -4,65 +4,25 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.3.3";
+const gameVersion = "2.3.4";
 
 const currentPatchNotes = [
-    "-> Artifacts:",
-    "- Added 5 new Artifacts (60 total, 1 common, 3 rare, 1 epic)",
-    "- Artifacts can now boost Bags (rounded up)",
-    "- Mobile: Reduced width of Artifacts and Achievements",
-    "- Changed Level to L",
-    "-> Balance:",
-    "- Playing DaGame IV: 1M -> 250k",
-    "- Playing DaGame V: 16M -> 1M",
-    "- Amulet of Dinosaurs: x3/x4/x5 -> x4/x5/x6",
-    "- Amulet of Gem Mines: 200 Gems -> 300 Gems",
-    "- Shgabb Seeds: 1%/2%/3% -> 2%/4%/6%",
-
-    "v2.3.2",
-    "-> Achievements:",
-    "- Added 10 new Achievements (110 total, 6 Bags, 4 meta)",
-    "- Moved Event Achievements to the end",
-    "- Added image for the meta/achievement Achievements",
+    "-> Egg Hunt Event:",
+    "- New event: Egg Hunt!",
+    "- Active from March 29th - April 12th",
+    "- Eggs appear at a random upgrade every 10 seconds!",
+    "- Click the hidden Egg to get an Egg",
+    "- Eggs can be spent on 4 offers (see section below)",
+    "- Added 6 event PFPs (23 total)",
+    "- Added 5 event Achievements (115 total)",
+    "- Added Egg Hunt Event background image",
+    "-> Egg offers:",
+    "- Offer 1: Buy an Easter PFP! (100 Eggs)",
+    "- Offer 2: Guaranteed Common Artifact! (10 Eggs)",
+    "- Offer 3: Guaranteed Rare Artifact! (25 Eggs)",
+    "- Offer 4: Guaranteed Epic Artifact! (100 Eggs)",
     "-> Other:",
-    "- The Bag PFP is now unlocked with Playing DaGame V instead",
-    "- Added current game version to the Player Profile",
-    "- Moved Player ID a bit to the right",
-
-    "v2.3.1",
-    "-> New content:",
-    "- Added 5 new Quotes (78 total)",
-    "- Added a new PFP of a Bag",
-    "- Temporarily unlocked at 10k total Bags, will be moved to an Achievement later",
-    "-> Other:",
-    "- Amount of GS gained from a Prestige now uses notations",
-    "- Increased PFP text size",
-    "- Increased space below currency displays to avoid overlapping, and reduced space above to avoid empty spaces",
-    "- Some code improvements",
-    "-> Bug fixes:",
-    "- Fixed Phallic Plays Achievement not being awarded when winning",
-    "- Fixed Prestige Gems not increasing total Gems stat, and the lost total Gems are automatically added",
-    "- Fixed Prestige Gems description saying HMS instead of More Shgabb (it is based on current)",
-
-    "v2.3",
-    "-> Bags:",
-    "- New currency: Bags!",
-    "- Unlocked at HMS 8000",
-    "- Earned by pushing More Shgabb",
-    "- Added 4 Bags Upgrades",
-    "- Bags image & original idea by Barduzzi",
-    "-> Améliorer:",
-    "- Added the 6th set of Améliorer Upgrades (150 Amé)",
-    "- Added 2 new Améliorer Upgrades (6th set):",
-    "- New Améliorer Upgrade: Golden Shgabb Boost",
-    "- New Améliorer Upgrade: Tiers Boost Bags",
-    "- Reduced max. level of Silicone Boost from 50 to 30 to be in line with the other boosts",
-    "-> Other:",
-    "- Added 5 new Achievements (100 total)",
-    "- Added 5 new Quotes (73 total)",
-    "- Added total Bags stat",
-    "- Added total tiers stat",
-    "- Changed Discord Server link from Toast to the new games server",
+    "- Increased time between auto saves from 5s to 10s",
 ]
 
 // Various variables
@@ -70,7 +30,7 @@ const currentPatchNotes = [
 //var doubleClick = 0;
 
 // some timers
-var autoSaveTime = 5;
+var autoSaveTime = 10;
 var quoteTime = 15;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
@@ -1057,6 +1017,7 @@ function updateStats() {
         + "<br />Total Gifts: " + fn(game.stats.gifts)
         + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
         + "<br />Total Qian: " + fn(game.stats.qian)
+        + "<br />Total Eggs: " + fn(game.stats.eggs)
         + "<br />Total Tiers: " + fn(getTotalTiers())
         + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
         + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
@@ -1236,6 +1197,11 @@ function autoSave() {
         canPlayTTT = compareMinigameTime();
     }
 
+    // Egg Hunt
+    if (isEvent("egg")) {
+        refreshEgg();
+    }
+
     // Auto Save
     localStorage.setItem("shgabbClicker", JSON.stringify(game));
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
@@ -1327,7 +1293,7 @@ function loop(tick) {
         ui.newArtifact.style.display = "none";
     }
     if (autoSaveTime <= 0) {
-        autoSaveTime = 5;
+        autoSaveTime = 10;
         autoSave();
     }
     if (quoteTime <= 0) {
@@ -1556,6 +1522,7 @@ function updateBG() {
     if (isEvent("christmas") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
     else if (isEvent("anniversary") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/anniversary-background.png)";
     else if (isEvent("lunar") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-chinese.png)";
+    else if (isEvent("egg") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-easter.png)";
     else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
 }
 

@@ -24,6 +24,7 @@ var game = {
     gifts: 0,
     cakeProgress: 0,
     qian: 0,
+    eggs: 0,
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -113,9 +114,11 @@ var game = {
         hms: 0,
         hmstp: 0,
         tgems: 0,
+
         gifts: 0,
         cakes: 0,
         qian: 0,
+        eggs: 0,
 
         tttpw: 0,
         tttpl: 0,

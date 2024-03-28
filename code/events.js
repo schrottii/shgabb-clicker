@@ -8,7 +8,7 @@ function isEvent(eventName, all = false) {
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
     
     /*
-    if (eventName == "anniversary") return true; // used to force event
+    if (eventName == "egg" || all) return true; // used to force event
     else return false;
     */
 
@@ -22,6 +22,11 @@ function isEvent(eventName, all = false) {
         case "lunar":
             // Lunar New Year Event | Feb 10 - Feb 24
             if (today >= 210 && today <= 224 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
+            else eventName = "egg";
+        case "egg":
+            // Egg Event | Mar 29 - Apr 12
+            if (today >= 329 && today <= 412 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -47,6 +52,9 @@ function renderCurrentEvent() {
     }
     else if (isEvent("lunar")) {
         renderLunar();
+    }
+    else if (isEvent("egg")) {
+        renderEgg();
     }
 }
 
@@ -97,6 +105,40 @@ function renderLunar() {
     render = render + "<button class='chineseOffer' onclick='useQian(8)'>Luck!<br/>36 " + cImg("qian") + "</button>";
 
     ui.eventRender.innerHTML = render;
+}
+
+var eggUpgrade = "";
+var eggNumber = 1;
+
+function renderEgg() {
+    let render = "<h3>Egg Hunt Event</h3><br /><b>December 16th - December 30th</b>";
+    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
+
+    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";
+    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
+
+    ui.eventRender.innerHTML = render;
+}
+
+function refreshEgg() {
+    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades);
+    let randomNumber = Math.floor(Math.random() * Object.keys(allUpgrades).length - 1);
+
+    eggUpgrade = Object.keys(allUpgrades)[randomNumber];
+    eggNumber = Math.ceil(Math.random() * 4);
+}
+
+function clickEgg() {
+    doesUnlevel = true;
+    eggUpgrade = "";
+
+    createNotification("Egg found!");
+    game.eggs += 1;
+    game.stats.eggs += 1;
+
+    renderCurrentEvent();
 }
 
 function openGifts(amount) {
@@ -281,4 +323,71 @@ function useQian(offerNR) {
 function applyLuck(div) {
     if (luck < 0) return 1;
     return (luck / div) + 1;
+}
+
+function useEggs(offerNR) {
+    switch (offerNR) {
+        case 1:
+            // buy PFP
+            if (game.eggs < 100) {
+                createNotification("Not enough Eggs!");
+                return false;
+            }
+
+            if (!game.evpfps.includes(409)) {
+                game.evpfps.push(409);
+            }
+            else if (!game.evpfps.includes(410)) {
+                game.evpfps.push(410);
+            }
+            else if (!game.evpfps.includes(411)) {
+                game.evpfps.push(411);
+            }
+            else if (!game.evpfps.includes(412)) {
+                game.evpfps.push(412);
+            }
+            else if (!game.evpfps.includes(413)) {
+                game.evpfps.push(413);
+            }
+            else if (!game.evpfps.includes(414)) {
+                game.evpfps.push(414);
+            }
+            else {
+                // has all
+                createNotification("You already own these PFPs!");
+                return false;
+            }
+            // bought one of them
+            game.eggs -= 100;
+            createNotification("Bought PFP for 100 Eggs!");
+
+            break;
+        case 2:
+            if (game.eggs < 10) return false;
+
+            game.eggs -= 10;
+            if (!allArtifactsOfRarity(1)) gambleArtifact(1);
+            else artifactDuplicate(1);
+
+            break;
+        case 3:
+            if (game.eggs < 25) return false;
+
+            game.eggs -= 25;
+            if (!allArtifactsOfRarity(2)) gambleArtifact(2);
+            else artifactDuplicate(2);
+
+            break;
+        case 4:
+            if (game.eggs < 100) return false;
+
+            game.eggs -= 100;
+            if (!allArtifactsOfRarity(3)) gambleArtifact(3);
+            else artifactDuplicate(3);
+
+            break;
+    }
+
+    if (!game.ach.includes(112)) game.ach.push(112);
+    renderCurrentEvent();
 }

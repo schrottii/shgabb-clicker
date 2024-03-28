@@ -1144,3 +1144,26 @@ Version 2.3.3:
 - Amulet of Dinosaurs: x3/x4/x5 -> x4/x5/x6
 - Amulet of Gem Mines: 200 Gems -> 300 Gems
 - Shgabb Seeds: 1%/2%/3% -> 2%/4%/6%
+
+
+
+2024/03/28 2.3.4:
+Version 2.3.4:
+-> Egg Hunt Event:
+- New event: Egg Hunt!
+- Active from March 29th - April 12th
+- Eggs appear at a random upgrade every 10 seconds!
+- Click the hidden Egg to get an Egg
+- Eggs can be spent on 4 offers (see section below)
+- Added 6 event PFPs (23 total)
+- Added 5 event Achievements (115 total)
+- Added Egg Hunt Event background image
+
+-> Egg offers:
+- Offer 1: Buy an Easter PFP! (100 Eggs)
+- Offer 2: Guaranteed Common Artifact! (10 Eggs)
+- Offer 3: Guaranteed Rare Artifact! (25 Eggs)
+- Offer 4: Guaranteed Epic Artifact! (100 Eggs)
+
+-> Other:
+- Increased time between auto saves from 5s to 10s

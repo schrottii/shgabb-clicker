@@ -76,6 +76,13 @@ var pfps = [
     new PFP(406, "images/currencies/qian.png", () => game.evpfps.includes(406)),
     new PFP(407, "images/chinese-pfp1.png", () => game.evpfps.includes(407)),
     new PFP(408, "images/chinese-pfp2.png", () => game.evpfps.includes(408)),
+
+    new PFP(409, "images/eggs/egg1.png", () => game.evpfps.includes(409)),
+    new PFP(410, "images/eggs/egg2.png", () => game.evpfps.includes(410)),
+    new PFP(411, "images/eggs/egg3.png", () => game.evpfps.includes(411)),
+    new PFP(412, "images/eggs/egg4.png", () => game.evpfps.includes(412)),
+    new PFP(413, "images/eggs/egg5.png", () => game.evpfps.includes(413)),
+    new PFP(414, "images/eggs/egg6.png", () => game.evpfps.includes(414)),
 ]
 
 function calculateProfileCanvasSize() {

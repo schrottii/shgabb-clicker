@@ -148,4 +148,10 @@ var achievements = [
     new Achievement(92, "chinese.png", "You are rich", "Double Qian!", () => false),
     new Achievement(93, "chinese.png", "You are lucky", "Buy a lucky deal...", () => false),
     new Achievement(94, "chinese.png", "Dragon's Money", "Buy anything with Qian", () => false),
+
+    new Achievement(111, "eggs.png", "Easter Grass", "Play during the Egg Hunt Event", () => isEvent("egg")),
+    new Achievement(112, "eggs.png", "Smashing Eggs", "Buy anything with Eggs", () => false),
+    new Achievement(113, "eggs.png", "Hatching a friend I", "Find 100 Eggs total", () => game.stats.eggs >= 100),
+    new Achievement(114, "eggs.png", "Hatching a friend II", "Find 1000 Eggs total", () => game.stats.eggs >= 1000),
+    new Achievement(115, "eggs.png", "I'm an Egg", "Get all Easter PFPs", () => game.evpfps.includes(414)),
 ]
