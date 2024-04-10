@@ -47,6 +47,7 @@ const currentPatchNotes = [
     "-> Settings:",
     "- Added setting to hide Artifact images",
     "- Added setting to save",
+    "- Added setting to disable upgrading",
     "- Changed setting button color (lighter)",
 ]
 

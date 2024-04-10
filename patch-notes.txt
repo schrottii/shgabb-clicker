@@ -1174,7 +1174,7 @@ Version 2.3.4:
 
 
 2024/04/10 2.4:
-Version 2.4:
+Version 2.4 Artifact Update:
 -> Artifacts:
 - Added legendary rarity! (see section below)
 - Added Artifact tiers! (see section below)
@@ -1220,4 +1220,5 @@ Version 2.4:
 -> Settings:
 - Added setting to hide Artifact images
 - Added setting to save
+- Added setting to disable upgrading
 - Changed setting button color (lighter)
