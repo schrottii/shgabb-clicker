@@ -4,25 +4,50 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.3.4";
+const gameVersion = "2.4";
 
 const currentPatchNotes = [
+    "-> Artifacts:",
+    "- Added legendary rarity! (see section below)",
+    "- Added Artifact tiers! (see section below)",
+    "- Added Artifact pages, each page shows up to 50 entries",
+    "",
+    "- Artifacts can now go beyond level 3, via an Artifact or an Upgrade",
+    "- Certain Artifacts can now have custom max. levels",
+    "- All Gem, Gem chance and Artifact chance Artifacts are capped at 3 for balance reasons",
+    "",
+    "- Added 5 new Artifacts (65 total, 1 rare, 2 epic, 2 legendary)",
+    "- Added 4 new Artifact images",
+    "- DaGame is now legendary, players who already had it get the new epic as compensation",
+    "- Changed the way Furious Knife works internally, the current effect is now displayed and cap changed from 3000% to 31x",
+    "-> Legendary Artifacts:",
+    "- New rarity: Legendary!",
+    "- Base chance is 1/1M (Epic is 1/32k), affected by multis",
+    "- There are 3 legendary Artifacts to collect!",
+    "- The secret Artifact is now a normal legendary Artifact, and the Achievement can no longer be obtained",
+    "- The secret Artifact now has an effect",
+    "-> Artifact tiers:",
+    "- A new feature to prevent unlocking lategame Artifacts early on",
+    "- There are 4 tiers for Artifacts, deciding at which More Shgabb the Artifact is unlocked",
+    "- Tier 1 is HMS 1000 (default), tier 2 is HMS 2000, tier 3 is HMS 5000 and tier 4 is HMS 8000",
+    '- You can search for tiers in the Artifact search (e. g. "tier 1")',
+    "- Most Artifacts are tier 1, here are the exceptions:",
+    "- Tier 2: Light Blue Ring, Gray Ring, Bloody Gray Ring, Amulet of Passive Silicone, Amulet of Active Silicone, Amulet of Condone, Amulet of Plastic Start, Amulet of Baked Silica, Silicone implants",
+    "- Tier 3: Plastic Ring, Bloody Plastic Ring, Amulet of Golden Clicks/Idle/Upgrades, Amulet of Dinosaurs, Sarah's Collection, Trash Can, Surgeon's Sacrifice, Semicone, Hood Goo",
+    "- Tier 4: Purple Ring, Amulet of Molten Bags, Amulet of Lazy Bags, Amulet of Bag Bank and all 3 legendaries",
+    "- There are 65 total Artifacts, 37 tier 1, 9 tier 2, 12 tier 3, 7 tier 4",
     "-> Egg Hunt Event:",
-    "- New event: Egg Hunt!",
-    "- Active from March 29th - April 12th",
-    "- Eggs appear at a random upgrade every 10 seconds!",
-    "- Click the hidden Egg to get an Egg",
-    "- Eggs can be spent on 4 offers (see section below)",
-    "- Added 6 event PFPs (23 total)",
-    "- Added 5 event Achievements (115 total)",
-    "- Added Egg Hunt Event background image",
-    "-> Egg offers:",
-    "- Offer 1: Buy an Easter PFP! (100 Eggs)",
-    "- Offer 2: Guaranteed Common Artifact! (10 Eggs)",
-    "- Offer 3: Guaranteed Rare Artifact! (25 Eggs)",
-    "- Offer 4: Guaranteed Epic Artifact! (100 Eggs)",
-    "-> Other:",
-    "- Increased time between auto saves from 5s to 10s",
+    "- Expanded Event for another week to make up for the delayed update",
+    "- Egg spawns are now independent from auto save",
+    "- Fixed Christmas Event's duration being shown",
+    "-> Améliorer:",
+    "- New Améliorer Upgrade (6th set, 175 Amé): Fourth Artifact Level",
+    "- All Amé Upgrades now display their set, and at how many Amé levels they are unlocked (e. g. [S1/1])",
+    "- Amé Upgrades that are not unlocked yet (due to lack of total Amé levels) now also display their set, and the Amé levels needed (e. g. [S3/25] 14/25)",
+    "-> Settings:",
+    "- Added setting to hide Artifact images",
+    "- Added setting to save",
+    "- Changed setting button color (lighter)",
 ]
 
 // Various variables
@@ -40,13 +65,6 @@ var oldTime = 0;
 // notifications
 var currentNotifications = [];
 var autoNotifications = 0;
-
-// artifacts
-var knifeBoost = 1;
-var trashCanBoost = 0;
-var diceAmount = 1;
-var frustration = 0;
-var hoodGoo = 0;
 
 // UI, display, render stuf
 var ui = {
@@ -335,88 +353,105 @@ function cImg(imgname) {
 function clickButton() {
     // Click button handler (the button that gives you shgabb)
     if (game.clickCooldown <= 0) {
-        let critMulti = criticalHit();
-        let amount = Math.floor(getProduction() * critMulti);
-        if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
+        let clickButtonMulti = 1;
 
-        game.shgabb += amount;
-        game.stats.shgabb += amount;
-        game.stats.shgabbtp += amount;
-
-        if (getArtifactByID(301).isEquipped() && (game.clickCooldown > -0.33 || lunarAntiCooldown > 0)) {
-            knifeBoost = Math.min(knifeBoost + (getArtifactLevel(301) / 2), 30);
-        }
-        else knifeBoost = 1;
-
-        game.clickCooldown = getCooldown();
-        game.stats.clicks += 1;
-        game.stats.ctp += 1;
-
-        if (getArtifactByID(310).isEquipped()) {
-            trashCanBoost = Math.max(0, trashCanBoost - 0.1);
-        }
-        else trashCanBoost = 0;
-
-        if (getArtifactByID(213).isEquipped()) increaseGS(getArtifactEffect(213) / 100);
-
-        if (getArtifactByID(314).isEquipped()) {
-            if (Math.random() * applyLuck(50) < 0.05 && hoodGoo > 0) {
-                hoodGoo = 0;
-                createNotification("Goo is gone...");
+        if (getArtifactByID(402).isEquipped()) {
+            if (techCollection < getArtifactByID(402).getEffect()) {
+                techCollection += 1;
+                game.clickCooldown = getCooldown();
             }
-            if (Math.random() < getArtifactLevel(314) / 10 && amount > hoodGoo) {
-                hoodGoo = amount;
-                createNotification("Goo: " + fn(amount));
+            else {
+                clickButtonMulti = techCollection;
+                techCollection = 0;
             }
         }
 
-        if (isEvent("christmas")) {
-            if (Math.random() < 1 / (250 / getCooldown())) {
-                game.gifts += 1;
-                game.stats.gifts += 1;
-                createNotification("+1 Gift!");
+        if (techCollection == 0) {
+            let critMulti = criticalHit();
+            let amount = Math.floor(getProduction() * critMulti * clickButtonMulti);
+            if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
+
+            game.shgabb += amount;
+            game.stats.shgabb += amount;
+            game.stats.shgabbtp += amount;
+
+            if ((getArtifactByID(301).isEquipped() || getArtifactByID(315).isEquipped()) && (game.clickCooldown > -0.33 || lunarAntiCooldown > 0)) {
+                knifeBoost = Math.min(knifeBoost + 1, 20);
             }
-        }
+            else knifeBoost = 0;
 
-        if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + 1);
+            game.clickCooldown = getCooldown();
+            game.stats.clicks += 1;
+            game.stats.ctp += 1;
 
-        if (isEvent("lunar")) {
-            lunarAntiCooldown -= 1;
-            luck -= 1; // reduce luck
-
-            if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
-                // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian
-                let amount = game.ach.includes(92) ? 2 : 1;
-                if (Math.random() < (1 / 8)) amount = 8;
-                if ((game.qian + amount) % 10 == 4) amount += 1;
-
-                game.qian += amount;
-                game.stats.qian += amount;
+            if (getArtifactByID(310).isEquipped()) {
+                trashCanBoost = Math.max(0, trashCanBoost - (0.1 * clickButtonMulti));
             }
+            else trashCanBoost = 0;
+
+            if (getArtifactByID(213).isEquipped()) increaseGS(clickButtonMulti * getArtifactEffect(213) / 100);
+
+            if (getArtifactByID(314).isEquipped()) {
+                if (Math.random() * applyLuck(50) < 0.05 && hoodGoo > 0) {
+                    hoodGoo = 0;
+                    createNotification("Goo is gone...");
+                }
+                if (Math.random() < getArtifactLevel(314) / 10 && amount > hoodGoo) {
+                    hoodGoo = amount;
+                    createNotification("Goo: " + fn(amount));
+                }
+            }
+
+            if (isEvent("christmas")) {
+                if (Math.random() < 1 / (250 / getCooldown())) {
+                    game.gifts += clickButtonMulti;
+                    game.stats.gifts += clickButtonMulti;
+                    createNotification("+1 Gift!");
+                }
+            }
+
+            if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + clickButtonMulti);
+
+            if (isEvent("lunar")) {
+                lunarAntiCooldown -= clickButtonMulti;
+                luck -= clickButtonMulti; // reduce luck
+
+                if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
+                    // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian
+                    let amount = (game.ach.includes(92) ? 2 : 1) * clickButtonMulti;
+                    if (Math.random() < (1 / 8)) amount = 8;
+                    if ((game.qian + amount) % 10 == 4) amount += 1;
+
+                    game.qian += amount;
+                    game.stats.qian += amount;
+                }
+            }
+
+            if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
+                let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi") * clickButtonMulti;
+                game.si += amount;
+                game.stats.si += amount;
+                if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
+            }
+
+            if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {
+                amount = getSandwich(critMulti) * clickButtonMulti;
+                game.sw += amount;
+                game.stats.sw += amount;
+                game.stats.swtp += amount;
+                createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
+            }
+
+            changeDiceAmount();
+            if (unlockedGems()) getGem();
+            if (unlockedArtifacts()) getArtifact();
         }
 
-        if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
-            let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi");
-            game.si += amount;
-            game.stats.si += amount;
-            if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
-        }
-
-        if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {
-            amount = getSandwich(critMulti);
-            game.sw += amount;
-            game.stats.sw += amount;
-            game.stats.swtp += amount;
-            createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
-        }
-
-        changeDiceAmount();
-        if (unlockedGems()) getGem();
-        if (unlockedArtifacts()) getArtifact();
         updateArtifacts();
         updateGems();
         updateUpgrades();
         renderCurrentEvent();
+
     }
     else {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
@@ -456,7 +491,6 @@ function getGlobalProduction() {
         * getSiliconeBoost()
         * goldenShgabbUpgrades.formaggi.currentEffect()
         * getArtifactBoost("shgabb")
-        * knifeBoost
         * (1 + game.gemboost / 4)
         * ameliorerUpgrades.shgabbBoost.currentEffect()
         * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
@@ -699,6 +733,7 @@ function buyUpgrade(id) {
 
 function buyMax(id) {
     // Buy an upgrade and update UI
+    if (settings.noUpgrading) return false;
     while (id.canBuy()) {
         id.buy();
     }
@@ -711,6 +746,7 @@ var doesUnlevel = false;
 function unlevel(id, isMax=false) {
     // Unbuy an upgrade and update UI
     //if (id.type == "goldenShgabbUpgrades") if (!confirm("Do you really want to unlevel?")) return false;
+    if (settings.noUpgrading) return false;
     if(!isMax || confirm("Do you really want to unlevel this to level 0?")) id.unlevel(isMax);
 
     updateUpgrades();
@@ -921,7 +957,7 @@ function updateArtifacts() {
     // Artifacts
     if (unlockedArtifacts()) {
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1) + " Artifacts unlocked!";
+        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + artifacts.length + " Artifacts unlocked!";
     }
     else {
         ui.artifacts.innerHTML = "";
@@ -1053,7 +1089,7 @@ function updateStats() {
         + (getArtifactBoost("gems") > 1 ? ("<br />x" + fn(getArtifactBoost("gems")) + " Gem amount") : "")
         + (getArtifactBoost("artifactchance") > 1 ? ("<br />x" + fn(getArtifactBoost("artifactchance")) + " Artifact chance") : "")
 
-        + "<br />Artifacts: " + Math.max(0, game.a.length - 1) + "/" + (artifacts.length - 1)
+        + "<br />Artifacts: " + getArtifactAmount() + "/" + artifacts.length
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "</div>";
 }
@@ -1185,7 +1221,7 @@ function autoSave() {
     autoNotifications += 1;
 
     // Kill knife if yo slow
-    if (game.clickCooldown < -0.33 || lunarAntiCooldown > 0) knifeBoost = 1;
+    if (game.clickCooldown < -0.33 || lunarAntiCooldown > 0) knifeBoost = 0;
 
     // Le rare renderes
     renderAmeConvert();
@@ -1195,11 +1231,6 @@ function autoSave() {
     // Every 50 saves, check for shgic
     if (autoNotifications % 50 == 0) {
         canPlayTTT = compareMinigameTime();
-    }
-
-    // Egg Hunt
-    if (isEvent("egg")) {
-        refreshEgg();
     }
 
     // Auto Save
@@ -1287,6 +1318,16 @@ function loop(tick) {
     cakeDuration -= time;
     game.stats.playTime += time;
     game.stats.pttp += time;
+    eggTime -= time;
+
+    // Egg Hunt
+    if (isEvent("egg")) {
+        if (eggTime <= 0) {
+            eggTime = 10;
+            refreshEgg();
+        }
+    }
+
     if (adLoaded && game.stats.sw > 9) adTime -= time;
 
     if (newArtifactDisplayTimer <= 0 && newArtifactDisplayTimer > -15) {

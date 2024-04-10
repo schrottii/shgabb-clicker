@@ -88,6 +88,7 @@ var game = {
 
         amegsBoost: 0,
         tiersBoostBags: 0,
+        fourthArtifactLevel: 0,
 
         // Bag
         challengeShgabb: 0,
@@ -169,6 +170,8 @@ var settings = {
     leastAdLess: true,
     eventBG: true,
     topNotifs: 1,
+    artifactImages: true,
+    noUpgrading: false,
 }
 
 // BETA (cheating)

@@ -56,6 +56,9 @@ var settingButtons = [
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events"),
     new Setting("save", "redeemCode", "Redeem Code", "Use this to import a special gift from Schrottii"),
     new Setting("design", "topNotifs", "Top Notification Amount", () => "Current: " + settings.topNotifs),
+    new ToggleSetting("design", "toggleArtifactImages", "artifactImages", "Show Artifact Images"),
+    new Setting("save", "manualSave", "Save", "Saves the game"),
+    new ToggleSetting("gameplay", "toggleNoUpgrading", "noUpgrading", "Disable Upgrading"),
 ]
 
 function onSettingClick(toggle) {
@@ -158,6 +161,17 @@ function topNotifs() {
     createNotification("Amount of notifications shown: " + settings.topNotifs);
 }
 
+function toggleArtifactImages() {
+    createNotification("Artifact images " + (settings.artifactImages ? "ON" : "OFF"));
+
+    updateArtifacts();
+}
+
+function toggleNoUpgrading() {
+    createNotification("No upgrading " + (settings.noUpgrading ? "ON" : "OFF"));
+    updateUpgrades();
+}
+
 // eh
 
 function toggleUpgradeColors() {
@@ -233,4 +247,8 @@ function createRedeemCode(){
     redeemCode = redeemCode.replace("ey", "RED-");
 
     return redeemCode;
+}
+
+function manualSave() {
+    autoSaveTime = 0.15;
 }

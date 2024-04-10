@@ -118,7 +118,7 @@ var achievements = [
     new Achievement(108, "bags.png", "Playing DaGame IV", () => "Get " + fn(250000) + " Bags (total)", () => game.stats.bags >= 250000),
     new Achievement(34, "hms.png", "Shgabb Conqueror IV", "Reach More Shgabb level 10000", () => game.stats.hms >= 10000),
     new Achievement(50, "ttt.png", "Shgiccer IV", "Win Shgic Shgac Shgoe 30 times", () => game.stats.tttw >= 30),
-    new Achievement(30, "artifact.png", "Alexander Cunningham", "Get all Artifacts!", () => game.a.length - 1 == artifacts.length - 1),
+    new Achievement(30, "artifact.png", "Alexander Cunningham", "Get all Artifacts!", () => getArtifactAmount() == artifacts.length),
     new Achievement(55, "gem.png", "The Red Gems V", "Get your 10000th Gem!", () => game.stats.tgems >= 10000),
     new Achievement(96, "ameliorer.png", "Amé: Part VI", "Unlock the sixth set of Améliorer upgrades", () => getTotalAme() >= 150),
     new Achievement(109, "bags.png", "Playing DaGame V", () => "Get " + fn(1000000) + " Bags (total)", () => game.stats.bags >= 1000000),
@@ -126,7 +126,7 @@ var achievements = [
     new Achievement(100, "ttt.png", "Phallic Plays", "Win Shgic Shgac Shgoe with an interesting formation", () => false),
     new Achievement(110, "bags.png", "Beating DaGame", () => "Have " + fn(1000000) + " Bags at the same time", () => game.bags >= 1000000),
     new Achievement(64, "clicks.png", "Clicker V", "Click 1M times", () => game.stats.clicks >= 1000000),
-    new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
+    new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => /* game.a.includes(400) */ false),
     new Achievement(89, "hms.png", "Shgabb Conqueror VI", "Reach More Shgabb level 20000", () => game.stats.hms >= 20000),
 
     new Achievement(101, "achievement.png", "Achiever I", "Get 10 Achievements", () => game.ach.length >= 10),

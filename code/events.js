@@ -26,7 +26,7 @@ function isEvent(eventName, all = false) {
             else eventName = "egg";
         case "egg":
             // Egg Event | Mar 29 - Apr 12
-            if (today >= 329 && today <= 412 && game.stats.hms >= 2000) return true;
+            if (today >= 329 && today <= 419 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -109,9 +109,10 @@ function renderLunar() {
 
 var eggUpgrade = "";
 var eggNumber = 1;
+var eggTime = 10;
 
 function renderEgg() {
-    let render = "<h3>Egg Hunt Event</h3><br /><b>December 16th - December 30th</b>";
+    let render = "<h3>Egg Hunt Event</h3><br /><b>March 29th - April 19th</b>";
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
 
     if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";

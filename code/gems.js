@@ -4,10 +4,10 @@ function unlockedGems() {
     return game.stats.hms >= 500;
 }
 
-function getGemChance() {
+function getGemChance(cap=10) {
     if (getArtifactByID(159).isEquipped()) return 0;
 
-    return Math.min(10, getArtifactBoost("gemchance")
+    return Math.min(cap, getArtifactBoost("gemchance")
         * (getArtifactByID(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
         * cakeValue(3, 1)
@@ -57,7 +57,7 @@ function gemOffer(i) {
             }
             break;
         case 3:
-            if (unlockedArtifacts() && game.gems > 29 /*&& (game.a.length - 1) < artifacts.length - 1*/) {
+            if (unlockedArtifacts() && game.gems > 29) {
                 game.gems -= 30;
                 getArtifact(3000);
                 autoSave();
@@ -88,7 +88,7 @@ function renderGemOffers() {
     ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately!";
     ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 25% more Shgabb!<br>Current: +" + ((game.gemboost - 1) * 25) + "%";
     if (unlockedArtifacts()) {
-        ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + ((game.a.length - 1) == artifacts.length - 1 ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
+        ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + (getArtifactAmount() == artifacts.length ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
         ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al > 7 ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25) + " Gems for another Artifact loadout slot!<br>(Max. 8)");
         ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifactByID(game.dgo).isUnlocked() ? "You already own today's artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifactByID(game.dgo).render(false));
     }
