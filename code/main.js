@@ -4,9 +4,17 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.4";
+const gameVersion = "2.4.1";
 
 const currentPatchNotes = [
+    "-> Settings:",
+    "- Added a setting to delete the current savefile (Delete Game)",
+    "- Added a setting to refresh the UI (Refresh Page)",
+    "- Slightly adjusted rendering of setting rows",
+    "-> Other:",
+    "- Changed minimum click cooldown from 0.1s to 0.2s",
+    "- Fixed Shgabb image not being displayed before unlocking Sandwiches",
+    "v2.4",
     "-> Artifacts:",
     "- Added legendary rarity! (see section below)",
     "- Added Artifact tiers! (see section below)",
@@ -582,7 +590,7 @@ var clickCooldown = 5;
 function getCooldown() {
     // click cooldown
     if (lunarAntiCooldown > 0) return 0;
-    let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
+    let CD = Math.max(0.2, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactBoost("clickspeed")
         / cakeValue(5, 1)
@@ -1010,7 +1018,7 @@ function updateTopSquare() {
 
 function updateCurrencies() {
     if (unlockedSandwiches()) ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb (" + fn(getAutoProduction()) + "/s)";
-    else ui.shgabbAmount.innerHTML = fn(game.shgabb) + " Shgabb";
+    else ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb";
 
     if (unlockedSandwiches()) ui.swAmount.innerHTML = cImg("sandwich") + fn(game.sw) + " Sandwiches";
     else ui.swAmount.innerHTML = "";
@@ -1063,7 +1071,7 @@ function updateStats() {
         + "</div><div style='float: right; width: 50%;' class='square2'>"
 
 
-        + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
+        + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.2 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
@@ -1293,6 +1301,19 @@ function exportGame() {
     renderGemOffers();
 
     createNotification("Game imported successfully!");
+}
+
+function deleteGame() {
+    if (confirm("Do you REALLY want to do this? EVERYTHING will be gone, you gain NOTHING")) {
+        if (confirm("Make sure to save your progress before doing this!!! Everything will be lost!")) {
+            if (confirm("If you press Yes again, everything will be gone!")) {
+                game = emptyGame;
+                createNotification("Game deleted successfully!");
+                autoSave();
+                updateUI();
+            }
+        }
+    }
 }
 
 function showAd() {

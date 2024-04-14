@@ -59,6 +59,8 @@ var settingButtons = [
     new ToggleSetting("design", "toggleArtifactImages", "artifactImages", "Show Artifact Images"),
     new Setting("save", "manualSave", "Save", "Saves the game"),
     new ToggleSetting("gameplay", "toggleNoUpgrading", "noUpgrading", "Disable Upgrading"),
+    new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)"),
+    new Setting("save", "updateUI", "Refresh page", "Updates everything UI-related"),
 ]
 
 function onSettingClick(toggle) {
@@ -78,7 +80,8 @@ function renderSettings() {
         }
         for (b in sortedSettings) {
             render = render + sortedSettings[b].render();
-            if ((b - 1) % (window.innerWidth >= 768 ? 4 : 2) == 0 && b != 1) render = render + "<br />";
+            console.log(b, sortedSettings[b].render())
+            // if ((b - 1) % (window.innerWidth >= 768 ? 4 : 2) == 0 && b != 1) render = render + "<br />";
         }
 
         if (settingSections[se] == "design") render = render + "<br />" + upgradeColorsRender;
