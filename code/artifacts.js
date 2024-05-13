@@ -222,8 +222,8 @@ function renderArtifacts() {
 
 	// Pages
 	if (game.a.length > 50) {
-		render = render + "<br /><button onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
-		render = render + "<button onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
+		render = render + "<br /><button class='grayButton' onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
+		render = render + "<button class='grayButton' onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
     }
 
 	return render;

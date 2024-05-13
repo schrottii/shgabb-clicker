@@ -4,59 +4,17 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.4.1";
+const gameVersion = "2.4.2";
 
 const currentPatchNotes = [
-    "-> Settings:",
-    "- Added a setting to delete the current savefile (Delete Game)",
-    "- Added a setting to refresh the UI (Refresh Page)",
-    "- Slightly adjusted rendering of setting rows",
-    "-> Other:",
-    "- Changed minimum click cooldown from 0.1s to 0.2s",
-    "- Fixed Shgabb image not being displayed before unlocking Sandwiches",
-    "v2.4",
-    "-> Artifacts:",
-    "- Added legendary rarity! (see section below)",
-    "- Added Artifact tiers! (see section below)",
-    "- Added Artifact pages, each page shows up to 50 entries",
-    "",
-    "- Artifacts can now go beyond level 3, via an Artifact or an Upgrade",
-    "- Certain Artifacts can now have custom max. levels",
-    "- All Gem, Gem chance and Artifact chance Artifacts are capped at 3 for balance reasons",
-    "",
-    "- Added 5 new Artifacts (65 total, 1 rare, 2 epic, 2 legendary)",
-    "- Added 4 new Artifact images",
-    "- DaGame is now legendary, players who already had it get the new epic as compensation",
-    "- Changed the way Furious Knife works internally, the current effect is now displayed and cap changed from 3000% to 31x",
-    "-> Legendary Artifacts:",
-    "- New rarity: Legendary!",
-    "- Base chance is 1/1M (Epic is 1/32k), affected by multis",
-    "- There are 3 legendary Artifacts to collect!",
-    "- The secret Artifact is now a normal legendary Artifact, and the Achievement can no longer be obtained",
-    "- The secret Artifact now has an effect",
-    "-> Artifact tiers:",
-    "- A new feature to prevent unlocking lategame Artifacts early on",
-    "- There are 4 tiers for Artifacts, deciding at which More Shgabb the Artifact is unlocked",
-    "- Tier 1 is HMS 1000 (default), tier 2 is HMS 2000, tier 3 is HMS 5000 and tier 4 is HMS 8000",
-    '- You can search for tiers in the Artifact search (e. g. "tier 1")',
-    "- Most Artifacts are tier 1, here are the exceptions:",
-    "- Tier 2: Light Blue Ring, Gray Ring, Bloody Gray Ring, Amulet of Passive Silicone, Amulet of Active Silicone, Amulet of Condone, Amulet of Plastic Start, Amulet of Baked Silica, Silicone implants",
-    "- Tier 3: Plastic Ring, Bloody Plastic Ring, Amulet of Golden Clicks/Idle/Upgrades, Amulet of Dinosaurs, Sarah's Collection, Trash Can, Surgeon's Sacrifice, Semicone, Hood Goo",
-    "- Tier 4: Purple Ring, Amulet of Molten Bags, Amulet of Lazy Bags, Amulet of Bag Bank and all 3 legendaries",
-    "- There are 65 total Artifacts, 37 tier 1, 9 tier 2, 12 tier 3, 7 tier 4",
-    "-> Egg Hunt Event:",
-    "- Expanded Event for another week to make up for the delayed update",
-    "- Egg spawns are now independent from auto save",
-    "- Fixed Christmas Event's duration being shown",
-    "-> Améliorer:",
-    "- New Améliorer Upgrade (6th set, 175 Amé): Fourth Artifact Level",
-    "- All Amé Upgrades now display their set, and at how many Amé levels they are unlocked (e. g. [S1/1])",
-    "- Amé Upgrades that are not unlocked yet (due to lack of total Amé levels) now also display their set, and the Amé levels needed (e. g. [S3/25] 14/25)",
-    "-> Settings:",
-    "- Added setting to hide Artifact images",
-    "- Added setting to save",
-    "- Added setting to disable upgrading",
-    "- Changed setting button color (lighter)",
+    "-> Design:",
+    "- The game now has a blue/gray/green color palette",
+    "- Made the game name's background much shorter and round",
+    "- Game name is now blue & light blue instead of green & blue",
+    "- Currencies display is now blue & light blue",
+    "- Gray buttons (like Ads) are now light blue & blue",
+    "- Previous and next page buttons (Artifacts) are now light blue & blue",
+    "- Adjusted blue shades of setting buttons",
 ]
 
 // Various variables
@@ -1117,14 +1075,14 @@ function updateUI() {
     // Click Button
     if (game.clickCooldown > 0) {
         ui.clickButton.innerHTML = getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
-        ui.clickButton.style["background-color"] = "lightblue";
+        ui.clickButton.style["background-color"] = "#01f8fd";
         ui.clickButton.style.backgroundSize = 100 * (game.clickCooldown / clickCooldown) + "% 100%";
     }
     else {
         let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
         let gooRender = (getArtifactByID(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
         ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
-        ui.clickButton.style["background-color"] = "blue";
+        ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
     }
     //ui.cooldownBar.value = game.clickCooldown;
