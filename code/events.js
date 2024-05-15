@@ -180,7 +180,7 @@ function openGifts(amount) {
         game.stats.swtp += sandwichAmount;
     }
     if (shgabbAmount > 0) {
-        game.shgabb += shgabbAmount;
+        game.shgabb = game.shgabb.add(shgabbAmount);
         game.stats.shgabbtp += shgabbAmount;
     }
     if (giftContents[0] > 0) {

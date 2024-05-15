@@ -45,7 +45,7 @@ function gemOffer(i) {
             if (game.gems > 9 && isChallenge(0)) {
                 game.gems -= 10;
                 let amount = firstGemOfferWorth();
-                game.shgabb += amount;
+                game.shgabb = game.shgabb.add(amount);
                 //game.stats.shgabb += amount;
                 //game.stats.shgabbtp += amount;
             }

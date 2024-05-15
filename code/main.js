@@ -7,7 +7,11 @@
 const gameVersion = "2.5";
 
 const currentPatchNotes = [
-    "-> re",
+    "-> Break Infinity:",
+    "- Added breakinfinity library",
+    "- Expanded it to take less space in savecodes",
+    "- Only Shgabb for now",
+    "- Updated number formatter (meh)",
 ]
 
 // Various variables
@@ -263,8 +267,29 @@ ui.artifactSearch.oninput = () => {
     updateArtifacts();
 }
 
-// format number
+// ALL THE NUMBER SHIT YEE COWBOYS
+function numberSaver(number) {
+    // turn a break infinity object (mantissa - exponent) into a simple string, for saving
+    // mantissa: 1.2, exponent: 10 -> 1.2e10
+    if (number.mantissa == undefined) {
+        number = number.toString();
+        if (number.split("e+")[1] != undefined) number = new Decimal(number.split("e+")[0] + "e" + number.split("e+")[1]);
+        else number = new Decimal(number);
+    }
+    return number.mantissa + "e" + number.exponent;
+}
+
+function numberLoader(number) {
+    // same thing but load the saved string
+    // 1.2e10 -> mantissa: 1.2, exponent: 10
+    return new Decimal("" + number);
+}
+
 function fn(number) {
+    if (number.mantissa != undefined) return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
+
+
+
     // format number function
 
     // this one is for very low numbers like 0.00000000001
@@ -331,7 +356,7 @@ function clickButton() {
             let amount = Math.floor(getProduction() * critMulti * clickButtonMulti);
             if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
 
-            game.shgabb += amount;
+            game.shgabb = game.shgabb.add(amount);
             game.stats.shgabb += amount;
             game.stats.shgabbtp += amount;
 
@@ -602,7 +627,7 @@ function sandwich() {
     }
 
     if (amount > 0) {
-        game.shgabb += amount;
+        game.shgabb = game.shgabb.add(amount);
         game.stats.shgabb += amount;
         game.stats.shgabbtp += amount;
         //createNotification("+" + amount + " shgabb");
@@ -723,7 +748,7 @@ function prestigeButton() {
         let amount = increaseGS(1 * getArtifactBoost("prestigegs"));
 
         // Reset Shgabb, Sandwiches, some stat stuff
-        game.shgabb = 0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb"));
+        game.shgabb = new Decimal(0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb")));
         game.sw = 0;
         //game.gemboost = 1; // 2nd Gem offer
         game.stats.shgabbtp = 0;
@@ -1217,7 +1242,16 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; knifeBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
+    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; }
+    let exportGame = game;
+
+    exportGame.shgabb = numberSaver(exportGame.shgabb);
+
+    exportGame = JSON.stringify(exportGame);
+
+    exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!");
+} function importGame() {
+    let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; knifeBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
 
     // Empty the game first. Make it completely empty
     emptyGame.a = [];
@@ -1436,8 +1470,11 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
         }
     }
 
-    game.shgabb = Math.ceil(game.shgabb);
-    if (game.shgabb == "-Infinity") game.shgabb = 0;
+    // on the television
+    game.shgabb = numberLoader(game.shgabb);
+    debugger
+
+    // ergh
     if (game.stats.shgabb == "-Infinity") game.stats.shgabb = 0;
     if (game.stats.shgabbtp == "-Infinity") game.stats.shgabbtp = 0;
     game.stats.shgabb = Math.ceil(game.stats.shgabb);

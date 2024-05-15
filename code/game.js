@@ -1,7 +1,6 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
 // GAME
-
 var game = {
     profile: {
         name: "",
@@ -10,8 +9,8 @@ var game = {
         startDay: "",
         pfp: 100,
     },
-    shgabb: 0,
-    clickCooldown: 0,
+    // currencies
+    shgabb: new Decimal(0),
     sw: 0,
     gs: 0,
     si: 0,
@@ -21,10 +20,27 @@ var game = {
     gems: 0,
     gemboost: 0,
     artifactScrap: 0,
+    // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,
     qian: 0,
     eggs: 0,
+    // other stuff
+    clickCooldown: 0,
+    a: [],
+    alvl: {},
+    aeqi: [],
+    alo: [[], [], []],
+    al: 2,
+    alnames: [""],
+    ach: [],
+    nexgai: [0, 0, 0, 0],
+    tttd: 1,
+    dgo: 100,
+    evpfps: [],
+    clg: [],
+    aclg: 0,
+    // upgrade levels
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -96,6 +112,7 @@ var game = {
         prestigeGems: 0,
         gemsBoostShgabb: 0,
     },
+    // stats (all time)
     stats: {
         shgabb: 0,
         clicks: 0,
@@ -136,26 +153,12 @@ var game = {
             mg: 0,
         }
     },
-    a: [],
-    alvl: {},
-    aeqi: [],
-    alo: [[], [], []],
-    al: 2,
-    alnames: [""],
-    ach: [],
-    nexgai: [0, 0, 0, 0],
-    tttd: 1,
-    dgo: 100,
-    evpfps: [],
-    clg: [],
-    aclg: 0,
     cheated: false,
 }
 
 const emptyGame = Object.assign({}, game, {});
 
 // SETTINGS
-
 var settings = {
     music: false,
     adMusic: true,
@@ -175,7 +178,6 @@ var settings = {
 }
 
 // BETA (cheating)
-
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
     value: false,
