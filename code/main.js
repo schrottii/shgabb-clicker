@@ -4,17 +4,10 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.4.2";
+const gameVersion = "2.5";
 
 const currentPatchNotes = [
-    "-> Design:",
-    "- The game now has a blue/gray/green color palette",
-    "- Made the game name's background much shorter and round",
-    "- Game name is now blue & light blue instead of green & blue",
-    "- Currencies display is now blue & light blue",
-    "- Gray buttons (like Ads) are now light blue & blue",
-    "- Previous and next page buttons (Artifacts) are now light blue & blue",
-    "- Adjusted blue shades of setting buttons",
+    "-> re",
 ]
 
 // Various variables
