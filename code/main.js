@@ -10,8 +10,13 @@ const currentPatchNotes = [
     "-> Break Infinity:",
     "- Added breakinfinity library",
     "- Expanded it to take less space in savecodes",
-    "- Only Shgabb for now",
+    "- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades",
     "- Updated number formatter (meh)",
+    "- Capped buy max at 50k (just in case)",
+    "-> Améliorer:",
+    "- Fixed sets 5 and 6 being labeled incorrectly",
+    "-> Other:",
+    "- The social links are now split into 2 rows (2-2) to work better on various device sizes",
 ]
 
 // Various variables
@@ -286,7 +291,10 @@ function numberLoader(number) {
 }
 
 function fn(number) {
-    if (number.mantissa != undefined) return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
+    if (number.mantissa != undefined) {
+        if (number.mantissa == 0 && number.exponent == 0) return "0";
+        return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
+    }
 
 
 
@@ -353,7 +361,7 @@ function clickButton() {
 
         if (techCollection == 0) {
             let critMulti = criticalHit();
-            let amount = Math.floor(getProduction() * critMulti * clickButtonMulti);
+            let amount = getProduction().mul(critMulti).mul(clickButtonMulti).floor();
             if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
 
             game.shgabb = game.shgabb.add(amount);
@@ -413,15 +421,15 @@ function clickButton() {
             }
 
             if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
-                let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi") * clickButtonMulti;
-                game.si += amount;
+                let amount = getSiliconeProduction(true).mul(3).mul(getArtifactBoost("clicksi")).mul(clickButtonMulti);
+                game.si = game.si.add(amount);
                 game.stats.si += amount;
                 if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
             }
 
             if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {
-                amount = getSandwich(critMulti) * clickButtonMulti;
-                game.sw += amount;
+                amount = getSandwich(critMulti).mul(clickButtonMulti);
+                game.sw = game.sw.add(amount);
                 game.stats.sw += amount;
                 game.stats.swtp += amount;
                 createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
@@ -446,8 +454,8 @@ function clickButton() {
 }
 
 function increaseGS(multi) {
-    let amount = Math.floor(getGoldenShgabb() * multi);
-    game.gs += amount;
+    let amount = getGoldenShgabb().mul(multi).floor();
+    game.gs = game.gs.add(amount);
     game.stats.gs += amount;
     return amount;
 }
@@ -469,24 +477,24 @@ function changeDiceAmount() {
 function getGlobalProduction() {
     // these will be applied to auto AND clicks
 
-    let prod = 1
-        * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
-        * shgabbUpgrades.bomblike.currentEffect()
-        * goldenShgabbUpgrades.divineShgabb.currentEffect()
-        * getSiliconeBoost()
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * getArtifactBoost("shgabb")
-        * (1 + game.gemboost / 4)
-        * ameliorerUpgrades.shgabbBoost.currentEffect()
-        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * sandwichUpgrades.meaningOfLife.currentEffect()
-        * cakeValue(10, 1)
-        * getChallenge(2).getBoost()
-        * bagUpgrades.gemsBoostShgabb.currentEffect()
-        * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
-        * eventValue("anniversary", 3, 1)
-        * eventValue("lunar", 8, 1);
+    let prod = new Decimal(1)
+        .mul(game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+        .mul(shgabbUpgrades.bomblike.currentEffect())
+        .mul(goldenShgabbUpgrades.divineShgabb.currentEffect())
+        .mul(getSiliconeBoost())
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(getArtifactBoost("shgabb"))
+        .mul(1 + game.gemboost / 4)
+        .mul(ameliorerUpgrades.shgabbBoost.currentEffect())
+        .mul(ameliorerUpgrades.gsBoostsShgabb.currentEffect())
+        .mul(getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        .mul(sandwichUpgrades.meaningOfLife.currentEffect())
+        .mul(cakeValue(10, 1))
+        .mul(getChallenge(2).getBoost())
+        .mul(bagUpgrades.gemsBoostShgabb.currentEffect())
+        .mul(isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
+        .mul(eventValue("anniversary", 3, 1))
+        .mul(eventValue("lunar", 8, 1));
 
     return prod;
 }
@@ -496,20 +504,20 @@ function getProduction(sosnog = false) {
     if (getArtifactByID(305).isEquipped() && sosnog == false) return getAutoProduction(true);
 
     // things that boost Shgabb and Click Shgabb
-    let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect())
-        * getGlobalProduction()
+    let prod = new Decimal(1 + shgabbUpgrades.moreShgabb.currentEffect())
+        .mul(getGlobalProduction())
 
-        * goldenShgabbUpgrades.gsBoost1.currentEffect()
-        * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
-        * getArtifactBoost("clickshgabb")
-        * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
-        * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
-        * getChallenge(3).getBoost()
-        * (currentBoost == "strongerClicks" ? 5 : 1)
-        * (getArtifactByID(200).isEquipped() ? 0 : 1)
-    );
+        .mul(goldenShgabbUpgrades.gsBoost1.currentEffect())
+        .mul(((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1))
+        .mul(getArtifactBoost("clickshgabb"))
+        .mul((getArtifactByID(211).isEquipped() ? 0.6 : 1))
+        .mul((getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1))
+        .mul(getChallenge(3).getBoost())
+        .mul((currentBoost == "strongerClicks" ? 5 : 1))
+        .mul((getArtifactByID(200).isEquipped() ? 0 : 1))
+        .ceil();
 
-    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
+    if (isChallenge(2)) prod = prod.pow(1 / (2 + 0.5 * getChallenge(2).getTier()));
     return prod;
 }
 
@@ -524,42 +532,49 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
     }
 
     // NORMAL AUTO PROD, things that boost Shgabb in general
-    let prod = 0;
+    let prod = new Decimal(0);
     if (returnType != "cheese") {
-        prod = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
-            * getGlobalProduction()
+        prod = new Decimal(sandwichUpgrades.autoShgabb.currentEffect())
+            .mul(getGlobalProduction())
 
-            * goldenShgabbUpgrades.gsBoost2.currentEffect()
-            * getArtifactBoost("autoshgabb")
-            * getChallenge(4).getBoost()
-            * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
-            * (currentBoost == "strongerAuto" ? 5 : 1)
-        );
-        if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
+            .mul(goldenShgabbUpgrades.gsBoost2.currentEffect())
+            .mul(getArtifactBoost("autoshgabb"))
+            .mul(getChallenge(4).getBoost())
+            .mul(getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
+            .mul(currentBoost == "strongerAuto" ? 5 : 1)
+            .ceil();
+
+        if (isChallenge(2)) prod = prod.pow(1 / (2 + 0.5 * getChallenge(2).getTier()));
         if (returnType == "auto") return prod;
     }
 
     // CHEESE
     if (sandwichUpgrades.cheese.currentLevel() > 0) {
-        prod = prod + Math.ceil((getProduction(true) * sandwichUpgrades.cheese.currentEffect()));
+        prod = prod.add(getProduction(true).mul(sandwichUpgrades.cheese.currentEffect()).ceil());
     }
 
     return prod;
 }
 
 function getSiliconeProduction(isClicks = false) {
-    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * goldenShgabbUpgrades.moreSilicone2.currentEffect()
-        * bagUpgrades.moreSilicone3.currentEffect()
-        * ameliorerUpgrades.siliconeBoost.currentEffect()
-        * getArtifactBoost("si"))
-        * (getArtifactByID(161).isEquipped() && !isClicks ? 0 : 1);
+    return new Decimal(siliconeShgabbUpgrades.moreSilicone.currentEffect())
+        .mul(currentBoost == "moreSilicone" ? 10 : 1)
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(goldenShgabbUpgrades.moreSilicone2.currentEffect())
+        .mul(bagUpgrades.moreSilicone3.currentEffect())
+        .mul(ameliorerUpgrades.siliconeBoost.currentEffect())
+        .mul(getArtifactBoost("si"))
+        .mul(getArtifactByID(161).isEquipped() && !isClicks ? 0 : 1)
+        .ceil();
 }
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(Math.min(game.stats.playTime, 3000000)))) * (getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1);
+    return new Decimal(game.si.div(1000).add(1).ln())
+        .mul(1 + siliconeShgabbUpgrades.strongerSilicone.effect(level))
+        .mul(Math.sqrt(Math.min(game.stats.playTime, 3000000)))
+        .mul(getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1)
+        .add(1);
 }
 
 var clickCooldown = 5;
@@ -583,28 +598,29 @@ function getAchievementBoost() {
 }
 
 function getGoldenShgabb() {
-    return Math.floor(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))
-        * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
-        * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000)
-        * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000)
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * ameliorerUpgrades.amegsBoost.currentEffect()
-        * sandwichUpgrades.twoTwoFive.currentEffect()
-        * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
-        * getArtifactBoost("gs")
-        * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
-        * getAchievementBoost()
-        );
+    return new Decimal(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))))
+        .mul(Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25)))
+        .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000))
+        .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000))
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(ameliorerUpgrades.amegsBoost.currentEffect())
+        .mul(sandwichUpgrades.twoTwoFive.currentEffect())
+        .mul(1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
+        .mul(getArtifactBoost("gs"))
+        .mul(game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
+        .mul(getAchievementBoost())
+        .floor();
 }
 
 function getSandwich(critMulti = 1) {
-    return Math.floor(((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
-        * goldenShgabbUpgrades.formaggi.currentEffect())
-        * ameliorerUpgrades.sandwichBoost.currentEffect()
-        * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * getChallenge(1).getBoost()
-        );
+    return new Decimal(((shgabbUpgrades.moreSw.currentEffect() + 1))
+        .mul(getArtifactBoost("sw"))
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect()))
+        .mul(ameliorerUpgrades.sandwichBoost.currentEffect())
+        .mul(Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())))
+        .mul(getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        .mul(getChallenge(1).getBoost())
+        .floor();
 }
 
 function criticalHit() {
@@ -654,7 +670,7 @@ function silicone() {
 
     let amount = getSiliconeProduction();
     if (amount > 0) {
-        game.si += amount;
+        game.si = game.si.add(amount);
         game.stats.si += amount;
         if (getArtifactByID(312).isEquipped() && Math.random() * applyLuck(100) > 0.9 && game.gems > 0) game.gems -= 1;
     }
@@ -719,7 +735,8 @@ function buyUpgrade(id) {
 function buyMax(id) {
     // Buy an upgrade and update UI
     if (settings.noUpgrading) return false;
-    while (id.canBuy()) {
+    let levelStart = id.currentLevel();
+    while (id.canBuy() && id.currentLevel() <= levelStart + 50000) {
         id.buy();
     }
     updateUpgrades();
@@ -749,7 +766,7 @@ function prestigeButton() {
 
         // Reset Shgabb, Sandwiches, some stat stuff
         game.shgabb = new Decimal(0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb")));
-        game.sw = 0;
+        game.sw = new Decimal(0);
         //game.gemboost = 1; // 2nd Gem offer
         game.stats.shgabbtp = 0;
         game.stats.swtp = 0;
@@ -1099,7 +1116,7 @@ function updateUI() {
     else {
         let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
         let gooRender = (getArtifactByID(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
-        ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
+        ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction().mul(currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
     }
@@ -1273,7 +1290,7 @@ function exportGame() {
 
         if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
             // Auto Shgabb was reworked
-            game.sw += Math.pow(game.upgradeLevels.autoShgabb, 2) / 2;
+            game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
             game.upgradeLevels.autoShgabb = 0;
         }
 
@@ -1472,13 +1489,15 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
 
     // on the television
     game.shgabb = numberLoader(game.shgabb);
+    game.sw = numberLoader(game.sw);
+    game.gs = numberLoader(game.gs);
+    game.si = numberLoader(game.si);
     debugger
 
     // ergh
     if (game.stats.shgabb == "-Infinity") game.stats.shgabb = 0;
     if (game.stats.shgabbtp == "-Infinity") game.stats.shgabbtp = 0;
     game.stats.shgabb = Math.ceil(game.stats.shgabb);
-    game.gs = Math.ceil(game.gs);
     if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
     if (game.stats.gems != undefined) {
         game.stats.tgems += game.stats.gems;
@@ -1489,7 +1508,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
 
     if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
         // Auto Shgabb was reworked
-        game.sw += Math.pow(game.upgradeLevels.autoShgabb, 2) / 2;
+        game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
         game.upgradeLevels.autoShgabb = 0;
     }
 

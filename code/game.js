@@ -11,9 +11,9 @@ var game = {
     },
     // currencies
     shgabb: new Decimal(0),
-    sw: 0,
-    gs: 0,
-    si: 0,
+    sw: new Decimal(0),
+    gs: new Decimal(0),
+    si: new Decimal(0),
     ame: 0,
     ameUp: [0, 0, 0, 0, 0],
     bags: 0,

@@ -171,11 +171,11 @@ function openGifts(amount) {
         else giftContents[2] += 1;
     }
 
-    let sandwichAmount = giftContents[1] * Math.ceil((getSandwich()) * 50);
-    let shgabbAmount = giftContents[2] * Math.ceil(firstGemOfferWorth() * 2);
+    let sandwichAmount = getSandwich().mul(50).ceil().mul(giftContents[1]);
+    let shgabbAmount = firstGemOfferWorth().mul(2).ceil().mul(giftContents[2]);
 
     if (sandwichAmount > 0) {
-        game.sw += sandwichAmount;
+        game.sw = game.sw.add(sandwichAmount);
         game.stats.sw += sandwichAmount;
         game.stats.swtp += sandwichAmount;
     }
