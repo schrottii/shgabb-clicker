@@ -201,11 +201,16 @@
         <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
         <h3>PFPs</h3>
         <span id="pfpsSel" style="width: 80%"></span>
+        <h3>Banners</h3>
+        <span id="bannersSel" style="width: 80%"></span>
     </div>
 
     <!-- Stats -->
     <div id="statsSection">
         <h3>Stats</h3>
+        <button class="grayButton" style="background-color: white" onclick="statsSet(1)">All time</button>
+        <button class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
+        <button class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
         <span id="stats"></span>
         <hr style="clear:both" />
     </div>
@@ -235,12 +240,16 @@
 
                 <hr style="clear:both" />
 
-                <!-- Social -->
-                <h3>Social</h3>
+                <!-- Info -->
+                <h3>Info</h3>
                 Shgabb Clicker - developed by Schrottii ©2023-2024<br />
                 Based on the lovely person known as shgabb<br />
                 Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
                 This game uses <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
+                <br />
+
+                <!-- Social -->
+                <h3>Social</h3>
                 <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
                 <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
 

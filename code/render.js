@@ -41,15 +41,15 @@ function renderSelection(sel) {
     // Buttons
     if (sel == 1) {
         sels = ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags"];
-        selsDisplay = ["Shgabb", "Sandwiches", "Golden Shgabb", "Silicone Shgabb", "Améliorer", "Bags"];
+        selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag")];
     }
     if (sel == 2) {
         sels = ["gems", "artifacts", "challenges", "minigames", "events"];
-        selsDisplay = ["Gems", "Artifacts", "Challenges", "Minigames", "Events"];
+        selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenge1.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
     }
     if (sel == 3) {
         sels = ["cheats", "playerprofile", "stats", "achievements", "settings", "social"];
-        selsDisplay = ["Cheats", "Player Profile", "Stats", "Achievements", "Settings", "Social"];
+        selsDisplay = ["Cheats", '<img class="currency" src="images/shgabbicon.png" />', '<img class="currency" src="images/currencies/qian.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/prestige.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
 
     for (s in sels) {

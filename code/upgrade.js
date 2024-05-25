@@ -70,8 +70,8 @@ class Upgrade {
     }
 
     currentPrice() {
-        if (this.price(1).mantissa != undefined) return this.price(game.upgradeLevels[this.ID] + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats.pttp * (getChallenge(4).getTier() + 1) * 5) : (game.stats.pttp * (getChallenge(4).getTier() + 1))) : 0)).floor();
-        else return Math.floor(this.price(game.upgradeLevels[this.ID] + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats.pttp * (getChallenge(4).getTier() + 1) * 5) : (game.stats.pttp * (getChallenge(4).getTier() + 1))) : 0)));
+        if (this.price(1).mantissa != undefined) return this.price(game.upgradeLevels[this.ID] + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0)).floor();
+        else return Math.floor(this.price(game.upgradeLevels[this.ID] + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0)));
     }
 
     currentEffect() {

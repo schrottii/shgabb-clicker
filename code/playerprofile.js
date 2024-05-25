@@ -10,12 +10,29 @@ var profileTextSizeMulti = 1;
 let pfp = new Image();
 pfp.src = "images/shgabbicon.png";
 
+let banner = new Image();
+banner.src = "images/shgabbicon.png";
+
 let pfpbg = new Image();
 pfpbg.src = "images/achievements/empty.png";
 
 // PFPs
 
 class PFP {
+    constructor(ID, image, unlock) {
+        this.ID = ID;
+        this.image = image;
+        this.unlock = unlock;
+    }
+
+    getType() {
+        if (this.ID >= 400) return "Event";
+        if (this.ID >= 300) return "Currency";
+        if (this.ID >= 100) return "Normal";
+    }
+}
+
+class Banner {
     constructor(ID, image, unlock) {
         this.ID = ID;
         this.image = image;
@@ -39,8 +56,22 @@ function renderPFPs() {
     ui.pfps.innerHTML = render;
 }
 
+function renderBanners() {
+    let render = "";
+
+    for (p in banners) {
+        if (banners[p].unlock()) render = render + "<button class='artifact' onclick='setBanner(" + banners[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px'><img src='" + banners[p].image + "' style='width: 50%'><br />" + banners[p].getType() + "</button>"
+        else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + banners[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + banners[p].getType() + "</button>"
+    }
+    ui.banners.innerHTML = render;
+}
+
 function setPFP(id) {
     game.profile.pfp = id;
+}
+
+function setBanner(id) {
+    game.profile.banner = id;
 }
 
 function getPFPByID(id) {
@@ -48,7 +79,15 @@ function getPFPByID(id) {
     for (a in pfps) {
         if (pfps[a].ID == id) return pfps[a];
     }
-    return 100;
+    return pfps[0];
+}
+
+function getBannerByID(id) {
+    // Use this to get a banner
+    for (a in banners) {
+        if (banners[a].ID == id) return banners[a];
+    }
+    return banners[0];
 }
 
 var pfps = [
@@ -83,7 +122,18 @@ var pfps = [
     new PFP(412, "images/eggs/egg4.png", () => game.evpfps.includes(412)),
     new PFP(413, "images/eggs/egg5.png", () => game.evpfps.includes(413)),
     new PFP(414, "images/eggs/egg6.png", () => game.evpfps.includes(414)),
-]
+];
+
+var banners = [
+    // 100 - 299 | Normal/Generic/Random Banners
+    new Banner(100, "images/banner1.png", () => true),
+    new Banner(101, "images/shgabb-banner.png", () => true),
+    new Banner(102, "images/pride-normal.png", () => true),
+
+    // 300 - 399 | Currency Banners
+
+    // 400 - 599 | Event Banners
+];
 
 function calculateProfileCanvasSize() {
     profileCanvasWidth = window.innerWidth;
@@ -92,6 +142,8 @@ function calculateProfileCanvasSize() {
 
     profileCanvas.width = profileCanvasWidth;
     profileCanvas.height = profileCanvasHeight;
+
+    pctx.imageSmoothingEnabled = false;
 }
 
 function changePlayerName() {
@@ -104,12 +156,18 @@ function changePlayerName() {
 
 function renderPlayerProfile() {
     calculateProfileCanvasSize();
-    let w = profileCanvasWidth ;
-    let h = profileCanvasHeight ;
+    let w = profileCanvasWidth;
+    let h = profileCanvasHeight;
 
     // Background
     pctx.fillStyle = "darkgray";
     pctx.fillRect(0, 0, w, h);
+
+    // Banner
+    pctx.fillStyle = "black";
+    pctx.fillRect(0, 0, w, w * 0.1);
+    banner.src = getBannerByID(game.profile.banner).image;
+    pctx.drawImage(banner, 0, 0, w, w * 0.1);
 
     // PFP
     pctx.fillStyle = "black";

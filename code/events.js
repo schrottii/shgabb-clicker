@@ -137,7 +137,7 @@ function clickEgg() {
 
     createNotification("Egg found!");
     game.eggs += 1;
-    game.stats.eggs += 1;
+    statIncrease("eggs", 1);
 
     renderCurrentEvent();
 }
@@ -176,12 +176,10 @@ function openGifts(amount) {
 
     if (sandwichAmount > 0) {
         game.sw = game.sw.add(sandwichAmount);
-        game.stats.sw += sandwichAmount;
-        game.stats.swtp += sandwichAmount;
+        statIncrease("sw", sandwichAmount);
     }
     if (shgabbAmount > 0) {
-        game.shgabb = game.shgabb.add(shgabbAmount);
-        game.stats.shgabbtp += shgabbAmount;
+        statIncrease("shgabb", shgabbAmount);
     }
     if (giftContents[0] > 0) {
         game.gems += giftContents[0];
@@ -196,7 +194,7 @@ function eatCake() {
     if (game.cakeProgress < 10000) return false;
     game.cakeProgress -= 10000;
     cakeDuration = 180;
-    game.stats.cakes += 1;
+    statIncrease("cakes", 1);
     renderCurrentEvent();
 }
 
@@ -257,7 +255,7 @@ function useQian(offerNR) {
             adTime = 60;
             adMax = 60;
 
-            game.stats.ads += 1;
+            statIncrease("ads", 1);
             game.stats.wads.fs += 1;
 
             break;
@@ -270,7 +268,7 @@ function useQian(offerNR) {
             adTime = 180;
             adMax = 180;
 
-            game.stats.ads += 1;
+            statIncrease("ads", 1);
             game.stats.wads.mc += 1;
 
             break;
@@ -283,7 +281,7 @@ function useQian(offerNR) {
             adTime = 300;
             adMax = 300;
 
-            game.stats.ads += 1;
+            statIncrease("ads", 1);
             game.stats.wads.sa += 1;
 
             break;

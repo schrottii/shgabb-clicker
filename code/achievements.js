@@ -110,7 +110,7 @@ var achievements = [
     new Achievement(97, "unlock.png", "DaBag", "Unlock Bags", () => unlockedBags()),
     new Achievement(58, "ameliorer.png", "Cap Bro III", "Get 300 Améliorer", () => game.stats.ame >= 300),
     new Achievement(98, "bags.png", "I Bag You", "Get your first Bag!", () => game.stats.bags > 0),
-    new Achievement(85, "challenge.png", "Slowchallenging", "Spend an hour inside a Challenge", () => !isChallenge(0) && game.stats.pttp >= 3600),
+    new Achievement(85, "challenge.png", "Slowchallenging", "Spend an hour inside a Challenge", () => !isChallenge(0) && game.stats_prestige.playTime >= 3600),
     new Achievement(105, "bags.png", "Playing DaGame I", "Get 100 Bags (total)", () => game.stats.bags >= 100),
     new Achievement(106, "bags.png", "Playing DaGame II", () => "Get 1000 Bags (total)", () => game.stats.bags >= 1000),
     new Achievement(86, "sosnog.png", "My Best Friend", "Find the developer's favorite Artifact", () => game.a.includes(305)),

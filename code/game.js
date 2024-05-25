@@ -8,6 +8,7 @@ var game = {
         startVer: "",
         startDay: "",
         pfp: 100,
+        banner: 100,
     },
     // currencies
     shgabb: new Decimal(0),
@@ -117,21 +118,16 @@ var game = {
         shgabb: 0,
         clicks: 0,
         playTime: 0,
-        pttp: 0,
+        pr: 0, // prestiges
+        hms: 0,
+
         sw: 0,
-        ads: 0,
         gs: 0,
-        pr: 0,
-        shgabbtp: 0,
-        swtp: 0,
-        ctp: 0,
+        tgems: 0,
+        artifactScrap: 0,
         si: 0,
         ame: 0,
         bags: 0,
-
-        hms: 0,
-        hmstp: 0,
-        tgems: 0,
 
         gifts: 0,
         cakes: 0,
@@ -142,7 +138,7 @@ var game = {
         tttpl: 0,
         tttw: 0,
         tttl: 0,
-        artifactScrap: 0,
+        ads: 0,
         wads: {
             sc: 0,
             sa: 0,
@@ -152,6 +148,12 @@ var game = {
             msi: 0,
             mg: 0,
         }
+    },
+    stats_prestige: {
+
+    },
+    stats_today: {
+
     },
     cheated: false,
 }

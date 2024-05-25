@@ -206,21 +206,27 @@ function renderArtifacts() {
 
 	// Artifacts
 	let currentArtifact;
-	let pageFill = 0;
+	let renderTheseArtifacts = [];
 
-	for (ara = (artifactPage - 1) * 50; pageFill < 50; ara++) {
+	// Gather the Artifacts to render
+	for (ara in artifacts) {
 		if (artifacts[ara] == undefined) break;
 		currentArtifact = getArtifactByID(artifacts[ara].ID);
-		//console.log(currentArtifact);
 
+		// only gather if you have it and it obeys the search filter
         if (currentArtifact.isUnlocked() && currentArtifact.innerRender().toUpperCase().includes(ui.artifactSearch.value.toUpperCase())
 		) {
-			pageFill += 1;
-            render = render + currentArtifact.render();
+			renderTheseArtifacts.push(currentArtifact.ID);
         }
+	}
+
+	// Render the Artifacts that were gathered
+	for (ara = 0; ara < Math.min(50, renderTheseArtifacts.length); ara++) {
+		if (getArtifactByID(renderTheseArtifacts[ara + ((artifactPage - 1) * 50)]) == undefined) break;
+		render = render + getArtifactByID(renderTheseArtifacts[ara + ((artifactPage - 1) * 50)]).render();
     }
 
-	// Pages
+	// Page buttons
 	if (game.a.length > 50) {
 		render = render + "<br /><button class='grayButton' onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
 		render = render + "<button class='grayButton' onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
@@ -301,7 +307,7 @@ function getArtifact(multi = 1) {
 	let chance = Math.random() * applyLuck(100);
 
 	if (chance < 1 / 1000000 * multi * multi2) {
-		if (!allArtifactsOfRarity(4) && Math.random() < 0.5 * !allArtifactsOfRarity(4)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(4) || !anyArtifactsOfRarity(4)) {
 			gambleArtifact(4);
 		}
 		else if (anyArtifactOfRarity(4)) {
@@ -309,7 +315,7 @@ function getArtifact(multi = 1) {
 		}
 	}
 	else if (chance < 1 / 32000 * multi * multi2) {
-		if (!allArtifactsOfRarity(3) && Math.random() < 0.5 * !allArtifactsOfRarity(3)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(3) || !anyArtifactsOfRarity(3)) {
 			gambleArtifact(3);
 		}
 		else if (anyArtifactOfRarity(3)) {
@@ -317,7 +323,7 @@ function getArtifact(multi = 1) {
 		}
 	}
 	else if (chance < 1 / 4000 * multi * multi2) {
-		if (!allArtifactsOfRarity(2) && Math.random() < 0.5 * !allArtifactsOfRarity(2)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(2) || !anyArtifactsOfRarity(2)) {
 			gambleArtifact(2);
 		}
 		else if (anyArtifactOfRarity(2)) {
@@ -325,7 +331,7 @@ function getArtifact(multi = 1) {
 		}
 	}
 	else if (chance < 1 / 800 * multi * multi2) {
-		if (!allArtifactsOfRarity(1) && Math.random() < 0.5 * !allArtifactsOfRarity(1)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(1) || !anyArtifactsOfRarity(1)) {
 			gambleArtifact(1);
 		}
 		else if (anyArtifactOfRarity(1)) {
@@ -382,7 +388,7 @@ function artifactDuplicate(rarity) {
 	let amount = (allArtifactsOfRarity(rarity) ? 2 : 1) * (getScrapCost(1, rarity) / 10);
 	createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifactByID(gainedID).name + "!");
 	game.artifactScrap += amount;
-	game.stats.artifactScrap += amount;
+	statIncrease("artifactScrap", amount);
 
 	ui.newArtifactText = "Duplicate!";
 	ui.newArtifactImage.src = "images/currencies/artifactscrap.png";
@@ -469,7 +475,7 @@ function destroyArtifact(id) {
         }
 
 		game.artifactScrap += amount;
-		game.stats.artifactScrap += amount;
+		statIncrease("artifactScrap", amount);
 
 		checkForZeroNext();
 
@@ -515,34 +521,34 @@ var artifacts = [
 	new Artifact(201, 2, 1, "Amulet of Saving", "amulet.png", "resetshgabb", level => Math.pow(1000, 2 + level), { prefix: "+", noPercentage: true }),
 	new Artifact(202, 2, 1, "Amulet of Quick Snacks", "amulet.png", "sw", level => 4 * level, { trigger: level => game.sw < 10000 * Math.max(1, (level - 1) * 5), desc: level => "While less than " + (10000 * Math.max(1, (level - 1) * 5)) + " Sandwiches" }),
 	new Artifact(203, 2, 1, "Amulet of Sloth", "amulet.png", "autoshgabb", level => 2 + level, { desc: "But 5x longer click cooldown" }),
-	new Artifact(204, 2, 1, "Amulet of Golden Bank", "amulet.png", "gs", level => 2.5 + 2.5 * level, { trigger: () => game.stats.pttp >= 300, desc: "If the last prestige was at least 5 minutes ago" }),
+	new Artifact(204, 2, 1, "Amulet of Golden Bank", "amulet.png", "gs", level => 2.5 + 2.5 * level, { trigger: () => game.stats_prestige.playTime >= 300, desc: "If the last prestige was at least 5 minutes ago" }),
 	new Artifact(205, 2, 1, "Amulet of Slowgemming", "amulet.png", "gemchance", level => 5 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)", maxLevel: 3 }),
 	new Artifact(206, 2, 2, "Amulet of Passive Silicone", "amulet.png", "si", level => 1 + level, { noPercentage: true, prefix: "x", trigger: () => game.clickCooldown < 0, desc: "When not clicking" }),
 	new Artifact(207, 2, 2, "Amulet of Active Silicone", "amulet.png", "si", level => 1.4 + (level * 2.2), { prefix: "x", trigger: () => game.clickCooldown > 0, desc: "When the click cooldown is active" }),
-	new Artifact(208, 2, 1, "Amulet of Fast Start", "amulet.png", "shgabb", level => [1, 10, 30, 100, 300, 1500][level], { noPercentage: true, prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),
-	new Artifact(209, 2, 1, "Amulet of Tides", "amulet.png", "shgabb", level => 4 + 3 * level, { prefix: "x", trigger: () => game.stats.pttp % 20 >= 10, desc: "Active for 10 seconds, inactive for 10 seconds" }),
+	new Artifact(208, 2, 1, "Amulet of Fast Start", "amulet.png", "shgabb", level => [1, 10, 30, 100, 300, 1500][level], { noPercentage: true, prefix: "x", trigger: () => game.stats_prestige.playTime < 180, desc: "For 3 minutes after a prestige" }),
+	new Artifact(209, 2, 1, "Amulet of Tides", "amulet.png", "shgabb", level => 4 + 3 * level, { prefix: "x", trigger: () => game.stats_prestige.playTime % 20 >= 10, desc: "Active for 10 seconds, inactive for 10 seconds" }),
 	new Artifact(210, 2, 1, "Amulet of Thaw", "amulet.png", "autoshgabb", level => 5 + 5 * level, { prefix: "x", desc: "But fridge duration is reduced to 5s" }),
 	new Artifact(211, 2, 2, "Amulet of Condone", "amulet.png", "si", level => 2 * level, { prefix: "x", desc: "But x0.6 Shgabb gain" }),
-	new Artifact(212, 2, 1, "Amulet of Sluggard", "amulet.png", "shgabb", level => 12 * level, { prefix: "x", trigger: () => game.stats.ctp < 10, desc: "Before the tenth click in a prestige" }),
+	new Artifact(212, 2, 1, "Amulet of Sluggard", "amulet.png", "shgabb", level => 12 * level, { prefix: "x", trigger: () => game.stats_prestige.clicks < 10, desc: "Before the tenth click in a prestige" }),
 	new Artifact(213, 2, 3, "Amulet of Golden Clicks", "amulet.png", "complicated", level => 0.02 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(213) + "% of your GS every click" }),
 	new Artifact(214, 2, 3, "Amulet of Golden Idle", "amulet.png", "complicated", level => 0.01 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(214) + "% of your GS every second" }),
 	new Artifact(215, 2, 3, "Amulet of Golden Upgrades", "amulet.png", "complicated", level => 0.001 * level, { prefix: "x", desc: () => "Get " + getArtifactEffect(215) + "% of your GS every upgrade" }),
 	new Artifact(216, 2, 3, "Amulet of Dinosaurs", "amulet.png", "artifactchance", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)", maxLevel: 3 }),
-	new Artifact(217, 2, 1, "Amulet of Well Fed Resets", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: level => game.stats.swtp > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " Sandwiches this prestige" }),
+	new Artifact(217, 2, 1, "Amulet of Well Fed Resets", "amulet.png", "gs", level => 3 * level, { prefix: "x", trigger: level => game.stats_prestige.sw > Math.pow(10, 3 + 3 * level), desc: level => "If >" + fn(Math.pow(10, 3 + 3 * level)) + " Sandwiches this prestige" }),
 	new Artifact(218, 2, 1, "Amulet of Some Patience", "amulet.png", "gs", level => 0.7 + 0.6 * level, { trigger: () => game.clickCooldown < 0, desc: "If clicking isn't on cooldown" }),
-	new Artifact(219, 2, 2, "Amulet of Plastic Start", "amulet.png", "si", level => 1 + 3 * level, { noPercentage: true, prefix: "x", trigger: () => game.stats.pttp < 180, desc: "For 3 minutes after a prestige" }),
+	new Artifact(219, 2, 2, "Amulet of Plastic Start", "amulet.png", "si", level => 1 + 3 * level, { noPercentage: true, prefix: "x", trigger: () => game.stats_prestige.playTime < 180, desc: "For 3 minutes after a prestige" }),
 	new Artifact(220, 2, 2, "Amulet of Baked Silica", "amulet.png", "clicksi", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
 	new Artifact(221, 2, 1, "Amulet of Molten Food", "amulet.png", "sw", level => 6 + 2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
 	new Artifact(222, 2, 1, "Amulet of Quickgemming", "amulet.png", "gems", level => 1.2 + 0.2 * level, { noPercentage: true, trigger: () => clickCooldown == 0.1, desc: "If the click cooldown is 0.1s", maxLevel: 3 }),
 	new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png", "gemchance", level => 1.3 + 0.1 * level, { noPercentage: true, trigger: () => game.gems < 300, desc: "If owning less than 300 Gems", maxLevel: 3 }),
 	new Artifact(224, 2, 4, "Amulet of Molten Bags", "amulet.png", "bags", level => 1 + 0.2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
 	new Artifact(225, 2, 4, "Amulet of Lazy Bags", "amulet.png", "bags", level => 1 + 0.2 * level, { desc: "But 5x longer click cooldown" }),
-	new Artifact(226, 2, 4, "Amulet of Bag Bank", "amulet.png", "bags", level => 2.5 + 0.5 * level, { trigger: () => game.stats.pttp >= 900, desc: "If the last prestige was at least 15 minutes ago" }),
+	new Artifact(226, 2, 4, "Amulet of Bag Bank", "amulet.png", "bags", level => 2.5 + 0.5 * level, { trigger: () => game.stats_prestige.playTime >= 900, desc: "If the last prestige was at least 15 minutes ago" }),
 	new Artifact(227, 2, 1, "Amulet of Eating Bread", "amulet.png", "resetshgabb", level => game.sw * level, { prefix: "+", noPercentage: true }),
 
 	new Artifact(300, 3, 1, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
 	new Artifact(301, 3, 1, "Furious Knife", "knife.png", "shgabb", level => 1 + (knifeBoost * 0.5 * level), { desc: level => "Shgabb gain increases by +" + (50 * level) + "% for every well timed click up to 31x" }),
-	new Artifact(302, 3, 1, "Shgabb Seeds", "seeds.png", "shgabb", level => 1 + ((game.stats.ctp % 1000) * 0.02 * level), { desc: level => "+" + 2 * level + "% per click, resets every 1000 clicks (" + game.stats.ctp % 1000 + "/1000)" }),
+	new Artifact(302, 3, 1, "Shgabb Seeds", "seeds.png", "shgabb", level => 1 + ((game.stats_prestige.clicks % 1000) * 0.02 * level), { desc: level => "+" + 2 * level + "% per click, resets every 1000 clicks (" + game.stats_prestige.clicks % 1000 + "/1000)" }),
 	new Artifact(303, 3, 1, "P2W", "p2w.png", "gems", level => 2.5 + level * 0.5, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active", maxLevel: 3 }),
 	new Artifact(304, 3, 2, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops Silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, 1, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
