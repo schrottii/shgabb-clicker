@@ -7,10 +7,9 @@ function isEvent(eventName, all = false) {
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? ("0" + (date.getUTCMonth() + 1)) : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
     
-    /*
-    if (eventName == "egg" || all) return true; // used to force event
+    if (eventName == "pride" || all) return true; // used to force event
     else return false;
-    */
+    
 
     // Events below in order (January -> December)
     switch (eventName) {
@@ -27,6 +26,11 @@ function isEvent(eventName, all = false) {
         case "egg":
             // Egg Event | Mar 29 - Apr 12
             if (today >= 329 && today <= 419 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
+            else eventName = "pride";
+        case "pride":
+            // Pride Event | Jun 1 - Jun 15
+            if (today >= 601 && today <= 615 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -55,6 +59,9 @@ function renderCurrentEvent() {
     }
     else if (isEvent("egg")) {
         renderEgg();
+    }
+    else if (isEvent("pride")) {
+        renderPride();
     }
 }
 
@@ -389,4 +396,16 @@ function useEggs(offerNR) {
 
     if (!game.ach.includes(112)) game.ach.push(112);
     renderCurrentEvent();
+}
+
+function renderPride() {
+    let render = "<h3>Pride Event</h3><br /><b>June 1st - June 15th</b>";
+    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
+
+    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";
+    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
+
+    ui.eventRender.innerHTML = render;
 }

@@ -11,7 +11,7 @@ const currentPatchNotes = [
     "- Added breakinfinity library",
     "- Expanded it to take less space in savecodes",
     "- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades",
-    "- Updated number formatter (meh)",
+    "- Reworked number formatter",
     "- Capped buy max at 50k (just in case)",
     "-> Stats:",
     "- Added prestige and daily stats (on top of all time)",
@@ -24,10 +24,20 @@ const currentPatchNotes = [
     "- Moved total Amé levels to the right side",
     "- Moved total prestiges up",
     "- Changed total cakes eaten to total cakes",
-    "-> Player Profile:",
+    "-> Banners / Player Profile:",
     "- Added banners",
-    "- Added 3 placeholder banners",
+    "- Added 3 normal banners (unlocked at 0, 2000, 4000 HMS) and 10 event banners (13 total)",
+    "- Added banner selection",
+    "- Added the no banner banner",
+    "- The banner is displayed at the top",
+    "- Moved PFP, name, version and stats down to make space for the banner",
     "- Improved quality of PFPs",
+    "- Added 3 new event PFPs (26 total)",
+    "- Changed started in to started",
+    "-> Pride Event:",
+    "- New event: Pride Event!",
+    "- Active from June 1st - June 15th",
+    "- 3 PFPs and 10 Banners",
     "-> Artifacts:",
     "- Artifacts now always award a new Artifact if none of this rarity are owned (thanks elmenda452)",
     "- Improved Artifact pages (when using search)",
@@ -271,7 +281,6 @@ const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A 
 
 // More beta stuff
 function cheatEngine(type) {
-    /*
     let toCheat;
     if (cheatCurrency.value == "stats.playTime") toCheat = game.stats.playTime;
     else toCheat = game[cheatCurrency.value];
@@ -292,7 +301,6 @@ function cheatEngine(type) {
     updateUI();
     updateArtifacts();
     updateGems();
-    */
 }
 
 ui.cheatAmount.oninput = () => {
@@ -335,51 +343,36 @@ function numberLoader(number) {
 }
 
 function fn(number) {
-    if (number.mantissa != undefined) {
-        if (number.mantissa == 0 && number.exponent == 0) return "0";
-        return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
+    // return basic number if it is 0 - 999 999
+    if (number < 1000000) return number * 1;
+
+    // 1 million or more? do notation shitz
+    let notationSymbol = ""; // M, :joy:, etc.
+
+    // Breakinfinity numbers
+    if (number.mantissa == undefined) {
+        number = new Decimal(number);
+        // note: originally (early 2.5) I was planning on doing 2 fn methods, pretty much, one for breakinf, one normal
+        // but I just realized that's tons of effort when I can just force decimal you
     }
 
-
-
-    // format number function
-
-    // this one is for very low numbers like 0.00000000001
-    if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "0" && number.toString().split(".")[1].substr(0, 2) == "00") return number.toString();
-
-    //if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
-    if (number < 1000000) number = Math.round(number * 10) / 10;
-    else number = Math.floor(number);
-
-    if (number.toString().split("e").length > 1) {
-        if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
-        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
-    }
-
-    // define variables for decimals (dec) and the notation part (notiePart, such as e6 or M)
-    let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
-    let notiePart = "";
     switch (settings.notation) {
-        case "normal":
-            notiePart = normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
-            if (notiePart == undefined) notiePart = "";
+        case "normal": // 1M, 10M
+            notationSymbol = normalNotation[Math.floor(number.exponent / 3) - 2];
             break;
-        case "scientific":
-            if (number.toString().length > 6) return number.toString().substr(0, 1) + "." + number.toString().substr(1, 2) + "e" + (number.toString().length - 1);
+        case "scientific": // special case: 1e6, 1e7
+            return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
             break;
-        case "engineering":
-            notiePart = "E" + (3 * Math.floor((number.toString().length - 1) / 3));
+        case "engineering": // special case: 1E6, 10E6
+            return (number.mantissa * Math.pow(10, number.exponent.toString() % 3)).toString().substr(0, 4) + "E" + (Math.floor(number.exponent.toString() / 3) * 3);
             break;
-        case "alphabet":
-            notiePart = alphabetNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+        case "alphabet": // 1a, 10a
+            notationSymbol = alphabetNotation[Math.floor(number.exponent / 3) - 2];
             break;
     }
 
-    // if at least one million, return it yes
-    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + notiePart;
+    return number.mantissa.toString().substr(0, 4) + notationSymbol;
 
-    // no notation below one million
-    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(2);
 }
 
 // currency image

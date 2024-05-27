@@ -43,6 +43,7 @@ class Banner {
         if (this.ID >= 400) return "Event";
         if (this.ID >= 300) return "Currency";
         if (this.ID >= 100) return "Normal";
+        return "None";
     }
 }
 
@@ -122,17 +123,32 @@ var pfps = [
     new PFP(412, "images/eggs/egg4.png", () => game.evpfps.includes(412)),
     new PFP(413, "images/eggs/egg5.png", () => game.evpfps.includes(413)),
     new PFP(414, "images/eggs/egg6.png", () => game.evpfps.includes(414)),
+
+    new PFP(415, "images/pride/shgabb-prideflag.png", () => game.evpfps.includes(415)),
+    new PFP(416, "images/pride/shgabb-transflag.png", () => game.evpfps.includes(416)),
+    new PFP(417, "images/pride/loveheart.png", () => game.evpfps.includes(417)),
 ];
 
 var banners = [
     // 100 - 299 | Normal/Generic/Random Banners
+    new Banner(0, "", () => true),
     new Banner(100, "images/banner1.png", () => true),
-    new Banner(101, "images/shgabb-banner.png", () => true),
-    new Banner(102, "images/pride-normal.png", () => true),
+    new Banner(101, "images/banner2.png", () => game.stats.hms >= 2000),
+    new Banner(102, "images/shgabb-banner.png", () => game.stats.hms >= 4000),
 
     // 300 - 399 | Currency Banners
 
     // 400 - 599 | Event Banners
+    new Banner(400, "images/pride/pride-normal.png", () => game.evbans.includes(400)),
+    new Banner(401, "images/pride/pride-trans.png", () => game.evbans.includes(401)),
+    new Banner(402, "images/pride/pride-nonbinary.png", () => game.evbans.includes(402)),
+    new Banner(403, "images/pride/pride-lesbian.png", () => game.evbans.includes(403)),
+    new Banner(404, "images/pride/pride-gay.png", () => game.evbans.includes(404)),
+    new Banner(405, "images/pride/pride-bi.png", () => game.evbans.includes(405)),
+    new Banner(406, "images/pride/pride-pan.png", () => game.evbans.includes(406)),
+    new Banner(407, "images/pride/pride-a.png", () => game.evbans.includes(407)),
+    new Banner(408, "images/pride/pride-inter.png", () => game.evbans.includes(408)),
+    new Banner(409, "images/pride/pride-shgabb.png", () => game.evbans.includes(409)),
 ];
 
 function calculateProfileCanvasSize() {
@@ -164,38 +180,38 @@ function renderPlayerProfile() {
     pctx.fillRect(0, 0, w, h);
 
     // Banner
-    pctx.fillStyle = "black";
-    pctx.fillRect(0, 0, w, w * 0.1);
-    banner.src = getBannerByID(game.profile.banner).image;
-    pctx.drawImage(banner, 0, 0, w, w * 0.1);
+    if (game.profile.banner != 0) {
+        banner.src = getBannerByID(game.profile.banner).image;
+        pctx.drawImage(banner, 0, 0, w, w * 0.1);
+    }
 
     // PFP
     pctx.fillStyle = "black";
-    pctx.fillRect(w * 0.05, w * 0.05, w * 0.3, w * 0.3);
+    pctx.fillRect(w * 0.05, w * 0.1, w * 0.3, w * 0.3);
     pfp.src = getPFPByID(game.profile.pfp).image;
-    pctx.drawImage(pfpbg, w * 0.075, w * 0.075, w * 0.25, w * 0.25);
-    pctx.drawImage(pfp, w * 0.075, w * 0.075, w * 0.25, w * 0.25);
+    pctx.drawImage(pfpbg, w * 0.075, w * 0.125, w * 0.25, w * 0.25);
+    pctx.drawImage(pfp, w * 0.075, w * 0.125, w * 0.25, w * 0.25);
 
     // Name
     pctx.font = (20 * profileTextSizeMulti) + "px Times New Roman";
     pctx.textAlign = "left";
-    pctx.fillText(game.profile.name, w * 0.4, w * 0.1)
+    pctx.fillText(game.profile.name, w * 0.4, w * 0.15)
 
     // Start
     pctx.font = (12 * profileTextSizeMulti) + "px Times New Roman";
-    pctx.fillText("Started in: v" + game.profile.startVer + " / " + formatDate(game.profile.startDay), w * 0.025, w * 0.475)
+    pctx.fillText("Start: v" + game.profile.startVer + " / " + formatDate(game.profile.startDay), w * 0.025, w * 0.475)
 
     // ID
     pctx.textAlign = "right";
     pctx.fillText("#" + game.profile.id.substr(0, 6), w * 0.975, w * 0.475)
 
     // Current version
-    pctx.fillText(gameVersion, w * 0.975, w * 0.05)
+    pctx.fillText(gameVersion, w * 0.975, w * 0.125)
 
     // Stats
     pctx.textAlign = "left";
     pctx.font = (16 * profileTextSizeMulti) + "px Times New Roman";
-    pctx.fillText("Highest More Shgabb: " + game.stats.hms, w * 0.4, w * 0.2)
-    pctx.fillText("Artifacts Unlocked: " + getArtifactAmount() + "/" + artifacts.length, w * 0.4, w * 0.25)
-    pctx.fillText("Achievements: " + game.ach.length + "/" + achievements.length, w * 0.4, w * 0.3)
+    pctx.fillText("Highest More Shgabb: " + game.stats.hms, w * 0.4, w * 0.25)
+    pctx.fillText("Artifacts Unlocked: " + getArtifactAmount() + "/" + artifacts.length, w * 0.4, w * 0.3)
+    pctx.fillText("Achievements: " + game.ach.length + "/" + achievements.length, w * 0.4, w * 0.35)
 }

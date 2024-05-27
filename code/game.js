@@ -39,6 +39,7 @@ var game = {
     tttd: 1,
     dgo: 100,
     evpfps: [],
+    evbans: [],
     clg: [],
     aclg: 0,
     // upgrade levels
