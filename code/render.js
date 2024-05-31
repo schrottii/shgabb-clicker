@@ -3,6 +3,7 @@
 // sel 1: shgabb - sandwiches - gs - silicone - amé
 // sel 2: gems - artifacts - shgic
 // sel 3: cheats - stats - achievements - other (social, patch notes)
+// sel 4: shbook: lore - currencies - features
 
 var sections = {
     // sel 1
@@ -28,10 +29,16 @@ var sections = {
     settings: document.getElementById("settingsSection"),
     social: document.getElementById("socialSection"),
 
+    // sel 4
+    lore: document.getElementById("loreSection"),
+    currencies: document.getElementById("currenciesSection"),
+    features: document.getElementById("featuresSection"),
+
     // sels
     selection1: document.getElementById("selection1"),
     selection2: document.getElementById("selection2"),
     selection3: document.getElementById("selection3"),
+    selection4: document.getElementById("selection4"),
 }
 
 function renderSelection(sel) {
@@ -50,6 +57,10 @@ function renderSelection(sel) {
     if (sel == 3) {
         sels = ["cheats", "playerprofile", "stats", "achievements", "settings", "social"];
         selsDisplay = ["Cheats", '<img class="currency" src="images/shgabbicon.png" />', '<img class="currency" src="images/currencies/qian.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/prestige.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
+    }
+    if (sel == 4) {
+        sels = ["lore", "currencies", "features"];
+        selsDisplay = ["Lore", "Currenciary", "Featuriary"];
     }
 
     for (s in sels) {
@@ -109,6 +120,13 @@ function isSelectionUnlocked(name) {
             return true;
         case "social":
             return true;
+
+        case "lore":
+            return true;
+        case "currencies":
+            return true;
+        case "features":
+            return true;
     }
 }
 
@@ -116,9 +134,10 @@ function renderAllSelection() {
     renderSelection(1);
     renderSelection(2);
     renderSelection(3);
+    renderSelection(4);
 }
 
-var selections = ["shgabb", "none", "social"];
+var selections = ["shgabb", "none", "social", "lore"];
 
 function changeSelection(sel, sels) {
     if (selections[sel - 1] == sels) selections[sel - 1] = "none";

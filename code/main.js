@@ -150,6 +150,11 @@ var ui = {
     eventRender: document.getElementById("eventRender"),
     challengeRender: document.getElementById("challengeRender"),
     autoInfo: document.getElementById("autoInfo"),
+
+    shbookCurrenciary: document.getElementById("shbookCurrenciary"),
+    shbookCurrenciary2: document.getElementById("shbookCurrenciary2"),
+    shbookFeaturiary: document.getElementById("shbookFeaturiary"),
+    shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
 }
 
 // Ad variables
@@ -344,7 +349,7 @@ function numberLoader(number) {
 
 function fn(number) {
     // return basic number if it is 0 - 999 999
-    if (number < 1000000) return number * 1;
+    if (number < 1000000) return (number < 100) ? (number * 1).toFixed(2) : (number * 1).toFixed(0);
 
     // 1 million or more? do notation shitz
     let notationSymbol = ""; // M, :joy:, etc.
@@ -1739,6 +1744,9 @@ renderBanners();
 updateBG();
 renderCurrentEvent();
 renderChallenges();
+
+renderCurrenciary();
+renderFeaturiary();
 
 renderSettings();
 
