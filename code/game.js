@@ -27,6 +27,10 @@ var game = {
     qian: 0,
     eggs: 0,
     // other stuff
+    lore: [],
+    lorepg: [],
+    loreSel: 0,
+    loreP: 0,
     clickCooldown: 0,
     a: [],
     alvl: {},

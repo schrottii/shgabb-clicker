@@ -13,6 +13,18 @@ const currentPatchNotes = [
     "- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades",
     "- Reworked number formatter",
     "- Capped buy max at 50k (just in case)",
+    "-> Shbook:",
+    "- New feature/selection: The Shbook!",
+    "- Unlocked at HMS 100",
+    "- Here you can access the lore, the currenciary and the featuriary",
+    "- Added pretty Shbook background and design",
+    "-> Lore:",
+    "- New feature: Lore! (Part of the Shbook)",
+    "-> Currenciary & Featuriary:",
+    "- New features: Currenciary & Featuriary! (Part of the Shbook)",
+    "- This is a list of currencies/features, with short descriptions and links to the wiki",
+    "- New entries are unlocked whenever a currency/feature is unlocked",
+    "- Primarily meant to help out beginners",
     "-> Stats:",
     "- Added prestige and daily stats (on top of all time)",
     "- Added buttons to switch between the three types",
@@ -151,10 +163,14 @@ var ui = {
     challengeRender: document.getElementById("challengeRender"),
     autoInfo: document.getElementById("autoInfo"),
 
+    shbookLore: document.getElementById("shbookLore"),
+    shbookLore2: document.getElementById("shbookLore2"),
     shbookCurrenciary: document.getElementById("shbookCurrenciary"),
     shbookCurrenciary2: document.getElementById("shbookCurrenciary2"),
     shbookFeaturiary: document.getElementById("shbookFeaturiary"),
     shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
+    shbook: document.getElementById("shbook"),
+    shbookHeader: document.getElementById("shbookHeader"),
 }
 
 // Ad variables
@@ -477,6 +493,9 @@ function clickButton() {
             changeDiceAmount();
             if (unlockedGems()) getGem();
             if (unlockedArtifacts()) getArtifact();
+
+            getLorePage();
+            if (game.loreSel != 0) getWisp();
         }
 
         updateArtifacts();
@@ -754,6 +773,7 @@ function buyUpgrade(id) {
         game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
         game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
         game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
+        renderShbook();
 
         if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) {
             let previousHms = game.stats_prestige.hms;
@@ -1745,8 +1765,7 @@ updateBG();
 renderCurrentEvent();
 renderChallenges();
 
-renderCurrenciary();
-renderFeaturiary();
+renderShbook();
 
 renderSettings();
 

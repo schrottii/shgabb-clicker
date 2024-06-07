@@ -29,8 +29,8 @@ function isEvent(eventName, all = false) {
             if (!all) return false;
             else eventName = "pride";
         case "pride":
-            // Pride Event | Jun 1 - Jun 15
-            if (today >= 601 && today <= 615 && game.stats.hms >= 2000) return true;
+            // Pride Event | Jun 7 - Jun 21
+            if (today >= 607 && today <= 621 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -399,7 +399,7 @@ function useEggs(offerNR) {
 }
 
 function renderPride() {
-    let render = "<h3>Pride Event</h3><br /><b>June 1st - June 15th</b>";
+    let render = "<h3>Pride Event</h3><br /><b>June 7th - June 21st</b>";
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
 
     if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";

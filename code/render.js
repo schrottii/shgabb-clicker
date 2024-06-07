@@ -122,7 +122,7 @@ function isSelectionUnlocked(name) {
             return true;
 
         case "lore":
-            return true;
+            return game.stats.hms >= 4000;
         case "currencies":
             return true;
         case "features":
