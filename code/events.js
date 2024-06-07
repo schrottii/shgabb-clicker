@@ -6,9 +6,9 @@ function isEvent(eventName, all = false) {
     let date = new Date();
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? ("0" + (date.getUTCMonth() + 1)) : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
-    
+
     /*
-    if (eventName == "egg" || all) return true; // used to force event
+    if (eventName == "pride" || all) return true; // used to force event
     else return false;
     */
 
@@ -27,6 +27,11 @@ function isEvent(eventName, all = false) {
         case "egg":
             // Egg Event | Mar 29 - Apr 12
             if (today >= 329 && today <= 419 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
+            else eventName = "pride";
+        case "pride":
+            // Pride Event | Jun 8 - Jun 22
+            if (today >= 608 && today <= 622 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -55,6 +60,9 @@ function renderCurrentEvent() {
     }
     else if (isEvent("egg")) {
         renderEgg();
+    }
+    else if (isEvent("pride")) {
+        renderPride();
     }
 }
 
@@ -137,7 +145,7 @@ function clickEgg() {
 
     createNotification("Egg found!");
     game.eggs += 1;
-    game.stats.eggs += 1;
+    statIncrease("eggs", 1);
 
     renderCurrentEvent();
 }
@@ -171,17 +179,15 @@ function openGifts(amount) {
         else giftContents[2] += 1;
     }
 
-    let sandwichAmount = giftContents[1] * Math.ceil((getSandwich()) * 50);
-    let shgabbAmount = giftContents[2] * Math.ceil(firstGemOfferWorth() * 2);
+    let sandwichAmount = getSandwich().mul(50).ceil().mul(giftContents[1]);
+    let shgabbAmount = firstGemOfferWorth().mul(2).ceil().mul(giftContents[2]);
 
     if (sandwichAmount > 0) {
-        game.sw += sandwichAmount;
-        game.stats.sw += sandwichAmount;
-        game.stats.swtp += sandwichAmount;
+        game.sw = game.sw.add(sandwichAmount);
+        statIncrease("sw", sandwichAmount);
     }
     if (shgabbAmount > 0) {
-        game.shgabb += shgabbAmount;
-        game.stats.shgabbtp += shgabbAmount;
+        statIncrease("shgabb", shgabbAmount);
     }
     if (giftContents[0] > 0) {
         game.gems += giftContents[0];
@@ -196,7 +202,7 @@ function eatCake() {
     if (game.cakeProgress < 10000) return false;
     game.cakeProgress -= 10000;
     cakeDuration = 180;
-    game.stats.cakes += 1;
+    statIncrease("cakes", 1);
     renderCurrentEvent();
 }
 
@@ -257,7 +263,7 @@ function useQian(offerNR) {
             adTime = 60;
             adMax = 60;
 
-            game.stats.ads += 1;
+            statIncrease("ads", 1);
             game.stats.wads.fs += 1;
 
             break;
@@ -270,7 +276,7 @@ function useQian(offerNR) {
             adTime = 180;
             adMax = 180;
 
-            game.stats.ads += 1;
+            statIncrease("ads", 1);
             game.stats.wads.mc += 1;
 
             break;
@@ -283,7 +289,7 @@ function useQian(offerNR) {
             adTime = 300;
             adMax = 300;
 
-            game.stats.ads += 1;
+            statIncrease("ads", 1);
             game.stats.wads.sa += 1;
 
             break;
@@ -391,4 +397,124 @@ function useEggs(offerNR) {
 
     if (!game.ach.includes(112)) game.ach.push(112);
     renderCurrentEvent();
+}
+
+var shgaybbMode = false;
+var shgaybbFound = "";
+const shgaybbList = [
+    "Asexual",
+    "Bi",
+    "Gay male",
+    "Intersex",
+    "Gay female",
+    "Non-binary",
+    "Supergay",
+    "Pan",
+    "Shgabbsexual",
+    "Trans",
+    "Ally",
+    "Straight"
+];
+
+function toggleShgaybbMode() {
+    shgaybbMode = !shgaybbMode;
+    shgaybbFound = "";
+    renderCurrentEvent();
+}
+
+function shgaybbID() {
+    switch (shgaybbFound) {
+        case "Supergay":
+            return 400;
+        case "Trans":
+            return 401;
+        case "Non-binary":
+            return 402;
+        case "Gay female":
+            return 403;
+        case "Gay male":
+            return 404;
+        case "Bi":
+            return 405;
+        case "Pan":
+            return 406;
+        case "Asexual":
+            return 407;
+        case "Intersex":
+            return 408;
+        case "Shgabbsexual":
+            return 409;
+        case "Ally":
+            return 999;
+        case "Straight":
+            return 999;
+        default:
+            return 999;
+    }
+    return 999;
+}
+
+function findShgaybb() {
+    if (!shgaybbMode) return false;
+
+    if (Math.random() < 1 / 5) {
+        let seed = Math.ceil(game.stats_today.playTime * game.stats.clicks) % shgaybbList.length;
+
+        if (shgaybbFound == "") {
+            // first of the couple
+            console.log(seed, shgaybbList[seed]);
+            shgaybbFound = shgaybbList[seed];
+            createNotification("Found: " + shgaybbFound + " Shgabb");
+        }
+        else if (shgaybbFound == shgaybbList[seed] || shgaybbList[seed] == "Pan") {
+            // second
+            createNotification("Couple found! " + shgaybbFound + " Shgabb");
+
+            // award the reward
+            let foundID = shgaybbID();
+            if (foundID != 999) {
+                // one of the 10 banners
+                if (!game.evbans.includes(foundID)) game.evbans.push(foundID);
+                else createNotification("You already own this reward...");
+            }
+            else {
+                // one of the 3 pfps, random
+                seed = seed % 3;
+
+                switch (seed) {
+                    case 0:
+                        if (!game.evpfps.includes(415)) game.evpfps.push(415);
+                        else createNotification("You already own this reward...");
+                        break;
+                    case 1:
+                        if (!game.evpfps.includes(416)) game.evpfps.push(416);
+                        else createNotification("You already own this reward...");
+                        break;
+                    case 2:
+                        if (!game.evpfps.includes(417)) game.evpfps.push(417);
+                        else createNotification("You already own this reward...");
+                        break;
+                }
+            }
+
+            renderPFPs();
+            renderBanners();
+            shgaybbFound = "";
+            //shgaybbMode = false;
+        }
+        else {
+            createNotification("Found: " + shgaybbList[seed] + " Shgabb. Not a couple... forever alone...");
+            shgaybbFound = "";
+            //shgaybbMode = false;
+        }
+    }
+}
+
+function renderPride() {
+    let render = "<h3>Pride Event</h3><br /><b>June 8th - June 22nd</b>";
+    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production!";
+    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward! 3 PFPs and 10 Banners. Getting Pan Shgabb second counts as a joker.";
+    render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
+
+    ui.eventRender.innerHTML = render;
 }

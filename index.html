@@ -102,6 +102,17 @@
     </div>
 
     <hr style="clear:both" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
+            crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-format="fluid"
+         data-ad-layout-key="-ey+5p+4q-bp+4t"
+         data-ad-client="ca-pub-8311163069228619"
+         data-ad-slot="2749625029"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
     <!--
         /////////////////////////////////////////////
@@ -190,11 +201,16 @@
         <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
         <h3>PFPs</h3>
         <span id="pfpsSel" style="width: 80%"></span>
+        <h3>Banners</h3>
+        <span id="bannersSel" style="width: 80%"></span>
     </div>
 
     <!-- Stats -->
     <div id="statsSection">
         <h3>Stats</h3>
+        <button class="grayButton" style="background-color: white" onclick="statsSet(1)">All time</button>
+        <button class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
+        <button class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
         <span id="stats"></span>
         <hr style="clear:both" />
     </div>
@@ -224,15 +240,34 @@
 
                 <hr style="clear:both" />
 
-                <!-- Social -->
-                <h3>Social</h3>
+                <!-- Info -->
+                <h3>Info</h3>
                 Shgabb Clicker - developed by Schrottii ©2023-2024<br />
                 Based on the lovely person known as shgabb<br />
                 Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
-                <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
-                <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
-                <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
-                <div class="grayButton" style="float: left; width: 24%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+                This game uses <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
+                <br />
+
+                <!-- Social -->
+                <h3>Social</h3>
+                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
+                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
+
+                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
+                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
+                        crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-format="fluid"
+                     data-ad-layout-key="+t+s9-1r-45+eb"
+                     data-ad-client="ca-pub-8311163069228619"
+                     data-ad-slot="8712398144"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
                 <hr style="clear:both" />
             </div>
             <div class="socsquare2">
@@ -246,10 +281,60 @@
         </div>
     </div>
 
+    <hr style="clear:both" />
+
+    <!--
+        /////////////////////////////////////////////
+        //                 Shbook                  //
+        /////////////////////////////////////////////
+    -->
+    <h3 id="shbookHeader">Shbook</h3>
+    <div id="shbook" class="grayButton" style="background-image: url('images/rough2.png'); background-size: 100%;">
+        <span id="selection4"></span> <br />
+
+        <div id="loreSection">
+            <h3>Lore</h3>
+            <div style="float: left; width: 29%;">
+                <span id="shbookLore"></span>
+            </div>
+            <div style="float: left; width: 1%; background-color: black; color: black; min-height: 50vh;">I</div>
+            <div style="float: right; width: 70%; background-image: url('images/rough.png'); background-size: 100%;">
+                <span id="shbookLore2"></span>
+            </div>
+            <hr style="clear:both" />
+        </div>
+
+        <div id="currenciesSection">
+            <h3>Currenciary</h3>
+            <div style="float: left; width: 29%;">
+                <span id="shbookCurrenciary"></span>
+            </div>
+            <div style="float: left; width: 1%; background-color: black; color: black; min-height: 50vh;">I</div>
+            <div style="float: right; width: 70%; background-image: url('images/rough.png'); background-size: 100%;">
+                <span id="shbookCurrenciary2"></span>
+            </div>
+            <hr style="clear:both" />
+        </div>
+
+        <div id="featuresSection">
+            <h3>Featuriary</h3>
+            <div style="float: left; width: 29%;">
+                <span id="shbookFeaturiary"></span>
+            </div>
+            <div style="float: left; width: 1%; background-color: black; color: black; min-height: 50vh;">I</div>
+            <div style="float: right; width: 70%; background-image: url('images/rough.png'); background-size: 100%;">
+                <span id="shbookFeaturiary2"></span>
+            </div>
+            <hr style="clear:both" />
+        </div>
+    </div>
+
     <!-- Audio -->
     <audio src="shgame.mp3" loop muted id="music"></audio>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2"></script>
+
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
     <script src="code\settings.js"></script>
@@ -261,6 +346,7 @@
     <script src="code\playerprofile.js"></script>
     <script src="code\events.js"></script>
     <script src="code\render.js"></script>
+    <script src="code\shbook.js"></script>
     <script src="code\main.js"></script>
 </body>
 </html>

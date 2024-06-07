@@ -4,17 +4,73 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.4.2";
+const gameVersion = "2.5";
 
 const currentPatchNotes = [
-    "-> Design:",
-    "- The game now has a blue/gray/green color palette",
-    "- Made the game name's background much shorter and round",
-    "- Game name is now blue & light blue instead of green & blue",
-    "- Currencies display is now blue & light blue",
-    "- Gray buttons (like Ads) are now light blue & blue",
-    "- Previous and next page buttons (Artifacts) are now light blue & blue",
-    "- Adjusted blue shades of setting buttons",
+    "-> Break Infinity:",
+    "- Added breakinfinity library",
+    "- Expanded it to take less space in savecodes",
+    "- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades",
+    "- Reworked number formatter",
+    "- Capped buy max at 50k (just in case)",
+    "-> Shbook:",
+    "- New feature/selection: The Shbook!",
+    "- Unlocked at HMS 25",
+    "- Here you can access the lore, the currenciary and the featuriary",
+    "- Added pretty Shbook background and design",
+    "-> Lore:",
+    "- New feature: Lore! (Part of the Shbook)",
+    "- New content: lore pages and Memory Wisps!",
+    "- Unlocked at HMS 4000",
+    "- Added 3 lore pages, more coming soon",
+    "- Find lore pages and Memory Wisps by clicking (1/25k and 1/5k chance, respectively)",
+    "- Up to 5 lore pages can be stored at the same time",
+    "- Select a lore page and collect Memory Wisps to unlock it",
+    "- Learn more about the story and lore of the game by reading the unlocked pages!",
+    "-> Currenciary & Featuriary:",
+    "- New features: Currenciary & Featuriary! (Part of the Shbook)",
+    "- This is a list of currencies/features, with short descriptions and links to the wiki",
+    "- New entries are unlocked whenever a currency/feature is unlocked",
+    "- Primarily meant to help out beginners",
+    "-> Stats:",
+    "- Added prestige and daily stats (on top of all time)",
+    "- Added buttons to switch between the three types",
+    "- Huge changes to the stats code",
+    "- Left side: added labels for the sections progress, currencies and events, and other",
+    "- Right side: added labels for the sections chances and progress",
+    "- Added spacing between sections",
+    "- Added legendary Artifact chances",
+    "- Moved total Amé levels to the right side",
+    "- Moved total prestiges up",
+    "- Changed total cakes eaten to total cakes",
+    "-> Banners / Player Profile:",
+    "- Added banners",
+    "- Added 3 normal banners (unlocked at 0, 2000, 4000 HMS) and 10 event banners (13 total)",
+    "- Added banner selection",
+    "- Added the no banner banner",
+    "- The banner is displayed at the top",
+    "- Moved PFP, name, version and stats down to make space for the banner",
+    "- Improved quality of PFPs",
+    "- Added 3 new event PFPs (26 total)",
+    "- Changed started in to started",
+    "-> Pride Event:",
+    "- New event: Pride Event!",
+    "- Active from June 8th - June 22nd",
+    "- x10 Shgabb production during the event",
+    "- 3 new event PFPs, 10 Banners and 5 Achievements can be earned",
+    "- Click the button to enter Shgaybb Mode and find identical Shgabbs",
+    "- Added Pride Event background image",
+    "-> Artifacts:",
+    "- Artifacts now always award a new Artifact if none of this rarity are owned (thanks elmenda452)",
+    "- Improved Artifact pages (when using search)",
+    "-> Other:",
+    "- Section buttons now use images instead of text",
+    "- Added 10 new Achievements (5 lore, 5 event)",
+    "- Added 5 new Quotes",
+    "- Fixed Améliorer sets 5 and 6 being labeled incorrectly",
+    "- Split social section into two: info and social",
+    "- The social links are now split into 2 rows (2-2) to work better on various device sizes",
+    "- Some small bug fixes",
 ]
 
 // Various variables
@@ -106,6 +162,7 @@ var ui = {
     stats: document.getElementById("stats"),
     achievements: document.getElementById("achievements"),
     pfps: document.getElementById("pfpsSel"),
+    banners: document.getElementById("bannersSel"),
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
     music: document.getElementById("music"),
@@ -116,6 +173,15 @@ var ui = {
     eventRender: document.getElementById("eventRender"),
     challengeRender: document.getElementById("challengeRender"),
     autoInfo: document.getElementById("autoInfo"),
+
+    shbookLore: document.getElementById("shbookLore"),
+    shbookLore2: document.getElementById("shbookLore2"),
+    shbookCurrenciary: document.getElementById("shbookCurrenciary"),
+    shbookCurrenciary2: document.getElementById("shbookCurrenciary2"),
+    shbookFeaturiary: document.getElementById("shbookFeaturiary"),
+    shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
+    shbook: document.getElementById("shbook"),
+    shbookHeader: document.getElementById("shbookHeader"),
 }
 
 // Ad variables
@@ -230,6 +296,13 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "i slowed you in dms - elmenda452",
     "I sacrifice myself to keep this chat alive because no one will dare send anything after this - shgabb",
     "If you would add player gifts, I'd be able to send you my 168035 scraps - DaGame",
+
+    // 2.5 (5)
+    "I will lick whatever the next message says - Aloee",
+    "Updates are not allowed also - Rofl",
+    "im currently spacebarrinh - Barduzzi",
+    "pray. - slowmerger",
+    "you little sheeps, why aren't you consuming? - elmenda452"
 ];
 
 // Notations
@@ -270,46 +343,70 @@ ui.artifactSearch.oninput = () => {
     updateArtifacts();
 }
 
-// format number
+function statIncrease(name, number) {
+    if (game.stats[name].mantissa != undefined) {
+        game.stats[name] = game.stats[name].add(number);
+        game.stats_prestige[name] = game.stats_prestige[name].add(number);
+        game.stats_today[name] = game.stats_today[name].add(number);
+    }
+    else {
+        game.stats[name] += number;
+        game.stats_prestige[name] += number;
+        game.stats_today[name] += number;
+    }
+}
+
+// ALL THE NUMBER SHIT YEE COWBOYS
+function numberSaver(number) {
+    // turn a break infinity object (mantissa - exponent) into a simple string, for saving
+    // mantissa: 1.2, exponent: 10 -> 1.2e10
+    if (number.mantissa == undefined) {
+        number = number.toString();
+        if (number.split("e+")[1] != undefined) number = new Decimal(number.split("e+")[0] + "e" + number.split("e+")[1]);
+        else number = new Decimal(number);
+    }
+    return number.mantissa + "e" + number.exponent;
+}
+
+function numberLoader(number) {
+    // same thing but load the saved string
+    // 1.2e10 -> mantissa: 1.2, exponent: 10
+    return new Decimal("" + number);
+}
+
 function fn(number) {
-    // format number function
+    if (number == undefined) return "?";
 
-    // this one is for very low numbers like 0.00000000001
-    if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "0" && number.toString().split(".")[1].substr(0, 2) == "00") return number.toString();
+    // return basic number if it is 0 - 999 999
+    if (number < 1000000) return (number < 100) ? (number * 1).toFixed(2) : (number * 1).toFixed(0);
 
-    //if (number.toString().split(".").length > 1) if (number.toString().split(".")[0] == "1" && number.toString().split(".")[1].substr(0, 3) == "000") return "0." + "0".repeat(number.toString().split("e-")[1] - 1) + "1";
-    if (number < 1000000) number = Math.round(number * 10) / 10;
-    else number = Math.floor(number);
+    // 1 million or more? do notation shitz
+    let notationSymbol = ""; // M, :joy:, etc.
 
-    if (number.toString().split("e").length > 1) {
-        if (number.toString().split("e")[0].split(".")[1] != undefined) number = number.toString().split("e")[0].split(".")[0] + number.toString().split("e")[0].split(".")[1].substr(0, 3) + "0".repeat(parseInt(number.toString().split("e")[1]) - 3);
-        number = number.toString().split("e")[0] + "0".repeat(parseInt(number.toString().split("e")[1]));
+    // Breakinfinity numbers
+    if (number.mantissa == undefined) {
+        number = new Decimal(number);
+        // note: originally (early 2.5) I was planning on doing 2 fn methods, pretty much, one for breakinf, one normal
+        // but I just realized that's tons of effort when I can just force decimal you
     }
 
-    // define variables for decimals (dec) and the notation part (notiePart, such as e6 or M)
-    let dec = number.toString().substr(number.toString().length % 3 == 0 ? 3 : number.toString().length % 3, number.toString().length % 3 == 0 ? 1 : 2);
-    let notiePart = "";
     switch (settings.notation) {
-        case "normal":
-            notiePart = normalNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
-            if (notiePart == undefined) notiePart = "";
+        case "normal": // 1M, 10M
+            notationSymbol = normalNotation[Math.floor(number.exponent / 3) - 2];
             break;
-        case "scientific":
-            if (number.toString().length > 6) return number.toString().substr(0, 1) + "." + number.toString().substr(1, 2) + "e" + (number.toString().length - 1);
+        case "scientific": // special case: 1e6, 1e7
+            return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
             break;
-        case "engineering":
-            notiePart = "E" + (3 * Math.floor((number.toString().length - 1) / 3));
+        case "engineering": // special case: 1E6, 10E6
+            return (number.mantissa * Math.pow(10, number.exponent.toString() % 3)).toString().substr(0, 4) + "E" + (Math.floor(number.exponent.toString() / 3) * 3);
             break;
-        case "alphabet":
-            notiePart = alphabetNotation[Math.floor((number.toString().length - 1) / 3 - 1) - 1];
+        case "alphabet": // 1a, 10a
+            notationSymbol = alphabetNotation[Math.floor(number.exponent / 3) - 2];
             break;
     }
 
-    // if at least one million, return it yes
-    if (number.toString().length > 6) return number.toString().substr(0, number.toString().length % 3 == 0 ? 3 : number.toString().length % 3) + (dec != "" ? ("." + dec) : "") + notiePart;
+    return number.mantissa.toString().substr(0, 4) + notationSymbol;
 
-    // no notation below one million
-    return number.toFixed(1).toString().substr(-1) == "0" ? number.toFixed(0) : number.toFixed(2);
 }
 
 // currency image
@@ -335,12 +432,11 @@ function clickButton() {
 
         if (techCollection == 0) {
             let critMulti = criticalHit();
-            let amount = Math.floor(getProduction() * critMulti * clickButtonMulti);
+            let amount = getProduction().mul(critMulti).mul(clickButtonMulti).floor();
             if (getArtifactByID(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
 
-            game.shgabb += amount;
-            game.stats.shgabb += amount;
-            game.stats.shgabbtp += amount;
+            game.shgabb = game.shgabb.add(amount);
+            statIncrease("shgabb", amount);
 
             if ((getArtifactByID(301).isEquipped() || getArtifactByID(315).isEquipped()) && (game.clickCooldown > -0.33 || lunarAntiCooldown > 0)) {
                 knifeBoost = Math.min(knifeBoost + 1, 20);
@@ -348,8 +444,7 @@ function clickButton() {
             else knifeBoost = 0;
 
             game.clickCooldown = getCooldown();
-            game.stats.clicks += 1;
-            game.stats.ctp += 1;
+            statIncrease("clicks", 1);
 
             if (getArtifactByID(310).isEquipped()) {
                 trashCanBoost = Math.max(0, trashCanBoost - (0.1 * clickButtonMulti));
@@ -372,7 +467,7 @@ function clickButton() {
             if (isEvent("christmas")) {
                 if (Math.random() < 1 / (250 / getCooldown())) {
                     game.gifts += clickButtonMulti;
-                    game.stats.gifts += clickButtonMulti;
+                    statIncrease("gifts", clickButtonMulti);
                     createNotification("+1 Gift!");
                 }
             }
@@ -390,28 +485,31 @@ function clickButton() {
                     if ((game.qian + amount) % 10 == 4) amount += 1;
 
                     game.qian += amount;
-                    game.stats.qian += amount;
+                    statIncrease("qian", amount);
                 }
             }
 
             if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
-                let amount = 3 * getSiliconeProduction(true) * getArtifactBoost("clicksi") * clickButtonMulti;
-                game.si += amount;
-                game.stats.si += amount;
+                let amount = getSiliconeProduction(true).mul(3).mul(getArtifactBoost("clicksi")).mul(clickButtonMulti);
+                game.si = game.si.add(amount);
+                statIncrease("si", amount);
                 if (getArtifactByID(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
             }
 
             if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {
-                amount = getSandwich(critMulti) * clickButtonMulti;
-                game.sw += amount;
-                game.stats.sw += amount;
-                game.stats.swtp += amount;
+                amount = getSandwich(critMulti).mul(clickButtonMulti);
+                game.sw = game.sw.add(amount);
+                statIncrease("sw", amount);
                 createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
             }
 
+            findShgaybb();
             changeDiceAmount();
             if (unlockedGems()) getGem();
             if (unlockedArtifacts()) getArtifact();
+
+            getLorePage();
+            if (game.loreSel != 0) getWisp();
         }
 
         updateArtifacts();
@@ -428,9 +526,9 @@ function clickButton() {
 }
 
 function increaseGS(multi) {
-    let amount = Math.floor(getGoldenShgabb() * multi);
-    game.gs += amount;
-    game.stats.gs += amount;
+    let amount = getGoldenShgabb().mul(multi).floor();
+    game.gs = game.gs.add(amount);
+    statIncrease("gs", amount);
     return amount;
 }
 
@@ -451,24 +549,25 @@ function changeDiceAmount() {
 function getGlobalProduction() {
     // these will be applied to auto AND clicks
 
-    let prod = 1
-        * (game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
-        * shgabbUpgrades.bomblike.currentEffect()
-        * goldenShgabbUpgrades.divineShgabb.currentEffect()
-        * getSiliconeBoost()
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * getArtifactBoost("shgabb")
-        * (1 + game.gemboost / 4)
-        * ameliorerUpgrades.shgabbBoost.currentEffect()
-        * ameliorerUpgrades.gsBoostsShgabb.currentEffect()
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * sandwichUpgrades.meaningOfLife.currentEffect()
-        * cakeValue(10, 1)
-        * getChallenge(2).getBoost()
-        * bagUpgrades.gemsBoostShgabb.currentEffect()
-        * (isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
-        * eventValue("anniversary", 3, 1)
-        * eventValue("lunar", 8, 1);
+    let prod = new Decimal(1)
+        .mul(game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+        .mul(shgabbUpgrades.bomblike.currentEffect())
+        .mul(goldenShgabbUpgrades.divineShgabb.currentEffect())
+        .mul(getSiliconeBoost())
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(getArtifactBoost("shgabb"))
+        .mul(1 + game.gemboost / 4)
+        .mul(ameliorerUpgrades.shgabbBoost.currentEffect())
+        .mul(ameliorerUpgrades.gsBoostsShgabb.currentEffect())
+        .mul(getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        .mul(sandwichUpgrades.meaningOfLife.currentEffect())
+        .mul(cakeValue(10, 1))
+        .mul(getChallenge(2).getBoost())
+        .mul(bagUpgrades.gemsBoostShgabb.currentEffect())
+        .mul(isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
+        .mul(eventValue("anniversary", 3, 1))
+        .mul(eventValue("lunar", 8, 1))
+        .mul(eventValue("pride", 10, 1));
 
     return prod;
 }
@@ -478,20 +577,20 @@ function getProduction(sosnog = false) {
     if (getArtifactByID(305).isEquipped() && sosnog == false) return getAutoProduction(true);
 
     // things that boost Shgabb and Click Shgabb
-    let prod = Math.ceil((1 + shgabbUpgrades.moreShgabb.currentEffect())
-        * getGlobalProduction()
+    let prod = new Decimal(1 + shgabbUpgrades.moreShgabb.currentEffect())
+        .mul(getGlobalProduction())
 
-        * goldenShgabbUpgrades.gsBoost1.currentEffect()
-        * ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1)
-        * getArtifactBoost("clickshgabb")
-        * (getArtifactByID(211).isEquipped() ? 0.6 : 1)
-        * (getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1)
-        * getChallenge(3).getBoost()
-        * (currentBoost == "strongerClicks" ? 5 : 1)
-        * (getArtifactByID(200).isEquipped() ? 0 : 1)
-    );
+        .mul(goldenShgabbUpgrades.gsBoost1.currentEffect())
+        .mul(((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1))
+        .mul(getArtifactBoost("clickshgabb"))
+        .mul((getArtifactByID(211).isEquipped() ? 0.6 : 1))
+        .mul((getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1))
+        .mul(getChallenge(3).getBoost())
+        .mul((currentBoost == "strongerClicks" ? 5 : 1))
+        .mul((getArtifactByID(200).isEquipped() ? 0 : 1))
+        .ceil();
 
-    if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
+    if (isChallenge(2)) prod = prod.pow(1 / (2 + 0.5 * getChallenge(2).getTier()));
     return prod;
 }
 
@@ -506,42 +605,50 @@ function getAutoProduction(sosnog2 = false, returnType = "all") {
     }
 
     // NORMAL AUTO PROD, things that boost Shgabb in general
-    let prod = 0;
+    let prod = new Decimal(0);
     if (returnType != "cheese") {
-        prod = Math.ceil(sandwichUpgrades.autoShgabb.currentEffect()
-            * getGlobalProduction()
+        prod = new Decimal(sandwichUpgrades.autoShgabb.currentEffect())
+            .mul(getGlobalProduction())
 
-            * goldenShgabbUpgrades.gsBoost2.currentEffect()
-            * getArtifactBoost("autoshgabb")
-            * getChallenge(4).getBoost()
-            * (getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
-            * (currentBoost == "strongerAuto" ? 5 : 1)
-        );
-        if (isChallenge(2)) prod = Math.pow(prod, 1 / (2 + 0.5 * getChallenge(2).getTier()));
+            .mul(goldenShgabbUpgrades.gsBoost2.currentEffect())
+            .mul(getArtifactBoost("autoshgabb"))
+            .mul(getChallenge(4).getBoost())
+            .mul(getArtifactByID(300).isEquipped() ? Math.max(1, ((getArtifactLevel(300) * 2) * game.clickCooldown + 1)) : 1)
+            .mul(currentBoost == "strongerAuto" ? 5 : 1)
+            .ceil();
+
+        if (isChallenge(2)) prod = prod.pow(1 / (2 + 0.5 * getChallenge(2).getTier()));
         if (returnType == "auto") return prod;
     }
 
     // CHEESE
     if (sandwichUpgrades.cheese.currentLevel() > 0) {
-        prod = prod + Math.ceil((getProduction(true) * sandwichUpgrades.cheese.currentEffect()));
+        prod = prod.add(getProduction(true).mul(sandwichUpgrades.cheese.currentEffect()).ceil());
     }
 
     return prod;
 }
 
 function getSiliconeProduction(isClicks = false) {
-    return Math.ceil(siliconeShgabbUpgrades.moreSilicone.currentEffect() * (currentBoost == "moreSilicone" ? 10 : 1)
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * goldenShgabbUpgrades.moreSilicone2.currentEffect()
-        * bagUpgrades.moreSilicone3.currentEffect()
-        * ameliorerUpgrades.siliconeBoost.currentEffect()
-        * getArtifactBoost("si"))
-        * (getArtifactByID(161).isEquipped() && !isClicks ? 0 : 1);
+    return new Decimal(siliconeShgabbUpgrades.moreSilicone.currentEffect())
+        .mul(currentBoost == "moreSilicone" ? 10 : 1)
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(goldenShgabbUpgrades.moreSilicone2.currentEffect())
+        .mul(bagUpgrades.moreSilicone3.currentEffect())
+        .mul(ameliorerUpgrades.siliconeBoost.currentEffect())
+        .mul(getArtifactBoost("si"))
+        .mul(getArtifactByID(161).isEquipped() && !isClicks ? 0 : 1)
+        .ceil();
 }
 
 function getSiliconeBoost(level = "current") {
     if (level == "current") level = game.upgradeLevels.strongerSilicone;
-    return (1 + Math.log((game.si / 1000) + 1) * (1 + siliconeShgabbUpgrades.strongerSilicone.effect(level) * Math.sqrt(Math.min(game.stats.playTime, 3000000)))) * (getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1);
+
+    return new Decimal(game.si.div(1000).add(1).ln())
+        .mul(1 + siliconeShgabbUpgrades.strongerSilicone.effect(level))
+        .mul(Math.sqrt(Math.min(game.stats.playTime, 3000000)))
+        .mul(getArtifactByID(304).isEquipped() ? (2 + (getArtifactLevel(304) * 1)) : 1)
+        .add(1);
 }
 
 var clickCooldown = 5;
@@ -556,6 +663,7 @@ function getCooldown() {
         * (getArtifactByID(203).isEquipped() ? 5 : 1)
         * (getArtifactByID(225).isEquipped() ? 5 : 1))
     if (isChallenge(3)) CD = 20;
+    if (shgaybbMode) CD = Math.max(2, CD);
     clickCooldown = CD; // Why T_T
     return CD;
 }
@@ -565,28 +673,29 @@ function getAchievementBoost() {
 }
 
 function getGoldenShgabb() {
-    return Math.floor(Math.max(10, (1 + Math.log(1 + game.stats.shgabbtp)) * (1 + Math.log(game.stats.swtp + 1))
-        * (Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25))))
-        * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000)
-        * Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000)
-        * goldenShgabbUpgrades.formaggi.currentEffect()
-        * ameliorerUpgrades.amegsBoost.currentEffect()
-        * sandwichUpgrades.twoTwoFive.currentEffect()
-        * (1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
-        * getArtifactBoost("gs")
-        * (game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
-        * getAchievementBoost()
-        );
+    return new Decimal(Math.max(10, (1 + Math.log(1 + game.stats_prestige.shgabb)) * (1 + Math.log(game.stats_prestige.sw + 1))))
+        .mul(Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25)))
+        .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000))
+        .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000))
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(ameliorerUpgrades.amegsBoost.currentEffect())
+        .mul(sandwichUpgrades.twoTwoFive.currentEffect())
+        .mul(1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
+        .mul(getArtifactBoost("gs"))
+        .mul(game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
+        .mul(getAchievementBoost())
+        .floor();
 }
 
 function getSandwich(critMulti = 1) {
-    return Math.floor(((shgabbUpgrades.moreSw.currentEffect() + 1) * getArtifactBoost("sw")
-        * goldenShgabbUpgrades.formaggi.currentEffect())
-        * ameliorerUpgrades.sandwichBoost.currentEffect()
-        * Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect()))
-        * (getArtifactByID(307).isEquipped() ? diceAmount : 1)
-        * getChallenge(1).getBoost()
-        );
+    return new Decimal((shgabbUpgrades.moreSw.currentEffect() + 1))
+        .mul(getArtifactBoost("sw"))
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
+        .mul(ameliorerUpgrades.sandwichBoost.currentEffect())
+        .mul(Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())))
+        .mul(getArtifactByID(307).isEquipped() ? diceAmount : 1)
+        .mul(getChallenge(1).getBoost())
+        .floor();
 }
 
 function criticalHit() {
@@ -609,9 +718,8 @@ function sandwich() {
     }
 
     if (amount > 0) {
-        game.shgabb += amount;
-        game.stats.shgabb += amount;
-        game.stats.shgabbtp += amount;
+        game.shgabb = game.shgabb.add(amount);
+        statIncrease("shgabb", amount);
         //createNotification("+" + amount + " shgabb");
 
         if (getArtifactByID(214).isEquipped()) increaseGS(getArtifactEffect(214) / 100);
@@ -636,8 +744,8 @@ function silicone() {
 
     let amount = getSiliconeProduction();
     if (amount > 0) {
-        game.si += amount;
-        game.stats.si += amount;
+        game.si = game.si.add(amount);
+        statIncrease("si", amount);
         if (getArtifactByID(312).isEquipped() && Math.random() * applyLuck(100) > 0.9 && game.gems > 0) game.gems -= 1;
     }
 
@@ -679,18 +787,21 @@ function buyUpgrade(id) {
 
     if (id.ID == "moreShgabb") {
         game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+        game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
+        game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
+        renderShbook();
 
-        if (game.upgradeLevels.moreShgabb > game.stats.hmstp) {
-            let previousHms = game.stats.hmstp;
-            if (game.upgradeLevels.moreShgabb > game.stats.hmstp) game.stats.hmstp = game.upgradeLevels.moreShgabb;
+        if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) {
+            let previousHms = game.stats_prestige.hms;
+            if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) game.stats_prestige.hms = game.upgradeLevels.moreShgabb;
 
             if (unlockedBags()) {
-                let bagi = Math.ceil((ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1) * (Math.floor(game.stats.hmstp / 1000) - Math.floor(previousHms / 1000))
+                let bagi = Math.ceil((ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1) * (Math.floor(game.stats_prestige.hms / 1000) - Math.floor(previousHms / 1000))
                     * getArtifactBoost("bags"));
 
                 if (bagi > 0) {
                     game.bags += bagi;
-                    game.stats.bags += bagi;
+                    statIncrease("bags", bagi);
                     createNotification("+" + bagi + " Bags!");
                 }
             }
@@ -701,7 +812,8 @@ function buyUpgrade(id) {
 function buyMax(id) {
     // Buy an upgrade and update UI
     if (settings.noUpgrading) return false;
-    while (id.canBuy()) {
+    let levelStart = id.currentLevel();
+    while (id.canBuy() && id.currentLevel() <= levelStart + 50000) {
         id.buy();
     }
     updateUpgrades();
@@ -730,14 +842,19 @@ function prestigeButton() {
         let amount = increaseGS(1 * getArtifactBoost("prestigegs"));
 
         // Reset Shgabb, Sandwiches, some stat stuff
-        game.shgabb = 0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb"));
-        game.sw = 0;
-        //game.gemboost = 1; // 2nd Gem offer
-        game.stats.shgabbtp = 0;
-        game.stats.swtp = 0;
-        game.stats.ctp = 0;
-        game.stats.pttp = 0;
+        game.shgabb = new Decimal(0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb")));
+        game.sw = new Decimal(0);
         hoodGoo = 0;
+        //game.gemboost = 1; // 2nd Gem offer
+
+        for (stat in game.stats_prestige) {
+            if (game.stats_prestige[stat] != undefined && game.stats_prestige[stat].mantissa != undefined) {
+                game.stats_prestige[stat] = new Decimal(0);
+            }
+            else {
+                game.stats_prestige[stat] = 0;
+            }
+        }
 
         if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg).getGoal()) {
             // Challenge completed
@@ -757,14 +874,14 @@ function prestigeButton() {
         if (ui.ameReset.checked == true) ameReset();
 
         if (bagUpgrades.prestigeGems.currentLevel() > 0) {
-            let amount = Math.floor(game.stats.hmstp / 1000);
+            let amount = Math.floor(game.stats_prestige.hms / 1000);
             game.gems += amount;
-            game.stats.tgems += amount;
+            statIncrease("tgems", amount);
             createNotification("+" + amount + " Gems!");
         }
 
-        game.stats.pr += 1;
-        game.stats.hmstp = 0;
+        statIncrease("pr", 1);
+        game.stats_prestige.hms = 0;
 
         game.aclg = 0;
         if (enableThisChallenge != 0) {
@@ -842,7 +959,8 @@ function convertAmeliorer(type) {
         game[type] -= costs;
         game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3, "gems": 4 }[type]] += 1;
         game.ame += 1;
-        game.stats.ame += 1;
+        statIncrease("ame", 1);
+
         updateUpgrades();
         renderAmeConvert();
     }
@@ -1000,46 +1118,74 @@ function updateCurrencies() {
     else ui.bagAmount.innerHTML = "";
 }
 
+// stats stuff
+var statDisplay = 1;
+function statLoader(title, format=true) {
+    switch (statDisplay) {
+        case 1:
+            return format ? fn(game.stats[title]) : game.stats[title];
+        case 2:
+            return format ? fn(game.stats_prestige[title]) : game.stats_prestige[title];
+        case 3:
+            return format ? fn(game.stats_today[title]) : game.stats_today[title];
+    }
+}
+
+function statsSet(no) {
+    statDisplay = no;
+    updateStats();
+}
+
 function updateStats() {
+    // LEFT SIDE
     ui.stats.innerHTML = "<div style='float: left; width: 50%;' class='square2'>"
-        + "Highest More Shgabb: " + fn(game.stats.hms)
-        + "<br />Total Clicks: " + fn(game.stats.clicks)
-        + "<br />Total Time: " + (game.stats.playTime > 18000 ? (game.stats.playTime / 3600).toFixed(1) + " hours" : game.stats.playTime.toFixed(1))
-        + "<br />Total Ads watched: " + game.stats.ads
+        + "Progress:"
+        + "<br />Highest More Shgabb: " + statLoader("hms")
+        + "<br />Total Clicks: " + statLoader("clicks")
+        + "<br />Total Time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime"))
+        + "<br />Total Prestiges: " + statLoader("pr")
+        + "<br />Total Ads watched: " + statLoader("ads")
         + "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
-        + "<br />Total Shgabb: " + fn(game.stats.shgabb)
-        + "<br />Total Sandwiches: " + fn(game.stats.sw)
-        + "<br />Total Golden Shgabb: " + fn(game.stats.gs)
-        + "<br />Total Prestiges: " + game.stats.pr
-        + "<br />Total Gems: " + fn(game.stats.tgems)
-        + "<br />Total Silicone Shgabb: " + fn(game.stats.si)
-        + "<br />Total Artifact Scrap: " + fn(game.stats.artifactScrap)
-        + "<br />Total Améliorer: " + fn(game.stats.ame)
-        + "<br />Améliorer Levels: " + getTotalAme()
-        + "<br />Total Bags: " + fn(game.stats.bags)
-        + "<br />Total Gifts: " + fn(game.stats.gifts)
-        + "<br />Total Cakes eaten: " + fn(game.stats.cakes)
-        + "<br />Total Qian: " + fn(game.stats.qian)
-        + "<br />Total Eggs: " + fn(game.stats.eggs)
+        + "<br />"
+
+        + "<br />Currencies and Events:"
+        + "<br />Total Shgabb: " + statLoader("shgabb")
+        + "<br />Total Sandwiches: " + statLoader("sw")
+        + "<br />Total Golden Shgabb: " + statLoader("gs")
+        + "<br />Total Gems: " + statLoader("tgems")
+        + "<br />Total Silicone Shgabb: " + statLoader("si")
+        + "<br />Total Artifact Scrap: " + statLoader("artifactScrap")
+        + "<br />Total Améliorer: " + statLoader("ame")
+        + "<br />Total Bags: " + statLoader("bags")
+        + "<br />Total Gifts: " + statLoader("gifts")
+        + "<br />Total Cakes: " + statLoader("cakes")
+        + "<br />Total Qian: " + statLoader("qian")
+        + "<br />Total Eggs: " + statLoader("eggs")
+        + "<br />"
+
+        + "<br />Other:"
         + "<br />Total Tiers: " + fn(getTotalTiers())
-        + "<br />Total SSS wins: " + fn(game.stats.tttw) + " (Points: " + fn(game.stats.tttpw) + ")"
-        + "<br />Total SSS losses: " + fn(game.stats.tttl) + " (Points: " + fn(game.stats.tttpl) + ")"
+        + "<br />Total SSS wins: " + statLoader("tttw") + " (Points: " + statLoader("tttpw") + ")"
+        + "<br />Total SSS losses: " + statLoader("tttl") + " (Points: " + statLoader("tttpl") + ")"
 
 
         + "</div><div style='float: right; width: 50%;' class='square2'>"
 
-
-        + "Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.2 ? " [MAX]" : "")
+        // RIGHT SIDE
+        + "Chances:"
+        + "<br />Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.2 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + frustration ? " [MAX]" : "") + " (+" + getArtifactBoost("gems").toFixed(1) + ")"
         + "<br />Luck: " + Math.floor(luck)
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
+        + "<br />"
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
-        + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(1) ? " ALL" : "")
-        + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(2) ? " ALL" : "")
+            + "<br />Common " + (1 / 8 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(1) ? " ALL" : "")
+            + "<br />Rare " + (1 / 40 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(2) ? " ALL" : "")
             + "<br />Epic " + (1 / 320 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(32000 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(3) ? " ALL" : "")
+            + "<br />Legendary " + (1 / 10000 * getArtifactBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(1000000 / getArtifactBoost("artifactchance")) + ")" + (allArtifactsOfRarity(4) ? " ALL" : "")
             : "Artifacts locked!")
 
         + (getArtifactBoost("shgabb") > 1 ? ("<br />x" + fn(getArtifactBoost("shgabb")) + " Shgabb") : "")
@@ -1055,9 +1201,12 @@ function updateStats() {
         + (getArtifactBoost("gemchance") > 1 ? ("<br />x" + fn(getArtifactBoost("gemchance")) + " Gem chance") : "")
         + (getArtifactBoost("gems") > 1 ? ("<br />x" + fn(getArtifactBoost("gems")) + " Gem amount") : "")
         + (getArtifactBoost("artifactchance") > 1 ? ("<br />x" + fn(getArtifactBoost("artifactchance")) + " Artifact chance") : "")
+        + "<br />"
 
+        + "<br />Progress:"
         + "<br />Artifacts: " + getArtifactAmount() + "/" + artifacts.length
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
+        + "<br />Améliorer Levels: " + getTotalAme()
         + "</div>";
 }
 
@@ -1081,7 +1230,7 @@ function updateUI() {
     else {
         let diceRender = (getArtifactByID(307).isEquipped() ? ("<img src='images/arti/dice-" + diceAmount + ".png' width='32px'>") : "");
         let gooRender = (getArtifactByID(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
-        ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction() * (currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
+        ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(getProduction().mul(currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
     }
@@ -1109,7 +1258,7 @@ function updateUI() {
     }
 
     // GS
-    if (game.shgabb >= 1000000 && game.stats.pttp >= 15) {
+    if (game.shgabb >= 1000000 && game.stats_prestige.playTime >= 15) {
         let challengeText = "";
         if (!isChallenge(0)) {
             challengeText = "<br />Challenge Goal: " + game.upgradeLevels.moreShgabb + "/" + getChallenge(game.aclg).getGoal();
@@ -1124,7 +1273,7 @@ function updateUI() {
 
     // Ameliorer
     if (unlockedAmeliorer()) {
-        if (game.stats.pttp >= 600) ui.ameReset.style.display = "unset";
+        if (game.stats_prestige.playTime >= 600) ui.ameReset.style.display = "unset";
         else ui.ameReset.style.display = "none";
         ui.ameReset2.style.display = ui.ameReset.style.display;
     }
@@ -1194,10 +1343,11 @@ function autoSave() {
     renderAmeConvert();
     renderAllSelection();
     renderPFPs();
+    renderBanners();
 
     // Every 50 saves, check for shgic
     if (autoNotifications % 50 == 0) {
-        canPlayTTT = compareMinigameTime();
+        checkCanPlayTTT();
     }
 
     // Auto Save
@@ -1224,7 +1374,33 @@ function autoSave() {
 }
 
 function exportGame() {
-    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; } let exportGame = JSON.stringify(game); exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb"); exportGame = exportGame.replace("x", "pppp"); exportGame = exportGame.replace("D", "dpjiopjrdopjh"); navigator.clipboard.writeText(exportGame); createNotification("Game exported to clipboard!"); } function importGame() { let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; knifeBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
+    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; }
+    let exportGame = Object.assign({}, game);
+
+    exportGame.shgabb = numberSaver(exportGame.shgabb);
+    exportGame.sw = numberSaver(exportGame.sw);
+    exportGame.gs = numberSaver(exportGame.gs);
+    exportGame.si = numberSaver(exportGame.si);
+
+    let statTypes = ["stats", "stats_prestige", "stats_today"];
+    for (let statHandler in statTypes) {
+        exportGame[statTypes[statHandler]].shgabb = numberSaver(exportGame[statTypes[statHandler]].shgabb);
+        exportGame[statTypes[statHandler]].sw = numberSaver(exportGame[statTypes[statHandler]].sw);
+        exportGame[statTypes[statHandler]].gs = numberSaver(exportGame[statTypes[statHandler]].gs);
+        exportGame[statTypes[statHandler]].si = numberSaver(exportGame[statTypes[statHandler]].si);
+    }
+
+    exportGame = JSON.stringify(exportGame);
+
+    exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb");
+    exportGame = exportGame.replace("x", "pppp");
+    exportGame = exportGame.replace("D", "dpjiopjrdopjh");
+    navigator.clipboard.writeText(exportGame);
+    createNotification("Game exported to clipboard!");
+}
+
+function importGame() {
+    let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; knifeBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
 
     // Empty the game first. Make it completely empty
     emptyGame.a = [];
@@ -1235,20 +1411,35 @@ function exportGame() {
     // Take care of arrays
     game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, importGame.upgradeLevels);
     game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
+    game.stats_prestige = Object.assign({}, emptyGame.stats, importGame.stats_prestige);
+    game.stats_today = Object.assign({}, emptyGame.stats, importGame.stats_today);
     game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
     game.profile = Object.assign({}, emptyGame.profile, importGame.profile);
 
+    // on the television
+    game.shgabb = numberLoader(game.shgabb);
+    game.sw = numberLoader(game.sw);
+    game.gs = numberLoader(game.gs);
+    game.si = numberLoader(game.si);
+
+    let statTypes = ["stats", "stats_prestige", "stats_today"];
+    for (let statHandler in statTypes) {
+        game[statTypes[statHandler]].shgabb = numberLoader(game[statTypes[statHandler]].shgabb);
+        game[statTypes[statHandler]].sw = numberLoader(game[statTypes[statHandler]].sw);
+        game[statTypes[statHandler]].gs = numberLoader(game[statTypes[statHandler]].gs);
+        game[statTypes[statHandler]].si = numberLoader(game[statTypes[statHandler]].si);
+    }
+
     // Some adjustments
-    canPlayTTT = compareMinigameTime();
+    checkCanPlayTTT();
     pointsPlayer = 0;
     pointsHer = 0;
 
-
-        if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
-            // Auto Shgabb was reworked
-            game.sw += Math.pow(game.upgradeLevels.autoShgabb, 2) / 2;
-            game.upgradeLevels.autoShgabb = 0;
-        }
+    if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
+        // Auto Shgabb was reworked
+        game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
+        game.upgradeLevels.autoShgabb = 0;
+    }
 
     // Execute some stuff
     handleArtifactsFirstTime();
@@ -1296,8 +1487,7 @@ function loop(tick) {
     sandwichFreezeTime -= time;
     newArtifactDisplayTimer -= time;
     cakeDuration -= time;
-    game.stats.playTime += time;
-    game.stats.pttp += time;
+    statIncrease("playTime", time);
     eggTime -= time;
 
     // Egg Hunt
@@ -1428,6 +1618,8 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
+    game.stats_prestige = Object.assign({}, cache.stats_prestige, JSON.parse(localStorage.getItem("shgabbClicker")).stats_prestige);
+    game.stats_today = Object.assign({}, cache.stats_today, JSON.parse(localStorage.getItem("shgabbClicker")).stats_today);
     game.ameUp = Object.assign({}, cache.ameUp, JSON.parse(localStorage.getItem("shgabbClicker")).ameUp);
     game.profile = Object.assign({}, cache.profile, JSON.parse(localStorage.getItem("shgabbClicker")).profile);
 
@@ -1443,23 +1635,34 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
         }
     }
 
-    game.shgabb = Math.ceil(game.shgabb);
-    if (game.shgabb == "-Infinity") game.shgabb = 0;
+    // on the television
+    game.shgabb = numberLoader(game.shgabb);
+    game.sw = numberLoader(game.sw);
+    game.gs = numberLoader(game.gs);
+    game.si = numberLoader(game.si);
+
+    let statTypes = ["stats", "stats_prestige", "stats_today"];
+    for (let statHandler in statTypes) {
+        game[statTypes[statHandler]].shgabb = numberLoader(game[statTypes[statHandler]].shgabb);
+        game[statTypes[statHandler]].sw = numberLoader(game[statTypes[statHandler]].sw);
+        game[statTypes[statHandler]].gs = numberLoader(game[statTypes[statHandler]].gs);
+        game[statTypes[statHandler]].si = numberLoader(game[statTypes[statHandler]].si);
+    }
+
+    // ergh
     if (game.stats.shgabb == "-Infinity") game.stats.shgabb = 0;
-    if (game.stats.shgabbtp == "-Infinity") game.stats.shgabbtp = 0;
-    game.stats.shgabb = Math.ceil(game.stats.shgabb);
-    game.gs = Math.ceil(game.gs);
-    if (game.stats.hmstp == 0) game.stats.hmstp = game.stats.hms;
+    if (game.stats_prestige.shgabb == "-Infinity") game.stats_prestige.shgabb = 0;
+    if (game.stats_prestige.hms == 0) game.stats_prestige.hms = game.stats.hms;
     if (game.stats.gems != undefined) {
         game.stats.tgems += game.stats.gems;
         delete game.stats.gems;
     }
-    canPlayTTT = compareMinigameTime();
+    checkCanPlayTTT();
     handleArtifactsFirstTime();
 
     if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
         // Auto Shgabb was reworked
-        game.sw += Math.pow(game.upgradeLevels.autoShgabb, 2) / 2;
+        game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
         game.upgradeLevels.autoShgabb = 0;
     }
 
@@ -1495,7 +1698,7 @@ adHandler.oncanplay = () => {
 
     adHandler.onended = () => {
         currentBoost = availableBoost;
-        game.stats.ads += 1;
+        statIncrease("ads", 1);
         switch (currentBoost) {
             case "strongerClicks":
                 game.stats.wads.sc += 1;
@@ -1544,6 +1747,7 @@ function updateBG() {
     else if (isEvent("anniversary") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/anniversary-background.png)";
     else if (isEvent("lunar") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-chinese.png)";
     else if (isEvent("egg") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-easter.png)";
+    else if (isEvent("pride") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-pride.png)";
     else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
 }
 
@@ -1573,9 +1777,12 @@ renderAmeConvert();
 updateUpgradeColors();
 renderAllSelection();
 renderPFPs();
+renderBanners();
 updateBG();
 renderCurrentEvent();
 renderChallenges();
+
+renderShbook();
 
 renderSettings();
 

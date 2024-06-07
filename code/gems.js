@@ -24,7 +24,7 @@ function getGem() {
             if (Math.random() < bonusChance) amount += 1;
         }
         game.gems += amount;
-        game.stats.tgems += amount;
+        statIncrease("tgems", amount);
 
         frustration = 0;
 
@@ -45,9 +45,8 @@ function gemOffer(i) {
             if (game.gems > 9 && isChallenge(0)) {
                 game.gems -= 10;
                 let amount = firstGemOfferWorth();
-                game.shgabb += amount;
-                //game.stats.shgabb += amount;
-                //game.stats.shgabbtp += amount;
+                game.shgabb = game.shgabb.add(amount);
+                // do not increase stat yousonofabittthh
             }
             break;
         case 2:

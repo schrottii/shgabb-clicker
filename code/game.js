@@ -1,7 +1,6 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
 // GAME
-
 var game = {
     profile: {
         name: "",
@@ -9,22 +8,45 @@ var game = {
         startVer: "",
         startDay: "",
         pfp: 100,
+        banner: 100,
     },
-    shgabb: 0,
-    clickCooldown: 0,
-    sw: 0,
-    gs: 0,
-    si: 0,
+    // currencies
+    shgabb: new Decimal(0),
+    sw: new Decimal(0),
+    gs: new Decimal(0),
+    si: new Decimal(0),
     ame: 0,
     ameUp: [0, 0, 0, 0, 0],
     bags: 0,
     gems: 0,
     gemboost: 0,
     artifactScrap: 0,
+    // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,
     qian: 0,
     eggs: 0,
+    // other stuff
+    lore: [],
+    lorepg: [],
+    loreSel: 0,
+    loreP: 0,
+    clickCooldown: 0,
+    a: [],
+    alvl: {},
+    aeqi: [],
+    alo: [[], [], []],
+    al: 2,
+    alnames: [""],
+    ach: [],
+    nexgai: [0, 0, 0, 0],
+    tttd: 1,
+    dgo: 100,
+    evpfps: [],
+    evbans: [],
+    clg: [],
+    aclg: 0,
+    // upgrade levels
     upgradeLevels: {
         // Shgabb
         moreShgabb: 0,
@@ -96,25 +118,21 @@ var game = {
         prestigeGems: 0,
         gemsBoostShgabb: 0,
     },
+    // stats (all time)
     stats: {
         shgabb: 0,
         clicks: 0,
         playTime: 0,
-        pttp: 0,
+        pr: 0, // prestiges
+        hms: 0,
+
         sw: 0,
-        ads: 0,
         gs: 0,
-        pr: 0,
-        shgabbtp: 0,
-        swtp: 0,
-        ctp: 0,
+        tgems: 0,
+        artifactScrap: 0,
         si: 0,
         ame: 0,
         bags: 0,
-
-        hms: 0,
-        hmstp: 0,
-        tgems: 0,
 
         gifts: 0,
         cakes: 0,
@@ -125,7 +143,7 @@ var game = {
         tttpl: 0,
         tttw: 0,
         tttl: 0,
-        artifactScrap: 0,
+        ads: 0,
         wads: {
             sc: 0,
             sa: 0,
@@ -136,26 +154,18 @@ var game = {
             mg: 0,
         }
     },
-    a: [],
-    alvl: {},
-    aeqi: [],
-    alo: [[], [], []],
-    al: 2,
-    alnames: [""],
-    ach: [],
-    nexgai: [0, 0, 0, 0],
-    tttd: 1,
-    dgo: 100,
-    evpfps: [],
-    clg: [],
-    aclg: 0,
+    stats_prestige: {
+
+    },
+    stats_today: {
+
+    },
     cheated: false,
 }
 
 const emptyGame = Object.assign({}, game, {});
 
 // SETTINGS
-
 var settings = {
     music: false,
     adMusic: true,
@@ -175,7 +185,6 @@ var settings = {
 }
 
 // BETA (cheating)
-
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
     value: false,

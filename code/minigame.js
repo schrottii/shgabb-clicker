@@ -101,6 +101,18 @@ function compareMinigameTime() {
     return parseInt(today()) > game.tttd; // returns true if it's a new day
 }
 
+function checkCanPlayTTT() {
+    canPlayTTT = compareMinigameTime();
+    for (stat in game.stats_today) {
+        if (game.stats_today[stat] != undefined && game.stats_today[stat].mantissa != undefined) {
+            game.stats_today[stat] = new Decimal(0);
+        }
+        else {
+            game.stats_today[stat] = 0;
+        }
+    }
+}
+
 function minigameEnemyMove() {
     let enemyMove = 0;
     for (y in minigameField) {
@@ -187,24 +199,26 @@ function minigameCheckForWinners() {
     // Okay, who's the winner
     if (winner == 1) {
         pointsPlayer += 1;
-        game.stats.tttpw += 1;
+        statIncrease("tttpw", 1);
         createNotification("+1 point for you!");
     }
     if (winner == 2) {
         pointsHer += 1;
-        game.stats.tttpl += 1;
+        statIncrease("tttpl", 1);
         createNotification("+1 point for shgabb!");
     }
 
     if (pointsPlayer > 2 && canPlayTTT) {
         game.ame += 2;
-        game.stats.ame += 2;
-        game.stats.tttw += 1;
+        statIncrease("ame", 2);
+        statIncrease("tttw", 1);
+
         createNotification("You won!");
         createNotification("+2 Améliorer!");
+
         if (isEvent("christmas")) {
             game.gifts += 10;
-            game.stats.gifts += 10;
+            statIncrease("gifts", 10);
             createNotification("+10 Gifts!");
         }
         createNotification("Come back tomorrow!");
@@ -217,7 +231,7 @@ function minigameCheckForWinners() {
         updateMinigameTime();
         canPlayTTT = false;
 
-        game.stats.tttl += 1;
+        statIncrease("tttl", 1);
         createNotification("shgabb won... no reward...");
         createNotification("Come back tomorrow!");
         return false;

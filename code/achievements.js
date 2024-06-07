@@ -110,7 +110,7 @@ var achievements = [
     new Achievement(97, "unlock.png", "DaBag", "Unlock Bags", () => unlockedBags()),
     new Achievement(58, "ameliorer.png", "Cap Bro III", "Get 300 Améliorer", () => game.stats.ame >= 300),
     new Achievement(98, "bags.png", "I Bag You", "Get your first Bag!", () => game.stats.bags > 0),
-    new Achievement(85, "challenge.png", "Slowchallenging", "Spend an hour inside a Challenge", () => !isChallenge(0) && game.stats.pttp >= 3600),
+    new Achievement(85, "challenge.png", "Slowchallenging", "Spend an hour inside a Challenge", () => !isChallenge(0) && game.stats_prestige.playTime >= 3600),
     new Achievement(105, "bags.png", "Playing DaGame I", "Get 100 Bags (total)", () => game.stats.bags >= 100),
     new Achievement(106, "bags.png", "Playing DaGame II", () => "Get 1000 Bags (total)", () => game.stats.bags >= 1000),
     new Achievement(86, "sosnog.png", "My Best Friend", "Find the developer's favorite Artifact", () => game.a.includes(305)),
@@ -128,6 +128,11 @@ var achievements = [
     new Achievement(64, "clicks.png", "Clicker V", "Click 1M times", () => game.stats.clicks >= 1000000),
     new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => /* game.a.includes(400) */ false),
     new Achievement(89, "hms.png", "Shgabb Conqueror VI", "Reach More Shgabb level 20000", () => game.stats.hms >= 20000),
+    new Achievement(121, "shbook.png", "Nerd", "Unlock the Shbook", () => game.stats.hms >= 25),
+    new Achievement(122, "shbook.png", "This game has lore now?!", "Unlock the Lore", () => game.stats.hms >= 4000),
+    new Achievement(123, "shbook.png", "The older scrolls", "Find a lore page", () => game.lorepg.length > 0),
+    new Achievement(124, "shbook.png", "I rember", "Find a Memory Wisp", () => game.loreP > 0),
+    new Achievement(125, "shbook.png", "Luckily it's in English", "Unlock a lore page", () => game.lore.length > 0),
 
     new Achievement(101, "achievement.png", "Achiever I", "Get 10 Achievements", () => game.ach.length >= 10),
     new Achievement(102, "achievement.png", "Achiever II", "Get 25 Achievements", () => game.ach.length >= 25),
@@ -154,4 +159,10 @@ var achievements = [
     new Achievement(113, "eggs.png", "Hatching a friend I", "Find 100 Eggs total", () => game.stats.eggs >= 100),
     new Achievement(114, "eggs.png", "Hatching a friend II", "Find 1000 Eggs total", () => game.stats.eggs >= 1000),
     new Achievement(115, "eggs.png", "I'm an Egg", "Get all Easter PFPs", () => game.evpfps.includes(414)),
+
+    new Achievement(116, "pride.png", "Love is love", "Play during the Pride Event", () => isEvent("pride")),
+    new Achievement(117, "pride.png", "United against loneliness", "Get a Pride Event PFP", () => game.evpfps.includes(415) || game.evpfps.includes(416) || game.evpfps.includes(417)),
+    new Achievement(118, "pride.png", "United Love", "Get all Pride Event PFPs", () => game.evpfps.includes(415) && game.evpfps.includes(416) && game.evpfps.includes(417)),
+    new Achievement(119, "pride.png", "Who do I love", "Get a Pride Event Banner", () => game.evbans.includes(400) || game.evbans.includes(401) || game.evbans.includes(402) || game.evbans.includes(403) || game.evbans.includes(404) || game.evbans.includes(405) || game.evbans.includes(406) || game.evbans.includes(407) || game.evbans.includes(408) || game.evbans.includes(409)),
+    new Achievement(120, "pride.png", "I love all of you", "Get all Pride Event Banners", () => game.evbans.includes(400) && game.evbans.includes(401) && game.evbans.includes(402) && game.evbans.includes(403) && game.evbans.includes(404) && game.evbans.includes(405) && game.evbans.includes(406) && game.evbans.includes(407) && game.evbans.includes(408) && game.evbans.includes(409)),
 ]
