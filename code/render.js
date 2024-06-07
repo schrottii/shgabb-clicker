@@ -124,9 +124,9 @@ function isSelectionUnlocked(name) {
         case "lore":
             return game.stats.hms >= 4000;
         case "currencies":
-            return true;
+            return game.stats.hms >= 25;
         case "features":
-            return true;
+            return game.stats.hms >= 25;
     }
 }
 
@@ -137,7 +137,7 @@ function renderAllSelection() {
     renderSelection(4);
 }
 
-var selections = ["shgabb", "none", "social", "lore"];
+var selections = ["shgabb", "none", "social", "currencies"];
 
 function changeSelection(sel, sels) {
     if (selections[sel - 1] == sels) selections[sel - 1] = "none";

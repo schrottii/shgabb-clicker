@@ -15,11 +15,18 @@ const currentPatchNotes = [
     "- Capped buy max at 50k (just in case)",
     "-> Shbook:",
     "- New feature/selection: The Shbook!",
-    "- Unlocked at HMS 100",
+    "- Unlocked at HMS 25",
     "- Here you can access the lore, the currenciary and the featuriary",
     "- Added pretty Shbook background and design",
     "-> Lore:",
     "- New feature: Lore! (Part of the Shbook)",
+    "- New content: lore pages and Memory Wisps!",
+    "- Unlocked at HMS 4000",
+    "- Added 3 lore pages, more coming soon",
+    "- Find lore pages and Memory Wisps by clicking (1/25k and 1/5k chance, respectively)",
+    "- Up to 5 lore pages can be stored at the same time",
+    "- Select a lore page and collect Memory Wisps to unlock it",
+    "- Learn more about the story and lore of the game by reading the unlocked pages!",
     "-> Currenciary & Featuriary:",
     "- New features: Currenciary & Featuriary! (Part of the Shbook)",
     "- This is a list of currencies/features, with short descriptions and links to the wiki",
@@ -48,18 +55,22 @@ const currentPatchNotes = [
     "- Changed started in to started",
     "-> Pride Event:",
     "- New event: Pride Event!",
-    "- Active from June 1st - June 15th",
-    "- 3 PFPs and 10 Banners",
+    "- Active from June 8th - June 22nd",
+    "- x10 Shgabb production during the event",
+    "- 3 new event PFPs, 10 Banners and 5 Achievements can be earned",
+    "- Click the button to enter Shgaybb Mode and find identical Shgabbs",
+    "- Added Pride Event background image",
     "-> Artifacts:",
     "- Artifacts now always award a new Artifact if none of this rarity are owned (thanks elmenda452)",
     "- Improved Artifact pages (when using search)",
-    "-> Améliorer:",
-    "- Fixed sets 5 and 6 being labeled incorrectly",
     "-> Other:",
     "- Section buttons now use images instead of text",
+    "- Added 10 new Achievements (5 lore, 5 event)",
     "- Added 5 new Quotes",
+    "- Fixed Améliorer sets 5 and 6 being labeled incorrectly",
     "- Split social section into two: info and social",
     "- The social links are now split into 2 rows (2-2) to work better on various device sizes",
+    "- Some small bug fixes",
 ]
 
 // Various variables
@@ -364,6 +375,8 @@ function numberLoader(number) {
 }
 
 function fn(number) {
+    if (number == undefined) return "?";
+
     // return basic number if it is 0 - 999 999
     if (number < 1000000) return (number < 100) ? (number * 1).toFixed(2) : (number * 1).toFixed(0);
 
@@ -490,6 +503,7 @@ function clickButton() {
                 createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
             }
 
+            findShgaybb();
             changeDiceAmount();
             if (unlockedGems()) getGem();
             if (unlockedArtifacts()) getArtifact();
@@ -552,7 +566,8 @@ function getGlobalProduction() {
         .mul(bagUpgrades.gemsBoostShgabb.currentEffect())
         .mul(isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
         .mul(eventValue("anniversary", 3, 1))
-        .mul(eventValue("lunar", 8, 1));
+        .mul(eventValue("lunar", 8, 1))
+        .mul(eventValue("pride", 10, 1));
 
     return prod;
 }
@@ -648,6 +663,7 @@ function getCooldown() {
         * (getArtifactByID(203).isEquipped() ? 5 : 1)
         * (getArtifactByID(225).isEquipped() ? 5 : 1))
     if (isChallenge(3)) CD = 20;
+    if (shgaybbMode) CD = Math.max(2, CD);
     clickCooldown = CD; // Why T_T
     return CD;
 }
@@ -672,9 +688,9 @@ function getGoldenShgabb() {
 }
 
 function getSandwich(critMulti = 1) {
-    return new Decimal(((shgabbUpgrades.moreSw.currentEffect() + 1))
+    return new Decimal((shgabbUpgrades.moreSw.currentEffect() + 1))
         .mul(getArtifactBoost("sw"))
-        .mul(goldenShgabbUpgrades.formaggi.currentEffect()))
+        .mul(goldenShgabbUpgrades.formaggi.currentEffect())
         .mul(ameliorerUpgrades.sandwichBoost.currentEffect())
         .mul(Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())))
         .mul(getArtifactByID(307).isEquipped() ? diceAmount : 1)
@@ -1603,7 +1619,7 @@ if (localStorage.getItem("shgabbClicker") != undefined) {
     game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
     game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
     game.stats_prestige = Object.assign({}, cache.stats_prestige, JSON.parse(localStorage.getItem("shgabbClicker")).stats_prestige);
-    game.stats_today = Object.assign({}, cache.stats_prestige, JSON.parse(localStorage.getItem("shgabbClicker")).stats_today);
+    game.stats_today = Object.assign({}, cache.stats_today, JSON.parse(localStorage.getItem("shgabbClicker")).stats_today);
     game.ameUp = Object.assign({}, cache.ameUp, JSON.parse(localStorage.getItem("shgabbClicker")).ameUp);
     game.profile = Object.assign({}, cache.profile, JSON.parse(localStorage.getItem("shgabbClicker")).profile);
 
@@ -1731,6 +1747,7 @@ function updateBG() {
     else if (isEvent("anniversary") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/anniversary-background.png)";
     else if (isEvent("lunar") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-chinese.png)";
     else if (isEvent("egg") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-easter.png)";
+    else if (isEvent("pride") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-pride.png)";
     else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
 }
 

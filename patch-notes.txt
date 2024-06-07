@@ -1250,3 +1250,80 @@ Version 2.4.2:
 - Gray buttons (like Ads) are now light blue & blue
 - Previous and next page buttons (Artifacts) are now light blue & blue
 - Adjusted blue shades of setting buttons
+
+
+
+2024/06/07 2.5:
+Version 2.5:
+-> Break Infinity:
+- Added breakinfinity library
+- Expanded it to take less space in savecodes
+- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades
+- Reworked number formatter
+- Capped buy max at 50k (just in case)
+
+-> Shbook:
+- New feature/selection: The Shbook!
+- Unlocked at HMS 25
+- Here you can access the lore, the currenciary and the featuriary
+- Added pretty Shbook background and design
+
+-> Lore:
+- New feature: Lore! (Part of the Shbook)
+- New content: lore pages and Memory Wisps!
+- Unlocked at HMS 4000
+- Added 3 lore pages, more coming soon
+- Find lore pages and Memory Wisps by clicking (1/25k and 1/5k chance, respectively)
+- Up to 5 lore pages can be stored at the same time
+- Select a lore page and collect Memory Wisps to unlock it
+- Learn more about the story and lore of the game by reading the unlocked pages!
+
+-> Currenciary & Featuriary:
+- New features: Currenciary & Featuriary! (Part of the Shbook)
+- This is a list of currencies/features, with short descriptions and links to the wiki
+- New entries are unlocked whenever a currency/feature is unlocked
+- Primarily meant to help out beginners
+
+-> Stats:
+- Added prestige and daily stats (on top of all time)
+- Added buttons to switch between the three types
+- Huge changes to the stats code
+- Left side: added labels for the sections progress, currencies and events, and other
+- Right side: added labels for the sections chances and progress
+- Added spacing between sections
+- Added legendary Artifact chances
+- Moved total Amé levels to the right side
+- Moved total prestiges up
+- Changed total cakes eaten to total cakes
+
+-> Banners / Player Profile:
+- Added banners
+- Added 3 normal banners (unlocked at 0, 2000, 4000 HMS) and 10 event banners (13 total)
+- Added banner selection
+- Added the no banner banner
+- The banner is displayed at the top
+- Moved PFP, name, version and stats down to make space for the banner
+- Improved quality of PFPs
+- Added 3 new event PFPs (26 total)
+- Changed started in to started
+
+-> Pride Event:
+- New event: Pride Event!
+- Active from June 8th - June 22nd
+- x10 Shgabb production during the event
+- 3 new event PFPs, 10 Banners and 5 Achievements can be earned
+- Click the button to enter Shgaybb Mode and find identical Shgabbs
+- Added Pride Event background image
+
+-> Artifacts:
+- Artifacts now always award a new Artifact if none of this rarity are owned (thanks elmenda452)
+- Improved Artifact pages (when using search)
+
+-> Other:
+- Section buttons now use images instead of text
+- Added 10 new Achievements (5 lore, 5 event)
+- Added 5 new Quotes
+- Fixed Améliorer sets 5 and 6 being labeled incorrectly
+- Split social section into two: info and social
+- The social links are now split into 2 rows (2-2) to work better on various device sizes
+- Some small bug fixes

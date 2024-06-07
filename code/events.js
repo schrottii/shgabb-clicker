@@ -6,10 +6,11 @@ function isEvent(eventName, all = false) {
     let date = new Date();
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? ("0" + (date.getUTCMonth() + 1)) : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
-    
+
+    /*
     if (eventName == "pride" || all) return true; // used to force event
     else return false;
-    
+    */
 
     // Events below in order (January -> December)
     switch (eventName) {
@@ -29,8 +30,8 @@ function isEvent(eventName, all = false) {
             if (!all) return false;
             else eventName = "pride";
         case "pride":
-            // Pride Event | Jun 7 - Jun 21
-            if (today >= 607 && today <= 621 && game.stats.hms >= 2000) return true;
+            // Pride Event | Jun 8 - Jun 22
+            if (today >= 608 && today <= 622 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -398,14 +399,122 @@ function useEggs(offerNR) {
     renderCurrentEvent();
 }
 
-function renderPride() {
-    let render = "<h3>Pride Event</h3><br /><b>June 7th - June 21st</b>";
-    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
+var shgaybbMode = false;
+var shgaybbFound = "";
+const shgaybbList = [
+    "Asexual",
+    "Bi",
+    "Gay male",
+    "Intersex",
+    "Gay female",
+    "Non-binary",
+    "Supergay",
+    "Pan",
+    "Shgabbsexual",
+    "Trans",
+    "Ally",
+    "Straight"
+];
 
-    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";
-    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
+function toggleShgaybbMode() {
+    shgaybbMode = !shgaybbMode;
+    shgaybbFound = "";
+    renderCurrentEvent();
+}
+
+function shgaybbID() {
+    switch (shgaybbFound) {
+        case "Supergay":
+            return 400;
+        case "Trans":
+            return 401;
+        case "Non-binary":
+            return 402;
+        case "Gay female":
+            return 403;
+        case "Gay male":
+            return 404;
+        case "Bi":
+            return 405;
+        case "Pan":
+            return 406;
+        case "Asexual":
+            return 407;
+        case "Intersex":
+            return 408;
+        case "Shgabbsexual":
+            return 409;
+        case "Ally":
+            return 999;
+        case "Straight":
+            return 999;
+        default:
+            return 999;
+    }
+    return 999;
+}
+
+function findShgaybb() {
+    if (!shgaybbMode) return false;
+
+    if (Math.random() < 1 / 5) {
+        let seed = Math.ceil(game.stats_today.playTime * game.stats.clicks) % shgaybbList.length;
+
+        if (shgaybbFound == "") {
+            // first of the couple
+            console.log(seed, shgaybbList[seed]);
+            shgaybbFound = shgaybbList[seed];
+            createNotification("Found: " + shgaybbFound + " Shgabb");
+        }
+        else if (shgaybbFound == shgaybbList[seed] || shgaybbList[seed] == "Pan") {
+            // second
+            createNotification("Couple found! " + shgaybbFound + " Shgabb");
+
+            // award the reward
+            let foundID = shgaybbID();
+            if (foundID != 999) {
+                // one of the 10 banners
+                if (!game.evbans.includes(foundID)) game.evbans.push(foundID);
+                else createNotification("You already own this reward...");
+            }
+            else {
+                // one of the 3 pfps, random
+                seed = seed % 3;
+
+                switch (seed) {
+                    case 0:
+                        if (!game.evpfps.includes(415)) game.evpfps.push(415);
+                        else createNotification("You already own this reward...");
+                        break;
+                    case 1:
+                        if (!game.evpfps.includes(416)) game.evpfps.push(416);
+                        else createNotification("You already own this reward...");
+                        break;
+                    case 2:
+                        if (!game.evpfps.includes(417)) game.evpfps.push(417);
+                        else createNotification("You already own this reward...");
+                        break;
+                }
+            }
+
+            renderPFPs();
+            renderBanners();
+            shgaybbFound = "";
+            //shgaybbMode = false;
+        }
+        else {
+            createNotification("Found: " + shgaybbList[seed] + " Shgabb. Not a couple... forever alone...");
+            shgaybbFound = "";
+            //shgaybbMode = false;
+        }
+    }
+}
+
+function renderPride() {
+    let render = "<h3>Pride Event</h3><br /><b>June 8th - June 22nd</b>";
+    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production!";
+    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward! 3 PFPs and 10 Banners. Getting Pan Shgabb second counts as a joker.";
+    render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
 
     ui.eventRender.innerHTML = render;
 }

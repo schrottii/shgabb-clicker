@@ -59,7 +59,7 @@ function getLoreByID(id){
 }
 
 function getWisp() {
-    if (game.loreSel != 0 && Math.random() <= 1 / 5000) {
+    if (game.stats.hms >= 4000 && game.loreSel != 0 && Math.random() <= 1 / 5000) {
         game.loreP += 1;
 
         if (game.loreP == getLoreByID(game.loreSel).amount) {
@@ -75,7 +75,7 @@ function getWisp() {
 }
 
 function getLorePage() {
-    if (game.lorepg.length < 4 && Math.random() <= 1 / 25000) {
+    if (game.stats.hms >= 4000 && game.lorepg.length < 4 && Math.random() <= 1 / 25000) {
         let availablePages = [];
         for (l in lore) {
             if (!lore[l].isFound()) availablePages.push(lore[l].ID);
@@ -203,7 +203,7 @@ function renderLore() {
 }
 
 function renderShbook() {
-    if (game.stats.hms >= 100) {
+    if (game.stats.hms >= 25) {
         ui.shbookHeader.innerHTML = "Shbook";
         ui.shbook.style.display = "";
         renderLore();

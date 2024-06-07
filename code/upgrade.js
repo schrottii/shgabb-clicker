@@ -28,7 +28,7 @@ class Upgrade {
     }
 
     canBuy() {
-        if (this.price(1).mantissa != undefined) return game[this.currency].gt(this.currentPrice()) && (this.getMax() == undefined || this.currentLevel() < this.getMax());
+        if (this.price(1).mantissa != undefined || game[this.currency].mantissa != undefined) return game[this.currency].gte(this.currentPrice()) && (this.getMax() == undefined || this.currentLevel() < this.getMax());
         return game[this.currency] >= this.currentPrice() && (this.getMax() == undefined || this.currentLevel() < this.getMax());
     }
 

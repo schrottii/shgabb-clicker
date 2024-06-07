@@ -307,7 +307,7 @@ function getArtifact(multi = 1) {
 	let chance = Math.random() * applyLuck(100);
 
 	if (chance < 1 / 1000000 * multi * multi2) {
-		if (Math.random() < 0.5 * !allArtifactsOfRarity(4) || !anyArtifactsOfRarity(4)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(4) || !anyArtifactOfRarity(4)) {
 			gambleArtifact(4);
 		}
 		else if (anyArtifactOfRarity(4)) {
@@ -315,7 +315,7 @@ function getArtifact(multi = 1) {
 		}
 	}
 	else if (chance < 1 / 32000 * multi * multi2) {
-		if (Math.random() < 0.5 * !allArtifactsOfRarity(3) || !anyArtifactsOfRarity(3)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(3) || !anyArtifactOfRarity(3)) {
 			gambleArtifact(3);
 		}
 		else if (anyArtifactOfRarity(3)) {
@@ -323,7 +323,7 @@ function getArtifact(multi = 1) {
 		}
 	}
 	else if (chance < 1 / 4000 * multi * multi2) {
-		if (Math.random() < 0.5 * !allArtifactsOfRarity(2) || !anyArtifactsOfRarity(2)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(2) || !anyArtifactOfRarity(2)) {
 			gambleArtifact(2);
 		}
 		else if (anyArtifactOfRarity(2)) {
@@ -331,7 +331,7 @@ function getArtifact(multi = 1) {
 		}
 	}
 	else if (chance < 1 / 800 * multi * multi2) {
-		if (Math.random() < 0.5 * !allArtifactsOfRarity(1) || !anyArtifactsOfRarity(1)) {
+		if (Math.random() < 0.5 * !allArtifactsOfRarity(1) || !anyArtifactOfRarity(1)) {
 			gambleArtifact(1);
 		}
 		else if (anyArtifactOfRarity(1)) {
