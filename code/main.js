@@ -405,7 +405,7 @@ function fn(number) {
             break;
     }
 
-    return number.mantissa.toString().substr(0, 4) + notationSymbol;
+    return (number.mantissa * (Math.pow(10, number.exponent % 3))).toString().substr(0, 4) + notationSymbol;
 
 }
 
@@ -786,11 +786,6 @@ function buyUpgrade(id) {
     freezeTime();
 
     if (id.ID == "moreShgabb") {
-        game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
-        game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
-        game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
-        renderShbook();
-
         if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) {
             let previousHms = game.stats_prestige.hms;
             if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) game.stats_prestige.hms = game.upgradeLevels.moreShgabb;
@@ -806,6 +801,11 @@ function buyUpgrade(id) {
                 }
             }
         }
+
+        game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+        game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
+        game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
+        renderShbook();
     }
 }
 
