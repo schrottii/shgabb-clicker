@@ -182,6 +182,7 @@ var settings = {
     topNotifs: 1,
     artifactImages: true,
     noUpgrading: false,
+    noAds: false,
 }
 
 // BETA (cheating)

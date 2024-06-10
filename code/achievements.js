@@ -126,7 +126,7 @@ var achievements = [
     new Achievement(100, "ttt.png", "Phallic Plays", "Win Shgic Shgac Shgoe with an interesting formation", () => false),
     new Achievement(110, "bags.png", "Beating DaGame", () => "Have " + fn(1000000) + " Bags at the same time", () => game.bags >= 1000000),
     new Achievement(64, "clicks.png", "Clicker V", "Click 1M times", () => game.stats.clicks >= 1000000),
-    new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => /* game.a.includes(400) */ false),
+    new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
     new Achievement(89, "hms.png", "Shgabb Conqueror VI", "Reach More Shgabb level 20000", () => game.stats.hms >= 20000),
     new Achievement(121, "shbook.png", "Nerd", "Unlock the Shbook", () => game.stats.hms >= 25),
     new Achievement(122, "shbook.png", "This game has lore now?!", "Unlock the Lore", () => game.stats.hms >= 4000),

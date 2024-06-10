@@ -42,6 +42,7 @@ April - June 2024:
 2.4
 2.4.1
 2.5
+2.5.1
 
 
 
@@ -1327,3 +1328,22 @@ Version 2.5:
 - Split social section into two: info and social
 - The social links are now split into 2 rows (2-2) to work better on various device sizes
 - Some small bug fixes
+
+
+
+2024/06/10 2.5.1:
+Version 2.5.1:
+-> Saves:
+- Added a backup system (see: settings)
+- Improved save related code
+- Fixed a critical stats bug
+
+-> Settings:
+- Setting titles are now bold
+- New Setting: Create Backup, creates a backup in the cache seperate from normal saving
+- New Setting: Load Backup, can be used to restore the backup when something went wrong
+- New Setting: No Ads, disables and hides ads and their boosts
+
+-> Other:
+- Pride Event: Getting an Event PFP is now guaranteed until all 3 are obtained
+- The Achievement "Mr. President" can be obtained again (same requirement, get Obama)

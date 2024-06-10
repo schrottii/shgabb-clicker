@@ -18,7 +18,7 @@ class Setting {
     }
 
     render() {
-        return `<button onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` + this.title + `<br />` + this.getDescription() + `</button>`;
+        return `<button onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton"><b>` + this.title + `</b><br />` + this.getDescription() + `</button>`;
     }
 }
 
@@ -44,7 +44,7 @@ var settingButtons = [
     new ToggleSetting("audio", "toggleMusic", "music", "Music"),
     new ToggleSetting("audio", "toggleAdMusic", "adMusic", "Ad Music"),
     new Setting("save", "exportGame", "Export Game", "Copy the savefile to clipboard"),
-    new Setting("save", "importGame", "Import Game", "Import a savefile"),
+    new Setting("save", "importButton", "Import Game", "Import a savefile"),
     new ToggleSetting("design", "toggleBG", "background", "No Background"),
     new ToggleSetting("design", "toggleCurrent", "displayCurrent", "Current Effect Display"),
     new ToggleSetting("gameplay", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades"),
@@ -61,6 +61,9 @@ var settingButtons = [
     new ToggleSetting("gameplay", "toggleNoUpgrading", "noUpgrading", "Disable Upgrading"),
     new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)"),
     new Setting("save", "updateUI", "Refresh page", "Updates everything UI-related"),
+    new Setting("save", "createBackup", "Create Backup", "Create an additional save in the cache, independent from the normal save"),
+    new Setting("save", "loadBackup", "Load Backup", "Load the backup"),
+    new ToggleSetting("gameplay", "toggleNoAds", "noAds", "Disable Ads"),
 ]
 
 function onSettingClick(toggle) {
@@ -175,6 +178,12 @@ function toggleNoUpgrading() {
     updateUpgrades();
 }
 
+function toggleNoAds() {
+    createNotification("No ads " + (settings.noAds ? "ON" : "OFF"));
+    currentBoost = "none";
+    adTime = 15;
+}
+
 // eh
 
 function toggleUpgradeColors() {
@@ -209,11 +218,11 @@ function importCustomColors() {
 }
 
 function exportCustomColors() {
-    let exportGame = JSON.stringify(settings.customColors);
-    exportGame = btoa(exportGame);
-    exportGame = exportGame.replace("W1", "colorshgabb");
+    let exporter = JSON.stringify(settings.customColors);
+    exporter = btoa(exporter);
+    exporter = exporter.replace("W1", "colorshgabb");
 
-    navigator.clipboard.writeText(exportGame);
+    navigator.clipboard.writeText(exporter);
     createNotification("Custom colors exported to clipboard!");
 }
 

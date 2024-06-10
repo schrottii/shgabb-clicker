@@ -4,9 +4,23 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.5";
+const gameVersion = "2.5.1";
 
 const currentPatchNotes = [
+    "-> Saves:",
+    "- Added a backup system (see: settings)",
+    "- Improved save related code",
+    "- Fixed a critical stats bug",
+    "-> Settings:",
+    "- Setting titles are now bold",
+    "- New Setting: Create Backup, creates a backup in the cache seperate from normal saving",
+    "- New Setting: Load Backup, can be used to restore the backup when something went wrong",
+    "- New Setting: No Ads, disables and hides ads and their boosts",
+    "-> Other:",
+    "- Pride Event: Getting an Event PFP is now guaranteed until all 3 are obtained",
+    '- The Achievement "Mr. President" can be obtained again (same requirement, get Obama)',
+
+    "v2.5",
     "-> Break Infinity:",
     "- Added breakinfinity library",
     "- Expanded it to take less space in savecodes",
@@ -361,11 +375,14 @@ function numberSaver(number) {
     // turn a break infinity object (mantissa - exponent) into a simple string, for saving
     // mantissa: 1.2, exponent: 10 -> 1.2e10
     if (number.mantissa == undefined) {
-        number = number.toString();
-        if (number.split("e+")[1] != undefined) number = new Decimal(number.split("e+")[0] + "e" + number.split("e+")[1]);
-        else number = new Decimal(number);
+        if (number.toString().split("e+")[1] != undefined) {
+            number = new Decimal(number.toString().split("e+")[0] + "e" + Math.floor(number.toString().split("e+")[1]));
+        }
+        else {
+            number = new Decimal(number);
+        }
     }
-    return number.mantissa + "e" + number.exponent;
+    return "" + number.mantissa + "e" + number.exponent;
 }
 
 function numberLoader(number) {
@@ -405,7 +422,10 @@ function fn(number) {
             break;
     }
 
-    return (number.mantissa * (Math.pow(10, number.exponent % 3))).toString().substr(0, 4) + notationSymbol;
+    let numberDisplay = (number.mantissa * (Math.pow(10, number.exponent % 3))).toString().substr(0, 4);
+    if (numberDisplay.substr(2, 4) == "00") numberDisplay = numberDisplay.substr(0, 2);
+
+    return numberDisplay + notationSymbol;
 
 }
 
@@ -1249,7 +1269,7 @@ function updateUI() {
     }
 
     // Ads
-    if (game.stats.sw > 9 && adTime > 0) {
+    if (game.stats.sw > 9 && adTime > 0 && !settings.noAds) {
         ui.adBar.style.display = "inline";
         ui.adBar.value = (adTime / adMax) * 100;
     }
@@ -1351,7 +1371,7 @@ function autoSave() {
     }
 
     // Auto Save
-    localStorage.setItem("shgabbClicker", JSON.stringify(game));
+    exportGame("cache");
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
 
     let newAch = false;
@@ -1373,76 +1393,169 @@ function autoSave() {
     if (!newAch) createNotification("Game saved automatically " + autoNotifications);
 }
 
-function exportGame() {
-    if (game.cheated == true) { alert("You can't export a cheated save!"); createNotification("Couldn't export: Cheated"); return false; }
-    let exportGame = Object.assign({}, game);
-
-    exportGame.shgabb = numberSaver(exportGame.shgabb);
-    exportGame.sw = numberSaver(exportGame.sw);
-    exportGame.gs = numberSaver(exportGame.gs);
-    exportGame.si = numberSaver(exportGame.si);
-
-    let statTypes = ["stats", "stats_prestige", "stats_today"];
-    for (let statHandler in statTypes) {
-        exportGame[statTypes[statHandler]].shgabb = numberSaver(exportGame[statTypes[statHandler]].shgabb);
-        exportGame[statTypes[statHandler]].sw = numberSaver(exportGame[statTypes[statHandler]].sw);
-        exportGame[statTypes[statHandler]].gs = numberSaver(exportGame[statTypes[statHandler]].gs);
-        exportGame[statTypes[statHandler]].si = numberSaver(exportGame[statTypes[statHandler]].si);
-    }
-
-    exportGame = JSON.stringify(exportGame);
-
-    exportGame = btoa(exportGame); exportGame = exportGame.replace(rep7, "shgabb");
-    exportGame = exportGame.replace("x", "pppp");
-    exportGame = exportGame.replace("D", "dpjiopjrdopjh");
-    navigator.clipboard.writeText(exportGame);
-    createNotification("Game exported to clipboard!");
+function createBackup() {
+    exportGame("backup");
 }
 
-function importGame() {
-    let importGame = prompt("Code?"); if (importGame == "resetmytic" && BETA.isBeta) { pointsPlayer = 0; pointsHer = 0; game.tttd = 1; canPlayTTT = true; } trashCanBoost = 0; knifeBoost = 0; resetMinigameField(); if (importGame.substr(0, 6) == "faCoDe") { importGame = importGame.substr(10); } else { importGame = importGame.replace("shgabb", rep7); importGame = importGame.replace("dpjiopjrdopjh", "D"); importGame = importGame.replace("pppp", "x"); } importGame = atob(importGame); importGame = JSON.parse(importGame);
+function loadBackup() {
+    importGame(localStorage.getItem("shgabbBackup"));
+}
+
+function exportGame(destination = "gimme") {
+    if (game.cheated == true) {
+        alert("You can't export a cheated save!");
+        createNotification("Couldn't export: Cheated");
+        return false;
+    }
+    let exporter = {};
+    for (exportit in game) {
+        exporter[exportit] = game[exportit];
+    }
+
+    exporter.shgabb = numberSaver(exporter.shgabb);
+    exporter.sw = numberSaver(exporter.sw);
+    exporter.gs = numberSaver(exporter.gs);
+    exporter.si = numberSaver(exporter.si);
+
+    let statTypes = ["stats", "stats_prestige", "stats_today"];
+    let statCurr = ["shgabb", "sw", "gs", "si"];
+    for (let statHandler in statTypes) {
+        exporter[statTypes[statHandler]] = {};
+        for (let allStats in game.stats) {
+            exporter[statTypes[statHandler]][allStats] = game[statTypes[statHandler]][allStats];
+        }
+        for (let currHandler in statCurr) {
+            exporter[statTypes[statHandler]][statCurr[currHandler]] = numberSaver(game[statTypes[statHandler]][statCurr[currHandler]]);
+        }
+    }
+    exporter = JSON.stringify(exporter);
+
+    exporter = btoa(exporter);
+    exporter = exporter.replace(rep7, "shgabb");
+    exporter = exporter.replace("x", "pppp");
+    exporter = exporter.replace("D", "dpjiopjrdopjh");
+
+    if (destination == "gimme") {
+        navigator.clipboard.writeText(exporter);
+        createNotification("Game exported to clipboard!");
+    }
+    if (destination == "cache") {
+        localStorage.setItem("shgabbClicker", exporter);
+    }
+    if (destination == "backup") {
+        localStorage.setItem("shgabbBackup", exporter);
+    }
+}
+
+function importButton() {
+    // handle the import button
+    // normal imports and rescue codes
+    // loading from cache is done elsewhere
+
+    let source = prompt("Code?");
+
+    if (source.substr(0, 6) == "faCoDe") {
+        source = source.substr(10);
+    }
+
+    importGame(source);
+}
+
+function importGame(source) {
+    /*
+    if (importGame == "resetmytic" && BETA.isBeta) {
+        pointsPlayer = 0;
+        pointsHer = 0;
+        game.tttd = 1;
+        canPlayTTT = true;
+    }
+    */
+
+    try {
+        if (source.toString().substr(0, 4) == "shga") {
+            source = source.replace("shgabb", rep7);
+            source = source.replace("dpjiopjrdopjh", "D");
+            source = source.replace("pppp", "x");
+            source = atob(source);
+        }
+        source = JSON.parse(source);
+    }
+    catch (e) {
+        alert("Something went wrong while unpacking the save!");
+    }
 
     // Empty the game first. Make it completely empty
     emptyGame.a = [];
     game = {};
+
     // Now import. it's done this way to support old saves
-    game = Object.assign({}, emptyGame, importGame);
+    game = Object.assign({}, emptyGame, source);
 
     // Take care of arrays
-    game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, importGame.upgradeLevels);
-    game.stats = Object.assign({}, emptyGame.stats, importGame.stats);
-    game.stats_prestige = Object.assign({}, emptyGame.stats, importGame.stats_prestige);
-    game.stats_today = Object.assign({}, emptyGame.stats, importGame.stats_today);
-    game.ameUp = Object.assign({}, emptyGame.ameUp, importGame.ameUp);
-    game.profile = Object.assign({}, emptyGame.profile, importGame.profile);
+    game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, source.upgradeLevels);
+    game.ameUp = Object.assign({}, emptyGame.ameUp, source.ameUp);
+    game.profile = Object.assign({}, emptyGame.profile, source.profile);
 
-    // on the television
+    game.stats = Object.assign({}, emptyGame.stats, source.stats);
+    game.stats_prestige = Object.assign({}, emptyGame.stats, source.stats_prestige);
+    game.stats_today = Object.assign({}, emptyGame.stats, source.stats_today);
+
+    let statTypes = ["stats", "stats_prestige", "stats_today"];
+    let statCurr = ["shgabb", "sw", "gs", "si"];
+    for (let statHandler in statTypes) {
+        for (let currHandler in statCurr) {
+            game[statTypes[statHandler]][statCurr[currHandler]] = numberLoader(game[statTypes[statHandler]][statCurr[currHandler]]);
+        }
+    }
+
+    // break infinity stuff
     game.shgabb = numberLoader(game.shgabb);
     game.sw = numberLoader(game.sw);
     game.gs = numberLoader(game.gs);
     game.si = numberLoader(game.si);
 
-    let statTypes = ["stats", "stats_prestige", "stats_today"];
-    for (let statHandler in statTypes) {
-        game[statTypes[statHandler]].shgabb = numberLoader(game[statTypes[statHandler]].shgabb);
-        game[statTypes[statHandler]].sw = numberLoader(game[statTypes[statHandler]].sw);
-        game[statTypes[statHandler]].gs = numberLoader(game[statTypes[statHandler]].gs);
-        game[statTypes[statHandler]].si = numberLoader(game[statTypes[statHandler]].si);
-    }
-
     // Some adjustments
     checkCanPlayTTT();
     pointsPlayer = 0;
     pointsHer = 0;
+    trashCanBoost = 0;
+    knifeBoost = 0;
+    resetMinigameField();
 
-    if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
+    let allAdsZero = true;
+    for (a in game.stats.wads) {
+        if (game.stats.wads[a] != 0) allAdsZero = false;
+    }
+    if (allAdsZero) {
+        allAdsZero = game.stats.ads;
+        while (allAdsZero > 0) {
+            allAdsZero -= 1;
+            game.stats.wads[Object.keys(game.stats.wads)[Math.floor(Math.random() * Object.keys(game.stats.wads).length)]] += 1;
+        }
+    }
+
+    if (game.stats.shgabb == "-Infinity") game.stats.shgabb = new Decimal(0);
+    if (game.stats_prestige.shgabb == "-Infinity") game.stats_prestige.shgabb = new Decimal(0);
+    if (game.stats_prestige.hms == 0) game.stats_prestige.hms = game.stats.hms;
+    if (game.stats.gems != undefined) {
+        game.stats.tgems += game.stats.gems;
+        delete game.stats.gems;
+    }
+
+    if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw.mul(10)) {
         // Auto Shgabb was reworked
         game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
         game.upgradeLevels.autoShgabb = 0;
     }
 
+    for (l in game.alo) {
+        if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
+    }
+
     // Execute some stuff
     handleArtifactsFirstTime();
+    checkForZeroNext();
+
     updateUI();
     updateUpgrades();
     updateArtifacts();
@@ -1529,31 +1642,39 @@ function loop(tick) {
         silicone();
     }
 
-    if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none" && currentBoost == "none") {
-        // Hey1 You can get this!
-        availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-        if (settings.leastAdLess && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-        while (!unlockedGems() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-        while (!unlockedSilicone() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+    if (!settings.noAds) {
+        if (adTime <= 0 && adTime >= cakeValue(-4, -15) && adButton.style.display == "none" && adHandler.style.display == "none" && currentBoost == "none") {
+            // Hey1 You can get this!
+            availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+            if (settings.leastAdLess && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+            while (!unlockedGems() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+            while (!unlockedSilicone() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
 
-        adButton.style.display = "inline";
-        adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
+            adButton.style.display = "inline";
+            adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
+        }
+        else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
+            // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
+            adTime = cakeValue(1, 5);
+            adMax = 5;
+
+            //ui.cooldownBar.classList.remove("buffedProgress")
+            ui.sandwichBar.classList.remove("buffedProgress")
+
+            currentBoost = "none";
+        }
+        else if (currentBoost == "none" && adTime <= cakeValue(-4, -15)) {
+            // Hm, let's wait for next ad (you didn't accept this one)
+            adButton.style.display = "none";
+            adTime = cakeValue(1, 5);
+            adMax = 5;
+        }
     }
-    else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
-        // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
-        adTime = cakeValue(1, 5);
-        adMax = 5;
-
-        //ui.cooldownBar.classList.remove("buffedProgress")
-        ui.sandwichBar.classList.remove("buffedProgress")
-
-        currentBoost = "none";
-    }
-    else if (currentBoost == "none" && adTime <= cakeValue(-4, -15)) {
-        // Hm, let's wait for next ad (you didn't accept this one)
+    else {
+        // Ads disabled
         adButton.style.display = "none";
-        adTime = cakeValue(1, 5);
-        adMax = 5;
+        adHandler.style.display = "none";
+        ui.adBar.style.display = "none";
     }
 
     updateUI();
@@ -1613,73 +1734,7 @@ function selectVideo() {
 }
 
 // Load
-if (localStorage.getItem("shgabbClicker") != undefined) {
-    let cache = game;
-    game = Object.assign({}, game, JSON.parse(localStorage.getItem("shgabbClicker")));
-    game.upgradeLevels = Object.assign({}, cache.upgradeLevels, JSON.parse(localStorage.getItem("shgabbClicker")).upgradeLevels);
-    game.stats = Object.assign({}, cache.stats, JSON.parse(localStorage.getItem("shgabbClicker")).stats);
-    game.stats_prestige = Object.assign({}, cache.stats_prestige, JSON.parse(localStorage.getItem("shgabbClicker")).stats_prestige);
-    game.stats_today = Object.assign({}, cache.stats_today, JSON.parse(localStorage.getItem("shgabbClicker")).stats_today);
-    game.ameUp = Object.assign({}, cache.ameUp, JSON.parse(localStorage.getItem("shgabbClicker")).ameUp);
-    game.profile = Object.assign({}, cache.profile, JSON.parse(localStorage.getItem("shgabbClicker")).profile);
-
-    let allAdsZero = true;
-    for (a in game.stats.wads) {
-        if (game.stats.wads[a] != 0) allAdsZero = false;
-    }
-    if (allAdsZero) {
-        allAdsZero = game.stats.ads;
-        while (allAdsZero > 0) {
-            allAdsZero -= 1;
-            game.stats.wads[Object.keys(game.stats.wads)[Math.floor(Math.random() * Object.keys(game.stats.wads).length)]] += 1;
-        }
-    }
-
-    // on the television
-    game.shgabb = numberLoader(game.shgabb);
-    game.sw = numberLoader(game.sw);
-    game.gs = numberLoader(game.gs);
-    game.si = numberLoader(game.si);
-
-    let statTypes = ["stats", "stats_prestige", "stats_today"];
-    for (let statHandler in statTypes) {
-        game[statTypes[statHandler]].shgabb = numberLoader(game[statTypes[statHandler]].shgabb);
-        game[statTypes[statHandler]].sw = numberLoader(game[statTypes[statHandler]].sw);
-        game[statTypes[statHandler]].gs = numberLoader(game[statTypes[statHandler]].gs);
-        game[statTypes[statHandler]].si = numberLoader(game[statTypes[statHandler]].si);
-    }
-
-    // ergh
-    if (game.stats.shgabb == "-Infinity") game.stats.shgabb = 0;
-    if (game.stats_prestige.shgabb == "-Infinity") game.stats_prestige.shgabb = 0;
-    if (game.stats_prestige.hms == 0) game.stats_prestige.hms = game.stats.hms;
-    if (game.stats.gems != undefined) {
-        game.stats.tgems += game.stats.gems;
-        delete game.stats.gems;
-    }
-    checkCanPlayTTT();
-    handleArtifactsFirstTime();
-
-    if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw * 10) {
-        // Auto Shgabb was reworked
-        game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
-        game.upgradeLevels.autoShgabb = 0;
-    }
-
-    try {
-        if (typeof (game.stats.wads.mg) == "undefined") game.stats.wads.mg = 0;
-        else if (game.stats.wads.mg != undefined && game.stats.wads.mg.toString() == "NaN") game.stats.wads.mg = 1;
-    }
-    catch (e) {
-        console.trace(e);
-    }
-    
-    for (l in game.alo) {
-        if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
-    }
-
-    checkForZeroNext();
-}
+importGame(localStorage.getItem("shgabbClicker"));
 if (localStorage.getItem("shgabbSettings") != undefined) {
     settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
 

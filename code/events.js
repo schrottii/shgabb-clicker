@@ -462,7 +462,6 @@ function findShgaybb() {
 
         if (shgaybbFound == "") {
             // first of the couple
-            console.log(seed, shgaybbList[seed]);
             shgaybbFound = shgaybbList[seed];
             createNotification("Found: " + shgaybbFound + " Shgabb");
         }
@@ -484,14 +483,17 @@ function findShgaybb() {
                 switch (seed) {
                     case 0:
                         if (!game.evpfps.includes(415)) game.evpfps.push(415);
-                        else createNotification("You already own this reward...");
-                        break;
+                        else {
+                            seed += 1;
+                        }
                     case 1:
                         if (!game.evpfps.includes(416)) game.evpfps.push(416);
-                        else createNotification("You already own this reward...");
-                        break;
+                        else {
+                            seed += 1;
+                        }
                     case 2:
                         if (!game.evpfps.includes(417)) game.evpfps.push(417);
+                        else if (!game.evpfps.includes(415)) game.evpfps.push(415);
                         else createNotification("You already own this reward...");
                         break;
                 }

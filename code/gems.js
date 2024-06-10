@@ -36,7 +36,7 @@ function getGem() {
 }
 
 function firstGemOfferWorth() {
-    return Math.max(10000, Math.ceil(Math.min(game.shgabb / 2, game.stats.shgabb / 5)));
+    return Math.max(10000, Math.ceil(Math.min(game.shgabb.div(2), game.stats.shgabb.div(5))));
 }
 
 function gemOffer(i) {
