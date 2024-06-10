@@ -1471,18 +1471,20 @@ function importGame(source) {
     }
     */
 
-    try {
-        if (source.toString().substr(0, 4) == "shga") {
-            source = source.replace("shgabb", rep7);
-            source = source.replace("dpjiopjrdopjh", "D");
-            source = source.replace("pppp", "x");
-            source = atob(source);
+    if (source == null || source == undefined) source = Object.assign({}, emptyGame);
+    else {
+        try {
+            if (source.toString().substr(0, 4) == "shga") {
+                source = source.replace("shgabb", rep7);
+                source = source.replace("dpjiopjrdopjh", "D");
+                source = source.replace("pppp", "x");
+                source = atob(source);
+            }
+            source = JSON.parse(source);
         }
-        if (source == null) source = Object.assign({}, emptyGame);
-        else source = JSON.parse(source);
-    }
-    catch (e) {
-        alert("Something went wrong while unpacking the save!");
+        catch (e) {
+            alert("Something went wrong while unpacking the save!");
+        }
     }
 
     // Empty the game first. Make it completely empty
