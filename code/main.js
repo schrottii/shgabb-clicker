@@ -1478,7 +1478,8 @@ function importGame(source) {
             source = source.replace("pppp", "x");
             source = atob(source);
         }
-        source = JSON.parse(source);
+        if (source == null) source = Object.assign({}, emptyGame);
+        else source = JSON.parse(source);
     }
     catch (e) {
         alert("Something went wrong while unpacking the save!");
