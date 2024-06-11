@@ -372,6 +372,7 @@ function statIncrease(name, number) {
 
 // ALL THE NUMBER SHIT YEE COWBOYS
 function numberSaver(number) {
+    if (number == undefined) number = 0;
     // turn a break infinity object (mantissa - exponent) into a simple string, for saving
     // mantissa: 1.2, exponent: 10 -> 1.2e10
     if (number.mantissa == undefined) {
@@ -1401,6 +1402,25 @@ function loadBackup() {
     importGame(localStorage.getItem("shgabbBackup"));
 }
 
+function importFromFile() {
+    if (document.getElementById("myFile").value != "") {
+        file = document.getElementById("myFile").files[0];
+        reader = new FileReader();
+        let filecontent;
+
+        reader.addEventListener('load', function (e) {
+            filecontent = e.target.result;
+            if (filecontent != undefined) importGame(filecontent);
+        });
+
+        reader.readAsText(file);
+    }
+}
+
+function exportToFile() {
+    exportGame("file");
+}
+
 function exportGame(destination = "gimme") {
     if (game.cheated == true) {
         alert("You can't export a cheated save!");
@@ -1444,6 +1464,18 @@ function exportGame(destination = "gimme") {
     }
     if (destination == "backup") {
         localStorage.setItem("shgabbBackup", exporter);
+    }
+    if (destination == "file") {
+        var temporaryFile = document.createElement('a');
+        temporaryFile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(exporter));
+        temporaryFile.setAttribute('download', "shgabbSave-" + today() + ".txt");
+
+        temporaryFile.style.display = 'none';
+        document.body.appendChild(temporaryFile);
+
+        temporaryFile.click();
+
+        document.body.removeChild(temporaryFile);
     }
 }
 

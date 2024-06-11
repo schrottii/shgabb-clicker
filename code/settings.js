@@ -64,6 +64,8 @@ var settingButtons = [
     new Setting("save", "createBackup", "Create Backup", "Create an additional save in the cache, independent from the normal save"),
     new Setting("save", "loadBackup", "Load Backup", "Load the backup"),
     new ToggleSetting("gameplay", "toggleNoAds", "noAds", "Disable Ads"),
+    new Setting("save", "exportToFile", "Export to file", "Save to a .txt file"),
+    new Setting("save", "importFromFile", "Import from file", `Load the .txt file`),
 ]
 
 function onSettingClick(toggle) {
