@@ -43,6 +43,7 @@ April - June 2024:
 2.4.1
 2.5
 2.5.1
+2.5.2
 
 
 
@@ -1347,3 +1348,35 @@ Version 2.5.1:
 -> Other:
 - Pride Event: Getting an Event PFP is now guaranteed until all 3 are obtained
 - The Achievement "Mr. President" can be obtained again (same requirement, get Obama)
+
+
+
+2024/06/12 2.5.2:
+Version 2.5.2:
+-> Content:
+- Added Terms of Service (found at the game info, below notifications)
+- Added the long awaited infinite Gems to Amé and 7 new upgrades
+
+-> Améliorer:
+- New Améliorer Upgrade: Nothing (Set 2, 10): Does nothing
+- New Améliorer Upgrade: Lore Boost (Set 6, 150): Adds a boost per lore page
+- Added the 7th set of Améliorer Upgrades (225 Amé)
+- New Améliorer Upgrade: Unlock More Bag Upgrades (Set 7, 225): Unlocks 2 new Bag Upgrades
+- New Améliorer Upgrade: Infinite Gems To Amé (Set 7, 225): Gems can be converted to Amé past the limit, for an increased cost
+- New Améliorer Upgrade: Amé Came (Set 7, 250): Increases the levels of currency boosting Améliorer Upgrades
+- Moved Sandwich Amount Lvl. from Set 2, 10 to Set 7, 225
+- Moved Shgabb Boost and Silicone Boost to be the first of their set
+
+-> Bags:
+- New Bags Upgrade: Ads Watched Boost Shgabb: Get more Shgabb based on how often each ad boost was gained, costs are reduced by total ads watched
+- New Bags Upgrade: Clicks Boost GS: Get more GS based on all time clicks, clicks this prestige and daily clicks, costs are reduced by total prestiges
+
+-> Settings:
+- New Setting: Export to file
+- New Setting: Import from file
+
+-> Other:
+- Added 5 new Achievements (130 total)
+- Prestige Button now also shows Gems gained on Prestige (if unlocked) and Bags gained in that Prestige
+- Fixed small numbers showing unnecessary .00s
+- Added Terms of Service and a link to them

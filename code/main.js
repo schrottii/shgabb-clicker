@@ -4,9 +4,34 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.5.1";
+const gameVersion = "2.5.2";
 
 const currentPatchNotes = [
+    "-> Content:",
+    "- Added Terms of Service (found at the game info, below notifications)",
+    "- Added the long awaited infinite Gems to Amé and 7 new upgrades",
+    "-> Améliorer:",
+    "- New Améliorer Upgrade: Nothing (Set 2, 10): Does nothing",
+    "- New Améliorer Upgrade: Lore Boost (Set 6, 150): Adds a boost per lore page",
+    "- Added the 7th set of Améliorer Upgrades (225 Amé)",
+    "- New Améliorer Upgrade: Unlock More Bag Upgrades (Set 7, 225): Unlocks 2 new Bag Upgrades",
+    "- New Améliorer Upgrade: Infinite Gems To Amé (Set 7, 225): Gems can be converted to Amé past the limit, for an increased cost",
+    "- New Améliorer Upgrade: Amé Came (Set 7, 250): Increases the levels of currency boosting Améliorer Upgrades",
+    "- Moved Sandwich Amount Lvl. from Set 2, 10 to Set 7, 225",
+    "- Moved Shgabb Boost and Silicone Boost to be the first of their set",
+    "-> Bags:",
+    "- New Bags Upgrade: Ads Watched Boost Shgabb: Get more Shgabb based on how often each ad boost was gained, costs are reduced by total ads watched",
+    "- New Bags Upgrade: Clicks Boost GS: Get more GS based on all time clicks, clicks this prestige and daily clicks, costs are reduced by total prestiges",
+    "-> Settings:",
+    "- New Setting: Export to file",
+    "- New Setting: Import from file",
+    "-> Other:",
+    "- Added 5 new Achievements (130 total)",
+    "- Prestige Button now also shows Gems gained on Prestige (if unlocked) and Bags gained in that Prestige",
+    "- Fixed small numbers showing unnecessary .00s",
+    "- Added Terms of Service and a link to them",
+
+    "v2.5.1",
     "-> Saves:",
     "- Added a backup system (see: settings)",
     "- Improved save related code",
@@ -396,7 +421,7 @@ function fn(number) {
     if (number == undefined) return "?";
 
     // return basic number if it is 0 - 999 999
-    if (number < 1000000) return (number < 100) ? (number * 1).toFixed(2) : (number * 1).toFixed(0);
+    if (number < 1000000) return (number < 100) ? ((number * 1).toFixed(2).substr((number * 1).toFixed(2).length - 2, 2) == "00" ? (number * 1).toFixed(2).split(".")[0] : (number * 1).toFixed(2)) : (number * 1).toFixed(0);
 
     // 1 million or more? do notation shitz
     let notationSymbol = ""; // M, :joy:, etc.
@@ -588,7 +613,8 @@ function getGlobalProduction() {
         .mul(isChallenge(0) ? 1 : bagUpgrades.challengeShgabb.currentEffect())
         .mul(eventValue("anniversary", 3, 1))
         .mul(eventValue("lunar", 8, 1))
-        .mul(eventValue("pride", 10, 1));
+        .mul(eventValue("pride", 10, 1))
+        .mul(bagUpgrades.adsWatchedBoostShgabb.currentEffect());
 
     return prod;
 }
@@ -693,6 +719,15 @@ function getAchievementBoost() {
     return (game.upgradeLevels.achBExpo > 0 ? (Math.pow(1.02, game.ach.length)) : (1 + (game.ach.length / 50)));
 }
 
+function getLoreBoost() {
+    return (game.upgradeLevels.achBExpo > 999 ? (Math.pow(1.02, game.lore.length)) : (game.upgradeLevels.loreBoost > 0 ? (1 + (game.lore.length / 50)) : 1));
+}
+
+function getAmeCame() {
+    if (ameliorerUpgrades != undefined) return ameliorerUpgrades.AMECAME.currentEffect();
+    return 0;
+}
+
 function getGoldenShgabb() {
     return new Decimal(Math.max(10, (1 + Math.log(1 + game.stats_prestige.shgabb)) * (1 + Math.log(game.stats_prestige.sw + 1))))
         .mul(Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25)))
@@ -705,6 +740,8 @@ function getGoldenShgabb() {
         .mul(getArtifactBoost("gs"))
         .mul(game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
         .mul(getAchievementBoost())
+        .mul(getLoreBoost())
+        .mul(bagUpgrades.clicksBoostGS.currentEffect())
         .floor();
 }
 
@@ -954,7 +991,7 @@ function getAmeliorerConvertCosts(type) {
         case "si":
             return Math.ceil(Math.pow(1e5, (game.ameUp[3] / 15) + 1));
         case "gems":
-            return 500;
+            return game.ameUp[4] >= highestAmeConvert() ? 1000 : 500;
     }
 }
 
@@ -962,7 +999,7 @@ function canAffordAmeliorer(type) {
     let costs = getAmeliorerConvertCosts(type);
     if (type != "gems") return game[type] >= costs;
     else {
-        return game[type] >= costs && highestAmeConvert() > game.ameUp[4];
+        return game[type] >= costs && (highestAmeConvert() > game.ameUp[4] || ameliorerUpgrades.infiniteGems2ame.currentLevel() > 0);
     }
 }
 
@@ -977,7 +1014,9 @@ function highestAmeConvert() {
 function convertAmeliorer(type) {
     let costs = getAmeliorerConvertCosts(type);
     if (canAffordAmeliorer(type)) {
-        game[type] -= costs;
+        if (type != "gems") game[type] = game[type].sub(costs);
+        else game[type] -= costs;
+
         game.ameUp[{ "shgabb": 0, "sw": 1, "gs": 2, "si": 3, "gems": 4 }[type]] += 1;
         game.ame += 1;
         statIncrease("ame", 1);
@@ -1286,7 +1325,11 @@ function updateUI() {
         }
 
         ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!<br />Prestige to get: " + fn(getGoldenShgabb()) + " GS!" + challengeText;
+        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
+            + "<br />Prestige to get: " + fn(getGoldenShgabb()) + " GS!"
+            + (bagUpgrades.prestigeGems.currentLevel() > 0 ? "<br />" + fn(Math.floor(game.stats_prestige.hms / 1000)) + " Gems!" : "")
+            + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained!" : "")
+            + challengeText
     }
     else {
         ui.prestigeButton.style.display = "none";

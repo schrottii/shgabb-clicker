@@ -83,13 +83,13 @@ var game = {
         siliconeAffectsGS: 0,
 
         // Ame
+        shgabbBoost: 0,
         AMEgsBoost1: 0,
         AMEgsBoost2: 0,
-        shgabbBoost: 0,
         achBExpo: 0,
 
+        nothing: 0,
         AMEfridge: 0,
-        AMEmoreSw: 0,
         AMEcritBoost: 0,
         unlockUnlevel: 0,
 
@@ -98,9 +98,9 @@ var game = {
         AMEbomblike: 0,
         gsBoostsShgabb: 0,
 
+        siliconeBoost: 0,
         AMEformaggi: 0,
         unlockMSW2: 0,
-        siliconeBoost: 0,
         fourthArtifactSlot: 0,
 
         sandwichBoost: 0,
@@ -109,14 +109,22 @@ var game = {
         keepSWU: 0,
 
         amegsBoost: 0,
+        loreBoost: 0,
         tiersBoostBags: 0,
         fourthArtifactLevel: 0,
+
+        AMEmoreSw: 0,
+        unlockMBU: 0,
+        infiniteGems2ame: 0,
+        AMECAME: 0,
 
         // Bag
         challengeShgabb: 0,
         moreSilicone3: 0,
         prestigeGems: 0,
         gemsBoostShgabb: 0,
+        adsWatchedBoostShgabb: 0,
+        clicksBoostGS: 0,
     },
     // stats (all time)
     stats: {

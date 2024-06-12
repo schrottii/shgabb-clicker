@@ -196,7 +196,9 @@ function renderLore() {
     render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : "Locked") + "</div><hr><br />";
 
     render = render + "<div style='font-size: 20px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
-    if (thisLore.ID == 0) render = render + "<br />" + cImg("memoryWisp") + game.loreP + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + game.loreP + "/" + getLoreByID(game.loreSel).amount) : "");
+
+    if (thisLore.ID == 0) render = render + "<br />" + cImg("memoryWisp") + game.loreP + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + game.loreP + "/" + getLoreByID(game.loreSel).amount) : "")
+        + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: +" + (100 * (getLoreBoost() - 1)).toFixed(2) + "% GS!";
     else if (!thisLore.isUnlocked() && thisLore.isFound() && thisLore.ID != game.loreSel) render = render + "<br />" + "<button class='grayButton' onclick=selectLore(" + thisLore.ID + ") style='font-size: 40px'>Start collecting</button>";
 
     ui.shbookLore2.innerHTML = render;
