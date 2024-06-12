@@ -899,6 +899,13 @@ function prestigeButton() {
     if (confirm("Do you really want to prestige?")) {
         let amount = increaseGS(1 * getArtifactBoost("prestigegs"));
 
+        if (bagUpgrades.prestigeGems.currentLevel() > 0) {
+            let gemAmount = Math.floor(game.stats_prestige.hms / 1000);
+            game.gems += gemAmount;
+            statIncrease("tgems", gemAmount);
+            createNotification("+" + gemAmount + " Gems!");
+        }
+
         // Reset Shgabb, Sandwiches, some stat stuff
         game.shgabb = new Decimal(0 + (isChallenge(2) ? 0 : getArtifactBoost("resetshgabb")));
         game.sw = new Decimal(0);
@@ -930,13 +937,6 @@ function prestigeButton() {
         }
 
         if (ui.ameReset.checked == true) ameReset();
-
-        if (bagUpgrades.prestigeGems.currentLevel() > 0) {
-            let amount = Math.floor(game.stats_prestige.hms / 1000);
-            game.gems += amount;
-            statIncrease("tgems", amount);
-            createNotification("+" + amount + " Gems!");
-        }
 
         statIncrease("pr", 1);
         game.stats_prestige.hms = 0;
