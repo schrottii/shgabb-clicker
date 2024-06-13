@@ -783,9 +783,9 @@ function sandwich() {
         if (getArtifactByID(214).isEquipped()) increaseGS(getArtifactEffect(214) / 100);
     }
 
-    if (getArtifactByID(315).isEquipped() && game.bags >= 10 && game.clickCooldown <= 0) {
+    if (getArtifactByID(401).isEquipped() && game.bags >= 10 && game.clickCooldown <= 0) {
         // DaGame
-        if (Math.random() * 100 <= 25 * getArtifactLevel(315)) {
+        if (Math.random() * 100 <= 25 * getArtifactLevel(401)) {
             game.bags -= 10;
             createNotification("DaGame clicked!");
 
