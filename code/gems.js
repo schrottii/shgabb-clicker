@@ -28,7 +28,7 @@ function getGem() {
 
         frustration = 0;
 
-        createNotification("+" + amount + " gem" + (amount > 1 ? "s" : "") + "!");
+        createNotification("+" + amount + " Gem" + (amount > 1 ? "s" : "") + "!");
     }
     else if (getArtifactByID(308).isEquipped()) {
         frustration += 1;

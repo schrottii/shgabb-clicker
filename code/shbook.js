@@ -102,7 +102,8 @@ const lore = [
     new BookEntry(100, "Fascinating", 1, 10, `Fascinating. It's simply fascinating. I've seen many things in my life, and discovered more than Joe did - even if he says otherwise - and have seen some things you wouldn't believe... including my wife, hehe. But this thing, it's fascinating. What is this creature? It's fascinating. - Pierre`),
     new BookEntry(101, "A Shgabb", 1, 10, `This creature is fascinating. It's called "Shgabb", very weird name, it does not quite fit in with the language's usual combinations of vowels and consonants, it's like a foreign sound, but what I know for sure, is that this creature is as foreign as one can get. I haven't spectated it for long yet. This definitely needs more research. - Pierre`),
     new BookEntry(102, "The Blues", 1, 10, `I should describe this creature's appearance, this creature being, this "Shgabb" thing, the recently discovered whatever. It's round. That's the best way I can describe the shape. The color scheme is fascinating. Think of this creature as a light blue ball, with a capital S written all over its forehead in a dark blue shade, like a tattoo. A Shgabb is blotchy. Skin not very clean, but who knows about the skincare in this world? Overall a wild appearance, but also soft, and clean, like a diamond, but of a different substance. Want me to describe it in one word? Blue. - Pierre`),
-    // new BookEntry(103, "", 1, 10, `Welelel`),
+    new BookEntry(103, "Not Alone", 1, 10, `I thought I was alone, just me and this blue blob, yes! A blob! It's a blob! Anyway - just me, and this little blob, but no. I was wrong. Yet again. Luckily the others are not here to laugh at me... whatever. There are many of them. It's not just one. This is an entire species. I have discovered something big. There is not just one Shgabb. There are many... what's the plural? Shgabbs? Shgabb? Shgabbou? What do I know. - Pierre`),
+    new BookEntry(104, "Following It", 1, 10, `I've managed to follow one of these Shgabb beings, and track its path and activities. I caught it between the trees, if you can even call these things trees. Its movement is hypnotizing. Mesmerizing. Wicked. This little fella walked down the hill, very smooth, no knees hurt. Well, except mine. But that's a different story. I kept following it, trying to not get caught. These leaves are loud enough to wake a giant, but these blobs either don't hear well, or they're not paying attention. I was not sure if this thing knows where it's going. But I kept following it. We approached a river, I was afraid that I had to swim now, but was also excited in case it happens to show me how it drinks fluids. Neither happened, it took a big left turn and walked parallel to the river. Eventually we approached a less open area, with trees and other objects. A structure. The Shgabb entered the structure, it's gone. I don't fit in there. What is this thing? Regardless, this adventure was successful. I need to analyze this data. I was following it. - Pierre`),
 
     // new BookEntry(100, "", 1, 10, `Welelel`),
 ]
@@ -139,10 +140,10 @@ function selectLore(id) {
 }
 
 function renderCurrenciary() {
-    let render = "<div style='font-size: 40px'>Currencies</div><hr>";
+    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Currencies</div><hr>";
 
     for (s in currenciary) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: 24px; background-color: ` + (shbookSelections[1] == currenciary[s].getName() ? "yellow" : "white") + `" onclick="changeShbook(1, '` + currenciary[s].getName() + `')">` + (currenciary[s].isUnlocked() ? currenciary[s].getName() : "Locked [" + currenciary[s].lockedText + "]") + `</button>`
+        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[1] == currenciary[s].getName() ? "yellow" : "white") + `" onclick="changeShbook(1, '` + currenciary[s].getName() + `')">` + (currenciary[s].isUnlocked() ? currenciary[s].getName() : "Locked [" + currenciary[s].lockedText + "]") + `</button>`
     }
 
     let thisCurrency = "";
@@ -160,10 +161,10 @@ function renderCurrenciary() {
 }
 
 function renderFeaturiary() {
-    let render = "<div style='font-size: 40px'>Features</div><hr>";
+    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Features</div><hr>";
 
     for (s in featuriary) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: 24px; background-color: ` + (shbookSelections[2] == featuriary[s].getName() ? "yellow" : "white") + `" onclick="changeShbook(2, '` + featuriary[s].getName() + `')">` + (featuriary[s].isUnlocked() ? featuriary[s].getName() : "Locked [" + featuriary[s].lockedText + "]") + `</button>`
+        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[2] == featuriary[s].getName() ? "yellow" : "white") + `" onclick="changeShbook(2, '` + featuriary[s].getName() + `')">` + (featuriary[s].isUnlocked() ? featuriary[s].getName() : "Locked [" + featuriary[s].lockedText + "]") + `</button>`
     }
 
     let thisFeature = "";
@@ -181,10 +182,10 @@ function renderFeaturiary() {
 }
 
 function renderLore() {
-    let render = "<div style='font-size: 40px'>Lore</div><hr>";
+    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Lore</div><hr>";
 
     for (s in lore) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: 24px; background-color: ` + (shbookSelections[0] == lore[s].ID ? "yellow" : "white") + `" onclick="changeShbook(0, '` + lore[s].ID + `')">` + (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? "Locked [#" + lore[s].ID + ", " + (lore[s].ID == game.loreSel ? game.loreP : "0") + "/" + lore[s].amount + "]" : "Not found")) + `</button>`
+        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[0] == lore[s].ID ? "yellow" : "white") + `" onclick="changeShbook(0, '` + lore[s].ID + `')">` + (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? "Locked [#" + lore[s].ID + ", " + (lore[s].ID == game.loreSel ? game.loreP : "0") + "/" + lore[s].amount + "]" : "Not found")) + `</button>`
     }
 
     let thisLore = "";

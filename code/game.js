@@ -41,6 +41,7 @@ var game = {
     ach: [],
     nexgai: [0, 0, 0, 0],
     tttd: 1,
+    day: 1,
     dgo: 100,
     evpfps: [],
     evbans: [],

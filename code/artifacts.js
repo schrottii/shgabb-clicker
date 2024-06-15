@@ -202,8 +202,6 @@ function renderArtifacts() {
 		render = render + "<br />";
 	}
 
-	ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
-
 	// Artifacts
 	let currentArtifact;
 	let renderTheseArtifacts = [];

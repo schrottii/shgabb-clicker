@@ -4,9 +4,32 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.5.2";
+const gameVersion = "2.5.3";
 
 const currentPatchNotes = [
+    "-> Shbook:",
+    "- Lore: Added 2 new lore pages (5 total)",
+    "- Mobile: Reduced feature name size (top left corner)",
+    "- Mobile: Reduced entries size (left)",
+    "-> Time:",
+    "- Reworked time related code",
+    "- Daily things (new Artifact Offer, SSS, daily stats) are now triggered every auto save, rather than every 50th",
+    "- Seperated SSS from other daily things",
+    "- Fixed daily stats getting reset way too often",
+    "-> Settings:",
+    `- Renamed "No Background" to "Black Background" to avoid confusion`,
+    `- Renamed "Toggle Currencies Display" to "Currencies Display" and changed it, see section below`,
+    "-> Currencies Display:",
+    "- Reworked top currencies display",
+    "- Made its display more smooth, taking less space",
+    "- Instead of being toggled on/off, it now has 3 modes: visible/hidden/compact",
+    "- The new mode, compact, hides currency names",
+    "- Improved performance",
+    "-> Other:",
+    "- Added 5 new Quotes (88 total)",
+    "- Capitalized Gem / Gems when getting them from clicking",
+
+    "v2.5.2",
     "-> Content:",
     "- Added Terms of Service (found at the game info, below notifications)",
     "- Added the long awaited infinite Gems to Amé and 7 new upgrades",
@@ -44,72 +67,6 @@ const currentPatchNotes = [
     "-> Other:",
     "- Pride Event: Getting an Event PFP is now guaranteed until all 3 are obtained",
     '- The Achievement "Mr. President" can be obtained again (same requirement, get Obama)',
-
-    "v2.5",
-    "-> Break Infinity:",
-    "- Added breakinfinity library",
-    "- Expanded it to take less space in savecodes",
-    "- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades",
-    "- Reworked number formatter",
-    "- Capped buy max at 50k (just in case)",
-    "-> Shbook:",
-    "- New feature/selection: The Shbook!",
-    "- Unlocked at HMS 25",
-    "- Here you can access the lore, the currenciary and the featuriary",
-    "- Added pretty Shbook background and design",
-    "-> Lore:",
-    "- New feature: Lore! (Part of the Shbook)",
-    "- New content: lore pages and Memory Wisps!",
-    "- Unlocked at HMS 4000",
-    "- Added 3 lore pages, more coming soon",
-    "- Find lore pages and Memory Wisps by clicking (1/25k and 1/5k chance, respectively)",
-    "- Up to 5 lore pages can be stored at the same time",
-    "- Select a lore page and collect Memory Wisps to unlock it",
-    "- Learn more about the story and lore of the game by reading the unlocked pages!",
-    "-> Currenciary & Featuriary:",
-    "- New features: Currenciary & Featuriary! (Part of the Shbook)",
-    "- This is a list of currencies/features, with short descriptions and links to the wiki",
-    "- New entries are unlocked whenever a currency/feature is unlocked",
-    "- Primarily meant to help out beginners",
-    "-> Stats:",
-    "- Added prestige and daily stats (on top of all time)",
-    "- Added buttons to switch between the three types",
-    "- Huge changes to the stats code",
-    "- Left side: added labels for the sections progress, currencies and events, and other",
-    "- Right side: added labels for the sections chances and progress",
-    "- Added spacing between sections",
-    "- Added legendary Artifact chances",
-    "- Moved total Amé levels to the right side",
-    "- Moved total prestiges up",
-    "- Changed total cakes eaten to total cakes",
-    "-> Banners / Player Profile:",
-    "- Added banners",
-    "- Added 3 normal banners (unlocked at 0, 2000, 4000 HMS) and 10 event banners (13 total)",
-    "- Added banner selection",
-    "- Added the no banner banner",
-    "- The banner is displayed at the top",
-    "- Moved PFP, name, version and stats down to make space for the banner",
-    "- Improved quality of PFPs",
-    "- Added 3 new event PFPs (26 total)",
-    "- Changed started in to started",
-    "-> Pride Event:",
-    "- New event: Pride Event!",
-    "- Active from June 8th - June 22nd",
-    "- x10 Shgabb production during the event",
-    "- 3 new event PFPs, 10 Banners and 5 Achievements can be earned",
-    "- Click the button to enter Shgaybb Mode and find identical Shgabbs",
-    "- Added Pride Event background image",
-    "-> Artifacts:",
-    "- Artifacts now always award a new Artifact if none of this rarity are owned (thanks elmenda452)",
-    "- Improved Artifact pages (when using search)",
-    "-> Other:",
-    "- Section buttons now use images instead of text",
-    "- Added 10 new Achievements (5 lore, 5 event)",
-    "- Added 5 new Quotes",
-    "- Fixed Améliorer sets 5 and 6 being labeled incorrectly",
-    "- Split social section into two: info and social",
-    "- The social links are now split into 2 rows (2-2) to work better on various device sizes",
-    "- Some small bug fixes",
 ]
 
 // Various variables
@@ -144,19 +101,13 @@ var ui = {
     shgabbAmount: document.getElementById("shgabbAmount"),
     swAmount: document.getElementById("swAmount"),
     gsAmount: document.getElementById("gsAmount"),
-    shgabbAmount2: document.getElementById("shgabbAmount2"),
-    swAmount2: document.getElementById("swAmount2"),
-    gsAmount2: document.getElementById("gsAmount2"),
     siAmount: document.getElementById("siAmount"),
-    siAmount2: document.getElementById("siAmount2"),
     gemAmount: document.getElementById("gemAmount"),
-    gemAmount2: document.getElementById("gemAmount2"),
     ameAmount: document.getElementById("ameAmount"),
-    ameAmount2: document.getElementById("ameAmount2"),
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
-    artifactScrapAmount2: document.getElementById("artifactScrapAmount2"),
     bagAmount: document.getElementById("bagAmount"),
-    bagAmount2: document.getElementById("bagAmount2"),
+
+    topSquareDisplay: document.getElementById("topSquareDisplay"),
 
     // Images of currencies
     swImage: document.getElementById("swImage"),
@@ -336,12 +287,17 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "I sacrifice myself to keep this chat alive because no one will dare send anything after this - shgabb",
     "If you would add player gifts, I'd be able to send you my 168035 scraps - DaGame",
 
-    // 2.5 (5)
+    // 2.5 (5) & 2.5.3 (5)
     "I will lick whatever the next message says - Aloee",
     "Updates are not allowed also - Rofl",
     "im currently spacebarrinh - Barduzzi",
     "pray. - slowmerger",
-    "you little sheeps, why aren't you consuming? - elmenda452"
+    "you little sheeps, why aren't you consuming? - elmenda452",
+    "obama d tier, tech and dagame f tier - elmenda452",
+    "pin me to the wall - shgabb",
+    "oh no, im not THAT allergic to progress",
+    "edison intensifies - elmenda452",
+    "why do i want to know how much qian, eggs and cakes i got today am i a time traveller - elmenda452",
 ];
 
 // Notations
@@ -1126,29 +1082,31 @@ window.addEventListener('keydown', function (e) {
 }, true);
 
 function updateTopSquare() {
-    if (settings.topSquare) {
-        ui.shgabbAmount2.innerHTML = ui.shgabbAmount.innerHTML;
+    if (settings.topSquare != 1) {
+        let render = "";
 
-        if (unlockedSandwiches()) ui.swAmount2.innerHTML = ui.swAmount.innerHTML;
-        else ui.swAmount2.innerHTML = "";
+        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
+        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags"];
 
-        if (unlockedGS()) ui.gsAmount2.innerHTML = ui.gsAmount.innerHTML;
-        else ui.gsAmount2.innerHTML = "";
+        render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
 
-        if (unlockedSilicone()) ui.siAmount2.innerHTML = ui.siAmount.innerHTML;
-        else ui.siAmount2.innerHTML = "";
+        if (unlockedSandwiches()) render = render + " " + ui.swAmount.innerHTML.split(currencyNames[1]).shift();
 
-        if (unlockedGems()) ui.gemAmount2.innerHTML = ui.gemAmount.innerHTML;
-        else ui.gemAmount2.innerHTML = "";
+        if (unlockedGS()) render = render + " " + ui.gsAmount.innerHTML.split(currencyNames[2]).shift();
 
-        if (unlockedAmeliorer()) ui.ameAmount2.innerHTML = ui.ameAmount.innerHTML;
-        else ui.ameAmount2.innerHTML = "";
+        if (unlockedSilicone()) render = render + " " + ui.siAmount.innerHTML.split(currencyNames[3]).shift();
 
-        if (unlockedArtifactUpgrading()) ui.artifactScrapAmount2.innerHTML = ui.artifactScrapAmount.innerHTML;
-        else ui.artifactScrapAmount2.innerHTML = "";
+        if (settings.topSquare == 0) render = render + "<br />";
 
-        if (unlockedBags()) ui.bagAmount2.innerHTML = ui.bagAmount.innerHTML;
-        else ui.bagAmount2.innerHTML = "";
+        if (unlockedGems()) render = render + " " + ui.gemAmount.innerHTML.split(currencyNames[4]).shift();
+
+        if (unlockedAmeliorer()) render = render + " " + ui.ameAmount.innerHTML.split(currencyNames[5]).shift();
+
+        if (unlockedArtifactUpgrading()) render = render + " " + ui.artifactScrapAmount.innerHTML.split(currencyNames[6]).shift();
+
+        if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
+
+        ui.topSquareDisplay.innerHTML = render;
     }
 }
 
@@ -1409,10 +1367,8 @@ function autoSave() {
     renderPFPs();
     renderBanners();
 
-    // Every 50 saves, check for shgic
-    if (autoNotifications % 50 == 0) {
-        checkCanPlayTTT();
-    }
+    // Every save, check if a new day has risen
+    checkNewDay()
 
     // Auto Save
     exportGame("cache");
@@ -1593,7 +1549,7 @@ function importGame(source) {
     game.si = numberLoader(game.si);
 
     // Some adjustments
-    checkCanPlayTTT();
+    checkNewDay();
     pointsPlayer = 0;
     pointsHer = 0;
     trashCanBoost = 0;
@@ -1898,7 +1854,7 @@ adHandler.ontimeupdate = () => {
     }*/
 }
 
-ui.topSquare.style.display = (settings.topSquare ? "" : "none");
+ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
 
 // Update UI
 updateUpgrades();

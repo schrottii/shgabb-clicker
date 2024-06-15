@@ -45,12 +45,12 @@ var settingButtons = [
     new ToggleSetting("audio", "toggleAdMusic", "adMusic", "Ad Music"),
     new Setting("save", "exportGame", "Export Game", "Copy the savefile to clipboard"),
     new Setting("save", "importButton", "Import Game", "Import a savefile"),
-    new ToggleSetting("design", "toggleBG", "background", "No Background"),
+    new ToggleSetting("design", "toggleBG", "background", "Black Background"),
     new ToggleSetting("design", "toggleCurrent", "displayCurrent", "Current Effect Display"),
     new ToggleSetting("gameplay", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades"),
     new ToggleSetting("gameplay", "toggleUnlevel", "hideUnlevel", "Hide Unlevel Button"),
     new Setting("gameplay", "toggleNotation", "Change Notation", () => "Current: " + settings.notation),
-    new ToggleSetting("design", "toggleCurrenciesDisplay", "topSquare", "Toggle Currencies Display"),
+    new Setting("design", "toggleCurrenciesDisplay", "Currencies Display", () => "Current: " + ["Visible", "Hidden", "Compact"][settings.topSquare]),
     new ToggleSetting("gameplay", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events"),
@@ -147,8 +147,23 @@ function toggleNotation() {
 }
 
 function toggleCurrenciesDisplay() {
-    createNotification("Currencies Display " + (settings.topSquare ? "ON" : "OFF"));
-    ui.topSquare.style.display = (settings.topSquare ? "" : "none");
+    if (settings.topSquare == false || settings.topSquare == 0) {
+        // Change to 1 - hide
+        settings.topSquare = 1;
+        createNotification("Currencies Display Hidden");
+    }
+    else if (settings.topSquare == true || settings.topSquare == 1) {
+        // Change to 2 - compact
+        settings.topSquare = 2;
+        createNotification("Currencies Display Compact");
+    }
+    else if (settings.topSquare == 2) {
+        // Change to 0 - show full
+        settings.topSquare = 0;
+        createNotification("Currencies Display Visible");
+    }
+
+    ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
 
     updateTopSquare();
 }

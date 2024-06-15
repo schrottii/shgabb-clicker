@@ -59,12 +59,20 @@ function onMouseMove(e) {
     mousey = e.clientY - gameCanvas.getBoundingClientRect().top;
 }
 
+// TIME RELATED FUNCTIONS
+
 function today() {
+    // returns today's date
+    // 20240615
+
     let today = new Date();
     return (1900 + today.getYear()) + "" + (today.getUTCMonth().toString().length == 1 ? "0" + (today.getUTCMonth() + 1) : (today.getUTCMonth() + 1)) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate());
 }
 
 function formatDate(date) {
+    // formats a date
+    // June 15th 2024
+
     date = date.toString();
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let postDay = "th";
@@ -75,40 +83,49 @@ function formatDate(date) {
         if (date.substr(7, 1) == "3") postDay = "rd";
     }
 
-
     return months[date.substr(4, 2) - 1] + " " + date.substr(6, 2) + postDay + " " + date.substr(0, 4);
 }
 
-function updateMinigameTime() {
-    game.tttd = parseInt(today());
-
-    // update artifact offer
-    let newDailyArtifact = 100;
-    let dgoRar = 3;
-
-    while (newDailyArtifact == 100 && dgoRar > 0) {
-        for (a in artifacts) {
-            if (artifacts[a].rarity == dgoRar && !getArtifactByID(artifacts[a].ID).isUnlocked() && game.stats.hms >= artifacts[a].getHMSNeeded() && Math.random() > (1 - (dgoRar / 5))) newDailyArtifact = artifacts[a].ID;
-        }
-        dgoRar -= 1;
-    }
-
-    game.dgo = newDailyArtifact;
+function isNewDay() {
+    // returns true if it's a new day
+    return parseInt(today()) > parseInt(game.day);
 }
 
-function compareMinigameTime() {
-    // yyymmdd
-    return parseInt(today()) > game.tttd; // returns true if it's a new day
-}
+function checkNewDay() {
+    // checks if it's a new day, and if it is, do whatever is needed
+    // 20240615 > 20240614
 
-function checkCanPlayTTT() {
-    canPlayTTT = compareMinigameTime();
-    for (stat in game.stats_today) {
-        if (game.stats_today[stat] != undefined && game.stats_today[stat].mantissa != undefined) {
-            game.stats_today[stat] = new Decimal(0);
+    if (isNewDay()) {
+        // IMPORTANT: update time
+        game.day = parseInt(today());
+
+        // new shgic? NEW SHGIC? SHGIC REMINDER
+        if (game.day > game.tttd) {
+            canPlayTTT = true;
+            updateMinigameUI();
         }
-        else {
-            game.stats_today[stat] = 0;
+
+        // update artifact offer
+        let newDailyArtifact = 100;
+        let dgoRar = 3;
+
+        while (newDailyArtifact == 100 && dgoRar > 0) {
+            for (a in artifacts) {
+                if (artifacts[a].rarity == dgoRar && !getArtifactByID(artifacts[a].ID).isUnlocked() && game.stats.hms >= artifacts[a].getHMSNeeded() && Math.random() > (1 - (dgoRar / 5))) newDailyArtifact = artifacts[a].ID;
+            }
+            dgoRar -= 1;
+        }
+        game.dgo = newDailyArtifact;
+        updateGems();
+
+        // daily stats reset
+        for (stat in game.stats_today) {
+            if (game.stats_today[stat] != undefined && game.stats_today[stat].mantissa != undefined) {
+                game.stats_today[stat] = new Decimal(0);
+            }
+            else {
+                game.stats_today[stat] = 0;
+            }
         }
     }
 }
@@ -223,12 +240,12 @@ function minigameCheckForWinners() {
         }
         createNotification("Come back tomorrow!");
 
-        updateMinigameTime();
+        game.tttd = game.day;
         canPlayTTT = false;
         return false;
     }
     else if (pointsHer > 2 && canPlayTTT) {
-        updateMinigameTime();
+        game.tttd = game.day;
         canPlayTTT = false;
 
         statIncrease("tttl", 1);

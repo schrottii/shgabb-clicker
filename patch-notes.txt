@@ -44,6 +44,7 @@ April - June 2024:
 2.5
 2.5.1
 2.5.2
+2.5.3
 
 
 
@@ -1380,3 +1381,33 @@ Version 2.5.2:
 - Prestige Button now also shows Gems gained on Prestige (if unlocked) and Bags gained in that Prestige
 - Fixed small numbers showing unnecessary .00s
 - Added Terms of Service and a link to them
+
+
+
+2024/06/15 2.5.3:
+Version 2.5.3:
+-> Shbook:
+- Lore: Added 2 new lore pages (5 total)
+- Mobile: Reduced feature name size (top left corner)
+- Mobile: Reduced entries size (left)
+
+-> Time:
+- Reworked time related code
+- Daily things (new Artifact Offer, SSS, daily stats) are now triggered every auto save, rather than every 50th
+- Seperated SSS from other daily things
+- Fixed daily stats getting reset way too often
+
+-> Settings:
+- Renamed "No Background" to "Black Background" to avoid confusion
+- Renamed "Toggle Currencies Display" to "Currencies Display" and changed it, see section below
+
+-> Currencies Display:
+- Reworked top currencies display
+- Made its display more smooth, taking less space
+- Instead of being toggled on/off, it now has 3 modes: visible/hidden/compact
+- The new mode, compact, hides currency names
+- Improved performance
+
+-> Other:
+- Added 5 new Quotes (88 total)
+- Capitalized Gem / Gems when getting them from clicking
