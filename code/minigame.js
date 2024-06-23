@@ -101,6 +101,8 @@ function checkNewDay() {
 
         // new shgic? NEW SHGIC? SHGIC REMINDER
         if (game.day > game.tttd) {
+            pointsPlayer = 0;
+            pointsHer = 0;
             canPlayTTT = true;
             updateMinigameUI();
         }
