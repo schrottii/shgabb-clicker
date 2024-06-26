@@ -60,7 +60,7 @@ var settingButtons = [
     new Setting("save", "manualSave", "Save", "Saves the game"),
     new ToggleSetting("gameplay", "toggleNoUpgrading", "noUpgrading", "Disable Upgrading"),
     new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)"),
-    new Setting("save", "updateUI", "Refresh page", "Updates everything UI-related"),
+    new Setting("save", "updateEVERYTHING", "Refresh page", "Updates everything UI-related"),
     new Setting("save", "createBackup", "Create Backup", "Create an additional save in the cache, independent from the normal save"),
     new Setting("save", "loadBackup", "Load Backup", "Load the backup"),
     new ToggleSetting("gameplay", "toggleNoAds", "noAds", "Disable Ads"),
@@ -112,17 +112,8 @@ function toggleAdMusic() {
 }
 
 function toggleBG() {
-    var body = document.getElementsByTagName('body')[0];
-    if (body.style.backgroundImage != "none") {
-        body.style.backgroundImage = "none";
-        body.style.backgroundColor = "black";
-        createNotification("Background OFF");
-    }
-    else {
-        updateBG();
-        body.style.backgroundColor = "none";
-        createNotification("Background ON");
-    }
+    createNotification("Black Background " + (settings.background ? "ON" : "OFF"));
+    updateBG();
 }
 
 function toggleCurrent() {

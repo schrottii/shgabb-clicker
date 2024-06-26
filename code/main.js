@@ -4,9 +4,32 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.5.3";
+const gameVersion = "2.5.4";
 
 const currentPatchNotes = [
+    "The 254adnemle Update",
+    "-> Artifacts:",
+    "- Stats now show Artifacts owned of each rarity (common, rare, epic, legendary)",
+    "- Balancing, see below",
+    "- Code improvements regarding Artifact amount",
+    "-> Balance:",
+    "- Amulet of Quickgemming: 0.1s -> 0.2s",
+    "- Amulet of Gem Mines: x1.4/x1.5/x1.6 -> x1.4/x1.6/x1.8",
+    "- Amulet of Molten Bags: x1.2/x1.4/x1.6 -> x1.5/x2/x2.5",
+    "- Amulet of Bag Bank: x3/x3.5/x4 -> x4/x5/x6",
+    "- Shgabb's sleeves: x2/x4/x6 -> x6/x12/x18",
+    "- Sarah's Collection: Removed legendary Artifacts from the requirement",
+    "-> Other:",
+    "- Improved background stuff & Black Background setting",
+    "- Improved full UI updates",
+    "- PC: Reduced size of ads with boosts",
+    "- Prestige button no longer scales weirdly when zoomed",
+    "- Shgic now displays the day it was completed on after completing it",
+    "- Fixed Shgic issues",
+    "- Fixed hard reset issues",
+    "- Fixed certain texts moving down when using Chrome",
+
+    "v2.5.3",
     "-> Shbook:",
     "- Lore: Added 2 new lore pages (5 total)",
     "- Mobile: Reduced feature name size (top left corner)",
@@ -295,7 +318,7 @@ const quotes = ["(I am always nice but whatever) - Schrottii",
     "you little sheeps, why aren't you consuming? - elmenda452",
     "obama d tier, tech and dagame f tier - elmenda452",
     "pin me to the wall - shgabb",
-    "oh no, im not THAT allergic to progress",
+    "oh no, im not THAT allergic to progress - Kuitti",
     "edison intensifies - elmenda452",
     "why do i want to know how much qian, eggs and cakes i got today am i a time traveller - elmenda452",
 ];
@@ -587,7 +610,7 @@ function getProduction(sosnog = false) {
         .mul(((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.currentEffect() / 100)) + 1))
         .mul(getArtifactBoost("clickshgabb"))
         .mul((getArtifactByID(211).isEquipped() ? 0.6 : 1))
-        .mul((getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 2) * (1 / getCooldown())) : 1))
+        .mul((getArtifactByID(306).isEquipped() ? ((getArtifactLevel(306) * 6) * (1 / getCooldown())) : 1))
         .mul(getChallenge(3).getBoost())
         .mul((currentBoost == "strongerClicks" ? 5 : 1))
         .mul((getArtifactByID(200).isEquipped() ? 0 : 1))
@@ -1058,7 +1081,7 @@ function updateArtifacts() {
     // Artifacts
     if (unlockedArtifacts()) {
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + artifacts.length + " Artifacts unlocked!";
+        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + totalAmountOfArtifacts() + " Artifacts unlocked!";
     }
     else {
         ui.artifacts.innerHTML = "";
@@ -1222,9 +1245,13 @@ function updateStats() {
         + "<br />"
 
         + "<br />Progress:"
-        + "<br />Artifacts: " + getArtifactAmount() + "/" + artifacts.length
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Améliorer Levels: " + getTotalAme()
+        + "<br />Artifacts: " + getArtifactAmount() + "/" + totalAmountOfArtifacts()
+        + "<br />- Common: " + getArtifactAmount(1) + "/" + totalAmountOfArtifacts(1)
+        + "<br />- Rare: " + getArtifactAmount(2) + "/" + totalAmountOfArtifacts(2)
+        + "<br />- Epic: " + getArtifactAmount(3) + "/" + totalAmountOfArtifacts(3)
+        + "<br />- Legendary: " + getArtifactAmount(4) + "/" + totalAmountOfArtifacts(4)
         + "</div>";
 }
 
@@ -1549,12 +1576,14 @@ function importGame(source) {
     game.si = numberLoader(game.si);
 
     // Some adjustments
-    checkNewDay();
     pointsPlayer = 0;
     pointsHer = 0;
     trashCanBoost = 0;
     knifeBoost = 0;
+    canPlayTTT = false;
     resetMinigameField();
+
+    checkNewDay();
 
     let allAdsZero = true;
     for (a in game.stats.wads) {
@@ -1590,11 +1619,7 @@ function importGame(source) {
     handleArtifactsFirstTime();
     checkForZeroNext();
 
-    updateUI();
-    updateUpgrades();
-    updateArtifacts();
-    updateBG();
-    renderGemOffers();
+    updateEVERYTHING();
 
     createNotification("Game imported successfully!");
 }
@@ -1603,10 +1628,18 @@ function deleteGame() {
     if (confirm("Do you REALLY want to do this? EVERYTHING will be gone, you gain NOTHING")) {
         if (confirm("Make sure to save your progress before doing this!!! Everything will be lost!")) {
             if (confirm("If you press Yes again, everything will be gone!")) {
+                let statCurr = ["shgabb", "sw", "gs", "si"];
+                for (let currHandler in statCurr) {
+                    emptyGame[statCurr[currHandler]] = new Decimal(0);
+                    emptyGame.stats[statCurr[currHandler]] = new Decimal(0);
+                    emptyGame.stats_prestige[statCurr[currHandler]] = new Decimal(0);
+                    emptyGame.stats_prestige[statCurr[currHandler]] = new Decimal(0);
+                }
+                console.log(emptyGame);
                 game = emptyGame;
                 createNotification("Game deleted successfully!");
                 autoSave();
-                updateUI();
+                updateEVERYTHING();
             }
         }
     }
@@ -1778,12 +1811,12 @@ if (localStorage.getItem("shgabbSettings") != undefined) {
 
 // Ad init
 try {
-adHandler.oncanplay = () => {
-    if (!adLoaded) createNotification("Ads loaded!");
-    adLoaded = true;
-    ui.adLoaded.style.display = "block";
-    adHandler.volume = 0.2;
-}
+    adHandler.oncanplay = () => {
+        if (!adLoaded) createNotification("Ads loaded!");
+        adLoaded = true;
+        ui.adLoaded.style.display = "block";
+        adHandler.volume = 0.2;
+    }
 
     adHandler.onended = () => {
         currentBoost = availableBoost;
@@ -1832,12 +1865,27 @@ catch (e) {
 }
 
 function updateBG() {
-    if (isEvent("christmas") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-christmas.png)";
-    else if (isEvent("anniversary") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/anniversary-background.png)";
-    else if (isEvent("lunar") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-chinese.png)";
-    else if (isEvent("egg") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-easter.png)";
-    else if (isEvent("pride") && settings.eventBG) document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background-pride.png)";
-    else document.getElementsByTagName('body')[0].style.backgroundImage = "url(images/shgabb-background.png)";
+    var body = document.getElementsByTagName('body')[0];
+    if (settings.background) {
+        // No background (-> black)
+        body.style.backgroundImage = "none";
+        body.style.backgroundColor = "black";
+    }
+    else {
+        // Background is enabled
+        body.style.backgroundColor = "none";
+
+        if (settings.eventBG && isEvent("", true)) {
+            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-christmas.png)";
+            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/anniversary-background.png)";
+            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-chinese.png)";
+            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-easter.png)";
+            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-pride.png)";
+        }
+        else {
+            body.style.backgroundImage = "url(images/shgabb-background.png)";
+        }
+    }
 }
 
 //let lastAdTimer = 0;
@@ -1857,23 +1905,35 @@ adHandler.ontimeupdate = () => {
 ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
 
 // Update UI
-updateUpgrades();
-updateArtifacts();
-updateGems();
-updateTopSquare();
-updateCurrencies();
-renderAmeConvert();
-updateUpgradeColors();
-renderAllSelection();
-renderPFPs();
-renderBanners();
-updateBG();
-renderCurrentEvent();
-renderChallenges();
+function updateEVERYTHING() {
+    updateArtifacts();
+    updateBG();
+    updateCurrencies();
+    updateGems();
+    updateQuote();
+    updateStats();
+    updateTopSquare();
+    updateUI();
+    updateUpgradeColors();
+    updateUpgrades();
+    updateMinigameUI();
 
-renderShbook();
+    renderAmeConvert();
+    renderUpgrades();
+    renderAchievements();
+    renderAllSelection();
+    renderArtifacts();
+    renderBanners();
+    renderChallenges();
+    renderCurrentEvent();
+    renderGemOffers();
+    renderPFPs();
+    renderPlayerProfile();
+    renderSettings();
+    renderShbook();
+}
 
-renderSettings();
+updateEVERYTHING();
 
 // Generate Patch Notes
 ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BETA)" : "");

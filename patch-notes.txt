@@ -45,6 +45,7 @@ April - June 2024:
 2.5.1
 2.5.2
 2.5.3
+2.5.4
 
 
 
@@ -1257,7 +1258,7 @@ Version 2.4.2:
 
 
 2024/06/07 2.5:
-Version 2.5:
+Version 2.5 The Update that Changed the World:
 -> Break Infinity:
 - Added breakinfinity library
 - Expanded it to take less space in savecodes
@@ -1411,3 +1412,30 @@ Version 2.5.3:
 -> Other:
 - Added 5 new Quotes (88 total)
 - Capitalized Gem / Gems when getting them from clicking
+
+
+
+2024/06/26 2.5.4:
+Version 2.5.4 The 254adnemle Update:
+-> Artifacts:
+- Stats now show Artifacts owned of each rarity (common, rare, epic, legendary)
+- Balancing, see below
+- Code improvements regarding Artifact amount
+
+-> Balance:
+- Amulet of Quickgemming: 0.1s -> 0.2s
+- Amulet of Gem Mines: x1.4/x1.5/x1.6 -> x1.4/x1.6/x1.8
+- Amulet of Molten Bags: x1.2/x1.4/x1.6 -> x1.5/x2/x2.5
+- Amulet of Bag Bank: x3/x3.5/x4 -> x4/x5/x6
+- Shgabb's sleeves: x2/x4/x6 -> x6/x12/x18
+- Sarah's Collection: Removed legendary Artifacts from the requirement
+
+-> Other:
+- Improved background stuff & Black Background setting
+- Improved full UI updates
+- PC: Reduced size of ads with boosts
+- Prestige button no longer scales weirdly when zoomed
+- Shgic now displays the day it was completed on after completing it
+- Fixed Shgic issues
+- Fixed hard reset issues
+- Fixed certain texts moving down when using Chrome

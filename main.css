@@ -261,7 +261,6 @@ progress {
     border: 3px solid gold;
     font-size: 18px;
     min-height: 120px;
-    max-width: 1080px;
 }
 
 .ameliorerButton {
@@ -281,6 +280,7 @@ progress {
     width: 116px;
     vertical-align: top;
     font-family: Rw;
+    position: sticky;
 }
 
     .artifact:hover {
@@ -317,6 +317,7 @@ progress {
     min-height: 220px;
     vertical-align: top;
     font-family: Rw;
+    position: sticky;
 }
 
     .challenge:hover {
@@ -438,6 +439,7 @@ progress {
     width: 48%;
     vertical-align: top;
     min-height: 78px;
+    position: sticky;
 }
 
     .settingButton:hover {
@@ -455,9 +457,10 @@ progress {
     }
 }
 
-.playerProfile{
+.playerProfile {
     width: 100%;
     text-align: center;
+    position: sticky;
 }
 
 @media only screen and (min-width: 768px) {

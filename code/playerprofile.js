@@ -212,6 +212,6 @@ function renderPlayerProfile() {
     pctx.textAlign = "left";
     pctx.font = (16 * profileTextSizeMulti) + "px Times New Roman";
     pctx.fillText("Highest More Shgabb: " + game.stats.hms, w * 0.4, w * 0.25)
-    pctx.fillText("Artifacts Unlocked: " + getArtifactAmount() + "/" + artifacts.length, w * 0.4, w * 0.3)
+    pctx.fillText("Artifacts Unlocked: " + getArtifactAmount() + "/" + totalAmountOfArtifacts(), w * 0.4, w * 0.3)
     pctx.fillText("Achievements: " + game.ach.length + "/" + achievements.length, w * 0.4, w * 0.35)
 }

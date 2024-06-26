@@ -95,17 +95,18 @@ function checkNewDay() {
     // checks if it's a new day, and if it is, do whatever is needed
     // 20240615 > 20240614
 
+    // new shgic? NEW SHGIC? SHGIC REMINDER
+    // it's outside so that you get a new one UNTIL you do it... not just once
+    if (game.day > game.tttd) {
+        pointsPlayer = 0;
+        pointsHer = 0;
+        canPlayTTT = true;
+        updateMinigameUI();
+    }
+
     if (isNewDay()) {
         // IMPORTANT: update time
         game.day = parseInt(today());
-
-        // new shgic? NEW SHGIC? SHGIC REMINDER
-        if (game.day > game.tttd) {
-            pointsPlayer = 0;
-            pointsHer = 0;
-            canPlayTTT = true;
-            updateMinigameUI();
-        }
 
         // update artifact offer
         let newDailyArtifact = 100;
@@ -370,6 +371,11 @@ function updateMinigameUI() {
         minigameDrawCircle(70 + (autoNotifications % 50), 128);
         minigameDrawX(255 - (70 + (autoNotifications % 50)), 132);
         minigameUpdateText(autoNotifications % 50 == 49 ? "Kiss! <3" : "Come back tomorrow!");
+
+        ctx.font = "20px Times New Roman";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText(formatDate(game.tttd), w / 2, h / 6 + h / 64 + (h / 24), w - (w / 64 + (w / 6) * 2));
     }
 }
 

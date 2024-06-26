@@ -225,7 +225,7 @@ function renderArtifacts() {
     }
 
 	// Page buttons
-	if (game.a.length > 50) {
+	if (getArtifactAmount() > 50) {
 		render = render + "<br /><button class='grayButton' onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
 		render = render + "<button class='grayButton' onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
     }
@@ -250,7 +250,7 @@ function changeArtifactMode(nr) {
 
 function changeArtifactPage(change) {
 	if (change == 0 && artifactPage > 1) artifactPage -= 1;
-	if (change == 1 && artifactPage < game.a.length / 50) artifactPage += 1;
+	if (change == 1 && artifactPage < getArtifactAmount() / 50) artifactPage += 1;
 	updateArtifacts();
 }
 
@@ -481,12 +481,33 @@ function destroyArtifact(id) {
     }
 }
 
-function getArtifactAmount() {
-	if (game.a.includes(0)) return game.a.length - 1;
-	return game.a.length;
+function getArtifactAmount(rarity=0) {
+	// Returns the amount of artifacts the player has of a set rarity
+	// 0 = all, 1 = common, 2 = rare, 3 = epic, 4 = legendary
+	// note: 0 in game.a is the confirmation your clicks prior to the release of Artifacts were used
+	if (rarity == 0) return game.a.includes(0) ? game.a.length - 1 : game.a.length;
+
+	let amount = 0;
+	for (a in game.a) {
+		if (game.a[a] == 0) continue;
+		if (getArtifactByID(game.a[a]).rarity == rarity) amount++;
+	}
+
+	return amount;
 }
 
+function totalAmountOfArtifacts(rarity=0) {
+	// Returns the amount of artifacts of a set rarity
+	// 0 = all, 1 = common, 2 = rare, 3 = epic, 4 = legendary
+	if (rarity == 0) return artifacts.length;
 
+	let amount = 0;
+	for (a in artifacts) {
+		if (artifacts[a].rarity == rarity) amount++;
+	}
+
+	return amount;
+}
 
 // artifacts
 var knifeBoost = 0;
@@ -537,11 +558,11 @@ var artifacts = [
 	new Artifact(219, 2, 2, "Amulet of Plastic Start", "amulet.png", "si", level => 1 + 3 * level, { noPercentage: true, prefix: "x", trigger: () => game.stats_prestige.playTime < 180, desc: "For 3 minutes after a prestige" }),
 	new Artifact(220, 2, 2, "Amulet of Baked Silica", "amulet.png", "clicksi", level => 3 + level, { prefix: "x", trigger: () => getCooldown() >= 3, desc: "If the cooldown is more than 3 sec (not current)" }),
 	new Artifact(221, 2, 1, "Amulet of Molten Food", "amulet.png", "sw", level => 6 + 2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
-	new Artifact(222, 2, 1, "Amulet of Quickgemming", "amulet.png", "gems", level => 1.2 + 0.2 * level, { noPercentage: true, trigger: () => clickCooldown == 0.1, desc: "If the click cooldown is 0.1s", maxLevel: 3 }),
-	new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png", "gemchance", level => 1.3 + 0.1 * level, { noPercentage: true, trigger: () => game.gems < 300, desc: "If owning less than 300 Gems", maxLevel: 3 }),
-	new Artifact(224, 2, 4, "Amulet of Molten Bags", "amulet.png", "bags", level => 1 + 0.2 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
+	new Artifact(222, 2, 1, "Amulet of Quickgemming", "amulet.png", "gems", level => 1.2 + 0.2 * level, { noPercentage: true, trigger: () => clickCooldown == 0.2, desc: "If the click cooldown is 0.2s", maxLevel: 3 }),
+	new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png", "gemchance", level => 1.2 + 0.2 * level, { noPercentage: true, trigger: () => game.gems < 300, desc: "If owning less than 300 Gems", maxLevel: 3 }),
+	new Artifact(224, 2, 4, "Amulet of Molten Bags", "amulet.png", "bags", level => 1 + 0.5 * level, { prefix: "x", trigger: () => sandwichFreezeTime < 1 && sandwichFreezeTime > 0, desc: "If the fridge has less than 1 second remaining" }),
 	new Artifact(225, 2, 4, "Amulet of Lazy Bags", "amulet.png", "bags", level => 1 + 0.2 * level, { desc: "But 5x longer click cooldown" }),
-	new Artifact(226, 2, 4, "Amulet of Bag Bank", "amulet.png", "bags", level => 2.5 + 0.5 * level, { trigger: () => game.stats_prestige.playTime >= 900, desc: "If the last prestige was at least 15 minutes ago" }),
+	new Artifact(226, 2, 4, "Amulet of Bag Bank", "amulet.png", "bags", level => 3 + 1 * level, { trigger: () => game.stats_prestige.playTime >= 900, desc: "If the last prestige was at least 15 minutes ago" }),
 	new Artifact(227, 2, 1, "Amulet of Eating Bread", "amulet.png", "resetshgabb", level => game.sw * level, { prefix: "+", noPercentage: true }),
 
 	new Artifact(300, 3, 1, "Shgabb's handcuffs", "handcuffs.png", "complicated", 0, { desc: level => "Auto Shgabb gain is multiplied by the click cooldown x" + (level * 2) }),
@@ -550,10 +571,10 @@ var artifacts = [
 	new Artifact(303, 3, 1, "P2W", "p2w.png", "gems", level => 2.5 + level * 0.5, { noPercentage: true, trigger: () => currentBoost != "none", desc: "While an ad is active", maxLevel: 3 }),
 	new Artifact(304, 3, 2, "Silicone implants", "implants.png", "complicated", 1, { desc: level => "Completely stops Silicone production, but its effects are +" + (100 + 100 * level) + "%" }),
 	new Artifact(305, 3, 1, "Sosnog", "sosnog.png", "shgabb", level => 3 + (11 * (level - 1)), { desc: "Switches Shgabb from clicks and Auto Shgabb" }),
-	new Artifact(306, 3, 1, "Shgabb's sleeves", "sleeves.png", "complicated", 0, { desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 2) + "<br>(Current: x" + ((level * 2) * (1 / clickCooldown)).toFixed(2) + ")" }),
+	new Artifact(306, 3, 1, "Shgabb's sleeves", "sleeves.png", "complicated", 0, { desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 6) + "<br>(Current: x" + ((level * 6) * (1 / clickCooldown)).toFixed(2) + ")" }),
 	new Artifact(307, 3, 1, "Shgabb's Dice", "dice-3.png", "complicated", 0, { desc: level => "Boosts Shgabb, Sandwiches by x" + diceAmount + " (" + level + "-6)" }),
 	new Artifact(308, 3, 1, "Gem Frustration", "frustration.png", "complicated", level => level * frustration, { desc: level => "Increases Gem chance and cap by " + (level * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5)).toFixed(2) + "% for every click without gems<br>(Current: +" + getArtifactEffect(308).toFixed(2) + "%)", maxLevel: 3 }),
-	new Artifact(309, 3, 3, "Sarah's Collection", "sarah.png", "gemchance", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => (getArtifactAmount() == artifacts.length), desc: "If you own all Artifacts", maxLevel: 3 }),
+	new Artifact(309, 3, 3, "Sarah's Collection", "sarah.png", "gemchance", level => 1.5 + level * 0.5, { noPercentage: true, trigger: () => ((getArtifactAmount() - getArtifactAmount(4)) == (totalAmountOfArtifacts() - totalAmountOfArtifacts(4))), desc: "If you own all common, rare and epic Artifacts", maxLevel: 3 }),
 	new Artifact(310, 3, 3, "Trash Can", "trashcan.png", "artifactchance", level => Math.max(1, Math.min(level * 4, trashCanBoost)), { noPercentage: true, desc: level => "+x" + (level + 1) + " per destroy, goes down by clicking<br>" + ((Math.max(1, trashCanBoost) > level * 4) ? ("Capped for " + Math.round(10 * trashCanBoost - level * 4) + " clicks") : ("Max: x" + (level * 4))), maxLevel: 3 }),
 	new Artifact(311, 3, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png", "prestigegs", level => new Decimal(game.si.log10()).sub(7).add(level * 2).max(1), { noPercentage: true, desc: level => "Lose Silicone (not upgs) on prestige, but get more GS" }),
 	new Artifact(312, 3, 3, "Semicone", "semicone.png", "si", level => 10 + 5 * level, { trigger: () => game.gems > 0, noPercentage: true, desc: level => "10% chance of consuming a Gem every time Silicone is produced" }),
