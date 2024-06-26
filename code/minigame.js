@@ -97,7 +97,7 @@ function checkNewDay() {
 
     // new shgic? NEW SHGIC? SHGIC REMINDER
     // it's outside so that you get a new one UNTIL you do it... not just once
-    if (game.day > game.tttd) {
+    if (game.day > game.tttd && canPlayTTT == false) {
         pointsPlayer = 0;
         pointsHer = 0;
         canPlayTTT = true;
