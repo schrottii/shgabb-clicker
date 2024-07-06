@@ -823,6 +823,29 @@ function buyMaxFunction(id) {
             }
         }
 
+        if (id.ID == "moreShgabb") {
+            if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) {
+                let previousHms = game.stats_prestige.hms;
+                if (game.upgradeLevels.moreShgabb > game.stats_prestige.hms) game.stats_prestige.hms = game.upgradeLevels.moreShgabb;
+
+                if (unlockedBags()) {
+                    let bagi = Math.ceil((ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1) * (Math.floor(game.stats_prestige.hms / 1000) - Math.floor(previousHms / 1000))
+                        * getArtifactsSimpleBoost("bags"));
+
+                    if (bagi > 0) {
+                        game.bags += bagi;
+                        statIncrease("bags", bagi);
+                        createNotification("+" + bagi + " Bags!");
+                    }
+                }
+            }
+
+            game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+            game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
+            game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
+            renderShbook();
+        }
+
         artifactEvent("onUpgrade", { "multi": id.currentLevel() - levelStart });
         createNotification("Upgrade bought max. successfully");
 
