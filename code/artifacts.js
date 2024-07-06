@@ -1216,7 +1216,7 @@ var artifacts = [
             }
         }),
 
-    new Artifact(318, 4, 1, "Shgabb's Fart", "fart.png",
+    new Artifact(318, 3, 1, "Shgabb's Fart", "fart.png",
         {
             desc: level => "Nice sounds + " + (10 * level) + "% of current Shgabb or 0.1% of highest, whichever is lower",
             onClick: (level) => {
