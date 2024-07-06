@@ -77,7 +77,7 @@ class Upgrade {
         else returnPrice = new Decimal(this.price(this.currentLevel() + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0)));
 
         if (this.currency == "shgabb") returnPrice = returnPrice.div(getChallenge(6).getBoost());
-        if (isChallenge(6)) returnPrice = returnPrice.mul(Math.pow((this.ID == "moreShgabb" ? 1.1 : 4) + getChallenge(6).getTier() / 10, this.currentLevel()));
+        if (isChallenge(6)) returnPrice = returnPrice.mul(new Decimal((this.ID == "moreShgabb" ? 1.1 : 4) + getChallenge(6).getTier() / 10).pow(this.currentLevel()));
         return returnPrice.max(1).floor(); // let's be nice ;)
     }
 

@@ -48,6 +48,7 @@ April - June 2024:
 2.5.4
 July - September 2024:
 2.6
+2.6.1
 
 
 
@@ -1445,8 +1446,7 @@ Version 2.5.4 The 254adnemle Update:
 
 
 2024/07/06 2.6:
-Version 2.6 The Artification Update
-
+Version 2.6 The Artification Update:
 -> Artifacts:
 - Reworked Artifacts / Artifact code, allowing for more complex effects, more possibilities, quality and quantity
 - Added 10 new Artifacts (75 total, 4 common, 1 rare, 3 epic, 2 legendary)
@@ -1496,3 +1496,34 @@ Version 2.6 The Artification Update
 - Buy max no longer creates a notification for every single level bought
 - Fixed Shgic being outdated after loading the game
 - Fixed Bags/Fridge bug
+
+
+
+2024/07/06 2.6.1:
+Version 2.6.1:
+-> Shgic Animations:
+- Added experimental Shgic animations
+- After placing down an X or O, it's thin at first but returns to its usual obesity
+- The border now cycles through various shades of blue (rather than always being light blue)
+- After placing down anything, it becomes light blue for a short moment
+
+-> Design:
+- Added text to the row of bars, displaying the seconds remaining
+- Sections: Added images for Stats and Settings
+
+-> Achievements:
+- Added 10 new Achievements (140 total)
+- Moved some Achievements
+
+-> Balance:
+- Changed minimum click cooldown from 0.2s to 0.1s
+- Ill-lit Dwn-upg (Challenge 5): 10%/tier -> 25%/tier
+- Amulet of Quickgemming: exactly 0.2s (or 0.1s) -> 0.25s or faster
+
+-> Other:
+- Artifact search now also supports L1 instead of level 1
+- Artifact search now redirects to page 1 if the others are empty & hides page buttons
+- Amulet of Slowgemming, Dinosaurs, Baked Silica: Made it more clear that 3 seconds counts too
+- Background now updates after a prestige
+- Fixed fridge bar only moving when looking at Sandwiches
+- Fixed free upgrades bug

@@ -64,7 +64,7 @@ function renderSelection(sel) {
         selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenge1.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
     }
     if (sel == 3) {
-        selsDisplay = ["Cheats", '<img class="currency" src="images/shgabbicon.png" />', '<img class="currency" src="images/currencies/qian.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/prestige.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
+        selsDisplay = ["Cheats", '<img class="currency" src="images/shgabbicon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
     if (sel == 4) {
         selsDisplay = ["Lore", "Currenciary", "Featuriary"];

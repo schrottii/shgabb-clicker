@@ -17,9 +17,18 @@
     <!-- <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br /> -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <div style="width: 100%; overflow: hidden; white-space: nowrap; display: flex ">
-        <progress min="0" max="100" value="0" id="autoBar" style="width: 33%; display: inline" class="progressDim"></progress><br />
-        <progress min="0" max="60" value="60" id="sandwichBar" style="width: 33%; display: inline"></progress><br />
-        <progress min="0" max="15" value="0" id="prestigeBar" style="width: 33%; display: inline" class="progressYellow"></progress><br />
+        <div class="textBar" style="width: 33%">
+            <span id="autoBarText">oops!</span>
+            <progress min="0" max="1" value="0" id="autoBar" style="width: 100%; display: inline" class="progressDim"></progress>
+        </div>
+        <div class="textBar" style="width: 33%">
+            <span id="sandwichBarText">the game</span>
+            <progress min="0" max="100" value="0" id="sandwichBar" style="width: 100%; display: inline"></progress>
+        </div>
+        <div class="textBar" style="width: 33%">
+            <span id="prestigeBarText">crashed</span>
+            <progress min="0" max="100" value="0" id="prestigeBar" style="width: 100%; display: inline" class="progressYellow"></progress>
+        </div>
     </div>
     <span id="newestnotif"></span>
     <!-- Top, currencies -->

@@ -118,6 +118,6 @@ var challenges = [
     new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t =>  Math.floor(6 * Math.pow(6, t)), "Shgabb"),
     new Challenge(3, 8000, t => 6000 + 2000 * t, "Manual Grind", "Click cooldown is fixed at 20s and auto is disabled", t =>  Math.floor(5 * Math.pow(2.2, t)), "Click Shgabb"),
     new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", "Shgabb Upgrades lose levels all the time", t =>  Math.floor(5 * Math.pow(2.2, t)), "Auto Shgabb"),
-    new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.1 * t, "Artifact drop rate"),
+    new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.25 * t, "Artifact drop rate"),
     new Challenge(6, 12000, t => 400 + 100 * t, "Inflation", "Upgrades are far more expensive", t => 2 * Math.pow(1.25, t), "cheaper Shgabb upgrades"),
 ];

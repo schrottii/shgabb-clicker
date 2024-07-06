@@ -11,7 +11,7 @@ function getGemChance(cap=10) {
         * (getArtifact(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
         * cakeValue(3, 1)
-    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.05 : 0.5) ): 0);
+    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1) ): 0);
 }
 
 function getGem() {

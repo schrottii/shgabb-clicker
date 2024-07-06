@@ -137,6 +137,20 @@ progress {
         background: dimgray;
     }
 
+.textBar span {
+    position: absolute;
+    display: inline-block;
+    color: black;
+    text-align: center;
+    width: 100%;
+    font-family: Rw-title;
+}
+
+.textBar {
+    display: block;
+    position: relative;
+    width: 100%;
+}
 
 /* ad bar */
 .adBar {

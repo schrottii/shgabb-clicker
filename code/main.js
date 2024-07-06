@@ -4,9 +4,37 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.6";
+const gameVersion = "2.6.1";
 
 const currentPatchNotes = [
+    "-> Shgic Animations:",
+    "- Added experimental Shgic animations",
+    "- After placing down an X or O, it's thin at first but returns to its usual obesity",
+    "- The border now cycles through various shades of blue (rather than always being light blue)",
+    "- After placing down anything, it becomes light blue for a short moment",
+
+    "-> Design:",
+    "- Added text to the row of bars, displaying the seconds remaining",
+    "- Sections: Added images for Stats and Settings",
+
+    "-> Achievements:",
+    "- Added 10 new Achievements (140 total)",
+    "- Moved some Achievements",
+
+    "-> Balance:",
+    "- Changed minimum click cooldown from 0.2s to 0.1s",
+    "- Ill-lit Dwn-upg (Challenge 5): 10%/tier -> 25%/tier",
+    "- Amulet of Quickgemming: exactly 0.2s (or 0.1s) -> 0.25s or faster",
+
+    "-> Other:",
+    "- Artifact search now also supports L1 instead of level 1",
+    "- Artifact search now redirects to page 1 if the others are empty & hides page buttons",
+    "- Amulet of Slowgemming, Dinosaurs, Baked Silica: Made it more clear that 3 seconds counts too",
+    "- Background now updates after a prestige",
+    "- Fixed fridge bar only moving when looking at Sandwiches",
+    "- Fixed free upgrades bug",
+
+    "v2.6",
     "The Artification Update",
     "-> Artifacts:",
     "- Reworked Artifacts / Artifact code, allowing for more complex effects, more possibilities, quality and quantity",
@@ -74,10 +102,15 @@ var autoNotifications = 0;
 var ui = {
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
+    adBar: document.getElementById("adBar"),
+
     sandwichBar: document.getElementById("sandwichBar"),
     autoBar: document.getElementById("autoBar"),
     prestigeBar: document.getElementById("prestigeBar"),
-    adBar: document.getElementById("adBar"),
+
+    sandwichBarText: document.getElementById("sandwichBarText"),
+    autoBarText: document.getElementById("autoBarText"),
+    prestigeBarText: document.getElementById("prestigeBarText"),
 
     // Cheats
     cheatCurrency: document.getElementById("cheatCurrency"),
@@ -645,7 +678,7 @@ var clickCooldown = 5;
 function getCooldown() {
     // click cooldown
     if (lunarAntiCooldown > 0) return 0;
-    let CD = Math.max(0.2, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
+    let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
         / (currentBoost == "fasterShgabb" ? 5 : 1)
         / getArtifactsSimpleBoost("clickspeed")
         / cakeValue(5, 1)
@@ -924,6 +957,7 @@ function prestigeButton() {
             enableThisChallenge = 0;
         }
 
+        updateBG();
         updateUpgrades();
         renderChallenges();
         createNotification("Prestiged for " + fn(amount) + " Golden Shgabb!");
@@ -1217,10 +1251,10 @@ function updateStats() {
 
         // RIGHT SIDE
         + "Chances:"
-        + "<br />Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.2 ? " [MAX]" : "")
+        + "<br />Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
-        + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + getArtifact(308).getValue(0) ? " [MAX]" : "") + " (+" + getArtifactsSimpleBoost("gems").toFixed(1) + ")"
+        + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + getArtifact(308).getValue(0) ? " [MAX]" : "") + " (+" + getArtifactsSimpleBoost("gems").toFixed(2) + ")"
         + "<br />Luck: " + Math.floor(luck)
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
         + "<br />"
@@ -1287,14 +1321,15 @@ function updateUI() {
 
     // Sandwiches
     if (selection("sandwich")) {
-        ui.sandwichBar.value = sandwichFreezeTime;
-        ui.sandwichBar.max = getFreezeTime();
-
         ui.autoInfo.innerHTML = "<span class='square2'>Fridge Time: " + getFreezeTime().toFixed(0)
             + "<br />Normal Auto Prod.: " + fn(getAutoProduction(false, "auto"))
             + "<br />Cheese Prod.: " + fn(getAutoProduction(false, "cheese"))
             + "<br />Total Prod.: " + fn(getAutoProduction()) + "</span>";
     }
+
+    ui.sandwichBar.value = sandwichFreezeTime;
+    ui.sandwichBar.max = getFreezeTime();
+    ui.sandwichBarText.innerHTML = ui.sandwichBar.value.toFixed(1) + "s/" + ui.sandwichBar.max + "s";
 
     // Ads
     if (game.stats.sw > 9 && adTime > 0 && !settings.noAds) {
@@ -1342,11 +1377,6 @@ function updateUI() {
     if (selection("achievements")) {
         renderAchievements();
         ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
-    }
-
-    // Minigame
-    if (selection("minigames")) {
-        updateMinigameUI();
     }
 
     // Plaj Provif
@@ -1408,6 +1438,7 @@ function autoSave() {
         if (achievements[a].unlock() && !game.ach.includes(achievements[a].ID)) {
             game.ach.push(achievements[a].ID);
             newAch = true;
+            console.log("you gotta, gotta")
             createNotification("New achievement: " + achievements[a].name);
 
             ui.newArtifactText = "Achievement Unlocked!";
@@ -1675,9 +1706,19 @@ function loop(tick) {
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
     }
 
-    ui.autoBar.value = sandwichTime * 100;
+    // Minigame
+    if (selection("minigames")) {
+        lastMove[2] += time / 2;
+        lastHerMove[2] += time / 2;
+        updateMinigameUI();
+    }
+
+    ui.autoBar.value = sandwichTime;
+    ui.autoBarText.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+
     ui.prestigeBar.value = game.stats_prestige.playTime;
     ui.prestigeBar.max = game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
+    ui.prestigeBarText.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
 
     // Egg Hunt
     if (isEvent("egg")) {

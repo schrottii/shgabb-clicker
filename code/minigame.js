@@ -15,6 +15,8 @@ let drawStartY = h / 3;
 
 let pointsPlayer = 0;
 let pointsHer = 0;
+let lastMove = [999, 999, 999];
+let lastHerMove = [999, 999, 999];
 
 var canPlayTTT = false;
 
@@ -45,6 +47,7 @@ function ongameCanvasClick() {
                 && mousey >= hitboxes[l][1] && mousey <= hitboxes[l][1] + (h / 8)
                 && minigameField[Math.floor(l / 3)][l % 3] == 0) {
                 minigameField[Math.floor(l / 3)][l % 3] = 1;
+                lastMove = [Math.floor(l / 3), l % 3, 0.1];
 
                 if (minigameCheckForWinners()) {
                     minigameEnemyMove();
@@ -173,6 +176,7 @@ function minigameEnemyMove() {
         let randomPlaced = Math.floor(Math.random() * 9);
         if (minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] == 0) {
             minigameField[Math.floor(randomPlaced / 3)][randomPlaced % 3] = 2;
+            lastHerMove = [Math.floor(randomPlaced / 3), randomPlaced % 3, 0.1];
             enemyMove = 1;
         }
     }
@@ -281,10 +285,15 @@ function minigameClear() {
 function minigameDrawBackground() {
     minigameClear();
     ctx.lineWidth = 1;
-    ctx.fillStyle = "lightblue";
+
+    let becomeWhite = Math.floor(((game.stats.playTime * 5) % 255) / 1.5);
+    if (lastMove[2] < 1) ctx.fillStyle = "lightblue";
+    else ctx.fillStyle = "rgb(" + becomeWhite + ", " + becomeWhite + ", " + Math.max(80, Math.floor((game.stats.playTime * 5) % 255)) + ")";
     ctx.fillRect(w / 64, h / 64, w - (w / 32), h - (h / 32));
+
     ctx.fillStyle = "black";
     ctx.fillRect(w / 64 + (w / 64), h / 64 + (h / 64), w - (w / 16), h - (h / 16));
+
     ctx.fillStyle = "white";
     ctx.fillRect(w / 64 + (w / 32), h / 64 + (h / 8), w - (w / 8) + (w / 32), h - (h / 8) - (h / 16));
 
@@ -299,9 +308,9 @@ function minigameUpdateText(text) {
     ctx.fillText(text, w / 2, h / 24 + h / 64 + (h / 24), w - (w / 64 + (w / 6) * 2));
 }
 
-function minigameDrawCircle(x, y) {
+function minigameDrawCircle(x, y, widthMulti=1) {
     ctx.strokeStyle = "blue";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = widthMulti * 4;
 
     ctx.beginPath();
     ctx.arc(x + (w / 12) - 4 * Math.PI, y + (w / 12) - 2 * Math.PI, w / 16, 0, 2 * Math.PI);
@@ -310,9 +319,9 @@ function minigameDrawCircle(x, y) {
     ctx.lineWidth = 1;
 }
 
-function minigameDrawX(x, y) {
+function minigameDrawX(x, y, widthMulti=1) {
     ctx.strokeStyle = "red";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = widthMulti * 4;
 
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -339,8 +348,8 @@ function minigameDrawHitbox(x, y) {
 
 function minigameRenderPos(x, y, X, Y) {
     //if (minigameField[y][x] == 0) minigameDrawHitbox(X, Y);
-    if (minigameField[y][x] == 1) minigameDrawX(X, Y);
-    if (minigameField[y][x] == 2) minigameDrawCircle(X, Y);
+    if (minigameField[y][x] == 1) minigameDrawX(X, Y, lastMove[0] == y && lastMove[1] == x ? Math.min(1, lastMove[2]) : 1);
+    if (minigameField[y][x] == 2) minigameDrawCircle(X, Y, lastHerMove[0] == y && lastHerMove[1] == x ? Math.min(1, lastHerMove[2]) : 1);
 }
 
 function minigameDrawField() {

@@ -253,7 +253,7 @@ class Artifact {
 
     innerRender() {
         // this is used for the search, it removes some keywords like "onclick" or "font-size"
-        return this.ID + " " + this.image + (this.isEquipped() && !this.isUpgradable() ? "[EQUIPPED] " : " ") + this.name + " " + this.getRarity() + " Level " + getArtifact(this.ID).getLevel()
+        return this.ID + " " + this.image + (this.isEquipped() && !this.isUpgradable() ? "[EQUIPPED] " : " ") + this.name + " " + this.getRarity() + " Level " + getArtifact(this.ID).getLevel() + " L" + getArtifact(this.ID).getLevel()
             + " " + this.renderSimpleEffect() + this.renderDescription() + " tier " + this.tier;
     }
 
@@ -344,7 +344,7 @@ function allArtifactsOfRarity(rarity) {
 function anyArtifactsOfRarity(rarity) {
     // returns true if you have more than 0 artis of this rarity
     // 1 (common) - 4 (legendary)
-    for (a in artifacts) {
+    for (let a in artifacts) {
         if (artifacts[a].rarity == rarity && artifacts[a].isUnlocked()) return true;
     }
     return false;
@@ -358,7 +358,7 @@ function getArtifactAmount(rarity = 0) {
     if (rarity == 0) return game.a.includes(0) ? game.a.length - 1 : game.a.length;
 
     let amount = 0;
-    for (a in game.a) {
+    for (let a in game.a) {
         if (game.a[a] == 0) continue;
         if (getArtifact(game.a[a]).rarity == rarity) amount++;
     }
@@ -439,6 +439,8 @@ function renderArtifacts() {
         }
     }
 
+    if (renderTheseArtifacts.length < 50) artifactPage = 1;
+
     // Render the Artifacts that were gathered
     for (ara = 0; ara < Math.min(50, renderTheseArtifacts.length); ara++) {
         if (getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * 50)]) == undefined) break;
@@ -446,7 +448,7 @@ function renderArtifacts() {
     }
 
     // Page buttons
-    if (getArtifactAmount() > 50) {
+    if (renderTheseArtifacts.length > 50) {
         render = render + "<br /><button class='grayButton' onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
         render = render + "<button class='grayButton' onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
     }
@@ -903,7 +905,7 @@ var artifacts = [
 
     new Artifact(205, 2, 1, "Amulet of Slowgemming", "amulet.png",
         {
-            prefix: "x", desc: "If the cooldown is more than 3 sec (not current)", maxLevel: 3,
+            prefix: "x", desc: "If the cooldown is 3s or longer (not current)", maxLevel: 3,
             simpleBoost: ["gemchance", level => 5 + level, () => getCooldown() >= 3]
         }),
 
@@ -969,7 +971,7 @@ var artifacts = [
 
     new Artifact(216, 2, 3, "Amulet of Dinosaurs", "amulet.png",
         {
-            prefix: "x", desc: "If the cooldown is more than 3 sec (not current)", maxLevel: 3,
+            prefix: "x", desc: "If the cooldown is 3s or longer (not current)", maxLevel: 3,
             simpleBoost: ["artifactchance", level => 3 + level, () => getCooldown() >= 3]
         }),
 
@@ -993,7 +995,7 @@ var artifacts = [
 
     new Artifact(220, 2, 2, "Amulet of Baked Silica", "amulet.png",
         {
-            prefix: "x", desc: "If the cooldown is more than 3 sec (not current)",
+            prefix: "x", desc: "If the cooldown is 3s or longer (not current)",
             simpleBoost: ["clicksi", level => 3 + level, () => getCooldown() >= 3]
         }),
 
@@ -1005,8 +1007,8 @@ var artifacts = [
 
     new Artifact(222, 2, 1, "Amulet of Quickgemming", "amulet.png",
         {
-            desc: "If the click cooldown is 0.2s", maxLevel: 3,
-            simpleBoost: ["gems", level => 1.2 + 0.2 * level, () => clickCooldown == 0.2]
+            desc: "If the click cooldown is 0.25s or less", maxLevel: 3,
+            simpleBoost: ["gems", level => 1.2 + 0.2 * level, () => clickCooldown <= 0.25]
         }),
 
     new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png",
@@ -1124,7 +1126,7 @@ var artifacts = [
     new Artifact(308, 3, 1, "Gem Frustration", "frustration.png",
         {
             prefix: "+", desc: level => "Increases Gem chance and cap by " + (level * (getArtifact(200).isEquipped() ? 0.05 : 0.5)).toFixed(2) + "% for every click without gems<br>(Current: +" + (level * 0.5 * getArtifact(308).getValue(0)).toFixed(2) + "%)", maxLevel: 3,
-            simpleBoost: ["gemchance", level => level * 0.5 * getArtifact(308).getValue(0)],
+            simpleBoost: ["gemchance", level => level * 0.5 * getArtifact(308).getValue(0), () => false],
             value: [0, 0, 300],
             onGem: (level, v) => {
                 if (v.amount == 0) getArtifact(308).increaseValue(1);
