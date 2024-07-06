@@ -114,7 +114,7 @@ function checkNewDay() {
 
         while (newDailyArtifact == 100 && dgoRar > 0) {
             for (a in artifacts) {
-                if (artifacts[a].rarity == dgoRar && !getArtifactByID(artifacts[a].ID).isUnlocked() && game.stats.hms >= artifacts[a].getHMSNeeded() && Math.random() > (1 - (dgoRar / 5))) newDailyArtifact = artifacts[a].ID;
+                if (artifacts[a].rarity == dgoRar && !getArtifact(artifacts[a].ID).isUnlocked() && game.stats.hms >= artifacts[a].getHMSNeeded() && Math.random() > (1 - (dgoRar / 5))) newDailyArtifact = artifacts[a].ID;
             }
             dgoRar -= 1;
         }

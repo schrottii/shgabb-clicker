@@ -5,6 +5,8 @@
 // sel 3: cheats - stats - achievements - other (social, patch notes)
 // sel 4: shbook: lore - currencies - features
 
+var selectedSelection = 1;
+
 var sections = {
     // sel 1
     shgabb: document.getElementById("shgabbSection"),
@@ -41,30 +43,35 @@ var sections = {
     selection4: document.getElementById("selection4"),
 }
 
+var selections = ["shgabb", "none", "social", "currencies"];
+var selectionTypes = [
+    ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags"],
+    ["gems", "artifacts", "challenges", "minigames", "events"],
+    ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
+    ["lore", "currencies", "features"]
+    ];
+
 function renderSelection(sel) {
     let render = ``;
     let sels = [];
 
     // Buttons
+    sels = selectionTypes[sel - 1];
     if (sel == 1) {
-        sels = ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags"];
         selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag")];
     }
     if (sel == 2) {
-        sels = ["gems", "artifacts", "challenges", "minigames", "events"];
         selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenge1.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
     }
     if (sel == 3) {
-        sels = ["cheats", "playerprofile", "stats", "achievements", "settings", "social"];
         selsDisplay = ["Cheats", '<img class="currency" src="images/shgabbicon.png" />', '<img class="currency" src="images/currencies/qian.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/prestige.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
     if (sel == 4) {
-        sels = ["lore", "currencies", "features"];
         selsDisplay = ["Lore", "Currenciary", "Featuriary"];
     }
 
     for (s in sels) {
-        if (isSelectionUnlocked(sels[s])) render = render + `<button class="grayButton" style="background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
+        if (isSelectionUnlocked(sels[s])) render = render + `<button class="grayButton" style="border: 2px solid ` + (selectedSelection == sel ? "darkorange" : "darkgray") + `; background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 
@@ -82,7 +89,7 @@ function selection(name) {
 }
 
 function isSelectionUnlocked(name) {
-    if (typeof (knifeBoost) == "undefined") return false;
+    // if (typeof (knifeBoost) == "undefined") return false; // what the heck is this line T_T
     switch (name) {
         case "shgabb":
             return true;
@@ -127,6 +134,9 @@ function isSelectionUnlocked(name) {
             return game.stats.hms >= 25;
         case "features":
             return game.stats.hms >= 25;
+
+        case "none":
+            return true;
     }
 }
 
@@ -137,11 +147,12 @@ function renderAllSelection() {
     renderSelection(4);
 }
 
-var selections = ["shgabb", "none", "social", "currencies"];
-
 function changeSelection(sel, sels) {
     if (selections[sel - 1] == sels) selections[sel - 1] = "none";
     else selections[sel - 1] = sels;
 
-    renderSelection(sel);
+    selectedSelection = sel;
+
+    // renderSelection(sel);
+    renderAllSelection();
 }

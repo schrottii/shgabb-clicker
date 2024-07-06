@@ -16,6 +16,11 @@
     <span id="quote"></span><br />
     <!-- <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br /> -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
+    <div style="width: 100%; overflow: hidden; white-space: nowrap; display: flex ">
+        <progress min="0" max="100" value="0" id="autoBar" style="width: 33%; display: inline" class="progressDim"></progress><br />
+        <progress min="0" max="60" value="60" id="sandwichBar" style="width: 33%; display: inline"></progress><br />
+        <progress min="0" max="15" value="0" id="prestigeBar" style="width: 33%; display: inline" class="progressYellow"></progress><br />
+    </div>
     <span id="newestnotif"></span>
     <!-- Top, currencies -->
     <div class="topSquare" id="topSquare">
@@ -52,12 +57,11 @@
 
     <!-- Sandwiches -->
     <div id="sandwichSection">
-        <br />
-        <span id="autoInfo"></span><br />
-        <progress min="0" max="60" value="60" id="sandwichBar"></progress><br />
         <h3>Sandwich Upgrades</h3>
         <span id="swAmount"></span><br />
         <span id="swupgradesrender"></span>
+        <br />
+        <span id="autoInfo"></span><br />
     </div>
 
     <!-- Golden Shgabb -->
@@ -190,9 +194,9 @@
     <!-- Stats -->
     <div id="statsSection">
         <h3>Stats</h3>
-        <button class="grayButton" style="background-color: white" onclick="statsSet(1)">All time</button>
-        <button class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
-        <button class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
+        <button id="statsTime1" class="grayButton" style="background-color: yellow" onclick="statsSet(1)">All time</button>
+        <button id="statsTime2" class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
+        <button id="statsTime3" class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
         <span id="stats"></span>
         <hr style="clear:both" />
     </div>
@@ -339,6 +343,7 @@
 
     <!-- Audio -->
     <audio src="shgame.mp3" loop muted id="music"></audio>
+    <audio src="fart.mp3" id="fart"></audio>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2"></script>

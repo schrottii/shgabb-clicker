@@ -40,6 +40,7 @@ class Banner {
     }
 
     getType() {
+        if (this.ID >= 600) return "Challenge";
         if (this.ID >= 400) return "Event";
         if (this.ID >= 300) return "Currency";
         if (this.ID >= 100) return "Normal";
@@ -94,6 +95,8 @@ function getBannerByID(id) {
 var pfps = [
     // 100 - 299 | Normal/Generic/Random PFPs
     new PFP(100, "images/shgabbicon.png", () => true),
+    new PFP(101, "images/winner.png", () => game.stats.hms >= 5000),
+    new PFP(102, "images/phone.png", () => game.stats.hms >= 10000),
 
     // 300 - 399 | Currency PFPs
     new PFP(300, "images/currencies/shgabb.png", () => game.ach.includes(21)),
@@ -149,6 +152,15 @@ var banners = [
     new Banner(407, "images/pride/pride-a.png", () => game.evbans.includes(407)),
     new Banner(408, "images/pride/pride-inter.png", () => game.evbans.includes(408)),
     new Banner(409, "images/pride/pride-shgabb.png", () => game.evbans.includes(409)),
+
+    // 600 - 699 | Challenge Banners
+    new Banner(600, "images/challenge-banner.png", () => getHighestTier() >= 3),
+    new Banner(601, "images/challenge1.png", () => game.clg[1] >= 3),
+    new Banner(602, "images/challenge2.png", () => game.clg[2] >= 3),
+    new Banner(603, "images/challenge3.png", () => game.clg[3] >= 3),
+    new Banner(604, "images/challenge4.png", () => game.clg[4] >= 3),
+    new Banner(605, "images/challenge5.png", () => game.clg[5] >= 3),
+    new Banner(606, "images/challenge6.png", () => game.clg[6] >= 3),
 ];
 
 function calculateProfileCanvasSize() {
@@ -206,7 +218,7 @@ function renderPlayerProfile() {
     pctx.fillText("#" + game.profile.id.substr(0, 6), w * 0.975, w * 0.475)
 
     // Current version
-    pctx.fillText(gameVersion, w * 0.975, w * 0.125)
+    pctx.fillText("v" + gameVersion, w * 0.975, w * 0.125)
 
     // Stats
     pctx.textAlign = "left";

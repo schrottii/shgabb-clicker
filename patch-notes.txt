@@ -46,6 +46,8 @@ April - June 2024:
 2.5.2
 2.5.3
 2.5.4
+July - September 2024:
+2.6
 
 
 
@@ -1439,3 +1441,58 @@ Version 2.5.4 The 254adnemle Update:
 - Fixed Shgic issues
 - Fixed hard reset issues
 - Fixed certain texts moving down when using Chrome
+
+
+
+2024/07/06 2.6:
+Version 2.6 The Artification Update
+
+-> Artifacts:
+- Reworked Artifacts / Artifact code, allowing for more complex effects, more possibilities, quality and quantity
+- Added 10 new Artifacts (75 total, 4 common, 1 rare, 3 epic, 2 legendary)
+
+- Every Artifact can now have an own value (Example: Furious Fork)
+- This value is reset after unequipping
+- Every Artifact can now have an own timer (Example: Fading Blue Ring)
+- This timer is also reset after unequipping
+
+- Removed percentage displays entirely
+- Amulet of Golden Idle and DaGame no longer require an auto production above 0
+- Changed Furious Knife cap from 31x to 30x
+- Small adjustments to some Artifacts
+
+-> Hotkeys:
+- Added hotkeys on PC (/devices with a keyboard)
+- Hold M: Buy max
+- P: Prestige button
+- WASD: Selections stuff
+- C: Hide selection
+
+-> Bars:
+- Added a row of bars below the click button
+- This row includes: auto bar, fridge bar and prestige bar
+- Auto bar: Time to next Sandwiches/Silicone (1 second)
+- Prestige bar: Time since prestige to 15s/3min/5min/15min
+- Moved fridge bar from Sandwiches section to the new row
+
+-> Challenges:
+- New Challenge: Ill-lit Dwn-upg, HMS 12k, upgrades are hidden, increases Artifact gain
+- New Challenge: Inflation, HMS 12k, upgrades are more expensive, reduces upgrade costs
+- Challenges now also have their images as backgrounds
+- Challenges can no longer be started before the 15s Prestige cooldown
+
+-> Player Profile:
+- Added 2 new PFPs (5k HMS & 10k HMS)
+- Added 7 new Banners
+- One of them is unlocked by getting any Challenge to tier 3
+- The other 6 are the Challenge images and unlocked by getting them to tier 3
+- Added a v to the version number
+
+-> Other:
+- Added 2 new quotes (90 total)
+- The last selected selection is now orange-ish
+- The selected stats type is now yellow
+- Moved auto info from above to below Sandwich upgrades
+- Buy max no longer creates a notification for every single level bought
+- Fixed Shgic being outdated after loading the game
+- Fixed Bags/Fridge bug

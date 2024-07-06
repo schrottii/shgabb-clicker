@@ -33,7 +33,7 @@ class Challenge {
     getBoost(level = -1) {
         if (level == -1) level = this.getTier();
         if (level == 0) return 1;
-        return Math.max(1, Math.floor(this.boost(level)));
+        return Math.max(1, this.boost(level));
     }
 }
 
@@ -64,6 +64,10 @@ function unlockedChallenges() {
 
 var enableThisChallenge = 0;
 function startChallenge(ID) {
+    if (game.stats_prestige.playTime < 15) {
+        alert("Can't prestige yet! " + game.stats_prestige.playTime.toFixed(0) + "/15");
+        return false;
+    }
     if (!isChallenge(0)) {
         alert("Already in a Challenge! Use Prestige to leave!");
         return false;
@@ -87,7 +91,7 @@ function renderChallenges() {
 
     for (c in challenges) {
         let cha = getChallenge(parseInt(c) + 1);
-        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge'" + (game.aclg == cha.ID ? " style='background-color: rgb(225, 225, 225)'" : "") + "><img src='images/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + cha.name + "<br />Tier " + cha.getTier() + "</b><br>" + cha.description + "<br />Goal: " + cha.getGoal() + " More Shgabb<br />" + cha.getPrice() + " Gems to start<br />Boost: x" + cha.getBoost() + " " + cha.boostTypeDisplay + "</button>"
+        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge' style='" + (game.aclg == cha.ID ? "background - color: rgb(225, 225, 225); " : "") + "background-image: url(images/challenge" + (parseInt(c) + 1) + ".png); background-size: cover; background-blend-mode: lighten;" + "'><img src='images/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + cha.name + "<br />Tier " + cha.getTier() + "</b><br>" + cha.description + "<br />Goal: " + cha.getGoal() + " More Shgabb<br />" + cha.getPrice() + " Gems to start<br />Boost: x" + fn(cha.getBoost()) + " " + cha.boostTypeDisplay + "</button>"
         else render = render + "<button class='challenge'><b>" + cha.name + "</b><br>Unlocked at " + cha.unlock + " More Shgabb</button>"
     }
     ui.challengeRender.innerHTML = render;
@@ -101,9 +105,19 @@ function getTotalTiers() {
     return totalTiers;
 }
 
+function getHighestTier() {
+    let highestTier = 0;
+    for (c in challenges) {
+        if (challenges[c].getTier() > highestTier) highestTier = challenges[c].getTier();
+    }
+    return highestTier;
+}
+
 var challenges = [
-    new Challenge(1, 6000, t => 4000 + 1000 * t, "Basic Climb", "Only the first two Shgabb Upgrades are available, and no Sandwich Upgrades!", t => 4 * Math.pow(1.5, t), "Sandwiches"),
-    new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t => 6 * Math.pow(6, t), "Shgabb"),
-    new Challenge(3, 8000, t => 6000 + 2000 * t, "Manual Grind", "Click cooldown is fixed at 20s and auto is disabled", t => 5 * Math.pow(2.2, t), "Click Shgabb"),
-    new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", "Shgabb Upgrades lose levels all the time", t => 5 * Math.pow(2.2, t), "Auto Shgabb"),
+    new Challenge(1, 6000, t => 4000 + 1000 * t, "Basic Climb", "Only the first two Shgabb Upgrades are available, and no Sandwich Upgrades!", t => Math.floor(4 * Math.pow(1.5, t)), "Sandwiches"),
+    new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t =>  Math.floor(6 * Math.pow(6, t)), "Shgabb"),
+    new Challenge(3, 8000, t => 6000 + 2000 * t, "Manual Grind", "Click cooldown is fixed at 20s and auto is disabled", t =>  Math.floor(5 * Math.pow(2.2, t)), "Click Shgabb"),
+    new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", "Shgabb Upgrades lose levels all the time", t =>  Math.floor(5 * Math.pow(2.2, t)), "Auto Shgabb"),
+    new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.1 * t, "Artifact drop rate"),
+    new Challenge(6, 12000, t => 400 + 100 * t, "Inflation", "Upgrades are far more expensive", t => 2 * Math.pow(1.25, t), "cheaper Shgabb upgrades"),
 ];

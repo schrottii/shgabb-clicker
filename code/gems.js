@@ -5,19 +5,21 @@ function unlockedGems() {
 }
 
 function getGemChance(cap=10) {
-    if (getArtifactByID(159).isEquipped()) return 0;
+    if (getArtifact(159).isEquipped()) return 0;
 
-    return Math.min(cap, getArtifactBoost("gemchance")
-        * (getArtifactByID(200).isEquipped() ? 0.1 : 1)
+    return Math.min(cap, getArtifactsSimpleBoost("gemchance")
+        * (getArtifact(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
         * cakeValue(3, 1)
-    ) + (getArtifactByID(308).isEquipped() ? (getArtifactEffect(308) * (getArtifactByID(200).isEquipped() ? 0.05 : 0.5) ): 0);
+    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.05 : 0.5) ): 0);
 }
 
 function getGem() {
+    let amount = 0;
+
     // Chance to get a gem
     if (Math.random() < 1 / 100 * getGemChance() * applyLuck(100)) {
-        let amount = getArtifactBoost("gems");
+        amount = getArtifactsSimpleBoost("gems");
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;
             amount = Math.floor(amount);
@@ -26,13 +28,10 @@ function getGem() {
         game.gems += amount;
         statIncrease("tgems", amount);
 
-        frustration = 0;
-
         createNotification("+" + amount + " Gem" + (amount > 1 ? "s" : "") + "!");
     }
-    else if (getArtifactByID(308).isEquipped()) {
-        frustration += 1;
-    }
+
+    artifactEvent("onGem", { "amount": amount });
 }
 
 function firstGemOfferWorth() {
@@ -44,8 +43,7 @@ function gemOffer(i) {
         case 1:
             if (game.gems > 9 && isChallenge(0)) {
                 game.gems -= 10;
-                let amount = firstGemOfferWorth();
-                game.shgabb = game.shgabb.add(amount);
+                game.shgabb = game.shgabb.add(firstGemOfferWorth());
                 // do not increase stat yousonofabittthh
             }
             break;
@@ -58,7 +56,7 @@ function gemOffer(i) {
         case 3:
             if (unlockedArtifacts() && game.gems > 29) {
                 game.gems -= 30;
-                getArtifact(3000);
+                getNewArtifact(3000);
                 autoSave();
             }
             break;
@@ -70,12 +68,12 @@ function gemOffer(i) {
             }
             break;
         case 5:
-            if (unlockedArtifacts() && game.gems >= 49 && !getArtifactByID(game.dgo).isUnlocked()) {
+            if (unlockedArtifacts() && game.gems >= 49 && !getArtifact(game.dgo).isUnlocked()) {
                 game.gems -= 50;
                 game.a.push(game.dgo)
-                createNotification("New Artifact: " + getArtifactByID(game.dgo).name);
+                createNotification("New Artifact: " + getArtifact(game.dgo).name);
 
-                game.nexgai[getArtifactByID(game.dgo).rarity - 1] = setNextArtifact(getArtifactByID(game.dgo).rarity - 1);
+                game.nexgai[getArtifact(game.dgo).rarity - 1] = setNextArtifact(getArtifact(game.dgo).rarity - 1);
                 updateArtifacts();
             }
             break;
@@ -89,7 +87,7 @@ function renderGemOffers() {
     if (unlockedArtifacts()) {
         ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + (getArtifactAmount() == totalAmountOfArtifacts() ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
         ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al > 7 ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25) + " Gems for another Artifact loadout slot!<br>(Max. 8)");
-        ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifactByID(game.dgo).isUnlocked() ? "You already own today's artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifactByID(game.dgo).render(false));
+        ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifact(game.dgo).isUnlocked() ? "You already own today's artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifact(game.dgo).render(false));
     }
     else {
         ui.gemOffer3.innerHTML = "Unlocked at 1000 More Shgabb!";

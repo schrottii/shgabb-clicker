@@ -32,12 +32,14 @@ var game = {
     loreSel: 0,
     loreP: 0,
     clickCooldown: 0,
+    //artifact stuff
     a: [],
     alvl: {},
     aeqi: [],
     alo: [[], [], []],
     al: 2,
     alnames: [""],
+    // more other
     ach: [],
     nexgai: [0, 0, 0, 0],
     tttd: 1,

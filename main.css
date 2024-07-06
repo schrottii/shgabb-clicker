@@ -113,6 +113,31 @@ progress {
     }
 }
 
+.progressYellow {
+    color: yellowgreen;
+}
+
+    .progressYellow::-moz-progress-bar {
+        background: yellowgreen;
+    }
+
+    .progressYellow::-webkit-progress-value {
+        background: yellowgreen;
+    }
+
+.progressDim {
+    color: dimgray;
+}
+
+    .progressDim::-moz-progress-bar {
+        background: dimgray;
+    }
+
+    .progressDim::-webkit-progress-value {
+        background: dimgray;
+    }
+
+
 /* ad bar */
 .adBar {
     background-image: linear-gradient(to right, #2D2D2D, #636363); /* Replace with your desired colors */
@@ -415,7 +440,6 @@ progress {
 .grayButton {
     background-color: #01f8fd;
     color: #2e269a;
-    border-color: black;
     border: 2px solid darkgray;
     font-size: 18px;
     text-align: center;
