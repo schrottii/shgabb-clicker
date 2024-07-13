@@ -162,7 +162,7 @@ const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgab
 const boostTexts = {
     strongerClicks: "Stronger Clicks: 5x click Shgabb (5:00)",
     strongerAuto: "Stronger Auto: 5x auto Shgabb (10:00)",
-    moreSandwiches: "More Sandwiches: 4x Sandwiches (10:00)",
+    moreSandwiches: "More Sandwiches: 4x Sandwiches (3:00)",
     fasterShgabb: "Faster Shgabb: 5x shorter click CD (1:00)",
     moreCrits: "More Crits: 5x chance and 3x boost (3:00)",
     moreSilicone: "More Silicone: 10x Silicone Shgabb (5:00)",
@@ -515,8 +515,12 @@ function clickButton() {
     freezeTime();
 }
 
+function getCopperChance() {
+    return copperShgabbUpgrades.copperClickChance.currentEffect() * getArtifactsSimpleBoost("copchance");
+}
+
 function getCopper() {
-    if (Math.random() * 100 < copperShgabbUpgrades.copperClickChance.currentEffect() * getArtifactsSimpleBoost("copchance")) { // chance to get copper, starts at 1%
+    if (Math.random() * 100 < getCopperChance()) { // chance to get copper, starts at 1%
         // we get copper. increase copper clicks by 1 (starts at 0)
         statIncrease("copClicks", 1);
 
@@ -1248,6 +1252,7 @@ function updateStats() {
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
         + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + getArtifact(308).getValue(0) ? " [MAX]" : "") + " (+" + getArtifactsSimpleBoost("gems").toFixed(2) + ")"
+        + "<br />Copper Chance: " + getCopperChance().toFixed(1) + "%"
         + "<br />Luck: " + Math.floor(luck)
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
         + "<br />"
@@ -1267,6 +1272,9 @@ function updateStats() {
         + (getArtifactsSimpleBoost("gs") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gs")) + " Golden Shgabb") : "")
         + (getArtifactsSimpleBoost("prestigegs") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("prestigegs")) + " Prestige GS") : "")
         + (getArtifactsSimpleBoost("si") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("si")) + " Silicone Shgabb") : "")
+        + (getArtifactsSimpleBoost("bags") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("bags")) + " Bags") : "")
+        + (getArtifactsSimpleBoost("cop") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("cop")) + " Copper") : "")
+        + (getArtifactsSimpleBoost("copChance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("copChance")) + " Copper Chance") : "")
         + (getArtifactsSimpleBoost("clicksi") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clicksi")) + " Click Silicone") : "")
         + (getArtifactsSimpleBoost("clickspeed") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickspeed")) + " click cooldown") : "")
         + (getArtifactsSimpleBoost("gemchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gemchance")) + " Gem chance") : "")
