@@ -91,7 +91,7 @@ function renderChallenges() {
 
     for (c in challenges) {
         let cha = getChallenge(parseInt(c) + 1);
-        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge' style='" + (game.aclg == cha.ID ? "background - color: rgb(225, 225, 225); " : "") + "background-image: url(images/challenge" + (parseInt(c) + 1) + ".png); background-size: cover; background-blend-mode: lighten;" + "'><img src='images/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + cha.name + "<br />Tier " + cha.getTier() + "</b><br>" + cha.description + "<br />Goal: " + cha.getGoal() + " More Shgabb<br />" + cha.getPrice() + " Gems to start<br />Boost: x" + fn(cha.getBoost()) + " " + cha.boostTypeDisplay + "</button>"
+        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge' style='" + (game.aclg == cha.ID ? "background - color: rgb(225, 225, 225); " : "") + "background-image: url(images/challenges/challenge" + (parseInt(c) + 1) + ".png); background-size: cover; background-blend-mode: lighten;" + "'><img src='images/challenges/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 192px; max-width=288px'><br><b>" + cha.name + "<br />Tier " + cha.getTier() + "</b><br>" + cha.description + "<br />Goal: " + cha.getGoal() + " More Shgabb<br />" + cha.getPrice() + " Gems to start<br />Boost: x" + fn(cha.getBoost()) + " " + cha.boostTypeDisplay + "</button>"
         else render = render + "<button class='challenge'><b>" + cha.name + "</b><br>Unlocked at " + cha.unlock + " More Shgabb</button>"
     }
     ui.challengeRender.innerHTML = render;

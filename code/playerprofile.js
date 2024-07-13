@@ -94,9 +94,9 @@ function getBannerByID(id) {
 
 var pfps = [
     // 100 - 299 | Normal/Generic/Random PFPs
-    new PFP(100, "images/shgabbicon.png", () => true),
-    new PFP(101, "images/winner.png", () => game.stats.hms >= 5000),
-    new PFP(102, "images/phone.png", () => game.stats.hms >= 10000),
+    new PFP(100, "images/playerprofile/shgabbicon.png", () => true),
+    new PFP(101, "images/playerprofile/winner.png", () => game.stats.hms >= 5000),
+    new PFP(102, "images/playerprofile/phone.png", () => game.stats.hms >= 10000),
 
     // 300 - 399 | Currency PFPs
     new PFP(300, "images/currencies/shgabb.png", () => game.ach.includes(21)),
@@ -106,19 +106,20 @@ var pfps = [
     new PFP(304, "images/currencies/ameliorer.png", () => game.ach.includes(58)),
     new PFP(305, "images/currencies/gem.png", () => game.ach.includes(55)),
     new PFP(306, "images/currencies/bag.png", () => game.ach.includes(109)),
+    new PFP(307, "images/currencies/copper.png", () => game.ach.includes(146)),
 
     // 400 - 599 | Event PFPs
     new PFP(400, "images/currencies/gift.png", () => game.evpfps.includes(400)),
-    new PFP(401, "images/gift2.png", () => game.evpfps.includes(401)),
-    new PFP(402, "images/ball.png", () => game.evpfps.includes(402)),
+    new PFP(401, "images/playerprofile/gift2.png", () => game.evpfps.includes(401)),
+    new PFP(402, "images/playerprofile/ball.png", () => game.evpfps.includes(402)),
 
-    new PFP(403, "images/party-pfp1.png", () => game.ach.includes(77)),
-    new PFP(404, "images/party-pfp2.png", () => game.ach.includes(78)),
+    new PFP(403, "images/playerprofile/party-pfp1.png", () => game.ach.includes(77)),
+    new PFP(404, "images/playerprofile/party-pfp2.png", () => game.ach.includes(78)),
     new PFP(405, "images/cake.png", () => game.ach.includes(79)),
 
     new PFP(406, "images/currencies/qian.png", () => game.evpfps.includes(406)),
-    new PFP(407, "images/chinese-pfp1.png", () => game.evpfps.includes(407)),
-    new PFP(408, "images/chinese-pfp2.png", () => game.evpfps.includes(408)),
+    new PFP(407, "images/playerprofile/chinese-pfp1.png", () => game.evpfps.includes(407)),
+    new PFP(408, "images/playerprofile/chinese-pfp2.png", () => game.evpfps.includes(408)),
 
     new PFP(409, "images/eggs/egg1.png", () => game.evpfps.includes(409)),
     new PFP(410, "images/eggs/egg2.png", () => game.evpfps.includes(410)),
@@ -135,9 +136,9 @@ var pfps = [
 var banners = [
     // 100 - 299 | Normal/Generic/Random Banners
     new Banner(0, "", () => true),
-    new Banner(100, "images/banner1.png", () => true),
-    new Banner(101, "images/banner2.png", () => game.stats.hms >= 2000),
-    new Banner(102, "images/shgabb-banner.png", () => game.stats.hms >= 4000),
+    new Banner(100, "images/playerprofile/banner1.png", () => true),
+    new Banner(101, "images/playerprofile/banner2.png", () => game.stats.hms >= 2000),
+    new Banner(102, "images/playerprofile/shgabb-banner.png", () => game.stats.hms >= 4000),
 
     // 300 - 399 | Currency Banners
 
@@ -154,13 +155,13 @@ var banners = [
     new Banner(409, "images/pride/pride-shgabb.png", () => game.evbans.includes(409)),
 
     // 600 - 699 | Challenge Banners
-    new Banner(600, "images/challenge-banner.png", () => getHighestTier() >= 3),
-    new Banner(601, "images/challenge1.png", () => game.clg[1] >= 3),
-    new Banner(602, "images/challenge2.png", () => game.clg[2] >= 3),
-    new Banner(603, "images/challenge3.png", () => game.clg[3] >= 3),
-    new Banner(604, "images/challenge4.png", () => game.clg[4] >= 3),
-    new Banner(605, "images/challenge5.png", () => game.clg[5] >= 3),
-    new Banner(606, "images/challenge6.png", () => game.clg[6] >= 3),
+    new Banner(600, "images/playerprofile/challenge-banner.png", () => getHighestTier() >= 3),
+    new Banner(601, "images/challenges/challenge1.png", () => game.clg[1] >= 3),
+    new Banner(602, "images/challenges/challenge2.png", () => game.clg[2] >= 3),
+    new Banner(603, "images/challenges/challenge3.png", () => game.clg[3] >= 3),
+    new Banner(604, "images/challenges/challenge4.png", () => game.clg[4] >= 3),
+    new Banner(605, "images/challenges/challenge5.png", () => game.clg[5] >= 3),
+    new Banner(606, "images/challenges/challenge6.png", () => game.clg[6] >= 3),
 ];
 
 function calculateProfileCanvasSize() {

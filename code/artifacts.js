@@ -139,6 +139,10 @@ class Artifact {
                 return "Click Silicone";
             case "bags":
                 return "Bags";
+            case "cop":
+                return "Copper";
+            case "copchance":
+                return "Copper chance";
         }
     }
 
@@ -865,6 +869,18 @@ var artifacts = [
             simpleBoost: ["bags", level => 1.15 + 0.05 * level]
         }),
 
+    new Artifact(163, 1, 4, "Orange Ring", "ring.png",
+        {
+            prefix: "x",
+            simpleBoost: ["cop", level => Math.pow(2, level)]
+        }),
+
+    new Artifact(164, 1, 4, "Ring of Orange Chances", "ring.png",
+        {
+            prefix: "x",
+            simpleBoost: ["copchance", level => 1.25 + 0.25 * level]
+        }),
+
 
 
 
@@ -1052,6 +1068,26 @@ var artifacts = [
             },
             onTimerZero: () => {
                 getArtifact(228).boost = "clickshgabb";
+            }
+        }),
+
+    new Artifact(229, 2, 4, "Amulet of Ore Rush", "amulet.png",
+        {
+            desc: "Active after finding Gems",
+            prefix: "x",
+            simpleBoost: ["copchance", level => 2 + 0.5 * level],
+            timer: [6, 0],
+            onGem: () => {
+                getArtifact(229).fillTimer();
+            }
+        }),
+
+    new Artifact(230, 2, 4, "Amulet of Ore Vein", "amulet.png",
+        {
+            desc: "Finding a Gem can also get Copper",
+            simpleBoost: ["cop", level => Math.pow(1.5, level)],
+            onGem: () => {
+                getCopper();
             }
         }),
 
@@ -1320,6 +1356,19 @@ var artifacts = [
                 if (getArtifact(405).getTimer() == 0) {
                     getArtifact(405).increaseValue(-10);
                     updateArtifacts();
+                }
+            }
+        }),
+
+    new Artifact(406, 4, 4, "Miner's Pay", "minerspay.png",
+        {
+            desc: level => "Consumes " + (level * 50) + " Gems to boost Copper for 60s",
+            simpleBoost: ["cop", level => Math.pow(4, level), () => getArtifact(406).getTimer(0) > 0],
+            timer: [60, 0],
+            onClick: (level) => {
+                if (getArtifact(406).getTimer() == 0 && game.gems >= level * 50) {
+                    game.gems -= level * 50;
+                    getArtifact(406).fillTimer();
                 }
             }
         }),

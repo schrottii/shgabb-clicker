@@ -18,6 +18,7 @@ var game = {
     ame: 0,
     ameUp: [0, 0, 0, 0, 0],
     bags: 0,
+    cop: new Decimal(0),
     gems: 0,
     gemboost: 0,
     artifactScrap: 0,
@@ -128,6 +129,12 @@ var game = {
         gemsBoostShgabb: 0,
         adsWatchedBoostShgabb: 0,
         clicksBoostGS: 0,
+
+        // Copper
+        moreCopper: 0,
+        copperClickChance: 0,
+        copShgabbBoost: 0,
+        copGSBoost: 0,
     },
     // stats (all time)
     stats: {
@@ -144,6 +151,8 @@ var game = {
         si: 0,
         ame: 0,
         bags: 0,
+        cop: 0,
+        copClicks: 0,
 
         gifts: 0,
         cakes: 0,

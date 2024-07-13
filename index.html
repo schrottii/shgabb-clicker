@@ -12,8 +12,10 @@
 </head>
 <body>
     <!-- Top, Quote, Click Button, Notifs -->
-    <h2 class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
-    <span id="quote"></span><br />
+    <h2 class="gameName" style="max-width: 320px"><span id="gametitle">Shgabb Clicker</span></h2>
+    <span id="quote" class="quoteClass"></span>
+    <br />
+
     <!-- <progress min="0" max="5" value="0" id="cooldownBar" style="width: 182px"></progress><br /> -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <div style="width: 100%; overflow: hidden; white-space: nowrap; display: flex ">
@@ -105,6 +107,13 @@
         <h3>Bags</h3>
         <span id="bagAmount"></span><br />
         <span id="bagupgradesrender"></span>
+    </div>
+
+    <!-- Copper Shgabb -->
+    <div id="copperShgabbSection">
+        <h3>Copper Shgabb</h3>
+        <span id="copAmount"></span><br />
+        <span id="copupgradesrender"></span>
     </div>
 
     <hr style="clear:both" />
@@ -224,73 +233,61 @@
         <span id="settings"></span>
         <br><input id="myFile" type="file">
 
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
-                crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-format="fluid"
              data-ad-layout-key="+t+s9-1r-45+eb"
              data-ad-client="ca-pub-8311163069228619"
              data-ad-slot="8712398144"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+
         <hr style="clear:both" />
     </div>
 
     <!-- Other -->
     <div id="socialSection">
-        <div class="socheader">
-            <div class="socsquare1">
-                <!-- Notifications -->
-                <h3>Notifications</h3>
-                <span id="notifications"></span>
+        <br style="clear:both" />
+        <div class="socsquare1">
+            <!-- Notifications -->
+            <h3>Notifications</h3>
+            <span id="notifications"></span>
 
-                <hr style="clear:both" />
+            <hr style="clear:both" />
 
-                <!-- Info -->
-                <h3>Info</h3>
-                Shgabb Clicker - developed by Schrottii ©2023-2024<br />
-                <a href="terms-of-service.html" target="_blank"><sub>By playing you agree to the Terms of Service - read them here</sub></a><br />
-                <br /><br />
+            <!-- Info -->
+            <h3>Info</h3>
+            Shgabb Clicker - developed by Schrottii ©2023-2024<br />
+            <a href="terms-of-service.html" target="_blank"><sub>By playing you agree to the Terms of Service - read them here</sub></a><br />
+            <br />
 
-                Based on the lovely person known as shgabb<br />
-                Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
-                This game uses <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
-                <br />
+            Based on the lovely person known as shgabb<br />
+            Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
+            This game uses <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
+            <br />
 
-                <!-- Social -->
-                <h3>Social</h3>
-                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
-                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
+            <!-- Social -->
+            <h3>Social</h3>
+            <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
+            <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
 
-                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
-                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+            <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
+            <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+        </div>
+        <div class="socsquare2">
+            <!-- Patch Notes -->
+            <h3>Patch Notes</h3>
+            <span id="patchNotes">...</span>
 
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
-                        crossorigin="anonymous"></script>
-                <ins class="adsbygoogle"
-                     style="display:inline-block;width:960px;height:480px"
-                     data-ad-client="ca-pub-8311163069228619"
-                     data-ad-slot="7146763519"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-
-                <hr style="clear:both" />
-            </div>
-            <div class="socsquare2">
-                <!-- Patch Notes -->
-                <h3>Patch Notes</h3>
-                <span id="patchNotes">...</span>
-
-                <br />
-                <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
-            </div>
+            <br />
+            <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
         </div>
     </div>
 
     <hr style="clear:both" />
+
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:960px;height:480px"
+         data-ad-client="ca-pub-8311163069228619"
+         data-ad-slot="7146763519"></ins>
 
     <!--
         /////////////////////////////////////////////
@@ -338,21 +335,16 @@
         </div>
     </div>
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
-            crossorigin="anonymous"></script>
     <ins class="adsbygoogle"
          style="display:block; text-align:center;"
          data-ad-layout="in-article"
          data-ad-format="fluid"
          data-ad-client="ca-pub-8311163069228619"
          data-ad-slot="5394698148"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <!-- Audio -->
-    <audio src="shgame.mp3" loop muted id="music"></audio>
-    <audio src="fart.mp3" id="fart"></audio>
+    <audio src="audio\shgame.mp3" loop muted id="music"></audio>
+    <audio src="audio\fart.mp3" id="fart"></audio>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2"></script>
@@ -370,5 +362,11 @@
     <script src="code\render.js"></script>
     <script src="code\shbook.js"></script>
     <script src="code\main.js"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
+            crossorigin="anonymous"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 </body>
 </html>

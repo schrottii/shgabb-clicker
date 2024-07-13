@@ -4,82 +4,35 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.6.1";
+const gameVersion = "2.7";
 
 const currentPatchNotes = [
-    "-> Shgic Animations:",
-    "- Added experimental Shgic animations",
-    "- After placing down an X or O, it's thin at first but returns to its usual obesity",
-    "- The border now cycles through various shades of blue (rather than always being light blue)",
-    "- After placing down anything, it becomes light blue for a short moment",
-
-    "-> Design:",
-    "- Added text to the row of bars, displaying the seconds remaining",
-    "- Sections: Added images for Stats and Settings",
-
-    "-> Achievements:",
-    "- Added 10 new Achievements (140 total)",
-    "- Moved some Achievements",
-
-    "-> Balance:",
-    "- Changed minimum click cooldown from 0.2s to 0.1s",
-    "- Ill-lit Dwn-upg (Challenge 5): 10%/tier -> 25%/tier",
-    "- Amulet of Quickgemming: exactly 0.2s (or 0.1s) -> 0.25s or faster",
-
+    "Copper Age",
+    "-> Copper Shgabb:",
+    "- New currency: Copper Shgabb!",
+    "- Unlocked at HMS 10k",
+    "- Earned from clicking, with a 1% chance",
+    "- Value increases by +1 every time its earned",
+    "- Spent on 4 upgrades: More Copper, Copper Click Chance, Shgabb Boost, GS Boost",
+    "-> More Copper Content:",
+    "- Added 5 new Artifacts (2 common, 2 rare, 1 legendary, 80 total)",
+    "- Added 10 new Achievements (150 total)",
+    "- Added Currenciary entry",
+    "- Added PFP",
+    "- Added stats for Copper and Copper clicks",
+    "-> Quotes and title:",
+    "- Added scrolling quotes",
+    "- Quotes now always take one row on mobile",
+    "- Added 2 Shgabb currency images to title",
+    "- Added v to the version number in the title",
     "-> Other:",
-    "- Artifact search now also supports L1 instead of level 1",
-    "- Artifact search now redirects to page 1 if the others are empty & hides page buttons",
-    "- Amulet of Slowgemming, Dinosaurs, Baked Silica: Made it more clear that 3 seconds counts too",
-    "- Background now updates after a prestige",
-    "- Fixed fridge bar only moving when looking at Sandwiches",
-    "- Fixed free upgrades bug",
-
-    "v2.6",
-    "The Artification Update",
-    "-> Artifacts:",
-    "- Reworked Artifacts / Artifact code, allowing for more complex effects, more possibilities, quality and quantity",
-    "- Added 10 new Artifacts (75 total, 4 common, 1 rare, 3 epic, 2 legendary)",
-    "",
-    "- Every Artifact can now have an own value (Example: Furious Fork)",
-    "- This value is reset after unequipping",
-    "- Every Artifact can now have an own timer (Example: Fading Blue Ring)",
-    "- This timer is also reset after unequipping",
-    "",
-    "- Removed percentage displays entirely",
-    "- Amulet of Golden Idle and DaGame no longer require an auto production above 0",
-    "- Changed Furious Knife cap from 31x to 30x",
-    "- Small adjustments to some Artifacts",
-    "-> Hotkeys:",
-    "- Added hotkeys on PC (/devices with a keyboard)",
-    "- Hold M: Buy max",
-    "- P: Prestige button",
-    "- WASD: Selections stuff",
-    "- C: Hide selection",
-    "-> Bars:",
-    "- Added a row of bars below the click button",
-    "- This row includes: auto bar, fridge bar and prestige bar",
-    "- Auto bar: Time to next Sandwiches/Silicone (1 second)",
-    "- Prestige bar: Time since prestige to 15s/3min/5min/15min",
-    "- Moved fridge bar from Sandwiches section to the new row",
-    "-> Challenges:",
-    "- New Challenge: Ill-lit Dwn-upg, HMS 12k, upgrades are hidden, increases Artifact gain",
-    "- New Challenge: Inflation, HMS 12k, upgrades are more expensive, reduces upgrade costs",
-    "- Challenges now also have their images as backgrounds",
-    "- Challenges can no longer be started before the 15s Prestige cooldown",
-    "-> Player Profile:",
-    "- Added 2 new PFPs (5k HMS & 10k HMS)",
-    "- Added 7 new Banners",
-    "- One of them is unlocked by getting any Challenge to tier 3",
-    "- The other 6 are the Challenge images and unlocked by getting them to tier 3",
-    "- Added a v to the version number",
-    "-> Other:",
-    "- Added 2 new quotes (90 total)",
-    "- The last selected selection is now orange-ish",
-    "- The selected stats type is now yellow",
-    "- Moved auto info from above to below Sandwich upgrades",
-    "- Buy max no longer creates a notification for every single level bought",
-    "- Fixed Shgic being outdated after loading the game",
-    "- Fixed Bags/Fridge bug",
+    "- Shortened ad descriptions",
+    "- Slightly reduced height of the click button",
+    "- Changed images of Obama and Snakes Oil Salesman",
+    "- Changed Social section a bit",
+    "- Improved organization of files",
+    "- Fixed Social overlapping with Shbook",
+    '- Fixed Achievement 134 calling rare Artifacts "uncommon"',
 ]
 
 // Various variables
@@ -88,7 +41,7 @@ const currentPatchNotes = [
 
 // some timers
 var autoSaveTime = 10;
-var quoteTime = 15;
+var quoteTime = 0;
 var sandwichTime = 1;
 var sandwichFreezeTime = 60;
 var time = 0;
@@ -126,6 +79,7 @@ var ui = {
     ameAmount: document.getElementById("ameAmount"),
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
     bagAmount: document.getElementById("bagAmount"),
+    copAmount: document.getElementById("copAmount"),
 
     topSquareDisplay: document.getElementById("topSquareDisplay"),
 
@@ -143,6 +97,7 @@ var ui = {
     siupgradesrender: document.getElementById("siupgradesrender"),
     ameupgradesrender: document.getElementById("ameupgradesrender"),
     bagupgradesrender: document.getElementById("bagupgradesrender"),
+    copupgradesrender: document.getElementById("copupgradesrender"),
 
     // New Artifact display thing
     newArtifact: document.getElementById("newArtifact"),
@@ -205,13 +160,13 @@ var adMax = 20;
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
 const boostTexts = {
-    strongerClicks: "Stronger Clicks: Get 5x Shgabb from clicks for 5 minutes",
-    strongerAuto: "Stronger Auto: Get 5x automatic Shgabb for 10 minutes",
-    moreSandwiches: "More Sandwiches: Get Sandwiches four times as often for 3 minutes",
-    fasterShgabb: "Faster Shgabb: 5x shorter click cooldown for 60 seconds",
-    moreCrits: "More Crits: 5x critical hit chance and 3x crit boost for 3 minutes",
-    moreSilicone: "More Silicone: Get 10x Silicone Shgabb for 5 minutes",
-    moreGems: "More Gems: 3x higher Gem chance for 8 minutes",
+    strongerClicks: "Stronger Clicks: 5x click Shgabb (5:00)",
+    strongerAuto: "Stronger Auto: 5x auto Shgabb (10:00)",
+    moreSandwiches: "More Sandwiches: 4x Sandwiches (10:00)",
+    fasterShgabb: "Faster Shgabb: 5x shorter click CD (1:00)",
+    moreCrits: "More Crits: 5x chance and 3x boost (3:00)",
+    moreSilicone: "More Silicone: 10x Silicone Shgabb (5:00)",
+    moreGems: "More Gems: 3x Gem chance (8:00)",
 };
 const adTimes = {
     strongerClicks: 300,
@@ -224,7 +179,8 @@ const adTimes = {
 };
 
 // Quotes
-const quotes = ["(I am always nice but whatever) - Schrottii",
+const quotes = [
+    "(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
     "how can i get this macdonald coin - Benio",
     "37 and 48 are basically the same - Topper",
@@ -398,6 +354,10 @@ function statIncrease(name, number) {
 }
 
 // ALL THE NUMBER SHIT YEE COWBOYS
+
+var statCurr = ["shgabb", "sw", "gs", "si", "cop"];
+var statTypes = ["stats", "stats_prestige", "stats_today"];
+
 function numberSaver(number) {
     if (number == undefined) number = 0;
     // turn a break infinity object (mantissa - exponent) into a simple string, for saving
@@ -536,6 +496,7 @@ function clickButton() {
             findShgaybb();
             if (unlockedGems()) getGem();
             if (unlockedArtifacts()) getNewArtifact();
+            if (unlockedCopper()) getCopper();
 
             getLorePage();
             if (game.loreSel != 0) getWisp();
@@ -552,6 +513,23 @@ function clickButton() {
     }
 
     freezeTime();
+}
+
+function getCopper() {
+    if (Math.random() * 100 < copperShgabbUpgrades.copperClickChance.currentEffect() * getArtifactsSimpleBoost("copchance")) { // chance to get copper, starts at 1%
+        // we get copper. increase copper clicks by 1 (starts at 0)
+        statIncrease("copClicks", 1);
+
+        // calculate how much copper we get
+        let amount = new Decimal(game.stats.copClicks)
+            .mul(copperShgabbUpgrades.moreCopper.currentEffect())
+            .mul(getArtifactsSimpleBoost("cop"))
+            .ceil();
+
+        // add it
+        game.cop = game.cop.add(amount);
+        statIncrease("cop", amount);
+    }
 }
 
 function increaseGS(multi) {
@@ -592,7 +570,8 @@ function getGlobalProduction() {
         .mul(eventValue("anniversary", 3, 1))
         .mul(eventValue("lunar", 8, 1))
         .mul(eventValue("pride", 10, 1))
-        .mul(bagUpgrades.adsWatchedBoostShgabb.currentEffect());
+        .mul(bagUpgrades.adsWatchedBoostShgabb.currentEffect())
+        .mul(copperShgabbUpgrades.copShgabbBoost.currentEffect());
 
     return prod;
 }
@@ -718,6 +697,7 @@ function getGoldenShgabb() {
         .mul(getAchievementBoost())
         .mul(getLoreBoost())
         .mul(bagUpgrades.clicksBoostGS.currentEffect())
+        .mul(copperShgabbUpgrades.copGSBoost.currentEffect())
         .floor();
 }
 
@@ -980,6 +960,10 @@ function unlockedBags() {
     return game.stats.hms >= 8000;
 }
 
+function unlockedCopper() {
+    return game.stats.hms >= 10000;
+}
+
 // Notifications
 function createNotification(text) {
     currentNotifications.push(text);
@@ -1083,7 +1067,7 @@ function ameReset() {
 
 // Update functions
 function updateQuote() {
-    ui.quote.innerHTML = quotes[Math.ceil(Math.random() * quotes.length - 1)];
+    ui.quote.innerHTML = " >  " + quotes[Math.ceil(Math.random() * quotes.length - 1)] + "  < ";
 }
 
 function renderUpgrades(object){
@@ -1107,6 +1091,8 @@ function updateUpgrades() {
     ui.ameupgradesrender.innerHTML = renderUpgrades(ameliorerUpgrades);
 
     ui.bagupgradesrender.innerHTML = renderUpgrades(bagUpgrades);
+
+    ui.copupgradesrender.innerHTML = renderUpgrades(copperShgabbUpgrades);
 }
 
 function updateArtifacts() {
@@ -1140,8 +1126,8 @@ function updateTopSquare() {
     if (settings.topSquare != 1) {
         let render = "";
 
-        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
-        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags"];
+        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
+        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper"];
 
         render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
 
@@ -1160,6 +1146,8 @@ function updateTopSquare() {
         if (unlockedArtifactUpgrading()) render = render + " " + ui.artifactScrapAmount.innerHTML.split(currencyNames[6]).shift();
 
         if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
+
+        if (unlockedCopper()) render = render + " " + ui.copAmount.innerHTML.split(currencyNames[8]).shift();
 
         ui.topSquareDisplay.innerHTML = render;
     }
@@ -1189,6 +1177,9 @@ function updateCurrencies() {
 
     if (unlockedBags()) ui.bagAmount.innerHTML = cImg("bag") + game.bags + " Bags";
     else ui.bagAmount.innerHTML = "";
+
+    if (unlockedCopper()) ui.copAmount.innerHTML = cImg("copper") + fn(game.cop) + " Copper";
+    else ui.copAmount.innerHTML = "";
 }
 
 // stats stuff
@@ -1235,6 +1226,8 @@ function updateStats() {
         + "<br />Total Artifact Scrap: " + statLoader("artifactScrap")
         + "<br />Total Améliorer: " + statLoader("ame")
         + "<br />Total Bags: " + statLoader("bags")
+        + "<br />Total Copper Shgabb: " + statLoader("cop")
+        + "<br />Total Copper Clicks: " + statLoader("copClicks")
         + "<br />Total Gifts: " + statLoader("gifts")
         + "<br />Total Cakes: " + statLoader("cakes")
         + "<br />Total Qian: " + statLoader("qian")
@@ -1438,7 +1431,6 @@ function autoSave() {
         if (achievements[a].unlock() && !game.ach.includes(achievements[a].ID)) {
             game.ach.push(achievements[a].ID);
             newAch = true;
-            console.log("you gotta, gotta")
             createNotification("New achievement: " + achievements[a].name);
 
             ui.newArtifactText = "Achievement Unlocked!";
@@ -1496,8 +1488,6 @@ function exportGame(destination = "gimme") {
     exporter.gs = numberSaver(exporter.gs);
     exporter.si = numberSaver(exporter.si);
 
-    let statTypes = ["stats", "stats_prestige", "stats_today"];
-    let statCurr = ["shgabb", "sw", "gs", "si"];
     for (let statHandler in statTypes) {
         exporter[statTypes[statHandler]] = {};
         for (let allStats in game.stats) {
@@ -1594,8 +1584,6 @@ function importGame(source) {
     game.stats_prestige = Object.assign({}, emptyGame.stats, source.stats_prestige);
     game.stats_today = Object.assign({}, emptyGame.stats, source.stats_today);
 
-    let statTypes = ["stats", "stats_prestige", "stats_today"];
-    let statCurr = ["shgabb", "sw", "gs", "si"];
     for (let statHandler in statTypes) {
         for (let currHandler in statCurr) {
             game[statTypes[statHandler]][statCurr[currHandler]] = numberLoader(game[statTypes[statHandler]][statCurr[currHandler]]);
@@ -1660,7 +1648,6 @@ function deleteGame() {
     if (confirm("Do you REALLY want to do this? EVERYTHING will be gone, you gain NOTHING")) {
         if (confirm("Make sure to save your progress before doing this!!! Everything will be lost!")) {
             if (confirm("If you press Yes again, everything will be gone!")) {
-                let statCurr = ["shgabb", "sw", "gs", "si"];
                 for (let currHandler in statCurr) {
                     emptyGame[statCurr[currHandler]] = new Decimal(0);
                     emptyGame.stats[statCurr[currHandler]] = new Decimal(0);
@@ -1694,7 +1681,7 @@ function loop(tick) {
     //doubleClick -= time;
     game.clickCooldown -= time;
     autoSaveTime -= time;
-    quoteTime -= time;
+    quoteTime += time;
     sandwichTime -= time;
     sandwichFreezeTime -= time;
     newArtifactDisplayTimer -= time;
@@ -1737,10 +1724,13 @@ function loop(tick) {
         autoSaveTime = 10;
         autoSave();
     }
-    if (quoteTime <= 0) {
-        quoteTime = 10;
+    if (quoteTime >= 18) {
+        quoteTime = 0;
         updateQuote();
     }
+    if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
+    else ui.quote.style["margin-left"] = "-0%";
+
     if (sandwichTime <= 0) {
         if (isChallenge(4)) {
             for (u in shgabbUpgrades) {
@@ -1927,14 +1917,14 @@ function updateBG() {
         body.style.backgroundColor = "none";
 
         if (settings.eventBG && isEvent("", true)) {
-            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-christmas.png)";
-            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/anniversary-background.png)";
-            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-chinese.png)";
-            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-easter.png)";
-            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/shgabb-background-pride.png)";
+            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-christmas.png)";
+            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/anniversary-background.png)";
+            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-chinese.png)";
+            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-easter.png)";
+            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-pride.png)";
         }
         else {
-            body.style.backgroundImage = "url(images/shgabb-background.png)";
+            body.style.backgroundImage = "url(images/backgrounds/shgabb-background.png)";
         }
     }
 }
@@ -1988,7 +1978,7 @@ updateEVERYTHING();
 checkNewDay();
 
 // Generate Patch Notes
-ui.gameTitle.innerHTML = "Shgabb Clicker " + gameVersion + (BETA.isBeta ? " (BETA)" : "");
+ui.gameTitle.innerHTML = cImg("shgabb") + "   Shgabb Clicker v" + gameVersion + (BETA.isBeta ? " (BETA)" : "") + "   " + cImg("shgabb");
 
 let patchNotesText = "Version " + gameVersion + ":";
 for (p in currentPatchNotes) {

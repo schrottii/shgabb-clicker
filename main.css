@@ -8,7 +8,7 @@
 /* ===================================================== */
 body {
     /*    background-color: black;*/
-    background-image: url("images/shgabb-background.png");
+    background-image: url("images/backgrounds/shgabb-background.png");
     background-size: 100vw 100vh;
     color: white;
     text-align: center;
@@ -155,12 +155,7 @@ progress {
 /* ad bar */
 .adBar {
     background-image: linear-gradient(to right, #2D2D2D, #636363); /* Replace with your desired colors */
-}
-
-@media only screen and (min-width: 768px) {
-    .adBar {
-        height: 44px;
-    }
+    height: 44px;
 }
 
 /* ===================================================== */
@@ -169,12 +164,25 @@ progress {
 .gameName {
     color: #01f8fd;
     background-color: #2e269a;
-    max-width: 320px;
     margin-left: auto;
     margin-right: auto;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
-    border-radius: 50px;
+    -moz-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius: 16px;
+}
+
+.quoteClass {
+    max-width: 90%;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: -0%;
+}
+
+@media only screen and (min-width: 768px) {
+    .quoteClass {
+        max-width: 640px;
+    }
 }
 
 .topSquare {
@@ -202,9 +210,10 @@ progress {
     border-color: black;
     border-width: 5px;
     font-size: 24px;
-    min-height: 64px;
+    min-height: 52px;
     min-width: 128px;
     font-family: Rw-title;
+    margin-top: 4px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -413,14 +422,13 @@ progress {
     border: 2px solid burlywood;
     text-align: left;
     width: 100%;
-    position: static;
 }
 
 @media only screen and (min-width: 768px) {
     .socsquare1 {
-        position: absolute;
+        float: left;
         text-align: right;
-        width: 48%;
+        width: 49%;
     }
 }
 
@@ -430,24 +438,14 @@ progress {
     border: 2px solid burlywood;
     text-align: left;
     width: 100%;
-    position: static;
 }
 
 @media only screen and (min-width: 768px) {
     .socsquare2 {
+        float: right;
         text-align: left;
-        width: 48%;
+        width: 49%;
         margin-left: auto;
-    }
-}
-
-.socheader {
-    position: inherit;
-}
-
-@media only screen and (min-width: 768px) {
-    .socheader {
-        position: relative;
     }
 }
 

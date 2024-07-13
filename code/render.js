@@ -1,6 +1,6 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 
-// sel 1: shgabb - sandwiches - gs - silicone - amé
+// sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper
 // sel 2: gems - artifacts - shgic
 // sel 3: cheats - stats - achievements - other (social, patch notes)
 // sel 4: shbook: lore - currencies - features
@@ -15,6 +15,7 @@ var sections = {
     siliconeShgabb: document.getElementById("siliconeShgabbSection"),
     ameliorer: document.getElementById("ameliorerSection"),
     bags: document.getElementById("bagSection"),
+    copper: document.getElementById("copperShgabbSection"),
 
     // sel 2
     gems: document.getElementById("gemSection"),
@@ -45,7 +46,7 @@ var sections = {
 
 var selections = ["shgabb", "none", "social", "currencies"];
 var selectionTypes = [
-    ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags"],
+    ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper"],
     ["gems", "artifacts", "challenges", "minigames", "events"],
     ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
     ["lore", "currencies", "features"]
@@ -58,13 +59,13 @@ function renderSelection(sel) {
     // Buttons
     sels = selectionTypes[sel - 1];
     if (sel == 1) {
-        selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag")];
+        selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag"), cImg("copper")];
     }
     if (sel == 2) {
-        selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenge1.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
+        selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenges/challenge1.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
     }
     if (sel == 3) {
-        selsDisplay = ["Cheats", '<img class="currency" src="images/shgabbicon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
+        selsDisplay = ["Cheats", '<img class="currency" src="images/playerprofile/shgabbicon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
     if (sel == 4) {
         selsDisplay = ["Lore", "Currenciary", "Featuriary"];
@@ -103,6 +104,8 @@ function isSelectionUnlocked(name) {
             return unlockedAmeliorer();
         case "bags":
             return unlockedBags();
+        case "copper":
+            return unlockedCopper();
 
         case "gems":
             return unlockedGems();

@@ -29,6 +29,7 @@ class Upgrade {
     }
 
     canBuy() {
+        if (typeof (game[this.currency]) && statCurr.includes(this.currency)) game[this.currency] = numberLoader(game[this.currency]);
         if (this.price(1).mantissa != undefined || game[this.currency].mantissa != undefined) return game[this.currency].gte(this.currentPrice()) && (this.getMax() == undefined || this.currentLevel() < this.getMax());
         return game[this.currency] >= this.currentPrice() && (this.getMax() == undefined || this.currentLevel() < this.getMax());
     }
@@ -191,6 +192,14 @@ class BagUpgrade extends Upgrade {
     }
 }
 
+class CopperShgabbUpgrade extends Upgrade {
+    constructor(ID, name, description, price, effect, config) {
+        super(ID, name, description, price, effect, config);
+        this.currency = "cop";
+        this.type = "copperShgabbUpgrades";
+    }
+}
+
 var shgabbUpgrades = {                                                                 
     moreShgabb: new Upgrade("moreShgabb", "More Shgabb", "Get more Shgabb per click", level => new Decimal(1).max(level / 25).mul(5).mul(level).add(5).mul(new Decimal(1.01).pow(level - 500).max(1)), level => level),
     critChance: new Upgrade("critChance", "Crit. Chance", "Increase the chance for critical hits", level => level * 10 * Math.max(1, level / 12) + 25, level => 3 + (level / 10), { maxLevel: 70, suffix: "%", unlock: () => !isChallenge(1) }),
@@ -271,6 +280,13 @@ var bagUpgrades = {
     moreSilicone3: new BagUpgrade("moreSilicone3", "More Silicone 3", "Get even more Silicone Shgabb", level => 20 * Math.floor(1 + level / 3), level => Math.pow(1 + (level / 10), 1.15), { prefix: "x" }),
     prestigeGems: new BagUpgrade("prestigeGems", "Prestige Gems", "Get 1 Gem for every 1000 More Shgabb on Prestige", level => 1000, level => level, { prefix: "+", maxLevel: 1 }),
     gemsBoostShgabb: new BagUpgrade("gemsBoostShgabb", "Gems Boost Shgabb", "Boosts Shgabb based on current Gems", level => 1000 * (level + 1), level => 1 + Math.floor((level * game.gems) / 100), { prefix: "x", maxLevel: 10 }),
-    adsWatchedBoostShgabb: new BagUpgrade("adsWatchedBoostShgabb", "Ads Watched Boost Shgabb", "Get More Shgabb based on all Ads watched. Costs are reduced by total Ads watched.", level => Math.max(1000, Math.floor(Math.pow(level, 3.75) * 5000 / game.stats.ads)), level => level > 0 ? Math.pow(game.stats.wads.sc * game.stats.wads.sa * game.stats.wads.msw * game.stats.wads.fs * game.stats.wads.mc * game.stats.wads.msi * game.stats.wads.mg, 0.1 + (level / 1000)) : 1, { unlock: () => game.upgradeLevels.unlockMBU >= 1, prefix: "x", maxLevel: 100 }),
-    clicksBoostGS: new BagUpgrade("clicksBoostGS", "Clicks Boost GS", "Get More Golden Shgabb based on all time, daily and prestige clicks. Costs are reduced by total Prestiges.", level => Math.max(1000, Math.floor(Math.pow(level, 3.75) * 5000 / game.stats.pr)), level => level > 0 ? Math.pow((game.stats.clicks + 1) * (game.stats_today.clicks + 1) * (game.stats_prestige.clicks + 1), 0.1 + (level / 1000)) : 1, { unlock: () => game.upgradeLevels.unlockMBU >= 2, prefix: "x", maxLevel: 100 }),
+    adsWatchedBoostShgabb: new BagUpgrade("adsWatchedBoostShgabb", "Ads Watched Boost Shgabb", "Get more Shgabb based on all Ads watched. Costs are reduced by total Ads watched.", level => Math.max(1000, Math.floor(Math.pow(level, 3.75) * 5000 / game.stats.ads)), level => level > 0 ? Math.pow(game.stats.wads.sc * game.stats.wads.sa * game.stats.wads.msw * game.stats.wads.fs * game.stats.wads.mc * game.stats.wads.msi * game.stats.wads.mg, 0.1 + (level / 1000)) : 1, { unlock: () => game.upgradeLevels.unlockMBU >= 1, prefix: "x", maxLevel: 100 }),
+    clicksBoostGS: new BagUpgrade("clicksBoostGS", "Clicks Boost GS", "Get more Golden Shgabb based on all time, daily and prestige clicks. Costs are reduced by total Prestiges.", level => Math.max(1000, Math.floor(Math.pow(level, 3.75) * 5000 / game.stats.pr)), level => level > 0 ? Math.pow((game.stats.clicks + 1) * (game.stats_today.clicks + 1) * (game.stats_prestige.clicks + 1), 0.1 + (level / 1000)) : 1, { unlock: () => game.upgradeLevels.unlockMBU >= 2, prefix: "x", maxLevel: 100 }),
+}
+
+var copperShgabbUpgrades = {
+    moreCopper: new CopperShgabbUpgrade("moreCopper", "More Copper", "Get more Copper every time a click gives Copper", level => new Decimal(1000).mul(level + 1).mul(new Decimal(1.01).pow(level)), level => 1 + level, { prefix: "x", unlock: () => game.upgradeLevels.copperClickChance >= 2 }),
+    copperClickChance: new CopperShgabbUpgrade("copperClickChance", "Copper Click Chance", "Increases the chance to get Copper from clicking", level => new Decimal(10).pow(level + 1), level => 1 + level, { suffix: "%", maxLevel: 49 }),
+    copShgabbBoost: new CopperShgabbUpgrade("copShgabbBoost", "Shgabb Boost", "Get more Shgabb", level => new Decimal(1000).pow(level + 2), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 32 }),
+    copGSBoost: new CopperShgabbUpgrade("copGSBoost", "GS Boost", "Get more GS", level => new Decimal(1000).pow(level + 3), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 256 }),
 }
