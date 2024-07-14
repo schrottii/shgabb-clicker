@@ -1180,8 +1180,13 @@ function adInject() {
     }
 
     // reinitialize the ad slots
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    console.log("Ads refreshed");
+    try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        console.log("Ads refreshed");
+    }
+    catch (e) {
+        console.log("That didn't go so well");
+    }
 }
 
 window.addEventListener('keydown', function (e) {
