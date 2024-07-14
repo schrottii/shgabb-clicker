@@ -147,6 +147,10 @@ var ui = {
     shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
     shbook: document.getElementById("shbook"),
     shbookHeader: document.getElementById("shbookHeader"),
+
+    googleAd1: document.getElementById("googleAd1"),
+    googleAd2: document.getElementById("googleAd2"),
+    googleAd3: document.getElementById("googleAd3"),
 }
 
 // Ad variables
@@ -1117,6 +1121,67 @@ function updateGems() {
     }
 }
 
+function adContent(nr) {
+    switch (nr) {
+        case 1:
+            return `
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
+                crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-format="fluid"
+             data-ad-layout-key="+t+s9-1r-45+eb"
+             data-ad-client="ca-pub-8311163069228619"
+             data-ad-slot="8712398144"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+                `
+            break;
+        case 2:
+            return `
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
+            crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:960px;height:480px"
+         data-ad-client="ca-pub-8311163069228619"
+         data-ad-slot="7146763519"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+                `
+            break;
+        case 3:
+            return `
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
+            crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:block; text-align:center;"
+         data-ad-layout="in-article"
+         data-ad-format="fluid"
+         data-ad-client="ca-pub-8311163069228619"
+         data-ad-slot="5394698148"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+                `
+            break;
+    }
+    return "error?";
+}
+
+function adInject() {
+    ui.googleAd1.innerHTML = "";
+    ui.googleAd2.innerHTML = "";
+    ui.googleAd3.innerHTML = "";
+
+    setTimeout(() => {
+        ui.googleAd1.innerHTML = adContent(1);
+        ui.googleAd2.innerHTML = adContent(2);
+        ui.googleAd3.innerHTML = adContent(3);
+    }, 250);
+}
+
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
         if (e.target.nodeName == 'BUTTON' || e.target.nodeName == 'BODY') {
@@ -1258,11 +1323,12 @@ function updateStats() {
         + "<br />"
 
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
-            + "<br />Common " + (1 / 8 * getArtifactsSimpleBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactsSimpleBoost("artifactchance")) + ")" + (allArtifactsOfRarity(1) ? " ALL" : "")
-            + "<br />Rare " + (1 / 40 * getArtifactsSimpleBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactsSimpleBoost("artifactchance")) + ")" + (allArtifactsOfRarity(2) ? " ALL" : "")
-            + "<br />Epic " + (1 / 320 * getArtifactsSimpleBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(32000 / getArtifactsSimpleBoost("artifactchance")) + ")" + (allArtifactsOfRarity(3) ? " ALL" : "")
-            + "<br />Legendary " + (1 / 10000 * getArtifactsSimpleBoost("artifactchance")).toFixed(3) + "% (1/" + Math.ceil(1000000 / getArtifactsSimpleBoost("artifactchance")) + ")" + (allArtifactsOfRarity(4) ? " ALL" : "")
+            + "<br />Common " + (1 / 8 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(1) ? " [ALL]" : "")
+            + "<br />Rare " + (1 / 40 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(2) ? " [ALL]" : "")
+            + "<br />Epic " + (1 / 320 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(32000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(3) ? " [ALL]" : "")
+            + "<br />Legendary " + (1 / 10000 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(1000000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(4) ? " [ALL]" : "")
             : "Artifacts locked!")
+        + "<br />Total Artifact gain multi: x" + getArtifactGainBoost()
 
         + (getArtifactsSimpleBoost("shgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("shgabb")) + " Shgabb") : "")
         + (getArtifactsSimpleBoost("clickshgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickshgabb")) + " Click Shgabb") : "")
@@ -1426,6 +1492,8 @@ function autoSave() {
     renderAllSelection();
     renderPFPs();
     renderBanners();
+
+    adInject();
 
     // Every save, check if a new day has risen
     checkNewDay()

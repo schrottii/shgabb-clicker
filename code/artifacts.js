@@ -553,19 +553,25 @@ function loadArtifactValues(previous=[0]) {
     }
 }
 
+function getArtifactGainBoost() {
+    return getArtifactsSimpleBoost("artifactchance")
+        * eventValue("anniversary", 1.5, 1)
+        * getChallenge(5).getBoost();
+
+}
+
 function getNewArtifact(multi = 1) {
     // (Chance TO GET)
     // Chance to get an artifact
 
     if (getArtifact(158).isEquipped()) return 0; // the no artifacts artifact
 
-    // multi1 = gem offer. multi2 = gem artis, events
-    let multi2 = 1;
-    if (multi == 1) multi2 = getArtifactsSimpleBoost("artifactchance") * eventValue("anniversary", 1.5, 1) * getChallenge(5).getBoost(); // Artifact chance artifacts only work from clicks, not the gem offer
-
+    // Artifact chance artifacts only work from clicks, not the gem offer
+    if (multi == 1) multi = getArtifactGainBoost();
+    
     let chance = Math.random() * applyLuck(100);
 
-    if (chance < 1 / 1000000 * multi * multi2) {
+    if (chance < 1 / 1000000 * multi) {
         if (Math.random() < 0.5 * !allArtifactsOfRarity(4) || !anyArtifactsOfRarity(4)) {
             gambleArtifact(4);
         }
@@ -573,7 +579,7 @@ function getNewArtifact(multi = 1) {
             artifactDuplicate(4);
         }
     }
-    else if (chance < 1 / 32000 * multi * multi2) {
+    else if (chance < 1 / 32000 * multi) {
         if (Math.random() < 0.5 * !allArtifactsOfRarity(3) || !anyArtifactsOfRarity(3)) {
             gambleArtifact(3);
         }
@@ -581,7 +587,7 @@ function getNewArtifact(multi = 1) {
             artifactDuplicate(3);
         }
     }
-    else if (chance < 1 / 4000 * multi * multi2) {
+    else if (chance < 1 / 4000 * multi) {
         if (Math.random() < 0.5 * !allArtifactsOfRarity(2) || !anyArtifactsOfRarity(2)) {
             gambleArtifact(2);
         }
@@ -589,7 +595,7 @@ function getNewArtifact(multi = 1) {
             artifactDuplicate(2);
         }
     }
-    else if (chance < 1 / 800 * multi * multi2) {
+    else if (chance < 1 / 800 * multi) {
         if (Math.random() < 0.5 * !allArtifactsOfRarity(1) || !anyArtifactsOfRarity(1)) {
             gambleArtifact(1);
         }
