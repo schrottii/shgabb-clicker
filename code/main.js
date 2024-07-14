@@ -1181,23 +1181,27 @@ function adInject() {
         ui.googleAd1.removeChild(ui.googleAd1.firstChild);
     }
 
+    window.adsbygoogle = [];
+
     setTimeout(() => {
         //for (let i = 0; i < 3; i++) {
-            // Re-add children
-            let ad = document.createElement('ins');
-            ad.className = 'adsbygoogle';
-            ad.style.display = 'block';
-            ad.setAttribute('data-ad-format', 'fluid');
-            ad.setAttribute('data-ad-layout-key', '+t+s9-1r-45+eb');
-            ad.setAttribute('data-ad-client', 'ca-pub-8311163069228619');
-            ad.setAttribute('data-ad-slot', '8712398144');
-            //ad.setAttribute('data-ad-format', 'auto');
-            ui.googleAd1.appendChild(ad);
-       // }
-    }, 250);
+        // Re-add children
+        let ad = document.createElement('ins');
+        ad.className = 'adsbygoogle';
+        ad.style.display = 'block';
+        ad.setAttribute('data-ad-format', 'fluid');
+        ad.setAttribute('data-ad-layout-key', '+t+s9-1r-45+eb');
+        ad.setAttribute('data-ad-client', 'ca-pub-8311163069228619');
+        ad.setAttribute('data-ad-slot', '8712398144');
+        //ad.setAttribute('data-ad-format', 'auto');
+        ui.googleAd1.appendChild(ad);
+        // }
 
-    // Give birth
-    (adsbygoogle = window.adsbygoogle || []).push({});
+        // Give birth
+        setTimeout(() => {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }, 115);
+    }, 215);
 }
 
 (adsbygoogle = window.adsbygoogle || []).push({});
