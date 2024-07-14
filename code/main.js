@@ -1182,9 +1182,11 @@ function adInject() {
             let ad = document.createElement('ins');
             ad.className = 'adsbygoogle';
             ad.style.display = 'block';
-            ad.setAttribute('data-ad-client', 'ca-pub-XXXXXXXXXXXX');
-            ad.setAttribute('data-ad-slot', 'XXXXXXXXXX');
-            ad.setAttribute('data-ad-format', 'auto');
+            ad.setAttribute('data-ad-format', 'fluid');
+            ad.setAttribute('data-ad-layout-key', '+t+s9-1r-45+eb');
+            ad.setAttribute('data-ad-client', 'ca-pub-8311163069228619');
+            ad.setAttribute('data-ad-slot', '8712398144');
+            //ad.setAttribute('data-ad-format', 'auto');
             ui.googleAd1.appendChild(ad);
        // }
     }, 250);
