@@ -1171,35 +1171,19 @@ function adContent(nr) {
 }
 
 function adInject() {
-    // Kill children
-    ui.googleAd1.innerHTML = "";
-    ui.googleAd2.innerHTML = "";
-    ui.googleAd3.innerHTML = "";
+    if (ui.googleAd1) {
+        // clear the container's content
+        ui.googleAd1.innerHTML = '';
 
-    while (ui.googleAd1.firstChild) {
-        ui.googleAd1.removeChild(ui.googleAd1.firstChild);
-    }
+        // destroy the existing ad slot
+        if (window.adsbygoogle && window.adsbygoogle.push) {
+            window.adsbygoogle = [];
+        }
 
-    window.adsbygoogle = window.adsbygoogle || [];
-
-    setTimeout(() => {
-        //for (let i = 0; i < 3; i++) {
-        // Re-add children
-        let ad = document.createElement('ins');
-        ad.className = 'adsbygoogle';
-        ad.style.display = 'block';
-        ad.style.maxHeight = '1200px';
-        ad.setAttribute('data-ad-format', 'fluid');
-        ad.setAttribute('data-ad-layout-key', '+t+s9-1r-45+eb');
-        ad.setAttribute('data-ad-client', 'ca-pub-8311163069228619');
-        ad.setAttribute('data-ad-slot', '8712398144');
-
-        ui.googleAd1.appendChild(ad);
-        // }
-
-        // Give birth
+        // reinitialize the ad slot
         (adsbygoogle = window.adsbygoogle || []).push({});
-    }, 250);
+        console.log("did it");
+    }
 }
 
 (adsbygoogle = window.adsbygoogle || []).push({});
