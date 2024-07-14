@@ -1171,7 +1171,6 @@ function adContent(nr) {
 }
 
 function adInject() {
-    console.log(ui.googleAd1);
     // Kill children
     ui.googleAd1.innerHTML = "";
     ui.googleAd2.innerHTML = "";
@@ -1190,7 +1189,7 @@ function adInject() {
         ad.className = 'adsbygoogle';
         ad.style.display = 'block';
         ad.style.maxHeight = '1200px';
-        //ad.setAttribute('data-ad-format', 'fluid');
+        ad.setAttribute('data-ad-format', 'fluid');
         ad.setAttribute('data-ad-layout-key', '+t+s9-1r-45+eb');
         ad.setAttribute('data-ad-client', 'ca-pub-8311163069228619');
         ad.setAttribute('data-ad-slot', '8712398144');
@@ -1200,14 +1199,10 @@ function adInject() {
 
         // Give birth
         (adsbygoogle = window.adsbygoogle || []).push({});
-        console.log(ui.googleAd1);
     }, 250);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    adInject(); // Initial ad injection
-});
+(adsbygoogle = window.adsbygoogle || []).push({});
 
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
