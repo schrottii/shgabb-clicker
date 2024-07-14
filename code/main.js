@@ -1169,6 +1169,7 @@ function adContent(nr) {
     }
     return "error?";
 }
+var dpdpadpdap = false
 
 function adInject() {
     // Kill children
@@ -1177,11 +1178,11 @@ function adInject() {
     ui.googleAd3.innerHTML = "";
 
     console.log(ui.googleAd1);
-    while (ui.googleAd1.firstChild) {
+    while (dpdpadpdap && ui.googleAd1.firstChild) {
         ui.googleAd1.removeChild(ui.googleAd1.firstChild);
     }
 
-    window.adsbygoogle = [];
+    window.adsbygoogle = window.adsbygoogle || [];
 
     setTimeout(() => {
         //for (let i = 0; i < 3; i++) {
@@ -1198,13 +1199,14 @@ function adInject() {
         // }
 
         // Give birth
-        setTimeout(() => {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        }, 115);
-    }, 215);
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    }, 250);
 }
 
-(adsbygoogle = window.adsbygoogle || []).push({});
+document.addEventListener("DOMContentLoaded", function () {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    adInject(); // Initial ad injection
+});
 
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
