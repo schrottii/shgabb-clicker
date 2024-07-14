@@ -1120,7 +1120,7 @@ function updateGems() {
         renderGemOffers();
     }
 }
-
+/*
 function adContent(nr) {
     switch (nr) {
         case 1:
@@ -1168,22 +1168,24 @@ function adContent(nr) {
             break;
     }
     return "error?";
-}
+} */
 
 function adInject() {
-    if (ui.googleAd1) {
-        // clear the container's content
-        ui.googleAd1.innerHTML = '';
-
-        // destroy the existing ad slot
-        if (window.adsbygoogle && window.adsbygoogle.push) {
-            window.adsbygoogle = [];
+    for (let adnr = 1; adnr < 4; adnr++) {
+        if (ui["googleAd" + adnr]) {
+            // clear the container's content
+            ui["googleAd" + adnr].innerHTML = '';
         }
-
-        // reinitialize the ad slot
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        console.log("did it");
     }
+
+    // destroy the existing ad slot
+    if (window.adsbygoogle && window.adsbygoogle.push) {
+        window.adsbygoogle = [];
+    }
+
+    // reinitialize the ad slot
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    console.log("did it");
 }
 
 (adsbygoogle = window.adsbygoogle || []).push({});
