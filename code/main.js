@@ -1171,16 +1171,29 @@ function adContent(nr) {
 }
 
 function adInject() {
+    // Kill children
     ui.googleAd1.innerHTML = "";
     ui.googleAd2.innerHTML = "";
     ui.googleAd3.innerHTML = "";
 
     setTimeout(() => {
-        ui.googleAd1.innerHTML = adContent(1);
-        ui.googleAd2.innerHTML = adContent(2);
-        ui.googleAd3.innerHTML = adContent(3);
+        //for (let i = 0; i < 3; i++) {
+            // Re-add children
+            let ad = document.createElement('ins');
+            ad.className = 'adsbygoogle';
+            ad.style.display = 'block';
+            ad.setAttribute('data-ad-client', 'ca-pub-XXXXXXXXXXXX');
+            ad.setAttribute('data-ad-slot', 'XXXXXXXXXX');
+            ad.setAttribute('data-ad-format', 'auto');
+            ui.googleAd1.appendChild(ad);
+       // }
     }, 250);
+
+    // Give birth
+    (adsbygoogle = window.adsbygoogle || []).push({});
 }
+
+(adsbygoogle = window.adsbygoogle || []).push({});
 
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
@@ -1482,7 +1495,7 @@ function updateUI() {
 var newArtifactDisplayTimer = 0;
 
 // Core
-function autoSave() {
+function autoSave(manual=true) {
     autoNotifications += 1;
 
     artifactEvent("onAutoSave");
@@ -1493,7 +1506,7 @@ function autoSave() {
     renderPFPs();
     renderBanners();
 
-    adInject();
+    if (!manual) adInject();
 
     // Every save, check if a new day has risen
     checkNewDay()
@@ -1798,7 +1811,7 @@ function loop(tick) {
     }
     if (autoSaveTime <= 0) {
         autoSaveTime = 10;
-        autoSave();
+        autoSave(false);
     }
     if (quoteTime >= 18) {
         quoteTime = 0;
