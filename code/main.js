@@ -1172,6 +1172,10 @@ function adInject() {
         if (adContainer) {
             // clear the container's content
             adContainer.innerHTML = '';
+
+            // reset any attributes that indicate ad status
+            adContainer.removeAttribute('data-adsbygoogle-status');
+            adContainer.removeAttribute('data-ad-status');
         }
     }
 
