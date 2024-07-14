@@ -1174,8 +1174,8 @@ function adInject() {
             adContainer.innerHTML = '';
 
             // destroy the existing ad slot
-            if (window.adsbygoogle && window.adsbygoogle.loaded) {
-                window.adsbygoogle.loaded();
+            if (window.adsbygoogle) {
+                window.adsbygoogle.loaded = false;
             }
 
             // reinitialize the ad slot
