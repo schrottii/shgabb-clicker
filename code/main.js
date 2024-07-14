@@ -147,10 +147,6 @@ var ui = {
     shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
     shbook: document.getElementById("shbook"),
     shbookHeader: document.getElementById("shbookHeader"),
-
-    googleAd1: document.getElementById("googleAd1"),
-    googleAd2: document.getElementById("googleAd2"),
-    googleAd3: document.getElementById("googleAd3"),
 }
 
 // Ad variables
@@ -1171,24 +1167,23 @@ function adContent(nr) {
 } */
 
 function adInject() {
-    for (let adnr = 1; adnr < 4; adnr++) {
-        if (ui["googleAd" + adnr]) {
+    for (let adnr = 1; adnr <= 3; adnr++) {
+        let adContainer = document.getElementById('googleAd' + adnr);
+        if (adContainer) {
             // clear the container's content
-            ui["googleAd" + adnr].innerHTML = '';
+            adContainer.innerHTML = '';
 
             // destroy the existing ad slot
-            if (window.adsbygoogle && window.adsbygoogle.push) {
-                window.adsbygoogle = [];
+            if (window.adsbygoogle && window.adsbygoogle.loaded) {
+                window.adsbygoogle.loaded();
             }
 
             // reinitialize the ad slot
             (adsbygoogle = window.adsbygoogle || []).push({});
         }
     }
-    console.log("did it");
+    console.log("Ads refreshed");
 }
-
-(adsbygoogle = window.adsbygoogle || []).push({});
 
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
