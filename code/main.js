@@ -1176,6 +1176,9 @@ function adInject() {
     ui.googleAd2.innerHTML = "";
     ui.googleAd3.innerHTML = "";
 
+    console.log(ui.googleAd1);
+    ui.googleAd1.removeChild(ui.googleAd1.firstChild);
+
     setTimeout(() => {
         //for (let i = 0; i < 3; i++) {
             // Re-add children
