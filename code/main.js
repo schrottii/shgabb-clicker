@@ -1172,16 +1172,16 @@ function adInject() {
         if (adContainer) {
             // clear the container's content
             adContainer.innerHTML = '';
-
-            // destroy the existing ad slot
-            if (window.adsbygoogle) {
-                window.adsbygoogle.loaded = false;
-            }
-
-            // reinitialize the ad slot
-            (adsbygoogle = window.adsbygoogle || []).push({});
         }
     }
+
+    // destroy the existing ad slot
+    if (window.adsbygoogle) {
+        window.adsbygoogle.loaded = false;
+    }
+
+    // reinitialize the ad slot
+    (adsbygoogle = window.adsbygoogle || []).push({});
     console.log("Ads refreshed");
 }
 
