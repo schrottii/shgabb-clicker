@@ -147,10 +147,6 @@ var ui = {
     shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
     shbook: document.getElementById("shbook"),
     shbookHeader: document.getElementById("shbookHeader"),
-
-    googleAd1: document.getElementById("googleAd1"),
-    googleAd2: document.getElementById("googleAd2"),
-    googleAd3: document.getElementById("googleAd3"),
 }
 
 // Ad variables
@@ -1121,79 +1117,28 @@ function updateGems() {
     }
 }
 
-function adContent(nr) {
-    switch (nr) {
-        case 1:
-            return `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
-                crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-format="fluid"
-             data-ad-layout-key="+t+s9-1r-45+eb"
-             data-ad-client="ca-pub-8311163069228619"
-             data-ad-slot="8712398144"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-                `
-            break;
-        case 2:
-            return `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
-            crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:960px;height:480px"
-         data-ad-client="ca-pub-8311163069228619"
-         data-ad-slot="7146763519"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-                `
-            break;
-        case 3:
-            return `
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"
-            crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:block; text-align:center;"
-         data-ad-layout="in-article"
-         data-ad-format="fluid"
-         data-ad-client="ca-pub-8311163069228619"
-         data-ad-slot="5394698148"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-                `
-            break;
-    }
-    return "error?";
-}
-
 function adInject() {
-    // Kill children
-    ui.googleAd1.innerHTML = "";
-    ui.googleAd2.innerHTML = "";
-    ui.googleAd3.innerHTML = "";
+    for (let adnr = 1; adnr <= 3; adnr++) {
+        let adContainer = document.getElementById('googleAd' + adnr);
+        if (adContainer) {
+            // clear the container's content
+            adContainer.innerHTML = '';
 
-    setTimeout(() => {
-        //for (let i = 0; i < 3; i++) {
-            // Re-add children
-            let ad = document.createElement('ins');
-            ad.className = 'adsbygoogle';
-            ad.style.display = 'block';
-            ad.setAttribute('data-ad-client', 'ca-pub-XXXXXXXXXXXX');
-            ad.setAttribute('data-ad-slot', 'XXXXXXXXXX');
-            ad.setAttribute('data-ad-format', 'auto');
-            ui.googleAd1.appendChild(ad);
-       // }
-    }, 250);
+            // reset any attributes that indicate ad status
+            adContainer.removeAttribute('data-adsbygoogle-status');
+            adContainer.removeAttribute('data-ad-status');
+        }
+    }
 
-    // Give birth
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    // reinitialize the ad slots
+    try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        console.log("Ads refreshed");
+    }
+    catch (e) {
+        console.log("That didn't go so well");
+    }
 }
-
-(adsbygoogle = window.adsbygoogle || []).push({});
 
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
