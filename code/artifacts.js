@@ -301,6 +301,8 @@ function getArtifact(id) {
 }
 
 function getArtifactsSimpleBoost(currency) {
+    if (game.aeqi.length > getMaxArtifactAmount()) return 1; // no boost if equipped amount > max amount
+
     let boost = 1;
     let thisArti;
 
@@ -1368,12 +1370,12 @@ var artifacts = [
 
     new Artifact(406, 4, 4, "Miner's Pay", "minerspay.png",
         {
-            desc: level => "Consumes " + (level * 50) + " Gems to boost Copper for 60s",
+            desc: level => "Consumes " + 50 + " Gems to boost Copper for 60s",
             simpleBoost: ["cop", level => Math.pow(4, level), () => getArtifact(406).getTimer(0) > 0],
             timer: [60, 0],
             onClick: (level) => {
-                if (getArtifact(406).getTimer() == 0 && game.gems >= level * 50) {
-                    game.gems -= level * 50;
+                if (getArtifact(406).getTimer() == 0 && game.gems >= 50) {
+                    game.gems -= 50;
                     getArtifact(406).fillTimer();
                 }
             }

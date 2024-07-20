@@ -82,9 +82,10 @@ class Upgrade {
         return returnPrice.max(1).floor(); // let's be nice ;)
     }
 
-    currentEffect() {
+    currentEffect(level = 0) {
+        // 0 == current
         if (!isChallenge(0) && !this.isUnlocked()) return this.effect(0);
-        return this.effect(game.upgradeLevels[this.ID]);
+        return this.effect(Math.min(level == 0 ? game.upgradeLevels[this.ID] : level, this.getMax() != undefined ? this.getMax() : 9999999999999999999));
     }
 
     currentLevel() {
@@ -101,7 +102,7 @@ class Upgrade {
     effectDisplay(level = 0) {
         if (isChallenge(5)) return "?";
 
-        let theEffect = level == 0 ? this.currentEffect() : this.effect(level);
+        let theEffect = this.currentEffect(level);
         if (this.currentEffect().mantissa != undefined) theEffect = theEffect.mul(this.effectMulti);
         else theEffect *= this.effectMulti;
 
@@ -265,14 +266,14 @@ var ameliorerUpgrades = {
     keepSWU: new AmeliorerUpgrade("keepSWU", "Keep Sandwich Upgrades", "Keep Sandwich Upgrades after a prestige", level => level >= 3 ? 10 : 2, level => level, { maxLevel: 6, ameSet: 5, ameAmount: 120, current: level => ["None", "Better Fridge", "1. Upgrade boosts clicks", "Cheese", "Auto Shgabb", "2+2=5", "Meaning Of Life"][level] }),
 
     amegsBoost: new AmeliorerUpgrade("amegsBoost", "Golden Shgabb Boost", "Get more Golden Shgabb", level => 3, level => 1 + (level * 0.1), { maxLevel: () => 30 + getAmeCame(), ameSet: 6, ameAmount: 150 }),
-    loreBoost: new AmeliorerUpgrade("loreBoost", "Lore Boost", "Get +2% GS per completed Lore Page (additive)", level => 10, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
+    loreBoost: new AmeliorerUpgrade("loreBoost", "Lore Boost", "Get +10% GS per completed Lore Page (additive)", level => 10, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
     tiersBoostBags: new AmeliorerUpgrade("tiersBoostBags", "Tiers Boost Bags", "Get more Bags for each Challenge tier completed", level => 25, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
     fourthArtifactLevel: new AmeliorerUpgrade("fourthArtifactLevel", "Fourth Artifact Level", "Increases max. level of most Artifacts by 1", level => 25, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 175 }),
 
     AMEmoreSw: new AmeliorerUpgrade("AMEmoreSw", "Sandwich Amount", "Increases max. level of that Shgabb Upgrade", level => level + 1, level => level * 5, { maxLevel: 15, ameSet: 7, ameAmount: 225 }),
     unlockMBU: new AmeliorerUpgrade("unlockMBU", "Unlock More Bag Upgrades", "Unlock a new Bag upgrade", level => 18, level => level, { maxLevel: 2, ameSet: 7, ameAmount: 225 }),
     infiniteGems2ame: new AmeliorerUpgrade("infiniteGems2ame", "Infinite Gems To Amé", "Gems to Amé can be used past its normal limit, but at twice the cost", level => 10, level => level, { maxLevel: 1, ameSet: 7, ameAmount: 225 }),
-    AMECAME: new AmeliorerUpgrade("AMECAME", "Amé Came", "Increases the levels (by +2) of all Amé upgrades that give a simple boost to a currency", level => 10, level => level * 2, { maxLevel: 10, ameSet: 7, ameAmount: 250 }),
+    AMECAME: new AmeliorerUpgrade("AMECAME", "Amé Came", "Increases the levels (by +2) of all Amé upgrades that give a simple boost to a currency", level => 2, level => level * 2, { maxLevel: 85, ameSet: 7, ameAmount: 250 }),
 }
 
 var bagUpgrades = {

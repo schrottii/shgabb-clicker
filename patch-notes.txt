@@ -50,6 +50,7 @@ July - September 2024:
 2.6
 2.6.1
 2.7
+2.7.1
 
 
 
@@ -1561,3 +1562,33 @@ Version 2.7 Copper Age:
 - Improved organization of files
 - Fixed Social overlapping with Shbook
 - Fixed Achievement 134 calling rare Artifacts "uncommon"
+
+
+
+2024/07/20 2.7.1:
+Version 2.7.1:
+-> Max Levels and Amé Reset:
+- Resetting Amé Upgrades no longer resets levels of GS and Si Upgrades
+- It also no longer removes the fourth Artifact from loadouts
+- Instead, those loadouts do nothing until the fourth Artifact is removed or the Upgrade bought again
+- Upgrades above their max. level now have their boost capped at that
+
+-> Balance:
+- Lore Boost: Increased boost per page from 2% to 10%
+- Amé Came: Increased max. level from 10 to 85 (30 -> 50 -> 200)
+- Amé Came: Reduced costs from 10/lvl to 2/lvl
+- Miner's Pay: Reduced costs from 50 x level to 50
+
+-> Stats:
+- Added Copper clicks and Copper chance
+- Moved Artifact stuff together, and below Progress
+- Added header for Artifact effects
+- Artifact effects: added Bags and Copper, moved some others
+- Split Currencies and Events
+- Renamed Other to Shgic Shgac Shgoe
+- Moved Total Tiers to Progress
+
+-> Other:
+- Added 5 new Quotes (95 total)
+- Game is now saved immediately after finishing Shgic
+- Removed auto save notification from buying Artifact Gift (third Gem offer)

@@ -4,35 +4,31 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.7";
+const gameVersion = "2.7.1";
 
 const currentPatchNotes = [
-    "Copper Age",
-    "-> Copper Shgabb:",
-    "- New currency: Copper Shgabb!",
-    "- Unlocked at HMS 10k",
-    "- Earned from clicking, with a 1% chance",
-    "- Value increases by +1 every time its earned",
-    "- Spent on 4 upgrades: More Copper, Copper Click Chance, Shgabb Boost, GS Boost",
-    "-> More Copper Content:",
-    "- Added 5 new Artifacts (2 common, 2 rare, 1 legendary, 80 total)",
-    "- Added 10 new Achievements (150 total)",
-    "- Added Currenciary entry",
-    "- Added PFP",
-    "- Added stats for Copper and Copper clicks",
-    "-> Quotes and title:",
-    "- Added scrolling quotes",
-    "- Quotes now always take one row on mobile",
-    "- Added 2 Shgabb currency images to title",
-    "- Added v to the version number in the title",
+    "-> Max Levels and Amé Reset:",
+    "- Resetting Amé Upgrades no longer resets levels of GS and Si Upgrades",
+    "- It also no longer removes the fourth Artifact from loadouts",
+    "- Instead, those loadouts do nothing until the fourth Artifact is removed or the Upgrade bought again",
+    "- Upgrades above their max. level now have their boost capped at that",
+    "-> Balance:",
+    "- Lore Boost: Increased boost per page from 2% to 10%",
+    "- Amé Came: Increased max. level from 10 to 85 (30 -> 50 -> 200)",
+    "- Amé Came: Reduced costs from 10/lvl to 2/lvl",
+    "- Miner's Pay: Reduced costs from 50 x level to 50",
+    "-> Stats:",
+    "- Added Copper clicks and Copper chance",
+    "- Moved Artifact stuff together, and below Progress",
+    "- Added header for Artifact effects",
+    "- Artifact effects: added Bags and Copper, moved some others",
+    "- Split Currencies and Events",
+    "- Renamed Other to Shgic Shgac Shgoe",
+    "- Moved Total Tiers to Progress",
     "-> Other:",
-    "- Shortened ad descriptions",
-    "- Slightly reduced height of the click button",
-    "- Changed images of Obama and Snakes Oil Salesman",
-    "- Changed Social section a bit",
-    "- Improved organization of files",
-    "- Fixed Social overlapping with Shbook",
-    '- Fixed Achievement 134 calling rare Artifacts "uncommon"',
+    "- Added 5 new Quotes (95 total)",
+    "- Game is now saved immediately after finishing Shgic",
+    "- Removed auto save notification from buying Artifact Gift (third Gem offer)",
 ]
 
 // Various variables
@@ -275,9 +271,14 @@ const quotes = [
     "edison intensifies - elmenda452",
     "why do i want to know how much qian, eggs and cakes i got today am i a time traveller - elmenda452",
 
-    // 2.6 (2)
+    // 2.6 (2) & 2.7.1 (5)
     "happily :) - elmenda452",
     "grats on the cheese - Phazer",
+    "More like Miner's Pray. - Slowmerger - DaGame",
+    "i appreciate the troll art but in smaller quantities - Phazer",
+    "this is kinda why farming spiders sucks, they dont really cooperate. - Phazer",
+    "smash your record on new laptop maybe? - Barduzzi",
+    "now make an x with x's - Tpot",
 ];
 
 // Notations
@@ -679,7 +680,7 @@ function getAchievementBoost() {
 }
 
 function getLoreBoost() {
-    return (game.upgradeLevels.achBExpo > 999 ? (Math.pow(1.02, game.lore.length)) : (game.upgradeLevels.loreBoost > 0 ? (1 + (game.lore.length / 50)) : 1));
+    return (game.upgradeLevels.achBExpo > 999 ? (Math.pow(1.1, game.lore.length)) : (game.upgradeLevels.loreBoost > 0 ? (1 + (game.lore.length / 10)) : 1));
 }
 
 function getAmeCame() {
@@ -1049,20 +1050,6 @@ function ameReset() {
         game.upgradeLevels[ameliorerUpgrades[a].ID] = 0;
     }
 
-    for (let a in goldenShgabbUpgrades) {
-        game.upgradeLevels[goldenShgabbUpgrades[a].ID] = Math.min((goldenShgabbUpgrades[a].getMax() != undefined ? goldenShgabbUpgrades[a].getMax() : game.upgradeLevels[goldenShgabbUpgrades[a].ID]), game.upgradeLevels[goldenShgabbUpgrades[a].ID]);
-    }
-
-    for (let a in siliconeShgabbUpgrades) {
-        game.upgradeLevels[siliconeShgabbUpgrades[a].ID] = Math.min((siliconeShgabbUpgrades[a].getMax() != undefined ? siliconeShgabbUpgrades[a].getMax() : game.upgradeLevels[siliconeShgabbUpgrades[a].ID]), game.upgradeLevels[siliconeShgabbUpgrades[a].ID]);
-    }
-
-    for (let l in game.alo) {
-        while (game.alo[l].length > getMaxArtifactAmount()) {
-            game.alo[l].pop();
-        }
-    }
-
     ui.ameReset.checked = false;
     ui.ameReset.value == "false";
 
@@ -1244,7 +1231,7 @@ function updateStats() {
         + "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
         + "<br />"
 
-        + "<br />Currencies and Events:"
+        + "<br />Currencies:"
         + "<br />Total Shgabb: " + statLoader("shgabb")
         + "<br />Total Sandwiches: " + statLoader("sw")
         + "<br />Total Golden Shgabb: " + statLoader("gs")
@@ -1255,14 +1242,16 @@ function updateStats() {
         + "<br />Total Bags: " + statLoader("bags")
         + "<br />Total Copper Shgabb: " + statLoader("cop")
         + "<br />Total Copper Clicks: " + statLoader("copClicks")
+        + "<br />"
+
+        + "<br />Events:"
         + "<br />Total Gifts: " + statLoader("gifts")
         + "<br />Total Cakes: " + statLoader("cakes")
         + "<br />Total Qian: " + statLoader("qian")
         + "<br />Total Eggs: " + statLoader("eggs")
         + "<br />"
 
-        + "<br />Other:"
-        + "<br />Total Tiers: " + fn(getTotalTiers())
+        + "<br />Shgic Shgac Shgoe:"
         + "<br />Total SSS wins: " + statLoader("tttw") + " (Points: " + statLoader("tttpw") + ")"
         + "<br />Total SSS losses: " + statLoader("tttl") + " (Points: " + statLoader("tttpl") + ")"
 
@@ -1280,6 +1269,19 @@ function updateStats() {
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
         + "<br />"
 
+        + "<br />Progress:"
+        + "<br />Achievements: " + game.ach.length + "/" + achievements.length
+        + "<br />Améliorer Levels: " + getTotalAme()
+        + "<br />Total Tiers: " + fn(getTotalTiers())
+        + "<br />"
+
+        + "<br />Artifacts: " + getArtifactAmount() + "/" + totalAmountOfArtifacts()
+        + "<br />- Common: " + getArtifactAmount(1) + "/" + totalAmountOfArtifacts(1)
+        + "<br />- Rare: " + getArtifactAmount(2) + "/" + totalAmountOfArtifacts(2)
+        + "<br />- Epic: " + getArtifactAmount(3) + "/" + totalAmountOfArtifacts(3)
+        + "<br />- Legendary: " + getArtifactAmount(4) + "/" + totalAmountOfArtifacts(4)
+        + "<br />"
+
         + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
             + "<br />Common " + (1 / 8 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(1) ? " [ALL]" : "")
             + "<br />Rare " + (1 / 40 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(2) ? " [ALL]" : "")
@@ -1287,7 +1289,10 @@ function updateStats() {
             + "<br />Legendary " + (1 / 10000 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(1000000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(4) ? " [ALL]" : "")
             : "Artifacts locked!")
         + "<br />Total Artifact gain multi: x" + getArtifactGainBoost()
+        + "<br />"
 
+        + "<br />Artifact effects:"
+        + (getArtifactsSimpleBoost("clickspeed") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickspeed")) + " click cooldown") : "")
         + (getArtifactsSimpleBoost("shgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("shgabb")) + " Shgabb") : "")
         + (getArtifactsSimpleBoost("clickshgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickshgabb")) + " Click Shgabb") : "")
         + (getArtifactsSimpleBoost("autoshgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("autoshgabb")) + " Auto Shgabb") : "")
@@ -1295,25 +1300,15 @@ function updateStats() {
         + (getArtifactsSimpleBoost("sw") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("sw")) + " Sandwiches") : "")
         + (getArtifactsSimpleBoost("gs") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gs")) + " Golden Shgabb") : "")
         + (getArtifactsSimpleBoost("prestigegs") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("prestigegs")) + " Prestige GS") : "")
+        + (getArtifactsSimpleBoost("clicksi") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clicksi")) + " Click Silicone") : "")
         + (getArtifactsSimpleBoost("si") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("si")) + " Silicone Shgabb") : "")
+        + (getArtifactsSimpleBoost("gemchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gemchance")) + " Gem chance") : "")
+        + (getArtifactsSimpleBoost("gems") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gems")) + " Gem amount") : "")
         + (getArtifactsSimpleBoost("bags") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("bags")) + " Bags") : "")
         + (getArtifactsSimpleBoost("cop") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("cop")) + " Copper") : "")
         + (getArtifactsSimpleBoost("copChance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("copChance")) + " Copper Chance") : "")
-        + (getArtifactsSimpleBoost("clicksi") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clicksi")) + " Click Silicone") : "")
-        + (getArtifactsSimpleBoost("clickspeed") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickspeed")) + " click cooldown") : "")
-        + (getArtifactsSimpleBoost("gemchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gemchance")) + " Gem chance") : "")
-        + (getArtifactsSimpleBoost("gems") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("gems")) + " Gem amount") : "")
         + (getArtifactsSimpleBoost("artifactchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("artifactchance")) + " Artifact chance") : "")
-        + "<br />"
 
-        + "<br />Progress:"
-        + "<br />Achievements: " + game.ach.length + "/" + achievements.length
-        + "<br />Améliorer Levels: " + getTotalAme()
-        + "<br />Artifacts: " + getArtifactAmount() + "/" + totalAmountOfArtifacts()
-        + "<br />- Common: " + getArtifactAmount(1) + "/" + totalAmountOfArtifacts(1)
-        + "<br />- Rare: " + getArtifactAmount(2) + "/" + totalAmountOfArtifacts(2)
-        + "<br />- Epic: " + getArtifactAmount(3) + "/" + totalAmountOfArtifacts(3)
-        + "<br />- Legendary: " + getArtifactAmount(4) + "/" + totalAmountOfArtifacts(4)
         + "</div>";
 }
 
@@ -1476,7 +1471,7 @@ function autoSave(manual=true) {
         }
     }
 
-    if (!newAch) createNotification("Game saved automatically " + autoNotifications);
+    if (!newAch && !manual) createNotification("Game saved automatically " + autoNotifications);
 }
 
 function createBackup() {
