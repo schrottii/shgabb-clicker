@@ -11,6 +11,7 @@ const currentPatchNotes = [
     "-> Ads:",
     "- Added Chengas (see section below)",
     "- Reworked / adjusted lots of ad code and the appearance of the bar and button(s)",
+    "- Ads can now be cancelled",
     "- Changed the least watched ad setting to have a third option: it appears more often",
     "- More Gems and More Silicone no longer have any chance to appear before being unlocked",
 
