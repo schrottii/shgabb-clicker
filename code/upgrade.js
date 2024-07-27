@@ -274,6 +274,9 @@ var ameliorerUpgrades = {
     unlockMBU: new AmeliorerUpgrade("unlockMBU", "Unlock More Bag Upgrades", "Unlock a new Bag upgrade", level => 18, level => level, { maxLevel: 2, ameSet: 7, ameAmount: 225 }),
     infiniteGems2ame: new AmeliorerUpgrade("infiniteGems2ame", "Infinite Gems To Amé", "Gems to Amé can be used past its normal limit, but at twice the cost", level => 10, level => level, { maxLevel: 1, ameSet: 7, ameAmount: 225 }),
     AMECAME: new AmeliorerUpgrade("AMECAME", "Amé Came", "Increases the levels (by +2) of all Amé upgrades that give a simple boost to a currency", level => 2, level => level * 2, { maxLevel: 85, ameSet: 7, ameAmount: 250 }),
+
+    copperBoost: new AmeliorerUpgrade("copperBoost", "Copper Boost", "Get more Copper Shgabb", level => 4, level => new Decimal(2).pow(level), { maxLevel: () => 30 + getAmeCame(), ameSet: 8, ameAmount: 300 }),
+    tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(2 * level).pow(getTotalTiers()), { maxLevel: 2, ameSet: 8, ameAmount: 300 }),
 }
 
 var bagUpgrades = {

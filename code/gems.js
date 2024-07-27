@@ -48,9 +48,17 @@ function gemOffer(i) {
             }
             break;
         case 2:
-            if (game.gems > 19) {
-                game.gems -= 20;
-                game.gemboost += 1;
+            if (!doBuyMax) {
+                if (game.gems > 19) {
+                    game.gems -= 20;
+                    game.gemboost += 1;
+                }
+            }
+            else {
+                // buy max
+                let amount = Math.floor(game.gems / 20);
+                game.gems -= 20 * amount;
+                game.gemboost += amount;
             }
             break;
         case 3:

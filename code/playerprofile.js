@@ -131,6 +131,10 @@ var pfps = [
     new PFP(415, "images/pride/shgabb-prideflag.png", () => game.evpfps.includes(415)),
     new PFP(416, "images/pride/shgabb-transflag.png", () => game.evpfps.includes(416)),
     new PFP(417, "images/pride/loveheart.png", () => game.evpfps.includes(417)),
+
+    new PFP(418, "images/currencies/shorts.png", () => game.evpfps.includes(418)),
+    new PFP(419, "images/playerprofile/sun.png", () => game.evpfps.includes(419)),
+    new PFP(420, "images/playerprofile/sunglasses.png", () => game.evpfps.includes(420)),
 ];
 
 var banners = [
@@ -153,6 +157,11 @@ var banners = [
     new Banner(407, "images/pride/pride-a.png", () => game.evbans.includes(407)),
     new Banner(408, "images/pride/pride-inter.png", () => game.evbans.includes(408)),
     new Banner(409, "images/pride/pride-shgabb.png", () => game.evbans.includes(409)),
+
+    new Banner(410, "images/playerprofile/summerbanner1.png", () => game.evbans.includes(410)),
+    new Banner(411, "images/playerprofile/summerbanner2.png", () => game.evbans.includes(411)),
+    new Banner(412, "images/playerprofile/summerbanner3.png", () => game.evbans.includes(412)),
+    new Banner(413, "images/playerprofile/summerbanner4.png", () => game.evbans.includes(413)),
 
     // 600 - 699 | Challenge Banners
     new Banner(600, "images/playerprofile/challenge-banner.png", () => getHighestTier() >= 3),

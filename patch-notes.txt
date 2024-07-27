@@ -51,6 +51,7 @@ July - September 2024:
 2.6.1
 2.7
 2.7.1
+2.8
 
 
 
@@ -1592,3 +1593,55 @@ Version 2.7.1:
 - Added 5 new Quotes (95 total)
 - Game is now saved immediately after finishing Shgic
 - Removed auto save notification from buying Artifact Gift (third Gem offer)
+
+
+
+2024/07/27 2.8:
+Version 2.8 Hot Change Update:
+-> Ads:
+- Added Chengas (see section below)
+- Reworked / adjusted lots of ad code and the appearance of the bar and button(s)
+- Changed the least watched ad setting to have a third option: it appears more often
+- More Gems and More Silicone no longer have any chance to appear before being unlocked
+
+-> Chengas:
+- New side currency: Chengas! Unlocked at HMS 5000
+- Can be used to change the ad boost that's being offered
+- It changes to a random offer, but changing again doesn't cost another Chenga
+- The offer does not disappear automatically after using a Chenga
+- Every time an ad is watched there is an 1% chance to obtain one
+- Added Currenciary entry
+
+-> Hot Hot Summer Event:
+- New event: Hot Hot Summer!
+- Active from July 28th - August 18th
+- x10 Sandwiches and x10 GS production during the event
+- 3 new event PFPs, 4 Banners and 5 Achievements can be earned
+- Added Hot Hot Summer background image
+- The event currency Shorts can be earned by clicking (0.1% chance)
+- Shorts can be spent on 6 offers
+- Hot Mode can be enabled or disabled at any time
+
+-> Hot Mode:
+- Every well timed click increases the heat
+- Click cooldown becomes faster, up to x3
+- At 200 clicks or more, Shorts are 100x more common (10% chance)
+- Clicking too fast causes a lengthy cooldown
+- Clicking too slow resets the click streak
+
+-> Shorts offers:
+- Offer 1: Buy a PFP (80 Shorts)
+- Offer 2: Buy a Banner (100 Shorts)
+- Offer 3: Instant Faster Shgabb boost! (1 minute) (60 Shorts)
+- Offer 4: Reset the click cooldown and the next 10 clicks have no cooldown! (40 Shorts)
+- Offer 5: Furious Fork Artifact (200 Shorts)
+- Offer 6: Amulet of Paroxysm Artifact (100 Shorts)
+
+-> Améliorer:
+- Added the 8th set of Améliorer Upgrades (300 Amé)
+- New Améliorer Upgrade: Copper Boost (Set 8, 300): Every level boosts Copper gains by 2x, affected by Amé Came
+- New Améliorer Upgrade: Tiers Boost Copper (Set 8, 300): Two levels, first is 2x, second is 4x
+
+-> Other:
+- Added 10 new Achievements (5 Event + 5 Chengas, 160 total)
+- The M hotkey can now also be used to buy max the Shgabb Boost Gem offer

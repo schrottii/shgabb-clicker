@@ -7,10 +7,10 @@ function isEvent(eventName, all = false) {
     let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? ("0" + (date.getUTCMonth() + 1)) : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
     if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
 
-    /*
-    if (eventName == "pride" || all) return true; // used to force event
+    
+    if (eventName == "summer" || all) return true; // used to force event
     else return false;
-    */
+    
 
     // Events below in order (January -> December)
     switch (eventName) {
@@ -32,6 +32,11 @@ function isEvent(eventName, all = false) {
         case "pride":
             // Pride Event | Jun 8 - Jun 22
             if (today >= 608 && today <= 622 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
+            else eventName = "summer";
+        case "summer":
+            // Hot Hot Summer Event | Jul 28 - Aug 18
+            if (today >= 728 && today <= 818 && game.stats.hms >= 2000) return true;
             if (!all) return false;
             else eventName = "christmas";
         case "christmas":
@@ -63,6 +68,9 @@ function renderCurrentEvent() {
     }
     else if (isEvent("pride")) {
         renderPride();
+    }
+    else if (isEvent("summer")) {
+        renderSummer();
     }
 }
 
@@ -519,4 +527,150 @@ function renderPride() {
     render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
 
     ui.eventRender.innerHTML = render;
+}
+
+function renderSummer() {
+    let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 18th</b>";
+    render = render + "<br />It's so hot! Don't forget your suncream! x10 Sandwiches and x10 GS! Shorts, the event currency, can be found by clicking with a low chance. Use Heat Mode for faster clicks and more Shorts.";
+    render = render + "<br />" + cImg("shorts") + game.shorts + " Shorts";
+
+    render = render + "<br /><br />Press the button below to activate Heat Mode. Every perfectly timed click reduces the cooldown (up to x3 speed), but clicking too slow resets it, and clicking too fast causes you to overheat. At a high speed, you can find Shorts at a 100x higher rate.";
+    render = render + "<br /><button class='grayButton' onclick='toggleHeatMode()'>" + (heatMode ? "Disable Heat Mode" : "Enable Heat Mode") + "</button>";
+    render = render + "<br />" + summerClicks + " clicks";
+
+    if (getCooldown() <= 0.5 && !game.evpfps.includes(420)) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(1)'>#1 Buy a PFP<br/>80 " + cImg("shorts") + "</button>";
+    if (getCooldown() >= 25 && !game.evbans.includes(413)) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(2)'>#2 Buy a Banner<br/>100 " + cImg("shorts") + "</button>";
+
+    if (getCooldown() <= 0.5) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(3)'>#3 Instant Faster Shgabb boost! (1 minute)<br/>60 " + cImg("shorts") + "</button>";
+    if (getCooldown() >= 25) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(4)'>#4 Reset the click cooldown and the next 10 clicks have no cooldown!<br/>40 " + cImg("shorts") + "</button>";
+
+    if (getCooldown() <= 1) render = render + "<br /><br /><button onclick='useShorts(5)'>" + getArtifact(313).render(false) + "<div class='chineseOffer'>#5<br/>200 " + cImg("shorts") + "</div></button>";
+    if (getCooldown() >= 5) render = render + "<br /><br /><button onclick='useShorts(6)'>" + getArtifact(200).render(false) + "<div class='chineseOffer'>#6<br/>100 " + cImg("shorts") + "</div></button>";
+
+    ui.eventRender.innerHTML = render;
+}
+
+var summerClicks = 0;
+var heatMode = false;
+
+function toggleHeatMode() {
+    heatMode = !heatMode;
+    summerClicks = 0;
+    renderCurrentEvent();
+}
+
+function useShorts(offerNR) {
+    switch (offerNR) {
+        case 1:
+            // buy PFP
+            if (game.shorts < 80) {
+                createNotification("Not enough Shorts!");
+                return false;
+            }
+
+            if (!game.evpfps.includes(418)) {
+                game.evpfps.push(418);
+            }
+            else if (!game.evpfps.includes(419)) {
+                game.evpfps.push(419);
+            }
+            else if (!game.evpfps.includes(420)) {
+                game.evpfps.push(420);
+            }
+            else {
+                // has all
+                createNotification("You already own these PFPs!");
+                return false;
+            }
+            // bought one of them
+            game.shorts -= 80;
+            createNotification("Bought PFP for 80 Shorts!");
+
+            break;
+        case 2:
+            // buy Banner
+            if (game.shorts < 100) {
+                createNotification("Not enough Shorts!");
+                return false;
+            }
+
+            if (!game.evbans.includes(410)) {
+                game.evbans.push(410);
+            }
+            else if (!game.evbans.includes(411)) {
+                game.evbans.push(411);
+            }
+            else if (!game.evbans.includes(412)) {
+                game.evbans.push(412);
+            }
+            else if (!game.evbans.includes(413)) {
+                game.evbans.push(413);
+            }
+            else {
+                // has all
+                createNotification("You already own these Banners!");
+                return false;
+            }
+            // bought one of them
+            game.shorts -= 100;
+            createNotification("Bought Banner for 100 Shorts!");
+
+            break;
+        case 3:
+            // instant faster shgabb
+            if (game.shorts < 60) return false;
+            game.shorts -= 60;
+
+            currentBoost = "fasterShgabb"
+            adTime = 60;
+            adMax = 60;
+
+            statIncrease("ads", 1);
+            game.stats.wads.fs += 1;
+
+            break;
+        case 4:
+            // click cooldown thing
+            if (game.shorts < 40 || lunarAntiCooldown == 10) return false;
+            game.shorts -= 40;
+
+            game.clickCooldown = 0;
+            clickCooldown = 0;
+            lunarAntiCooldown = 10;
+
+            break;
+        case 5:
+            if (game.shorts < 200) return false;
+
+            if (!game.a.includes(313)) {
+                game.a.push(313)
+                createNotification("New Artifact: " + getArtifact(313).name);
+            }
+            else {
+                artifactDuplicate(313);
+            }
+
+            game.shorts -= 200;
+
+            updateArtifacts();
+            break;
+        case 6:
+            if (game.shorts < 100) return false;
+
+            if (!game.a.includes(200)) {
+                game.a.push(200)
+                createNotification("New Artifact: " + getArtifact(200).name);
+            }
+            else {
+                artifactDuplicate(200);
+            }
+
+            game.shorts -= 100;
+
+            updateArtifacts();
+            break;
+    }
+
+    if (!game.ach.includes(94)) game.ach.push(94);
+    renderCurrentEvent();
 }

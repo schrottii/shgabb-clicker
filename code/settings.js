@@ -50,8 +50,8 @@ var settingButtons = [
     new ToggleSetting("gameplay", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades"),
     new ToggleSetting("gameplay", "toggleUnlevel", "hideUnlevel", "Hide Unlevel Button"),
     new Setting("gameplay", "toggleNotation", "Change Notation", () => "Current: " + settings.notation),
-    new Setting("design", "toggleCurrenciesDisplay", "Currencies Display", () => "Current: " + ["Visible", "Hidden", "Compact"][settings.topSquare]),
-    new ToggleSetting("gameplay", "toggleLeastAd", "leastAdLess", "Least watched ad appears less often"),
+    new Setting("design", "toggleCurrenciesDisplay", "Currencies Display", () => "Current: " + ["Visible", "Hidden", "Compact"][typeof (settings.topSquare) != "boolean" ? settings.topSquare : (settings.topSquare == true ? 1 : 0)]),
+    new Setting("gameplay", "toggleLeastAd", "Least watched ad setting", () => "Current: " + ["Appears less often", "Unchanged", "Appears more often"][typeof (settings.leastAdLess) != "boolean" ? settings.leastAdLess : (settings.leastAdLess == true ? 1 : 0)]),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", () => "Current: " + settings.upgradeColors),
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events"),
     new Setting("save", "redeemCode", "Redeem Code", "Use this to import a special gift from Schrottii"),
@@ -160,7 +160,22 @@ function toggleCurrenciesDisplay() {
 }
 
 function toggleLeastAd() {
-    createNotification("Least watched ad appears less often " + (settings.leastAdLess ? "ON" : "OFF"));
+    if (settings.leastAdLess == false || settings.leastAdLess == 0) {
+        // Change to 1 - normal
+        settings.leastAdLess = 1;
+        createNotification("Least watched ad appears as often as others");
+    }
+    else if (settings.leastAdLess == true || settings.leastAdLess == 1) {
+        // Change to 2 - more
+        settings.leastAdLess = 2;
+        createNotification("Least watched ad appears more often");
+    }
+    else if (settings.leastAdLess == 2) {
+        // Change to 0 - less
+        settings.leastAdLess = 0;
+        createNotification("Least watched ad appears more often");
+    }
+
     updateUpgrades();
 }
 

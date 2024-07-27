@@ -22,11 +22,13 @@ var game = {
     gems: 0,
     gemboost: 0,
     artifactScrap: 0,
+    chenga: 0,
     // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,
     qian: 0,
     eggs: 0,
+    shorts: 0,
     // other stuff
     lore: [],
     lorepg: [],
@@ -122,6 +124,9 @@ var game = {
         infiniteGems2ame: 0,
         AMECAME: 0,
 
+        copperBoost: 0,
+        tiersBoostCopper: 0,
+
         // Bag
         challengeShgabb: 0,
         moreSilicone3: 0,
@@ -153,11 +158,13 @@ var game = {
         bags: 0,
         cop: 0,
         copClicks: 0,
+        chenga: 0,
 
         gifts: 0,
         cakes: 0,
         qian: 0,
         eggs: 0,
+        shorts: 0,
 
         tttpw: 0,
         tttpl: 0,

@@ -4,31 +4,57 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.7.1";
+const gameVersion = "2.8";
 
 const currentPatchNotes = [
-    "-> Max Levels and Amé Reset:",
-    "- Resetting Amé Upgrades no longer resets levels of GS and Si Upgrades",
-    "- It also no longer removes the fourth Artifact from loadouts",
-    "- Instead, those loadouts do nothing until the fourth Artifact is removed or the Upgrade bought again",
-    "- Upgrades above their max. level now have their boost capped at that",
-    "-> Balance:",
-    "- Lore Boost: Increased boost per page from 2% to 10%",
-    "- Amé Came: Increased max. level from 10 to 85 (30 -> 50 -> 200)",
-    "- Amé Came: Reduced costs from 10/lvl to 2/lvl",
-    "- Miner's Pay: Reduced costs from 50 x level to 50",
-    "-> Stats:",
-    "- Added Copper clicks and Copper chance",
-    "- Moved Artifact stuff together, and below Progress",
-    "- Added header for Artifact effects",
-    "- Artifact effects: added Bags and Copper, moved some others",
-    "- Split Currencies and Events",
-    "- Renamed Other to Shgic Shgac Shgoe",
-    "- Moved Total Tiers to Progress",
+    "Hot Change Update",
+    "-> Ads:",
+    "- Added Chengas (see section below)",
+    "- Reworked / adjusted lots of ad code and the appearance of the bar and button(s)",
+    "- Changed the least watched ad setting to have a third option: it appears more often",
+    "- More Gems and More Silicone no longer have any chance to appear before being unlocked",
+
+    "-> Chengas:",
+    "- New side currency: Chengas! Unlocked at HMS 5000",
+    "- Can be used to change the ad boost that's being offered",
+    "- It changes to a random offer, but changing again doesn't cost another Chenga",
+    "- The offer does not disappear automatically after using a Chenga",
+    "- Every time an ad is watched there is an 1% chance to obtain one",
+    "- Added Currenciary entry",
+
+    "-> Hot Hot Summer Event:",
+    "- New event: Hot Hot Summer!",
+    "- Active from July 28th - August 18th",
+    "- x10 Sandwiches and x10 GS production during the event",
+    "- 3 new event PFPs, 4 Banners and 5 Achievements can be earned",
+    "- Added Hot Hot Summer background image",
+    "- The event currency Shorts can be earned by clicking (0.1% chance)",
+    "- Shorts can be spent on 6 offers",
+    "- Hot Mode can be enabled or disabled at any time",
+
+    "-> Hot Mode:",
+    "- Every well timed click increases the heat",
+    "- Click cooldown becomes faster, up to x3",
+    "- At 200 clicks or more, Shorts are 100x more common (10% chance)",
+    "- Clicking too fast causes a lengthy cooldown",
+    "- Clicking too slow resets the click streak",
+
+    "-> Shorts offers:",
+    "- Offer 1: Buy a PFP (80 Shorts)",
+    "- Offer 2: Buy a Banner (100 Shorts)",
+    "- Offer 3: Instant Faster Shgabb boost! (1 minute) (60 Shorts)",
+    "- Offer 4: Reset the click cooldown and the next 10 clicks have no cooldown! (40 Shorts)",
+    "- Offer 5: Furious Fork Artifact (200 Shorts)",
+    "- Offer 6: Amulet of Paroxysm Artifact (100 Shorts)",
+
+    "-> Améliorer:",
+    "- Added the 8th set of Améliorer Upgrades (300 Amé)",
+    "- New Améliorer Upgrade: Copper Boost (Set 8, 300): Every level boosts Copper gains by 2x, affected by Amé Came",
+    "- New Améliorer Upgrade: Tiers Boost Copper (Set 8, 300): Two levels, first is 2x, second is 4x",
+
     "-> Other:",
-    "- Added 5 new Quotes (95 total)",
-    "- Game is now saved immediately after finishing Shgic",
-    "- Removed auto save notification from buying Artifact Gift (third Gem offer)",
+    "- Added 10 new Achievements (5 Event + 5 Chengas, 160 total)",
+    "- The M hotkey can now also be used to buy max the Shgabb Boost Gem offer",
 ]
 
 // Various variables
@@ -112,7 +138,9 @@ var ui = {
     gameTitle: document.getElementById("gametitle"),
     patchNotes: document.getElementById("patchNotes"),
     clickButton: document.getElementById("clickButton"),
-    adLoaded: document.getElementById("adloaded"),
+    adContent: document.getElementById("adContent"),
+    adButton: document.getElementById("adButton"),
+    adStartButton: document.getElementById("adStartButton"),
     ameReset: document.getElementById("amereset"),
     ameReset2: document.getElementById("amereset2"),
     artifacts: document.getElementById("artifacts"),
@@ -144,15 +172,6 @@ var ui = {
     shbook: document.getElementById("shbook"),
     shbookHeader: document.getElementById("shbookHeader"),
 }
-
-// Ad variables
-var adHandler = document.getElementById("baldad");
-var adButton = document.getElementById("adstartbutton");
-var adLoaded = false;
-var availableBoost = "none";
-var currentBoost = "none";
-var adTime = 20;
-var adMax = 20;
 
 const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
 const boostTexts = {
@@ -445,6 +464,22 @@ function clickButton() {
 
             artifactEvent("onClickBefore", { "multi": clickButtonMulti });
 
+            if (isEvent("summer")) {
+                if (heatMode) {
+                    if (game.clickCooldown > -0.33) summerClicks += 1;
+                    else if (summerClicks > 0) {
+                        heatMode = false;
+                        summerClicks = 0;
+                    }
+                    renderCurrentEvent();
+                }
+
+                if (Math.random() * 100 < 0.1 * (summerClicks >= 200 ? 100 : 1)) {
+                    game.shorts += 1;
+                    statIncrease("shorts", 1);
+                }
+            }
+
             game.shgabb = game.shgabb.add(amount);
             statIncrease("shgabb", amount);
 
@@ -465,10 +500,10 @@ function clickButton() {
 
             if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + clickButtonMulti);
 
-            if (isEvent("lunar")) {
-                lunarAntiCooldown -= clickButtonMulti;
-                luck -= clickButtonMulti; // reduce luck
+            if (lunarAntiCooldown > 0) lunarAntiCooldown -= clickButtonMulti;
+            if (luck > 0) luck -= clickButtonMulti; // reduce luck
 
+            if (isEvent("lunar")) {
                 if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
                     // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian
                     let amount = (game.ach.includes(92) ? 2 : 1) * clickButtonMulti;
@@ -511,6 +546,12 @@ function clickButton() {
     }
     else {
         createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
+
+        if (isEvent("summer") && heatMode) {
+            heatMode = false;
+            summerClicks = 0;
+            game.clickCooldown = 60;
+        }
     }
 
     freezeTime();
@@ -528,6 +569,8 @@ function getCopper() {
         // calculate how much copper we get
         let amount = new Decimal(game.stats.copClicks)
             .mul(copperShgabbUpgrades.moreCopper.currentEffect())
+            .mul(ameliorerUpgrades.copperBoost.currentEffect())
+            .mul(ameliorerUpgrades.tiersBoostCopper.currentEffect())
             .mul(getArtifactsSimpleBoost("cop"))
             .ceil();
 
@@ -668,7 +711,8 @@ function getCooldown() {
         / cakeValue(5, 1)
         * (getArtifact(156).isEquipped() ? getArtifact(156).getEffect() : 1)
         * (getArtifact(203).isEquipped() ? 5 : 1)
-        * (getArtifact(225).isEquipped() ? 5 : 1))
+        * (getArtifact(225).isEquipped() ? 5 : 1)
+        / (heatMode ? Math.max(1, Math.min(3, Math.log(summerClicks / 22.5))) : 1))
     if (isChallenge(3)) CD = 20;
     if (shgaybbMode) CD = Math.max(2, CD);
     clickCooldown = CD; // Why T_T
@@ -703,6 +747,7 @@ function getGoldenShgabb() {
         .mul(getLoreBoost())
         .mul(bagUpgrades.clicksBoostGS.currentEffect())
         .mul(copperShgabbUpgrades.copGSBoost.currentEffect())
+        .mul(eventValue("summer", 10, 1))
         .floor();
 }
 
@@ -714,6 +759,7 @@ function getSandwich(critMulti = 1) {
         .mul(Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())))
         .mul(getArtifact(307).isEquipped() ? getArtifact(307).getValue(0) : 1)
         .mul(getChallenge(1).getBoost())
+        .mul(eventValue("summer", 10, 1))
         .floor();
 }
 
@@ -1104,29 +1150,6 @@ function updateGems() {
     }
 }
 
-function adInject() {
-    for (let adnr = 1; adnr <= 3; adnr++) {
-        let adContainer = document.getElementById('googleAd' + adnr);
-        if (adContainer) {
-            // clear the container's content
-            adContainer.innerHTML = '';
-
-            // reset any attributes that indicate ad status
-            adContainer.removeAttribute('data-adsbygoogle-status');
-            adContainer.removeAttribute('data-ad-status');
-        }
-    }
-
-    // reinitialize the ad slots
-    try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        console.log("Ads refreshed");
-    }
-    catch (e) {
-        console.log("That didn't go so well");
-    }
-}
-
 window.addEventListener('keydown', function (e) {
     if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
         if (e.target.nodeName == 'BUTTON' || e.target.nodeName == 'BODY') {
@@ -1242,6 +1265,7 @@ function updateStats() {
         + "<br />Total Bags: " + statLoader("bags")
         + "<br />Total Copper Shgabb: " + statLoader("cop")
         + "<br />Total Copper Clicks: " + statLoader("copClicks")
+        + "<br />Total Chengas: " + statLoader("chenga")
         + "<br />"
 
         + "<br />Events:"
@@ -1352,12 +1376,11 @@ function updateUI() {
     ui.sandwichBarText.innerHTML = ui.sandwichBar.value.toFixed(1) + "s/" + ui.sandwichBar.max + "s";
 
     // Ads
-    if (game.stats.sw > 9 && adTime > 0 && !settings.noAds) {
-        ui.adBar.style.display = "inline";
+    if (unlockedAds() && !settings.noAds) {
         ui.adBar.value = (adTime / adMax) * 100;
     }
     else {
-        ui.adBar.style.display = "none";
+        ui.adContent.style.display = "none";
     }
 
     // GS
@@ -1693,15 +1716,6 @@ function deleteGame() {
     }
 }
 
-function showAd() {
-    selectVideo();
-
-    adButton.style.display = "none";
-    adHandler.style.display = "inline";
-    adHandler.play();
-    currentBoost = "wait";
-}
-
 function loop(tick) {
     // Main Game Loop
     let time = (tick - oldTime) / 1000;
@@ -1744,7 +1758,7 @@ function loop(tick) {
         }
     }
 
-    if (adLoaded && game.stats.sw > 9) adTime -= time;
+    if (adLoaded && unlockedAds()) adTime -= time;
 
     if (newArtifactDisplayTimer <= 0 && newArtifactDisplayTimer > -15) {
         ui.newArtifact.style.display = "none";
@@ -1779,40 +1793,7 @@ function loop(tick) {
         artifactEvent("onAuto", {});
     }
 
-    if (!settings.noAds) {
-        if (adTime <= 0 && adTime >= cakeValue(-4, -15) && adButton.style.display == "none" && adHandler.style.display == "none" && currentBoost == "none") {
-            // Hey1 You can get this!
-            availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-            if (settings.leastAdLess && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-            while (!unlockedGems() && availableBoost == "moreGems") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-            while (!unlockedSilicone() && availableBoost == "moreSilicone") availableBoost = boosts[Math.floor(boosts.length * Math.random())];
-
-            adButton.style.display = "inline";
-            adButton.innerHTML = "Watch an ad to get a boost!<br />" + boostTexts[availableBoost];
-        }
-        else if (adTime <= 0 && adButton.style.display == "none" && adHandler.style.display == "none") {
-            // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
-            adTime = cakeValue(1, 5);
-            adMax = 5;
-
-            //ui.cooldownBar.classList.remove("buffedProgress")
-            ui.sandwichBar.classList.remove("buffedProgress")
-
-            currentBoost = "none";
-        }
-        else if (currentBoost == "none" && adTime <= cakeValue(-4, -15)) {
-            // Hm, let's wait for next ad (you didn't accept this one)
-            adButton.style.display = "none";
-            adTime = cakeValue(1, 5);
-            adMax = 5;
-        }
-    }
-    else {
-        // Ads disabled
-        adButton.style.display = "none";
-        adHandler.style.display = "none";
-        ui.adBar.style.display = "none";
-    }
+    adSwitcher();
 
     updateUI();
     window.requestAnimationFrame(loop);
@@ -1879,61 +1860,6 @@ if (localStorage.getItem("shgabbSettings") != undefined) {
     adHandler.muted = !settings.adMusic;
     }
 
-// Ad init
-try {
-    adHandler.oncanplay = () => {
-        if (!adLoaded) createNotification("Ads loaded!");
-        adLoaded = true;
-        ui.adLoaded.style.display = "block";
-        adHandler.volume = 0.2;
-    }
-
-    adHandler.onended = () => {
-        currentBoost = availableBoost;
-        statIncrease("ads", 1);
-        switch (currentBoost) {
-            case "strongerClicks":
-                game.stats.wads.sc += 1;
-                break;
-            case "strongerAuto":
-                game.stats.wads.sa += 1;
-                break;
-            case "moreSandwiches":
-                game.stats.wads.msw += 1;
-                break;
-            case "fasterShgabb":
-                game.stats.wads.fs += 1;
-                break;
-            case "moreCrits":
-                game.stats.wads.mc += 1;
-                break;
-            case "moreSilicone":
-                game.stats.wads.msi += 1;
-                break;
-            case "moreGems":
-                game.stats.wads.mg += 1;
-                break;
-        }
-
-        lastAdTimer = 0;
-        availableBoost = "none";
-        adTime = adTimes[currentBoost];
-        adMax = adTimes[currentBoost];
-        adHandler.style.display = "none";
-        adButton.style.display = "none";
-
-        if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
-            //ui.cooldownBar.classList.add("buffedProgress")
-        }
-        if (currentBoost == "moreSandwiches") {
-            ui.sandwichBar.classList.add("buffedProgress")
-        }
-    }
-}
-catch (e) {
-    console.trace(e);
-}
-
 function updateBG() {
     var body = document.getElementsByTagName('body')[0];
     if (settings.background || isChallenge(5)) {
@@ -1951,6 +1877,7 @@ function updateBG() {
             else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-chinese.png)";
             else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-easter.png)";
             else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-pride.png)";
+            else if (isEvent("summer") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-summer.png)";
         }
         else {
             body.style.backgroundImage = "url(images/backgrounds/shgabb-background.png)";

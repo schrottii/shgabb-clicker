@@ -154,8 +154,10 @@ progress {
 
 /* ad bar */
 .adBar {
-    background-image: linear-gradient(to right, #2D2D2D, #636363); /* Replace with your desired colors */
-    height: 44px;
+    background-image: linear-gradient(to right, #2D2D2D, #636363);
+    width: 70%;
+    height: 90%;
+    float: left;
 }
 
 /* ===================================================== */

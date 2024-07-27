@@ -263,13 +263,13 @@ class Artifact {
 
     render(clickable = true) {
         // what you see is what you get.
-        return `<button class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
+        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
             + (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
             + (!this.isUpgradable() ? (this.getRarity() + " L" + this.getLevel()) : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
             + this.renderSimpleEffect() + "<br />" + this.renderDescription()
             // + (this.value != undefined ? ("<br />Value: " + this.getValue("?") + "/" + this.getValueMax()) : "")
             + (this.timer != undefined ? ("<br />Timer: " + this.getTimer(0).toFixed(0) + "/" + this.timerMax) : "")
-            + "</button>";
+            + `</` + (clickable ? "button" : "div") + `>`;
     }
 }
 
@@ -645,12 +645,20 @@ function gambleArtifact(r) {
 function artifactDuplicate(rarity) {
     // this is triggered if we *know* that we are getting a duplicate, so let's see which one it is
     let possibleArtifacts = [];
-    for (a in artifacts) {
-        if (artifacts[a].rarity == rarity && artifacts[a].isUnlocked()) {
-            possibleArtifacts.push(artifacts[a].ID);
-        }
+    let gainedID = 100;
+
+    if (rarity > 99) {
+        gainedID = rarity;
+        rarity = getArtifact(gainedID).rarity;
     }
-    let gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+    else {
+        for (a in artifacts) {
+            if (artifacts[a].rarity == rarity && artifacts[a].isUnlocked()) {
+                possibleArtifacts.push(artifacts[a].ID);
+            }
+        }
+        gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+    }
 
     // Duplicate...
     let amount = (allArtifactsOfRarity(rarity) ? 2 : 1) * (getScrapCost(1, rarity) / 10);
