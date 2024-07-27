@@ -276,7 +276,7 @@ var ameliorerUpgrades = {
     AMECAME: new AmeliorerUpgrade("AMECAME", "Amé Came", "Increases the levels (by +2) of all Amé upgrades that give a simple boost to a currency", level => 2, level => level * 2, { maxLevel: 85, ameSet: 7, ameAmount: 250 }),
 
     copperBoost: new AmeliorerUpgrade("copperBoost", "Copper Boost", "Get more Copper Shgabb", level => 4, level => new Decimal(2).pow(level), { maxLevel: () => 30 + getAmeCame(), ameSet: 8, ameAmount: 300 }),
-    tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(2 * level).pow(getTotalTiers()), { maxLevel: 2, ameSet: 8, ameAmount: 300 }),
+    tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(Math.max(1, 2 * level)).pow(getTotalTiers()), { maxLevel: 2, ameSet: 8, ameAmount: 300 }),
 }
 
 var bagUpgrades = {
