@@ -19,6 +19,7 @@ const currentPatchNotes = [
     "- Trying to upgrade a maxed upgrade now says that rather than pretending you can't afford it",
     "- Moved Silicone text from its section to the Currenciary",
     "- Sped up Shgic animations",
+    "- Fixed GS boosts Shgabb 2 going crazy at high numbers",
     "- Fixed the 3 bars being a bit shorter on the right side",
 
     "v2.8",
