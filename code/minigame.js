@@ -47,7 +47,7 @@ function ongameCanvasClick() {
                 && mousey >= hitboxes[l][1] && mousey <= hitboxes[l][1] + (h / 8)
                 && minigameField[Math.floor(l / 3)][l % 3] == 0) {
                 minigameField[Math.floor(l / 3)][l % 3] = 1;
-                lastMove = [Math.floor(l / 3), l % 3, 0.1];
+                lastMove = [Math.floor(l / 3), l % 3, 0];
 
                 if (minigameCheckForWinners()) {
                     minigameEnemyMove();
@@ -288,9 +288,9 @@ function minigameDrawBackground() {
     minigameClear();
     ctx.lineWidth = 1;
 
-    let becomeWhite = Math.floor(((game.stats.playTime * 5) % 255) / 1.5);
-    if (lastMove[2] < 1) ctx.fillStyle = "lightblue";
-    else ctx.fillStyle = "rgb(" + becomeWhite + ", " + becomeWhite + ", " + Math.max(80, Math.floor((game.stats.playTime * 5) % 255)) + ")";
+    let becomeWhite = Math.floor(((game.stats.playTime * 10) % 255) / 1.5);
+    if (lastMove[2] < 0.5) ctx.fillStyle = "lightblue";
+    else ctx.fillStyle = "rgb(" + becomeWhite + ", " + becomeWhite + ", " + Math.max(160, Math.floor((game.stats.playTime * 5) % 255)) + ")";
     ctx.fillRect(w / 64, h / 64, w - (w / 32), h - (h / 32));
 
     ctx.fillStyle = "black";

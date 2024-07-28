@@ -52,6 +52,7 @@ July - September 2024:
 2.7
 2.7.1
 2.8
+2.8.1
 
 
 
@@ -1646,3 +1647,23 @@ Version 2.8 Hot Change Update:
 -> Other:
 - Added 10 new Achievements (5 Event + 5 Chengas, 160 total)
 - The M hotkey can now also be used to buy max the Shgabb Boost Gem offer
+
+
+
+2024/07/28 2.8.1:
+Version 2.8.1:
+-> Ads:
+- Reduced waiting time after canceling an ad from 20s to 5s
+- Fixed ads not loading sometimes
+- Fixed no ad loop bug
+
+-> Chengas:
+- Increased chance to get a Chenga from 1% to 10%
+- Expanded Currenciary entry for Chengas
+
+-> Other:
+- Notifications at the top now stay empty rather than disappearing
+- Trying to upgrade a maxed upgrade now says that rather than pretending you can't afford it
+- Moved Silicone text from its section to the Currenciary
+- Sped up Shgic animations
+- Fixed the 3 bars being a bit shorter on the right side

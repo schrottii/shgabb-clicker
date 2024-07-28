@@ -52,7 +52,7 @@ class Upgrade {
                 return true;
             }
             else {
-                if (!isChallenge(5)) createNotification("Not enough " + this.currency + "!");
+                if (!isChallenge(5)) !this.isMax() ? createNotification("Not enough " + this.currency + "!") : createNotification("Upgrade is maxed!");
                 else if (!isBuyingMax) this.unlevel(true);
                 return false;
             }

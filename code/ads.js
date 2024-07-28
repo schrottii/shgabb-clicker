@@ -6,7 +6,6 @@
 
 // Some ad variables
 var adHandler = document.getElementById("baldad");
-var adLoaded = false;
 var adStatus = "loading";
 
 var chengaUsed = false;
@@ -80,10 +79,13 @@ function adButtonHandler() {
             break;
 
         case "boosted":
+            // cancel ad
+            adTime = 5;
+            adMax = 5;
+
             currentBoost = "none";
-            adTime = 20;
-            adMax = 20;
             adStatus = "loaded";
+
             ui.adButton.innerHTML = "";
             break;
     }
@@ -111,6 +113,7 @@ function adSwitcher() {
             //ui.cooldownBar.classList.remove("buffedProgress")
             ui.sandwichBar.classList.remove("buffedProgress")
 
+            adStatus = "loaded";
             currentBoost = "none";
             ui.adButton.innerHTML = "";
         }
@@ -136,10 +139,10 @@ function adSwitcher() {
 // Ad init
 try {
     adHandler.oncanplay = () => {
-        if (!adLoaded) createNotification("Ads loaded!");
-        adLoaded = true;
         if (adStatus == "loading") {
+            if (createNotification != undefined) createNotification("Ads loaded!");
             adStatus = "loaded";
+
             ui.adContent.style.display = "";
             adHandler.volume = 0.2;
         }
@@ -192,7 +195,7 @@ try {
 
         // chenga
         if (unlockedChengas()) {
-            if (Math.random() < 0.01) {
+            if (Math.random() < 0.10) {
                 game.chenga += 1;
                 statIncrease("chenga", 1);
             }

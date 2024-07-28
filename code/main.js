@@ -4,9 +4,24 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.8";
+const gameVersion = "2.8.1";
 
 const currentPatchNotes = [
+    "-> Ads:",
+    "- Reduced waiting time after canceling an ad from 20s to 5s",
+    "- Fixed ads not loading sometimes",
+    "- Fixed no ad loop bug",
+    "-> Chengas:",
+    "- Increased chance to get a Chenga from 1% to 10%",
+    "- Expanded Currenciary entry for Chengas",
+    "-> Other:",
+    "- Notifications at the top now stay empty rather than disappearing",
+    "- Trying to upgrade a maxed upgrade now says that rather than pretending you can't afford it",
+    "- Moved Silicone text from its section to the Currenciary",
+    "- Sped up Shgic animations",
+    "- Fixed the 3 bars being a bit shorter on the right side",
+
+    "v2.8",
     "Hot Change Update",
     "-> Ads:",
     "- Added Chengas (see section below)",
@@ -1452,6 +1467,7 @@ function updateUI() {
         if (currentNotifications[(Object.keys(currentNotifications).length - i)] != undefined && currentNotifications[Object.keys(currentNotifications).length - i].substr(0, 10) != "Game saved") {
             topNotifsRender = topNotifsRender + currentNotifications[Object.keys(currentNotifications).length - i] + (i != settings.topNotifs ? "<br />" : "");
         }
+        else topNotifsRender = topNotifsRender + (i != settings.topNotifs ? "-<br />" : "-");
     }
     ui.newestNotification.innerHTML = topNotifsRender;
 }
@@ -1739,8 +1755,8 @@ function loop(tick) {
 
     // Minigame
     if (selection("minigames")) {
-        lastMove[2] += time / 2;
-        lastHerMove[2] += time / 2;
+        lastMove[2] += time;
+        lastHerMove[2] += time;
         updateMinigameUI();
     }
 
@@ -1759,7 +1775,7 @@ function loop(tick) {
         }
     }
 
-    if (adLoaded && unlockedAds()) adTime -= time;
+    if (adStatus != "loading" && unlockedAds()) adTime -= time;
 
     if (newArtifactDisplayTimer <= 0 && newArtifactDisplayTimer > -15) {
         ui.newArtifact.style.display = "none";
