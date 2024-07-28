@@ -137,17 +137,16 @@ function adSwitcher() {
 
 
 // Ad init
-try {
-    adHandler.oncanplay = () => {
-        if (adStatus == "loading") {
-            if (createNotification != undefined) createNotification("Ads loaded!");
-            adStatus = "loaded";
+function canPlayAds() {
+    if (adStatus == "loading") {
+        if (createNotification != undefined) createNotification("Ads loaded!");
+        adStatus = "loaded";
 
-            ui.adContent.style.display = "";
-            adHandler.volume = 0.2;
-        }
+        ui.adContent.style.display = "";
+        adHandler.volume = 0.2;
     }
-
+}
+try {
     adHandler.onended = () => {
         currentBoost = availableBoost;
         adStatus = "boosted";
