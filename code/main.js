@@ -1694,12 +1694,12 @@ function importGame(source) {
         game.stats.tgems += game.stats.gems;
         delete game.stats.gems;
     }
-
+    /*
     if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw.mul(10)) {
         // Auto Shgabb was reworked
         game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
         game.upgradeLevels.autoShgabb = 0;
-    }
+    } */
 
     for (l in game.alo) {
         if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
