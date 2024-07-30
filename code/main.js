@@ -1672,6 +1672,13 @@ function importGame(source) {
     canPlayTTT = false;
     resetMinigameField();
 
+    if (currentBoost != "none") {
+        currentBoost = "none";
+        adStatus = "loaded";
+        adTime = 10;
+        adMax = 10;
+    }
+
     loadArtifactValues();
     checkNewDay();
 
