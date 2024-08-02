@@ -210,6 +210,9 @@ var shgabbUpgrades = {
     bomblike: new Upgrade("bomblike", "Bomblike", "Get even more Shgabb", level => Math.pow((level > 10 ? 3 : 5), 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 34 && !isChallenge(1) }),
     swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious Sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 250, level => 0.1 * level, { maxLevel: 250, suffix: "%", unlock: () => game.upgradeLevels.moreShgabb > 49 && !isChallenge(1) }),
     moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more Sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 24, unlock: () => game.upgradeLevels.swChance > 24 && !isChallenge(1) }),
+
+    deepMiner: new Upgrade("deepMiner", "Deep Miner", "Get more Copper, as well as +1% GS per level (multiplicative). Every level takes 10 minutes.", level => game.stats_prestige.playTime / 600 >= (level + 1) ? new Decimal(1e10).pow(level).mul(1e50) : new Decimal("1e100").pow(level).mul("1e500"), level => new Decimal(4).pow(level), { maxLevel: 50, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb >= 12000 && !isChallenge(1), current: level => "x" + fn(new Decimal(1.01).pow(level)) + " GS" }),
+    bomblike2: new Upgrade("bomblike2", "Bomblike 2", "Get even more Shgabb", level => new Decimal(1e5).pow(level).mul(1e60), level => new Decimal(3).pow(level), { maxLevel: 30, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb >= 12000 && !isChallenge(1) }),
 }
 
 var sandwichUpgrades = {
@@ -240,43 +243,43 @@ var siliconeShgabbUpgrades = {
 }
 
 var ameliorerUpgrades = {
-    shgabbBoost: new AmeliorerUpgrade("shgabbBoost", "Shgabb Boost", "Get more Shgabb (clicks and auto)", level => 1, level => 1 + (level * 0.5), { maxLevel: () => 30 + getAmeCame(), ameSet: 1, ameAmount: 0 }),
-    AMEgsBoost1: new AmeliorerUpgrade("AMEgsBoost1", "GS boosts Shgabb 1", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16, ameSet: 1, ameAmount: 0 }),
-    AMEgsBoost2: new AmeliorerUpgrade("AMEgsBoost2", "GS boosts Shgabb 2", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16, ameSet: 1, ameAmount: 0 }),
+    shgabbBoost: new AmeliorerUpgrade("shgabbBoost", "Shgabb Boost", "Get more Shgabb (clicks and auto)", level => 1, level => 1 + (level * 0.5), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 1, ameAmount: 0 }),
+    AMEgsBoost1: new AmeliorerUpgrade("AMEgsBoost1", "GS boosts Shgabb 1", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16, prefix: "+", ameSet: 1, ameAmount: 0 }),
+    AMEgsBoost2: new AmeliorerUpgrade("AMEgsBoost2", "GS boosts Shgabb 2", "Increases max. level of that GS Upgrade", level => 1, level => level * 25, { maxLevel: 16, prefix: "+", ameSet: 1, ameAmount: 0 }),
     achBExpo: new AmeliorerUpgrade("achBExpo", "Achievements Become Exponential", "Turns the GS boost from Achievements exponential", level => 5, level => level, { maxLevel: 1, ameSet: 1, ameAmount: 3 }),
 
-    nothing: new AmeliorerUpgrade("nothing", "Nothing", "This does nothing", level => 2, level => 0, { maxLevel: 100, ameSet: 2, ameAmount: 10 }),
-    AMEfridge: new AmeliorerUpgrade("AMEfridge", "Better Fridge", "Increases max. level of that Sandwich Upgrade", level => 2, level => level * 5, { maxLevel: 6, ameSet: 2, ameAmount: 10 }),
-    AMEcritBoost: new AmeliorerUpgrade("AMEcritBoost", "Crit. Boost", "Increases max. level of that Shgabb Upgrade", level => 1, level => level * 10, { maxLevel: 15, ameSet: 2, ameAmount: 10 }),
+    nothing: new AmeliorerUpgrade("nothing", "Nothing", "This does nothing", level => 2, level => 0, { maxLevel: 100, prefix: "x", ameSet: 2, ameAmount: 10 }),
+    AMEfridge: new AmeliorerUpgrade("AMEfridge", "Better Fridge", "Increases max. level of that Sandwich Upgrade", level => 2, level => level * 5, { maxLevel: 6, prefix: "+", ameSet: 2, ameAmount: 10 }),
+    AMEcritBoost: new AmeliorerUpgrade("AMEcritBoost", "Crit. Boost", "Increases max. level of that Shgabb Upgrade", level => 1, level => level * 10, { maxLevel: 15, prefix: "+", ameSet: 2, ameAmount: 10 }),
     unlockUnlevel: new AmeliorerUpgrade("unlockUnlevel", "Unlock Unlevel Button", "Getting more levels is good, but less levels is better", level => 10, level => level, { maxLevel: 1, ameSet: 2, ameAmount: 15 }),
 
-    AMEfirstBoostsClicks: new AmeliorerUpgrade("AMEfirstBoostsClicks", "1. Upgrade boosts clicks", "Increases max. level of that Sandwich Upgrade", level => 2, level => level, { maxLevel: 30, ameSet: 3, ameAmount: 25 }),
-    AMEsiliconeFromClicks: new AmeliorerUpgrade("AMEsiliconeFromClicks", "Silicone From Clicks", "Increases max. level of that Silicone Upgrade", level => 3, level => level * 10, { maxLevel: 15, ameSet: 3, ameAmount: 25 }),
-    AMEbomblike: new AmeliorerUpgrade("AMEbomblike", "Bomblike", "Increases max. level of that Shgabb Upgrade", level => 3 * Math.ceil((1 + level) / 10), level => level * 3, { maxLevel: 30, ameSet: 3, ameAmount: 25 }),
+    AMEfirstBoostsClicks: new AmeliorerUpgrade("AMEfirstBoostsClicks", "1. Upgrade boosts clicks", "Increases max. level of that Sandwich Upgrade", level => 2, level => level, { maxLevel: 30, prefix: "+", ameSet: 3, ameAmount: 25 }),
+    AMEsiliconeFromClicks: new AmeliorerUpgrade("AMEsiliconeFromClicks", "Silicone From Clicks", "Increases max. level of that Silicone Upgrade", level => 3, level => level * 10, { maxLevel: 15, prefix: "+", ameSet: 3, ameAmount: 25 }),
+    AMEbomblike: new AmeliorerUpgrade("AMEbomblike", "Bomblike", "Increases max. level of that Shgabb Upgrade", level => 3 * Math.ceil((1 + level) / 10), level => level * 3, { maxLevel: 30, prefix: "+", ameSet: 3, ameAmount: 25 }),
     gsBoostsShgabb: new AmeliorerUpgrade("gsBoostsShgabb", "GS Boosts Shgabb", "Increases Shgabb production based on GS (^0.5)", level => 10, level => level == 1 ?  game.gs.pow(0.5).add(1) : 1, { prefix: "x", maxLevel: 1, ameSet: 3, ameAmount: 30 }),
 
-    siliconeBoost: new AmeliorerUpgrade("siliconeBoost", "Silicone Boost", "Get more Silicone Shgabb", level => 1, level => 1 + (level * 0.2), { maxLevel: () => 30 + getAmeCame(), ameSet: 4, ameAmount: 40 }),
-    AMEformaggi: new AmeliorerUpgrade("AMEformaggi", "Pizza quattro formaggi", "Increases max. level of that Golden Shgabb Upgrade", level => 8 * (level + 1), level => level * 8, { maxLevel: 7, ameSet: 4, ameAmount: 40 }),
+    siliconeBoost: new AmeliorerUpgrade("siliconeBoost", "Silicone Boost", "Get more Silicone Shgabb", level => 1, level => 1 + (level * 0.2), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 4, ameAmount: 40 }),
+    AMEformaggi: new AmeliorerUpgrade("AMEformaggi", "Pizza quattro formaggi", "Increases max. level of that Golden Shgabb Upgrade", level => 8 * (level + 1), level => level * 8, { maxLevel: 7, prefix: "+", ameSet: 4, ameAmount: 40 }),
     unlockMSW2: new AmeliorerUpgrade("unlockMSW2", "Unlock More Sandwich Upgrades 2", "Unlock two new Sandwich Upgrades", level => 10, level => level, { maxLevel: 2, ameSet: 4, ameAmount: 40 }),
-    fourthArtifactSlot: new AmeliorerUpgrade("fourthArtifactSlot", "Fourth Artifact Slot", "Makes it possible to equip 4 Artifacts at once", level => 10, level => level, { maxLevel: 1, ameSet: 4, ameAmount: 50 }),
+    fourthArtifactSlot: new AmeliorerUpgrade("fourthArtifactSlot", "Fourth Artifact Slot", "Makes it possible to equip 4 Artifacts at once", level => 10, level => level, { maxLevel: 1, prefix: "+", ameSet: 4, ameAmount: 50 }),
 
-    sandwichBoost: new AmeliorerUpgrade("sandwichBoost", "Sandwich Boost", "Get more Sandwiches", level => 2, level => 1 + (level * 0.1), { maxLevel: () => 30 + getAmeCame(), ameSet: 5, ameAmount: 100 }),
+    sandwichBoost: new AmeliorerUpgrade("sandwichBoost", "Sandwich Boost", "Get more Sandwiches", level => 2, level => 1 + (level * 0.1), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 5, ameAmount: 100 }),
     critsAffectSW: new AmeliorerUpgrade("critsAffectSW", "Crits Affect Sandwiches", "Get more Sandwiches on critical hits", level => 5, level => (level * 0.1), { maxLevel: 10, ameSet: 5, ameAmount: 100 }),
     gems2ame: new AmeliorerUpgrade("gems2ame", "Gems To Amé", "Makes it possible to convert 500 Gems to 1 Améliorer", level => 10, level => level, { maxLevel: 1, ameSet: 5, ameAmount: 100 }),
     keepSWU: new AmeliorerUpgrade("keepSWU", "Keep Sandwich Upgrades", "Keep Sandwich Upgrades after a prestige", level => level >= 3 ? 10 : 2, level => level, { maxLevel: 6, ameSet: 5, ameAmount: 120, current: level => ["None", "Better Fridge", "1. Upgrade boosts clicks", "Cheese", "Auto Shgabb", "2+2=5", "Meaning Of Life"][level] }),
 
-    amegsBoost: new AmeliorerUpgrade("amegsBoost", "Golden Shgabb Boost", "Get more Golden Shgabb", level => 3, level => 1 + (level * 0.1), { maxLevel: () => 30 + getAmeCame(), ameSet: 6, ameAmount: 150 }),
+    amegsBoost: new AmeliorerUpgrade("amegsBoost", "Golden Shgabb Boost", "Get more Golden Shgabb", level => 3, level => 1 + (level * 0.1), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 6, ameAmount: 150 }),
     loreBoost: new AmeliorerUpgrade("loreBoost", "Lore Boost", "Get +10% GS per completed Lore Page (additive)", level => 10, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
     tiersBoostBags: new AmeliorerUpgrade("tiersBoostBags", "Tiers Boost Bags", "Get more Bags for each Challenge tier completed", level => 25, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
     fourthArtifactLevel: new AmeliorerUpgrade("fourthArtifactLevel", "Fourth Artifact Level", "Increases max. level of most Artifacts by 1", level => 25, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 175 }),
 
-    AMEmoreSw: new AmeliorerUpgrade("AMEmoreSw", "Sandwich Amount", "Increases max. level of that Shgabb Upgrade", level => level + 1, level => level * 5, { maxLevel: 15, ameSet: 7, ameAmount: 225 }),
+    AMEmoreSw: new AmeliorerUpgrade("AMEmoreSw", "Sandwich Amount", "Increases max. level of that Shgabb Upgrade", level => level + 1, level => level * 5, { maxLevel: 15, prefix: "+", ameSet: 7, ameAmount: 225 }),
     unlockMBU: new AmeliorerUpgrade("unlockMBU", "Unlock More Bag Upgrades", "Unlock a new Bag upgrade", level => 18, level => level, { maxLevel: 2, ameSet: 7, ameAmount: 225 }),
     infiniteGems2ame: new AmeliorerUpgrade("infiniteGems2ame", "Infinite Gems To Amé", "Gems to Amé can be used past its normal limit, but at twice the cost", level => 10, level => level, { maxLevel: 1, ameSet: 7, ameAmount: 225 }),
-    AMECAME: new AmeliorerUpgrade("AMECAME", "Amé Came", "Increases the levels (by +2) of all Amé upgrades that give a simple boost to a currency", level => 2, level => level * 2, { maxLevel: 85, ameSet: 7, ameAmount: 250 }),
+    AMECAME: new AmeliorerUpgrade("AMECAME", "Amé Came", "Increases the levels (by +2) of all Amé upgrades that give a simple boost to a currency", level => 2, level => level * 2, { maxLevel: 85, prefix: "+", ameSet: 7, ameAmount: 250 }),
 
-    copperBoost: new AmeliorerUpgrade("copperBoost", "Copper Boost", "Get more Copper Shgabb", level => 4, level => new Decimal(2).pow(level), { maxLevel: () => 30 + getAmeCame(), ameSet: 8, ameAmount: 300 }),
-    tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(Math.max(1, 2 * level)).pow(getTotalTiers()), { maxLevel: 2, ameSet: 8, ameAmount: 300 }),
+    copperBoost: new AmeliorerUpgrade("copperBoost", "Copper Boost", "Get more Copper Shgabb", level => 4, level => new Decimal(2).pow(level), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 8, ameAmount: 300 }),
+    tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(Math.max(1, 2 * level)).pow(getTotalTiers()), { maxLevel: 2, prefix: "x", ameSet: 8, ameAmount: 300 }),
 }
 
 var bagUpgrades = {

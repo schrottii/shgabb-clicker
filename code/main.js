@@ -4,74 +4,44 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.8.1";
+const gameVersion = "2.9";
 
 const currentPatchNotes = [
-    "-> Ads:",
-    "- Reduced waiting time after canceling an ad from 20s to 5s",
-    "- Fixed ads not loading sometimes",
-    "- Fixed no ad loop bug",
-    "-> Chengas:",
-    "- Increased chance to get a Chenga from 1% to 10%",
-    "- Expanded Currenciary entry for Chengas",
-    "-> Other:",
-    "- Notifications at the top now stay empty rather than disappearing",
-    "- Trying to upgrade a maxed upgrade now says that rather than pretending you can't afford it",
-    "- Moved Silicone text from its section to the Currenciary",
-    "- Sped up Shgic animations",
-    "- Fixed GS boosts Shgabb 2 going crazy at high numbers",
-    "- Fixed the 3 bars being a bit shorter on the right side",
+    "Back to Bomblike Update",
 
-    "v2.8",
-    "Hot Change Update",
-    "-> Ads:",
-    "- Added Chengas (see section below)",
-    "- Reworked / adjusted lots of ad code and the appearance of the bar and button(s)",
-    "- Ads can now be cancelled",
-    "- Changed the least watched ad setting to have a third option: it appears more often",
-    "- More Gems and More Silicone no longer have any chance to appear before being unlocked",
+    "-> Backgrounds:",
+    "- Reworked background images to be less distracting, darker, smaller and more pixelated",
+    "- New main background + new backgrounds for all events (7 total)",
 
-    "-> Chengas:",
-    "- New side currency: Chengas! Unlocked at HMS 5000",
-    "- Can be used to change the ad boost that's being offered",
-    "- It changes to a random offer, but changing again doesn't cost another Chenga",
-    "- The offer does not disappear automatically after using a Chenga",
-    "- Every time an ad is watched there is an 1% chance to obtain one",
-    "- Added Currenciary entry",
+    "-> Upgrades:",
+    "- New Shgabb Upgrade (12k HMS): Deep Miner - Get more Copper and GS",
+    "- New Shgabb Upgrade (12k HMS): Bomblike 2 - Get more Shgabb",
 
-    "-> Hot Hot Summer Event:",
-    "- New event: Hot Hot Summer!",
-    "- Active from July 28th - August 18th",
-    "- x10 Sandwiches and x10 GS production during the event",
-    "- 3 new event PFPs, 4 Banners and 5 Achievements can be earned",
-    "- Added Hot Hot Summer background image",
-    "- The event currency Shorts can be earned by clicking (0.1% chance)",
-    "- Shorts can be spent on 6 offers",
-    "- Hot Mode can be enabled or disabled at any time",
+    "-> Export and Import:",
+    "- Added export and import buttons for Artifact loadouts",
+    "- This import button automatically imports without asking",
+    "- Unlocked after getting all loadouts",
+    "- Added confirmation for loading or creating a backup",
+    "- Added confirmation for importing from a file",
 
-    "-> Hot Mode:",
-    "- Every well timed click increases the heat",
-    "- Click cooldown becomes faster, up to x3",
-    "- At 200 clicks or more, Shorts are 100x more common (10% chance)",
-    "- Clicking too fast causes a lengthy cooldown",
-    "- Clicking too slow resets the click streak",
-
-    "-> Shorts offers:",
-    "- Offer 1: Buy a PFP (80 Shorts)",
-    "- Offer 2: Buy a Banner (100 Shorts)",
-    "- Offer 3: Instant Faster Shgabb boost! (1 minute) (60 Shorts)",
-    "- Offer 4: Reset the click cooldown and the next 10 clicks have no cooldown! (40 Shorts)",
-    "- Offer 5: Furious Fork Artifact (200 Shorts)",
-    "- Offer 6: Amulet of Paroxysm Artifact (100 Shorts)",
-
-    "-> Améliorer:",
-    "- Added the 8th set of Améliorer Upgrades (300 Amé)",
-    "- New Améliorer Upgrade: Copper Boost (Set 8, 300): Every level boosts Copper gains by 2x, affected by Amé Came",
-    "- New Améliorer Upgrade: Tiers Boost Copper (Set 8, 300): Two levels, first is 2x, second is 4x",
+    "-> Notations and Display:",
+    "- Reworked normal notation, re-using the system from SC2FMFR",
+    "- Gems, Bags and Shgabb Boost (2nd offer) can now use notations",
+    "- Changed Achievement & Lore boost displays from % to x",
+    "- Added + prefix to 11 Améliorer Upgrades",
+    "- Added x prefix to 7 Améliorer Upgrades",
+    "- Made Amé reset button prettier",
 
     "-> Other:",
-    "- Added 10 new Achievements (5 Event + 5 Chengas, 160 total)",
-    "- The M hotkey can now also be used to buy max the Shgabb Boost Gem offer",
+    "- Added 5 new Achievements (165 total)",
+    "- Improved image quality",
+    "- The cancel ad button now shows which ad is currently running",
+    "- Individual ad watched amounts are no longer visible for prestige and daily stats",
+    "- Current Ad is now reset when importing a save",
+    "- Back and Forth now changes its boost after applying it",
+    "- Fixed Power Charger and Surgeon bugs",
+    "- Fixed Sandwich bar still being displayed as boosted after canceling an ad",
+    "- Fixed right side of the 3 bars being cut off when zooming in",
 ]
 
 // Various variables
@@ -190,16 +160,6 @@ var ui = {
     shbookHeader: document.getElementById("shbookHeader"),
 }
 
-const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
-const boostTexts = {
-    strongerClicks: "Stronger Clicks: 5x click Shgabb (5:00)",
-    strongerAuto: "Stronger Auto: 5x auto Shgabb (10:00)",
-    moreSandwiches: "More Sandwiches: 4x Sandwiches (3:00)",
-    fasterShgabb: "Faster Shgabb: 5x shorter click CD (1:00)",
-    moreCrits: "More Crits: 5x chance and 3x boost (3:00)",
-    moreSilicone: "More Silicone: 10x Silicone Shgabb (5:00)",
-    moreGems: "More Gems: 3x Gem chance (8:00)",
-};
 const adTimes = {
     strongerClicks: 300,
     strongerAuto: 600,
@@ -323,6 +283,15 @@ const notations = ["normal", "scientific", "engineering", "alphabet"];
 const normalNotation = ["M", "B", "T", "q", "Q", "s", "S", "O", "N", "D", "UD", "DD", "TD", "qD", "QD", "sD", "SD", "OD", "ND", "V", "sV", "Tr", "UTR", "QU", "TQU", "qu", "Se", "Sp", "Oc", "No", "Améliorer", "What?!?!", "What?!?!2", "You Broke The Game", "I am crying", "no!!!", "WhyDoesFranceStillExist", "GodIsWatchingYou"];
 const alphabetNotation = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ")
 
+let pre =
+{
+    start: ["", "K", "M", "B"],
+    ones: ["", "U", "D", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "N"],
+    tens: ["", "Dc", "Vg", "Tg", "Qag", "Qig", "Sxg", "Spg", "Og", "Ng"],
+    hundreds: ["", "Ct", "DCt", "TCt", "QaCt", "QiCt", "SxCt", "SpCt", "OcCt", "NCt"],
+    thousands: ["", "M", "DM", "TM", "qM", "QM", "sM", "SM", "OM", "NM"]
+};
+
 // More beta stuff
 function cheatEngine(type) {
     let toCheat;
@@ -434,8 +403,25 @@ function fn(number) {
 
     switch (settings.notation) {
         case "normal": // 1M, 10M
-            notationSymbol = normalNotation[Math.floor(number.exponent / 3) - 2];
+            //notationSymbol = normalNotation[Math.floor(number.exponent / 3) - 2];
+
+            let m = (number.mantissa * Math.pow(10, number.exponent % 3)).toFixed(2);
+
+            if (number.lt(1e12)) {
+                return m + " " + pre.start[Math.floor(number.exponent / 3)];
+            }
+            if (number.gt(1e303)) {
+                return m + " ???";
+            }
+
+            let newE = number.exponent - 3;
+            let thousand = Math.floor(newE / 3000) < 10 ? pre.thousands[Math.floor(newE / 3000)] : "[" + formatNumber(Math.floor(newE / 3000)) + "]M";
+            return m + " " + thousand +
+                pre.hundreds[Math.floor(newE / 300) % pre.hundreds.length] +
+                pre.ones[Math.floor(newE / 3) % pre.ones.length] +
+                pre.tens[Math.floor(newE / 30) % pre.tens.length];
             break;
+
         case "scientific": // special case: 1e6, 1e7
             return number.mantissa.toString().substr(0, 4) + "e" + number.exponent.toString();
             break;
@@ -449,6 +435,7 @@ function fn(number) {
 
     let numberDisplay = (number.mantissa * (Math.pow(10, number.exponent % 3))).toString().substr(0, 4);
     if (numberDisplay.substr(2, 4) == "00") numberDisplay = numberDisplay.substr(0, 2);
+    if (numberDisplay.substr(-1) == ".") numberDisplay = numberDisplay.split(".")[0];
 
     return numberDisplay + notationSymbol;
 
@@ -588,6 +575,7 @@ function getCopper() {
             .mul(copperShgabbUpgrades.moreCopper.currentEffect())
             .mul(ameliorerUpgrades.copperBoost.currentEffect())
             .mul(ameliorerUpgrades.tiersBoostCopper.currentEffect())
+            .mul(shgabbUpgrades.deepMiner.currentEffect())
             .mul(getArtifactsSimpleBoost("cop"))
             .ceil();
 
@@ -619,6 +607,7 @@ function getGlobalProduction() {
     let prod = new Decimal(1)
         .mul(game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         .mul(shgabbUpgrades.bomblike.currentEffect())
+        .mul(shgabbUpgrades.bomblike2.currentEffect())
         .mul(goldenShgabbUpgrades.divineShgabb.currentEffect())
         .mul(getSiliconeBoost())
         .mul(goldenShgabbUpgrades.formaggi.currentEffect())
@@ -764,6 +753,7 @@ function getGoldenShgabb() {
         .mul(getLoreBoost())
         .mul(bagUpgrades.clicksBoostGS.currentEffect())
         .mul(copperShgabbUpgrades.copGSBoost.currentEffect())
+        .mul(new Decimal(1.01).pow(shgabbUpgrades.deepMiner.currentLevel()))
         .mul(eventValue("summer", 10, 1))
         .floor();
 }
@@ -955,6 +945,8 @@ function prestigeButton() {
         }
     }
     if (confirm("Do you really want to prestige?")) {
+        artifactEvent("onPrestige");
+
         let amount = increaseGS(1 * getArtifactsSimpleBoost("prestigegs"));
 
         if (bagUpgrades.prestigeGems.currentLevel() > 0) {
@@ -1220,7 +1212,7 @@ function updateCurrencies() {
     if (unlockedSilicone()) ui.siAmount.innerHTML = cImg("silicone") + fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
     else ui.siAmount.innerHTML = "";
 
-    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + game.gems + " Gems";
+    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + fn(game.gems) + " Gems";
     else ui.gemAmount.innerHTML = "";
 
     if (unlockedAmeliorer()) ui.ameAmount.innerHTML = cImg("ameliorer") + game.ame + " Améliorer";
@@ -1229,7 +1221,7 @@ function updateCurrencies() {
     if (unlockedArtifactUpgrading()) ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
     else ui.artifactScrapAmount.innerHTML = "";
 
-    if (unlockedBags()) ui.bagAmount.innerHTML = cImg("bag") + game.bags + " Bags";
+    if (unlockedBags()) ui.bagAmount.innerHTML = cImg("bag") + fn(game.bags) + " Bags";
     else ui.bagAmount.innerHTML = "";
 
     if (unlockedCopper()) ui.copAmount.innerHTML = cImg("copper") + fn(game.cop) + " Copper";
@@ -1268,7 +1260,7 @@ function updateStats() {
         + "<br />Total Time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime"))
         + "<br />Total Prestiges: " + statLoader("pr")
         + "<br />Total Ads watched: " + statLoader("ads")
-        + "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")"
+        + (statDisplay == 1 ? "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")" : "")
         + "<br />"
 
         + "<br />Currencies:"
@@ -1436,7 +1428,7 @@ function updateUI() {
     // Achievements
     if (selection("achievements")) {
         renderAchievements();
-        ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: +" + (100 * (getAchievementBoost() - 1)).toFixed(2) + "% GS!";
+        ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: x" + fn(getAchievementBoost()) + " GS!";
     }
 
     // Plaj Provif
@@ -1496,35 +1488,33 @@ function autoSave(manual=true) {
     exportGame("cache");
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
 
-    let newAch = false;
-    for (a in achievements) {
-        if (achievements[a].unlock() && !game.ach.includes(achievements[a].ID)) {
-            game.ach.push(achievements[a].ID);
-            newAch = true;
-            createNotification("New achievement: " + achievements[a].name);
+    for (let achGo in achievements) {
+        if (achievements[achGo].unlock() && !game.ach.includes(achievements[achGo].ID)) {
+            game.ach.push(achievements[achGo].ID);
+            createNotification("New achievement: " + achievements[achGo].name);
 
             ui.newArtifactText = "Achievement Unlocked!";
-            ui.newArtifactImage.src = "images/achievements/" + achievements[a].image;
-            ui.newArtifactName.innerHTML = achievements[a].name;
+            ui.newArtifactImage.src = "images/achievements/" + achievements[achGo].image;
+            ui.newArtifactName.innerHTML = achievements[achGo].name;
             ui.newArtifact.style.display = "block";
             newArtifactDisplayTimer = 5;
             break;
         }
     }
 
-    if (!newAch && !manual) createNotification("Game saved automatically " + autoNotifications);
+    if (!manual) createNotification("Game saved automatically " + autoNotifications);
 }
 
 function createBackup() {
-    exportGame("backup");
+    if (confirm("Are you sure you want to CREATE a backup?")) exportGame("backup");
 }
 
 function loadBackup() {
-    importGame(localStorage.getItem("shgabbBackup"));
+    if (confirm("Are you sure you want to LOAD a backup?")) importGame(localStorage.getItem("shgabbBackup"));
 }
 
 function importFromFile() {
-    if (document.getElementById("myFile").value != "") {
+    if (document.getElementById("myFile").value != "" && confirm("Do you really want to import from this file?")) {
         file = document.getElementById("myFile").files[0];
         reader = new FileReader();
         let filecontent;
@@ -1895,17 +1885,17 @@ function updateBG() {
     else {
         // Background is enabled
         body.style.backgroundColor = "none";
-
+        
         if (settings.eventBG && isEvent("", true)) {
-            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-christmas.png)";
-            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/anniversary-background.png)";
-            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-chinese.png)";
-            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-easter.png)";
-            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-pride.png)";
-            else if (isEvent("summer") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/shgabb-background-summer.png)";
+            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-christmas.png)";
+            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-anniversary.png)";
+            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-lunar.png)";
+            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-easter.png)";
+            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-pride.png)";
+            else if (isEvent("summer") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-summer.png)";
         }
         else {
-            body.style.backgroundImage = "url(images/backgrounds/shgabb-background.png)";
+            body.style.backgroundImage = "url(images/backgrounds/bg-normal.png)";
         }
     }
 }

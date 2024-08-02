@@ -53,6 +53,7 @@ July - September 2024:
 2.7.1
 2.8
 2.8.1
+2.9
 
 
 
@@ -1668,3 +1669,41 @@ Version 2.8.1:
 - Sped up Shgic animations
 - Fixed GS boosts Shgabb 2 going crazy at high numbers
 - Fixed the 3 bars being a bit shorter on the right side
+
+
+
+2024/08/02 2.9:
+Version 2.9 Back to Bomblike Update:
+-> Backgrounds:
+- Reworked background images to be less distracting, darker, smaller and more pixelated
+- New main background + new backgrounds for all events (7 total)
+
+-> Upgrades:
+- New Shgabb Upgrade (12k HMS): Deep Miner - Get more Copper and GS
+- New Shgabb Upgrade (12k HMS): Bomblike 2 - Get more Shgabb
+
+-> Export and Import:
+- Added export and import buttons for Artifact loadouts
+- This import button automatically imports without asking
+- Unlocked after getting all loadouts
+- Added confirmation for loading or creating a backup
+- Added confirmation for importing from a file
+
+-> Notations and Display:
+- Reworked normal notation, re-using the system from SC2FMFR
+- Gems, Bags and Shgabb Boost (2nd offer) can now use notations
+- Changed Achievement & Lore boost displays from % to x
+- Added + prefix to 11 Améliorer Upgrades
+- Added x prefix to 7 Améliorer Upgrades
+- Made Amé reset button prettier
+
+-> Other:
+- Added 5 new Achievements (165 total)
+- Improved image quality
+- The cancel ad button now shows which ad is currently running
+- Individual ad watched amounts are no longer visible for prestige and daily stats
+- Current Ad is now reset when importing a save
+- Back and Forth now changes its boost after applying it
+- Fixed Power Charger and Surgeon bugs
+- Fixed Sandwich bar still being displayed as boosted after canceling an ad
+- Fixed right side of the 3 bars being cut off when zooming in

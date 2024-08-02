@@ -18,16 +18,16 @@
 
     <!-- The 3 bars -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
-    <div style="width: 100%; overflow: hidden; white-space: nowrap; display: flex ">
-        <div class="textBar" style="width: 33.275%">
+    <div style="width: 100%; overflow-x: hidden; white-space: nowrap; display: flex; box-sizing: border-box;">
+        <div class="textBar" style="max-width: 33.2%">
             <span id="autoBarText">oops!</span>
             <progress min="0" max="1" value="0" id="autoBar" style="width: 100%; display: inline" class="progressDim"></progress>
         </div>
-        <div class="textBar" style="width: 33.275%">
+        <div class="textBar" style="max-width: 33.2%">
             <span id="sandwichBarText">the game</span>
             <progress min="0" max="100" value="0" id="sandwichBar" style="width: 100%; display: inline"></progress>
         </div>
-        <div class="textBar" style="width: 33.275%">
+        <div class="textBar" style="max-width: 33.2%">
             <span id="prestigeBarText">crashed</span>
             <progress min="0" max="100" value="0" id="prestigeBar" style="width: 100%; display: inline" class="progressYellow"></progress>
         </div>
@@ -101,8 +101,10 @@
         <span id="ameconvert"></span><br />
         <span id="ameupgradesrender"></span>
         <br style="clear:both" />
-        <input type="checkbox" id="amereset" value="true">
-        <label for="amereset" id="amereset2">Reset Améliorer and Upgrades on Prestige</label>
+        <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto">
+            <input type="checkbox" id="amereset" value="true">
+            <label for="amereset" id="amereset2">Reset Améliorer and Upgrades on Prestige</label>
+        </div>
     </div>
 
     <!-- Bags -->

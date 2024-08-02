@@ -66,6 +66,8 @@ class Artifact {
             if (config.onAutoSave) this.onDestroy = config.onAutoSave;
             if (config.onGem) this.onGem = config.onGem;
             if (config.onTimerZero) this.onTimerZero = config.onTimerZero;
+            if (config.onPrestige) this.onPrestige = config.onPrestige;
+            if (config.onEquipped) this.onEquipped = config.onEquipped;
         }
     }
 
@@ -423,11 +425,18 @@ function renderArtifacts() {
 
     // Mode buttons
     if (unlockedArtifactUpgrading()) {
-        render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";
-        render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "upgrade" ? "white" : "gray") + "'>Upgrade</button>";
-        render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton' style='background-color:" + (artifactMode != "destroy" ? "white" : "gray") + "'>Destroy</button>";
-        render = render + "<br />";
+        render = render + "<button onclick='changeArtifactMode(0)' class='artifactLoadoutButton' style='min-width: 104px; background-color:" + (artifactMode != "select" ? "white" : "gray") + "'>Select</button>";
+        render = render + "<button onclick='changeArtifactMode(1)' class='artifactLoadoutButton' style='min-width: 104px; background-color:" + (artifactMode != "upgrade" ? "white" : "gray") + "'>Upgrade</button>";
+        render = render + "<button onclick='changeArtifactMode(2)' class='artifactLoadoutButton' style='min-width: 104px; background-color:" + (artifactMode != "destroy" ? "white" : "gray") + "'>Destroy</button>";
     }
+
+    // Export and Import
+    if (game.al == 8) {
+        render = render + "<button onclick='exportArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 3%; background-color: white;'>E</button>";
+        render = render + "<button onclick='importArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 3%; background-color: white;'>I</button>";
+    }
+
+    render = render + "<br />";
 
     // Artifacts
     let currentArtifact;
@@ -482,6 +491,45 @@ function changeArtifactPage(change) {
     // swap between the pages
     if (change == 0 && artifactPage > 1) artifactPage -= 1;
     if (change == 1 && artifactPage < getArtifactAmount() / 50) artifactPage += 1;
+    updateArtifacts();
+}
+
+function exportArtifactLoadout(){
+    let exporter = JSON.stringify(game.alo[selectedLoadout]);
+    exporter = btoa(exporter);
+    exporter = exporter.replace("Wz", "ARTILOADOUT");
+
+    navigator.clipboard.writeText(exporter);
+    createNotification("Artifact loadout exported to clipboard!");
+}
+
+async function importArtifactLoadout() {
+    let importer = await navigator.clipboard.readText();
+
+    try {
+        importer = importer.replace("ARTILOADOUT", "Wz");
+        importer = atob(importer);
+        importer = JSON.parse(importer);
+
+        let ownsAll = true;
+        for (let artiOwn in importer) {
+            if (!getArtifact(importer[artiOwn]).isUnlocked()) ownsAll = false;
+        }
+
+        if (ownsAll) {
+            game.alo[selectedLoadout] = importer;
+            game.aeqi = importer;
+
+            createNotification("Artifact loadout imported!");
+        }
+        else {
+            createNotification("It seems like you don't own some of these Artifacts");
+        }
+    }
+    catch (e) {
+        createNotification("Something went wrong while trying to import a loadout!");
+    }
+
     updateArtifacts();
 }
 
@@ -698,6 +746,7 @@ function switchArtifact(id) {
     // value and timer
     if (getArtifact(id).value != undefined) getArtifact(id).resetValue();
     if (getArtifact(id).timer != undefined) getArtifact(id).resetTimer();
+    if (getArtifact(id).onEquipped != undefined) getArtifact(id).onEquipped();
 
     freezeTime();
     updateArtifacts();
@@ -1204,7 +1253,10 @@ var artifacts = [
     new Artifact(311, 3, 3, "Surgeon's Sacrifice", "surgeonssacrifice.png",
         { // has outside GetArtifact
             desc: level => "Lose Silicone (not upgs) on prestige, but get more GS",
-            simpleBoost: ["prestigegs", level => new Decimal(game.si.log10()).sub(7).add(level * 2).max(1)]
+            simpleBoost: ["prestigegs", level => new Decimal(game.si.log10()).sub(7).add(level * 2).max(1)],
+            onPrestige: () => {
+                game.si = new Decimal(0);
+            }
         }),
 
     new Artifact(312, 3, 3, "Semicone", "semicone.png",
@@ -1259,7 +1311,7 @@ var artifacts = [
             desc: "Switches between Silicone and Sandwiches",
             simpleBoost: ["si", level => level * getArtifact(317).getValue(1) * (getArtifact(317).boost == "si" ? 2 : 1)],
             value: [1, 1, 7],
-            onClick: (level) => {
+            onClickBefore: (level) => {
                 if (getArtifact(317).boost == "si") getArtifact(317).boost = "sw";
                 else getArtifact(317).boost = "si";
             },
@@ -1321,6 +1373,12 @@ var artifacts = [
             simpleBoost: ["clickspeed", level => 1.25],
             value: [1, 1, 500],
             timer: [60, 0],
+            onEquipped: (level) => {
+                getArtifact(403).setValue(0);
+                getArtifact(403).boost = "clickspeed";
+                getArtifact(403).prefix = "/";
+                getArtifact(403).amount = (level) => 1.25;
+            },
             onClick: (level) => {
                 if (getArtifact(403).boost == "clickspeed") {
                     if (getArtifact(403).amount(0) == 1.25) {

@@ -63,6 +63,8 @@ var game = {
         bomblike: 0,
         swChance: 0,
         moreSw: 0,
+        deepMiner: 0,
+        bomblike2: 0,
 
         // Sandwich
         autoShgabb: 0,

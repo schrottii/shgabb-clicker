@@ -15,7 +15,16 @@ var currentBoost = "none";
 var adTime = 20;
 var adMax = 20;
 
-
+const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
+const boostTexts = {
+    strongerClicks: "Stronger Clicks: 5x click Shgabb (5:00)",
+    strongerAuto: "Stronger Auto: 5x auto Shgabb (10:00)",
+    moreSandwiches: "More Sandwiches: 4x Sandwiches (3:00)",
+    fasterShgabb: "Faster Shgabb: 5x shorter click CD (1:00)",
+    moreCrits: "More Crits: 5x chance and 3x boost (3:00)",
+    moreSilicone: "More Silicone: 10x Silicone Shgabb (5:00)",
+    moreGems: "More Gems: 3x Gem chance (8:00)",
+};
 
 // unlocked functions
 function unlockedAds() {
@@ -86,6 +95,7 @@ function adButtonHandler() {
             currentBoost = "none";
             adStatus = "loaded";
 
+            ui.sandwichBar.classList.remove("buffedProgress")
             ui.adButton.innerHTML = "";
             break;
     }
@@ -152,7 +162,7 @@ try {
         adStatus = "boosted";
 
         ui.adContent.style.display = "";
-        ui.adButton.innerHTML = "Cancel";
+        ui.adButton.innerHTML = "Cancel<br />" + boostTexts[currentBoost].split(":")[0];
         adHandler.style.display = "none";
 
         statIncrease("ads", 1);

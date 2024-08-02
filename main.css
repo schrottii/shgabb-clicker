@@ -8,14 +8,19 @@
 /* ===================================================== */
 body {
     /*    background-color: black;*/
-    background-image: url("images/backgrounds/shgabb-background.png");
+    background-image: url("images/backgrounds/bg-normal.png");
     background-size: 100vw 100vh;
+    image-rendering: pixelated;
     color: white;
     text-align: center;
     font-size: 16px;
     font-family: Rw;
     max-width: 100%;
     overflow-x: hidden;
+}
+
+img {
+    image-rendering: initial;
 }
 
 @media only screen and (min-width: 768px) {
@@ -350,7 +355,6 @@ progress {
 
 .artifactLoadoutButton {
     width: 15%;
-    min-width: 104px;
     height: 32px;
     white-space: nowrap;
     font-family: Rw;
