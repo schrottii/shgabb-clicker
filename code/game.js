@@ -212,6 +212,7 @@ var settings = {
     artifactImages: true,
     noUpgrading: false,
     noAds: false,
+    confirm: true,
 }
 
 // BETA (cheating)

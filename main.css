@@ -70,7 +70,7 @@ progress {
 
 .buffedProgress {
     animation: change-color 2s infinite;
-    background: darkslategrey;
+    /* background: darkslategrey; */
     color: red;
 }
 

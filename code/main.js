@@ -4,44 +4,29 @@
 
 // Game version and patch notes
 
-const gameVersion = "2.9";
+const gameVersion = "2.9.1";
 
 const currentPatchNotes = [
-    "Back to Bomblike Update",
+    "Back to Making An Update",
 
-    "-> Backgrounds:",
-    "- Reworked background images to be less distracting, darker, smaller and more pixelated",
-    "- New main background + new backgrounds for all events (7 total)",
+    "-> Settings:",
+    "- Added Setting to toggle confirmation dialogs",
+    "- This affects destroying and upgrading Artifacts, unlevel and prestige",
 
-    "-> Upgrades:",
-    "- New Shgabb Upgrade (12k HMS): Deep Miner - Get more Copper and GS",
-    "- New Shgabb Upgrade (12k HMS): Bomblike 2 - Get more Shgabb",
+    "-> Stats:",
+    "- The background is now always equally long on both sides",
+    "- Headers are now bold",
+    "- Added Shorts",
+    "- Added total event currencies",
 
-    "-> Export and Import:",
-    "- Added export and import buttons for Artifact loadouts",
-    "- This import button automatically imports without asking",
-    "- Unlocked after getting all loadouts",
-    "- Added confirmation for loading or creating a backup",
-    "- Added confirmation for importing from a file",
-
-    "-> Notations and Display:",
-    "- Reworked normal notation, re-using the system from SC2FMFR",
-    "- Gems, Bags and Shgabb Boost (2nd offer) can now use notations",
-    "- Changed Achievement & Lore boost displays from % to x",
-    "- Added + prefix to 11 Améliorer Upgrades",
-    "- Added x prefix to 7 Améliorer Upgrades",
-    "- Made Amé reset button prettier",
+    "-> Ads:",
+    "- Faster Shgabb and More Crits now give the click button the buff effect",
+    "- Buffed bars (Sandwich bar during More Sandwiches Ad) no longer get a darker background",
 
     "-> Other:",
-    "- Added 5 new Achievements (165 total)",
-    "- Improved image quality",
-    "- The cancel ad button now shows which ad is currently running",
-    "- Individual ad watched amounts are no longer visible for prestige and daily stats",
-    "- Current Ad is now reset when importing a save",
-    "- Back and Forth now changes its boost after applying it",
-    "- Fixed Power Charger and Surgeon bugs",
-    "- Fixed Sandwich bar still being displayed as boosted after canceling an ad",
-    "- Fixed right side of the 3 bars being cut off when zooming in",
+    "- Duplicate Artifacts in save are now removed when a save is loaded (30 Gem refund)",
+    "- Amé reset button: clicking the button now toggles reset too",
+    "- Save message after completing Shgic is now visible",
 ]
 
 // Various variables
@@ -930,9 +915,8 @@ var doesUnlevel = false;
 
 function unlevel(id, isMax=false) {
     // Unbuy an upgrade and update UI
-    //if (id.type == "goldenShgabbUpgrades") if (!confirm("Do you really want to unlevel?")) return false;
     if (settings.noUpgrading) return false;
-    if(!isMax || confirm("Do you really want to unlevel this to level 0?")) id.unlevel(isMax);
+    if (!settings.confirm || !isMax || confirm("Do you really want to unlevel this to level 0?")) id.unlevel(isMax);
 
     updateUpgrades();
     freezeTime();
@@ -944,7 +928,7 @@ function prestigeButton() {
             alert("The Challenge is not completed yet! If you prestige, it will be cancelled!");
         }
     }
-    if (confirm("Do you really want to prestige?")) {
+    if (!settings.confirm || confirm("Do you really want to prestige?")) {
         artifactEvent("onPrestige");
 
         let amount = increaseGS(1 * getArtifactsSimpleBoost("prestigegs"));
@@ -1106,7 +1090,7 @@ function ameReset() {
     }
 
     ui.ameReset.checked = false;
-    ui.ameReset.value == "false";
+    ui.ameReset.value = "false";
 
     updateArtifacts();
 }
@@ -1251,10 +1235,12 @@ function statsSet(no) {
     updateStats();
 }
 
+
+var higherStatsSize = 200;
 function updateStats() {
     // LEFT SIDE
-    ui.stats.innerHTML = "<div style='float: left; width: 50%;' class='square2'>"
-        + "Progress:"
+    ui.stats.innerHTML = "<div style='float: left; width: 50%; min-height: " + higherStatsSize + "px' class='square2' id='statsDisplayLeft'>"
+        + "<b>Progress:</b>"
         + "<br />Highest More Shgabb: " + statLoader("hms")
         + "<br />Total Clicks: " + statLoader("clicks")
         + "<br />Total Time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime"))
@@ -1263,7 +1249,7 @@ function updateStats() {
         + (statDisplay == 1 ? "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")" : "")
         + "<br />"
 
-        + "<br />Currencies:"
+        + "<br /><b>Currencies:</b>"
         + "<br />Total Shgabb: " + statLoader("shgabb")
         + "<br />Total Sandwiches: " + statLoader("sw")
         + "<br />Total Golden Shgabb: " + statLoader("gs")
@@ -1277,19 +1263,21 @@ function updateStats() {
         + "<br />Total Chengas: " + statLoader("chenga")
         + "<br />"
 
-        + "<br />Events:"
+        + "<br /><b>Events:</b>"
         + "<br />Total Gifts: " + statLoader("gifts")
         + "<br />Total Cakes: " + statLoader("cakes")
         + "<br />Total Qian: " + statLoader("qian")
         + "<br />Total Eggs: " + statLoader("eggs")
+        + "<br />Total Shorts: " + statLoader("shorts")
+        + "<br />Total Event currencies: " + (new Decimal(statLoader("gifts")).add(statLoader("cakes")).add(statLoader("qian")).add(statLoader("eggs")).add(statLoader("shorts")))
         + "<br />"
 
-        + "<br />Shgic Shgac Shgoe:"
+        + "<br /><b>Shgic Shgac Shgoe:</b>"
         + "<br />Total SSS wins: " + statLoader("tttw") + " (Points: " + statLoader("tttpw") + ")"
         + "<br />Total SSS losses: " + statLoader("tttl") + " (Points: " + statLoader("tttpl") + ")"
 
 
-        + "</div><div style='float: right; width: 50%;' class='square2'>"
+        + "</div><div style='float: right; width: 50%; min-height: " + higherStatsSize + "px' class='square2' id='statsDisplayRight'>"
 
         // RIGHT SIDE
         + "Chances:"
@@ -1343,6 +1331,8 @@ function updateStats() {
         + (getArtifactsSimpleBoost("artifactchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("artifactchance")) + " Artifact chance") : "")
 
         + "</div>";
+    
+    higherStatsSize = Math.max(document.getElementById("statsDisplayLeft").offsetHeight, document.getElementById("statsDisplayRight").offsetHeight);
 }
 
 function updateUI() {
@@ -1702,6 +1692,18 @@ function importGame(source) {
         if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
     }
 
+    let ownedArtisList = [];
+    for (let ownedArtis = 0; ownedArtis < game.a.length; ownedArtis++) {
+        if (ownedArtisList.includes(game.a[ownedArtis])) {
+            // duplicate detected! remove it & refund
+            console.log("Duplicate Artifact detected! Loc: " + ownedArtis + ", ID: " + game.a[ownedArtis]);
+            game.a.splice(ownedArtis, 1);
+            game.gems += 30;
+            ownedArtis -= 1;
+        }
+        else ownedArtisList.push(game.a[ownedArtis]);
+    }
+
     // Execute some stuff
     //handleArtifactsFirstTime(); // it's safe to say nobody needs this anymore lol
     checkForZeroNext();
@@ -1864,6 +1866,27 @@ function selectVideo() {
             adHandler.src = "videos/Mend_car_crashing_vid.mp4";
             break;
     }
+}
+
+var ameResetCounter = false;
+function toggleAmeReset() {
+    if (ameResetCounter) {
+        ameResetCounter = false;
+    }
+    else {
+        if (ui.ameReset.checked) {
+            ui.ameReset.checked = false;
+            ui.ameReset.value = "false";
+        }
+        else {
+            ui.ameReset.checked = true;
+            ui.ameReset.value = "true";
+        }
+    }
+}
+
+function toggleAmeReset2() {
+    ameResetCounter = true;
 }
 
 // Load

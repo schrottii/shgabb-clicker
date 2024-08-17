@@ -562,6 +562,14 @@ function artifactLoadout(l, source = "key") {
             while (game.alo[l].length > getMaxArtifactAmount()) {
                 game.alo[l].pop();
             }
+
+            for (let arti in game.alo[l]) {
+                if (!getArtifact(game.alo[l][arti]).isUnlocked()) {
+                    game.alo[l].splice(arti, 1);
+                    arti -= 1;
+                }
+            }
+
             let previous = game.aeqi;
             game.aeqi = game.alo[l];
 
@@ -754,7 +762,7 @@ function switchArtifact(id) {
 
 function upgradeArtifact(id) {
     if (game.alvl[id] == undefined) game.alvl[id] = 1;
-    if (game.alvl[id] < getArtifact(id).getMaxLevel() && game.artifactScrap >= getScrapCost(game.alvl[id], getArtifact(id).rarity) && confirm("Use " + getScrapCost(game.alvl[id], getArtifact(id).rarity) + " Artifact Scrap to upgrade this?")) {
+    if (game.alvl[id] < getArtifact(id).getMaxLevel() && game.artifactScrap >= getScrapCost(game.alvl[id], getArtifact(id).rarity) && (!settings.confirm || confirm("Use " + getScrapCost(game.alvl[id], getArtifact(id).rarity) + " Artifact Scrap to upgrade this?"))) {
         game.artifactScrap -= getScrapCost(game.alvl[id], getArtifact(id).rarity);
         game.alvl[id] += 1;
     }
@@ -764,7 +772,7 @@ function destroyArtifact(id) {
     let rarity = getArtifact(id).rarity;
     let level = game.alvl[id];
     let amount = Math.floor(getScrapCost(level, rarity) / 5);
-    if (confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
+    if (!settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
 
         game.a.splice(game.a.indexOf(id), 1);
         delete game.alvl[id];

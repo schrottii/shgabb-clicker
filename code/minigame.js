@@ -249,7 +249,7 @@ function minigameCheckForWinners() {
 
         game.tttd = game.day;
         canPlayTTT = false;
-        autoSave();
+        autoSave(false);
         return false;
     }
     else if (pointsHer > 2 && canPlayTTT) {
@@ -259,7 +259,7 @@ function minigameCheckForWinners() {
         statIncrease("tttl", 1);
         createNotification("shgabb won... no reward...");
         createNotification("Come back tomorrow!");
-        autoSave();
+        autoSave(false);
         return false;
     }
     else if (winner != 0) {

@@ -95,7 +95,8 @@ function adButtonHandler() {
             currentBoost = "none";
             adStatus = "loaded";
 
-            ui.sandwichBar.classList.remove("buffedProgress")
+            ui.sandwichBar.classList.remove("buffedProgress");
+            ui.clickButton.classList.remove("buffedProgress");
             ui.adButton.innerHTML = "";
             break;
     }
@@ -120,8 +121,8 @@ function adSwitcher() {
             adTime = cakeValue(1, 5);
             adMax = 5;
 
-            //ui.cooldownBar.classList.remove("buffedProgress")
-            ui.sandwichBar.classList.remove("buffedProgress")
+            ui.sandwichBar.classList.remove("buffedProgress");
+            ui.clickButton.classList.remove("buffedProgress");
 
             adStatus = "loaded";
             currentBoost = "none";
@@ -196,7 +197,7 @@ try {
         adMax = adTimes[currentBoost];
 
         if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
-            //ui.cooldownBar.classList.add("buffedProgress")
+            ui.clickButton.classList.add("buffedProgress")
         }
         if (currentBoost == "moreSandwiches") {
             ui.sandwichBar.classList.add("buffedProgress")

@@ -66,6 +66,7 @@ var settingButtons = [
     new ToggleSetting("gameplay", "toggleNoAds", "noAds", "Disable Ads"),
     new Setting("save", "exportToFile", "Export to file", "Save to a .txt file"),
     new Setting("save", "importFromFile", "Import from file", `Load the .txt file`),
+    new ToggleSetting("gameplay", "toggleConfirm", "confirm", "Confirmation Dialogs"),
 ]
 
 function onSettingClick(toggle) {
@@ -205,6 +206,10 @@ function toggleNoAds() {
     createNotification("No ads " + (settings.noAds ? "ON" : "OFF"));
     currentBoost = "none";
     adTime = 15;
+}
+
+function toggleConfirm() {
+    createNotification("Confirmation dialogs " + (settings.confirm ? "ON" : "OFF"));
 }
 
 // eh

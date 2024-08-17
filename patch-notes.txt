@@ -54,6 +54,7 @@ July - September 2024:
 2.8
 2.8.1
 2.9
+2.9.1
 
 
 
@@ -1707,3 +1708,26 @@ Version 2.9 Back to Bomblike Update:
 - Fixed Power Charger and Surgeon bugs
 - Fixed Sandwich bar still being displayed as boosted after canceling an ad
 - Fixed right side of the 3 bars being cut off when zooming in
+
+
+
+2024/08/18 2.9.1:
+Back to Making An Update:
+-> Settings:
+- Added Setting to toggle confirmation dialogs
+- This affects destroying and upgrading Artifacts, unlevel and prestige
+
+-> Stats:
+- The background is now always equally long on both sides
+- Headers are now bold
+- Added Shorts
+- Added total event currencies
+
+-> Ads:
+- Faster Shgabb and More Crits now give the click button the buff effect
+- Buffed bars (Sandwich bar during More Sandwiches Ad) no longer get a darker background
+
+-> Other:
+- Duplicate Artifacts in save are now removed when a save is loaded (30 Gem refund)
+- Amé reset button: clicking the button now toggles reset too
+- Save message after completing Shgic is now visible
