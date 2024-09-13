@@ -26,6 +26,16 @@ const boostTexts = {
     moreGems: "More Gems: 3x Gem chance (8:00)",
 };
 
+const adTimes = {
+    strongerClicks: 300,
+    strongerAuto: 600,
+    moreSandwiches: 180,
+    fasterShgabb: 60,
+    moreCrits: 180,
+    moreSilicone: 300,
+    moreGems: 480,
+};
+
 // unlocked functions
 function unlockedAds() {
     return game.stats.sw >= 10;
@@ -43,10 +53,10 @@ function setRandomAd() {
     if (!unlockedGems() && availableBoost == "moreGems") possibleBoosts.splice(possibleBoosts.indexOf("moreGems"), 1);
     if (!unlockedSilicone() && availableBoost == "moreSilicone") possibleBoosts.splice(possibleBoosts.indexOf("moreSilicone"), 1);
 
-    availableBoost = possibleBoosts[Math.floor(boosts.length * Math.random())];
+    availableBoost = possibleBoosts[Math.floor(possibleBoosts.length * Math.random())];
 
     // least watched ad setting
-    if (settings.leastAdLess == 0 && availableBoost == determineLeastUsedBoost()) availableBoost = boosts[Math.floor(boosts.length * Math.random())];
+    if (settings.leastAdLess == 0 && availableBoost == determineLeastUsedBoost()) availableBoost = possibleBoosts[Math.floor(possibleBoosts.length * Math.random())];
     if (settings.leastAdLess == 2 && Math.random() < 1 / possibleBoosts.length) availableBoost = determineLeastUsedBoost();
 }
 
@@ -214,6 +224,72 @@ try {
 }
 catch (e) {
     console.trace(e);
+}
+
+function determineLeastUsedBoost() {
+    let least = ["", 1000000000000000000000000];
+    for (s in game.stats.wads) {
+        if (game.stats.wads[s] < least[1]) {
+            least[0] = s;
+            least[1] = game.stats.wads[s];
+        }
+    }
+
+    switch (least[0]) {
+        case "sc":
+            return "strongerClicks";
+        case "sa":
+            return "strongerAuto";
+        case "msw":
+            return "moreSandwiches";
+        case "fs":
+            return "fasterShgabb";
+        case "mc":
+            return "moreCrits";
+        case "msi":
+            return "moreSilicone";
+        case "mg":
+            return "moreGems";
+    }
+}
+
+function selectVideo() {
+    // Select which video you will see
+    let adVideoPicker = Math.ceil(Math.random() * 6)
+    switch (adVideoPicker) {
+        case 1:
+            adHandler.src = "videos/elmenda_bad_as_always.mp4";
+            break;
+        case 2:
+            adHandler.src = "videos/elm_ad_2.mp4";
+            break;
+        case 3:
+            adHandler.src = "videos/Helmet452_Trailer.mp4";
+            break;
+        case 4:
+            adHandler.src = "videos/Drunk_elmenda_savage.mp4";
+            break;
+        case 5:
+            adHandler.src = "videos/shgabb_flame.mp4";
+            break;
+        case 6:
+            adHandler.src = "videos/Mend_car_crashing_vid.mp4";
+            break;
+    }
+}
+
+//let lastAdTimer = 0;
+adHandler.ontimeupdate = () => {
+    if (adHandler.controls == true) { //((adHandler.currentTime > lastAdTimer + 2 && adHandler.currentTime < adHandler.duration) || adHandler.playbackRate > 1) {
+        adHandler.onended();
+
+        adTime = -50000000000;
+        currentBoost = "screwyou";
+        availableBoost = "noneeeeeee";
+    }
+    /*else {
+        lastAdTimer = adHandler.currentTime;
+    }*/
 }
 
 

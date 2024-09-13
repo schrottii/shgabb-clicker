@@ -173,7 +173,7 @@ var banners = [
     new Banner(606, "images/challenges/challenge6.png", () => game.clg[6] >= 3),
 ];
 
-function calculateProfileCanvasSize() {
+function calcProfileCanvasSize() {
     profileCanvasWidth = window.innerWidth;
     profileCanvasHeight = profileCanvasWidth / 2;
     profileTextSizeMulti = Math.max(1, (window.innerWidth - 312) / 312);
@@ -193,7 +193,7 @@ function changePlayerName() {
 }
 
 function renderPlayerProfile() {
-    calculateProfileCanvasSize();
+    calcProfileCanvasSize();
     let w = profileCanvasWidth;
     let h = profileCanvasHeight;
 

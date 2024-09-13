@@ -153,6 +153,104 @@ class Upgrade {
     }
 }
 
+// Buy functions
+function buyUpgrade(id) {
+    // M hotkey
+    if (doBuyMax) {
+        doBuyMax = false;
+        buyMaxFunction(id);
+        return false;
+    }
+
+    // Buy an upgrade and update UI
+    id.buy();
+
+    if (id.ID == "moreShgabb") {
+        getBags();
+
+        game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+        game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
+        game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
+        renderShbook();
+    }
+
+    updateUpgrades();
+    freezeTime();
+}
+
+function buyMax(id) {
+    doBuyMax = true;
+}
+
+function buyMaxFunction(id) {
+    // v same check to display buy max
+    if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((id.getMax() > 10 && !id.isMax()) || id.getMax() == undefined)) {
+        // Buy an upgrade and update UI
+        if (settings.noUpgrading) return false;
+        let levelStart = id.currentLevel();
+        if (!id.canBuy() && isChallenge(5)) id.unlevel(true);
+        else {
+            while (id.canBuy() && id.currentLevel() <= levelStart + 50000) {
+                id.buy(true);
+            }
+        }
+
+        if (id.ID == "moreShgabb") {
+            getBags();
+
+            game.stats.hms = Math.max(game.stats.hms, game.upgradeLevels.moreShgabb);
+            game.stats_prestige.hms = Math.max(game.stats_prestige.hms, game.upgradeLevels.moreShgabb);
+            game.stats_today.hms = Math.max(game.stats_today.hms, game.upgradeLevels.moreShgabb);
+            renderShbook();
+        }
+
+        artifactEvent("onUpgrade", { "multi": id.currentLevel() - levelStart });
+        createNotification("Upgrade bought max. successfully");
+
+        updateUpgrades();
+        freezeTime();
+    }
+    else if (id.isMax() && isChallenge(5)) id.unlevel(true);
+}
+
+var doesUnlevel = false;
+
+function unlevel(id, isMax = false) {
+    // Unbuy an upgrade and update UI
+    if (settings.noUpgrading) return false;
+    if (!settings.confirm || !isMax || confirm("Do you really want to unlevel this to level 0?")) id.unlevel(isMax);
+
+    updateUpgrades();
+    freezeTime();
+}
+
+// render / UI
+function renderUpgrades(object) {
+    let render = "";
+    for (o in object) {
+        render = render + object[o].render();
+    }
+    return render;
+}
+
+function updateUpgrades() {
+    // Update upgrades UI
+    ui.upgradesrender.innerHTML = renderUpgrades(shgabbUpgrades);
+
+    ui.swupgradesrender.innerHTML = renderUpgrades(sandwichUpgrades);
+
+    ui.gsupgradesrender.innerHTML = renderUpgrades(goldenShgabbUpgrades);
+
+    ui.siupgradesrender.innerHTML = renderUpgrades(siliconeShgabbUpgrades);
+
+    ui.ameupgradesrender.innerHTML = renderUpgrades(ameliorerUpgrades);
+
+    ui.bagupgradesrender.innerHTML = renderUpgrades(bagUpgrades);
+
+    ui.copupgradesrender.innerHTML = renderUpgrades(copperShgabbUpgrades);
+}
+
+// classes for other currencies
 class SandwichUpgrade extends Upgrade {
     constructor(ID, name, description, price, effect, config) {
         super(ID, name, description, price, effect, config);
@@ -219,7 +317,7 @@ var sandwichUpgrades = {
     autoShgabb: new SandwichUpgrade("autoShgabb", "Auto Shgabb", "Automatically earn Shgabb without having to click", level => level * Math.max(1, level / 25) * Math.max(1, Math.pow(1.001, level - 1000)), level => level * 10 + Math.max(0, 5 * (level - 25)) + Math.max(0, 10 * (level - 50)) + Math.max(0, 75 * (level - 101)), { unlock: () => (game.upgradeLevels.swChance > 0 || game.upgradeLevels.autoShgabb > 0) && !isChallenge(1) }),
     fridge: new SandwichUpgrade("fridge", "Better Fridge", "Keep the Sandwiches cool for longer (More time before they stop making Shgabb)", level => (6 + level * 2) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.2) * (-1), Math.sin(level * 0.2))) / 6), level => level * 4, { maxLevel: 30, unlock: () => (game.upgradeLevels.swChance > 0 || game.upgradeLevels.fridge > 0) && !isChallenge(1) }),
     firstBoostsClicks: new SandwichUpgrade("firstBoostsClicks", "1. Upgrade boosts clicks", "The first Sandwich upgrade also boosts Shgabb from clicks", level => (40 + level * 20) * (0.6 + Math.max(0.2, Math.max(Math.sin(level * 0.4) * (-1), Math.sin(level * 0.2))) / 6) * (level > 19 ? level * 45 : 1), level => level / 2, { maxLevel: 20, suffix: "%", current: level => "x" + ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.effect(level) / 100)) + 1).toFixed(1), unlock: () => goldenShgabbUpgrades.unlockMSW.currentLevel() > 0 && !isChallenge(1) }),
-    cheese: new SandwichUpgrade("cheese", "Cheese", "Increases auto Shgabb based on clicks", level => 10 * Math.pow(1.08, level), level => level / 200, { maxLevel: 100, suffix: "%", effectMulti: 100, current: level => "+" + fn(Math.ceil(getProduction() * sandwichUpgrades.cheese.effect(level))), unlock: () => goldenShgabbUpgrades.unlockMSW.currentLevel() > 1 && !isChallenge(1) }),
+    cheese: new SandwichUpgrade("cheese", "Cheese", "Increases auto Shgabb based on clicks", level => 10 * Math.pow(1.08, level), level => level / 200, { maxLevel: 100, suffix: "%", effectMulti: 100, current: level => "+" + fn(Math.ceil(calcShgabbClick() * sandwichUpgrades.cheese.effect(level))), unlock: () => goldenShgabbUpgrades.unlockMSW.currentLevel() > 1 && !isChallenge(1) }),
     twoTwoFive: new SandwichUpgrade("twoTwoFive", "2+2=5", "Increases Golden Shgabb", level => 25 * Math.pow(2.5, level), level => Math.pow(1 + (level / 100), level + 1), { maxLevel: 25, prefix: "x", unlock: () => ameliorerUpgrades.unlockMSW2.currentLevel() > 0 && !isChallenge(1) }),
     meaningOfLife: new SandwichUpgrade("meaningOfLife", "Meaning Of Life", "Increases Shgabb", level => Math.pow(420, level + 1), level => Math.pow(42, level), { maxLevel: 42, prefix: "x", unlock: () => ameliorerUpgrades.unlockMSW2.currentLevel() > 1 && !isChallenge(1) }),
 }

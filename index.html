@@ -162,9 +162,8 @@
 
     <!-- Minigame -->
     <div id="minigamesSection">
-        <h3>Shgic Shgac Shgoe Minigame</h3>
-        Every day you have the chance to win 2 Améliorer by getting to 3 points before shgabb does! <br />
-        <canvas id="minigame" width=256 height=256></canvas>
+        <h3>Minigames</h3>
+        <canvas id="minigame" width=256 height=256 style="margin-left: 0px; margin-right: 0px"></canvas>
     </div>
 
     <!-- Event -->
@@ -276,6 +275,8 @@
             <span id="patchNotes">...</span>
 
             <br />
+            <input type="range" min="10" max="40" value="16" step="2" class="slider" id="patchNotesSizeSlider" onchange="patchNotesSize()">
+            <br />
             <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
         </div>
     </div>
@@ -333,6 +334,7 @@
             </div>
             <hr style="clear:both" />
         </div>
+        <input type="range" min="2" max="30" value="10" step="2" class="slider" id="shbookSizeSlider" onchange="shbookSize()">
     </div>
 
     <ins class="adsbygoogle" id="googleAd2"
@@ -358,15 +360,30 @@
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
     <script src="code\settings.js"></script>
-    <script src="code\achievements.js"></script>
-    <script src="code\artifacts.js"></script>
-    <script src="code\gems.js"></script>
-    <script src="code\challenges.js"></script>
-    <script src="code\minigame.js"></script>
-    <script src="code\playerprofile.js"></script>
-    <script src="code\events.js"></script>
+
+    <script src="code\features\achievements.js"></script>
+    <script src="code\features\artifacts.js"></script>
+    <script src="code\features\challenges.js"></script>
+    <script src="code\features\playerprofile.js"></script>
+    <script src="code\features\events.js"></script>
+    <script src="code\features\shbook.js"></script>
+
+    <script src="code\currencies\shgabb.js"></script>
+    <script src="code\currencies\sandwiches.js"></script>
+    <script src="code\currencies\gs.js"></script>
+    <script src="code\currencies\silicone.js"></script>
+    <script src="code\currencies\gems.js"></script>
+    <script src="code\currencies\ameliorer.js"></script>
+    <script src="code\currencies\bags.js"></script>
+    <script src="code\currencies\copper.js"></script>
+
+    <script src="code\games\games.js"></script>
+    <script src="code\games\minigameSelection.js"></script>
+    <script src="code\games\shgic.js"></script>
+    <script src="code\games\fishgang.js"></script>
+
+    <script src="code\update.js"></script>
     <script src="code\render.js"></script>
-    <script src="code\shbook.js"></script>
     <script src="code\main.js"></script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8311163069228619"

@@ -187,7 +187,7 @@ function openGifts(amount) {
         else giftContents[2] += 1;
     }
 
-    let sandwichAmount = getSandwich().mul(50).ceil().mul(giftContents[1]);
+    let sandwichAmount = calcSandwiches().mul(50).ceil().mul(giftContents[1]);
     let shgabbAmount = firstGemOfferWorth().mul(2).ceil().mul(giftContents[2]);
 
     if (sandwichAmount > 0) {

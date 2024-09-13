@@ -1,6 +1,7 @@
 ﻿// Schrottii - editing or stealing is prohibited!
 
-var shbookSelections = [0, "Shgabb", "Shbook"]
+var shbookSelections = [0, "Shgabb", "Shbook"];
+var shbookSizeFactor = 10;
 
 class BookEntry{
     constructor(ID, name, unlock, lockedText, unlockedText){
@@ -92,6 +93,11 @@ function getLorePage() {
     renderShbook();
 }
 
+function shbookSize() {
+    shbookSizeFactor = ui.shbookSizeSlider.value;
+    renderShbook();
+}
+
 // Pierre
 // dr. xd (when?)
 
@@ -156,7 +162,7 @@ function renderCurrenciary() {
     ui.shbookCurrenciary.innerHTML = render;
     render = "<div style='font-size: 40px'>" + (thisCurrency.isUnlocked() ? thisCurrency.getName() : "Locked") + "</div><hr><br />";
 
-    render = render + "<div style='font-size: 20px'>" + (thisCurrency.isUnlocked() ? thisCurrency.unlockedText : "Locked [" + thisCurrency.lockedText + "]") + "</div>";
+    render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisCurrency.isUnlocked() ? thisCurrency.unlockedText : "Locked [" + thisCurrency.lockedText + "]") + "</div>";
     render = render + "<br /><br /><button class='grayButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + shbookSelections[1] + "'>" + "Learn more (Wiki)" + "</a></button>";
 
     ui.shbookCurrenciary2.innerHTML = render;
@@ -177,7 +183,7 @@ function renderFeaturiary() {
     ui.shbookFeaturiary.innerHTML = render;
     render = "<div style='font-size: 40px'>" + (thisFeature.isUnlocked() ? thisFeature.getName() : "Locked") + "</div><hr><br />";
 
-    render = render + "<div style='font-size: 20px'>" + (thisFeature.isUnlocked() ? thisFeature.unlockedText : "Locked [" + thisFeature.lockedText + "]") + "</div>";
+    render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisFeature.isUnlocked() ? thisFeature.unlockedText : "Locked [" + thisFeature.lockedText + "]") + "</div>";
     render = render + "<br /><br /><button class='grayButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + shbookSelections[2] + "'>" + "Learn more (Wiki)" + "</a></button>";
 
     ui.shbookFeaturiary2.innerHTML = render;
@@ -198,10 +204,10 @@ function renderLore() {
     ui.shbookLore.innerHTML = render;
     render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : "Locked") + "</div><hr><br />";
 
-    render = render + "<div style='font-size: 20px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
+    render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
 
-    if (thisLore.ID == 0) render = render + "<br />" + cImg("memoryWisp") + game.loreP + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + game.loreP + "/" + getLoreByID(game.loreSel).amount) : "")
-        + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: x" + fn(getLoreBoost()) + " GS!";
+    if (thisLore.ID == 0) render = render + "<div style='font-size: " + (1.6 * shbookSizeFactor) + "px'><br />" + cImg("memoryWisp") + game.loreP + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + game.loreP + "/" + getLoreByID(game.loreSel).amount) : "")
+        + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: x" + fn(getLoreBoost()) + " GS!</div>";
     else if (!thisLore.isUnlocked() && thisLore.isFound() && thisLore.ID != game.loreSel) render = render + "<br />" + "<button class='grayButton' onclick=selectLore(" + thisLore.ID + ") style='font-size: 40px'>Start collecting</button>";
 
     ui.shbookLore2.innerHTML = render;

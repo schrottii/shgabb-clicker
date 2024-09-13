@@ -8,13 +8,28 @@
     }
 }
 
+var achievementsPage = 0;
+
 function renderAchievements() {
     let render = "";
 
-    for (a in achievements) {
+    for (a = achievementsPage * 50; a < achievementsPage * 50 + 50; a++) {
+        if (a > achievements.length - 1) continue;
         render = render + "<button class='artifact' style='color: black; background-color: " + (game.ach.includes(achievements[a].ID) ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (game.ach.includes(achievements[a].ID) ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</button>"
     }
+
+    render = render + "<br /><button class='grayButton' onclick='changeAchievementPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
+    render = render + "<button class='grayButton' onclick='changeAchievementPage(1)' class='artifactLoadoutButton'>Next Page</button>";
+
     ui.achievements.innerHTML = render;
+}
+
+function changeAchievementPage(change) {
+    // swap between the pages
+    if (change == 0 && achievementsPage > 0) achievementsPage -= 1;
+    if (change == 1 && achievementsPage < Math.floor((achievements.length - 1) / 50)) achievementsPage += 1;
+
+    renderAchievements();
 }
 
 function getAchievementByID(id) {
@@ -137,6 +152,9 @@ var achievements = [
     new Achievement(147, "copper.png", "Shcopper 64", () => "Get " + fn(1e64) + " Copper Shgabb", () => game.stats.cop.gte(1e64)),
     new Achievement(84, "challenge.png", "I Forgor", "Complete Challenge 4", () => game.clg[4] >= 1),
     new Achievement(138, "challenge.png", "Challenger II", "Complete Challenges 10 times", () => getTotalTiers() >= 10),
+    new Achievement(166, "unlock.png", "Wet Gang", "Unlock Fishgang", () => unlockedFishing()),
+    new Achievement(172, "fishing.png", "Goldy Depp", "Catch a fish!", () => game.stats.fish >= 1),
+    new Achievement(173, "fishing.png", "Trash Metal", "Catch trash!", () => game.stats.trash >= 1),
     new Achievement(148, "ameliorer.png", "Cap Bro IV", "Get 800 Améliorer", () => game.stats.ame >= 800),
     new Achievement(50, "ttt.png", "Shgiccer IV", "Win Shgic Shgac Shgoe 30 times", () => game.stats.tttw >= 30),
     new Achievement(30, "artifact.png", "Alexander Cunningham", "Get all Artifacts!", () => getArtifactAmount() == totalAmountOfArtifacts()),
@@ -147,6 +165,11 @@ var achievements = [
     new Achievement(109, "bags.png", "Playing DaGame V", () => "Get " + fn(1000000) + " Bags (total)", () => game.stats.bags >= 1000000),
     new Achievement(160, "chenga.png", "Collecta II", "Get 100 Chengas (total)", () => game.stats.chenga >= 100),
     new Achievement(51, "hms.png", "Shgabb Conqueror V", "Reach More Shgabb level 15000", () => game.stats.hms >= 15000),
+    new Achievement(167, "fishlvl.png", "Cod of Dedication I", "Reach Fish Level 10", () => game.fishlvl >= 10),
+    new Achievement(168, "fishlvl.png", "Cod of Dedication II", "Reach Fish Level 25", () => game.fishlvl >= 25),
+    new Achievement(169, "fishlvl.png", "Cod of Dedication III", "Reach Fish Level 50", () => game.fishlvl >= 50),
+    new Achievement(170, "fishlvl.png", "Cod of Dedication IV", "Reach Fish Level 75", () => game.fishlvl >= 75),
+    new Achievement(171, "fishlvl.png", "Cod of Dedication V", "Reach Fish Level 100", () => game.fishlvl >= 100),
     new Achievement(100, "ttt.png", "Phallic Plays", "Win Shgic Shgac Shgoe with an interesting formation", () => false),
     new Achievement(110, "bags.png", "Beating DaGame", () => "Have " + fn(1000000) + " Bags at the same time", () => game.bags >= 1000000),
     new Achievement(126, "ameliorer.png", "Amé: Part VII", "Unlock the seventh set of Améliorer upgrades", () => getTotalAme() >= 225),
@@ -155,6 +178,8 @@ var achievements = [
     new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
     new Achievement(130, "ameliorer.png", "Vaméni, Vamidi, Vamici", "Increase max. levels of Améliorer upgrades... what?!", () => ameliorerUpgrades.AMECAME.currentLevel() > 0),
     new Achievement(150, "shgabb.png", "Shgabb IX", () => "Get " + fn(1e75) + " Shgabb", () => game.shgabb >= 1e75),
+    new Achievement(174, "fishing.png", "Overluck (water element version)", "Have a very good chance of catching a fish", () => false),
+    new Achievement(175, "fishing.png", "Legend of Leao", "Catch the legendary fish", () => false),
     new Achievement(149, "ameliorer.png", "Cap Bro V", "Get 2500 Améliorer", () => game.stats.ame >= 2500),
     new Achievement(161, "chenga.png", "Collecta III", "Get 1000 Chengas (total)", () => game.stats.chenga >= 1000),
     new Achievement(139, "challenge.png", "Challenger III", "Complete Challenges 25 times", () => getTotalTiers() >= 25),

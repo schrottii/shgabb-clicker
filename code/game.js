@@ -35,13 +35,21 @@ var game = {
     loreSel: 0,
     loreP: 0,
     clickCooldown: 0,
-    //artifact stuff
+    // artifact stuff
     a: [],
     alvl: {},
     aeqi: [],
     alo: [[], [], []],
     al: 2,
     alnames: [""],
+    // fishing
+    fishxp: 0,
+    fishlvl: 0,
+    fish: 0,
+    trash: 0,
+    fishvalue: new Decimal(0),
+    bfishweight: 0, // best
+    bfishvalue: 0, // best
     // more other
     ach: [],
     nexgai: [0, 0, 0, 0],
@@ -167,6 +175,11 @@ var game = {
         qian: 0,
         eggs: 0,
         shorts: 0,
+
+        trash: 0,
+        fish: 0,
+        fishweight: 0,
+        fishvalue: 0,
 
         tttpw: 0,
         tttpl: 0,

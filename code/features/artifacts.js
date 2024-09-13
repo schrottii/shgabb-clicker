@@ -471,6 +471,18 @@ function renderArtifacts() {
     return render;
 }
 
+function updateArtifacts() {
+    // Artifacts
+    if (unlockedArtifacts()) {
+        ui.artifacts.innerHTML = renderArtifacts();
+        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + totalAmountOfArtifacts() + " Artifacts unlocked!";
+    }
+    else {
+        ui.artifacts.innerHTML = "";
+        ui.artifactamount.innerHTML = "";
+    }
+}
+
 function changeArtifactMode(nr) {
     // swap between the modes
     switch (nr) {

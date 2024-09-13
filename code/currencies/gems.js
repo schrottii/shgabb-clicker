@@ -1,17 +1,18 @@
 // Game made by Schrottii - editing or stealing is prohibited!
+// Currency file
 
 function unlockedGems() {
     return game.stats.hms >= 500;
 }
 
-function getGemChance(cap=10) {
+function getGemChance(cap = 10) {
     if (getArtifact(159).isEquipped()) return 0;
 
     return Math.min(cap, getArtifactsSimpleBoost("gemchance")
         * (getArtifact(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
         * cakeValue(3, 1)
-    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1) ): 0);
+    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1)) : 0);
 }
 
 function getGem() {
@@ -101,5 +102,20 @@ function renderGemOffers() {
         ui.gemOffer3.innerHTML = "Unlocked at 1000 More Shgabb!";
         ui.gemOffer4.innerHTML = "Unlocked at 1000 More Shgabb!";
         ui.gemOffer5.innerHTML = "Unlocked at 1000 More Shgabb!";
+    }
+}
+
+function updateGems() {
+    if (unlockedGems()) {
+        renderGemOffers();
+    }
+}
+
+function prestigeGems() {
+    if (bagUpgrades.prestigeGems.currentLevel() > 0) {
+        let gemAmount = Math.floor(game.stats_prestige.hms / 1000);
+        game.gems += gemAmount;
+        statIncrease("tgems", gemAmount);
+        createNotification("+" + gemAmount + " Gems!");
     }
 }
