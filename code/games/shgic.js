@@ -173,7 +173,7 @@ function shgicFindWinners() {
     if (shgicField[0][0] == 0 && shgicField[0][1] != 0 && shgicField[0][2] == 0
         && shgicField[1][0] == 0 && shgicField[1][1] != 0 && shgicField[1][2] == 0
         && shgicField[2][0] != 0 && shgicField[2][1] != 0 && shgicField[2][2] != 0) {
-        if (!game.ach.includes(100)) game.ach.push(100);
+        checkAchievement(100);
     }
 
     // Check for board full

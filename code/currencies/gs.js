@@ -22,6 +22,7 @@ function calcGS() {
         .mul(copperShgabbUpgrades.copGSBoost.currentEffect())
         .mul(new Decimal(1.01).pow(shgabbUpgrades.deepMiner.currentLevel()))
         .mul(eventValue("summer", 10, 1))
+        .mul(pearlUpgrades.prlGS.currentEffect())
         .floor();
 }
 

@@ -23,6 +23,7 @@ var game = {
     gemboost: 0,
     artifactScrap: 0,
     chenga: 0,
+    pearls: 0,
     // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,
@@ -150,6 +151,10 @@ var game = {
         copperClickChance: 0,
         copShgabbBoost: 0,
         copGSBoost: 0,
+
+        // Pearls
+        prlShgabb: 0,
+        prlGS: 0,
     },
     // stats (all time)
     stats: {

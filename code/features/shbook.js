@@ -125,6 +125,7 @@ const currenciary = [
     new BookEntry(8, "Chengas", () => unlockedChengas(), "HMS 5000", "Chengas are the third side currency. They can be used to change the ad boost that's being offered. Doing so consumes 1 Chenga, and then the offer does not expire, and can be changed infinite times without consuming more. There is a 10% chance to get a Chenga after watching any ad."),
     new BookEntry(9, "Bags", () => unlockedBags(), "HMS 8000", "Bags are the sixth main currency, unlocked at HMS 8000, and can be earned from upgrading More Shgabb. They can be spent on a collection of upgrades."),
     new BookEntry(10, "Copper Shgabb", () => unlockedCopper(), "HMS 10 000", "Copper is the seventh main currency, unlocked at HMS 10 000. It can be earned by clicking, starting with a 1% chance. Its value inflates quickly."),
+    new BookEntry(11, "Pearls", () => unlockedFishing(), "HMS 12 000", "Pearls are the fourth side currency, earned from Fishgang level ups. They can be spent on minor boosts. It is possible to reset and refund all Pearls every new level up."),
 ];
 
 const featuriary = [
@@ -133,6 +134,7 @@ const featuriary = [
     new BookEntry(3, "Artifacts", () => unlockedArtifacts(), "HMS 1000", "Artifacts are unlocked at HMS 1000 and can be equipped for all kinds of effects, from simple to mind-blowing complicated. By default, up to 3 Artifacts can be equipped at the same time. Artifacts of the same type are multiplicative with each other. Artifacts can be found from clicking or bought with Gems, and the further you go, the more Artifacts you can find. Loadouts can be saved and loaded at any time."),
     new BookEntry(4, "Shgic Shgac Shgoe", () => unlockedAmeliorer(), "HMS 2000", "Shgic Shgac Shgoe (whatever that means) is unlocked along Améliorer. Every day you get the chance to win 2 Améliorer here by playing your cards right."),
     new BookEntry(5, "Challenges", () => unlockedChallenges(), "HMS 6000", "Challenges are unlocked at HMS 6000 and each offer a change to the gameplay. Starting a Challenge costs Gems and a Prestige. A Challenge can be beaten by reaching the required More Shgabb amount and then performing a Prestige. Each Challenge has a different reward, increasing with every tier: with every completion."),
+    new BookEntry(6, "Fishgang", () => unlockedFishing(), "HMS 12 000", "Fishgang (also known as Fishing) is the second minigame, unlocked at HMS 12000. It is rather complex. The player can choose how far to throw the rod, further distances are more difficult, but also more valuable. The player can catch trash or fish, which award XP that contribute to level ups which award Pearls."),
 ];
 
 function changeShbook(id, sel) {

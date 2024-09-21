@@ -2,10 +2,39 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.0";
-const versionTitle = "Fish Up Gang Date";
+const gameVersion  = "3.0.1";
+const versionTitle = "Fish +2";
 
 const currentPatchNotes = [
+    "-> Pearls:",
+    "- New side currency, unlocked at 12k HMS alongside Fishgang",
+    "- Gained from level ups in Fishgang (gain = level)",
+    "- Can be spent for a Shgabb or GS boost",
+    "- Can be refunded every new level up",
+    "- Shgabb Boost: Spend Pearls to get more Shgabb (x1.1 every level)",
+    "- GS Boost: Spend Pearls to get more GS (x1.05 every level)",
+
+    "-> Fishgang Gameplay:",
+    "- Added Pearls: side currency gained from level ups",
+    "- Reduced base XP needed for level up from 400 to 100",
+    "- Doubled XP from fish",
+    "- Valuable attempts can no longer end up being trash",
+
+    "-> Fishgang Design:",
+    "- Moved and increased size of the throw/reel button",
+    "- Increased size of catch chance text",
+    "- Made the successful click green more visible",
+    "- Gave Bobby some ADHD meds",
+
+    "-> Other:",
+    "- Improved Achievements rendering and obtaining",
+    "- Added Featuriary entry for Fishgang",
+    "- Added Currenciary entry for Pearls",
+    "- Fixed a minigame Hz issue",
+
+
+
+    "v3.0",
     "-> Content:",
     "- New feature / minigame: Fishgang!",
     "- Reworked minigames section/display",

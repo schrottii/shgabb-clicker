@@ -164,6 +164,19 @@
     <div id="minigamesSection">
         <h3>Minigames</h3>
         <canvas id="minigame" width=256 height=256 style="margin-left: 0px; margin-right: 0px"></canvas>
+
+        <div id="pearlSection" style="display: none">
+            <h3>Pearls</h3>
+            <span id="pearlAmount"></span><br />
+            <span id="pearlupgradesrender"></span>
+
+            <br style="clear:both" />
+            <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto;" onclick="togglePearlReset()">
+                <div style="height: 50%"> X </div>
+                <input type="checkbox" id="pearlreset" value="true" onclick="togglePearlReset2()">
+                <label for="pearlreset" id="pearlreset2">Reset Pearl Upgrades on the next level up</label>
+            </div>
+        </div>
     </div>
 
     <!-- Event -->

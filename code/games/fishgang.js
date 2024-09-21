@@ -1,6 +1,6 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
-const fishingLevelUpFormula = (level) => Math.ceil(Math.pow(400, 1 + 0.002 * (level - 1)) * level);
+const fishingLevelUpFormula = (level) => Math.ceil(Math.pow(100, 1 + 0.002 * (level - 1)) * level);
 
 // name, value factor, weight factor
 const fishDictionary = [
@@ -51,9 +51,62 @@ function updateFishingLevel() {
 
     while (game.fishxp >= fishingLevelUpFormula(game.fishlvl + 1)) {
         // Level up! Yay!
+        let pearlsGained = 0;
         game.fishlvl += 1;
-        createNotification("Fish level up! New level: " + game.fishlvl);
+
+        if (ui.pearlreset.checked) {
+            // Reset
+            ui.pearlreset.checked = false;
+            ui.pearlreset.value = "false";
+
+            for (let up in pearlUpgrades) {
+                game.upgradeLevels[up] = 0;
+            }
+            game.pearls = pearlsGained = calcPearls();
+            createNotification("Pearls reset successfully!");
+        }
+        else {
+            // get 1, 2, 3, etc.
+            game.pearls += game.fishlvl;
+            pearlsGained = game.fishlvl;
+        }
+
+        updateUpgrades();
+        createNotification("Fish level up! New level: " + game.fishlvl + ", gained Pearls: " + pearlsGained);
     }
+}
+
+function calcPearls() {
+    if (game.fishlvl == 0) return 0;
+
+    let earnedPearls = 0;
+
+    for (let ep = 1; ep <= game.fishlvl; ep++) {
+        earnedPearls += ep;
+    }
+
+    return earnedPearls;
+}
+
+var pearlResetCounter = false;
+function togglePearlReset() {
+    if (pearlResetCounter) {
+        pearlResetCounter = false;
+    }
+    else {
+        if (ui.pearlreset.checked) {
+            ui.pearlreset.checked = false;
+            ui.pearlreset.value = "false";
+        }
+        else {
+            ui.pearlreset.checked = true;
+            ui.pearlreset.value = "true";
+        }
+    }
+}
+
+function togglePearlReset2() {
+    pearlResetCounter = true;
 }
 
 scenes["fishgang"] = new Scene(
@@ -70,6 +123,7 @@ scenes["fishgang"] = new Scene(
         createText("title", 0.08, 0.1, "Fishgang", "white", 32, "left");
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
+            ui.pearlSection.style.display = "none";
             loadScene("minigameSelection");
         }, true);
 
@@ -108,7 +162,7 @@ scenes["fishgang"] = new Scene(
         objects["bobby"].chance = 0; // 0 - 100
         objects["bobby"].reelCD = 0;
 
-        createButton("slideButton", 0.4, 0.85, 0.2, 0.05, "button", () => {
+        createButton("slideButton", 0, 0.75, 0.3, 0.15, "button", () => {
             if (objects["bobby"].mode == 0) {
                 objects["bobby"].distance = Math.max(10, objects["slider"].sliderMove);
                 objects["bobby"].mode = 1;
@@ -120,7 +174,7 @@ scenes["fishgang"] = new Scene(
                         // Hit
                         objects["bobby"].chance += 5 + objects["bobby"].quality; // +6% - +15%
                         objects["bobby"].reelCD = 0.1;
-                        objects["sliderbg"].color = "rgb(0, 30, 0)";
+                        objects["sliderbg"].color = "rgb(10, 60, 10)";
                     }
                     else {
                         // Miss
@@ -138,10 +192,12 @@ scenes["fishgang"] = new Scene(
                 }
             }
         })
-        createText("slideButtonText", 0.5, 0.9, "", "black", 24, "center");
+        createText("slideButtonText", 0.15, 0.85, "", "black", 24, "center");
 
-        createText("catchQuality", 0.7, 0.8, "", "black", 24, "left");
-        createText("catchChance", 0.7, 0.9, "", "black", 24, "left");
+        createText("catchQuality", 0.7, 0.775, "", "black", 40, "left");
+        createText("catchChance", 0.7, 0.85, "", "black", 40, "left");
+
+        ui.pearlSection.style.display = "";
     },
     (tick) => {
         // Loop
@@ -200,8 +256,13 @@ scenes["fishgang"] = new Scene(
         }
 
         // Animate Bobby
-        objects["bobby"].x = 0.5 + 0.003 * Math.random();
-        objects["bobby"].y = 0.75 - 0.5 * (objects["bobby"].distance / 100) + 0.003 * Math.random();
+        if (Math.random() >= 0.92) {
+            objects["bobby"].x = 0.5 + 0.003 * Math.random();
+            objects["bobby"].y = 0.75 - 0.5 * (objects["bobby"].distance / 100) + 0.003 * Math.random();
+        }
+        else {
+            objects["bobby"].y = 0.75 - 0.5 * (objects["bobby"].distance / 100);
+        }
 
         // Bobby waiting for fish
         if (objects["bobby"].mode == 1) {
@@ -235,12 +296,10 @@ scenes["fishgang"] = new Scene(
                 objects["sliderbg"].color = "black";
 
                 // Get fish
-                if (objects["bobby"].chance >= 300) {
-                    if (!game.ach.includes(174)) game.ach.push(174);
-                }
+                checkAchievement(174, objects["bobby"].chance >= 300);
 
                 if (Math.random() * 100 < objects["bobby"].chance) {
-                    if (Math.random() >= 0.75) {
+                    if (Math.random() >= 0.75 || objects["bobby"].quality >= 5) {
                         // got a fish
 
                         let caughtFish = -1;
@@ -257,7 +316,7 @@ scenes["fishgang"] = new Scene(
                         let caughtValue = Math.ceil(thisFish[1] * thisFish[2] * Math.random());
                         let caughtWeight = "" + (thisFish[2] * Math.random()).toPrecision(2);
 
-                        game.fishxp += caughtValue;
+                        game.fishxp += caughtValue * 2;
                         game.gems += caughtGems;
                         statIncrease("tgems", caughtGems);
 
@@ -273,9 +332,7 @@ scenes["fishgang"] = new Scene(
 
                         updateFishingLevel();
 
-                        if (thisFish[0] == "Leaoodandingzumn") {
-                            if (!game.ach.includes(175)) game.ach.push(175);
-                        }
+                        checkAchievement(175, thisFish[0] == "Leaoodandingzumn");
 
                         objects["infotext"].text = "You caught a " + thisFish[0] + "! (Weight: " + caughtWeight + "kg, Value: " + fn(caughtValue) + ") +" + caughtGems + " Gems";
                     }

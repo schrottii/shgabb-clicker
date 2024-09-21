@@ -163,7 +163,7 @@ function openGifts(amount) {
         return false;
     }
     game.gifts -= amount;
-    if (!game.ach.includes(72)) game.ach.push(72);
+    checkAchievement(72);
 
     // PFP 0.5% - Gems 19.5% - SW 40% - Shgabb 40%
     let giftContents = [0, 0, 0];
@@ -256,7 +256,7 @@ function useQian(offerNR) {
             }
             else {
                 game.qian -= 96;
-                game.ach.push(92);
+                checkAchievement(92);
 
                 createNotification("Double Qian!");
             }
@@ -324,14 +324,14 @@ function useQian(offerNR) {
             if (game.qian < 36 || luck > 0) return false;
             game.qian -= 36;
 
-            if (!game.ach.includes(93)) game.ach.push(93);
+            checkAchievement(93);
 
             luck = 300;
 
             break;
     }
 
-    if (!game.ach.includes(94)) game.ach.push(94);
+    checkAchievement(94);
     renderCurrentEvent();
 }
 
@@ -403,7 +403,7 @@ function useEggs(offerNR) {
             break;
     }
 
-    if (!game.ach.includes(112)) game.ach.push(112);
+    checkAchievement(112);
     renderCurrentEvent();
 }
 
@@ -671,6 +671,6 @@ function useShorts(offerNR) {
             break;
     }
 
-    if (!game.ach.includes(94)) game.ach.push(94);
+    checkAchievement(94);
     renderCurrentEvent();
 }

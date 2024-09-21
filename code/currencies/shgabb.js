@@ -26,7 +26,8 @@ function calcShgabbGlobal() {
         .mul(eventValue("lunar", 8, 1))
         .mul(eventValue("pride", 10, 1))
         .mul(bagUpgrades.adsWatchedBoostShgabb.currentEffect())
-        .mul(copperShgabbUpgrades.copShgabbBoost.currentEffect());
+        .mul(copperShgabbUpgrades.copShgabbBoost.currentEffect())
+        .mul(pearlUpgrades.prlShgabb.currentEffect());
 
     return prod;
 }

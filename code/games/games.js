@@ -207,12 +207,17 @@ function createButton(clickableName, x, y, w, h, color, onClick, quadratic = fal
 }
 
 // loop
-function gamesLoop() {
+var lastTime = 0;
+function gamesLoop(tick) {
     // The game's main loop
 
     // Tick time
-    delta = Date.now() - time;
-    time = Date.now();
+    if (lastTime === 0) {
+        lastTime = tick;
+    }
+
+    const delta = tick - lastTime;
+    lastTime = tick;
 
     // Resize the canvas
     if (window.innerWidth <= 480) {

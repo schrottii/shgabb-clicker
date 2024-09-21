@@ -47,6 +47,7 @@ var ui = {
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
     bagAmount: document.getElementById("bagAmount"),
     copAmount: document.getElementById("copAmount"),
+    pearlAmount: document.getElementById("pearlAmount"),
 
     topSquareDisplay: document.getElementById("topSquareDisplay"),
 
@@ -65,6 +66,7 @@ var ui = {
     ameupgradesrender: document.getElementById("ameupgradesrender"),
     bagupgradesrender: document.getElementById("bagupgradesrender"),
     copupgradesrender: document.getElementById("copupgradesrender"),
+    pearlupgradesrender: document.getElementById("pearlupgradesrender"),
 
     // New Artifact display thing
     newArtifact: document.getElementById("newArtifact"),
@@ -88,6 +90,8 @@ var ui = {
     adStartButton: document.getElementById("adStartButton"),
     ameReset: document.getElementById("amereset"),
     ameReset2: document.getElementById("amereset2"),
+    pearlreset: document.getElementById("pearlreset"),
+    pearlreset2: document.getElementById("pearlreset2"),
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
     artifactSearch: document.getElementById("artifactSearch"),
@@ -109,7 +113,7 @@ var ui = {
     autoInfo: document.getElementById("autoInfo"),
     patchNotesSizeSlider: document.getElementById("patchNotesSizeSlider"),
     shbookSizeSlider: document.getElementById("shbookSizeSlider"),
-
+    pearlSection: document.getElementById("pearlSection"),
     shbookLore: document.getElementById("shbookLore"),
     shbookLore2: document.getElementById("shbookLore2"),
     shbookCurrenciary: document.getElementById("shbookCurrenciary"),
@@ -646,6 +650,9 @@ function updateCurrencies() {
 
     if (unlockedCopper()) ui.copAmount.innerHTML = cImg("copper") + fn(game.cop) + " Copper";
     else ui.copAmount.innerHTML = "";
+
+    if (unlockedFishing() && ui.pearlSection.style.display != "none") ui.pearlAmount.innerHTML = cImg("pearl") + fn(game.pearls) + " Pearls";
+    else ui.pearlAmount.innerHTML = "";
 }
 
 // stats stuff
@@ -858,12 +865,6 @@ function updateUI() {
 
     if (selection("stats")) updateStats();
 
-    // Achievements
-    if (selection("achievements") && Math.random() > 0.99 /* lord forgive me for this sin */) {
-        renderAchievements();
-        ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: x" + fn(getAchievementBoost()) + " GS!";
-    }
-
     // Plaj Provif
     if (selection("playerprofile")) {
         renderPlayerProfile();
@@ -921,19 +922,7 @@ function autoSave(manual=true) {
     exportGame("cache");
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
 
-    for (let achGo in achievements) {
-        if (achievements[achGo].unlock() && !game.ach.includes(achievements[achGo].ID)) {
-            game.ach.push(achievements[achGo].ID);
-            createNotification("New achievement: " + achievements[achGo].name);
-
-            ui.newArtifactText = "Achievement Unlocked!";
-            ui.newArtifactImage.src = "images/achievements/" + achievements[achGo].image;
-            ui.newArtifactName.innerHTML = achievements[achGo].name;
-            ui.newArtifact.style.display = "block";
-            newArtifactDisplayTimer = 5;
-            break;
-        }
-    }
+    checkForNewAchievements();
 
     if (!manual) createNotification("Game saved automatically " + autoNotifications);
 }
@@ -1200,7 +1189,7 @@ function loop(tick) {
 
     // Minigame
     if (selection("minigames")) {
-        gamesLoop();
+        gamesLoop(tick);
     }
 
     ui.autoBar.value = sandwichTime;

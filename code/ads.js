@@ -87,7 +87,7 @@ function adButtonHandler() {
                 chengaUsed = true;
                 game.chenga -= 1;
 
-                if (!game.ach.includes(158)) game.ach.push(158);
+                checkAchievement(158);
             }
 
             setRandomAd();

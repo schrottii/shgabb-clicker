@@ -248,6 +248,8 @@ function updateUpgrades() {
     ui.bagupgradesrender.innerHTML = renderUpgrades(bagUpgrades);
 
     ui.copupgradesrender.innerHTML = renderUpgrades(copperShgabbUpgrades);
+
+    ui.pearlupgradesrender.innerHTML = renderUpgrades(pearlUpgrades);
 }
 
 // classes for other currencies
@@ -296,6 +298,14 @@ class CopperShgabbUpgrade extends Upgrade {
         super(ID, name, description, price, effect, config);
         this.currency = "cop";
         this.type = "copperShgabbUpgrades";
+    }
+}
+
+class PearlUpgrade extends Upgrade {
+    constructor(ID, name, description, price, effect, config) {
+        super(ID, name, description, price, effect, config);
+        this.currency = "pearls";
+        this.type = "pearlUpgrades";
     }
 }
 
@@ -394,4 +404,9 @@ var copperShgabbUpgrades = {
     copperClickChance: new CopperShgabbUpgrade("copperClickChance", "Copper Click Chance", "Increases the chance to get Copper from clicking", level => new Decimal(10).pow(level + 1), level => 1 + level, { suffix: "%", maxLevel: 49 }),
     copShgabbBoost: new CopperShgabbUpgrade("copShgabbBoost", "Shgabb Boost", "Get more Shgabb", level => new Decimal(1000).pow(level + 2), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 32 }),
     copGSBoost: new CopperShgabbUpgrade("copGSBoost", "GS Boost", "Get more GS", level => new Decimal(1000).pow(level + 3), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 256 }),
+}
+
+var pearlUpgrades = {
+    prlShgabb: new PearlUpgrade("prlShgabb", "Shgabb Boost", "Spend Pearls to get more Shgabb (x1.1 every level)", level => level + 1, level => new Decimal(1.1).pow(level), { prefix: "x" }),
+    prlGS: new PearlUpgrade("prlGS", "GS Boost", "Spend Pearls to get more GS (x1.05 every level)", level => level + 1, level => new Decimal(1.05).pow(level), { prefix: "x" }),
 }

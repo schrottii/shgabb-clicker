@@ -22,6 +22,7 @@ function renderAchievements() {
     render = render + "<button class='grayButton' onclick='changeAchievementPage(1)' class='artifactLoadoutButton'>Next Page</button>";
 
     ui.achievements.innerHTML = render;
+    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: x" + fn(getAchievementBoost()) + " GS!";
 }
 
 function changeAchievementPage(change) {
@@ -38,6 +39,39 @@ function getAchievementByID(id) {
         if (achievements[a].ID == id) return achievements[a];
     }
     return 1;
+}
+
+// Give the player the achievement with the id "id"
+function awardAchievement(id) {
+    game.ach.push(id);
+    createNotification("New achievement: " + achievements[id].name);
+
+    ui.newArtifactText = "Achievement Unlocked!";
+    ui.newArtifactImage.src = "images/achievements/" + achievements[id].image;
+    ui.newArtifactName.innerHTML = achievements[id].name;
+    ui.newArtifact.style.display = "block";
+    newArtifactDisplayTimer = 5;
+
+    renderAchievements();
+}
+
+// Used for stuff like event achievements - if you have this and that then you may get this
+function checkAchievement(id, condition = true) {
+    if (condition) {
+        if (!game.ach.includes(id)) {
+            awardAchievement(id);
+        }
+    }
+}
+
+// run regularly
+function checkForNewAchievements() {
+    for (let achGo in achievements) {
+        if (achievements[achGo].unlock() && !game.ach.includes(achievements[achGo].ID)) {
+            awardAchievement(achievements[achGo].ID);
+            break;
+        }
+    }
 }
 
 var achievements = [
