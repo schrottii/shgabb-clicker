@@ -295,6 +295,7 @@ adHandler.ontimeupdate = () => {
 
 
 // AdSense
+/*
 function adInject() {
     for (let adnr = 1; adnr <= 3; adnr++) {
         let adContainer = document.getElementById('googleAd' + adnr);
@@ -317,3 +318,4 @@ function adInject() {
         // console.log("That didn't go so well");
     }
 }
+*/

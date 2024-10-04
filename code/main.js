@@ -913,7 +913,7 @@ function autoSave(manual=true) {
     renderPFPs();
     renderBanners();
 
-    if (!manual) adInject();
+    // if (!manual) adInject();
 
     // Every save, check if a new day has risen
     checkNewDay()
