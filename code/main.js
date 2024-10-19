@@ -122,6 +122,9 @@ var ui = {
     shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
     shbook: document.getElementById("shbook"),
     shbookHeader: document.getElementById("shbookHeader"),
+    gemStorageContainer: document.getElementById("gemStorageContainer"),
+    gemStorageDisplay: document.getElementById("gemStorageDisplay"),
+    gemStorageAmount: document.getElementById("gemStorageAmount"),
 }
 
 // Quotes
@@ -477,7 +480,7 @@ function clickButton() {
                 let amount = getSiliconeProduction(true).mul(3).mul(getArtifactsSimpleBoost("clicksi")).mul(clickButtonMulti);
                 game.si = game.si.add(amount);
                 statIncrease("si", amount);
-                if (getArtifact(312).isEquipped() && Math.random() > 0.9 && game.gems > 0) game.gems -= 1;
+                if (getArtifact(312).isEquipped() && Math.random() > 0.9 && currentGems() > 0) game.gems -= 1;
             }
 
             if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {

@@ -21,6 +21,7 @@ var game = {
     cop: new Decimal(0),
     gems: 0,
     gemboost: 0,
+    gemb: 0,
     artifactScrap: 0,
     chenga: 0,
     pearls: 0,
@@ -137,6 +138,8 @@ var game = {
 
         copperBoost: 0,
         tiersBoostCopper: 0,
+        // zgcycbcx
+        moreLoadouts: 0,
 
         // Bag
         challengeShgabb: 0,

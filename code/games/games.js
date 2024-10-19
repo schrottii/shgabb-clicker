@@ -31,6 +31,26 @@ var images = {
     water2: "water2.png",
     fishlvl: "fishlvl.png",
     bobby: "bobby.png",
+
+    anchovy: "fish/anchovy.png",
+    batfish: "fish/batfish.png",
+    buffalo: "fish/buffalo.png",
+    butterfish: "fish/butterfish.png",
+    carp: "fish/carp.png",
+    catfish: "fish/catfish.png",
+    cod: "fish/cod.png",
+    koi: "fish/koi.png",
+    leaoo: "fish/leaoo.png",
+    oscar: "fish/oscar.png",
+    pike: "fish/pike.png",
+    piranha: "fish/piranha.png",
+    salmon: "fish/salmon.png",
+    shark: "fish/shark.png",
+    skate: "fish/skate.png",
+    swordfish: "fish/swordfish.png",
+    tuna: "fish/tuna.png",
+    zander: "fish/zander.png",
+    trash: "currencies/artifactscrap.png",
 }
 
 var scenes = {

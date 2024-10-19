@@ -73,7 +73,7 @@ function startChallenge(ID) {
         return false;
     }
 
-    if (game.gems <= getChallenge(ID).getPrice()) {
+    if (currentGems() <= getChallenge(ID).getPrice()) {
         alert("Not enough Gems!");
         return false;
     }

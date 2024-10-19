@@ -431,7 +431,7 @@ function renderArtifacts() {
     }
 
     // Export and Import
-    if (game.al == 8) {
+    if (game.al >= 8) {
         render = render + "<button onclick='exportArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 3%; background-color: white;'>E</button>";
         render = render + "<button onclick='importArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 3%; background-color: white;'>I</button>";
     }
@@ -607,7 +607,7 @@ function artifactLoadout(l, source = "key") {
         }
         else {
             // equip this loadout
-            createNotification("Selected loadout: " + game.alnames[l]);
+            createNotification("Selected loadout: " + (game.alnames[l] == undefined || game.alnames[l] == "" ? "Loadout " + (l + 1) : game.alnames[l]));
             selectedLoadout = l;
         }
     }
@@ -897,14 +897,13 @@ var artifacts = [
 
     new Artifact(153, 1, 1, "Shiny Red Ring", "ring.png",
         {
-            prefix: "x", maxLevel: 3,
-            simpleBoost: ["gemchance", level => 1 + 0.25 * level]
+            prefix: "x",
+            simpleBoost: ["gemchance", level => 1 + 0.2 * level]
         }),
 
     new Artifact(154, 1, 1, "Pulsing Red Ring", "ring.png",
         {
-            maxLevel: 3,
-            simpleBoost: ["gems", level => [1, 1.5, 1.65, 1.75, 1.85, 2][level]]
+            simpleBoost: ["gems", level => 1.5 + 0.1 * level]
         }),
 
     new Artifact(155, 1, 1, "Ring of Depression", "ring.png",
@@ -927,7 +926,7 @@ var artifacts = [
 
     new Artifact(158, 1, 1, "Bloody Red Ring", "ring.png",
         {
-            desc: "But no Artifacts", prefix: "x", maxLevel: 3,
+            desc: "But no Artifacts", prefix: "x",
             simpleBoost: ["gemchance", level => 1.25 + 0.25 * level]
         }),
 
@@ -1006,8 +1005,8 @@ var artifacts = [
 
     new Artifact(205, 2, 1, "Amulet of Slowgemming", "amulet.png",
         {
-            prefix: "x", desc: "If the cooldown is 3s or longer (not current)", maxLevel: 3,
-            simpleBoost: ["gemchance", level => 5 + level, () => getCooldown() >= 3]
+            prefix: "x", desc: "If the cooldown is 3s or longer (not current)",
+            simpleBoost: ["gemchance", level => 7.5 + 0.5 * level, () => getCooldown() >= 3]
         }),
 
     new Artifact(206, 2, 2, "Amulet of Passive Silicone", "amulet.png",
@@ -1108,14 +1107,14 @@ var artifacts = [
 
     new Artifact(222, 2, 1, "Amulet of Quickgemming", "amulet.png",
         {
-            desc: "If the click cooldown is 0.25s or less", maxLevel: 3,
+            desc: "If the click cooldown is 0.25s or less",
             simpleBoost: ["gems", level => 1.2 + 0.2 * level, () => clickCooldown <= 0.25]
         }),
 
     new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png",
         {
-            desc: "If owning less than 300 Gems", maxLevel: 3,
-            simpleBoost: ["gemchance", level => 1.2 + 0.2 * level, () => game.gems < 300]
+            desc: "If owning less than 300 Gems", 
+            simpleBoost: ["gemchance", level => 1.25 + 0.25 * level, () => game.gems < 300]
         }),
 
     new Artifact(224, 2, 4, "Amulet of Molten Bags", "amulet.png",
@@ -1212,7 +1211,7 @@ var artifacts = [
 
     new Artifact(303, 3, 1, "P2W", "p2w.png",
         {
-            desc: "While an ad is active", maxLevel: 3,
+            desc: "While an ad is active",
             simpleBoost: ["gems", level => 2.5 + level * 0.5, () => currentBoost != "none"]
         }),
 
@@ -1246,7 +1245,7 @@ var artifacts = [
 
     new Artifact(308, 3, 1, "Gem Frustration", "frustration.png",
         {
-            prefix: "+", desc: level => "Increases Gem chance and cap by " + (level * (getArtifact(200).isEquipped() ? 0.05 : 0.5)).toFixed(2) + "% for every click without gems<br>(Current: +" + (level * 0.5 * getArtifact(308).getValue(0)).toFixed(2) + "%)", maxLevel: 3,
+            prefix: "+", desc: level => "Increases Gem chance and cap by " + (level * (getArtifact(200).isEquipped() ? 0.05 : 0.5)).toFixed(2) + "% for every click without gems<br>(Current: +" + (level * 0.5 * getArtifact(308).getValue(0)).toFixed(2) + "%)",
             simpleBoost: ["gemchance", level => level * 0.5 * getArtifact(308).getValue(0), () => false],
             value: [0, 0, 300],
             onGem: (level, v) => {
@@ -1257,7 +1256,7 @@ var artifacts = [
 
     new Artifact(309, 3, 3, "Sarah's Collection", "sarah.png",
         {
-            desc: "If you own all common, rare and epic Artifacts", maxLevel: 3,
+            desc: "If you own all common, rare and epic Artifacts",
             simpleBoost: ["gemchance", level => 1.5 + level * 0.5, () => ((getArtifactAmount() - getArtifactAmount(4)) == (totalAmountOfArtifacts() - totalAmountOfArtifacts(4)))]
         }),
 
@@ -1322,7 +1321,7 @@ var artifacts = [
 
     new Artifact(316, 3, 3, "Overluck", "overluck.png",
         {
-            desc: "Based on chance above the 10% cap", maxLevel: 3,
+            desc: "Based on chance above the 10% cap",
             simpleBoost: ["gems", level => Math.max(1, (getGemChance(100) - 10 - (getArtifact(308).isEquipped() ? getArtifact(308).getLevel() * getArtifact(308).getValue(0) : 0)) * (0.05 + (level / 20)))]
         }),
 
@@ -1432,7 +1431,7 @@ var artifacts = [
         {
             maxLevel: 1, desc: level => "Buy my amazing products for 100 Gems/second!",
             onAuto: (level) => {
-                if (game.gems >= 100) game.gems -= 100;
+                if (currentGems() >= 100) game.gems -= 100;
             }
         }),
 
@@ -1460,7 +1459,7 @@ var artifacts = [
             simpleBoost: ["cop", level => Math.pow(4, level), () => getArtifact(406).getTimer(0) > 0],
             timer: [60, 0],
             onClick: (level) => {
-                if (getArtifact(406).getTimer() == 0 && game.gems >= 50) {
+                if (getArtifact(406).getTimer() == 0 && currentGems() >= 50) {
                     game.gems -= 50;
                     getArtifact(406).fillTimer();
                 }

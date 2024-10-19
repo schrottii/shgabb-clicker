@@ -2,87 +2,38 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.0.1";
-const versionTitle = "Fish +2";
+const gameVersion  = "3.1";
+const versionTitle = "Grateful Gems";
 
 const currentPatchNotes = [
-    "-> Pearls:",
-    "- New side currency, unlocked at 12k HMS alongside Fishgang",
-    "- Gained from level ups in Fishgang (gain = level)",
-    "- Can be spent for a Shgabb or GS boost",
-    "- Can be refunded every new level up",
-    "- Shgabb Boost: Spend Pearls to get more Shgabb (x1.1 every level)",
-    "- GS Boost: Spend Pearls to get more GS (x1.05 every level)",
-
-    "-> Fishgang Gameplay:",
-    "- Added Pearls: side currency gained from level ups",
-    "- Reduced base XP needed for level up from 400 to 100",
-    "- Doubled XP from fish",
-    "- Valuable attempts can no longer end up being trash",
-
-    "-> Fishgang Design:",
-    "- Moved and increased size of the throw/reel button",
-    "- Increased size of catch chance text",
-    "- Made the successful click green more visible",
-    "- Gave Bobby some ADHD meds",
-
-    "-> Other:",
-    "- Improved Achievements rendering and obtaining",
-    "- Added Featuriary entry for Fishgang",
-    "- Added Currenciary entry for Pearls",
-    "- Fixed a minigame Hz issue",
-
-
-
-    "v3.0",
-    "-> Content:",
-    "- New feature / minigame: Fishgang!",
-    "- Reworked minigames section/display",
-    "- Internal improvements",
-
-    "-> Minigames",
-    "- Integrated Shgic into the new minigames selection",
-    "- New minigame: Fishgang",
-    "- Reworked the entire appearance",
-    "- Minigame display now scales, and is generally bigger",
-    "- Added the selection screen with cool 90s CDs and a chessgabb",
-
+    "-> Gems:",
+    "- New Gems image!",
+    "- Added the Gem Storage (see section below)",
+    "- Gem amount/chance Artifacts can now go beyond level 3 and were re-balanced (see section below)",
+    '- "Artifact Loadout" max. level can now be increased from 8 to 12 with Améliorer',
+    "-> Gem Storage:",
+    "- Unlocked at HMS 8000",
+    "- Some Gems can be stored, locking them from being spent",
+    "- The amount of Gems stored can be changed at any time without a fee",
+    "-> Gem Artifacts:",
+    "- Removed level 3 limitation from Gem amount and Gem chance Artifacts",
+    "- Shiny Red Ring: x1.25/x1.5/x1.75 -> x1.2/x1.4/x1.6/x1.8/x2.0 chance (+0.2/lvl)",
+    "- Pulsing Red Ring: x1.5/x1.65/x1.75 -> x1.6/x1.7/x1.8/x1.9/x2.0 amount (+0.1/lvl)",
+    "- Bloody Red Ring: (unchanged) x1.5/x1.75/x2/x2.25/x2.5 chance (+0.25/lvl)",
+    "- Amulet of Slowgemming: x6/x7/x8 -> x8/x8.5/x9/x9.5/x10 chance (+0.5/lvl)",
+    "- Amulet of Quickgemming: (unchanged) x1.4/x1.6/x1.8/x2/x2.2 amount (+0.2/lvl)",
+    "- Amulet of Gem Mines: x1.4/x1.6/x1.8 -> x1.5/x1.75/x2/x2.25/x2.5 chance (+0.25/lvl)",
+    "- P2W: x3/x3.5/x4 -> x3/x3.3/x3.6/x3.9/x4.2 amount (+0.3/lvl)",
+    "- Gem Frustration: (unchanged) +0.5%/+1%/+1.5%/2%/2.5% (0.5/lvl)",
+    "- Sarah's Collection: (unchanged) x2/x2.5/x3/x3.5/x4 chance (+0.5/lvl)",
+    "- Overluck: cap removed but idk how it works",
     "-> Fishgang:",
-    "- New feature and minigame: Fishgang",
-    "- Unlocked at HMS 12k",
-    "- Throw a rod and reel the fish in!",
-    "- Longer distance = better fish",
-    "- Hit at the right time to increase the chance of success",
-    "- Missing can make the fish flee",
-    "- Fish and trash can be caught",
-    "- Catching fish gives XP, Gems and +1 fish",
-    "- Catching trash gives XP and +1 trash",
-    "- Added fishing level and XP, no effect yet",
-    "- Added fishing stats and Achievements",
-
-    "-> Achievements:",
-    "- Added 10 new Fishgang Achievements (175 total)",
-    "- Added Achievement pages, 50 per page",
-
-    "-> Patch notes:",
-    "- Added a slider to adjust size of patch notes",
-    "- Range: 10 - 16 (default) - 40",
-    "- Update title is now displayed after the number rather than below",
-    "- Update version/title is now also bold",
-    "- Added v to the version number",
-
-    "-> Shbook:",
-    "- Added a slider to adjust size of Shbook text",
-    "- Range: 2 - 10 (default) - 30",
-    "- Smoother background",
-
-    "-> Internal improvements:",
-    "- Various code and file sorting improvements",
-    "- Reworked minigames rendering code (see: QuoteQuiz), including scaling",
-    "- Added seperate files for: update.js and all currencies except Gems (already existed)",
-    "- Added sub-folders for currencies, features and games code files",
-    "- Fixed locked Ad boosts appearing (maybe)",
-    "- Happy Friday the 13th everyone",
+    "- Added 18 beautiful fish images",
+    "- When a fish is caught, its image appears for a brief moment",
+    "- Similarly, catching trash shows Artifact Scrap",
+    "-> Other:",
+    "- New Améliorer Upgrade: More Loadouts (Set 8, 320)",
+    "- Added Donate button (between Info and Social)",
 ]
 
 function generatePatchNotes() {

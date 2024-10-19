@@ -388,6 +388,7 @@ var ameliorerUpgrades = {
 
     copperBoost: new AmeliorerUpgrade("copperBoost", "Copper Boost", "Get more Copper Shgabb", level => 4, level => new Decimal(2).pow(level), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 8, ameAmount: 300 }),
     tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(Math.max(1, 2 * level)).pow(getTotalTiers()), { maxLevel: 2, prefix: "x", ameSet: 8, ameAmount: 300 }),
+    moreLoadouts: new AmeliorerUpgrade("moreLoadouts", "More Loadouts", "Be able to buy more Artifact loadouts, and get a boost for every loadout you own", level => 4 * (level + 1), level => 1 + (game.al * level) / 100, { maxLevel: 4, prefix: "x", suffix: " Bags", ameSet: 8, ameAmount: 320 }),
 }
 
 var bagUpgrades = {

@@ -31,7 +31,7 @@ function silicone() {
     if (amount > 0) {
         game.si = game.si.add(amount);
         statIncrease("si", amount);
-        if (getArtifact(312).isEquipped() && Math.random() * applyLuck(100) > 0.9 && game.gems > 0) game.gems -= 1;
+        if (getArtifact(312).isEquipped() && Math.random() * applyLuck(100) > 0.9 && currentGems() > 0) game.gems -= 1;
     }
 
     updateUpgrades();

@@ -4,25 +4,25 @@ const fishingLevelUpFormula = (level) => Math.ceil(Math.pow(100, 1 + 0.002 * (le
 
 // name, value factor, weight factor
 const fishDictionary = [
-    ["Pike", 8, 5],
-    ["Batfish", 1, 1],
-    ["Cod", 1, 1],
-    ["Buffalo", 2, 8],
-    ["Catfish", 2, 3],
-    ["Carp", 3, 3],
-    ["Oscar", 5, 2],
-    ["Skate", 5, 3],
-    ["Butterfish", 1, 2],
-    ["Koi", 9, 3],
-    ["Baby Shark", 1, 1],
-    ["Tuna", 1, 1],
-    ["Salmon", 1, 4],
-    ["Anchovy", 1, 1],
-    ["Piranha", 2, 2],
-    ["Zander", 1, 3],
-    ["Swordfish", 4, 6],
-    ["Leaoodandingzumn", 10, 10],
-    ["Stupid Tuna", 1, 1],
+    ["Pike", 8, 5, "pike"],
+    ["Batfish", 1, 1, "batfish"],
+    ["Cod", 1, 1, "cod"],
+    ["Buffalo", 2, 8, "buffalo"],
+    ["Catfish", 2, 3, "catfish"],
+    ["Carp", 3, 3, "carp"],
+    ["Oscar", 5, 2, "oscar"],
+    ["Skate", 5, 3, "skate"],
+    ["Butterfish", 1, 2, "butterfish"],
+    ["Koi", 9, 3, "koi"],
+    ["Baby Shark", 1, 1, "shark"],
+    ["Tuna", 1, 1, "tuna"],
+    ["Salmon", 1, 4, "salmon"],
+    ["Anchovy", 1, 1, "anchovy"],
+    ["Piranha", 2, 2, "piranha"],
+    ["Zander", 1, 3, "zander"],
+    ["Swordfish", 4, 6, "swordfish"],
+    ["Leaoodandingzumn", 10, 10, "leaoo"],
+    ["Stupid Tuna", 1, 1, "tuna"],
 ];
 
 const trashDictionary = [
@@ -139,6 +139,7 @@ scenes["fishgang"] = new Scene(
         createText("value", 0.8, 0.075, "(Value: 0)", "white", 16, "left");
 
         createText("infotext", 0.03, 0.95, "", "white", 24, "left");
+        createImage("recentfish", 50, 0.5, 0.2, 0.2, "button", true);
         // You caught a rare Leaoodandingzumn (Weight: 50kg, Value: 80M)
 
 
@@ -335,6 +336,9 @@ scenes["fishgang"] = new Scene(
                         checkAchievement(175, thisFish[0] == "Leaoodandingzumn");
 
                         objects["infotext"].text = "You caught a " + thisFish[0] + "! (Weight: " + caughtWeight + "kg, Value: " + fn(caughtValue) + ") +" + caughtGems + " Gems";
+
+                        objects["recentfish"].image = thisFish[3];
+                        objects["recentfish"].x = 0.5;
                     }
                     else {
                         // got a trash
@@ -348,10 +352,10 @@ scenes["fishgang"] = new Scene(
                         updateFishingLevel();
 
                         objects["infotext"].text = "You caught " + caughtTrash + "!";
+
+                        objects["recentfish"].image = "trash";
+                        objects["recentfish"].x = 0.5;
                     }
-                }
-                else if (false) {
-                    // trash
                 }
                 else {
                     // no fish
@@ -367,6 +371,9 @@ scenes["fishgang"] = new Scene(
 
                 objects["slider"].sliderSize = 10;
                 objects["slider"].sliderSpeed = 1;
+
+                objects["recentfish"].image = "button";
+                objects["recentfish"].x = 50;
             }
         }
     }
