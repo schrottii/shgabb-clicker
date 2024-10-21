@@ -59,8 +59,8 @@ function getLoreByID(id){
     }
 }
 
-function getWisp() {
-    if (game.stats.hms >= 4000 && game.loreSel != 0 && Math.random() <= 1 / 5000) {
+function getWisp(multi = 1) {
+    if (game.stats.hms >= 4000 && game.loreSel != 0 && Math.random() * multi <= 1 / 5000) {
         game.loreP += 1;
 
         if (game.loreP == getLoreByID(game.loreSel).amount) {
@@ -75,8 +75,8 @@ function getWisp() {
     }
 }
 
-function getLorePage() {
-    if (game.stats.hms >= 4000 && game.lorepg.length < 4 && Math.random() <= 1 / 25000) {
+function getLorePage(multi = 1) {
+    if (game.stats.hms >= 4000 && game.lorepg.length < 4 && Math.random() * multi <= 1 / 25000) {
         let availablePages = [];
         for (l in lore) {
             if (!lore[l].isFound()) availablePages.push(lore[l].ID);

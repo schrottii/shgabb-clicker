@@ -15,12 +15,12 @@ function getGemChance(cap = 10) {
     ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1)) : 0);
 }
 
-function getGem() {
+function getGem(multi = 1) {
     let amount = 0;
 
     // Chance to get a gem
     if (Math.random() < 1 / 100 * getGemChance() * applyLuck(100)) {
-        amount = getArtifactsSimpleBoost("gems");
+        amount = getArtifactsSimpleBoost("gems") * multi;
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;
             amount = Math.floor(amount);

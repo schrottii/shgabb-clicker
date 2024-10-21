@@ -1368,11 +1368,12 @@ var artifacts = [
 
     new Artifact(401, 4, 4, "DaGame", "dagame.png",
         {
-            desc: level => 25 * level + "% chance to autoclick every second, consuming 10 Bags",
+            desc: level => 25 * level + "% chance to autoclick every second, consuming " + (10 * level) + " Bags",
+            simpleBoost: ["clickshgabb", level => 10 * Math.pow(2, level), level => game.bags >= 10 * level],
             onAuto: level => {
-                if (game.bags >= 10 && game.clickCooldown <= 0) {
+                if (game.bags >= 10 * level && game.clickCooldown <= 0) {
                     if (Math.random() * 100 <= 25 * level) {
-                        game.bags -= 10;
+                        game.bags -= 10 * level;
                         createNotification("DaGame clicked!");
 
                         clickButton();
@@ -1383,6 +1384,8 @@ var artifacts = [
 
     new Artifact(402, 4, 4, "Tech Collection", "techcollection.png",
         { // TAKE A LOOK AT THIS ONE
+            prefix: "/",
+            simpleBoost: ["clickspeed", level => 1.25 + 0.25 * level],
             desc: level => techCollection + "/" + (10 * level) + " clicks saved. Unleashes their effects when the limit is reached",
         }),
 
@@ -1398,7 +1401,7 @@ var artifacts = [
                 getArtifact(403).prefix = "/";
                 getArtifact(403).amount = (level) => 1.25;
             },
-            onClick: (level) => {
+            onClick: (level, v) => {
                 if (getArtifact(403).boost == "clickspeed") {
                     if (getArtifact(403).amount(0) == 1.25) {
                         // Start 10s trial
@@ -1406,7 +1409,7 @@ var artifacts = [
                         getArtifact(403).amount = (level) => 1.5;
                     }
                     else {
-                        getArtifact(403).increaseValue(1);
+                        getArtifact(403).increaseValue(v.multi);
                     }
                 }
             },
@@ -1416,7 +1419,7 @@ var artifacts = [
                     getArtifact(403).setTimer(50);
                     getArtifact(403).boost = "shgabb";
                     getArtifact(403).prefix = "x";
-                    getArtifact(403).amount = (level) => getArtifact(403).getValue() * level;
+                    getArtifact(403).amount = (level) => Math.ceil(Math.pow(getArtifact(403).getValue(), 1 + (level / 10)) * level * 3);
                 }
                 else if (getArtifact(403).boost == "shgabb") {
                     getArtifact(403).setValue(0);
@@ -1429,17 +1432,47 @@ var artifacts = [
 
     new Artifact(404, 4, 4, "Snake Oil Salesman", "snakeoilsalesman.png",
         {
-            maxLevel: 1, desc: level => "Buy my amazing products for 100 Gems/second!",
+            desc: level => "Buy my amazing products for only " + (level * 2) + " Gems/offer! (20% chance/second)",
+            simpleBoost: ["shgabb", 1],
             onAuto: (level) => {
-                if (currentGems() >= 100) game.gems -= 100;
+                if (currentGems() >= level * 2 && Math.random() >= 0.8) {
+                    game.gems -= level * 2;
+
+                    if (Math.random() <= 0.25) {
+                        getArtifact(404).boost = "shgabb";
+                        getArtifact(404).amount = 10 * Math.pow(2, level);
+                    }
+                    else if (Math.random() <= 0.25) {
+                        getArtifact(404).boost = "sw";
+                        getArtifact(404).amount = 4 * level;
+                    }
+                    else if (Math.random() <= 0.25) {
+                        getArtifact(404).boost = "gemchance";
+                        getArtifact(404).amount = 6 * level;
+                    }
+                    else if (Math.random() <= 0.25) {
+                        getArtifact(404).boost = "si";
+                        getArtifact(404).amount = 10 * Math.pow(2, level);
+                    }
+                    else if (Math.random() <= 0.25) {
+                        getArtifact(404).boost = "gems";
+                        getArtifact(404).amount = 2 * level;
+                    }
+                    else {
+                        getArtifact(404).boost = "cop";
+                        getArtifact(404).amount = Math.pow(8, level);
+                    }
+
+                    updateArtifacts();
+                }
             }
         }),
 
     new Artifact(405, 4, 1, "Tower", "tower.png",
         {
             desc: level => "Builds up auto boost, released after 5s of no clicks",
-            simpleBoost: ["autoshgabb", level => 1 + (level * getArtifact(405).getValue(1) / 10), () => getArtifact(405).getTimer() == 0],
-            value: [0, 0, 99999],
+            simpleBoost: ["autoshgabb", level => 1 + (level * getArtifact(405).getValue(1) / 5), () => getArtifact(405).getTimer() == 0],
+            value: [0, 0, 9999],
             timer: [5, 0],
             onClick: (level) => {
                 getArtifact(405).fillTimer();
@@ -1456,7 +1489,7 @@ var artifacts = [
     new Artifact(406, 4, 4, "Miner's Pay", "minerspay.png",
         {
             desc: level => "Consumes " + 50 + " Gems to boost Copper for 60s",
-            simpleBoost: ["cop", level => Math.pow(4, level), () => getArtifact(406).getTimer(0) > 0],
+            simpleBoost: ["cop", level => Math.pow(6, level), () => getArtifact(406).getTimer(0) > 0],
             timer: [60, 0],
             onClick: (level) => {
                 if (getArtifact(406).getTimer() == 0 && currentGems() >= 50) {

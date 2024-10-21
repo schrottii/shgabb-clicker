@@ -409,8 +409,10 @@ function clickButton() {
         let clickButtonMulti = 1;
 
         if (getArtifact(402).isEquipped()) {
-            if (techCollection < getArtifact(402).getEffect()) {
+            if (techCollection < getArtifact(402).getLevel() * 10) {
                 techCollection += 1;
+
+                statIncrease("clicks", 1);
                 game.clickCooldown = getCooldown();
             }
             else {
@@ -427,7 +429,7 @@ function clickButton() {
 
             if (isEvent("summer")) {
                 if (heatMode) {
-                    if (game.clickCooldown > -0.33) summerClicks += 1;
+                    if (game.clickCooldown > -0.33) summerClicks += clickButtonMulti;
                     else if (summerClicks > 0) {
                         heatMode = false;
                         summerClicks = 0;
@@ -455,7 +457,7 @@ function clickButton() {
                 if (Math.random() < 1 / (250 / getCooldown())) {
                     game.gifts += clickButtonMulti;
                     statIncrease("gifts", clickButtonMulti);
-                    createNotification("+1 Gift!");
+                    createNotification("+" + clickButtonMulti + " Gift!");
                 }
             }
 
@@ -491,12 +493,12 @@ function clickButton() {
             }
 
             findShgaybb();
-            if (unlockedGems()) getGem();
-            if (unlockedArtifacts()) getNewArtifact();
-            if (unlockedCopper()) getCopper();
+            if (unlockedGems()) getGem(clickButtonMulti);
+            if (unlockedArtifacts()) getNewArtifact(clickButtonMulti);
+            if (unlockedCopper()) getCopper(clickButtonMulti);
 
-            getLorePage();
-            if (game.loreSel != 0) getWisp();
+            getLorePage(clickButtonMulti);
+            if (game.loreSel != 0) getWisp(clickButtonMulti);
         }
 
         updateArtifacts();
@@ -1190,10 +1192,10 @@ function loop(tick) {
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
     }
 
-    // Minigame
+    /* Minigame
     if (selection("minigames")) {
         gamesLoop(tick);
-    }
+    } */
 
     ui.autoBar.value = sandwichTime;
     ui.autoBarText.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
@@ -1405,3 +1407,49 @@ document.addEventListener('keyup', function (e) {
 
 if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
 console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
+
+// minigames setup WGGJ
+images = {
+    button: "rough.png",
+    empty: "empty.png",
+
+    minigames: "minigames.png",
+    minigames2: "minigames2.png",
+    cd1: "cd1.png",
+    cd2: "cd2.png",
+    cd3: "cd3.png",
+    sssx: "sss-x.png",
+    ssso: "sss-o.png",
+    sssn: "sss-n.png",
+
+    waves: "waves.png",
+    waves2: "waves2.png",
+    water: "water.png",
+    water2: "water2.png",
+    fishlvl: "fishlvl.png",
+    bobby: "bobby.png",
+
+    anchovy: "fish/anchovy.png",
+    batfish: "fish/batfish.png",
+    buffalo: "fish/buffalo.png",
+    butterfish: "fish/butterfish.png",
+    carp: "fish/carp.png",
+    catfish: "fish/catfish.png",
+    cod: "fish/cod.png",
+    koi: "fish/koi.png",
+    leaoo: "fish/leaoo.png",
+    oscar: "fish/oscar.png",
+    pike: "fish/pike.png",
+    piranha: "fish/piranha.png",
+    salmon: "fish/salmon.png",
+    shark: "fish/shark.png",
+    skate: "fish/skate.png",
+    swordfish: "fish/swordfish.png",
+    tuna: "fish/tuna.png",
+    zander: "fish/zander.png",
+    trash: "currencies/artifactscrap.png",
+}
+GAMENAME = "Minigames";
+FONT = "Rw";
+wggjLoadImages();
+wggjLoop();

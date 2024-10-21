@@ -120,26 +120,26 @@ scenes["fishgang"] = new Scene(
         createImage("wavesbottom", 0, 1 - 0.025, 1, 0.025, "waves");
         objects["wavestop"].time = 0;
 
-        createText("title", 0.08, 0.1, "Fishgang", "white", 32, "left");
+        createText("title", 0.08, 0.1, "Fishgang", { color: "white", size: 32, align: "left" });
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
             ui.pearlSection.style.display = "none";
-            loadScene("minigameSelection");
-        }, true);
+            loadScene("mainmenu");
+        }, { quadratic: true, centered: true });
 
         // player info
-        createImage("fishlvl1", 0.3, 0, 0.1, 0.1, "fishlvl", true);
-        createText("fishlvl2", 0.3, 0.0725, "?", "darkblue", 20, "center");
+        createImage("fishlvl1", 0.3, 0, 0.1, 0.1, "fishlvl", { quadratic: true, centered: true });
+        createText("fishlvl2", 0.3, 0.0725, "?", { color: "darkblue", size: 20 });
         createImage("fishlvl5", 0.3125, 0, 0.175, 0.1, "fishlvl");
         createSquare("fishlvl3", 0.325, 0.02, 0.15, 0.06, "black");
         createSquare("fishlvl4", 0.3275, 0.02, 0.145, 0.06, "blue");
 
-        createText("trashamount", 0.6, 0.075, "Trash: 0", "white", 16, "left");
-        createText("fishamount", 0.7, 0.075, "Fish: 0", "white", 16, "left");
-        createText("value", 0.8, 0.075, "(Value: 0)", "white", 16, "left");
+        createText("trashamount", 0.6, 0.075, "Trash: 0", { color: "white", size: 16, align: "left" });
+        createText("fishamount", 0.7, 0.075, "Fish: 0", { color: "white", size: 16, align: "left" });
+        createText("value", 0.8, 0.075, "(Value: 0)", { color: "white", size: 16, align: "left" });
 
-        createText("infotext", 0.03, 0.95, "", "white", 24, "left");
-        createImage("recentfish", 50, 0.5, 0.2, 0.2, "button", true);
+        createText("infotext", 0.03, 0.95, "", { color: "white", size: 24, align: "left" });;
+        createImage("recentfish", 50, 0.5, 0.2, 0.2, "button", { quadratic: true, centered: true });
         // You caught a rare Leaoodandingzumn (Weight: 50kg, Value: 80M)
 
 
@@ -155,7 +155,7 @@ scenes["fishgang"] = new Scene(
         createSquare("sliderMiddle2", 0.495, 0.8, 0.001, 0.05, "red");
         createSquare("sliderMiddle3", 0.505 - 0.001, 0.8, 0.001, 0.05, "red");
 
-        createImage("bobby", 0.5, 0.75, 0.05, 0.05, "bobby", true);
+        createImage("bobby", 0.5, 0.75, 0.05, 0.05, "bobby", { quadratic: true, centered: true });
         objects["bobby"].mode = 0; // 0 is throw it out, 1 is wait, 2 is reel it in, 3 is cooldown
         objects["bobby"].distance = 0; // 0 - 100
         objects["bobby"].cooldown = 3; // 0 - 3 (in seconds)
@@ -188,15 +188,17 @@ scenes["fishgang"] = new Scene(
 
                             objects["bobby"].distance = 0;
                             objects["bobby"].cooldown = 3;
+
+                            objects["infotext"].text = "The line broke! Be more careful!";
                         }
                     }
                 }
             }
         })
-        createText("slideButtonText", 0.15, 0.85, "", "black", 24, "center");
+        createText("slideButtonText", 0.15, 0.85, "", { size: 24 });
 
-        createText("catchQuality", 0.7, 0.775, "", "black", 40, "left");
-        createText("catchChance", 0.7, 0.85, "", "black", 40, "left");
+        createText("catchQuality", 0.7, 0.775, "", { size: 40, align: "left" });
+        createText("catchChance", 0.7, 0.85, "", { size: 40, align: "left" });
 
         ui.pearlSection.style.display = "";
     },
@@ -297,7 +299,7 @@ scenes["fishgang"] = new Scene(
                 objects["sliderbg"].color = "black";
 
                 // Get fish
-                checkAchievement(174, objects["bobby"].chance >= 300);
+                checkAchievement(174, objects["bobby"].chance >= 200);
 
                 if (Math.random() * 100 < objects["bobby"].chance) {
                     if (Math.random() >= 0.75 || objects["bobby"].quality >= 5) {
@@ -316,8 +318,9 @@ scenes["fishgang"] = new Scene(
 
                         let caughtValue = Math.ceil(thisFish[1] * thisFish[2] * Math.random());
                         let caughtWeight = "" + (thisFish[2] * Math.random()).toPrecision(2);
+                        let caughtXP = caughtValue * 2;
 
-                        game.fishxp += caughtValue * 2;
+                        game.fishxp += caughtXP;
                         game.gems += caughtGems;
                         statIncrease("tgems", caughtGems);
 
@@ -335,7 +338,7 @@ scenes["fishgang"] = new Scene(
 
                         checkAchievement(175, thisFish[0] == "Leaoodandingzumn");
 
-                        objects["infotext"].text = "You caught a " + thisFish[0] + "! (Weight: " + caughtWeight + "kg, Value: " + fn(caughtValue) + ") +" + caughtGems + " Gems";
+                        objects["infotext"].text = "You caught a " + thisFish[0] + "! (Weight: " + caughtWeight + "kg, Value: " + fn(caughtValue) + ") +" + caughtGems + " Gems +" + caughtXP + "XP";
 
                         objects["recentfish"].image = thisFish[3];
                         objects["recentfish"].x = 0.5;
@@ -351,7 +354,7 @@ scenes["fishgang"] = new Scene(
 
                         updateFishingLevel();
 
-                        objects["infotext"].text = "You caught " + caughtTrash + "!";
+                        objects["infotext"].text = "You caught " + caughtTrash + "! +3XP";
 
                         objects["recentfish"].image = "trash";
                         objects["recentfish"].x = 0.5;
@@ -359,6 +362,7 @@ scenes["fishgang"] = new Scene(
                 }
                 else {
                     // no fish
+                    objects["infotext"].text = "Unlucky! Nothing was caught (Chance: " + Math.floor(objects["bobby"].chance) + "%)";
                 }
             }
         }

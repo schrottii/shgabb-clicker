@@ -2,10 +2,37 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.1";
-const versionTitle = "Grateful Gems";
+const gameVersion  = "3.1.1";
+const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Minigames:",
+    "- Implemented WGGJ",
+    "- Fishgang: Added info texts for: line broke, not caught",
+    "- Gained XP is now shown",
+    "-> Balance:",
+    '- Reduced chance needed for "Overluck (water element version)" Achievement from 300% to 200%',
+    "- DaGame: Added Click Shgabb boost as a secondary effect (x20/x40/x80) but Bag costs increase: 10 -> 10/20/30",
+    "- Tech Collection: Added faster click speed as a secondary effect (x1.5/x1.75/x2)",
+    "- Tech Collection now also affects Gems, Shorts, Power Charger (amount) and Artifacts, Copper, Wisps, Lore Pages (chance)",
+    "- Tech Collection now also increases click stat every click",
+    "- Power Charger: Changed boost from clicks * level to clicks^(1.1/1.2/1.3) * level * 3",
+    "- Tower: Increased boost per click from 10% * level to 20% * level, but reduced cap from 99999 to 9999",
+    "- Miner's Pay: x4^level -> x6^level",
+    "-> Snake Oil Salesman:",
+    "- Having an useless meme artifact is funny, but as a legendary it can be disappointing, so now Snake Oil Salesman was reworked to become useful, but still be suspicious!",
+    "- Every auto second, there is a 20% chance of a new offer being bought",
+    "- Offers cost 2/4/6 Gems (level * 2)",
+    "- The offer you currently have can be re-bought, scamming you of some Gems!",
+    "- There are 6 possible offers, each less common than the previous:",
+    "- x20/x40/x80 Shgabb",
+    "- x4/x8/x12 Sandwiches",
+    "- x6/x12/x18 Gem chance",
+    "- x20/x40/x80 Silicone",
+    "- x2/x4/x6 Gems",
+    "- x8/x64/x512 Copper amount",
+
+    "v3.1",
     "-> Gems:",
     "- New Gems image!",
     "- Added the Gem Storage (see section below)",

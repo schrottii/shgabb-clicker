@@ -262,25 +262,25 @@ scenes["shgic"] = new Scene(
         createSquare("colorchangertop", 0, 0, 1, 0.025, "white");
         createSquare("colorchangerbottom", 0, 1 - 0.025, 1, 0.025, "white");
 
-        createText("title", 0.08, 0.1, "Shgic Shgac Shgoe", "white", 32, "left");
+        createText("title", 0.08, 0.1, "Shgic Shgac Shgoe", { color: "white", size: 32, align: "left" });
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
-            loadScene("minigameSelection");
-        }, true);
+            loadScene("mainmenu");
+        }, { quadratic: true, centered: true });
 
-        createSquare("verticalA", 0.4, 0.3, 0.05 / width * height, 0.4, "black");
-        createSquare("verticalB", 0.6, 0.3, 0.05 / width * height, 0.4, "black");
+        createSquare("verticalA", 0.4, 0.3, 0.05 / wggjCanvasWidth * wggjCanvasHeight, 0.4, "black");
+        createSquare("verticalB", 0.6, 0.3, 0.05 / wggjCanvasWidth * wggjCanvasHeight, 0.4, "black");
 
-        createSquare("horizontalA", 0.3, 0.4, 0.4, 0.05 / width * height, "black");
-        createSquare("horizontalB", 0.3, 0.6, 0.4, 0.05 / width * height, "black");
+        createSquare("horizontalA", 0.3, 0.4, 0.4, 0.05 / wggjCanvasWidth * wggjCanvasHeight, "black");
+        createSquare("horizontalB", 0.3, 0.6, 0.4, 0.05 / wggjCanvasWidth * wggjCanvasHeight, "black");
 
         createSquare("scoreBG", 0.35, 0.05, 0.3, 0.1, "white");
-        createText("scoreText", 0.5, 0.125, "-", "black", 32, "center");
+        createText("scoreText", 0.5, 0.125, "-", { size: 32 });
 
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                createButton("f" + j + "." + i, 0.36 + 0.15 * i, 0.2675 + 0.2 * j, 0.125, 0.125, "empty", () => { shgicClickField(j, i) }, true);
-                createImage("i" + j + "." + i, 0.36 + 0.15 * i, 0.2675 + 0.2 * j, 0.125, 0.125, "sssn", true);
+                createButton("f" + j + "." + i, 0.36 + 0.15 * i, 0.2675 + 0.2 * j, 0.125, 0.125, "empty", () => { shgicClickField(j, i) }, { quadratic: true, centered: true });
+                createImage("i" + j + "." + i, 0.36 + 0.15 * i, 0.2675 + 0.2 * j, 0.125, 0.125, "sssn", { quadratic: true, centered: true });
             }
         }
 

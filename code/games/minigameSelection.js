@@ -1,49 +1,49 @@
 var selectedMinigame = 0;
 
-scenes["minigameSelection"] = new Scene(
+scenes["mainmenu"] = new Scene(
     () => {
         // Init
         createSquare("bg", 0, 0, 1, 1, "darkblue");
         createSquare("bg2", 0, 0.1, 1, 0.8, "rgb(0, 0, 255)");
         objects["bg2"].blue = 255;
 
-        createText("title", 0.08, 0.1, "Minigames Selection", "white", 32, "left");
-        createText("selgam", 0.92, 0.975, "Select a game!", "white", 32, "right");
+        createText("title", 0.08, 0.1, "Minigames Selection", { color: "white", size: 32, align: "left" });
+        createText("selgam", 0.92, 0.975, "Select a game!", { color: "white", size: 32, align: "right" });
 
-        createImage("aniImage1", 0.75, 0.5, 0.2, 0.2, "minigames", true);
-        createImage("aniImage2", 0.72, 0.55, 0.05, 0.05, "minigames2", true);
+        createImage("aniImage1", 0.75, 0.5, 0.2, 0.2, "minigames", { quadratic: true, centered: true });
+        createImage("aniImage2", 0.72, 0.55, 0.05, 0.05, "minigames2", { quadratic: true, centered: true });
 
-        createImage("aniImage3", -0.2, 0.85, 0.05, 0.05, "minigames2", true);
-        createImage("aniImage4", 0.5, 0.85, 0.05, 0.05, "minigames2", true);
+        createImage("aniImage3", -0.2, 0.85, 0.05, 0.05, "minigames2", { quadratic: true, centered: true });
+        createImage("aniImage4", 0.5, 0.85, 0.05, 0.05, "minigames2", { quadratic: true, centered: true });
 
         objects["aniImage2"].dir = 1; // right
         createSquare("CDPlayer2", 0.6, 0.65, 0.05, 0.05, "rgb(10, 10, 10)");
 
         // Buttons
-        createImage("gameCD1", 0.05, 0.4, 0.1, 0.1, "cd2", true);
-        createImage("gameCD2", 0.05, 0.55, 0.1, 0.1, "cd2", true);
+        createImage("gameCD1", 0.05, 0.4, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
+        createImage("gameCD2", 0.05, 0.55, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
 
         createButton("gameSel1", 0.05, 0.4, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 1;
             objects["selgam"].text = "Selected: Shgic Shgac Shgoe";
-        }, true)
+        }, { quadratic: true, centered: true })
 
         createButton("gameSel2", 0.05, 0.55, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 2;
             objects["selgam"].text = "Selected: Fishgang";
-        }, true)
+        }, { quadratic: true, centered: true })
 
-        createText("gameText1", 0.08, 0.475, "Shgic Shgac Shgoe", "white", 24, "left");
-        createText("gameText2", 0.08, 0.625, "Fishgang", "white", 24, "left");
+        createText("gameText1", 0.08, 0.475, "Shgic Shgac Shgoe", { color: "white", size: 24, align: "left" });
+        createText("gameText2", 0.08, 0.625, "Fishgang", { color: "white", size: 24, align: "left" });
 
 
 
-        createImage("gameCDStart", 0.625, 2, 0.1, 0.1, "cd2", true);
+        createImage("gameCDStart", 0.625, 2, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
         objects["gameCDStart"].status = "none";
         createButton("pressStart", 0.65, 0.75, 0.2, 0.1, "button", () => {
             if (selectedMinigame != 0) objects["gameCDStart"].status = "move";
         })
-        createText("startText", 0.75, 0.825, "Play Da Game", "black", 32, "center");
+        createText("startText", 0.75, 0.825, "Play Da Game", { size: 32 });
 
         createSquare("CDPlayer1", 0.6, 0.55, 0.05, 0.12, "black");
         createImage("CDPlayer3", 0.6, 0.55, 0.05, 0.17, "cd3");
