@@ -67,6 +67,7 @@ function adStartButtonHandler() {
         adHandler.style.display = "inline";
         adHandler.play();
 
+        chengaUsed = false;
         currentBoost = "wait";
         adStatus = "watching";
 
