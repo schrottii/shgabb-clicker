@@ -43,7 +43,7 @@ function getAchievementByID(id) {
 
 // Give the player the achievement with the id "id"
 function awardAchievement(id) {
-    game.ach.push(id + 1);
+    game.ach.push(achievements[id].ID);
     createNotification("New achievement: " + achievements[id].name);
 
     ui.newArtifactText = "Achievement Unlocked!";
@@ -69,7 +69,22 @@ function checkForNewAchievements() {
     for (let achGo in achievements) {
         if (achievements[achGo].unlock() && !game.ach.includes(achievements[achGo].ID)) {
             awardAchievement(parseInt(achGo));
+            checkForDuplicateAchievements();
             break;
+        }
+    }
+}
+
+function checkForDuplicateAchievements() {
+    let existingAchievements = [];
+
+    for (achievs = 0; achievs < game.ach.length; achievs++) {
+        if (!existingAchievements.includes(game.ach[achievs])) {
+            existingAchievements.push(game.ach[achievs]);
+        }
+        else {
+            game.ach.splice(achievs, 1);
+            achievs -= 1;
         }
     }
 }
