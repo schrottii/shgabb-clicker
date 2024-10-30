@@ -38,6 +38,11 @@ function isEvent(eventName, all = false) {
             // Hot Hot Summer Event | Jul 28 - Aug 18
             if (today >= 728 && today <= 818 && game.stats.hms >= 2000) return true;
             if (!all) return false;
+            else eventName = "shgabbthewitch";
+        case "shgabbthewitch":
+            // Shgabb The Witch Event | Oct 28 - Nov 10
+            if (today >= 1028 && today <= 1110 && game.stats.hms >= 2000) return true;
+            if (!all) return false;
             else eventName = "christmas";
         case "christmas":
             // Christmas Event | Dec 16 - Dec 30
@@ -71,6 +76,9 @@ function renderCurrentEvent() {
     }
     else if (isEvent("summer")) {
         renderSummer();
+    }
+    else if (isEvent("shgabbthewitch")) {
+        renderShgabbTheWitch();
     }
 }
 
@@ -188,14 +196,15 @@ function openGifts(amount) {
     }
 
     let sandwichAmount = calcSandwiches().mul(50).ceil().mul(giftContents[1]);
-    let shgabbAmount = firstGemOfferWorth().mul(2).ceil().mul(giftContents[2]);
+    let shgabbAmount = new Decimal(firstGemOfferWorth()).mul(2).ceil().mul(giftContents[2]);
 
     if (sandwichAmount > 0) {
         game.sw = game.sw.add(sandwichAmount);
         statIncrease("sw", sandwichAmount);
     }
     if (shgabbAmount > 0) {
-        statIncrease("shgabb", shgabbAmount);
+        game.shgabb = game.shgabb.add(shgabbAmount);
+        //statIncrease("shgabb", shgabbAmount); DO NOT!!!
     }
     if (giftContents[0] > 0) {
         game.gems += giftContents[0];
@@ -672,5 +681,211 @@ function useShorts(offerNR) {
     }
 
     checkAchievement(94);
+    renderCurrentEvent();
+}
+
+var witchesSpent = [0, 0, 0, 0]; // total (up to 10), virtue, herbs, odor
+var cursedArtifacts = [0, 0, 0]; // three
+
+function renderShgabbTheWitch() {
+    let collectedPages = 0;
+    for (let lored in game.lore) {
+        if (getLoreByID(game.lore[lored]).source == 2) collectedPages++;
+    }
+
+    let render = "<h3>Shgabb The Witch</h3><br /><b>October 28th - November 10th</b>";
+    render = render + "<br />" + cImg("witchshgabb") + game.witchshgabb + " Witch Shgabb";
+    render = render + "<br />" + cImg("candle") + game.loreP + " Candles (" + collectedPages + "/10 Pages)";
+
+    render = render + "<br /><br /><h3>Witch Spells</h3>";
+    render = render + "<br />Spell density: " + witchesSpent[0] + "/10";
+    render = render + "<br /><button onclick='spendWitches(1)' class='grayButton'><b>Push Virtue (" + witchesSpent[1] + "/10)</b><br />Increases chance of receiving a more positive effect</button>";
+    render = render + "<br /><button onclick='spendWitches(2)' class='grayButton'><b>Defensive Herbs (" + witchesSpent[2] + "/10)</b><br />Decreases chance of negative effect</button>";
+    render = render + "<br /><button onclick='spendWitches(3)' class='grayButton'><b>Hair Odor (" + witchesSpent[3] + "/10)</b><br />Increases chance of getting cosmetics</button>";
+    render = render + "<br /><button onclick='castSpell()' class='grayButton'><b>Cast Spell</b><br />Prove your witchery skills!</button>";
+
+
+    ui.eventRender.innerHTML = render;
+}
+
+function spendWitches(id) {
+    if (witchesSpent[0] < 10 && game.witchshgabb > witchesSpent[0]) {
+        witchesSpent[0] += 1;
+        witchesSpent[id] += 1;
+    }
+    renderCurrentEvent();
+}
+
+function castSpell() {
+    if (witchesSpent[0] < 1) return false;
+    game.witchshgabb -= witchesSpent[0];
+
+    // Random effect
+    if (Math.random() * 100 < witchesSpent[3] + (witchesSpent[1] / 5)) {
+        // Cosmetics
+        // Base chance: 0%, +1% per Odor, +0.2% per Virtue
+        createNotification("The spell contains cosmetic effects:");
+
+        let availableCosmetics = [421, 422, 423, 424, 425, 414, 415, 416, 417];
+        for (let runWitch = 414; runWitch <= 417; runWitch++) {
+            if (game.evbans.includes(runWitch)) availableCosmetics.splice(availableCosmetics.indexOf(runWitch), 1);
+        }
+        for (let runWitch = 421; runWitch <= 425; runWitch++) {
+            if (game.evpfps.includes(runWitch)) availableCosmetics.splice(availableCosmetics.indexOf(runWitch), 1);
+        }
+        if (availableCosmetics.length == 0) {
+            // You have all cosmetics
+            game.gems += 30;
+            statIncrease("tgems", 30);
+        }
+        else {
+            // You don't have all of them, here, a new one
+            let randomlySelected = availableCosmetics[Math.floor(Math.random() * (availableCosmetics.length - 1))];
+
+            if (randomlySelected <= 417) {
+                game.evbans.push(randomlySelected);
+                createNotification("New Profile Banner unlocked!");
+            }
+            else {
+                game.evpfps.push(randomlySelected);
+                createNotification("New PFP unlocked!");
+            }
+        }
+    }
+    else if (Math.random() * 100 < (witchesSpent[1] * 2) + 5 + (witchesSpent[2] / 5)) {
+        // Very good stuff
+        // Base chance: 5%, +2% per Virtue, +0.2% per Herbs
+        createNotification("The spell contains holy effects:");
+        let effectAmount = 0;
+
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+            game.gems += 80;
+            statIncrease("tgems", 80);
+            createNotification("+80 Gems!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+            let shgabbAmount = new Decimal(firstGemOfferWorth()).mul(32).mul(witchesSpent[0] * witchesSpent[1]).mul(game.upgradeLevels.deepMiner + 1).ceil();
+
+            game.shgabb = game.shgabb.add(shgabbAmount);
+            //statIncrease("shgabb", shgabbAmount); DO NOT!!!
+            createNotification("+" + fn(shgabbAmount) + " Shgabb!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+
+            game.chenga += 5;
+            statIncrease("chenga", 5);
+
+            createNotification("+5 Chengas!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+
+            cursedArtifacts = [0, 0, 0];
+            createNotification("Curses have been removed from Artifacts.");
+        }
+
+
+        if (effectAmount == 0) {
+            createNotification("Your soul has been blessed.");
+        }
+    }
+    else if (Math.random() * 100 < 50 - (witchesSpent[2] * 5) - witchesSpent[1]) {
+        // Bad stuff
+        // Base chance: 50%, -5% per Herbs, -1% per Virtue
+        createNotification("The spell contains evil effects:");
+        let effectAmount = 0;
+
+        if (Math.random() <= 0.2 && game.gems >= 30) {
+            effectAmount++;
+            game.gems -= 30;
+            createNotification("30 of your Gems were destroyed!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+            game.shgabb = new Decimal(0);
+            createNotification("Your Shgabb is gone!");
+        }
+        if (Math.random() <= 0.2 && currentBoost != "none") {
+            effectAmount++;
+            currentBoost = "none";
+            adStatus = "loaded";
+            adTime = -1;
+            createNotification("Your ad is gone!");
+        }
+        if (Math.random() <= 0.2 && game.a.includes(155)) {
+            effectAmount++;
+            game.aeqi = [155];
+            createNotification("That's a nice set of equipped Artifacts");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+            createNotification("Horrible things are approaching...");
+        }
+
+
+        if (effectAmount == 0) {
+            createNotification("Doom is coming closer...");
+        }
+    }
+    else {
+        // Good stuff
+        createNotification("The spell contains positive effects:");
+        let effectAmount = 0;
+
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+            game.gems += 10;
+            statIncrease("tgems", 10);
+            createNotification("+10 Gems!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+            let shgabbAmount = new Decimal(firstGemOfferWorth()).div(32).mul(witchesSpent[0]).ceil();
+
+            game.shgabb = game.shgabb.add(shgabbAmount);
+            //statIncrease("shgabb", shgabbAmount); DO NOT!!!
+            createNotification("+" + fn(shgabbAmount) + " Shgabb!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+
+            game.chenga++;
+            statIncrease("chenga", 1);
+
+            createNotification("+1 Chenga!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+
+            game.witchshgabb += 2;
+            statIncrease("witchshgabb", 2);
+            createNotification("+2 Witch Shgabb!");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+
+            game.clickCooldown = 0;
+            clickCooldown = 0;
+            lunarAntiCooldown = 5;
+            createNotification("The click cooldown has been reset and the next 5 clicks have no cooldown.");
+        }
+        if (Math.random() <= 0.2) {
+            effectAmount++;
+
+            luck += 66;
+            createNotification("+66 Luck!");
+        }
+
+
+        if (effectAmount == 0) {
+            createNotification("You feel happy.");
+        }
+    }
+
+    // Reset it
+    witchesSpent = [0, 0, 0, 0];
     renderCurrentEvent();
 }

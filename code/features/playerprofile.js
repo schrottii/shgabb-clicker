@@ -135,6 +135,12 @@ var pfps = [
     new PFP(418, "images/currencies/shorts.png", () => game.evpfps.includes(418)),
     new PFP(419, "images/playerprofile/sun.png", () => game.evpfps.includes(419)),
     new PFP(420, "images/playerprofile/sunglasses.png", () => game.evpfps.includes(420)),
+
+    new PFP(421, "images/playerprofile/stw-pfp1.png", () => game.evpfps.includes(421)),
+    new PFP(422, "images/playerprofile/stw-pfp2.png", () => game.evpfps.includes(422)),
+    new PFP(423, "images/playerprofile/stw-pfp3.png", () => game.evpfps.includes(423)),
+    new PFP(424, "images/currencies/candle.png", () => game.evpfps.includes(424)),
+    new PFP(425, "images/currencies/witchshgabb.png", () => game.evpfps.includes(425)),
 ];
 
 var banners = [
@@ -162,6 +168,11 @@ var banners = [
     new Banner(411, "images/playerprofile/summerbanner2.png", () => game.evbans.includes(411)),
     new Banner(412, "images/playerprofile/summerbanner3.png", () => game.evbans.includes(412)),
     new Banner(413, "images/playerprofile/summerbanner4.png", () => game.evbans.includes(413)),
+
+    new Banner(414, "images/playerprofile/shgabb-the-witch.png", () => game.evbans.includes(414)),
+    new Banner(415, "images/playerprofile/stw-banner1.png", () => game.evbans.includes(415)),
+    new Banner(416, "images/playerprofile/stw-banner2.png", () => game.evbans.includes(416)),
+    new Banner(417, "images/playerprofile/stw-banner3.png", () => game.evbans.includes(417)),
 
     // 600 - 699 | Challenge Banners
     new Banner(600, "images/playerprofile/challenge-banner.png", () => getHighestTier() >= 3),

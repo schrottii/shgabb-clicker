@@ -43,7 +43,7 @@ function getAchievementByID(id) {
 
 // Give the player the achievement with the id "id"
 function awardAchievement(id) {
-    game.ach.push(id);
+    game.ach.push(id + 1);
     createNotification("New achievement: " + achievements[id].name);
 
     ui.newArtifactText = "Achievement Unlocked!";
@@ -68,7 +68,7 @@ function checkAchievement(id, condition = true) {
 function checkForNewAchievements() {
     for (let achGo in achievements) {
         if (achievements[achGo].unlock() && !game.ach.includes(achievements[achGo].ID)) {
-            awardAchievement(achievements[achGo].ID);
+            awardAchievement(parseInt(achGo));
             break;
         }
     }
@@ -257,4 +257,10 @@ var achievements = [
     new Achievement(153, "summer.png", "No Pants II", "Get 100 Shorts", () => game.stats.shorts >= 100),
     new Achievement(154, "summer.png", "No Pants III", "Get 1000 Shorts", () => game.stats.shorts >= 1000),
     new Achievement(155, "summer.png", "Hate No Heat", "Get all Hot Hot Summer PFPs and Banners", () => game.evpfps.includes(420) && game.evbans.includes(413)),
+
+    new Achievement(176, "stw.png", "Hallowitch Shgabbhain", "Play during the Shgabb The Witch Event", () => isEvent("shgabbthewitch")),
+    new Achievement(177, "stw.png", "Poison of the Pot", "Get all Shgabb The Witch PFPs", () => game.evpfps.includes(421) && game.evpfps.includes(422) && game.evpfps.includes(423) && game.evpfps.includes(424) && game.evpfps.includes(425)),
+    new Achievement(178, "stw.png", "Bane of the Witch", "Get all Shgabb The Witch Banners", () => game.evbans.includes(414) && game.evbans.includes(415) && game.evbans.includes(416) && game.evbans.includes(417)),
+    new Achievement(179, "stw.png", "Scary Noodles", "Get all Shgabb The Witch lore pages", () => game.lore.includes(200) && game.lore.includes(201) && game.lore.includes(202) && game.lore.includes(203) && game.lore.includes(204) && game.lore.includes(205) && game.lore.includes(206) && game.lore.includes(207) && game.lore.includes(208) && game.lore.includes(209)),
+    new Achievement(180, "stw.png", "Shgummon Demobbn", "Get 666 Witch Shgabb", () => game.witchshgabb >= 666),
 ]

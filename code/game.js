@@ -31,6 +31,7 @@ var game = {
     qian: 0,
     eggs: 0,
     shorts: 0,
+    witchshgabb: 0,
     // other stuff
     lore: [],
     lorepg: [],
@@ -183,6 +184,7 @@ var game = {
         qian: 0,
         eggs: 0,
         shorts: 0,
+        witchshgabb: 0,
 
         trash: 0,
         fish: 0,

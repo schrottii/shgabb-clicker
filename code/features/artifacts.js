@@ -84,7 +84,7 @@ class Artifact {
     getLevel() {
         if (game.alvl[this.ID] == undefined) game.alvl[this.ID] = 1; // if it doesn't exist
 
-        return game.alvl[this.ID] + (getArtifact(400).isEquipped() && (this.canIncreaseLevel() || game.alvl[this.ID] < this.getMaxLevel()) ? 1 : 0);
+        return game.alvl[this.ID] + (cursedArtifacts.includes(this.ID) ? 1 : 0) + (getArtifact(400).isEquipped() && (this.canIncreaseLevel() || game.alvl[this.ID] < this.getMaxLevel()) ? 1 : 0);
     }
 
     getMaxLevel() {
@@ -266,7 +266,9 @@ class Artifact {
     render(clickable = true) {
         // what you see is what you get.
         return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
-            + (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "") + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
+            + (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "")
+            + (cursedArtifacts.includes(this.ID) ? "<br><b>[CURSED]</b>" : "")
+            + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
             + (!this.isUpgradable() ? (this.getRarity() + " L" + this.getLevel()) : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
             + this.renderSimpleEffect() + "<br />" + this.renderDescription()
             // + (this.value != undefined ? ("<br />Value: " + this.getValue("?") + "/" + this.getValueMax()) : "")
@@ -1229,8 +1231,8 @@ var artifacts = [
 
     new Artifact(306, 3, 1, "Shgabb's sleeves", "sleeves.png",
         {
-            desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 6) + "<br>(Current: x" + Math.max(1, ((level * 6) * (1 / getCooldown()))).toFixed(2) + ")",
-            simpleBoost: ["clickshgabb", level => Math.max(1, (level * 6) * (1 / getCooldown()))]
+            desc: level => "Click Shgabb gain is multiplied by inverse of click cooldown x" + (level * 6) + "<br>(Current: x" + (getCooldown() == 0 ? 1000 : Math.max(1, ((level * 6) * (1 / getCooldown()))).toFixed(2)) + ")",
+            simpleBoost: ["clickshgabb", level => getCooldown() == 0 ? 1000 : Math.max(1, (level * 6) * (1 / getCooldown()))]
         }),
 
     new Artifact(307, 3, 1, "Shgabb's Dice", "dice-3.png",

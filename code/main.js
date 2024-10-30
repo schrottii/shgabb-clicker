@@ -724,7 +724,8 @@ function updateStats() {
         + "<br />Total Qian: " + statLoader("qian")
         + "<br />Total Eggs: " + statLoader("eggs")
         + "<br />Total Shorts: " + statLoader("shorts")
-        + "<br />Total Event currencies: " + (new Decimal(statLoader("gifts")).add(statLoader("cakes")).add(statLoader("qian")).add(statLoader("eggs")).add(statLoader("shorts")))
+        + "<br />Total Witch Shgabb: " + statLoader("witchshgabb")
+        + "<br />Total Event currencies: " + (new Decimal(statLoader("gifts")).add(statLoader("cakes")).add(statLoader("qian")).add(statLoader("eggs")).add(statLoader("shorts")).add(statLoader("witchshgabb")))
         + "<br />"
 
         + "<br /><b>Shgic Shgac Shgoe:</b>"
@@ -845,7 +846,7 @@ function updateUI() {
         }
 
         ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "Prestige!<br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
+        ui.prestigeButton.innerHTML = "<b>Prestige!</b><br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
             + "<br />Prestige to get: " + fn(calcGS()) + " GS!"
             + (bagUpgrades.prestigeGems.currentLevel() > 0 ? "<br />" + fn(Math.floor(game.stats_prestige.hms / 1000)) + " Gems!" : "")
             + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained!" : "")
@@ -928,6 +929,22 @@ function autoSave(manual=true) {
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
 
     checkForNewAchievements();
+
+    if (isEvent("shgabbthewitch") && !manual) {
+        for (let witchArtis = 0; witchArtis <= 2; witchArtis++) {
+            if (game.aeqi.includes(cursedArtifacts[witchArtis]) && Math.random() >= 0.8) {
+                game.witchshgabb += 1;
+                statIncrease("witchshgabb", 1);
+            }
+
+            if (Math.random() >= 0.8 || cursedArtifacts[witchArtis] == 0) {
+                cursedArtifacts[witchArtis] = artifacts[Math.floor(Math.random() * (artifacts.length - 1))].ID;
+                createNotification(getArtifact(cursedArtifacts[witchArtis]).name + " has been cursed!");
+            }
+        }
+
+        updateArtifacts();
+    }
 
     if (!manual) createNotification("Game saved automatically " + autoNotifications);
 }
@@ -1280,6 +1297,7 @@ function updateBG() {
             else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-easter.png)";
             else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-pride.png)";
             else if (isEvent("summer") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-summer.png)";
+            else if (isEvent("shgabbthewitch") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-stw.png)";
         }
         else {
             body.style.backgroundImage = "url(images/backgrounds/bg-normal.png)";

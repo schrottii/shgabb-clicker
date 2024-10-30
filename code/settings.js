@@ -86,8 +86,6 @@ function renderSettings() {
         }
         for (b in sortedSettings) {
             render = render + sortedSettings[b].render();
-            //console.log(b, sortedSettings[b].render())
-            // if ((b - 1) % (window.innerWidth >= 768 ? 4 : 2) == 0 && b != 1) render = render + "<br />";
         }
 
         if (settingSections[se] == "design") render = render + "<br />" + upgradeColorsRender;
