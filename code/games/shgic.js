@@ -37,7 +37,7 @@ function today() {
     // 20240615
 
     let today = new Date();
-    return (1900 + today.getYear()) + "" + (today.getUTCMonth().toString().length == 1 ? "0" + (today.getUTCMonth() + 1) : (today.getUTCMonth() + 1)) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate());
+    return (1900 + today.getYear()) + "" + ((today.getUTCMonth() + 1).toString().length == 1 ? "0" + (today.getUTCMonth() + 1) : (today.getUTCMonth() + 1)) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate());
 }
 
 function formatDate(date) {
@@ -65,6 +65,9 @@ function isNewDay() {
 function checkNewDay() {
     // checks if it's a new day, and if it is, do whatever is needed
     // 20240615 > 20240614
+
+    if (game.day.toString().substr(0, 7) == "2024010") game.day = "0";
+    if (game.tttd.toString().substr(0, 7) == "2024010") game.tttd = "0";
 
     // new shgic? NEW SHGIC? SHGIC REMINDER
     // it's outside so that you get a new one UNTIL you do it... not just once
