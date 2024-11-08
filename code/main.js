@@ -871,17 +871,6 @@ function updateUI() {
 
     if (selection("stats")) updateStats();
 
-    // Plaj Provif
-    if (selection("playerprofile")) {
-        renderPlayerProfile();
-    }
-
-    // Eventzzz
-    //if (selection("events")) {
-        //renderCurrentEvent();
-    //}
-
-
     // Notifications
     ui.notifications.innerHTML = "";
     let n2 = 15;
@@ -929,22 +918,6 @@ function autoSave(manual=true) {
     localStorage.setItem("shgabbSettings", JSON.stringify(settings));
 
     checkForNewAchievements();
-
-    if (isEvent("shgabbthewitch") && !manual) {
-        for (let witchArtis = 0; witchArtis <= 2; witchArtis++) {
-            if (game.aeqi.includes(cursedArtifacts[witchArtis]) && Math.random() >= 0.8) {
-                game.witchshgabb += 1;
-                statIncrease("witchshgabb", 1);
-            }
-
-            if (Math.random() >= 0.8 || cursedArtifacts[witchArtis] == 0) {
-                cursedArtifacts[witchArtis] = artifacts[Math.floor(Math.random() * (artifacts.length - 1))].ID;
-                createNotification(getArtifact(cursedArtifacts[witchArtis]).name + " has been cursed!");
-            }
-        }
-
-        updateArtifacts();
-    }
 
     if (!manual) createNotification("Game saved automatically " + autoNotifications);
 }
@@ -1262,6 +1235,35 @@ function loop(tick) {
         sandwich();
         silicone();
         artifactEvent("onAuto", {});
+
+        // Plaj Provif
+        if (selection("playerprofile")) {
+            renderPlayerProfile();
+        }
+
+        if (isEvent("shgabbthewitch")) {
+            for (let witchArtis = 0; witchArtis <= 5; witchArtis++) {
+                let witchesEarned = 0;
+                if (game.aeqi.includes(cursedArtifacts[witchArtis]) && Math.random() <= 0.03) {
+                    witchesEarned += 1;
+                }
+
+                if (witchesEarned > 0) {
+                    game.witchshgabb += witchesEarned;
+                    statIncrease("witchshgabb", witchesEarned);
+
+                    createNotification("+" + witchesEarned + " Witch Shgabb!");
+                    renderCurrentEvent();
+                }
+
+                if (Math.random() <= 0.003 || cursedArtifacts[witchArtis] == 0) {
+                    cursedArtifacts[witchArtis] = artifacts[Math.floor(Math.random() * (artifacts.length - 1))].ID;
+                    createNotification(getArtifact(cursedArtifacts[witchArtis]).name + " has been cursed!");
+                }
+            }
+
+            updateArtifacts();
+        }
     }
 
     adSwitcher();

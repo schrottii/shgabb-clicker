@@ -259,7 +259,7 @@ class Artifact {
 
     innerRender() {
         // this is used for the search, it removes some keywords like "onclick" or "font-size"
-        return this.ID + " " + this.image + (this.isEquipped() && !this.isUpgradable() ? "[EQUIPPED] " : " ") + this.name + " " + this.getRarity() + " Level " + getArtifact(this.ID).getLevel() + " L" + getArtifact(this.ID).getLevel()
+        return this.ID + " " + this.image + (this.isEquipped() && !this.isUpgradable() ? "[EQUIPPED] " : " ") + (cursedArtifacts.includes(this.ID) ? "[CURSED]" : "") + this.name + " " + this.getRarity() + " Level " + getArtifact(this.ID).getLevel() + " L" + getArtifact(this.ID).getLevel()
             + " " + this.renderSimpleEffect() + this.renderDescription() + " tier " + this.tier;
     }
 

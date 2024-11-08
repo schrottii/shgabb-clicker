@@ -2,10 +2,28 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.2";
+const gameVersion  = "3.2.1";
 const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Shgabb The Witch Event:",
+    "- Extended event by a week -> November 17th",
+    "- Added an event description (lol?)",
+    "- Added an extra description for how spells work",
+    "- The most recent spell's effects are now also shown below the buttons (rather than notifications only)",
+    "- Added a notification for gaining Witch Shgabb",
+
+    "-> Shgabb The Witch Balance:",
+    "- Increased max. amount of cursed Artifacts from 3 to 6",
+    "- Cursing and gaining witches now happen every second, instead of every auto save (x10 essentially, but needs fridge)",
+    "- Reduced curse chance from 20% to 0.3%",
+    "- Reduced witch gain chance from 20% to 3%",
+    "- Using at least one Defensive Herb now decreases the chance for a negative effect by 20%",
+    "- Doubled chance to get cosmetics",
+    "- Added a new spell effect: instant lore page progress",
+    "- Changed chances of certain spell effects appearing",
+
+    "v3.2",
     "-> Shgabb The Witch:",
     "- New event: Shgabb The Witch!",
     "- Active from October 28th - November 10th",
