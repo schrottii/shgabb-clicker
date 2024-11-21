@@ -274,9 +274,9 @@ function wggjLoop() {
 
     // Your own custom loop function
     //if (typeof (loop) != "undefined") loop(wggjDelta);
-    /////////////////////////
 
-    if (currentScene != "none") {
+    if (currentScene != "none" && selections[1] == "minigames") {
+    /////////////////////////
         // render the current scene
         scenes[currentScene].loop(wggjDelta / 1000);
 

@@ -3,6 +3,7 @@
 var shbookSelections = [0, "Shgabb", "Shbook"];
 var shbookSizeFactor = 10;
 
+// Book Entry Class
 class BookEntry{
     constructor(ID, name, unlock, lockedText, unlockedText){
         this.ID = ID;
@@ -44,6 +45,7 @@ class BookEntry{
     }
 }
 
+// Everything Wisps and similar
 function getWispType(typeID) {
     switch (typeID) {
         case 0:
@@ -66,12 +68,6 @@ function getWispRarity(typeID) {
     }
 }
 
-function getLoreByID(id){
-    for (l in lore) {
-        if (lore[l].ID == id) return lore[l];
-    }
-}
-
 function getWisp(multi = 1) {
     if (game.stats.hms >= 4000 && game.loreSel != 0 &&
         Math.random() <= getWispRarity(getLoreByID(game.loreSel).source) * multi * eventValue("shgabbthewitch", 6, 1)) {
@@ -89,8 +85,9 @@ function getWisp(multi = 1) {
     }
 }
 
+// lore page functions
 function getLorePage(multi = 1) {
-    if (game.stats.hms >= 4000 && game.lorepg.length < 4 &&
+    if (game.stats.hms >= 4000 && game.lorepg.length < 5 &&
         Math.random() <= 1 / 25000 * multi * eventValue("shgabbthewitch", 6, 1)) {
         let availablePages = [];
         for (l in lore) {
@@ -98,7 +95,7 @@ function getLorePage(multi = 1) {
         }
         if (availablePages.length > 0) {
             createNotification("Found new lore!");
-            game.lorepg.push(availablePages[availablePages.length * Math.floor(Math.random())]);
+            game.lorepg.push(availablePages[Math.ceil(Math.random() * (availablePages.length - 1))]);
         }
         else {
             createNotification("All lore pages already found...");
@@ -108,23 +105,26 @@ function getLorePage(multi = 1) {
     renderShbook();
 }
 
-function shbookSize() {
-    shbookSizeFactor = ui.shbookSizeSlider.value;
-    renderShbook();
+function getLoreByID(id) {
+    for (l in lore) {
+        if (lore[l].ID == id) return lore[l];
+    }
 }
 
-// Pierre
-// dr. xd (when?)
-
+// THE BIG DICTIONARIES
 const lore = [
-    new BookEntry(0, "Info", 0, 0, "Find lore pages and Memory Wisps by clicking. Select a found lore page to start collecting Wisps for it. Collect all required Memory Wisps to unlock the lore!"),
+    new BookEntry(0, "Info", 0, 0, "Lore pages can be found by clicking (1/25k base chance). When one is found, it is added to your inventory, which can store up to 5 pages. Found pages can be selected to start collecting progress for them. Depending on the page this can be Memory Wisps or Candles, which are both gained by simply clicking. Once a page is fully collected/researched, it is unlocked, and can be read, and can provide a GS boost. Only one page can be selected at the same time, and when there is no page selected, zero Wisps are earned."),
 
     // 100 - 199: Basic information about the lore, just rough edges
-    new BookEntry(100, "Fascinating", 1, 10, `Fascinating. It's simply fascinating. I've seen many things in my life, and discovered more than Joe did - even if he says otherwise - and have seen some things you wouldn't believe... including my wife, hehe. But this thing, it's fascinating. What is this creature? It's fascinating. - Pierre`),
-    new BookEntry(101, "A Shgabb", 1, 10, `This creature is fascinating. It's called "Shgabb", very weird name, it does not quite fit in with the language's usual combinations of vowels and consonants, it's like a foreign sound, but what I know for sure, is that this creature is as foreign as one can get. I haven't spectated it for long yet. This definitely needs more research. - Pierre`),
-    new BookEntry(102, "The Blues", 1, 10, `I should describe this creature's appearance, this creature being, this "Shgabb" thing, the recently discovered whatever. It's round. That's the best way I can describe the shape. The color scheme is fascinating. Think of this creature as a light blue ball, with a capital S written all over its forehead in a dark blue shade, like a tattoo. A Shgabb is blotchy. Skin not very clean, but who knows about the skincare in this world? Overall a wild appearance, but also soft, and clean, like a diamond, but of a different substance. Want me to describe it in one word? Blue. - Pierre`),
-    new BookEntry(103, "Not Alone", 1, 10, `I thought I was alone, just me and this blue blob, yes! A blob! It's a blob! Anyway - just me, and this little blob, but no. I was wrong. Yet again. Luckily the others are not here to laugh at me... whatever. There are many of them. It's not just one. This is an entire species. I have discovered something big. There is not just one Shgabb. There are many... what's the plural? Shgabbs? Shgabb? Shgabbou? What do I know. - Pierre`),
+    new BookEntry(100, "Fascinating", 1, 4, `Fascinating. It's simply fascinating. I've seen many things in my life, and discovered more than Joe did - even if he says otherwise - and have seen some things you wouldn't believe... including my wife, hehe. But this thing, it's fascinating. What is this creature? It's fascinating. - Pierre`),
+    new BookEntry(101, "A Shgabb", 1, 4, `This creature is fascinating. It's called "Shgabb", very weird name, it does not quite fit in with the language's usual combinations of vowels and consonants, it's like a foreign sound, but what I know for sure, is that this creature is as foreign as one can get. I haven't spectated it for long yet. This definitely needs more research. - Pierre`),
+    new BookEntry(102, "The Blues", 1, 4, `I should describe this creature's appearance, this creature being, this "Shgabb" thing, the recently discovered whatever. It's round. That's the best way I can describe the shape. The color scheme is fascinating. Think of this creature as a light blue ball, with a capital S written all over its forehead in a dark blue shade, like a tattoo. A Shgabb is blotchy. Skin not very clean, but who knows about the skincare in this world? Overall a wild appearance, but also soft, and clean, like a diamond, but of a different substance. Want me to describe it in one word? Blue. - Pierre`),
+    new BookEntry(103, "Not Alone", 1, 6, `I thought I was alone, just me and this blue blob, yes! A blob! It's a blob! Anyway - just me, and this little blob, but no. I was wrong. Yet again. Luckily the others are not here to laugh at me... whatever. There are many of them. It's not just one. This is an entire species. I have discovered something big. There is not just one Shgabb. There are many... what's the plural? Shgabbs? Shgabb? Shgabbou? What do I know. - Pierre`),
     new BookEntry(104, "Following It", 1, 10, `I've managed to follow one of these Shgabb beings, and track its path and activities. I caught it between the trees, if you can even call these things trees. Its movement is hypnotizing. Mesmerizing. Wicked. This little fella walked down the hill, very smooth, no knees hurt. Well, except mine. But that's a different story. I kept following it, trying to not get caught. These leaves are loud enough to wake a giant, but these blobs either don't hear well, or they're not paying attention. I was not sure if this thing knows where it's going. But I kept following it. We approached a river, I was afraid that I had to swim now, but was also excited in case it happens to show me how it drinks fluids. Neither happened, it took a big left turn and walked parallel to the river. Eventually we approached a less open area, with trees and other objects. A structure. The Shgabb entered the structure, it's gone. I don't fit in there. What is this thing? Regardless, this adventure was successful. I need to analyze this data. I was following it. - Pierre`),
+    new BookEntry(105, "The Movement", 1, 3, `After a few days, my analysis of the recent events was complete. I am still fairly new to this place, it's a whole new type of research and exploration. I discovered a new species, The Shgabb, and while I have yet to touch one, I was successfully able to find three of them. Their movement is so interesting: they just walk, and the bottom of their body, I can't even call it feet, it just moves along. It's no rolling motion, but no actual movement either. It's like pushing an object, it just moves forward. - Pierre, analysis 1/3`),
+    new BookEntry(106, "Analysis", 1, 3, `Further elements of my analysis outline the idea of what this creature might be. They are not very tall, less than a meter, a couple feet perchance. Could be a mammal or something else. It doesn't seem to be capable of flying. Unsure about swimming state. No smell discovered so far, probably hindered due to the river. Water covers your smell. The species appears to be harmless. Not a predator. Probably not. Quiet so far. More research is needed, but the current progress confirms the safety of proceeding this project. More funding would help. - Pierre, analysis 2/3`),
+    new BookEntry(107, "Universal Notice", 1, 3, `For any readers of Pierre's Shgabb research project and analysis, it is important to know where the creatures were found. They are not on our home planet. I am not on our home planet. This planet, nicely referred to as "The Bluer Planet", has been observed as a possible new home for humanity, even before the war. Previous research has been done, including by survival expert Vihaan, who outlined the planet's general safety, climate and landscape. Without his great work, I wouldn't be able to dive into the planet's more specific content, to be exact, its wildlife. Mostly familiar, lots of mushrooms around here as well, but these blobs? Well, that's a new thing. - Pierre, analysis 3/3`),
+    // new BookEntry(105, "Analysis", 1, 10, ``),
 
     // 200 - 209 : Shgabb The Witch
     new BookEntry(200, "October Occurrence", 2, 1, `I was just doing my usual research - but something was off about this October night. I wasted all noon and just got ready for some effort, but it simply didn't feel right. I started to feel anxious. Is it just because of my research presentation? No, there was certainly something else going on... late October has never been a good time for me. Before I was able to stop myself, I was sucked into a new branch of research. - Pierre`),
@@ -165,6 +165,12 @@ const featuriary = [
     new BookEntry(6, "Fishgang", () => unlockedFishing(), "HMS 12 000", "Fishgang (also known as Fishing) is the second minigame, unlocked at HMS 12000. It is rather complex. The player can choose how far to throw the rod, further distances are more difficult, but also more valuable. The player can catch trash or fish, which award XP that contribute to level ups which award Pearls."),
 ];
 
+// general shbook functions
+function shbookSize() {
+    shbookSizeFactor = ui.shbookSizeSlider.value;
+    renderShbook();
+}
+
 function changeShbook(id, sel) {
     shbookSelections[id] = sel;
 
@@ -177,6 +183,7 @@ function selectLore(id) {
     renderLore();
 }
 
+// the 4 renders: currenciary, featuriary, lore and shbook in general
 function renderCurrenciary() {
     let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Currencies</div><hr>";
 
@@ -230,14 +237,20 @@ function renderLore() {
     for (s in lore) {
         if (lore[s].ID == shbookSelections[0]) thisLore = lore[s];
     }
-    
+
     ui.shbookLore.innerHTML = render;
     render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : "Locked") + "</div><hr><br />";
 
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText.replace(new RegExp('"s', 'g'), `<br>>>"`).replace(new RegExp('"e', 'g'), `"<<`) : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
 
-    if (thisLore.ID == 0) render = render + "<div style='font-size: " + (1.6 * shbookSizeFactor) + "px'><br />" + cImg(getLoreByID(game.loreSel).source == 1 ? "memoryWisp" : "candle") + game.loreP + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + game.loreP + "/" + getLoreByID(game.loreSel).amount) : "")
-        + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: x" + fn(getLoreBoost()) + " GS!</div>";
+    if (thisLore.ID == 0) {
+        // info page
+        render = render + "<br /><br /><div style='font-size: " + (1.6 * shbookSizeFactor) + "px'>Current page progress:<br />" +
+            cImg(getLoreByID(game.loreSel).source == 1 || getLoreByID(game.loreSel).name == "Info" ? "memoryWisp" : "candle") + game.loreP + (getLoreByID(game.loreSel).name == "Info" ? "" : "/" + getLoreByID(game.loreSel).amount)
+            + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + (game.loreP / getLoreByID(game.loreSel).amount * 100)) + "%" : "<br />Currently not collecting progress for any page! Select one to start collecting!")
+            + "<br /><br />Lore pages currently in inventory (" + game.lorepg.length + "/5): " + game.lorepg + "."
+            + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: x" + fn(getLoreBoost()) + " GS!</div>";
+    }
     else if (!thisLore.isUnlocked() && thisLore.isFound() && thisLore.ID != game.loreSel) render = render + "<br />" + "<button class='grayButton' onclick=selectLore(" + thisLore.ID + ") style='font-size: 40px'>Start collecting</button>";
 
     ui.shbookLore2.innerHTML = render;

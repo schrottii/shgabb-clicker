@@ -99,8 +99,7 @@ var ui = {
     achievementsamount: document.getElementById("achievementsamount"),
     stats: document.getElementById("stats"),
     achievements: document.getElementById("achievements"),
-    pfps: document.getElementById("pfpsSel"),
-    banners: document.getElementById("bannersSel"),
+    playerprofile: document.getElementById("playerProfileRender"),
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
     music: document.getElementById("music"),
@@ -801,6 +800,7 @@ function updateUI() {
     }
     if (game.profile.startVer == "") game.profile.startVer = gameVersion;
     if (game.profile.startDay == "") game.profile.startDay = today();
+    if (game.profile.startDay.substr(-1) == "0") game.profile.startDay = game.profile.startDay.substr(0, 7) + "1";
 
     // Click Button
     if (game.clickCooldown > 0) {
@@ -905,8 +905,6 @@ function autoSave(manual=true) {
     // Le rare renderes
     renderAmeConvert();
     renderAllSelection();
-    renderPFPs();
-    renderBanners();
 
     // if (!manual) adInject();
 
@@ -1236,11 +1234,6 @@ function loop(tick) {
         silicone();
         artifactEvent("onAuto", {});
 
-        // Plaj Provif
-        if (selection("playerprofile")) {
-            renderPlayerProfile();
-        }
-
         if (isEvent("shgabbthewitch")) {
             for (let witchArtis = 0; witchArtis <= 5; witchArtis++) {
                 let witchesEarned = 0;
@@ -1327,11 +1320,9 @@ function updateEVERYTHING() {
     renderAchievements();
     renderAllSelection();
     renderArtifacts();
-    renderBanners();
     renderChallenges();
     renderCurrentEvent();
     renderGemOffers();
-    renderPFPs();
     renderPlayerProfile();
     renderSettings();
     renderShbook();
@@ -1433,40 +1424,41 @@ images = {
     button: "rough.png",
     empty: "empty.png",
 
-    minigames: "minigames.png",
-    minigames2: "minigames2.png",
-    cd1: "cd1.png",
-    cd2: "cd2.png",
-    cd3: "cd3.png",
-    sssx: "sss-x.png",
-    ssso: "sss-o.png",
-    sssn: "sss-n.png",
+    minigames: "minigames/selection/minigames.png",
+    minigames2: "minigames/selection/minigames2.png",
+    cd1: "minigames/selection/cd1.png",
+    cd2: "minigames/selection/cd2.png",
+    cd3: "minigames/selection/cd3.png",
 
-    waves: "waves.png",
-    waves2: "waves2.png",
-    water: "water.png",
-    water2: "water2.png",
-    fishlvl: "fishlvl.png",
-    bobby: "bobby.png",
+    sssx: "minigames/shgic/sss-x.png",
+    ssso: "minigames/shgic/sss-o.png",
+    sssn: "minigames/shgic/sss-n.png",
 
-    anchovy: "fish/anchovy.png",
-    batfish: "fish/batfish.png",
-    buffalo: "fish/buffalo.png",
-    butterfish: "fish/butterfish.png",
-    carp: "fish/carp.png",
-    catfish: "fish/catfish.png",
-    cod: "fish/cod.png",
-    koi: "fish/koi.png",
-    leaoo: "fish/leaoo.png",
-    oscar: "fish/oscar.png",
-    pike: "fish/pike.png",
-    piranha: "fish/piranha.png",
-    salmon: "fish/salmon.png",
-    shark: "fish/shark.png",
-    skate: "fish/skate.png",
-    swordfish: "fish/swordfish.png",
-    tuna: "fish/tuna.png",
-    zander: "fish/zander.png",
+    waves: "minigames/fishgang/waves.png",
+    waves2: "minigames/fishgang/waves2.png",
+    water: "minigames/fishgang/water.png",
+    water2: "minigames/fishgang/water2.png",
+    fishlvl: "minigames/fishgang/fishlvl.png",
+    bobby: "minigames/fishgang/bobby.png",
+
+    anchovy: "minigames/fishgang/fish/anchovy.png",
+    batfish: "minigames/fishgang/fish/batfish.png",
+    buffalo: "minigames/fishgang/fish/buffalo.png",
+    butterfish: "minigames/fishgang/fish/butterfish.png",
+    carp: "minigames/fishgang/fish/carp.png",
+    catfish: "minigames/fishgang/fish/catfish.png",
+    cod: "minigames/fishgang/fish/cod.png",
+    koi: "minigames/fishgang/fish/koi.png",
+    leaoo: "minigames/fishgang/fish/leaoo.png",
+    oscar: "minigames/fishgang/fish/oscar.png",
+    pike: "minigames/fishgang/fish/pike.png",
+    piranha: "minigames/fishgang/fish/piranha.png",
+    salmon: "minigames/fishgang/fish/salmon.png",
+    shark: "minigames/fishgang/fish/shark.png",
+    skate: "minigames/fishgang/fish/skate.png",
+    swordfish: "minigames/fishgang/fish/swordfish.png",
+    tuna: "minigames/fishgang/fish/tuna.png",
+    zander: "minigames/fishgang/fish/zander.png",
     trash: "currencies/artifactscrap.png",
 }
 GAMENAME = "Minigames";

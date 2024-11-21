@@ -9,6 +9,7 @@ var game = {
         startDay: "",
         pfp: 100,
         banner: 100,
+        frame: 100,
     },
     // currencies
     shgabb: new Decimal(0),

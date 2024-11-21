@@ -227,11 +227,14 @@
     <div id="playerprofileSection">
         <h3>Player Profile</h3>
         <canvas id="profileCanvas" class="playerProfile"></canvas><br />
+
+        <button id="playerProfileButton1" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(1)">PFPs</button>
+        <button id="playerProfileButton2" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(2)">Banners</button>
+        <button id="playerProfileButton3" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(3)">Frames</button>
+        <button id="playerProfileButton4" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(4)">All</button> <br />
+        <span id="playerProfileRender"></span>
+
         <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
-        <h3>PFPs</h3>
-        <span id="pfpsSel" style="width: 80%"></span>
-        <h3>Banners</h3>
-        <span id="bannersSel" style="width: 80%"></span>
     </div>
 
     <!-- Stats -->

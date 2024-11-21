@@ -2,57 +2,30 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.2.1";
-const versionTitle = "";
+const gameVersion  = "3.3";
+const versionTitle = "Framed Pages";
 
 const currentPatchNotes = [
-    "-> Shgabb The Witch Event:",
-    "- Extended event by a week -> November 17th",
-    "- Added an event description (lol?)",
-    "- Added an extra description for how spells work",
-    "- The most recent spell's effects are now also shown below the buttons (rather than notifications only)",
-    "- Added a notification for gaining Witch Shgabb",
+    "-> Player Profile:",
+    "- Added Frames, a new type of decoration!",
+    "- Added 3 normal Frames (unlocked at 0, 6000, 8000 HMS) + No Frame",
+    "- Added a selection: PFPs, Banners, Frames or All",
+    "- Added names for ALL PFPs, Banners and Frames",
+    "- Added new buttons: Random PFP, Random Banner and Random Frame",
+    "- Moved PFP a bit more to the left",
 
-    "-> Shgabb The Witch Balance:",
-    "- Increased max. amount of cursed Artifacts from 3 to 6",
-    "- Cursing and gaining witches now happen every second, instead of every auto save (x10 essentially, but needs fridge)",
-    "- Reduced curse chance from 20% to 0.3%",
-    "- Reduced witch gain chance from 20% to 3%",
-    "- Using at least one Defensive Herb now decreases the chance for a negative effect by 20%",
-    "- Doubled chance to get cosmetics",
-    "- Added a new spell effect: instant lore page progress",
-    "- Changed chances of certain spell effects appearing",
-
-    "v3.2",
-    "-> Shgabb The Witch:",
-    "- New event: Shgabb The Witch!",
-    "- Active from October 28th - November 10th",
-    "- x6 lore pages, x6 page progress and x6 Bags during the event",
-    "- 10 new event lore pages, 5 event PFPs, 4 Banners and 5 Achievements can be earned",
-    "- Two event currencies: Witch Shgabb and Candles",
-    "- Added Shgabb The Witch background image",
-
-    "-> Lore / Candles",
-    "- Candles can be randomly earned from clicking, just like Memory Wisps",
-    "- 1/666 chance (including the x6 event boost)",
-    "- Added 10 new event lore pages, unlocked with Candles",
-    "- Discover the story of Shgabb The Witch!",
-
-    "-> Witch Shgabb:",
-    "- Every 10 seconds, 3 random Artifacts can get cursed",
-    "- Cursed Artifacts have their level increased by one, and using them can award Witch Shgabb",
-    "- Witch Shgabb can be used to cast a witch spell",
-    "- Up to 10 Witch Shgabb can be allocated for: Push Virtue, Defensive Herbs, Hair Odor",
-    "- Push Virtue: Increases chance of receiving a more positive effect",
-    "- Defensive Herbs: Decreases chance of negative effect",
-    "- Hair Odor: Increases chance of getting cosmetics",
-    "- Spells can give the new PFPs, Banners, boosts",
+    "-> Lore:",
+    "- Lore pages are now found randomly, rather than in order",
+    "- Increased page storage from 4 to 5",
+    "- Re-wrote lore info text",
+    "- Added more info to the info page",
+    "- Added 3 new lore pages (18 total)",
+    "- Reduced Memory Wisps needed from a flat 10 for every page to: 4, 4, 4, 6, 10 (and 3, 3, 3 for the new ones)",
 
     "-> Other:",
-    "- Shbook can now render conversations",
-    "- Shgabb's sleeves now give a fixed x1000 boost if the cooldown is exactly 0",
-    '- "Prestige!" in the prestige button is now bold',
-    "- Happy Halloween!",
+    "- Changed images for Ring and Amulet Artifacts",
+    "- Improved minigame performance after switching to a different selection",
+    "- Re-organized some image files"
 ];
 
 function generatePatchNotes() {

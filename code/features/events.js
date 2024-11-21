@@ -516,8 +516,6 @@ function findShgaybb() {
                 }
             }
 
-            renderPFPs();
-            renderBanners();
             shgaybbFound = "";
             //shgaybbMode = false;
         }
