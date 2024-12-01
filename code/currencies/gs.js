@@ -48,11 +48,11 @@ function prestigeButton() {
         }
     }
     if (!settings.confirm || confirm("Do you really want to prestige?")) {
-        artifactEvent("onPrestige");
-
         let amount = increaseGS(1 * getArtifactsSimpleBoost("prestigegs"));
 
         prestigeGems();
+
+        artifactEvent("onPrestige");
 
         // Reset Shgabb, Sandwiches, some stat stuff
         game.shgabb = new Decimal(0 + (isChallenge(2) ? 0 : getArtifactsSimpleBoost("resetshgabb")));

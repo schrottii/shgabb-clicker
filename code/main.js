@@ -847,7 +847,7 @@ function updateUI() {
 
         ui.prestigeButton.style.display = "inline";
         ui.prestigeButton.innerHTML = "<b>Prestige!</b><br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
-            + "<br />Prestige to get: " + fn(calcGS()) + " GS!"
+            + "<br />Prestige to get: " + fn(calcGS().mul(getArtifactsSimpleBoost("prestigegs"))) + " GS!"
             + (bagUpgrades.prestigeGems.currentLevel() > 0 ? "<br />" + fn(Math.floor(game.stats_prestige.hms / 1000)) + " Gems!" : "")
             + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained!" : "")
             + challengeText
