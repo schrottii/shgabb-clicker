@@ -22,6 +22,7 @@ class Artifact {
         this.image = image; // name and file extension
 
         // defaults
+        this.boost = undefined;
         this.prefix = "x";
 
         // config is the last part, following ID, rarity, tier, name and image (which EVERY arti has)
@@ -263,6 +264,28 @@ class Artifact {
             + " " + this.renderSimpleEffect() + this.renderDescription() + " tier " + this.tier;
     }
 
+    obeysSearch() {
+        // if a boost filter is active, check if it fits the criteria
+        if (artifactBoostFilter != "" && this.boost != artifactBoostFilter) return false;
+
+        // this handles the artifact search
+        // it searches through the innerRender and is case insensitive
+        // you can do some neat stuff like [ or eq to see your equipped stuff
+        // you can use / as an OR operator
+        let searchQuery = ui.artifactSearch.value;
+
+        if (!searchQuery.includes("/")) {
+            return this.innerRender().toUpperCase().includes(searchQuery.toUpperCase());
+        }
+        else {
+            let splitQuery = searchQuery.split("/");
+            for (let qry in splitQuery) {
+                if (this.innerRender().toUpperCase().includes(splitQuery[qry].toUpperCase())) return true;
+            }
+            return false;
+        }
+    }
+
     render(clickable = true) {
         // what you see is what you get.
         return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
@@ -291,6 +314,9 @@ var artifactTimers = {};
 
 var hoodGoo = 0;
 var techCollection = 0;
+
+var artifactBoostTypes = ["shgabb", "clickshgabb", "autoshgabb", "resetshgabb", "sw", "gs", "prestigegs", "si", "clickspeed", "gemchance", "gems", "artifactchance", "clicksi", "bags", "cop", "copchance", undefined];
+var artifactBoostFilter = "";
 
 // toc_arti_global
 // Global Artifact functions, used anywhere
@@ -416,9 +442,66 @@ function getScrapCost(level, rarity) {
 // Artifact functions really only needed for the Artifact section itself
 //
 
+function getBoostImage(boost) {
+    switch (boost) {
+        case "shgabb":
+            return "currencies/shgabb.png";
+        case "clickshgabb":
+            return "boostimages/clickshgabb.png";
+        case "autoshgabb":
+            return "boostimages/autoshgabb.png";
+        case "resetshgabb":
+            return "boostimages/prestigeshgabb.png";
+        case "sw":
+            return "currencies/sandwich.png";
+        case "gs":
+            return "currencies/gs.png";
+        case "prestigegs":
+            return "prestige.png";
+        case "si":
+            return "currencies/silicone.png";
+        case "clickspeed":
+            return "boostimages/cooldown.png";
+        case "gemchance":
+            return "boostimages/gemchance.png";
+        case "gems":
+            return "currencies/gem.png";
+        case "artifactchance":
+            return "currencies/artifactscrap.png";
+        case "clicksi":
+            return "boostimages/clicksi.png";
+        case "bags":
+            return "currencies/bag.png";
+        case "cop":
+            return "currencies/copper.png";
+        case "copchance":
+            return "boostimages/copperchance.png";
+        case undefined:
+            return "boostimages/special.png";
+    }
+}
+
+function setBoostFilter(boost) {
+    if (boost == "undefined") boost = undefined;
+    if (artifactBoostFilter == boost) artifactBoostFilter = "";
+    else artifactBoostFilter = boost;
+
+    updateArtifacts();
+}
+
 function renderArtifacts() {
     // used by the artifacts section, this renders all the artifacts on the current page
     let render = "";
+
+    // boost filter buttons
+    if (settings.boostFilters) {
+        for (let boostType in artifactBoostTypes) {
+            render = render + "<button onclick='setBoostFilter(`" + artifactBoostTypes[boostType] + "`)' style='width: 64px; background-color: " + (artifactBoostFilter == artifactBoostTypes[boostType] ? "yellow" : "white") + ";'><img class='currency' src='images/" + getBoostImage(artifactBoostTypes[boostType]) + "' /></button>";
+        }
+        render = render + "<br />";
+    }
+
+    // Loadouts
     for (l = 0; l < game.al; l++) {
         let thisLoadoutName = (game.alnames[l] == "" || game.alnames[l] == undefined ? "Loadout " + (l + 1) : game.alnames[l]);
         render = render + "<button onclick='artifactLoadout(" + l + ", `arti`)' class='artifactLoadoutButton' style='background-color: " + (l == selectedLoadout ? "yellow" : "white") + "; font-size: " + (thisLoadoutName.length > 25 ? 12 : 16) + "px;'>" + thisLoadoutName + "</button>";
@@ -434,8 +517,8 @@ function renderArtifacts() {
 
     // Export and Import
     if (game.al >= 8) {
-        render = render + "<button onclick='exportArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 3%; background-color: white;'>E</button>";
-        render = render + "<button onclick='importArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 3%; background-color: white;'>I</button>";
+        render = render + "<button onclick='exportArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 4%; background-color: white;'>Exp.</button>";
+        render = render + "<button onclick='importArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 4%; background-color: white;'>Imp.</button>";
     }
 
     render = render + "<br />";
@@ -450,8 +533,7 @@ function renderArtifacts() {
         currentArtifact = getArtifact(artifacts[ara].ID);
 
         // only gather if you have it and it obeys the search filter
-        if (currentArtifact.isUnlocked() && currentArtifact.innerRender().toUpperCase().includes(ui.artifactSearch.value.toUpperCase())
-        ) {
+        if (currentArtifact.isUnlocked() && currentArtifact.obeysSearch()) {
             renderTheseArtifacts.push(currentArtifact.ID);
         }
     }
@@ -967,6 +1049,17 @@ var artifacts = [
             simpleBoost: ["copchance", level => 1.25 + 0.25 * level]
         }),
 
+    new Artifact(165, 1, 1, "Shiny Yellow Ring", "ring.png",
+        {
+            simpleBoost: ["prestigegs", level => 1.0 + 0.2 * level]
+        }),
+
+    new Artifact(166, 1, 1, "Ring of Reset Growth", "ring.png",
+        {
+            prefix: "+",
+            simpleBoost: ["resetshgabb", level => game.stats_prestige.gs.gt(0) ? game.stats_prestige.gs.mul(Math.pow(10, level)) : 1]
+        }),
+
 
 
 
@@ -1174,6 +1267,34 @@ var artifacts = [
             simpleBoost: ["cop", level => Math.pow(1.5, level)],
             onGem: () => {
                 getCopper();
+            }
+        }),
+
+    new Artifact(231, 2, 1, "Amulet of Golden Past", "amulet.png",
+        {
+            desc: "Based on GS last prestige",
+            simpleBoost: ["prestigegs", level => game.stats_prestige.gs.gt(0) ? game.stats_prestige.gs.log(10) / 8 * level : 1]
+        }),
+
+    new Artifact(232, 2, 1, "Amulet of Golden Day", "amulet.png",
+        {
+            desc: "Based on GS today",
+            simpleBoost: ["gs", level => game.stats_today.gs.gt(0) ? game.stats_today.gs.log(10) / 8 * level : 1]
+        }),
+
+    new Artifact(233, 2, 2, "Amulet of Buying Bags", "amulet.png",
+        {
+            desc: "Boost turns Bags for 10s after clicking",
+            simpleBoost: ["clickshgabb", level => 8 * level],
+            timer: [10, 0],
+            onClick: (level) => {
+                getArtifact(233).boost = "bags";
+                getArtifact(233).amount = 1 + 0.5 * level;
+                getArtifact(233).fillTimer();
+            },
+            onTimerZero: (level) => {
+                getArtifact(233).boost = "clickshgabb";
+                getArtifact(233).amount = 8 * level;
             }
         }),
 

@@ -1319,7 +1319,7 @@ function updateEVERYTHING() {
     renderUpgrades();
     renderAchievements();
     renderAllSelection();
-    renderArtifacts();
+    updateArtifacts();
     renderChallenges();
     renderCurrentEvent();
     renderGemOffers();

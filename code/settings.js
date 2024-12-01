@@ -67,6 +67,7 @@ var settingButtons = [
     new Setting("save", "exportToFile", "Export to file", "Save to a .txt file"),
     new Setting("save", "importFromFile", "Import from file", `Load the .txt file`),
     new ToggleSetting("gameplay", "toggleConfirm", "confirm", "Confirmation Dialogs"),
+    new ToggleSetting("design", "toggleBoostFilters", "boostFilters", "Show Artifact Boost Filters"),
 ]
 
 function onSettingClick(toggle) {
@@ -191,6 +192,12 @@ function topNotifs() {
 
 function toggleArtifactImages() {
     createNotification("Artifact images " + (settings.artifactImages ? "ON" : "OFF"));
+
+    updateArtifacts();
+}
+
+function toggleBoostFilters() {
+    createNotification("Artifact Boost Filters " + (settings.boostFilters ? "ON" : "OFF"));
 
     updateArtifacts();
 }

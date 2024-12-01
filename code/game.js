@@ -237,6 +237,7 @@ var settings = {
     noUpgrading: false,
     noAds: false,
     confirm: true,
+    boostFilters: true,
 }
 
 // BETA (cheating)

@@ -63,6 +63,7 @@ October - December 2024:
 3.2
 3.2.1
 3.3
+3.3.1
 
 
 
@@ -1971,3 +1972,27 @@ Version v3.3 Framed Pages:
 - Changed images for Ring and Amulet Artifacts
 - Improved minigame performance after switching to a different selection
 - Re-organized some image files
+
+
+
+2024/12/01 3.3.1:
+Version v3.3.1:
+-> Artifacts:
+- Added 5 new Artifacts (2 common, 3 rare, 85 total)
+- Added Boost Filters (see section below)
+- Artifact Search now supports / as an OR-operator
+- Changed names of Artifact loadout export and import buttons from E and I to Exp. and Imp.
+- Fixed Surgeon bug, and its boost is now displayed in the Prestige text
+
+-> Boost Filters:
+- Added Boost Filters to Artifacts / search
+- These allow simple and direct filtering for the 16 simple boost and special Artifacts
+- Shgabb, Click Shgabb, Auto Shgabb, Reset Shgabb, Sandwiches, GS, Prestige GS, Silicone, Cooldown, Gem chance, Gem amount, Artifacts, Click Silicone, Bags, Copper, Copper chance and special Artifacts
+- Special Artifacts include Obama, Hood Goo, Fart and others
+- Added images for them
+- Boost Filters can be combined with the search (AND-operator)
+- Added a setting to hide Boost Filters
+
+-> Other:
+- Added 2 new lore pages (20 total)
+- The GS earned in a Prestige is now added to the GS this Prestige stat

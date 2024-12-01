@@ -68,6 +68,7 @@ function prestigeButton() {
                 game.stats_prestige[stat] = 0;
             }
         }
+        game.stats_prestige.gs = amount;
 
         if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg).getGoal()) {
             // Challenge completed
