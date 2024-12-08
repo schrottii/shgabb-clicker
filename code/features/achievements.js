@@ -33,7 +33,7 @@ function changeAchievementPage(change) {
     renderAchievements();
 }
 
-function getAchievementByID(id) {
+function getAchievement(id) {
     // Use this to get a pfp
     for (a in achievements) {
         if (achievements[a].ID == id) return achievements[a];
@@ -43,12 +43,14 @@ function getAchievementByID(id) {
 
 // Give the player the achievement with the id "id"
 function awardAchievement(id) {
-    game.ach.push(achievements[id].ID);
-    createNotification("New achievement: " + achievements[id].name);
+    let thisAchievement = getAchievement(id);
+
+    game.ach.push(thisAchievement.ID);
+    createNotification("New achievement: " + thisAchievement.name);
 
     ui.newArtifactText = "Achievement Unlocked!";
-    ui.newArtifactImage.src = "images/achievements/" + achievements[id].image;
-    ui.newArtifactName.innerHTML = achievements[id].name;
+    ui.newArtifactImage.src = "images/achievements/" + thisAchievement.image;
+    ui.newArtifactName.innerHTML = thisAchievement.name;
     ui.newArtifact.style.display = "block";
     newArtifactDisplayTimer = 5;
 
@@ -68,7 +70,7 @@ function checkAchievement(id, condition = true) {
 function checkForNewAchievements() {
     for (let achGo in achievements) {
         if (achievements[achGo].unlock() && !game.ach.includes(achievements[achGo].ID)) {
-            awardAchievement(parseInt(achGo));
+            awardAchievement(achievements[achGo].ID);
             checkForDuplicateAchievements();
             break;
         }

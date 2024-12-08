@@ -833,6 +833,7 @@ function updateUI() {
     // Ads
     if (unlockedAds() && !settings.noAds) {
         ui.adBar.value = (adTime / adMax) * 100;
+        if (currentBoost == "none" && adStatus != "watching") ui.adContent.style.display = "";
     }
     else {
         ui.adContent.style.display = "none";

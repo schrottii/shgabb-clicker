@@ -293,7 +293,9 @@ function changePlayerName() {
     let newName = prompt("New name? (Max. 16 characters)");
     if (newName != "" && newName != undefined && newName != false) {
         game.profile.name = newName.substr(0, 16);
+
         checkAchievement(87);
+        renderPlayerProfile();
     }
 }
 
@@ -394,3 +396,5 @@ function renderPlayerProfile() {
     pctx.fillText("Artifacts Unlocked: " + getArtifactAmount() + "/" + totalAmountOfArtifacts(), w * 0.4, w * 0.3)
     pctx.fillText("Achievements: " + game.ach.length + "/" + achievements.length, w * 0.4, w * 0.35)
 }
+
+renderPlayerProfile();
