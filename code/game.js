@@ -140,7 +140,7 @@ var game = {
 
         copperBoost: 0,
         tiersBoostCopper: 0,
-        // zgcycbcx
+        chainGems: 0,
         moreLoadouts: 0,
 
         // Bag

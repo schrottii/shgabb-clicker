@@ -23,6 +23,7 @@ var ui = {
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
     adBar: document.getElementById("adBar"),
+    threeBars: document.getElementById("threeBars"),
 
     sandwichBar: document.getElementById("sandwichBar"),
     autoBar: document.getElementById("autoBar"),
@@ -800,7 +801,7 @@ function updateUI() {
     }
     if (game.profile.startVer == "") game.profile.startVer = gameVersion;
     if (game.profile.startDay == "") game.profile.startDay = today();
-    if (game.profile.startDay.substr(-1) == "0") game.profile.startDay = game.profile.startDay.substr(0, 7) + "1";
+    if (game.profile.startDay == "20240100") game.profile.startDay = "20241101";
 
     // Click Button
     if (game.clickCooldown > 0) {
@@ -1186,12 +1187,19 @@ function loop(tick) {
         gamesLoop(tick);
     } */
 
-    ui.autoBar.value = sandwichTime;
-    ui.autoBarText.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+    if (unlockedSandwiches()) {
+        ui.threeBars.style.display = "flex";
 
-    ui.prestigeBar.value = game.stats_prestige.playTime;
-    ui.prestigeBar.max = game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
-    ui.prestigeBarText.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
+        ui.autoBar.value = sandwichTime;
+        ui.autoBarText.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+
+        ui.prestigeBar.value = game.stats_prestige.playTime;
+        ui.prestigeBar.max = game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
+        ui.prestigeBarText.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
+    }
+    else {
+        ui.threeBars.style.display = "none";
+    }
 
     // Egg Hunt
     if (isEvent("egg")) {

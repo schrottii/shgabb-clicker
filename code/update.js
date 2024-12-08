@@ -6,7 +6,10 @@ const gameVersion  = "3.4";
 const versionTitle = "";
 
 const currentPatchNotes = [
+    "- New Améliorer Upgrade: Chain Gems (Set 8, 300): Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems",
+
     "-> Other:",
+    "- The three bars at the top are now hidden until Sandwiches are unlocked",
     "- When unlocking Ads for the first time, they directly appear, restarting the game is no longer required",
     "- Improved Player Profile display updating",
     "- Fixed issue with receiving wrong Achievements",

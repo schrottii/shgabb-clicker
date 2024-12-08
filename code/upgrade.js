@@ -388,7 +388,12 @@ var ameliorerUpgrades = {
 
     copperBoost: new AmeliorerUpgrade("copperBoost", "Copper Boost", "Get more Copper Shgabb", level => 4, level => new Decimal(2).pow(level), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 8, ameAmount: 300 }),
     tiersBoostCopper: new AmeliorerUpgrade("tiersBoostCopper", "Tiers Boost Copper", "Get more Copper Shgabb for each Challenge tier completed", level => 10, level => new Decimal(Math.max(1, 2 * level)).pow(getTotalTiers()), { maxLevel: 2, prefix: "x", ameSet: 8, ameAmount: 300 }),
-    moreLoadouts: new AmeliorerUpgrade("moreLoadouts", "More Loadouts", "Be able to buy more Artifact loadouts, and get a boost for every loadout you own", level => 4 * (level + 1), level => 1 + (game.al * level) / 100, { maxLevel: 4, prefix: "x", suffix: " Bags", ameSet: 8, ameAmount: 320 }),
+    chainGems: new AmeliorerUpgrade("chainGems", "Chain Gems", "Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems", level => Math.ceil(level / 2) + 1, level => 1 + Math.floor((level * 0.1) * 10) / 10, { prefix: "x", maxLevel: 30, ameSet: 8, ameAmount: 300 }),
+    moreLoadouts: new AmeliorerUpgrade("moreLoadouts", "More Loadouts", "Be able to buy more Artifact loadouts, and get a Bags boost for every loadout you own", level => 4 * (level + 1), level => 1 + (game.al * level) / 100, { maxLevel: 4, prefix: "x", suffix: " Bags", ameSet: 8, ameAmount: 320 }),
+
+    // insert upgrade that gives boost based on time since last amé reset
+    // insert shgabb(?) boost for every arti you own
+    // efficientDestruction: new AmeliorerUpgrade("efficientDestruction", "Efficient Destruction", "Get more Artifact Scrap from destroying Artifacts", level => 2, level => 1 + level * 0.01, { prefix: "x", maxLevel: 400, ameSet: 9, ameAmount: 400 }),
 }
 
 var bagUpgrades = {

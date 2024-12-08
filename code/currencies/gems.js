@@ -1,6 +1,8 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 // Currency file
 
+var previousClickAwardedGem = false;
+
 function unlockedGems() {
     return game.stats.hms >= 500;
 }
@@ -8,11 +10,11 @@ function unlockedGems() {
 function getGemChance(cap = 10) {
     if (getArtifact(159).isEquipped()) return 0;
 
-    return Math.min(cap, getArtifactsSimpleBoost("gemchance")
+    return (Math.min(cap, getArtifactsSimpleBoost("gemchance")
         * (getArtifact(200).isEquipped() ? 0.1 : 1)
         * (currentBoost == "moreGems" ? 3 : 1)
         * cakeValue(3, 1)
-    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1)) : 0);
+    ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1)) : 0)) * (previousClickAwardedGem ? ameliorerUpgrades.chainGems.currentEffect() : 1);
 }
 
 function getGem(multi = 1) {
@@ -20,7 +22,9 @@ function getGem(multi = 1) {
 
     // Chance to get a gem
     if (Math.random() < 1 / 100 * getGemChance() * applyLuck(100)) {
+        previousClickAwardedGem = true;
         amount = getArtifactsSimpleBoost("gems") * multi;
+
         if (amount % 1 != 0) {
             let bonusChance = amount % 1;
             amount = Math.floor(amount);
@@ -30,6 +34,10 @@ function getGem(multi = 1) {
         statIncrease("tgems", amount);
 
         createNotification("+" + amount + " Gem" + (amount > 1 ? "s" : "") + "!");
+    }
+    else {
+        // No Gem
+        previousClickAwardedGem = false;
     }
 
     artifactEvent("onGem", { "amount": amount });
