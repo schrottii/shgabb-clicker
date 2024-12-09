@@ -1,55 +1,62 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
-function isEvent(eventName, all = false) {
+class LimitedEvent {
+    constructor(name, displayName, startDate, endDate, renderFunction) {
+        this.name = name;
+        this.displayName = displayName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.renderFunction = renderFunction;
+    }
+
+    render() {
+        eval(this.renderFunction + "()");
+    }
+
+    isActive(currentDate) {
+        return parseInt(currentDate) >= this.startDate && parseInt(currentDate) <= this.endDate && game.stats.hms >= 2000;
+    }
+}
+
+// Anniversary Event | Jan 6 - Jan 20
+// Lunar New Year Event | Feb 10 - Feb 24
+// Egg Hunt | Mar 29 - Apr 12
+// Pride Event | Jun 8 - Jun 22
+// Hot Hot Summer Event | Jul 28 - Aug 18
+// Shgabb The Witch Event | Oct 28 - Nov 17
+// Christmas Event | Dec 16 - Dec 30
+
+const events = {
+    anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 120, "renderAnniversary"),
+    lunar: new LimitedEvent("lunar", "Lunar New Year Event", 210, 224, "renderLunar"),
+    egg: new LimitedEvent("egg", "Egg Hunt", 329, 419, "renderEgg"),
+    pride: new LimitedEvent("pride", "Pride Event", 608, 622, "renderPride"),
+    summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
+    shgabbthewitch: new LimitedEvent("shgabbthewitch", "Shgabb The Witch Event", 1028, 1117, "renderShgabbTheWitch"),
+    christmas: new LimitedEvent("christmas", "Christmas Event", 1216, 1230, "renderChristmas"),
+};
+
+function isEvent(eventName) {
+    // eventName can be "any" to look if there is *any* event active at all
+    // or: directly the name of an event (e. g. christmas)
+
     if (game.stats.hms < 2000) return false; // not unlocked
 
-    let date = new Date();
-    let today = parseInt("" + (date.getUTCMonth().toString().length == 1 ? ("0" + (date.getUTCMonth() + 1)) : date.getUTCMonth() + 1) + (date.getUTCDate().toString().length == 1 ? "0" + date.getUTCDate() : date.getUTCDate()));
-    if (all) eventName = "anniversary"; //first event whatever it is, so it goes thru all
+    let currentDate = today().substr(4);
+    //// debug:
+    //currentDate = events.christmas.startDate;
 
-    /*
-    if (eventName == "summer" || all) return true; // used to force event
-    else return false;
-    */
-
-    // Events below in order (January -> December)
-    switch (eventName) {
-        case "anniversary":
-            // Anniversary Event | Jan 6 - Jan 20
-            if (today >= 106 && today <= 120 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "lunar";
-        case "lunar":
-            // Lunar New Year Event | Feb 10 - Feb 24
-            if (today >= 210 && today <= 224 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "egg";
-        case "egg":
-            // Egg Event | Mar 29 - Apr 12
-            if (today >= 329 && today <= 419 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "pride";
-        case "pride":
-            // Pride Event | Jun 8 - Jun 22
-            if (today >= 608 && today <= 622 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "summer";
-        case "summer":
-            // Hot Hot Summer Event | Jul 28 - Aug 18
-            if (today >= 728 && today <= 818 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "shgabbthewitch";
-        case "shgabbthewitch":
-            // Shgabb The Witch Event | Oct 28 - Nov 17
-            if (today >= 1028 && today <= 1117 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "christmas";
-        case "christmas":
-            // Christmas Event | Dec 16 - Dec 30
-            if (today >= 1216 && today <= 1230 && game.stats.hms >= 2000) return true;
-            if (!all) return false;
-            else eventName = "nextEvent";
+    if (eventName != "any") {
+        // We are looking for one specific event
+        return events[eventName].isActive(currentDate);
     }
+    else {
+        // Look if there is *any* event
+        for (let checkEvent in events) {
+            if (events[checkEvent].isActive(currentDate)) return true;
+        }
+    }
+    
     return false; // none
 }
 
@@ -58,28 +65,19 @@ function eventValue(eventName, trueValue, falseValue) {
     else return falseValue;
 }
 
+function getCurrentEvent(currentDate = today().substr(4)) {
+    //// debug:
+    //return "christmas";
+
+    for (let checkEvent in events) {
+        if (events[checkEvent].isActive(currentDate)) return checkEvent;
+    }
+    return "none";
+}
+
 function renderCurrentEvent() {
-    if (isEvent("christmas")) {
-        renderChristmas();
-    }
-    else if (isEvent("anniversary")) {
-        renderAnniversary();
-    }
-    else if (isEvent("lunar")) {
-        renderLunar();
-    }
-    else if (isEvent("egg")) {
-        renderEgg();
-    }
-    else if (isEvent("pride")) {
-        renderPride();
-    }
-    else if (isEvent("summer")) {
-        renderSummer();
-    }
-    else if (isEvent("shgabbthewitch")) {
-        renderShgabbTheWitch();
-    }
+    if (getCurrentEvent() == "none") return false;
+    events[getCurrentEvent()].render();
 }
 
 // Christmas Event

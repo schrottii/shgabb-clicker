@@ -6,6 +6,15 @@ const gameVersion  = "3.4";
 const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Events:",
+    "- Every year, the events return",
+    "- Events may have a different time/duration or new/different content when they return",
+    "- Event code improvements",
+
+    "-> Christmas Event:",
+    "- The Christmas Event is back for Year 2",
+    "- Duration changed to December 14th - December 28th (2 days earlier)",
+
     "-> Upgrades:",
     "- New Améliorer Upgrade: Chain Gems (Set 8, 300): Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems",
     "- Expanded More Shgabb description to clarify that it unlocks many things",

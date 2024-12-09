@@ -116,7 +116,7 @@ function isSelectionUnlocked(name) {
         case "minigames":
             return unlockedAmeliorer();
         case "events":
-            return isEvent("", true);
+            return isEvent("any");
 
         case "cheats":
             return BETA.isBeta;

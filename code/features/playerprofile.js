@@ -396,5 +396,3 @@ function renderPlayerProfile() {
     pctx.fillText("Artifacts Unlocked: " + getArtifactAmount() + "/" + totalAmountOfArtifacts(), w * 0.4, w * 0.3)
     pctx.fillText("Achievements: " + game.ach.length + "/" + achievements.length, w * 0.4, w * 0.35)
 }
-
-renderPlayerProfile();

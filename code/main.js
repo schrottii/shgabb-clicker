@@ -1326,7 +1326,7 @@ function updateBG() {
         // Background is enabled
         body.style.backgroundColor = "none";
         
-        if (settings.eventBG && isEvent("", true)) {
+        if (settings.eventBG && isEvent("any")) {
             if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-christmas.png)";
             else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-anniversary.png)";
             else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-lunar.png)";
@@ -1371,6 +1371,7 @@ function updateEVERYTHING() {
 
 updateEVERYTHING();
 checkNewDay();
+renderPlayerProfile();
 
 // Generate Patch Notes
 generatePatchNotes();
