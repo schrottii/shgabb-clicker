@@ -3,7 +3,7 @@
 // Game version and patch notes
 
 const gameVersion  = "3.4";
-const versionTitle = "";
+const versionTitle = "Global Freeze";
 
 const currentPatchNotes = [
     "-> Events:",
