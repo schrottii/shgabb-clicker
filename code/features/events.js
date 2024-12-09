@@ -1,5 +1,9 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
+///////////////////////////////////
+// EVENT CLASS & LIST
+///////////////////////////////////
+
 class LimitedEvent {
     constructor(name, displayName, startDate, endDate, renderFunction) {
         this.name = name;
@@ -36,6 +40,10 @@ const events = {
     christmas: new LimitedEvent("christmas", "Christmas Event", 1216, 1230, "renderChristmas"),
 };
 
+///////////////////////////////////
+// ESSENTIAL FUNCTIONS
+///////////////////////////////////
+
 function isEvent(eventName) {
     // eventName can be "any" to look if there is *any* event active at all
     // or: directly the name of an event (e. g. christmas)
@@ -56,7 +64,7 @@ function isEvent(eventName) {
             if (events[checkEvent].isActive(currentDate)) return true;
         }
     }
-    
+
     return false; // none
 }
 
@@ -80,7 +88,14 @@ function renderCurrentEvent() {
     events[getCurrentEvent()].render();
 }
 
+///////////////////////////////////
+// ALL THE EVENTS
+///////////////////////////////////
+
+////////////////////////////////////////////////////////////// event functions below
 // Christmas Event
+///////////////////////////////////
+var cakeDuration = 0;
 
 function renderChristmas() {
     let render = "<h3>Christmas Event</h3><br /><b>December 16th - December 30th</b>";
@@ -90,78 +105,6 @@ function renderChristmas() {
         <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
         <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>`;
     ui.eventRender.innerHTML = render;
-}
-
-var cakeDuration = 0;
-
-function renderAnniversary() {
-    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 20th</b>";
-    render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
-    render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
-    if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + (game.cakeProgress >= 10000 ? "/15000" : "/10000");
-    else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
-    if (game.cakeProgress >= 10000) render = render + "<br /><button class='grayButton' onclick='eatCake()'>Eat Cake</button>";
-
-    ui.eventRender.innerHTML = render;
-    document.getElementById("eventCake").style.filter = "brightness(" + Math.min(100, game.cakeProgress / 100) + "%)";
-}
-
-var lunarAntiCooldown = 0;
-var luck = 0;
-
-function renderLunar() {
-    let render = "<h3>Lunar New Year Event</h3><br /><b>February 10th - February 24th</b>";
-    render = render + "<br />x8 Shgabb production! Qian!";
-    render = render + "<br />" + cImg("qian") + game.qian + " Qian";
-
-    if (!game.evpfps.includes(408) || !game.ach.includes(92)) render = render + "<br /><br />";
-    if (!game.evpfps.includes(408)) render = render + "<button class='chineseOffer' onclick='useQian(1)'>Buy a Chinese PFP!<br/>888 " + cImg("qian") + "</button>";
-    if (!game.ach.includes(92)) render = render + "<button class='chineseOffer' onclick='useQian(2)'>Permanent x2 Qian!<br/>96 " + cImg("qian") + "</button>";
-
-    render = render + "<br /><br /><button class='chineseOffer' onclick='useQian(3)'>Instant Faster Shgabb boost! (1 minute)<br/>26 " + cImg("qian") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useQian(4)'>Instant More Crits boost! (3 minutes)<br/>8 " + cImg("qian") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useQian(5)'>Instant Stronger Auto boost! (5 minutes)<br/>8 " + cImg("qian") + "</button>";
-
-    render = render + "<br /><br /><button class='chineseOffer' onclick='useQian(6)'>Get 3 Gems!<br/>3 " + cImg("qian") + "</buttons>";
-    render = render + "<button class='chineseOffer' onclick='useQian(7)'>Reset the click cooldown and the next 8 clicks have no cooldown!<br/>6 " + cImg("qian") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useQian(8)'>Luck!<br/>36 " + cImg("qian") + "</button>";
-
-    ui.eventRender.innerHTML = render;
-}
-
-var eggUpgrade = "";
-var eggNumber = 1;
-var eggTime = 10;
-
-function renderEgg() {
-    let render = "<h3>Egg Hunt Event</h3><br /><b>March 29th - April 19th</b>";
-    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
-
-    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";
-    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
-
-    ui.eventRender.innerHTML = render;
-}
-
-function refreshEgg() {
-    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades);
-    let randomNumber = Math.floor(Math.random() * Object.keys(allUpgrades).length - 1);
-
-    eggUpgrade = Object.keys(allUpgrades)[randomNumber];
-    eggNumber = Math.ceil(Math.random() * 4);
-}
-
-function clickEgg() {
-    doesUnlevel = true;
-    eggUpgrade = "";
-
-    createNotification("Egg found!");
-    game.eggs += 1;
-    statIncrease("eggs", 1);
-
-    renderCurrentEvent();
 }
 
 function openGifts(amount) {
@@ -213,6 +156,21 @@ function openGifts(amount) {
     createNotification("Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb, " : "") + (sandwichAmount != 0 ? fn(sandwichAmount) + " Sandwiches, " : "") + (giftContents[0] != 0 ? giftContents[0] + " Gems, " : ""));
 }
 
+////////////////////////////////////////////////////////////// event functions below
+// Anniversary Event
+///////////////////////////////////
+function renderAnniversary() {
+    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 20th</b>";
+    render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
+    render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
+    if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + (game.cakeProgress >= 10000 ? "/15000" : "/10000");
+    else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
+    if (game.cakeProgress >= 10000) render = render + "<br /><button class='grayButton' onclick='eatCake()'>Eat Cake</button>";
+
+    ui.eventRender.innerHTML = render;
+    document.getElementById("eventCake").style.filter = "brightness(" + Math.min(100, game.cakeProgress / 100) + "%)";
+}
+
 function eatCake() {
     if (game.cakeProgress < 10000) return false;
     game.cakeProgress -= 10000;
@@ -224,6 +182,32 @@ function eatCake() {
 function cakeValue(trueValue, falseValue) {
     if (cakeDuration > 0) return trueValue;
     else return falseValue;
+}
+
+////////////////////////////////////////////////////////////// event functions below
+// Lunar New Year Event
+///////////////////////////////////
+var lunarAntiCooldown = 0;
+var luck = 0;
+
+function renderLunar() {
+    let render = "<h3>Lunar New Year Event</h3><br /><b>February 10th - February 24th</b>";
+    render = render + "<br />x8 Shgabb production! Qian!";
+    render = render + "<br />" + cImg("qian") + game.qian + " Qian";
+
+    if (!game.evpfps.includes(408) || !game.ach.includes(92)) render = render + "<br /><br />";
+    if (!game.evpfps.includes(408)) render = render + "<button class='chineseOffer' onclick='useQian(1)'>Buy a Chinese PFP!<br/>888 " + cImg("qian") + "</button>";
+    if (!game.ach.includes(92)) render = render + "<button class='chineseOffer' onclick='useQian(2)'>Permanent x2 Qian!<br/>96 " + cImg("qian") + "</button>";
+
+    render = render + "<br /><br /><button class='chineseOffer' onclick='useQian(3)'>Instant Faster Shgabb boost! (1 minute)<br/>26 " + cImg("qian") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useQian(4)'>Instant More Crits boost! (3 minutes)<br/>8 " + cImg("qian") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useQian(5)'>Instant Stronger Auto boost! (5 minutes)<br/>8 " + cImg("qian") + "</button>";
+
+    render = render + "<br /><br /><button class='chineseOffer' onclick='useQian(6)'>Get 3 Gems!<br/>3 " + cImg("qian") + "</buttons>";
+    render = render + "<button class='chineseOffer' onclick='useQian(7)'>Reset the click cooldown and the next 8 clicks have no cooldown!<br/>6 " + cImg("qian") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useQian(8)'>Luck!<br/>36 " + cImg("qian") + "</button>";
+
+    ui.eventRender.innerHTML = render;
 }
 
 function useQian(offerNR) {
@@ -347,6 +331,44 @@ function applyLuck(div) {
     return (luck / div) + 1;
 }
 
+////////////////////////////////////////////////////////////// event functions below
+// Egg Hunt Event
+///////////////////////////////////
+var eggUpgrade = "";
+var eggNumber = 1;
+var eggTime = 10;
+
+function renderEgg() {
+    let render = "<h3>Egg Hunt Event</h3><br /><b>March 29th - April 19th</b>";
+    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
+
+    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";
+    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
+    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
+
+    ui.eventRender.innerHTML = render;
+}
+
+function refreshEgg() {
+    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades);
+    let randomNumber = Math.floor(Math.random() * Object.keys(allUpgrades).length - 1);
+
+    eggUpgrade = Object.keys(allUpgrades)[randomNumber];
+    eggNumber = Math.ceil(Math.random() * 4);
+}
+
+function clickEgg() {
+    doesUnlevel = true;
+    eggUpgrade = "";
+
+    createNotification("Egg found!");
+    game.eggs += 1;
+    statIncrease("eggs", 1);
+
+    renderCurrentEvent();
+}
+
 function useEggs(offerNR) {
     switch (offerNR) {
         case 1:
@@ -414,8 +436,21 @@ function useEggs(offerNR) {
     renderCurrentEvent();
 }
 
+////////////////////////////////////////////////////////////// event functions below
+// Pride Event
+///////////////////////////////////
 var shgaybbMode = false;
 var shgaybbFound = "";
+
+function renderPride() {
+    let render = "<h3>Pride Event</h3><br /><b>June 8th - June 22nd</b>";
+    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production!";
+    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward! 3 PFPs and 10 Banners. Getting Pan Shgabb second counts as a joker.";
+    render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
+
+    ui.eventRender.innerHTML = render;
+}
+
 const shgaybbList = [
     "Asexual",
     "Bi",
@@ -525,14 +560,11 @@ function findShgaybb() {
     }
 }
 
-function renderPride() {
-    let render = "<h3>Pride Event</h3><br /><b>June 8th - June 22nd</b>";
-    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production!";
-    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward! 3 PFPs and 10 Banners. Getting Pan Shgabb second counts as a joker.";
-    render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
-
-    ui.eventRender.innerHTML = render;
-}
+////////////////////////////////////////////////////////////// event functions below
+// Hot Hot Summer Event
+///////////////////////////////////
+var summerClicks = 0;
+var heatMode = false;
 
 function renderSummer() {
     let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 18th</b>";
@@ -554,9 +586,6 @@ function renderSummer() {
 
     ui.eventRender.innerHTML = render;
 }
-
-var summerClicks = 0;
-var heatMode = false;
 
 function toggleHeatMode() {
     heatMode = !heatMode;
@@ -680,6 +709,9 @@ function useShorts(offerNR) {
     renderCurrentEvent();
 }
 
+////////////////////////////////////////////////////////////// event functions below
+// Shgabb The Witch Event
+///////////////////////////////////
 var witchesSpent = [0, 0, 0, 0]; // total (up to 10), virtue, herbs, odor
 var cursedArtifacts = [0, 0, 0, 0, 0, 0]; // six
 var recentSpellText = "";
@@ -939,3 +971,5 @@ function castSpell() {
     witchesSpent = [0, 0, 0, 0];
     renderCurrentEvent();
 }
+
+/////////////////////////////////// end of event functions
