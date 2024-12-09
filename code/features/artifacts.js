@@ -519,6 +519,7 @@ function renderArtifacts() {
     if (game.al >= 8) {
         render = render + "<button onclick='exportArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 4%; background-color: white;'>Exp.</button>";
         render = render + "<button onclick='importArtifactLoadout()' class='artifactLoadoutButton' style='min-width: 32px; width: 4%; background-color: white;'>Imp.</button>";
+        render = render + "<button onclick='unequipCurrentArtifacts()' class='artifactLoadoutButton' style='min-width: 32px; width: 4%; background-color: white;'>Clear</button>";
     }
 
     render = render + "<br />";
@@ -840,6 +841,20 @@ function clickArtifact(id) {
             break;
     }
     updateArtifacts();
+}
+
+function unequipCurrentArtifacts() {
+    if (game.aeqi.length == 0) return false;
+
+    let tempEquipped = [];
+
+    for (let equippedArti in game.aeqi) {
+        tempEquipped.push(game.aeqi[equippedArti]);
+    }
+
+    for (let equippedArti in tempEquipped) {
+        switchArtifact(tempEquipped[equippedArti]);
+    }
 }
 
 function switchArtifact(id) {

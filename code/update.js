@@ -6,9 +6,15 @@ const gameVersion  = "3.4";
 const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Upgrades:",
     "- New Améliorer Upgrade: Chain Gems (Set 8, 300): Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems",
+    "- Expanded More Shgabb description to clarify that it unlocks many things",
+    "- Changed descriptions of 2+2=5 and Meaning Of Life for consistency: Increases -> Get more",
+    "- Changed description of More GS (Copper): GS -> Golden Shgabb",
 
     "-> Other:",
+    '- Artifacts: Added a button to quickly clear the current loadout ("Clear")',
+    "- Changed Auto info (below Sandwich Upgrades): added Auto info mini-header, removed background color, added current fridge time remaining, added normal/cheese percentages",
     "- The three bars at the top are now hidden until Sandwiches are unlocked",
     "- When unlocking Ads for the first time, they directly appear, restarting the game is no longer required",
     "- Improved Player Profile display updating",

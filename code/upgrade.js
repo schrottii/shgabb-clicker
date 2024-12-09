@@ -310,7 +310,7 @@ class PearlUpgrade extends Upgrade {
 }
 
 var shgabbUpgrades = {                                                                 
-    moreShgabb: new Upgrade("moreShgabb", "More Shgabb", "Get more Shgabb per click", level => new Decimal(1).max(level / 25).mul(5).mul(level).add(5).mul(new Decimal(1.01).pow(level - 500).max(1)), level => level),
+    moreShgabb: new Upgrade("moreShgabb", "More Shgabb", "Get more Shgabb per click, and unlock new content.", level => new Decimal(1).max(level / 25).mul(5).mul(level).add(5).mul(new Decimal(1.01).pow(level - 500).max(1)), level => level),
     critChance: new Upgrade("critChance", "Crit. Chance", "Increase the chance for critical hits", level => level * 10 * Math.max(1, level / 12) + 25, level => 3 + (level / 10), { maxLevel: 70, suffix: "%", unlock: () => !isChallenge(1) }),
     critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50 * (level > 19 ? Math.pow(1.75, level - 19) : 1), level => 3 + (level / 10), { maxLevel: 20, prefix: "x", unlock: () => !isChallenge(1) }),
     shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 40 * Math.max(1, level / 4) + 60, level => (level / 20), { maxLevel: 40, prefix: "-", suffix: "s", unlock: () => game.upgradeLevels.moreShgabb > 14 }),
@@ -328,8 +328,8 @@ var sandwichUpgrades = {
     fridge: new SandwichUpgrade("fridge", "Better Fridge", "Keep the Sandwiches cool for longer (More time before they stop making Shgabb)", level => (6 + level * 2) * (0.8 + Math.max(0.2, Math.max(Math.sin(level * 0.2) * (-1), Math.sin(level * 0.2))) / 6), level => level * 4, { maxLevel: 30, unlock: () => (game.upgradeLevels.swChance > 0 || game.upgradeLevels.fridge > 0) && !isChallenge(1) }),
     firstBoostsClicks: new SandwichUpgrade("firstBoostsClicks", "1. Upgrade boosts clicks", "The first Sandwich upgrade also boosts Shgabb from clicks", level => (40 + level * 20) * (0.6 + Math.max(0.2, Math.max(Math.sin(level * 0.4) * (-1), Math.sin(level * 0.2))) / 6) * (level > 19 ? level * 45 : 1), level => level / 2, { maxLevel: 20, suffix: "%", current: level => "x" + ((sandwichUpgrades.autoShgabb.currentLevel() * (sandwichUpgrades.firstBoostsClicks.effect(level) / 100)) + 1).toFixed(1), unlock: () => goldenShgabbUpgrades.unlockMSW.currentLevel() > 0 && !isChallenge(1) }),
     cheese: new SandwichUpgrade("cheese", "Cheese", "Increases auto Shgabb based on clicks", level => 10 * Math.pow(1.08, level), level => level / 200, { maxLevel: 100, suffix: "%", effectMulti: 100, current: level => "+" + fn(Math.ceil(calcShgabbClick() * sandwichUpgrades.cheese.effect(level))), unlock: () => goldenShgabbUpgrades.unlockMSW.currentLevel() > 1 && !isChallenge(1) }),
-    twoTwoFive: new SandwichUpgrade("twoTwoFive", "2+2=5", "Increases Golden Shgabb", level => 25 * Math.pow(2.5, level), level => Math.pow(1 + (level / 100), level + 1), { maxLevel: 25, prefix: "x", unlock: () => ameliorerUpgrades.unlockMSW2.currentLevel() > 0 && !isChallenge(1) }),
-    meaningOfLife: new SandwichUpgrade("meaningOfLife", "Meaning Of Life", "Increases Shgabb", level => Math.pow(420, level + 1), level => Math.pow(42, level), { maxLevel: 42, prefix: "x", unlock: () => ameliorerUpgrades.unlockMSW2.currentLevel() > 1 && !isChallenge(1) }),
+    twoTwoFive: new SandwichUpgrade("twoTwoFive", "2+2=5", "Get more Golden Shgabb", level => 25 * Math.pow(2.5, level), level => Math.pow(1 + (level / 100), level + 1), { maxLevel: 25, prefix: "x", unlock: () => ameliorerUpgrades.unlockMSW2.currentLevel() > 0 && !isChallenge(1) }),
+    meaningOfLife: new SandwichUpgrade("meaningOfLife", "Meaning Of Life", "Get more Shgabb", level => Math.pow(420, level + 1), level => Math.pow(42, level), { maxLevel: 42, prefix: "x", unlock: () => ameliorerUpgrades.unlockMSW2.currentLevel() > 1 && !isChallenge(1) }),
 }
 
 var goldenShgabbUpgrades = {
@@ -409,7 +409,7 @@ var copperShgabbUpgrades = {
     moreCopper: new CopperShgabbUpgrade("moreCopper", "More Copper", "Get more Copper every time a click gives Copper", level => new Decimal(1000).mul(level + 1).mul(new Decimal(1.01).pow(level)), level => 1 + level, { prefix: "x", unlock: () => game.upgradeLevels.copperClickChance >= 2 }),
     copperClickChance: new CopperShgabbUpgrade("copperClickChance", "Copper Click Chance", "Increases the chance to get Copper from clicking", level => new Decimal(10).pow(level + 1), level => 1 + level, { suffix: "%", maxLevel: 49 }),
     copShgabbBoost: new CopperShgabbUpgrade("copShgabbBoost", "Shgabb Boost", "Get more Shgabb", level => new Decimal(1000).pow(level + 2), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 32 }),
-    copGSBoost: new CopperShgabbUpgrade("copGSBoost", "GS Boost", "Get more GS", level => new Decimal(1000).pow(level + 3), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 256 }),
+    copGSBoost: new CopperShgabbUpgrade("copGSBoost", "GS Boost", "Get more Golden Shgabb", level => new Decimal(1000).pow(level + 3), level => new Decimal(2).pow(level), { prefix: "x", unlock: () => game.upgradeLevels.moreCopper >= 256 }),
 }
 
 var pearlUpgrades = {

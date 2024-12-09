@@ -33,10 +33,22 @@ var ui = {
     autoBarText: document.getElementById("autoBarText"),
     prestigeBarText: document.getElementById("prestigeBarText"),
 
-    // Cheats
-    cheatCurrency: document.getElementById("cheatCurrency"),
-    cheatAmount: document.getElementById("cheatAmount"),
-    cheatDisplay: document.getElementById("cheatDisplay"),
+    // essential displays
+    gameTitle: document.getElementById("gametitle"),
+    clickButton: document.getElementById("clickButton"),
+    music: document.getElementById("music"),
+    quote: document.getElementById("quote"),
+    patchNotes: document.getElementById("patchNotes"),
+    settings: document.getElementById("settings"),
+    stats: document.getElementById("stats"),
+    achievements: document.getElementById("achievements"),
+    achievementsamount: document.getElementById("achievementsamount"),
+    playerprofile: document.getElementById("playerProfileRender"),
+
+    // ad stuff
+    adContent: document.getElementById("adContent"),
+    adButton: document.getElementById("adButton"),
+    adStartButton: document.getElementById("adStartButton"),
 
     // Amount displays
     shgabbAmount: document.getElementById("shgabbAmount"),
@@ -50,6 +62,7 @@ var ui = {
     copAmount: document.getElementById("copAmount"),
     pearlAmount: document.getElementById("pearlAmount"),
 
+    topSquare: document.getElementById("topSquare"),
     topSquareDisplay: document.getElementById("topSquareDisplay"),
 
     // Images of currencies
@@ -69,11 +82,20 @@ var ui = {
     copupgradesrender: document.getElementById("copupgradesrender"),
     pearlupgradesrender: document.getElementById("pearlupgradesrender"),
 
+    // Cheats
+    cheatCurrency: document.getElementById("cheatCurrency"),
+    cheatAmount: document.getElementById("cheatAmount"),
+    cheatDisplay: document.getElementById("cheatDisplay"),
+
     // New Artifact display thing
     newArtifact: document.getElementById("newArtifact"),
     newArtifactImage: document.getElementById("newArtifactImage"),
     newArtifactName: document.getElementById("newArtifactName"),
     newArtifactText: document.getElementById("newArtifactText"),
+
+    // notifications
+    notifications: document.getElementById("notifications"),
+    newestNotification: document.getElementById("newestnotif"),
 
     // Gem offers
     gemOffer1: document.getElementById("gemOffer1"),
@@ -82,53 +104,48 @@ var ui = {
     gemOffer4: document.getElementById("gemOffer4"),
     gemOffer5: document.getElementById("gemOffer5"),
 
-    // Other
-    gameTitle: document.getElementById("gametitle"),
-    patchNotes: document.getElementById("patchNotes"),
-    clickButton: document.getElementById("clickButton"),
-    adContent: document.getElementById("adContent"),
-    adButton: document.getElementById("adButton"),
-    adStartButton: document.getElementById("adStartButton"),
-    ameReset: document.getElementById("amereset"),
-    ameReset2: document.getElementById("amereset2"),
-    pearlreset: document.getElementById("pearlreset"),
-    pearlreset2: document.getElementById("pearlreset2"),
+    // artifacts stuff
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
     artifactSearch: document.getElementById("artifactSearch"),
-    ameconvert: document.getElementById("ameconvert"),
-    achievementsamount: document.getElementById("achievementsamount"),
-    stats: document.getElementById("stats"),
-    achievements: document.getElementById("achievements"),
-    playerprofile: document.getElementById("playerProfileRender"),
-    notifications: document.getElementById("notifications"),
-    newestNotification: document.getElementById("newestnotif"),
-    music: document.getElementById("music"),
-    quote: document.getElementById("quote"),
-    prestigeButton: document.getElementById("prestigebutton"),
-    topSquare: document.getElementById("topSquare"),
-    settings: document.getElementById("settings"),
-    eventRender: document.getElementById("eventRender"),
-    challengeRender: document.getElementById("challengeRender"),
-    autoInfo: document.getElementById("autoInfo"),
-    patchNotesSizeSlider: document.getElementById("patchNotesSizeSlider"),
-    shbookSizeSlider: document.getElementById("shbookSizeSlider"),
-    pearlSection: document.getElementById("pearlSection"),
+
+    // shbook
+    shbook: document.getElementById("shbook"),
+    shbookHeader: document.getElementById("shbookHeader"),
     shbookLore: document.getElementById("shbookLore"),
     shbookLore2: document.getElementById("shbookLore2"),
     shbookCurrenciary: document.getElementById("shbookCurrenciary"),
     shbookCurrenciary2: document.getElementById("shbookCurrenciary2"),
     shbookFeaturiary: document.getElementById("shbookFeaturiary"),
     shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
-    shbook: document.getElementById("shbook"),
-    shbookHeader: document.getElementById("shbookHeader"),
+    shbookSizeSlider: document.getElementById("shbookSizeSlider"),
+    patchNotesSizeSlider: document.getElementById("patchNotesSizeSlider"),
+
+    // gem storage
     gemStorageContainer: document.getElementById("gemStorageContainer"),
     gemStorageDisplay: document.getElementById("gemStorageDisplay"),
     gemStorageAmount: document.getElementById("gemStorageAmount"),
+
+    // ame
+    ameReset: document.getElementById("amereset"),
+    ameReset2: document.getElementById("amereset2"),
+    ameconvert: document.getElementById("ameconvert"),
+
+    // pearls
+    pearlSection: document.getElementById("pearlSection"),
+    pearlreset: document.getElementById("pearlreset"),
+    pearlreset2: document.getElementById("pearlreset2"),
+
+    // Other
+    prestigeButton: document.getElementById("prestigebutton"),
+    eventRender: document.getElementById("eventRender"),
+    challengeRender: document.getElementById("challengeRender"),
+    autoInfo: document.getElementById("autoInfo"),
 }
 
 // Quotes
 const quotes = [
+    // 1.0 (10)
     "(I am always nice but whatever) - Schrottii",
     "I merge with my internal organs - K. whale",
     "how can i get this macdonald coin - Benio",
@@ -139,6 +156,8 @@ const quotes = [
     "noooo he deleted my balls - shgabb",
     "2+3=3 you idiot - Schrottii",
     "You need 7.5k merges every second - Fishka",
+
+    // 1.2 (+12 -> 22)
     "I want to kick my own ass - Brickman",
     "WHy you ping him    don 't poing peopel - Schrottii",
     "@everyone piss break - shgabb",
@@ -151,10 +170,14 @@ const quotes = [
     "Finally, some not death-threatening message - slowmerger",
     "I am teriffied of this place - slowmerger",
     "You still insulted me, human. - slowmerger",
+
+    // 1.3.2 (+4 -> 26)
     "love - elmenda452",
     "dong - shgabb",
     ":fire::dance: cavemen be like - shgabb",
     "Should I reinstall again because of developers utter degeneracy - slowmerger",
+
+    // 1.6.2 (+7 -> 33)
     "hey shgabb can you send me a cat picture pls - Barduzzi",
     "Yes, really! If you tap now to watch a short video, you'll receive 30 minutes of ad-free music. - slowmerger",
     "Bro, this sounds like contract with a satan - DaGame",
@@ -162,6 +185,8 @@ const quotes = [
     "Stop pretending I'm an hamburger - Barduzzi",
     "touch my buttons :uwu: - shgabb",
     "onions are literally a mass torture device - elmenda452",
+
+    // 1.9 (+10 -> 43)
     "you can just throw your oponion if you want - elmenda452",
     "Thanks redstone repeater from Minecraft - slowmerger",
     "my brain cells have disappeared a long time ago - Barduzzi",
@@ -172,6 +197,8 @@ const quotes = [
     "I heard your mental state is rotting down my man no offense - elmenda452",
     "um do we really want to get 1,000,000 sandwiches per click - elmenda452",
     "congrats on the knowledge - Phazer",
+
+    // 1.9.1 (+10 -> 53)
     "I will bestow my wrath upon you - elmenda452",
     "close! those are tires - Phazer",
     "my son was here earlier - Phazer",
@@ -182,25 +209,29 @@ const quotes = [
     "Quote placeholder - DaGame",
     "2021 what year was that - slowmerger",
     "lag was invented in 1855 - Schrottii",
+
+    // 2.0 (+5 -> 58)
     "im gonna outrun elken - schrotttv",
     "my brain isnt braining - schrotttv",
     "but because toilet has an o in it that could lead to infinite recursion - K. whale",
     "meh thats not the true kelp experience - Phazer",
     "finally, smoking ciguretos is economically profitable - elmenda452",
+
+    // 2.0.2 (+5 -> 63)
     "You caught a Bass! Weight: 1.46e73 kilos - DaGame",
     "yo fish is almost as fat as yo momma - elmenda452",
     "You caught a rare golden fish! Rain of pure gold appears! - DaGame",
     "You have 0.0001 second to click this quote and get Obama right now! Oops, you're late! - DaGame",
     "elken bad person no sharo statto - schrotttv",
 
-    // 2.2 (5)
+    // 2.2 (+5 -> 68)
     "my brain isnt mathing rn i need ciguretos - schrotttv",
     "i avoid plants - elmenda452",
     "are seeds still trash - slowmerger",
     "You hate them just because you're not an endgame player :puke: - DaGame",
     "i AGRHARH - Schrottii",
 
-    // 2.3 (5) & 2.3.1 (5)
+    // 2.3 (+5 -> 73) & 2.3.1 (+5 -> 78)
     "schronter you need to play more - schrotttv",
     "You won't guess my qians amount :excellent: - DaGame",
     "them fresh green rectangles - elmenda452",
@@ -212,7 +243,7 @@ const quotes = [
     "I sacrifice myself to keep this chat alive because no one will dare send anything after this - shgabb",
     "If you would add player gifts, I'd be able to send you my 168035 scraps - DaGame",
 
-    // 2.5 (5) & 2.5.3 (5)
+    // 2.5 (+5 -> 83) & 2.5.3 (+5 -> 88)
     "I will lick whatever the next message says - Aloee",
     "Updates are not allowed also - Rofl",
     "im currently spacebarrinh - Barduzzi",
@@ -224,7 +255,7 @@ const quotes = [
     "edison intensifies - elmenda452",
     "why do i want to know how much qian, eggs and cakes i got today am i a time traveller - elmenda452",
 
-    // 2.6 (2) & 2.7.1 (5)
+    // 2.6 (+2 -> 70) & 2.7.1 (+5 -> 75)
     "happily :) - elmenda452",
     "grats on the cheese - Phazer",
     "More like Miner's Pray. - Slowmerger - DaGame",
@@ -821,9 +852,10 @@ function updateUI() {
 
     // Sandwiches
     if (selection("sandwich")) {
-        ui.autoInfo.innerHTML = "<span class='square2'>Fridge Time: " + getFreezeTime().toFixed(0)
-            + "<br />Normal Auto Prod.: " + fn(calcShgabbAuto(false, "auto"))
-            + "<br />Cheese Prod.: " + fn(calcShgabbAuto(false, "cheese"))
+        ui.autoInfo.innerHTML = "<span><b>Auto info:</b>"
+            + "<br />Fridge Time: " + sandwichFreezeTime.toFixed(1) + "s/" + getFreezeTime().toFixed(0) + "s"
+            + "<br />Normal Auto Prod.: " + fn(calcShgabbAuto(false, "auto")) + " (" + (100 * calcShgabbAuto(false, "auto") / calcShgabbAuto()).toFixed(1) + "%)"
+            + "<br />Cheese Prod.: " + fn(calcShgabbAuto(false, "cheese")) + " (" + (100 * calcShgabbAuto(false, "cheese") / calcShgabbAuto()).toFixed(1) + "%)"
             + "<br />Total Prod.: " + fn(calcShgabbAuto()) + "</span>";
     }
 
