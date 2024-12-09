@@ -14,6 +14,12 @@ const currentPatchNotes = [
     "-> Christmas Event:",
     "- The Christmas Event is back for Year 2",
     "- Duration changed to December 14th - December 28th (2 days earlier)",
+    "- Added description",
+    "- Added 1 more PFP (3 -> 4)",
+    "- Added 3 Banners",
+    "- Added 3 Frames (first Event Frames ever)",
+    "- The new PFP, Banners and Frames are unlocked as usual",
+    "- The content of the latest Gift opening is now shown at the bottom (similar to Shgabb The Witch)",
 
     "-> Upgrades:",
     "- New Améliorer Upgrade: Chain Gems (Set 8, 300): Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems",

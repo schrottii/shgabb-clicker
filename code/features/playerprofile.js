@@ -193,6 +193,7 @@ var pfps = [
     new PFP(400, "Gift 1", "images/currencies/gift.png", () => game.evpfps.includes(400)),
     new PFP(401, "Gift 2",  "images/playerprofile/pfps/gift2.png", () => game.evpfps.includes(401)),
     new PFP(402, "Dingle Ball", "images/playerprofile/pfps/ball.png", () => game.evpfps.includes(402)),
+    new PFP(426, "Snowflake", "images/playerprofile/pfps/snowflake.png", () => game.evpfps.includes(426)),
 
     new PFP(403, "Party! 1", "images/playerprofile/pfps/party-pfp1.png", () => game.ach.includes(77)),
     new PFP(404, "Party! 2", "images/playerprofile/pfps/party-pfp2.png", () => game.ach.includes(78)),
@@ -255,6 +256,10 @@ var banners = [
     new Banner(416, "Game Over Candles", "images/playerprofile/banners/stw-banner2.png", () => game.evbans.includes(416)),
     new Banner(417, "Pumpkins Are Evil", "images/playerprofile/banners/stw-banner3.png", () => game.evbans.includes(417)),
 
+    new Banner(418, "Many Winters Ago...", "images/playerprofile/banners/christmas-idlebar.png", () => game.evbans.includes(418)),
+    new Banner(419, "Falling Snow", "images/playerprofile/banners/christmas-snowing.png", () => game.evbans.includes(419)),
+    new Banner(420, "Christmas Lights", "images/playerprofile/banners/christmas-lights.png", () => game.evbans.includes(420)),
+
     // 600 - 699 | Challenge Banners
     new Banner(600, "Challenger", "images/playerprofile/banners/challenge-banner.png", () => getHighestTier() >= 3),
     new Banner(601, "Basic Climb", "images/challenges/challenge1.png", () => game.clg[1] >= 3),
@@ -276,6 +281,9 @@ var frames = [
     // 300 - 399 | Currency Frames
 
     // 400 - 599 | Event Frames
+    new Banner(400, "Cold Days", "images/playerprofile/frames/christmasframe1.png", () => game.evframes.includes(400)),
+    new Banner(401, "Frozen", "images/playerprofile/frames/christmasframe2.png", () => game.evframes.includes(401)),
+    new Banner(402, "Winter Time", "images/playerprofile/frames/christmasframe3.png", () => game.evframes.includes(402)),
 ];
 
 function calcProfileCanvasSize() {

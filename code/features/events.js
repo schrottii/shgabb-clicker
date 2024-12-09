@@ -95,15 +95,21 @@ function renderCurrentEvent() {
 ////////////////////////////////////////////////////////////// event functions below
 // Christmas Event
 ///////////////////////////////////
-var cakeDuration = 0;
+var previousGiftText = "";
 
 function renderChristmas() {
-    let render = "<h3>Christmas Event</h3><br /><b>December 16th - December 30th</b>";
+    let render = "<h3>Christmas Event (Year 2)</h3><br /><b>December 14th - December 28th</b>";
+    render = render + "<br />The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! Gifts are earned by clicking, regardless of speed. Merry christmas and happy holidays everyone!";
+
+
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
     render = render + `<br /><br />
         <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
         <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
         <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>`;
+
+    render = render + "<br /><br />" + previousGiftText;
+
     ui.eventRender.innerHTML = render;
 }
 
@@ -131,6 +137,34 @@ function openGifts(amount) {
             createNotification("Received a Christmas PFP!");
             game.evpfps.push(402);
         }
+        else if (random < 0.005 && !game.evpfps.includes(426)) {
+            createNotification("Received a Christmas PFP!");
+            game.evpfps.push(426);
+        }
+        else if (random < 0.005 && !game.evbans.includes(418)) {
+            createNotification("Received a Christmas Banner!");
+            game.evbans.push(418);
+        }
+        else if (random < 0.005 && !game.evbans.includes(419)) {
+            createNotification("Received a Christmas Banner!");
+            game.evbans.push(419);
+        }
+        else if (random < 0.005 && !game.evbans.includes(420)) {
+            createNotification("Received a Christmas Banner!");
+            game.evbans.push(420);
+        }
+        else if (random < 0.005 && !game.evframes.includes(400)) {
+            createNotification("Received a Christmas Frame!");
+            game.evframes.push(400);
+        }
+        else if (random < 0.005 && !game.evframes.includes(401)) {
+            createNotification("Received a Christmas Frame!");
+            game.evframes.push(401);
+        }
+        else if (random < 0.005 && !game.evframes.includes(402)) {
+            createNotification("Received a Christmas Frame!");
+            game.evframes.push(402);
+        }
         else if (random < 0.2) giftContents[0] += 2;
         else if (random < 0.6) giftContents[1] += 1;
         else giftContents[2] += 1;
@@ -153,12 +187,15 @@ function openGifts(amount) {
     }
 
     renderCurrentEvent();
-    createNotification("Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb, " : "") + (sandwichAmount != 0 ? fn(sandwichAmount) + " Sandwiches, " : "") + (giftContents[0] != 0 ? giftContents[0] + " Gems, " : ""));
+    previousGiftText = "Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb, " : "") + (sandwichAmount != 0 ? fn(sandwichAmount) + " Sandwiches, " : "") + (giftContents[0] != 0 ? giftContents[0] + " Gems, " : "");
+    createNotification(previousGiftText);
 }
 
 ////////////////////////////////////////////////////////////// event functions below
 // Anniversary Event
 ///////////////////////////////////
+var cakeDuration = 0;
+
 function renderAnniversary() {
     let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 20th</b>";
     render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
