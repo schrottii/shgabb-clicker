@@ -161,7 +161,7 @@ function adSwitcher() {
 // Ad init
 function canPlayAds() {
     if (adStatus == "loading") {
-        if (createNotification != undefined) createNotification("Ads loaded!");
+        if (createNotification != undefined && unlockedAds()) createNotification("Joke ads loaded");
         adStatus = "loaded";
 
         ui.adContent.style.display = "";
