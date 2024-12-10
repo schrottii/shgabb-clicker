@@ -267,7 +267,7 @@ function renderShbook() {
         renderFeaturiary();
     }
     else {
-        ui.shbookHeader.innerHTML = "<div class='grayubtton'>Upgrade More Shgabb to level 100 to unlock the Shbook!</div>";
+        ui.shbookHeader.innerHTML = "<div class='grayubtton'>Upgrade More Shgabb to level 25 to unlock the Shbook!</div>";
         ui.shbook.style.display = "none";
     }
 }
