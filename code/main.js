@@ -955,6 +955,7 @@ function autoSave(manual=true) {
 }
 
 function createBackup() {
+    if (game.cheated == true) return false;
     if (confirm("Are you sure you want to CREATE a backup?")) exportGame("backup");
 }
 
@@ -978,7 +979,7 @@ function importFromFile() {
 }
 
 function exportToFile() {
-    exportGame("file");
+    if (game.cheated != true) exportGame("file");
 }
 
 function exportGame(destination = "gimme") {

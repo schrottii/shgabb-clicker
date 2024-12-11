@@ -36,6 +36,11 @@ class Upgrade {
 
     buy(isBuyingMax = false) {
         if (settings.noUpgrading) return false;
+        if (this.ID == "moreShgabb" && game.stats.pr == 0 && this.currentLevel() <= 25 && game.shgabb.gte(1e6)) {
+            console.log("Cheating? Really?");
+            game.cheated = true;
+            game.shgabb = "cheater";
+        }
         if (doesUnlevel == true) {
             doesUnlevel = false;
             return false;
@@ -311,16 +316,18 @@ class PearlUpgrade extends Upgrade {
 
 var shgabbUpgrades = {                                                                 
     moreShgabb: new Upgrade("moreShgabb", "More Shgabb", "Get more Shgabb per click, and unlock new content.", level => new Decimal(1).max(level / 25).mul(5).mul(level).add(5).mul(new Decimal(1.01).pow(level - 500).max(1)), level => level),
-    critChance: new Upgrade("critChance", "Crit. Chance", "Increase the chance for critical hits", level => level * 10 * Math.max(1, level / 12) + 25, level => 3 + (level / 10), { maxLevel: 70, suffix: "%", unlock: () => !isChallenge(1) }),
-    critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50 * (level > 19 ? Math.pow(1.75, level - 19) : 1), level => 3 + (level / 10), { maxLevel: 20, prefix: "x", unlock: () => !isChallenge(1) }),
-    shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 40 * Math.max(1, level / 4) + 60, level => (level / 20), { maxLevel: 40, prefix: "-", suffix: "s", unlock: () => game.upgradeLevels.moreShgabb > 14 }),
-    goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more Shgabb", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 24 && !isChallenge(1) }),
-    bomblike: new Upgrade("bomblike", "Bomblike", "Get even more Shgabb", level => Math.pow((level > 10 ? 3 : 5), 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb > 34 && !isChallenge(1) }),
-    swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious Sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 250, level => 0.1 * level, { maxLevel: 250, suffix: "%", unlock: () => game.upgradeLevels.moreShgabb > 49 && !isChallenge(1) }),
-    moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more Sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 24, unlock: () => game.upgradeLevels.swChance > 24 && !isChallenge(1) }),
+    shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 40 * Math.max(1, level / 4) + 60, level => (level / 20), { maxLevel: 40, prefix: "-", suffix: "s" }),
+    goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more Shgabb", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.stats.hms >= 10 && !isChallenge(1) }),
+    bomblike: new Upgrade("bomblike", "Bomblike", "Get even more Shgabb", level => Math.pow((level > 10 ? 3 : 5), 4 + (level * 1.5)), level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.stats.hms >= 15 && !isChallenge(1) }),
 
-    deepMiner: new Upgrade("deepMiner", "Deep Miner", "Get more Copper, as well as +1% GS per level (multiplicative). Every level takes 10 minutes.", level => game.stats_prestige.playTime / 600 >= (level + 1) ? new Decimal(1e10).pow(level).mul(1e50) : new Decimal("1e100").pow(level).mul("1e500"), level => new Decimal(4).pow(level), { maxLevel: 50, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb >= 12000 && !isChallenge(1), current: level => "x" + fn(new Decimal(1.01).pow(level)) + " GS" }),
-    bomblike2: new Upgrade("bomblike2", "Bomblike 2", "Get even more Shgabb", level => new Decimal(1e5).pow(level).mul(1e60), level => new Decimal(3).pow(level), { maxLevel: 30, prefix: "x", unlock: () => game.upgradeLevels.moreShgabb >= 12000 && !isChallenge(1) }),
+    swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious Sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 250, level => 0.1 * level, { maxLevel: 250, suffix: "%", unlock: () => game.stats.hms >= 25 && !isChallenge(1) }),
+    moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more Sandwiches (by using more cheese)", level => 250 + Math.pow(4, 6 + level), level => level, { maxLevel: 24, unlock: () => (game.upgradeLevels.swChance >= 10 || game.stats.hms >= 50) && !isChallenge(1) }),
+
+    critChance: new Upgrade("critChance", "Crit. Chance", "Increase the chance for critical hits", level => level * 10 * Math.max(1, level / 12) + 25, level => 3 + (level / 10), { maxLevel: 70, suffix: "%", unlock: () => game.stats.hms >= 60 && !isChallenge(1) }),
+    critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50 * (level > 19 ? Math.pow(1.75, level - 19) : 1), level => 3 + (level / 10), { maxLevel: 20, prefix: "x", unlock: () => game.stats.hms && !isChallenge(1) }),
+
+    bomblike2: new Upgrade("bomblike2", "Bomblike 2", "Get even more Shgabb", level => new Decimal(1e5).pow(level).mul(1e60), level => new Decimal(3).pow(level), { maxLevel: 30, prefix: "x", unlock: () => game.stats.hms >= 10000 && !isChallenge(1) }),
+    deepMiner: new Upgrade("deepMiner", "Deep Miner", "Get more Copper, as well as +1% GS per level (multiplicative). Every level takes 10 minutes.", level => game.stats_prestige.playTime / 600 >= (level + 1) ? new Decimal(1e10).pow(level).mul(1e50) : new Decimal("1e100").pow(level).mul("1e500"), level => new Decimal(4).pow(level), { maxLevel: 50, prefix: "x", unlock: () => game.stats.hms >= 12000 && !isChallenge(1), current: level => "x" + fn(new Decimal(1.01).pow(level)) + " GS" }),
 }
 
 var sandwichUpgrades = {

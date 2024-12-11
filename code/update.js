@@ -2,10 +2,34 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4";
-const versionTitle = "Global Freeze";
+const gameVersion  = "3.4.1";
+const versionTitle = "Global2";
 
 const currentPatchNotes = [
+    "-> Unlocking Shgabb Upgrades:",
+    "- Reviewed the order and unlock requirements for Shgabb Upgrades:",
+    "- More Shgabb: None",
+    "- Crit. Chance: None -> HMS 60",
+    "- Crit. Boost: None -> HMS 70",
+    "- Shorter Cooldown: MS 15 -> None",
+    "- Good Joke: MS 25 -> HMS 10",
+    "- Bomblike: MS 35 -> HMS 15",
+    "- Sandwich Chance: MS 50 -> HMS 25",
+    "- Sandwich Amount: Sandwich Chance level 25 -> Sandwich Chance level 10 OR HMS 50",
+    "- Deep Miner: MS 12k -> HMS 12k",
+    "- Bomblike 2: MS 12k -> HMS 10k",
+    "- Old order: More Shgabb, Crit. Chance, Crit. Boost, Shorter Cooldown, Good Joke, Bomblike, Sandwich Chance, Sandwich Amount, Deep Miner, Bomblike 2",
+    "- New order: More Shgabb, Shorter Cooldown, Good Joke, Bomblike, Sandwich Chance, Sandwich Amount, Crit. Chance, Crit. Boost, Bomblike 2, Deep Miner",
+    "- Changed their unlocks from current More Shgabb level to highest (HMS), this also affects midgame and lategame",
+
+    "-> Pre-release changes:",
+    "- Uploaded Shgabb Clicker to galaxy!",
+    "- Made it clear that the ads are not real",
+    "- Fixed incorrect Shbook text pre-unlock",
+
+
+
+    "v3.4 Global Freeze",
     "-> Events:",
     "- Every year, the events return",
     "- Events may have a different time/duration or new/different content when they return",
