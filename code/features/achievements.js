@@ -93,12 +93,12 @@ function checkForDuplicateAchievements() {
 
 var achievements = [
     new Achievement(1, "shgabb.png", "Shgabb I", "Get 10 Shgabb", () => game.shgabb >= 10),
-    new Achievement(60, "clicks.png", "Clicker I", "Click 100 times", () => game.stats.clicks >= 100),
     new Achievement(121, "shbook.png", "Nerd", "Unlock the Shbook by reaching HMS 25", () => game.stats.hms >= 25),
     new Achievement(2, "shgabb.png", "Shgabb II", "Get 1000 Shgabb", () => game.shgabb >= 1000),
     new Achievement(3, "unlock.png", "Can I eat this?", "Unlock Sandwiches by upgrading the Sandwich Chance upgrade (HMS 25)", () => game.upgradeLevels.swChance > 0),
-    new Achievement(4, "sandwich.png", "Sandwiches I", "Get 10 Sandwiches", () => game.sw >= 10),
     new Achievement(67, "clicks2.png", "Fast Clicks I", "Reduce the click cooldown to 4s or less", () => clickCooldown <= 4),
+    new Achievement(60, "clicks.png", "Clicker I", "Click 100 times", () => game.stats.clicks >= 100),
+    new Achievement(4, "sandwich.png", "Sandwiches I", "Get 10 Sandwiches", () => game.sw >= 10),
     new Achievement(181, "unlock.png", "This is home", "Unlock the Player Profile at HMS 100", () => game.stats.hms >= 100),
     new Achievement(87, "shgabb.png", "This is me", "Change your name.", () => false),
     new Achievement(5, "unlock.png", "Back to 0!", () => "Unlock Prestige by reaching " + fn(1e6) + " Shgabb", () => game.shgabb >= 1000000),
