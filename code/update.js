@@ -22,6 +22,11 @@ const currentPatchNotes = [
     "- New order: More Shgabb, Shorter Cooldown, Good Joke, Bomblike, Sandwich Chance, Sandwich Amount, Crit. Chance, Crit. Boost, Bomblike 2, Deep Miner",
     "- Changed their unlocks from current More Shgabb level to highest (HMS), this also affects midgame and lategame",
 
+    "-> Achievements:",
+    "- Added two new Achievements: This is home & Shgannta Claubb (182 total)",
+    "- Achievements for unlocks (such as Nerd or Can I eat this?) now explain how to unlock it",
+    "- Moved some Achievements around a bit, especially the first few",
+
     "-> Pre-release changes:",
     "- Uploaded Shgabb Clicker to galaxy!",
     "- Made it clear that the ads are not real",
