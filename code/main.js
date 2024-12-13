@@ -539,7 +539,7 @@ function clickButton() {
 
     }
     else {
-        createNotification("Cooldown: " + game.clickCooldown.toFixed(1));
+        createNotification("Cooldown: " + game.clickCooldown.toFixed(1) + "s");
 
         if (isEvent("summer") && heatMode) {
             heatMode = false;
@@ -854,8 +854,8 @@ function updateUI() {
     if (selection("sandwich")) {
         ui.autoInfo.innerHTML = "<span><b>Auto info:</b>"
             + "<br />Fridge Time: " + sandwichFreezeTime.toFixed(1) + "s/" + getFreezeTime().toFixed(0) + "s"
-            + "<br />Normal Auto Prod.: " + fn(calcShgabbAuto(false, "auto")) + " (" + (100 * calcShgabbAuto(false, "auto") / calcShgabbAuto()).toFixed(1) + "%)"
-            + "<br />Cheese Prod.: " + fn(calcShgabbAuto(false, "cheese")) + " (" + (100 * calcShgabbAuto(false, "cheese") / calcShgabbAuto()).toFixed(1) + "%)"
+            + "<br />Normal Auto Prod.: " + fn(calcShgabbAuto(false, "auto")) + (calcShgabbAuto(false, "auto") > 0 ? " (" + (100 * calcShgabbAuto(false, "auto") / calcShgabbAuto()).toFixed(1) + "%)" : "")
+            + "<br />Cheese Prod.: " + fn(calcShgabbAuto(false, "cheese")) + (calcShgabbAuto(false, "cheese") > 0 ? " (" + (100 * calcShgabbAuto(false, "cheese") / calcShgabbAuto()).toFixed(1) + "%)" : "")
             + "<br />Total Prod.: " + fn(calcShgabbAuto()) + "</span>";
     }
 

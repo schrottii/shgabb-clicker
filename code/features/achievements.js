@@ -55,6 +55,7 @@ function awardAchievement(id) {
     newArtifactDisplayTimer = 5;
 
     renderAchievements();
+    renderPlayerProfile();
 }
 
 // Used for stuff like event achievements - if you have this and that then you may get this

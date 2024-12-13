@@ -66,6 +66,7 @@ October - December 2024:
 3.3.1
 3.4
 3.4.1
+3.4.2
 
 
 
@@ -2076,3 +2077,20 @@ Version v3.4.1 Global2:
 - Uploaded Shgabb Clicker to galaxy!
 - Made it clear that the ads are not real
 - Fixed incorrect Shbook text pre-unlock
+
+
+
+2024/12/12 3.4.2:
+Version v3.4.2 Globbbal Frrreeze:
+-> Shbook:
+- Reworked entry for the Shbook itself
+- Expanded entries for Shgabb and Sandwiches
+- Made the unlocks for Sandwiches and Artifact Scrap more clear
+- Wiki button now has a different text if it's not unlocked yet (but it still works)
+
+-> Minor changes:
+- Removed Upgrade bought successfully notification
+- Added s to Cooldown notification
+- Player Profile updates after upgrading More Shgabb or getting an Achievement
+- Changed effect display for More Shgabb, Sandwich Amount, Auto Shgabb and Better Fridge
+- Auto Info can no longer show NaN
