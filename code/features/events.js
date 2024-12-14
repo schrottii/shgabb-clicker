@@ -28,7 +28,7 @@ class LimitedEvent {
 // Pride Event | Jun 8 - Jun 22
 // Hot Hot Summer Event | Jul 28 - Aug 18
 // Shgabb The Witch Event | Oct 28 - Nov 17
-// Christmas Event | Dec 16 - Dec 30
+// Christmas Event | Dec 14 - Dec 28
 
 const events = {
     anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 120, "renderAnniversary"),
@@ -37,7 +37,7 @@ const events = {
     pride: new LimitedEvent("pride", "Pride Event", 608, 622, "renderPride"),
     summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
     shgabbthewitch: new LimitedEvent("shgabbthewitch", "Shgabb The Witch Event", 1028, 1117, "renderShgabbTheWitch"),
-    christmas: new LimitedEvent("christmas", "Christmas Event", 1216, 1230, "renderChristmas"),
+    christmas: new LimitedEvent("christmas", "Christmas Event", 1214, 1228, "renderChristmas"),
 };
 
 ///////////////////////////////////
