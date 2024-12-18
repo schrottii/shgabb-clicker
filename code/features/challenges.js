@@ -37,6 +37,8 @@ class Challenge {
     }
 }
 
+var enableThisChallenge = 0;
+
 // game.clg [] = array of challenge tiers
 // game.aclg = active challenge (int)
 
@@ -62,7 +64,6 @@ function unlockedChallenges() {
     return getChallenge(1).isUnlocked();
 }
 
-var enableThisChallenge = 0;
 function startChallenge(ID) {
     if (game.stats_prestige.playTime < 15) {
         alert("Can't prestige yet! " + game.stats_prestige.playTime.toFixed(0) + "/15");

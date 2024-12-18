@@ -1,13 +1,8 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 // (both the minigame and the main game, lol)
 
-// const gameCanvas = document.getElementById("minigame");
-// const ctx = gameCanvas.getContext("2d");
-
 let shgicPointsPlayer = 0;
 let shgicPointsEnemy = 0;
-// let shgicLastMovePlayer = [999, 999, 999];
-// let shgicLastMoveEnemy = [999, 999, 999];
 
 var canPlayTTT = false;
 var completedTTT = false;
@@ -247,9 +242,11 @@ function shgicFindWinners() {
 
 function shgicResetField() {
     shgicField =
-        [[0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]];
+        [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
 }
 
 function shgicUpdateText(text) {

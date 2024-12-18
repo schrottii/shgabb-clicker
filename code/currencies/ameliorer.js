@@ -83,6 +83,8 @@ function ameReset() {
 
 var ameResetCounter = false;
 function toggleAmeReset() {
+    if (game.stats_prestige.playTime < 600) return false;
+
     if (ameResetCounter) {
         ameResetCounter = false;
     }
@@ -99,5 +101,11 @@ function toggleAmeReset() {
 }
 
 function toggleAmeReset2() {
+    if (game.stats_prestige.playTime < 600) return false;
     ameResetCounter = true;
+}
+
+function getAmeCame() {
+    if (ameliorerUpgrades != undefined) return ameliorerUpgrades.AMECAME.currentEffect();
+    return 0;
 }

@@ -130,6 +130,7 @@ var ui = {
     ameReset: document.getElementById("amereset"),
     ameReset2: document.getElementById("amereset2"),
     ameconvert: document.getElementById("ameconvert"),
+    ameResetText: document.getElementById("ameResetText"),
 
     // pearls
     pearlSection: document.getElementById("pearlSection"),
@@ -141,6 +142,7 @@ var ui = {
     eventRender: document.getElementById("eventRender"),
     challengeRender: document.getElementById("challengeRender"),
     autoInfo: document.getElementById("autoInfo"),
+    gameLoadingText: document.getElementById("gameLoadingText"),
 }
 
 // Quotes
@@ -569,11 +571,6 @@ function getCooldown() {
     return CD;
 }
 
-function getAmeCame() {
-    if (ameliorerUpgrades != undefined) return ameliorerUpgrades.AMECAME.currentEffect();
-    return 0;
-}
-
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
     if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1) * applyLuck(100)) {
@@ -742,13 +739,6 @@ function updateStats() {
         + "<br />Total Chengas: " + statLoader("chenga")
         + "<br />"
 
-        + "<br /><b>Fishgang:</b>"
-        + "<br />Total Trash: " + statLoader("trash")
-        + "<br />Total Fish: " + statLoader("fish")
-        + "<br />Total Fish Weight: " + statLoader("fishweight") + " (Best: " + game.bfishweight + ")"
-        + "<br />Total Fish Value: " + statLoader("fishvalue") + " (Best: " + game.bfishvalue + ")"
-        + "<br />"
-
         + "<br /><b>Events:</b>"
         + "<br />Total Gifts: " + statLoader("gifts")
         + "<br />Total Cakes: " + statLoader("cakes")
@@ -762,12 +752,20 @@ function updateStats() {
         + "<br /><b>Shgic Shgac Shgoe:</b>"
         + "<br />Total SSS wins: " + statLoader("tttw") + " (Points: " + statLoader("tttpw") + ")"
         + "<br />Total SSS losses: " + statLoader("tttl") + " (Points: " + statLoader("tttpl") + ")"
+        + "<br />"
+
+        + "<br /><b>Fishgang:</b>"
+        + "<br />Total Trash: " + statLoader("trash")
+        + "<br />Total Fish: " + statLoader("fish")
+        + "<br />Total Fish Weight: " + statLoader("fishweight") + " (Best: " + game.bfishweight + ")"
+        + "<br />Total Fish Value: " + statLoader("fishvalue") + " (Best: " + game.bfishvalue + ")"
+        + "<br />"
 
 
         + "</div><div style='float: right; width: 50%; min-height: " + higherStatsSize + "px' class='square2' id='statsDisplayRight'>"
 
         // RIGHT SIDE
-        + "Chances:"
+        + "<b>Chances:</b>"
         + "<br />Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
         + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
@@ -777,7 +775,7 @@ function updateStats() {
         + (isEvent("christmas") ? "<br />Gift Chance: 1/" + Math.ceil(250 / getCooldown()) : "")
         + "<br />"
 
-        + "<br />Progress:"
+        + "<br /><b>Progress:</b>"
         + "<br />Achievements: " + game.ach.length + "/" + achievements.length
         + "<br />Améliorer Levels: " + getTotalAme()
         + "<br />Total Tiers: " + fn(getTotalTiers())
@@ -790,7 +788,7 @@ function updateStats() {
         + "<br />- Legendary: " + getArtifactAmount(4) + "/" + totalAmountOfArtifacts(4)
         + "<br />"
 
-        + "<br />" + (unlockedArtifacts() ? "Artifact Chances:"
+        + "<br />" + (unlockedArtifacts() ? "<b>Artifact Chances:</b>"
             + "<br />Common " + (1 / 8 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(800 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(1) ? " [ALL]" : "")
             + "<br />Rare " + (1 / 40 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(4000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(2) ? " [ALL]" : "")
             + "<br />Epic " + (1 / 320 * getArtifactGainBoost()).toFixed(3) + "% (1/" + Math.ceil(32000 / getArtifactGainBoost()) + ")" + (allArtifactsOfRarity(3) ? " [ALL]" : "")
@@ -799,7 +797,7 @@ function updateStats() {
         + "<br />Total Artifact gain multi: x" + getArtifactGainBoost()
         + "<br />"
 
-        + "<br />Artifact effects:"
+        + "<br /><b>Artifact effects:</b>"
         + (getArtifactsSimpleBoost("clickspeed") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickspeed")) + " click cooldown") : "")
         + (getArtifactsSimpleBoost("shgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("shgabb")) + " Shgabb") : "")
         + (getArtifactsSimpleBoost("clickshgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickshgabb")) + " Click Shgabb") : "")
@@ -890,14 +888,9 @@ function updateUI() {
         ui.prestigeButton.style.display = "none";
     }
 
-    // Ameliorer
-    if (unlockedAmeliorer()) {
-        if (game.stats_prestige.playTime >= 600) ui.ameReset.style.display = "unset";
-        else ui.ameReset.style.display = "none";
-        ui.ameReset2.style.display = ui.ameReset.style.display;
-    }
-    else {
-        ui.ameReset.style.display = "none";
+    if (selection("ameliorer")) {
+        if (game.stats_prestige.playTime >= 600) ui.ameResetText.innerHTML = "";
+        else ui.ameResetText.innerHTML = "<br />Available in " + Math.round(600 - game.stats_prestige.playTime) + "s!";
     }
 
     updateTopSquare();
@@ -1172,7 +1165,7 @@ function importGame(source) {
 
     updateEVERYTHING();
 
-    createNotification("Game imported successfully!");
+    createNotification("Save imported successfully!");
 }
 
 function deleteGame() {
@@ -1195,7 +1188,7 @@ function deleteGame() {
     }
 }
 
-function loop(tick) {
+function shgabbClickerLoop(tick) {
     // Main Game Loop
     let time = (tick - oldTime) / 1000;
     oldTime = tick;
@@ -1304,17 +1297,8 @@ function loop(tick) {
     adSwitcher();
 
     updateUI();
-    window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(shgabbClickerLoop);
 }
-
-// Load
-importGame(localStorage.getItem("shgabbClicker"));
-if (localStorage.getItem("shgabbSettings") != undefined) {
-    settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
-
-    music.muted = !settings.music;
-    adHandler.muted = !settings.adMusic;
-    }
 
 function updateBG() {
     var body = document.getElementsByTagName('body')[0];
@@ -1342,8 +1326,6 @@ function updateBG() {
     }
 }
 
-ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
-
 // Update UI
 function updateEVERYTHING() {
     updateArtifacts();
@@ -1369,16 +1351,6 @@ function updateEVERYTHING() {
     renderSettings();
     renderShbook();
 }
-
-updateEVERYTHING();
-checkNewDay();
-renderPlayerProfile();
-
-// Generate Patch Notes
-generatePatchNotes();
-
-// Start game loop (30 FPS)
-window.requestAnimationFrame(loop);
 
 // hotkey stuff
 var hotkeysEnabled = true;
@@ -1459,9 +1431,6 @@ document.addEventListener('keyup', function (e) {
     if (e.key == "m") doBuyMax = false;
 }, false);
 
-if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
-console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
-
 // minigames setup WGGJ
 images = {
     button: "rough.png",
@@ -1504,7 +1473,67 @@ images = {
     zander: "minigames/fishgang/fish/zander.png",
     trash: "currencies/artifactscrap.png",
 }
-GAMENAME = "Minigames";
-FONT = "Rw";
-wggjLoadImages();
-wggjLoop();
+
+var GAMELOADED = false;
+var gameLoadingProgress = 0;
+function shgabbClickerSetup() {
+    // Generate Patch Notes
+    generatePatchNotes();
+    gameLoadingProgress++;
+
+    // pls dont hax kthx
+    if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+    console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
+    gameLoadingProgress++;
+
+    // Init. WGGJ - also see images dict
+    GAMENAME = "Minigames";
+    FONT = "Rw";
+
+    wggjCanvasDesiredSquare = true;
+    wggjCanvasDesiredMobileWidthMulti = 0.96;
+    wggjCanvasDesiredMobileHeightMulti = 0.96 / 1.7777777777777777777777777777778;
+    wggjCanvasDesiredPCWidthMulti = 0.8;
+    wggjCanvasDesiredPCHeightMulti = 0.8 / 1.7777777777777777777777777777778;
+
+    wggjLoadImages();
+    wggjLoop();
+
+    gameLoadingProgress++;
+
+    // Load your savefile
+    importGame(localStorage.getItem("shgabbClicker"));
+    if (localStorage.getItem("shgabbSettings") != undefined) {
+        settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
+
+        music.muted = !settings.music;
+        adHandler.muted = !settings.adMusic;
+    }
+    gameLoadingProgress++;
+
+    // Some UI preparations
+    ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
+
+    updateEVERYTHING();
+    checkNewDay();
+    renderPlayerProfile();
+    gameLoadingProgress++;
+
+    // Start game loop (30 FPS)
+    window.requestAnimationFrame(shgabbClickerLoop);
+    gameLoadingProgress++;
+
+    // Game is loaded! Yay
+    createNotification("Game loaded");
+    GAMELOADED = true;
+    ui.gameLoadingText.style.display = "none";
+    ui.gameLoadingText.innerHTML = "Game loaded!";
+    gameLoadingProgress++;
+}
+
+try {
+    shgabbClickerSetup();
+}
+catch(e){
+    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading! Maybe report it to the dev. P: " + gameLoadingProgress + "/7<br /><br />";
+}

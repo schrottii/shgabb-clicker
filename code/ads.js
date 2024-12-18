@@ -168,63 +168,69 @@ function canPlayAds() {
         adHandler.volume = 0.2;
     }
 }
-try {
-    adHandler.onended = () => {
-        currentBoost = availableBoost;
-        adStatus = "boosted";
 
-        ui.adContent.style.display = "";
-        ui.adButton.innerHTML = "Cancel<br />" + boostTexts[currentBoost].split(":")[0];
-        adHandler.style.display = "none";
+function onAdEnded() {
+    currentBoost = availableBoost;
+    adStatus = "boosted";
 
-        statIncrease("ads", 1);
-        switch (currentBoost) {
-            case "strongerClicks":
-                game.stats.wads.sc += 1;
-                break;
-            case "strongerAuto":
-                game.stats.wads.sa += 1;
-                break;
-            case "moreSandwiches":
-                game.stats.wads.msw += 1;
-                break;
-            case "fasterShgabb":
-                game.stats.wads.fs += 1;
-                break;
-            case "moreCrits":
-                game.stats.wads.mc += 1;
-                break;
-            case "moreSilicone":
-                game.stats.wads.msi += 1;
-                break;
-            case "moreGems":
-                game.stats.wads.mg += 1;
-                break;
-        }
+    ui.adContent.style.display = "";
+    ui.adButton.innerHTML = "Cancel<br />" + boostTexts[currentBoost].split(":")[0];
+    adHandler.style.display = "none";
 
-        lastAdTimer = 0;
-        availableBoost = "none";
-        adTime = adTimes[currentBoost];
-        adMax = adTimes[currentBoost];
+    statIncrease("ads", 1);
+    switch (currentBoost) {
+        case "strongerClicks":
+            game.stats.wads.sc += 1;
+            break;
+        case "strongerAuto":
+            game.stats.wads.sa += 1;
+            break;
+        case "moreSandwiches":
+            game.stats.wads.msw += 1;
+            break;
+        case "fasterShgabb":
+            game.stats.wads.fs += 1;
+            break;
+        case "moreCrits":
+            game.stats.wads.mc += 1;
+            break;
+        case "moreSilicone":
+            game.stats.wads.msi += 1;
+            break;
+        case "moreGems":
+            game.stats.wads.mg += 1;
+            break;
+    }
 
-        if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
-            ui.clickButton.classList.add("buffedProgress")
-        }
-        if (currentBoost == "moreSandwiches") {
-            ui.sandwichBar.classList.add("buffedProgress")
-        }
+    lastAdTimer = 0;
+    availableBoost = "none";
+    adTime = adTimes[currentBoost];
+    adMax = adTimes[currentBoost];
 
-        // chenga
-        if (unlockedChengas()) {
-            if (Math.random() < 0.10) {
-                game.chenga += 1;
-                statIncrease("chenga", 1);
-            }
+    if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
+        ui.clickButton.classList.add("buffedProgress")
+    }
+    if (currentBoost == "moreSandwiches") {
+        ui.sandwichBar.classList.add("buffedProgress")
+    }
+
+    // chenga
+    if (unlockedChengas()) {
+        if (Math.random() < 0.10) {
+            game.chenga += 1;
+            statIncrease("chenga", 1);
         }
     }
 }
-catch (e) {
-    console.trace(e);
+
+function onAdTimeUpdate() {
+    if (adHandler.controls == true) {
+        adHandler.onended();
+
+        adTime = -50000000000;
+        currentBoost = "screwyou";
+        availableBoost = "noneeeeeee";
+    }
 }
 
 function determineLeastUsedBoost() {
@@ -277,20 +283,6 @@ function selectVideo() {
             adHandler.src = "videos/Mend_car_crashing_vid.mp4";
             break;
     }
-}
-
-//let lastAdTimer = 0;
-adHandler.ontimeupdate = () => {
-    if (adHandler.controls == true) { //((adHandler.currentTime > lastAdTimer + 2 && adHandler.currentTime < adHandler.duration) || adHandler.playbackRate > 1) {
-        adHandler.onended();
-
-        adTime = -50000000000;
-        currentBoost = "screwyou";
-        availableBoost = "noneeeeeee";
-    }
-    /*else {
-        lastAdTimer = adHandler.currentTime;
-    }*/
 }
 
 

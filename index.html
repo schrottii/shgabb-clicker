@@ -16,19 +16,22 @@
     <span id="quote" class="quoteClass"></span>
     <br />
 
+    <!-- is loading -->
+    <span style="display: inline; font-size: 40px" id="gameLoadingText">Game is loading<br /></span>
+
     <!-- The 3 bars -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
     <div style="width: 100%; overflow-x: hidden; white-space: nowrap; display: flex; box-sizing: border-box;" id="threeBars">
         <div class="textBar" style="max-width: 33.2%">
-            <span id="autoBarText">oops!</span>
+            <span id="autoBarText"></span>
             <progress min="0" max="1" value="0" id="autoBar" style="width: 100%; display: inline" class="progressDim"></progress>
         </div>
         <div class="textBar" style="max-width: 33.2%">
-            <span id="sandwichBarText">the game</span>
+            <span id="sandwichBarText"></span>
             <progress min="0" max="100" value="0" id="sandwichBar" style="width: 100%; display: inline"></progress>
         </div>
         <div class="textBar" style="max-width: 33.2%">
-            <span id="prestigeBarText">crashed</span>
+            <span id="prestigeBarText"></span>
             <progress min="0" max="100" value="0" id="prestigeBar" style="width: 100%; display: inline" class="progressYellow"></progress>
         </div>
     </div>
@@ -46,7 +49,7 @@
         <button id="adStartButton" class="grayButton" style="display: none; width: 70%; height: 100%; float: left" onclick="adStartButtonHandler()"></button>
         <button id="adButton" class="grayButton" style="width: 25%; height: 100%; float: right" onclick="adButtonHandler()"></button><br />
     </div>
-    <video playsinline src="videos/Helmet452_Trailer.mp4" style="width:75%; max-width: 760px; display: none" id="baldad" oncanplay="setTimeout(() => canPlayAds(), 500)"></video>
+    <video playsinline src="videos/Helmet452_Trailer.mp4" style="width:75%; max-width: 760px; display: none" id="baldad" oncanplay="setTimeout(() => canPlayAds(), 500)" onended="onAdEnded()" ontimeupdate="onAdTimeUpdate()"></video>
     <hr style="clear:both" />
 
     <!-- New artifact / achievement popup -->
@@ -64,14 +67,14 @@
     <span id="selection1"></span>
 
     <!-- Shgabb -->
-    <div id="shgabbSection">
+    <div id="shgabbSection" style="display: none">
         <h3>Shgabb Upgrades</h3>
         <span id="shgabbAmount">0 Shgabb</span><br />
         <span id="upgradesrender"></span>
     </div>
 
     <!-- Sandwiches -->
-    <div id="sandwichSection">
+    <div id="sandwichSection" style="display: none">
         <h3>Sandwich Upgrades</h3>
         <span id="swAmount"></span><br />
         <span id="swupgradesrender"></span>
@@ -80,7 +83,7 @@
     </div>
 
     <!-- Golden Shgabb -->
-    <div id="goldenShgabbSection">
+    <div id="goldenShgabbSection" style="display: none">
         <h3>Golden Shgabb</h3>
         <button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
         <span id="gsAmount"></span><br />
@@ -88,14 +91,14 @@
     </div>
 
     <!-- Silicone Shgabb -->
-    <div id="siliconeShgabbSection">
+    <div id="siliconeShgabbSection" style="display: none">
         <h3>Silicone Shgabb</h3>
         <span id="siAmount"></span><br />
         <span id="siupgradesrender"></span>
     </div>
 
     <!-- Ameliorer -->
-    <div id="ameliorerSection">
+    <div id="ameliorerSection" style="display: none">
         <h3>Améliorer</h3>
         <span id="ameAmount"></span><br />
         <span id="ameconvert"></span><br />
@@ -104,19 +107,19 @@
         <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto;" onclick="toggleAmeReset()">
             <div style="height: 50%"> X </div>
             <input type="checkbox" id="amereset" value="true" onclick="toggleAmeReset2()">
-            <label for="amereset" id="amereset2">Reset Améliorer Upgrades on Prestige</label>
+            <label for="amereset" id="amereset2">Reset Améliorer Upgrades on the next Prestige (100% refund)<span id="ameResetText"></span></label>
         </div>
     </div>
 
     <!-- Bags -->
-    <div id="bagSection">
+    <div id="bagSection" style="display: none">
         <h3>Bags</h3>
         <span id="bagAmount"></span><br />
         <span id="bagupgradesrender"></span>
     </div>
 
     <!-- Copper Shgabb -->
-    <div id="copperShgabbSection">
+    <div id="copperShgabbSection" style="display: none">
         <h3>Copper Shgabb</h3>
         <span id="copAmount"></span><br />
         <span id="copupgradesrender"></span>
@@ -132,7 +135,7 @@
     <span id="selection2"></span>
 
     <!-- Gems -->
-    <div id="gemSection">
+    <div id="gemSection" style="display: none">
         <h3>Gems</h3>
         <span id="gemAmount"></span><br /><br />
         <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
@@ -149,7 +152,7 @@
     </div>
 
     <!-- Artifacts -->
-    <div id="artifactSection">
+    <div id="artifactSection" style="display: none">
         <h3>Artifacts</h3>
         <span id="artifactScrapAmount"></span>    <span id="artifactamount"></span> <br />
 
@@ -161,13 +164,13 @@
     </div>
 
     <!-- Challenges -->
-    <div id="challengeSection" class="square2">
+    <div id="challengeSection" class="square2" style="display: none">
         <h3>Challenges</h3>
         <span id="challengeRender"></span>
     </div>
 
     <!-- Minigame -->
-    <div id="minigamesSection">
+    <div id="minigamesSection" style="display: none">
         <h3>Minigames</h3>
         <canvas id="wggjCanvas" width=256 height=256 style="margin-left: 0px; margin-right: 0px"></canvas>
         <audio id="wggjAudio" type="audio/ogg" preload="auto"></audio>
@@ -187,7 +190,7 @@
     </div>
 
     <!-- Event -->
-    <div id="eventsSection" class="square2">
+    <div id="eventsSection" class="square2" style="display: none">
         <span id="eventRender"></span>
     </div>
 
@@ -224,7 +227,7 @@
     </div>
 
     <!-- Player Profile -->
-    <div id="playerprofileSection">
+    <div id="playerprofileSection" style="display: none">
         <h3>Player Profile</h3>
         <canvas id="profileCanvas" class="playerProfile"></canvas><br />
 
@@ -238,7 +241,7 @@
     </div>
 
     <!-- Stats -->
-    <div id="statsSection">
+    <div id="statsSection" style="display: none">
         <h3>Stats</h3>
         <button id="statsTime1" class="grayButton" style="background-color: yellow" onclick="statsSet(1)">All time</button>
         <button id="statsTime2" class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
@@ -247,7 +250,7 @@
     </div>
 
     <!-- Achievements -->
-    <div id="achievementsSection">
+    <div id="achievementsSection" style="display: none">
         <h3>Achievements</h3>
         <span id="achievementsamount"></span><br />
         <span id="achievements" style="width: 80%"></span>
@@ -255,7 +258,7 @@
     </div>
 
     <!-- Settings -->
-    <div id="settingsSection">
+    <div id="settingsSection" style="display: none">
         <h3>Settings</h3>
         <span id="settings"></span>
         <br><input id="myFile" type="file">
@@ -264,7 +267,7 @@
     </div>
 
     <!-- Other -->
-    <div id="socialSection">
+    <div id="socialSection" style="display: none">
         <br style="clear:both" />
         <div class="socsquare1">
             <!-- Notifications -->
@@ -276,12 +279,12 @@
             <!-- Info -->
             <h3>Info</h3>
             Shgabb Clicker - developed by Schrottii ©2023-2024<br />
-            <a href="terms-of-service.html" target="_blank"><sub>By playing you agree to the Terms of Service - read them here</sub></a><br />
+            <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
+            This game uses WGGJ v1.1 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
             <br />
 
             Based on the lovely person known as shgabb<br />
             Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
-            This game uses WGGJ and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
             <br />
 
             <h3>Donate</h3>
@@ -304,7 +307,7 @@
             <span id="patchNotes">...</span>
 
             <br />
-            <input type="range" min="10" max="40" value="16" step="2" class="slider" id="patchNotesSizeSlider" onchange="patchNotesSize()">
+            <input type="range" min="10" max="24" value="16" step="2" class="slider" id="patchNotesSizeSlider" onchange="patchNotesSize()">
             <br />
             <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
         </div>
@@ -317,8 +320,8 @@
         //                 Shbook                  //
         /////////////////////////////////////////////
     -->
-    <h3 id="shbookHeader">Shbook</h3>
-    <div id="shbook" class="grayButton" style="background-image: url('images/rough2.png'); background-size: 100%;">
+    <div id="shbook" class="grayButton" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
+        <h3 id="shbookHeader">Shbook</h3>
         <span id="selection4"></span> <br />
 
         <div id="loreSection">
@@ -356,7 +359,7 @@
             </div>
             <hr style="clear:both" />
         </div>
-        <input type="range" min="2" max="30" value="10" step="2" class="slider" id="shbookSizeSlider" onchange="shbookSize()">
+        <input type="range" min="2" max="20" value="10" step="2" class="slider" id="shbookSizeSlider" onchange="shbookSize()">
     </div>
 
     <!-- Audio -->
