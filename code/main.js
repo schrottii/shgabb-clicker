@@ -957,18 +957,24 @@ function loadBackup() {
 }
 
 function importFromFile() {
-    if (document.getElementById("myFile").value != "" && confirm("Do you really want to import from this file?")) {
-        file = document.getElementById("myFile").files[0];
-        reader = new FileReader();
-        let filecontent;
+    if (document.getElementById("myFile").value != "") {
+        if (confirm("Do you really want to import from this file?")) {
+            file = document.getElementById("myFile").files[0];
+            reader = new FileReader();
+            let filecontent;
 
-        reader.addEventListener('load', function (e) {
-            filecontent = e.target.result;
-            if (filecontent != undefined) importGame(filecontent);
-        });
+            reader.addEventListener('load', function (e) {
+                filecontent = e.target.result;
+                if (filecontent != undefined) importGame(filecontent);
+            });
 
-        reader.readAsText(file);
+            reader.readAsText(file);
+        }
     }
+    // this does not work for some reason. it's meant to trigger the click on the "select file" thing and while the file selection screen does pop up, it does not set the value at all, for some reason
+    //else {
+    //    document.getElementById("myFile").click();
+    //}
 }
 
 function exportToFile() {
@@ -1047,15 +1053,6 @@ function importButton() {
 }
 
 function importGame(source) {
-    /*
-    if (importGame == "resetmytic" && BETA.isBeta) {
-        shgicPointsPlayer = 0;
-        shgicPointsEnemy = 0;
-        game.tttd = 1;
-        canPlayTTT = true;
-    }
-    */
-
     if (source == null || source == undefined) source = Object.assign({}, emptyGame);
     else {
         try {
@@ -1069,6 +1066,7 @@ function importGame(source) {
         }
         catch (e) {
             alert("Something went wrong while unpacking the save!");
+            return false;
         }
     }
 
@@ -1476,17 +1474,21 @@ images = {
 
 var GAMELOADED = false;
 var gameLoadingProgress = 0;
+var gameLoadingPhaseName = "Loading files";
 function shgabbClickerSetup() {
     // Generate Patch Notes
+    gameLoadingPhaseName = "Generating patch notes";
     generatePatchNotes();
     gameLoadingProgress++;
 
     // pls dont hax kthx
+    gameLoadingPhaseName = "Fairness measures";
     if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
     console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
     gameLoadingProgress++;
 
     // Init. WGGJ - also see images dict
+    gameLoadingPhaseName = "WGGJ loading";
     GAMENAME = "Minigames";
     FONT = "Rw";
 
@@ -1502,6 +1504,7 @@ function shgabbClickerSetup() {
     gameLoadingProgress++;
 
     // Load your savefile
+    gameLoadingPhaseName = "Loading save from cache";
     importGame(localStorage.getItem("shgabbClicker"));
     if (localStorage.getItem("shgabbSettings") != undefined) {
         settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
@@ -1512,18 +1515,20 @@ function shgabbClickerSetup() {
     gameLoadingProgress++;
 
     // Some UI preparations
+    gameLoadingPhaseName = "UI preparations";
     ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
-
+    
     updateEVERYTHING();
     checkNewDay();
-    renderPlayerProfile();
     gameLoadingProgress++;
 
     // Start game loop (30 FPS)
+    gameLoadingPhaseName = "Starting game loop";
     window.requestAnimationFrame(shgabbClickerLoop);
     gameLoadingProgress++;
 
     // Game is loaded! Yay
+    gameLoadingPhaseName = "Finishing loading process";
     createNotification("Game loaded");
     GAMELOADED = true;
     ui.gameLoadingText.style.display = "none";
@@ -1535,5 +1540,5 @@ try {
     shgabbClickerSetup();
 }
 catch(e){
-    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading! Maybe report it to the dev. P: " + gameLoadingProgress + "/7<br /><br />";
+    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br /><br />";
 }

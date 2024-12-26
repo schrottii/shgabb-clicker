@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
     <link href="main.css" rel="stylesheet" type="text/css">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico">
 </head>
 <body>
     <!-- Top, Quote, Click Button, Notifs -->
@@ -17,7 +19,7 @@
     <br />
 
     <!-- is loading -->
-    <span style="display: inline; font-size: 40px" id="gameLoadingText">Game is loading<br /></span>
+    <span style="display: inline; font-size: 40px; color: white; background-color: black" id="gameLoadingText">Game is loading<br /></span>
 
     <!-- The 3 bars -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
@@ -261,7 +263,7 @@
     <div id="settingsSection" style="display: none">
         <h3>Settings</h3>
         <span id="settings"></span>
-        <br><input id="myFile" type="file">
+        
 
         <hr style="clear:both" />
     </div>

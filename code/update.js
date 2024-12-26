@@ -2,30 +2,17 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4.3";
-const versionTitle = "Earthwide Coldization";
+const gameVersion  = "3.4.4";
+const versionTitle = "Set Cold";
 
 const currentPatchNotes = [
-    "-> Loading:",
-    "- Changed how the game is loaded",
-    "- A lot more stuff is now hidden while loading, to prevent confusion and spoilers",
-    "- Added text to show the game is loading",
-    "- Added notification when the game is done loading",
-    "- Added error message if loading fails",
-    "- Also tweaked ad loading a bit",
-
-    "-> Améliorer:",
-    "- Reset button now mentions the refund is 100%",
-    "- Time until it's available again is now shown",
-
-    "-> Stats:",
-    "- Headers on the right side are now bold too",
-    "- Moved Fishgang to below Shgic",
+    "-> Settings:",
+    "- Sorted and re-arranged lots of settings",
+    "- Changed category of Current Effect Display from design to gameplay",
 
     "-> Other:",
-    "- Updated WGGJ from v1.0 to v1.1",
-    "- Social: changed info part a bit",
-    "- Reduced the max size (slider) of patch notes and Shbook, because let's be honest, you are not THAT blind",
+    "- Gave the loading/crash text a black background for better readability, and gave names to the loading steps",
+    "- Some smaller improvements",
 ];
 
 function generatePatchNotes() {

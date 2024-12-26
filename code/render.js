@@ -156,6 +156,9 @@ function changeSelection(sel, sels) {
 
     selectedSelection = sel;
 
+    // custom onclicks
+    if (selections[sel - 1] == "playerprofile") renderPlayerProfile();
+
     // renderSelection(sel);
     renderAllSelection();
 }

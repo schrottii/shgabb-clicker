@@ -8,10 +8,10 @@ var profileCanvasHeight = 10;
 var profileTextSizeMulti = 1;
 
 let pfp = new Image();
-pfp.src = "images/shgabbicon.png";
+pfp.src = "images/playerprofile/pfps/shgabbicon.png";
 
 let banner = new Image();
-banner.src = "images/shgabbicon.png";
+banner.src = "images/playerprofile/pfps/shgabbicon.png";
 
 let pfpbg = new Image();
 pfpbg.src = "images/playerprofile/bg.png";
