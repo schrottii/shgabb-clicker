@@ -36,6 +36,12 @@ class Upgrade {
 
     buy(isBuyingMax = false) {
         if (settings.noUpgrading) return false;
+        if (settings.preferMS && this.currency == "shgabb" && this.name != "moreShgabb") {
+            if (shgabbUpgrades.moreShgabb.currentPrice().lt(this.currentPrice())) {
+                shgabbUpgrades.moreShgabb.buy(isBuyingMax);
+                return false;
+            }
+        }
         if (doesUnlevel == true) {
             doesUnlevel = false;
             return false;

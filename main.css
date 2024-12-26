@@ -502,7 +502,7 @@ progress {
 
 .settingButton, .settingButton2 {
     background-color: #01f8fd;
-    color: #2e269a;
+    color: black;
     border-color: darkblue;
     border: 2px solid darkgray;
     font-size: 20px;

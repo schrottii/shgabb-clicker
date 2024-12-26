@@ -209,6 +209,7 @@ function shgicFindWinners() {
             game.gifts += 10;
             statIncrease("gifts", 10);
             createNotification("+10 Gifts!");
+            renderCurrentEvent();
         }
         createNotification("Come back tomorrow!");
 

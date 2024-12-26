@@ -487,7 +487,7 @@ function clickButton() {
 
             // EVENTS
             if (isEvent("christmas")) {
-                if (Math.random() < 1 / (250 / getCooldown())) {
+                if (Math.random() < 1 / (180 / getCooldown())) {
                     game.gifts += clickButtonMulti;
                     statIncrease("gifts", clickButtonMulti);
                     createNotification("+" + clickButtonMulti + " Gift!");
@@ -578,31 +578,6 @@ function criticalHit() {
         return shgabbUpgrades.critBoost.currentEffect() * (currentBoost == "moreCrits" ? 3 : 1);
     }
     return 1;
-}
-
-var upgradeColorsRender = "";
-function updateUpgradeColors() {
-    if (settings.upgradeColors == "custom") {
-        let ihText = "";
-
-        ihText = "<div class='settingButton2'> Custom colors: <br>";
-
-        for (i = 0; i < 3; i++) {
-            ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
-            for (j = 0; j < 4; j++) {
-                ihText = ihText + "<button class='grayButton' style='margin-left: 8px' onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
-            }
-            ihText = ihText + "<br />";
-        }
-        ihText = ihText + "<br /><button class='grayButton' onclick='importCustomColors()'>Import</button>";
-        ihText = ihText + "<button class='grayButton' onclick='exportCustomColors()'>Export</button></div>";
-
-        upgradeColorsRender = ihText;
-    }
-    else {
-        upgradeColorsRender = "";
-    }
-    renderSettings();
 }
 
 // Notifications
@@ -1211,7 +1186,7 @@ function shgabbClickerLoop(tick) {
         gamesLoop(tick);
     } */
 
-    if (unlockedSandwiches()) {
+    if (unlockedSandwiches() && settings.threeBars) {
         ui.threeBars.style.display = "flex";
 
         ui.autoBar.value = sandwichTime;
@@ -1325,7 +1300,12 @@ function updateBG() {
 }
 
 // Update UI
+var dateload = new Date();
+var timeSinceFullUIUpdate = dateload.getHours() + ":" + dateload.getMinutes();
 function updateEVERYTHING() {
+    dateload = new Date();
+    timeSinceFullUIUpdate = dateload.getHours() + ":" + dateload.getMinutes();
+
     updateArtifacts();
     updateBG();
     updateCurrencies();

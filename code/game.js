@@ -224,6 +224,7 @@ const emptyGame = Object.assign({}, game, {});
 // SETTINGS
 var settings = {
     music: false,
+    sounds: false,
     adMusic: true,
     background: false,
     displayCurrent: false,
@@ -241,6 +242,8 @@ var settings = {
     noAds: false,
     confirm: true,
     boostFilters: true,
+    threeBars: true,
+    preferMS: false,
 }
 
 // BETA (cheating)
