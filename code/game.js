@@ -244,6 +244,7 @@ var settings = {
     boostFilters: true,
     threeBars: true,
     preferMS: false,
+    settingDesc: true,
 }
 
 // BETA (cheating)

@@ -2,36 +2,32 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4.4";
-const versionTitle = "Set Cold";
+const gameVersion  = "3.4.5";
+const versionTitle = "The Cold Back";
 
 const currentPatchNotes = [
+    "-> Backgrounds:",
+    "- Changed four backgrounds from green to blue:",
+    "- Normal, Christmas, Anniversary, Easter",
+    "- Now all backgrounds are blue-ish or red-ish",
+
+    "-> Design:",
+    "- Changed design of the social and patch notes squares, and they look the same now",
+    "- Added lines between all four social sections and below the patch notes",
+    "- Auto info and link to all patch notes are gray boxes now (better readability)",
+    "- Changed gray button design",
+
     "-> Settings:",
-    "- Added descriptions for settings!",
-    "- Changed design of settings",
-    "- Sorted and re-arranged lots of settings",
-    "- Whether toggle options are currently Enabled or Disabled is now green/red",
-    "- Changed category of Current Effect Display from design to gameplay, and Refresh page from savefile to design",
-    "- Custom Colors: swapped position of export and import",
-
-    "-> New settings:",
-    "- (Gameplay:) Three Bars",
-    "- (Gameplay:) Prefer More Shgabb",
-    "- (Audio:) Sounds",
-    "- (Savefile:) Export Settings",
-    "- (Savefile:) Import Settings",
-
-    "-> Christmas Event:",
-    "- Changed average time per Gift from 250s to 180s",
-    "- Increased cosmetic chance from 0.5% to 2%, reduced Gem chance from 19.5% to 18%",
-    "- This changes the average time to collect all 10 cosmetics from 138 hours to 25 hours, 2000 Gifts to 500 Gifts",
-    "- Latest Gift content now includes cosmetics",
-    "- Event description now mentions Gifts from Shgic (still 10/day)",
-    "- Fixed render issue",
+    "- New setting (design): Show Setting Descriptions",
+    "- Ad Music (setting) is now affected by the general Music setting, so if either is disabled, ad music won't play",
+    "- Changed border color and hover effect of setting buttons",
+    "- Custom colors selection is now centered",
 
     "-> Other:",
-    "- Gave the loading/crash text a black background for better readability, and gave names to the loading steps",
-    "- Some smaller improvements",
+    "- Improved breakinfinity loading",
+    "- Small joke ad related changes",
+    "- Fixed not being able to unlock lore pages that had their requirements reduced if you have more than the new requirement",
+    "- Fixed crash when using Sosnog in Challenge 3 (Manual Grind)",
 ];
 
 function generatePatchNotes() {

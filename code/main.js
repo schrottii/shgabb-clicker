@@ -1490,7 +1490,7 @@ function shgabbClickerSetup() {
         settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
 
         music.muted = !settings.music;
-        adHandler.muted = !settings.adMusic;
+        adHandler.muted = !(settings.music && settings.adMusic);
     }
     gameLoadingProgress++;
 

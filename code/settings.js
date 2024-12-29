@@ -26,7 +26,7 @@ class Setting {
     render() {
         return `<button onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` +
             `<b><u>` + this.title + `</u></b><br />`
-            + `<span style="font-size: 14px; line-height: 0.5;">` + this.getDescription() + `</span><hr />`
+            + (settings.settingDesc ? (`<span style="font-size: 14px; line-height: 0.5;">` + this.getDescription() + `</span><hr />`) : ``)
             + this.getCurrentEffect() + `</button>`;
     }
 }
@@ -71,6 +71,7 @@ var settingButtons = [
     new Setting("design", "topNotifs", "Top Notification Amount", "Adjust how many of the most recent notifications are shown at the top.", () => "Current: " + settings.topNotifs),
     new ToggleSetting("design", "toggleArtifactImages", "artifactImages", "Show Artifact Images", "If this is disabled, the images of Artifacts are hidden. Can make the Artifact inventory more clear."),
     new ToggleSetting("design", "toggleBoostFilters", "boostFilters", "Show Artifact Boost Filters", "When enabled, Artifact Boost Filters are visible. They can be used to quickly filter the Artifact inventory for certain types of Artifacts."),
+    new ToggleSetting("design", "toggleSettingDescriptions", "settingDesc", "Show Setting Descriptions", "When enabled, descriptions for settings are shown. Disable to achieve more compact settings."),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", "Adjust the colors of the three types of upgrades (can afford, too expensive, maxed)!", () => "Current: " + settings.upgradeColors),
     new Setting("design", "updateEVERYTHING", "Refresh page", "Updates everything UI-related", () => "Last full update: " + timeSinceFullUIUpdate),
 
@@ -81,7 +82,7 @@ var settingButtons = [
 
     // save
     new Setting("save", "exportGame", "Export Game", "[EXPORT - CODE] Copy the savefile to the clipboard. Store it somewhere and use it to load your progress later.", ""),
-    new Setting("save", "importButton", "Import Game", "[IMPORT - CODE] Import a savefile, obtained from the Export Game setting."),
+    new Setting("save", "importButton", "Import Game", "[IMPORT - CODE] Import a savefile, obtained from the Export Game setting.", ""),
     new Setting("save", "createBackup", "Create Backup", "[EXPORT - BACKUP] Create an additional save in the cache, independent from the normal save.", ""),
     new Setting("save", "loadBackup", "Load Backup", "[IMPORT - BACKUP] Load the additional cached backup, that you created with the Create Backup setting.", () => localStorage.getItem("shgabbBackup") != null ? "Exists" : "Does not exist"),
     new Setting("save", "exportToFile", "Export to file", "[EXPORT - FILE] Save to a .txt file", ""),
@@ -244,6 +245,12 @@ function toggleBoostFilters() {
     updateArtifacts();
 }
 
+function toggleSettingDescriptions() {
+    createNotification("Setting Descriptions " + (settings.settingDesc ? "ON" : "OFF"));
+
+    renderSettings();
+}
+
 // these five below are all for the Upgrade Colors setting
 function toggleUpgradeColors() {
     settings.upgradeColors = (upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] != undefined ? upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] : upgradeColors[0]);
@@ -290,7 +297,7 @@ function updateUpgradeColors() {
     if (settings.upgradeColors == "custom") {
         let ihText = "";
 
-        ihText = "<div class='settingButton2'> Custom colors: <br>";
+        ihText = "<div class='settingButton2' style='margin: 0 auto;'> <b>Custom colors: </b><br />";
 
         for (i = 0; i < 3; i++) {
             ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
@@ -329,7 +336,7 @@ function toggleSounds() {
 
 function toggleAdMusic() {
     createNotification("Ad Music " + (settings.adMusic ? "ON" : "OFF"));
-    adHandler.muted = !settings.adMusic;
+    adHandler.muted = !(settings.music && settings.adMusic);
 }
 
 ///////////////////////////////////

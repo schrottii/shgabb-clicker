@@ -69,6 +69,7 @@ October - December 2024:
 3.4.2
 3.4.3
 3.4.4
+3.4.5
 
 
 
@@ -2152,3 +2153,30 @@ Version v3.4.4 Set Cold:
 -> Other:
 - Gave the loading/crash text a black background for better readability, and gave names to the loading steps
 - Some smaller improvements
+
+
+
+2024/12/29 v3.4.5:
+Version v3.4.5 The Cold Back:
+-> Backgrounds:
+- Changed four backgrounds from green to blue:
+- Normal, Christmas, Anniversary, Easter
+- Now all backgrounds are blue-ish or red-ish
+
+-> Design:
+- Changed design of the social and patch notes squares, and they look the same now
+- Added lines between all four social sections and below the patch notes
+- Auto info and link to all patch notes are gray boxes now (better readability)
+- Changed gray button design
+
+-> Settings:
+- New setting (design): Show Setting Descriptions
+- Ad Music (setting) is now affected by the general Music setting, so if either is disabled, ad music won't play
+- Changed border color and hover effect of setting buttons
+- Custom colors selection is now centered
+
+-> Other:
+- Improved breakinfinity loading
+- Small joke ad related changes
+- Fixed not being able to unlock lore pages that had their requirements reduced if you have more than the new requirement
+- Fixed crash when using Sosnog in Challenge 3 (Manual Grind)

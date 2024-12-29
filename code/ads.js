@@ -93,7 +93,7 @@ function adButtonHandler() {
 
             setRandomAd();
 
-            ui.adStartButton.innerHTML = "Ad offer: " + boostTexts[availableBoost];
+            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + boostTexts[availableBoost];
             ui.adButton.innerHTML = cImg("chenga");
 
             break;
@@ -123,7 +123,7 @@ function adSwitcher() {
             ui.adBar.style.display = "none";
 
             adStatus = "possible";
-            ui.adStartButton.innerHTML = "Ad offer: " + boostTexts[availableBoost];
+            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + boostTexts[availableBoost];
             if (unlockedChengas()) ui.adButton.innerHTML = cImg("chenga") + game.chenga;
             else ui.adButton.innerHTML = "HMS 5000";
         }
@@ -284,31 +284,3 @@ function selectVideo() {
             break;
     }
 }
-
-
-
-// AdSense
-/*
-function adInject() {
-    for (let adnr = 1; adnr <= 3; adnr++) {
-        let adContainer = document.getElementById('googleAd' + adnr);
-        if (adContainer) {
-            // clear the container's content
-            adContainer.innerHTML = '';
-
-            // reset any attributes that indicate ad status
-            adContainer.removeAttribute('data-adsbygoogle-status');
-            adContainer.removeAttribute('data-ad-status');
-        }
-    }
-
-    // reinitialize the ad slots
-    try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        // console.log("Ads refreshed");
-    }
-    catch (e) {
-        // console.log("That didn't go so well");
-    }
-}
-*/

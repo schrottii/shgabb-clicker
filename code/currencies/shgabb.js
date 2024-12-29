@@ -56,7 +56,7 @@ function calcShgabbClick(sosnog = false) {
 function calcShgabbAuto(sosnog2 = false, returnType = "all") {
     // Get auto prod
 
-    if (isChallenge(3)) return 0;
+    if (isChallenge(3)) return new Decimal(0);
     if (getArtifact(305).isEquipped() && sosnog2 == false && returnType != "cheese") return calcShgabbClick(true);
 
     if (returnType == "cheese") {

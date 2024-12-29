@@ -73,15 +73,20 @@ function getWisp(multi = 1) {
         Math.random() <= getWispRarity(getLoreByID(game.loreSel).source) * multi * eventValue("shgabbthewitch", 6, 1)) {
         game.loreP += 1;
 
-        if (game.loreP == getLoreByID(game.loreSel).amount) {
-            game.lore.push(game.loreSel);
-            game.lorepg.splice(game.lorepg.indexOf(game.loreSel), 1);
-            game.loreSel = 0;
-            game.loreP = 0;
-            createNotification("Unlocked new lore!");
-        }
+        checkCollectingLorePageCompleted();
 
         renderShbook();
+    }
+}
+
+function checkCollectingLorePageCompleted() {
+    // checks if the lore page you currently are collecting is done now (enough wisps)
+    if (game.loreP >= getLoreByID(game.loreSel).amount) {
+        game.lore.push(game.loreSel);
+        game.lorepg.splice(game.lorepg.indexOf(game.loreSel), 1);
+        game.loreSel = 0;
+        game.loreP = 0;
+        createNotification("Unlocked new lore!");
     }
 }
 
@@ -174,7 +179,10 @@ function shbookSize() {
 }
 
 function changeShbook(id, sel) {
+    // id: 0 lore 1 currenciary 2 featuriary
     shbookSelections[id] = sel;
+
+    if (id == 0 && sel == game.loreSel) checkCollectingLorePageCompleted();
 
     renderShbook();
 }

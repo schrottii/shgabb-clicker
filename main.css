@@ -453,32 +453,35 @@ progress {
     font-size: 18px;
 }
 
-.socsquare1 {
-    background-color: rgb(128, 128, 128, 0.7);
-    border-color: black;
-    border: 2px solid burlywood;
+.socialHr {
+    color: purple;
+    height: 2px;
+}
+
+.socialContainerSquare {
+    background-color: rgb(128, 128, 156, 0.8);
+    border: 2px solid purple;
     text-align: left;
     width: 100%;
 }
 
 @media only screen and (min-width: 768px) {
-    .socsquare1 {
+    .socialContainerSquare {
         float: left;
         text-align: right;
         width: 49%;
     }
 }
 
-.socsquare2 {
-    background-color: rgb(128, 128, 128, 1);
-    border-color: black;
-    border: 2px solid burlywood;
+.patchNotesContainerSquare {
+    background-color: rgb(128, 128, 156, 0.8);
+    border: 2px solid purple;
     text-align: left;
     width: 100%;
 }
 
 @media only screen and (min-width: 768px) {
-    .socsquare2 {
+    .patchNotesContainerSquare {
         float: right;
         text-align: left;
         width: 49%;
@@ -487,9 +490,9 @@ progress {
 }
 
 .grayButton {
-    background-color: #01f8fd;
+    background-color: #AFC3D6;
     color: #2e269a;
-    border: 2px solid darkgray;
+    border: 3px solid #726E6B;
     font-size: 18px;
     text-align: center;
     font-family: Rw;
@@ -504,7 +507,7 @@ progress {
     background-color: #01f8fd;
     color: black;
     border-color: darkblue;
-    border: 2px solid darkgray;
+    border: 4px solid darkblue;
     font-size: 20px;
     text-align: center;
     font-family: Rw;
@@ -516,8 +519,8 @@ progress {
 }
 
     .settingButton:hover {
-        filter: brightness(120%);
-        transition: 0.3s;
+        filter: brightness(60%);
+        transition: 0.2s;
     }
 
 .settingButton2 {

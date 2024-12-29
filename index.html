@@ -45,7 +45,7 @@
     </div>
     <br />
 
-    <!-- Ads -->
+    <!-- Joke Ads -->
     <div id="adContent" style="display: none; width: 100%; height: 44px; background-color: darkblue">
         <progress min="0" max="100" value="0" id="adBar" class="adBar"></progress>
         <button id="adStartButton" class="grayButton" style="display: none; width: 70%; height: 100%; float: left" onclick="adStartButtonHandler()"></button>
@@ -81,7 +81,9 @@
         <span id="swAmount"></span><br />
         <span id="swupgradesrender"></span>
         <br />
-        <span id="autoInfo"></span><br />
+        <div class="grayButton" style="width: 50%; margin: 0 auto;">
+            <span id="autoInfo"></span><br />
+        </div>
     </div>
 
     <!-- Golden Shgabb -->
@@ -270,12 +272,11 @@
     <!-- Other -->
     <div id="socialSection" style="display: none">
         <br style="clear:both" />
-        <div class="socsquare1">
+        <div class="socialContainerSquare">
             <!-- Notifications -->
             <h3>Notifications</h3>
             <span id="notifications"></span>
-
-            <hr style="clear:both" />
+            <hr class="socialHr" style="clear:both" />
 
             <!-- Info -->
             <h3>Info</h3>
@@ -286,13 +287,14 @@
 
             Based on the lovely person known as shgabb<br />
             Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
-            <br />
+            <hr class="socialHr" style="clear:both" />
 
             <h3>Donate</h3>
             If you enjoy the game and have money, consider donating some! It is my only income source and supports me a lot: <br />
             <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
             <script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#2e269a', 'Y8Y2XMZX1'); kofiwidget2.draw();</script>
-            <br /><br />
+            <br />
+            <hr class="socialHr" style="clear:both" />
 
             <!-- Social -->
             <h3>Social</h3>
@@ -302,15 +304,18 @@
             <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
             <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
         </div>
-        <div class="socsquare2">
+        <div class="patchNotesContainerSquare">
             <!-- Patch Notes -->
             <h3>Patch Notes</h3>
             <span id="patchNotes">...</span>
 
             <br />
+            <hr class="socialHr" style="clear:both" />
             <input type="range" min="10" max="24" value="16" step="2" class="slider" id="patchNotesSizeSlider" onchange="patchNotesSize()">
             <br />
-            <a href="patch-notes.txt" target="_blank"><sub>(All patch notes)</sub></a>
+            <div style="display: flex; align-items: center; justify-content: center; ">
+                <div class="grayButton" style="width: 25%;"><a href="patch-notes.txt" target="_blank">(All patch notes)</a></div>
+            </div>
         </div>
     </div>
 
@@ -368,8 +373,7 @@
     <audio src="audio\fart.mp3" id="fart"></audio>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2"></script>
-
+    <script src="code\breakinfinity.js"></script>
     <script src="code\ads.js"></script>
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
