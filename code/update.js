@@ -2,32 +2,30 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4.5";
-const versionTitle = "The Cold Back";
+const gameVersion  = "3.4.6";
+const versionTitle = "Secolnd Birthday";
 
 const currentPatchNotes = [
-    "-> Backgrounds:",
-    "- Changed four backgrounds from green to blue:",
-    "- Normal, Christmas, Anniversary, Easter",
-    "- Now all backgrounds are blue-ish or red-ish",
+    "-> Anniversary Event:",
+    "- The Anniversary Event is back for Year 2",
+    "- Same duration: January 6th - January 20th",
+    "- Added description (before it only was a list of boosts)",
+    "- Added a bar to display Cake progress",
+    "- New Achievement: It's A Celebration (Get all 8 Anniversary Event cosmetics) (183 total)",
 
-    "-> Design:",
-    "- Changed design of the social and patch notes squares, and they look the same now",
-    "- Added lines between all four social sections and below the patch notes",
-    "- Auto info and link to all patch notes are gray boxes now (better readability)",
-    "- Changed gray button design",
+    "-> Anniversary Event Cosmetics:",
+    "- No new PFPs (still 3)",
+    "- Added 3 Banners",
+    "- Added 2 Frames",
+    "- One of the Banners is special, and is given to everyone who plays the event this year!",
+    "- This event's cosmetics are now gathered by eating Cake",
+    "- PFPs were tied to the Achievements before, those who gained them that way get to keep them",
 
-    "-> Settings:",
-    "- New setting (design): Show Setting Descriptions",
-    "- Ad Music (setting) is now affected by the general Music setting, so if either is disabled, ad music won't play",
-    "- Changed border color and hover effect of setting buttons",
-    "- Custom colors selection is now centered",
-
-    "-> Other:",
-    "- Improved breakinfinity loading",
-    "- Small joke ad related changes",
-    "- Fixed not being able to unlock lore pages that had their requirements reduced if you have more than the new requirement",
-    "- Fixed crash when using Sosnog in Challenge 3 (Manual Grind)",
+    "-> Special Cosmetics:",
+    "- Special Cosmetics are PFPs, Banners or Items that have an unusually high resolution, are animated or have some other special thing",
+    "- There are only two of them for now: default Shgabb PFP and Two Years of Shgabb Banner (new)",
+    "- They are marked with a yellow outline",
+    "- Similarly, equipped Cosmetics now have a green outline",
 ];
 
 function generatePatchNotes() {

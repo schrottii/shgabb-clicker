@@ -22,11 +22,12 @@ pfpframe.src = "images/playerprofile/frames/defaultframe.png";
 // PFPs
 
 class PFP {
-    constructor(ID, name, image, unlock) {
+    constructor(ID, name, image, unlock, config) {
         this.ID = ID;
         this.name = name;
         this.image = image;
         this.unlock = unlock;
+        this.config = config;
     }
 
     getType() {
@@ -34,14 +35,26 @@ class PFP {
         if (this.ID >= 300) return "Currency";
         if (this.ID >= 100) return "Normal";
     }
+
+    isEquipped() {
+        return game.profile.pfp == this.ID;
+    }
+
+    isSpecial() {
+        if (this.config == undefined) return false;
+        return this.config.special != undefined ? this.config.special : false;
+    }
+
+    renderBorder() {
+        if (this.isEquipped()) return "border-width: 4px; border-color: green;";
+        if (this.isSpecial()) return "border-width: 4px; border-color: yellow;";
+        return "";
+    }
 }
 
-class Banner {
-    constructor(ID, name, image, unlock) {
-        this.ID = ID;
-        this.name = name;
-        this.image = image;
-        this.unlock = unlock;
+class Banner extends PFP {
+    constructor(ID, name, image, unlock, config) {
+        super(ID, name, image, unlock, config)
     }
 
     getType() {
@@ -51,14 +64,15 @@ class Banner {
         if (this.ID >= 100) return "Normal";
         return "None";
     }
+
+    isEquipped() {
+        return game.profile.banner == this.ID;
+    }
 }
 
-class Frame {
-    constructor(ID, name, image, unlock) {
-        this.ID = ID;
-        this.name = name;
-        this.image = image;
-        this.unlock = unlock;
+class Frame extends PFP {
+    constructor(ID, name, image, unlock, config) {
+        super(ID, name, image, unlock, config)
     }
 
     getType() {
@@ -67,6 +81,10 @@ class Frame {
         if (this.ID >= 300) return "Currency";
         if (this.ID >= 100) return "Normal";
         return "None";
+    }
+
+    isEquipped() {
+        return game.profile.frame == this.ID;
     }
 }
 
@@ -79,7 +97,7 @@ function renderPFPsPart() {
     let render = "<h3>PFPs</h3>";
 
     for (p in pfps) {
-        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px'><img src='" + pfps[p].image + "' style='width: 50%'><br />" + pfps[p].name + "<br />(" + pfps[p].getType() + ")</button>"
+        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + pfps[p].renderBorder() + "'><img src='" + pfps[p].image + "' style='width: 50%'><br />" + pfps[p].name + "<br />(" + pfps[p].getType() + ")</button>"
         else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + pfps[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + pfps[p].getType() + "</button>"
     }
 
@@ -94,7 +112,7 @@ function renderBannersPart() {
     let render = "<h3>Banners</h3>";
 
     for (p in banners) {
-        if (banners[p].unlock()) render = render + "<button class='artifact' onclick='setBanner(" + banners[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px'><img src='" + banners[p].image + "' style='width: 50%'><br />" + banners[p].name + "<br />(" + banners[p].getType() + ")</button>"
+        if (banners[p].unlock()) render = render + "<button class='artifact' onclick='setBanner(" + banners[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + banners[p].renderBorder() + "'><img src='" + banners[p].image + "' style='width: 50%'><br />" + banners[p].name + "<br />(" + banners[p].getType() + ")</button>"
         else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + banners[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + banners[p].getType() + "</button>"
     }
 
@@ -109,7 +127,7 @@ function renderFramesPart() {
     let render = "<h3>Frames</h3>";
 
     for (p in frames) {
-        if (frames[p].unlock()) render = render + "<button class='artifact' onclick='setFrame(" + frames[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px'><img src='" + frames[p].image + "' style='width: 50%'><br />" + frames[p].name + "<br />(" + frames[p].getType() + ")</button>"
+        if (frames[p].unlock()) render = render + "<button class='artifact' onclick='setFrame(" + frames[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + frames[p].renderBorder() + "'><img src='" + frames[p].image + "' style='width: 50%'><br />" + frames[p].name + "<br />(" + frames[p].getType() + ")</button>"
         else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + frames[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + frames[p].getType() + "</button>"
     }
 
@@ -175,7 +193,7 @@ function getFrameByID(id) {
 
 var pfps = [
     // 100 - 299 | Normal/Generic/Random PFPs
-    new PFP(100, "Shgabb", "images/playerprofile/pfps/shgabbicon.png", () => true),
+    new PFP(100, "Shgabb", "images/playerprofile/pfps/shgabbicon.png", () => true, { special: true }),
     new PFP(101, "Winner", "images/playerprofile/pfps/winner.png", () => game.stats.hms >= 5000),
     new PFP(102, "Mobile", "images/playerprofile/pfps/phone.png", () => game.stats.hms >= 10000),
 
@@ -195,9 +213,9 @@ var pfps = [
     new PFP(402, "Dingle Ball", "images/playerprofile/pfps/ball.png", () => game.evpfps.includes(402)),
     new PFP(426, "Snowflake", "images/playerprofile/pfps/snowflake.png", () => game.evpfps.includes(426)),
 
-    new PFP(403, "Party! 1", "images/playerprofile/pfps/party-pfp1.png", () => game.ach.includes(77)),
-    new PFP(404, "Party! 2", "images/playerprofile/pfps/party-pfp2.png", () => game.ach.includes(78)),
-    new PFP(405, "Big Cake", "images/cake.png", () => game.ach.includes(79)),
+    new PFP(403, "Party! 1", "images/playerprofile/pfps/party-pfp1.png", () => game.evpfps.includes(403)),
+    new PFP(404, "Party! 2", "images/playerprofile/pfps/party-pfp2.png", () => game.evpfps.includes(404)),
+    new PFP(405, "Big Cake", "images/cake.png", () => game.evpfps.includes(405)),
 
     new PFP(406, "Qian", "images/currencies/qian.png", () => game.evpfps.includes(406)),
     new PFP(407, "Chinese 1", "images/playerprofile/pfps/chinese-pfp1.png", () => game.evpfps.includes(407)),
@@ -260,6 +278,10 @@ var banners = [
     new Banner(419, "Falling Snow", "images/playerprofile/banners/christmas-snowing.png", () => game.evbans.includes(419)),
     new Banner(420, "Christmas Lights", "images/playerprofile/banners/christmas-lights.png", () => game.evbans.includes(420)),
 
+    new Banner(421, "The Light of Birth", "images/playerprofile/banners/anvbnr1.png", () => game.evbans.includes(421)),
+    new Banner(422, "Happy Birthday", "images/playerprofile/banners/anvbnr2.png", () => game.evbans.includes(422)),
+    new Banner(423, "Two Years of Shgabb", "images/playerprofile/banners/big-twoyearsbanner.png", () => game.evbans.includes(423), { special: true }),
+
     // 600 - 699 | Challenge Banners
     new Banner(600, "Challenger", "images/playerprofile/banners/challenge-banner.png", () => getHighestTier() >= 3),
     new Banner(601, "Basic Climb", "images/challenges/challenge1.png", () => game.clg[1] >= 3),
@@ -273,17 +295,20 @@ var banners = [
 
 var frames = [
     // 100 - 299 | Normal/Generic/Random Frames
-    new Banner(0, "No Frame", "", () => true),
-    new Banner(100, "Default Frame", "images/playerprofile/frames/defaultframe.png", () => true),
-    new Banner(101, "Thin Frame", "images/playerprofile/frames/thin.png", () => game.stats.hms >= 6000),
-    new Banner(102, "3D Frame", "images/playerprofile/frames/3d.png", () => game.stats.hms >= 8000),
+    new Frame(0, "No Frame", "", () => true),
+    new Frame(100, "Default Frame", "images/playerprofile/frames/defaultframe.png", () => true),
+    new Frame(101, "Thin Frame", "images/playerprofile/frames/thin.png", () => game.stats.hms >= 6000),
+    new Frame(102, "3D Frame", "images/playerprofile/frames/3d.png", () => game.stats.hms >= 8000),
 
     // 300 - 399 | Currency Frames
 
     // 400 - 599 | Event Frames
-    new Banner(400, "Cold Days", "images/playerprofile/frames/christmasframe1.png", () => game.evframes.includes(400)),
-    new Banner(401, "Frozen", "images/playerprofile/frames/christmasframe2.png", () => game.evframes.includes(401)),
-    new Banner(402, "Winter Time", "images/playerprofile/frames/christmasframe3.png", () => game.evframes.includes(402)),
+    new Frame(400, "Cold Days", "images/playerprofile/frames/christmasframe1.png", () => game.evframes.includes(400)),
+    new Frame(401, "Frozen", "images/playerprofile/frames/christmasframe2.png", () => game.evframes.includes(401)),
+    new Frame(402, "Winter Time", "images/playerprofile/frames/christmasframe3.png", () => game.evframes.includes(402)),
+
+    new Frame(403, "Party Person", "images/playerprofile/frames/partyframe.png", () => game.evframes.includes(403)),
+    new Frame(404, "The King", "images/playerprofile/frames/kingframe.png", () => game.evframes.includes(404)),
 ];
 
 function calcProfileCanvasSize() {

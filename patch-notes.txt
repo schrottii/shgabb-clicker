@@ -70,6 +70,8 @@ October - December 2024:
 3.4.3
 3.4.4
 3.4.5
+January - March 2025:
+3.4.6
 
 
 
@@ -2180,3 +2182,28 @@ Version v3.4.5 The Cold Back:
 - Small joke ad related changes
 - Fixed not being able to unlock lore pages that had their requirements reduced if you have more than the new requirement
 - Fixed crash when using Sosnog in Challenge 3 (Manual Grind)
+
+
+
+2025/01/04 v3.4.6:
+Version v3.4.6 Secolnd Birthday:
+-> Anniversary Event:
+- The Anniversary Event is back for Year 2
+- Same duration: January 6th - January 20th
+- Added description (before it only was a list of boosts)
+- Added a bar to display Cake progress
+- New Achievement: It's A Celebration (Get all 8 Anniversary Event cosmetics) (183 total)
+
+-> Anniversary Event Cosmetics:
+- No new PFPs (still 3)
+- Added 3 Banners
+- Added 2 Frames
+- One of the Banners is special, and is given to everyone who plays the event this year!
+- This event's cosmetics are now gathered by eating Cake
+- PFPs were tied to the Achievements before, those who gained them that way get to keep them
+
+-> Special Cosmetics:
+- Special Cosmetics are PFPs, Banners or Items that have an unusually high resolution, are animated or have some other special thing
+- There are only two of them for now: default Shgabb PFP and Two Years of Shgabb Banner (new)
+- They are marked with a yellow outline
+- Similarly, equipped Cosmetics now have a green outline

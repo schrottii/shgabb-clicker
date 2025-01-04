@@ -255,6 +255,7 @@ var achievements = [
     new Achievement(77, "cake.png", "Make Some Cake I", "Eat 1 Cake", () => game.stats.cakes >= 1),
     new Achievement(78, "cake.png", "Make Some Cake II", "Eat 5 Cakes", () => game.stats.cakes >= 5),
     new Achievement(79, "cake.png", "Make Some Cake III", "Eat 25 Cakes", () => game.stats.cakes >= 25),
+    new Achievement(183, "cake.png", "It's A Celebration", "Get all 8 Anniversary Event cosmetics", () => game.evpfps.includes(403) && game.evpfps.includes(404) && game.evpfps.includes(405) && game.evbans.includes(421) && game.evbans.includes(422) && game.evbans.includes(423) && game.evframes.includes(403) && game.evframes.includes(404)),
 
     new Achievement(91, "chinese.png", "Happy New Year!", "Play during the Lunar New Year Event", () => isEvent("lunar")),
     new Achievement(92, "chinese.png", "You are rich", "Double Qian!", () => false),

@@ -52,7 +52,7 @@ function isEvent(eventName) {
 
     let currentDate = today().substr(4);
     //// debug:
-    //currentDate = events.christmas.startDate;
+    currentDate = events.anniversary.startDate;
 
     if (eventName != "any") {
         // We are looking for one specific event
@@ -75,7 +75,7 @@ function eventValue(eventName, trueValue, falseValue) {
 
 function getCurrentEvent(currentDate = today().substr(4)) {
     //// debug:
-    //return "christmas";
+    return "anniversary";
 
     for (let checkEvent in events) {
         if (events[checkEvent].isActive(currentDate)) return checkEvent;
@@ -209,22 +209,52 @@ function openGifts(amount) {
 var cakeDuration = 0;
 
 function renderAnniversary() {
-    let render = "<h3>Anniversary Event</h3><br /><b>January 6th - January 20th</b>";
-    render = render + "<br />x3 Shgabb production! 50% more Artifacts! Cake!";
+    // SAVE EDITING
+    if (!game.evbans.includes(423) && new Date().getYear() + 1900 == 2025 && isEvent("anniversary")) game.evbans.push(423); // free banner for everyone in the second year
+    if (!game.evpfps.includes(403)) { // give PFPs to those who played in the first year
+        if (game.ach.includes(77)) game.evpfps.push(403);
+        if (game.ach.includes(78)) game.evpfps.push(404);
+        if (game.ach.includes(79)) game.evpfps.push(405);
+    }
+
+    // HEADER AND DESCRIPTION
+    let render = "<h3>Anniversary Event (Year 2)</h3><b>January 6th - January 20th</b>";
+    render = render + "<br />Celebrate the anniversary of Shgabb Clicker! During the event, all Shgabb production is tripled, and Artifacts are 50% easier to find. Click to bake a Cake - up to 15 000 times - after 10 000 clicks it's done and can be eaten. After eating a Cake, you get x5 click speed, x10 Shgabb production and x3 Gem Chance for three minutes. Get 3 PFPs, 0 Banners and 0 Frames to celebrate!";
+
+    // CAKE
+    render = render + "<br /><h3>Cake</h3>";
     render = render + "<img class='cake' id='eventCake' src='images/cake.png'>";
+    render = render + "<progress id='cakeBar' min='0' max='100' value='0'></progress> <br />";
+
     if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + (game.cakeProgress >= 10000 ? "/15000" : "/10000");
     else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
     if (game.cakeProgress >= 10000) render = render + "<br /><button class='grayButton' onclick='eatCake()'>Eat Cake</button>";
 
+    // FINISH
     ui.eventRender.innerHTML = render;
+
     document.getElementById("eventCake").style.filter = "brightness(" + Math.min(100, game.cakeProgress / 100) + "%)";
+    document.getElementById("cakeBar").value = Math.min(100, game.cakeProgress / 100);
 }
 
 function eatCake() {
     if (game.cakeProgress < 10000) return false;
+
     game.cakeProgress -= 10000;
     cakeDuration = 180;
     statIncrease("cakes", 1);
+
+    if (game.evpfps.includes(403)) {
+        // first cake is guaranteed to give the first PFP, after that, this happens:
+        if (Math.random() < 0.33 && !game.evpfps.includes(404)) game.evpfps.push(404);
+        else if (Math.random() < 0.33 && !game.evpfps.includes(405)) game.evpfps.push(405);
+        else if (Math.random() < 0.33 && !game.evbans.includes(421)) game.evbans.push(421);
+        else if (Math.random() < 0.33 && !game.evbans.includes(422)) game.evbans.push(422);
+        else if (Math.random() < 0.33 && !game.evbans.includes(423)) game.evbans.push(423);
+        else if (Math.random() < 0.33 && !game.evframes.includes(403)) game.evframes.push(403);
+        else if (Math.random() < 0.33 && !game.evframes.includes(404)) game.evframes.push(404);
+    }
+    
     renderCurrentEvent();
 }
 
