@@ -14,7 +14,7 @@ let shgicField =
     [0, 0, 0]];
 
 function shgicClickField(x, y) {
-    if (shgicField[x][y] == 0 && canPlayTTT) {
+    if (shgicField[x][y] == 0 && canPlayTTT && shicTimeSinceLastMove < 0.8) {
         shgicField[x][y] = 1;
         // shgicLastMovePlayer = [x, y, 0];
         shicTimeSinceLastMove = 1;
@@ -269,19 +269,20 @@ scenes["shgic"] = new Scene(
             loadScene("mainmenu");
         }, { quadratic: true, centered: true });
 
-        createSquare("verticalA", 0.4, 0.3, 0.05 / wggjCanvasWidth * wggjCanvasHeight, 0.4, "black");
-        createSquare("verticalB", 0.6, 0.3, 0.05 / wggjCanvasWidth * wggjCanvasHeight, 0.4, "black");
+        let ignoreW = 1 / wggjCanvasWidth * wggjCanvasHeight;
+        createSquare("verticalA", 0.433, 0.25, 0.02 * ignoreW, 0.55, "black");
+        createSquare("verticalB", 0.566, 0.25, 0.02 * ignoreW, 0.55, "black");
 
-        createSquare("horizontalA", 0.3, 0.4, 0.4, 0.05 / wggjCanvasWidth * wggjCanvasHeight, "black");
-        createSquare("horizontalB", 0.3, 0.6, 0.4, 0.05 / wggjCanvasWidth * wggjCanvasHeight, "black");
+        createSquare("horizontalA", 0.3, 0.4, 0.4, 0.02, "black");
+        createSquare("horizontalB", 0.3, 0.6, 0.4, 0.02, "black");
 
         createSquare("scoreBG", 0.35, 0.05, 0.3, 0.1, "white");
         createText("scoreText", 0.5, 0.125, "-", { size: 32 });
 
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                createButton("f" + j + "." + i, 0.36 + 0.15 * i, 0.2675 + 0.2 * j, 0.125, 0.125, "empty", () => { shgicClickField(j, i) }, { quadratic: true, centered: true });
-                createImage("i" + j + "." + i, 0.36 + 0.15 * i, 0.2675 + 0.2 * j, 0.125, 0.125, "sssn", { quadratic: true, centered: true });
+                createButton("f" + j + "." + i, 0.3875 + 0.2 * i * ignoreW, 0.2675 + 0.2 * j, 0.125, 0.125, "empty", () => { shgicClickField(j, i) }, { quadratic: true, centered: true });
+                createImage("i" + j + "." + i, 0.3875 + 0.2 * i * ignoreW, 0.2675 + 0.2 * j, 0.125, 0.125, "sssn", { quadratic: true, centered: true });
             }
         }
 

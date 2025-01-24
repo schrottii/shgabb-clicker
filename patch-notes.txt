@@ -72,6 +72,7 @@ October - December 2024:
 3.4.5
 January - March 2025:
 3.4.6
+3.4.7
 
 
 
@@ -2207,3 +2208,36 @@ Version v3.4.6 Secolnd Birthday:
 - There are only two of them for now: default Shgabb PFP and Two Years of Shgabb Banner (new)
 - They are marked with a yellow outline
 - Similarly, equipped Cosmetics now have a green outline
+
+
+
+2025/01/24 v3.4.7:
+Version v3.4.7 B-Cold:
+-> Minigames:
+- Minigames now only run if selected, otherwise, absolutely nothing happens (improved performance)
+- Shgic: Added a 0.2s cooldown after clicking, to prevent accidental double clicks
+- Shgic: Made the grid prettier
+- Fishgang: Removed Your Mom and Pirate Piss, added Brick, Broken Key, Glass Shard and Fake Fish
+
+-> Minigames Selection:
+- If Fishgang isn't unlocked yet, it now says Locked
+- Added a background behind the list of minigames
+- Increased size of minigame names
+- Split Shgic's full name into two lines
+- Changed "Play Da Game" text to "Play Minigame"
+- Sped up CD animations
+- Fixed CD being slightly too low after being put back (Fishgang locked)
+
+-> Shbook:
+- Added a list of all unlocks to the Featuriary (new Unlocks entry)
+- Changed the Shbook entry to have its list on the left side too
+- Lore page 10% GS boost is now base
+- The upgrade turns it exponential instead
+
+-> Design:
+- Moved the three bars from between the click button and notifications, to between notifications and top currencies display
+- Added black backgrounds behind the quote and recent notifications
+
+-> Other:
+- The cooldown notification now shows a second decimal if the cooldown is less than 0.1s
+- Fixed Anniversary Event lasting too long

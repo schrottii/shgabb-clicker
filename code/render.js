@@ -158,6 +158,13 @@ function changeSelection(sel, sels) {
 
     // custom onclicks
     if (selections[sel - 1] == "playerprofile") renderPlayerProfile();
+    if (selections[sel - 1] == "minigames") {
+        wggjRunning = true;
+        wggjLoop();
+    }
+    else if (wggjRunning) {
+        wggjRunning = false;
+    }
 
     // renderSelection(sel);
     renderAllSelection();

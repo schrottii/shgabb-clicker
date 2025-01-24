@@ -31,11 +31,15 @@ const trashDictionary = [
     "Plastic Straw",
     "Plastic Net",
     "Plastic Bag",
-    "Your Mom",
+//    "Your Mom",
     "Old Boot",
     "Tin Can",
     "Wood",
-    "Pirate Piss",
+//    "Pirate Piss",
+    "Brick",
+    "Broken Key",
+    "Glass Shard",
+    "Fake Fish",
     "Wet Dirt",
 ];
 

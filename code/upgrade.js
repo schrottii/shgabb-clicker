@@ -393,7 +393,7 @@ var ameliorerUpgrades = {
     keepSWU: new AmeliorerUpgrade("keepSWU", "Keep Sandwich Upgrades", "Keep Sandwich Upgrades after a prestige", level => level >= 3 ? 10 : 2, level => level, { maxLevel: 6, ameSet: 5, ameAmount: 120, current: level => ["None", "Better Fridge", "1. Upgrade boosts clicks", "Cheese", "Auto Shgabb", "2+2=5", "Meaning Of Life"][level] }),
 
     amegsBoost: new AmeliorerUpgrade("amegsBoost", "Golden Shgabb Boost", "Get more Golden Shgabb", level => 3, level => 1 + (level * 0.1), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 6, ameAmount: 150 }),
-    loreBoost: new AmeliorerUpgrade("loreBoost", "Lore Boost", "Get +10% GS per completed Lore Page (additive)", level => 10, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
+    loreBoost: new AmeliorerUpgrade("loreBoost", "Lore Boost", "Turns the GS boost from Lore pages exponential", level => 10, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
     tiersBoostBags: new AmeliorerUpgrade("tiersBoostBags", "Tiers Boost Bags", "Get more Bags for each Challenge tier completed", level => 25, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 150 }),
     fourthArtifactLevel: new AmeliorerUpgrade("fourthArtifactLevel", "Fourth Artifact Level", "Increases max. level of most Artifacts by 1", level => 25, level => level, { maxLevel: 1, ameSet: 6, ameAmount: 175 }),
 

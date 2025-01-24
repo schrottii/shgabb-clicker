@@ -15,14 +15,21 @@
 <body>
     <!-- Top, Quote, Click Button, Notifs -->
     <h2 class="gameName" style="max-width: 420px"><span id="gametitle">Shgabb Clicker</span></h2>
-    <span id="quote" class="quoteClass"></span>
+    <span id="quote" class="quoteClass" style="background-color: black"></span>
     <br />
 
     <!-- is loading -->
     <span style="display: inline; font-size: 40px; color: white; background-color: black" id="gameLoadingText">Game is loading<br /></span>
 
-    <!-- The 3 bars -->
+    <!-- Click button -->
     <button class="clickButton" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
+
+    <!-- Newest notifications -->
+    <div style="background-color: black">
+        <span id="newestnotif"></span>
+    </div>
+
+    <!-- The 3 bars -->
     <div style="width: 100%; overflow-x: hidden; white-space: nowrap; display: flex; box-sizing: border-box;" id="threeBars">
         <div class="textBar" style="max-width: 33.2%">
             <span id="autoBarText"></span>
@@ -37,7 +44,6 @@
             <progress min="0" max="100" value="0" id="prestigeBar" style="width: 100%; display: inline" class="progressYellow"></progress>
         </div>
     </div>
-    <span id="newestnotif"></span>
 
     <!-- Top, currencies -->
     <div class="topSquare" id="topSquare">
@@ -280,7 +286,7 @@
 
             <!-- Info -->
             <h3>Info</h3>
-            Shgabb Clicker - developed by Schrottii ©2023-2024<br />
+            Shgabb Clicker - developed by Schrottii ©2023-2025<br />
             <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
             This game uses WGGJ v1.1 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
             <br />

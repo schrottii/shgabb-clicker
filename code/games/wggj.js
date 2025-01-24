@@ -310,10 +310,14 @@ function wggjUpdateTextScaling() {
     wggjTextScaling = 0.25 + 0.5 * (wggjCanvasWidth / 960);
 }
 
+var wggjRunning = false; //EDITED <-------------------------------------------------------------- 1/2
+
 // wggjLoop
 function wggjLoop() {
     // The game's main loop
     // This part just does the wggj side of things, to add your own loop, define a function called loop()
+
+    if (!wggjRunning) return false; //EDITED <-------------------------------------------------------------- 2/2
 
     // Tick wggjTime
     wggjDelta = Date.now() - wggjTime;

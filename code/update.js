@@ -2,30 +2,38 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4.6";
-const versionTitle = "Secolnd Birthday";
+const gameVersion  = "3.4.7";
+const versionTitle = "B-Cold";
 
 const currentPatchNotes = [
-    "-> Anniversary Event:",
-    "- The Anniversary Event is back for Year 2",
-    "- Same duration: January 6th - January 20th",
-    "- Added description (before it only was a list of boosts)",
-    "- Added a bar to display Cake progress",
-    "- New Achievement: It's A Celebration (Get all 8 Anniversary Event cosmetics) (183 total)",
+    "-> Minigames:",
+    "- Minigames now only run if selected, otherwise, absolutely nothing happens (improved performance)",
+    "- Shgic: Added a 0.2s cooldown after clicking, to prevent accidental double clicks",
+    "- Shgic: Made the grid prettier",
+    "- Fishgang: Removed Your Mom and Pirate Piss, added Brick, Broken Key, Glass Shard and Fake Fish",
 
-    "-> Anniversary Event Cosmetics:",
-    "- No new PFPs (still 3)",
-    "- Added 3 Banners",
-    "- Added 2 Frames",
-    "- One of the Banners is special, and is given to everyone who plays the event this year!",
-    "- This event's cosmetics are now gathered by eating Cake",
-    "- PFPs were tied to the Achievements before, those who gained them that way get to keep them",
+    "-> Minigames Selection:",
+    "- If Fishgang isn't unlocked yet, it now says Locked",
+    "- Added a background behind the list of minigames",
+    "- Increased size of minigame names",
+    "- Split Shgic's full name into two lines",
+    '- Changed "Play Da Game" text to "Play Minigame"',
+    "- Sped up CD animations",
+    "- Fixed CD being slightly too low after being put back (Fishgang locked)",
 
-    "-> Special Cosmetics:",
-    "- Special Cosmetics are PFPs, Banners or Items that have an unusually high resolution, are animated or have some other special thing",
-    "- There are only two of them for now: default Shgabb PFP and Two Years of Shgabb Banner (new)",
-    "- They are marked with a yellow outline",
-    "- Similarly, equipped Cosmetics now have a green outline",
+    "-> Shbook:",
+    "- Added a list of all unlocks to the Featuriary (new Unlocks entry)",
+    "- Changed the Shbook entry to have its list on the left side too",
+    "- Lore page 10% GS boost is now base",
+    "- The upgrade turns it exponential instead",
+
+    "-> Design:",
+    "- Moved the three bars from between the click button and notifications, to between notifications and top currencies display",
+    "- Added black backgrounds behind the quote and recent notifications",
+
+    "-> Other:",
+    "- The cooldown notification now shows a second decimal if the cooldown is less than 0.1s",
+    "- Fixed Anniversary Event lasting too long",
 ];
 
 function generatePatchNotes() {

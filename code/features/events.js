@@ -52,7 +52,7 @@ function isEvent(eventName) {
 
     let currentDate = today().substr(4);
     //// debug:
-    currentDate = events.anniversary.startDate;
+    //currentDate = events.anniversary.startDate;
 
     if (eventName != "any") {
         // We are looking for one specific event
@@ -75,7 +75,7 @@ function eventValue(eventName, trueValue, falseValue) {
 
 function getCurrentEvent(currentDate = today().substr(4)) {
     //// debug:
-    return "anniversary";
+    //return "anniversary";
 
     for (let checkEvent in events) {
         if (events[checkEvent].isActive(currentDate)) return checkEvent;

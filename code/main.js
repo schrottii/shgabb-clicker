@@ -541,7 +541,9 @@ function clickButton() {
 
     }
     else {
-        createNotification("Cooldown: " + game.clickCooldown.toFixed(1) + "s");
+        createNotification("Cooldown: " +
+            (game.clickCooldown < 0.1 ? game.clickCooldown.toFixed(2) : game.clickCooldown.toFixed(1))
+            + "s");
 
         if (isEvent("summer") && heatMode) {
             heatMode = false;

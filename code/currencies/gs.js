@@ -38,7 +38,7 @@ function getAchievementBoost() {
 }
 
 function getLoreBoost() {
-    return (game.upgradeLevels.achBExpo > 999 ? (Math.pow(1.1, game.lore.length)) : (game.upgradeLevels.loreBoost > 0 ? (1 + (game.lore.length / 10)) : 1));
+    return (game.upgradeLevels.loreBoost > 0 ? (Math.pow(1.1, game.lore.length)) : 1 + (game.lore.length / 10));
 }
 
 function prestigeButton() {
