@@ -2,38 +2,37 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4.7";
-const versionTitle = "B-Cold";
+const gameVersion  = "3.4.8";
+const versionTitle = "Winter Lunar";
 
 const currentPatchNotes = [
-    "-> Minigames:",
-    "- Minigames now only run if selected, otherwise, absolutely nothing happens (improved performance)",
-    "- Shgic: Added a 0.2s cooldown after clicking, to prevent accidental double clicks",
-    "- Shgic: Made the grid prettier",
-    "- Fishgang: Removed Your Mom and Pirate Piss, added Brick, Broken Key, Glass Shard and Fake Fish",
+    "-> Lunar New Year Event:",
+    "- The Lunar New Year Event is back for Year 2",
+    "- Duration changed to February 4th - February 18th (6 days earlier)",
+    "- This chosen duration is based on an average (since it shifts by up to a month every time)",
+    "- 5 event lore pages can be found, and unlocked with Red Envelopes",
+    "- Added 3 new Banners and 2 new Frames (still 3 PFPs)",
+    "- Reduced cosmetic cost from 888 to 188 (total: 2664 to 1504)",
+    "- Cosmetics are now given out randomly rather than in order",
+    "- Added a new Achievement for getting all 8 cosmetics",
+    "- Extended event description",
 
-    "-> Minigames Selection:",
-    "- If Fishgang isn't unlocked yet, it now says Locked",
-    "- Added a background behind the list of minigames",
-    "- Increased size of minigame names",
-    "- Split Shgic's full name into two lines",
-    '- Changed "Play Da Game" text to "Play Minigame"',
-    "- Sped up CD animations",
-    "- Fixed CD being slightly too low after being put back (Fishgang locked)",
-
-    "-> Shbook:",
-    "- Added a list of all unlocks to the Featuriary (new Unlocks entry)",
-    "- Changed the Shbook entry to have its list on the left side too",
-    "- Lore page 10% GS boost is now base",
-    "- The upgrade turns it exponential instead",
-
-    "-> Design:",
-    "- Moved the three bars from between the click button and notifications, to between notifications and top currencies display",
-    "- Added black backgrounds behind the quote and recent notifications",
+    "-> Lore:",
+    "- Added 15 new lore pages (35 total)",
+    "- 5 belated pages for the Christmas Event",
+    "- 5 belated pages for the Anniversary Event",
+    "- 5 pages for the Lunar New Year Event",
+    "- Added 3 new lore currencies: Memory Snowflakes, Birthday Candles & Red Envelopes",
+    "- Their chances: 1/1200, 1/1000 & 1/888",
+    "- Lore currency is now shown next to the name/not found/locked",
+    "- Integrated these new pages and lore currencies into their events",
 
     "-> Other:",
-    "- The cooldown notification now shows a second decimal if the cooldown is less than 0.1s",
-    "- Fixed Anniversary Event lasting too long",
+    "- Added 5 new Quotes (80 total)",
+    "- Added 7 new Achievements (190 total)",
+    "- Fixed description of Luckily it's in English Achievement",
+    "- Luck now also affects the base Fishgang chance, but also gets reduced every reel (5x if missed)",
+    "- Updated WGGJ from v1.1 to v1.2.1"
 ];
 
 function generatePatchNotes() {

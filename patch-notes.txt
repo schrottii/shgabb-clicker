@@ -73,6 +73,7 @@ October - December 2024:
 January - March 2025:
 3.4.6
 3.4.7
+3.4.8
 
 
 
@@ -2241,3 +2242,35 @@ Version v3.4.7 B-Cold:
 -> Other:
 - The cooldown notification now shows a second decimal if the cooldown is less than 0.1s
 - Fixed Anniversary Event lasting too long
+
+
+
+2025/02/01 v3.4.8:
+Version v3.4.8 Winter Lunar:
+-> Lunar New Year Event:
+- The Lunar New Year Event is back for Year 2
+- Duration changed to February 4th - February 18th (6 days earlier)
+- This chosen duration is based on an average (since it shifts by up to a month every time)
+- 5 event lore pages can be found, and unlocked with Red Envelopes
+- Added 3 new Banners and 2 new Frames (still 3 PFPs)
+- Reduced cosmetic cost from 888 to 188 (total: 2664 to 1504)
+- Cosmetics are now given out randomly rather than in order
+- Added a new Achievement for getting all 8 cosmetics
+- Extended event description
+
+-> Lore:
+- Added 15 new lore pages (35 total)
+- 5 belated pages for the Christmas Event
+- 5 belated pages for the Anniversary Event
+- 5 pages for the Lunar New Year Event
+- Added 3 new lore currencies: Memory Snowflakes, Birthday Candles & Red Envelopes
+- Their chances: 1/1200, 1/1000 & 1/888
+- Lore currency is now shown next to the name/not found/locked
+- Integrated these new pages and lore currencies into their events
+
+-> Other:
+- Added 5 new Quotes (80 total)
+- Added 7 new Achievements (190 total)
+- Fixed description of Luckily it's in English Achievement
+- Luck now also affects the base Fishgang chance, but also gets reduced every reel (5x if missed)
+- Updated WGGJ from v1.1 to v1.2.1

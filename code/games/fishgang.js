@@ -180,12 +180,14 @@ scenes["fishgang"] = new Scene(
                         objects["bobby"].chance += 5 + objects["bobby"].quality; // +6% - +15%
                         objects["bobby"].reelCD = 0.1;
                         objects["sliderbg"].color = "rgb(10, 60, 10)";
+                        if (luck > 0) luck -= 1; // reduce luck
                     }
                     else {
                         // Miss
                         objects["bobby"].chance -= 5;
                         objects["bobby"].reelCD = 0.2;
                         objects["sliderbg"].color = "rgb(160, 0, 0)";
+                        if (luck > 0) luck -= 5; // reduce luck
 
                         if (Math.random() * 80 >= (objects["bobby"].chance + 20)) {
                             objects["bobby"].mode = 3;
@@ -276,11 +278,12 @@ scenes["fishgang"] = new Scene(
             if (Math.random() > 0.99) {
                 objects["bobby"].mode = 2;
 
+                // got a fish!
                 objects["slider"].sliderSize = Math.max(2, (objects["bobby"].distance >= 50 ? 20 : 40) * Math.random());
                 objects["slider"].sliderSpeed = Math.round(Math.max((objects["bobby"].distance >= 75 ? 2 : 1), 4 * Math.random()));
                 objects["bobby"].quality = Math.min(10, Math.ceil(10 * objects["slider"].sliderSpeed / objects["slider"].sliderSize)); // 1 - 20 (capped at 10)
                 if (objects["bobby"].distance < 25) objects["bobby"].quality = Math.min(3, objects["bobby"].quality);
-                objects["bobby"].chance = 30 - (objects["bobby"].distance / 2);
+                objects["bobby"].chance = 30 - (objects["bobby"].distance / 2) + applyLuck(60);
             }
         }
 

@@ -282,6 +282,10 @@ var banners = [
     new Banner(422, "Happy Birthday", "images/playerprofile/banners/anvbnr2.png", () => game.evbans.includes(422)),
     new Banner(423, "Two Years of Shgabb", "images/playerprofile/banners/big-twoyearsbanner.png", () => game.evbans.includes(423), { special: true }),
 
+    new Banner(424, "Chinese Night Sky", "images/playerprofile/banners/lunar1.png", () => game.evbans.includes(424)),
+    new Banner(425, "Sacred Envelope", "images/playerprofile/banners/lunar2.png", () => game.evbans.includes(425)),
+    new Banner(426, "Qianmania", "images/playerprofile/banners/lunar3.png", () => game.evbans.includes(426)),
+
     // 600 - 699 | Challenge Banners
     new Banner(600, "Challenger", "images/playerprofile/banners/challenge-banner.png", () => getHighestTier() >= 3),
     new Banner(601, "Basic Climb", "images/challenges/challenge1.png", () => game.clg[1] >= 3),
@@ -309,6 +313,9 @@ var frames = [
 
     new Frame(403, "Party Person", "images/playerprofile/frames/partyframe.png", () => game.evframes.includes(403)),
     new Frame(404, "The King", "images/playerprofile/frames/kingframe.png", () => game.evframes.includes(404)),
+
+    new Frame(405, "Hen Duo Qian", "images/playerprofile/frames/lunarframe.png", () => game.evframes.includes(405)),
+    new Frame(406, "Red Lanterns", "images/playerprofile/frames/lunarframe2.png", () => game.evframes.includes(406)),
 ];
 
 function calcProfileCanvasSize() {

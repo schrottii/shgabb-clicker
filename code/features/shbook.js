@@ -37,10 +37,26 @@ class BookEntry{
 
     getName() {
         if (this.ID > 99) {
-            return "[" + this.ID + "] " + this.name;
+            return cImg(getWispImage(this.source))
+                + "[" + this.ID + "] "
+                + this.name;
         }
         else {
             return this.name;
+        }
+    }
+
+    getLoreLocked() {
+        return cImg(getWispImage(this.source))  + " Locked [#" + this.ID + ", " + (this.ID == game.loreSel ? game.loreP : "0") + "/" + this.amount + "]";
+    }
+
+    getLockedName() {
+        if (this.ID > 99) {
+            return cImg(getWispImage(this.source))
+                + " Not found";
+        }
+        else {
+            return "Locked";
         }
     }
 }
@@ -54,6 +70,46 @@ function getWispType(typeID) {
             return "Memory Wisps";
         case 2:
             return "Candles";
+        case 3:
+            return "Memory Snowflakes";
+        case 4:
+            return "Birthday Candles";
+        case 5:
+            return "Red Envelopes";
+    }
+}
+
+function getWispEvent(typeID) {
+    switch (typeID) {
+        case 0:
+            return true;
+        case 1:
+            return true;
+        case 2:
+            return isEvent("shgabbthewitch");
+        case 3:
+            return isEvent("christmas");
+        case 4:
+            return isEvent("anniversary");
+        case 5:
+            return isEvent("lunar");
+    }
+}
+
+function getWispImage(typeID) {
+    switch (typeID) {
+        case 0:
+            return "memoryWisp";
+        case 1:
+            return "memoryWisp";
+        case 2:
+            return "candle";
+        case 3:
+            return "memorySnowflake";
+        case 4:
+            return "birthdayCandle";
+        case 5:
+            return "redEnvelope";
     }
 }
 
@@ -65,6 +121,12 @@ function getWispRarity(typeID) {
             return 1 / 5000;
         case 2:
             return 1 / (666 * 6); // you get x6 during the event so
+        case 3:
+            return 1 / 1200;
+        case 4:
+            return 1 / 1000;
+        case 5:
+            return 1 / 888;
     }
 }
 
@@ -96,7 +158,7 @@ function getLorePage(multi = 1) {
         Math.random() <= 1 / 25000 * multi * eventValue("shgabbthewitch", 6, 1)) {
         let availablePages = [];
         for (l in lore) {
-            if (!lore[l].isFound() && (lore[l].unlock != 2 || isEvent("shgabbthewitch"))) availablePages.push(lore[l].ID);
+            if (!lore[l].isFound() && getWispEvent(lore[l].source)) availablePages.push(lore[l].ID);
         }
         if (availablePages.length > 0) {
             createNotification("Found new lore!");
@@ -131,9 +193,8 @@ const lore = [
     new BookEntry(107, "Universal Notice", 1, 3, `For any readers of Pierre's Shgabb research project and analysis, it is important to know where the creatures were found. They are not on our home planet. I am not on our home planet. This planet, nicely referred to as "The Bluer Planet", has been observed as a possible new home for humanity, even before the war. Previous research has been done, including by survival expert Vihaan, who outlined the planet's general safety, climate and landscape. Without his great work, I wouldn't be able to dive into the planet's more specific content, to be exact, its wildlife. Mostly familiar, lots of mushrooms around here as well, but these blobs? Well, that's a new thing. - Pierre, analysis 3/3`),
     new BookEntry(108, "Funding for Finding", 1, 10, `It's been a while since the previous entry... but it has been a productive stretch of days. A new group has been created specifically for this project, the Shgabb Research Group. As the one who discovered the creature for the first time, I am the head leader of the group. Other members analyze the info that I provide, or make theories, or... art? Maybe one day they will create stuffed animals of Shgabb! I would buy a few and cuddle with them, aww! Also, the group has received major funding - overall this is essential help for the continuation of my research! I have found something great, I am working on something great, and other scientists and researchers are waiting for the next findings. Now I have a group to assist me, I have the recognition, and the money. It's a nice place here, and I am in a nice place. Time to go outside again. - Pierre`),
     new BookEntry(109, "Following It II", 1, 3, `Following the creation of the group and the funding, the time arrived to head out for another round of Shgabb research. I went outside my little research hut, and went to the same place where I have found them before. I picked some berries, interesting colors, not sure if I should eat them. Before I could make an educated decision on whether I should eat them, and by this I mean a clear NO, because I am not stupid, anyway, while I was looking at the berries in my hand, I noticed that a little Shgabb peeked up on me. Staring right at them berries. "sAww, are you hungry? Can you eat this? Do you want to eat this?"e`),
-    // new BookEntry(105, "Analysis", 1, 10, ``),
 
-    // 200 - 209 : Shgabb The Witch
+    // 200 - 209: Shgabb The Witch
     new BookEntry(200, "October Occurrence", 2, 1, `I was just doing my usual research - but something was off about this October night. I wasted all noon and just got ready for some effort, but it simply didn't feel right. I started to feel anxious. Is it just because of my research presentation? No, there was certainly something else going on... late October has never been a good time for me. Before I was able to stop myself, I was sucked into a new branch of research. - Pierre`),
     new BookEntry(201, "Nightfall", 2, 2, `I smelled the smell of an evil pumpkin, thus I promptly left through the back door and went looking for the source. Then I saw something truly terrifying. There were pumpkins on the sidewalk. Terrifying! Why are they here? And... why is it this dark... in the early evening? Did I oversleep? No, not today... this is not normal. Something cursed must be going on. This is not normal darkness. This is paranormal darkness. - Pierre`),
     new BookEntry(202, "Red Forest", 2, 3, `The evil pumpkins and strong darkness were not the only unusual thing. They did not want to be the only unusual thing. Things got worse. As I approached the very forest I know so well, the anxious feeling skyrocketed, and any process of forming thoughts was cancelled. The forest was painted in an extra-dark black with a red glow, and a terrifying presence. The voices of pumpkins got into my head, and footsteps were to be heard from behind. I had no choice but to run into darker and darker areas. Rational thinking died. Pure fear was born. All I knew was fright. My emotions were torn. - Pierre`),
@@ -145,8 +206,28 @@ const lore = [
     new BookEntry(208, "Glowing Spell", 2, 9, `Finally, the spell finished. And it's just what I wanted. Pierre asks, "sHow do I use this? And will it really protect me from the orange assassins?"e I take a closer look at the points, and emit audio: "sTake it and rub it against the trees. Take down as many as you can. Avoid other targets. Live will lead you your way."e "sGreat, I trust your words that it will work. But will we ever see again?"e "sOf course, we are officially friends now!"e (now, now, now...) ... He accepted the task, took the glowing spell and left. It has been a few hours since he left. I wonder how he feels. Maybe the roles should be the other way around, but where does any way lead anyway? Witch life can be lonely - one of the three things no legendary spell can give. I will work on another spell and wait for what comes to me later this week. - Ragobba`),
     new BookEntry(209, "5000-0", 2, 10, `I thought it was a lot of work up to that point, but it only got harder. The initial shock of the darkness broke my plans, but the duration is numbing. She gave me the glowing spell, and I went out to use it. One tree and another tree. Another tree. Another tree. Soon enough, the forest was caught in my web of light, like a star you can see from space. A 5000-0 victory. Me against the forest and its spooks. I won. I was exhausted, but there was no need to run any further. It has been illuminated. I was finally able to find a clear path, but it was not the one I came from. Not the way home, not the way to the hut: down to a river, next to which I found a shrine. Covered in candles, pictures, cheese and clothes. I think I have seen these pictures before... still not so sure. But it could be the same as I saw in the hut. It wasn't among the weirdest things I saw that night, it did not deserve more of my attention. I followed the river down to a lonely town, and getting back home was not back on my mind for the next day. This town is not the best place, but I can feel safe enough here. I'm staying here until the night ends. And it's a new place to explore, which is perfect for my research work. Maybe I can meet some people... but after everything that happened tonight, I might not want to. Too exciting. I need to get back. I need to get back. But not now. Not now. Good night. - Pierre`),
 
+    // 210 - 214: Christmas Event
+    new BookEntry(210, "The Lost Gift", 3, 1, `On a cold winter night, after a lengthy prayer, a young Shgabb went to bed. High expectations for the next day. "sWhat will I get, what will I see, when I get out of bed, what'll be under the tree?"e, he wonders. One morning later, removed from the feathers, a distance from the sleep - who's the traitor? Under the tree, there is no Gift to see. No present for you, no present for me, time to weep. - Shganta`),
+    new BookEntry(211, "What you've lost", 3, 3, `"sI must find the one who stole the one thing I feel excitement for, in this depressing and gray time! What's more frustrating than a loss, is to not know what you've lost. You may never know."e - thoughtful words for a Shgabb still wearing pajamas, but maybe it's not bananas, after all, it's Christmas Eve. He gets ready, and puts on proper clothes. A really thick winter jacket that can resist any northern degree. He looks everywhere in the house, but nothing is to be found, and where's daddy's spouse? Another loss, another fight, trying to find, making the return alright. - Shganta`),
+    new BookEntry(212, "Freezing Thoughts", 3, 5, `Gone outside, looking for the stolen gift and mother. Oh, the snow is so cold. He's a bit hungry, but what can you eat when your mother is not near and can't make you a sandwich? What else are you supposed to eat? Bananas? Olives? No, that is ridiculous... as he steps through the snow, an idea begins to linger. "sI should go to the mall. There's a lot of people there, and in the lower area, some criminals. I can ask them. I hope they give me a nice answer."e says the freezing Shgabb, optimistically. Not everyone would expect criminals to know where their gift and mother are, and giving them back? Naive. - Shganta`),
+    new BookEntry(213, "In The Mall", 3, 7, `"sI won't give up. I'm almost there."e he says, and only a minute later, he arrives at the main entrance of the mall. "sI... can't... open... thissh ahh!"e he says and falls. The door is frozen. No way to open that. "sI have to get in there some other way... but how?"e he asks himself, trying to find a new way to enter the mall. Experts all around the country are unsure why he is so fixated on finding the lost things THERE, but what do you expect from someone with mediocre intelligence? He steps through the snow, every breath a breeze, not falling from the freeze. Eventually, he reaches an alternative entrance. It's not frozen. (Let's not tell him that the main entrance wasn't frozen either, it was just closed. Don't tell him.)"sI'm finally in. Lots of people here. Bananas for sale. I'll go to the criminals, down there, about 150 bananas for scale."e he stupidly says, and who talks about criminals in public? When talking to yourself, even? Right before he reaches the stairs, someone familiar strikes his eye's glance... "sMom? Why are you here?"e - Shganta`),
+    new BookEntry(214, "Peace and Love", 3, 10, `He runs to her. "sMom, why are you here? I looked for you everywhere!"e (Didn't you literally go here expecting to find her? Moron.) "sOh, my little one... it's probably best if I tell you the truth. I forgot to get you the gift. That's why I'm here."e Realization. Reality shattered. Re-assessing the situation. The gift was not stolen. It was never there in the first place. "sBut I have the gift now. Let's go home, and open each other's gifts, and those from Santa too."e, she says. Her son nearly in tears. They go back home, everyone is together, the entire family. Everyone gets good gifts, eats the good food, and there is something special on TV. It's all about peace and love, as it should be. The worries are forgotten, and put aside for a week - no matter if heavy or weak, this is not the time to feel bad. It's aaaaall peace and love. The gift in question... it's a new console. Merry Christmas everyone! - Shganta`),
 
-    // new BookEntry(100, "", 1, 10, `Welelel`),
+    // 215-219: Anniversary Event
+    new BookEntry(215, "Take Control", 4, 2, `Dear diary, tomorrow will be my birthday. I have spent a lot of time thinking about how I want it to be. My family treats me well. I can get what I want for my birthday. Last year, I failed. My birthday was bad, and it was my fault. I didn't wish for enough. I just let it happen, and it was just a normal day. This year it will be different. I will take control. The birthday will be great. - Lilly`),
+    new BookEntry(216, "What I Want", 4, 4, `They know what I want. For my birthday tomorrow. Looooots of presents. I wrote a looong list. Last year I was uninspired and wrote down lots of random stuff, but this year I got my priorities straight. The issue was that some things changed in my life, and my interests changed, and the direction my desires were heading to was uncertain. But this year I know what things and objects I want. Games. Clothes. Tools. I got it. I will get it. I'm so excited for tomorrow! - Lilly`),
+    new BookEntry(217, "Year Culture", 4, 6, `I have spectated the culture of this species. It seems like Shgabbs have a big culture around years. They see a new year as a new beginning, where you can leave behind plagues and miseries from the previous year, and new things are often started at the beginning of a new year. Things like moving to a new location, or buying something important. Every new year is different. They draw a strict line between years. Birthdays are quite relevant too. They celebrate them just like how humans do. But even bigger. When you are a Shgabb and it's your birthday, you get a lot of gifts, and are treated like a king, or like a princess, for one day. Of course there are limits, but it's really one day where everything is about YOU. And I think that's great. - Pierre`),
+    new BookEntry(218, "Birthday: Before", 4, 8, `Today is the day. Today is MY day. Today I am the princess. It's my birthday. It's early in the morning, so the celebrations haven't started yet. But soon they will. I will report back. The others aren't awake yet, so I'll take some time and do things that make me happy. - Lilly`),
+    new BookEntry(219, "Birthday: After", 4, 10, `My birthday is over, and waow, that was quite the day. I am so happy. One of the best days of the year. I got everything I wanted. Some of the stuff they gifted me... is very hard to get. I wouldn't have managed to find it on my own. I'm so grateful for my positive life and great family and friends. I wish that everyone could have it. Wait... there's still 4 minutes until the day is over. Maybe this final wish can come true? :) - Lilly`),
+
+    // 220-224(?): Lunar New Year Event
+    new BookEntry(220, "A bit poor", 5, 8, `I am Yúzé. A young Shgabboy from the East. A bit poor. Every new year, we celebrate. Our date might be different than yours. I want to buy Dragon Cake. It is sweet, but also spicy. Most cakes are not spicy. I ate it for the first time last year, and it was very delicious. This year, I want to eat it again. But I don't have enough Qian to buy it. It is not a cheap cake. - Yúzé`),
+    new BookEntry(221, "Working for Qian", 5, 8, `Today, I worked very hard. I went to the bigger city and offered my strength and work, in exchange for payment. There was one store where I helped re-organize the products and update a list of how many are left. They paid me some Qian. I also helped some good men and polished their shoes. Their shoes became shiny. Some had a lot of mud under them. These good men paid me some Qian, but not much. It is not a very grateful work. But I also helped out an elder woman, who is too broken to get to the store on her own. She gave me Qian to buy these things for her, and I was allowed to keep the rest. This was very much worth it. It was a productive day. I helped people, and they helped me. A well working society. - Yúzé`),
+    new BookEntry(222, "Luck", 5, 8, `Luck is a part of life. Whether you believe in it or not, sometimes you are lucky, sometimes you are unlucky. Some things that happen may be outside of your control. Qian are lucky coins. You work to get them, and you get rewarded. Or you spend them and reward yourself. Luck is invisible, but you feel the good feelings. Life can give you what you want. You just need to prove that you are worthy. - Yúzé`),
+    new BookEntry(223, "Dragon Cake", 5, 8, `I have finally gathered enough Qian. I went to the Dragon Bakery. They sell lots of fancy looking food. A lot of it is spicy. But it is not normal spices. They have a secret ingredient, that tickles your tongue like no other. "sHello. I would like to buy a Dragon Cake. Medium size. Here is the Qian."e "sWe see that you worked hard. You are a valuable member of society. Luck is with you. You are getting a 10% sale. Here is your cake. Enjoy."e the shop owner replied. I was rewarded for my good work. I ate the cake at home, with a glass of milk in the other hand, because I don't want my tongue to burn to ashes. - Yúzé`),
+    new BookEntry(224, "New Year Celebrations", 5, 8, `I took the final two slices of cake with me. In the bigger city, the new year is celebrated today. The lunar new year. I sat down on one of the long benches. Many shows. Some are funny, some are poetry, some are very traditional. Later, at night, there's fireworks. Beautiful fireworks. The sky never looks this beautiful. The moon shines bright and is happy to be here with us tonight. - Yúzé`),
+
+    // new BookEntry(100, "", 1, 10, ``),
 ]
 
 const currenciary = [
@@ -241,7 +322,7 @@ function renderLore() {
     let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Lore</div><hr>";
 
     for (s in lore) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[0] == lore[s].ID ? "yellow" : "white") + `" onclick="changeShbook(0, '` + lore[s].ID + `')">` + (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? "Locked [#" + lore[s].ID + ", " + (lore[s].ID == game.loreSel ? game.loreP : "0") + "/" + lore[s].amount + "]" : "Not found")) + `</button>`
+        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[0] == lore[s].ID ? "yellow" : "white") + `" onclick="changeShbook(0, '` + lore[s].ID + `')">` + (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName())) + `</button>`
     }
 
     let thisLore = "";
@@ -250,14 +331,14 @@ function renderLore() {
     }
 
     ui.shbookLore.innerHTML = render;
-    render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : "Locked") + "</div><hr><br />";
+    render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : thisLore.getLockedName()) + "</div><hr><br />";
 
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText.replace(new RegExp('"s', 'g'), `<br>>>"`).replace(new RegExp('"e', 'g'), `"<<`) : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
 
     if (thisLore.ID == 0) {
         // info page
         render = render + "<br /><br /><div style='font-size: " + (1.6 * shbookSizeFactor) + "px'>Current page progress:<br />" +
-            cImg(getLoreByID(game.loreSel).source == 1 || getLoreByID(game.loreSel).name == "Info" ? "memoryWisp" : "candle") + game.loreP + (getLoreByID(game.loreSel).name == "Info" ? "" : "/" + getLoreByID(game.loreSel).amount)
+            cImg(getWispImage(getLoreByID(game.loreSel).name == "Info" ? 1 : getLoreByID(game.loreSel).source)) + game.loreP + (getLoreByID(game.loreSel).name == "Info" ? "" : "/" + getLoreByID(game.loreSel).amount)
             + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + (game.loreP / getLoreByID(game.loreSel).amount * 100)) + "%" : "<br />Currently not collecting progress for any page! Select one to start collecting!")
             + "<br /><br />Lore pages currently in inventory (" + game.lorepg.length + "/5): " + game.lorepg + "."
             + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: x" + fn(getLoreBoost()) + " GS!</div>";

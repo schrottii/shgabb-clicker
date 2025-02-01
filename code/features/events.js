@@ -32,7 +32,7 @@ class LimitedEvent {
 
 const events = {
     anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 120, "renderAnniversary"),
-    lunar: new LimitedEvent("lunar", "Lunar New Year Event", 210, 224, "renderLunar"),
+    lunar: new LimitedEvent("lunar", "Lunar New Year Event", 204, 218, "renderLunar"),
     egg: new LimitedEvent("egg", "Egg Hunt", 329, 419, "renderEgg"),
     pride: new LimitedEvent("pride", "Pride Event", 608, 622, "renderPride"),
     summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
@@ -52,7 +52,7 @@ function isEvent(eventName) {
 
     let currentDate = today().substr(4);
     //// debug:
-    //currentDate = events.anniversary.startDate;
+    //currentDate = events.lunar.startDate;
 
     if (eventName != "any") {
         // We are looking for one specific event
@@ -75,7 +75,7 @@ function eventValue(eventName, trueValue, falseValue) {
 
 function getCurrentEvent(currentDate = today().substr(4)) {
     //// debug:
-    //return "anniversary";
+    //return "lunar";
 
     for (let checkEvent in events) {
         if (events[checkEvent].isActive(currentDate)) return checkEvent;
@@ -98,11 +98,15 @@ function renderCurrentEvent() {
 var previousGiftText = "";
 
 function renderChristmas() {
+    let collectedPages = calcCollectedPages(3);
+
     let render = "<h3>Christmas Event (Year 2)</h3><br /><b>December 14th - December 28th</b>";
     render = render + "<br />The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! Gifts are earned by clicking, regardless of speed (average 180s per Gift), or 10 can be earned per day from Shgic. Merry christmas and happy holidays everyone!";
 
 
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
+    render = render + "<br />" + cImg("memorySnowflake") + (getLoreByID(game.loreSel).source == 3 ? game.loreP : 0) + " Memory Snowflakes (" + collectedPages + "/5 Pages)";
+
     render = render + `<br /><br />
         <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
         <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
@@ -209,6 +213,8 @@ function openGifts(amount) {
 var cakeDuration = 0;
 
 function renderAnniversary() {
+    let collectedPages = calcCollectedPages(4);
+
     // SAVE EDITING
     if (!game.evbans.includes(423) && new Date().getYear() + 1900 == 2025 && isEvent("anniversary")) game.evbans.push(423); // free banner for everyone in the second year
     if (!game.evpfps.includes(403)) { // give PFPs to those who played in the first year
@@ -220,6 +226,7 @@ function renderAnniversary() {
     // HEADER AND DESCRIPTION
     let render = "<h3>Anniversary Event (Year 2)</h3><b>January 6th - January 20th</b>";
     render = render + "<br />Celebrate the anniversary of Shgabb Clicker! During the event, all Shgabb production is tripled, and Artifacts are 50% easier to find. Click to bake a Cake - up to 15 000 times - after 10 000 clicks it's done and can be eaten. After eating a Cake, you get x5 click speed, x10 Shgabb production and x3 Gem Chance for three minutes. Get 3 PFPs, 0 Banners and 0 Frames to celebrate!";
+    render = render + "<br />" + cImg("birthdayCandle") + (getLoreByID(game.loreSel).source == 4 ? game.loreP : 0) + " Birthday Candles (" + collectedPages + "/5 Pages)";
 
     // CAKE
     render = render + "<br /><h3>Cake</h3>";
@@ -270,12 +277,20 @@ var lunarAntiCooldown = 0;
 var luck = 0;
 
 function renderLunar() {
-    let render = "<h3>Lunar New Year Event</h3><br /><b>February 10th - February 24th</b>";
-    render = render + "<br />x8 Shgabb production! Qian!";
-    render = render + "<br />" + cImg("qian") + game.qian + " Qian";
+    let collectedPages = calcCollectedPages(5);
 
-    if (!game.evpfps.includes(408) || !game.ach.includes(92)) render = render + "<br /><br />";
-    if (!game.evpfps.includes(408)) render = render + "<button class='chineseOffer' onclick='useQian(1)'>Buy a Chinese PFP!<br/>888 " + cImg("qian") + "</button>";
+    let render = "<h3>Lunar New Year Event (Year 2)</h3><br /><b>February 4th - February 18th</b>";
+    render = render + "<br />Celebrate the Chinese New Year, or, Lunar New Year, with us. x8 Shgabb production. Earn Qian by clicking (with a chance every 100th click) and spend them on 8 different offers. You can get 3 PFPs, 3 Banners and 2 Frames, and also find 5 exclusive Lore Pages and unlock them with Red Envelopes.";
+    render = render + "<br />" + cImg("qian") + game.qian + " Qian";
+    render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)<br /><br />";
+
+    if (!(game.evpfps.includes(406) && game.evpfps.includes(407) && game.evpfps.includes(408)
+        && game.evbans.includes(424) && game.evbans.includes(425) && game.evbans.includes(426)
+        && game.evframes.includes(405) && game.evframes.includes(406))) {
+        render = render + "<button class='chineseOffer' onclick='useQian(1)'>Buy a Cosmetic!<br/>188 " + cImg("qian") + "</button>";
+    }
+    else checkAchievement(184);;
+
     if (!game.ach.includes(92)) render = render + "<button class='chineseOffer' onclick='useQian(2)'>Permanent x2 Qian!<br/>96 " + cImg("qian") + "</button>";
 
     render = render + "<br /><br /><button class='chineseOffer' onclick='useQian(3)'>Instant Faster Shgabb boost! (1 minute)<br/>26 " + cImg("qian") + "</button>";
@@ -293,28 +308,43 @@ function useQian(offerNR) {
     switch (offerNR) {
         case 1:
             // buy PFP
-            if (game.qian < 888) {
+            if (game.qian < 188) {
                 createNotification("Not enough Qian!");
                 return false;
             }
 
-            if (!game.evpfps.includes(406)) {
-                game.evpfps.push(406);
-            }
-            else if (!game.evpfps.includes(407)) {
-                game.evpfps.push(407);
-            }
-            else if (!game.evpfps.includes(408)) {
-                game.evpfps.push(408);
-            }
-            else {
+            let availableCosmetics = [];
+            if (!game.evpfps.includes(406)) availableCosmetics.push("pfp406");
+            if (!game.evpfps.includes(407)) availableCosmetics.push("pfp407");
+            if (!game.evpfps.includes(408)) availableCosmetics.push("pfp408");
+            if (!game.evbans.includes(424)) availableCosmetics.push("ban424");
+            if (!game.evbans.includes(425)) availableCosmetics.push("ban425");
+            if (!game.evbans.includes(426)) availableCosmetics.push("ban426");
+            if (!game.evframes.includes(405)) availableCosmetics.push("fra405");
+            if (!game.evframes.includes(406)) availableCosmetics.push("fra406");
+
+            if (availableCosmetics.length == 0) {
                 // has all
-                createNotification("You already own these PFPs!");
+                createNotification("You already own all of these cosmetics");
+                checkAchievement(184);
                 return false;
             }
+
+            let selectedCosmetic = availableCosmetics[Math.floor(availableCosmetics.length * Math.random())]
+
+            if (selectedCosmetic == "pfp406") game.evpfps.push(406);
+            else if (selectedCosmetic == "pfp407") game.evpfps.push(407);
+            else if (selectedCosmetic == "pfp408") game.evpfps.push(408);
+            else if (selectedCosmetic == "ban424") game.evbans.push(424);
+            else if (selectedCosmetic == "ban425") game.evbans.push(425);
+            else if (selectedCosmetic == "ban426") game.evbans.push(426);
+            else if (selectedCosmetic == "fra405") game.evframes.push(405);
+            else if (selectedCosmetic == "fra406") game.evframes.push(406);
+            else return false; // this shouldn't happen, but just in case
+
             // bought one of them
             game.qian -= 888;
-            createNotification("Bought PFP for 888 Qian!");
+            createNotification("Bought Cosmetic for 888 Qian!");
 
             break;
         case 2:
@@ -404,6 +434,19 @@ function useQian(offerNR) {
     checkAchievement(94);
     renderCurrentEvent();
 }
+
+function clickLunar(clickButtonMulti) {
+    if (isEvent("lunar")) {
+        if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
+            // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian (if you bought the upgrade)
+            let amount = (game.ach.includes(92) ? 2 : 1) * clickButtonMulti;
+            if (Math.random() < (1 / 8)) amount = 8;
+            if ((game.qian + amount) % 10 == 4) amount += 1;
+
+            game.qian += amount;
+            statIncrease("qian", amount);
+        }
+    } }
 
 function applyLuck(div) {
     if (luck < 0) return 1;
@@ -795,11 +838,16 @@ var witchesSpent = [0, 0, 0, 0]; // total (up to 10), virtue, herbs, odor
 var cursedArtifacts = [0, 0, 0, 0, 0, 0]; // six
 var recentSpellText = "";
 
-function renderShgabbTheWitch() {
+function calcCollectedPages(type) {
     let collectedPages = 0;
     for (let lored in game.lore) {
-        if (getLoreByID(game.lore[lored]).source == 2) collectedPages++;
+        if (getLoreByID(game.lore[lored]).source == type) collectedPages++;
     }
+    return collectedPages;
+}
+
+function renderShgabbTheWitch() {
+    let collectedPages = calcCollectedPages(2);
 
     let render = "<h3>Shgabb The Witch</h3><br /><b>October 28th - November 17th</b>";
     render = render + "<br />It's time for the scary, the painful and the evil things! Find event pages and their Candles by clicking, or equip the buffed-up cursed Artifacts to gain Witch Shgabb, which can be used to create spells with over a dozen different effects! x6 lore pages, x6 page progress and x6 Bags during the event!";

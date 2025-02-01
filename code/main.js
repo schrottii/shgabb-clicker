@@ -265,6 +265,13 @@ const quotes = [
     "this is kinda why farming spiders sucks, they dont really cooperate. - Phazer",
     "smash your record on new laptop maybe? - Barduzzi",
     "now make an x with x's - Tpot",
+
+    // 3.4.8 (+5 -> 80)
+    "catastrophic lack of common sense - elmenda452",
+    "my bus sometimes teleports - K. Whale",
+    "i can't believe i even have to debate this - elmenda452",
+    "how do you even get coins I want the 9/11 skin - shgabb",
+    "Such a weird game for people to go einstein on - myllääjä",
 ];
 
 // Notations
@@ -499,17 +506,7 @@ function clickButton() {
             if (lunarAntiCooldown > 0) lunarAntiCooldown -= clickButtonMulti;
             if (luck > 0) luck -= clickButtonMulti; // reduce luck
 
-            if (isEvent("lunar")) {
-                if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
-                    // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian
-                    let amount = (game.ach.includes(92) ? 2 : 1) * clickButtonMulti;
-                    if (Math.random() < (1 / 8)) amount = 8;
-                    if ((game.qian + amount) % 10 == 4) amount += 1;
-
-                    game.qian += amount;
-                    statIncrease("qian", amount);
-                }
-            }
+            clickLunar(clickButtonMulti);
 
             if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
                 let amount = getSiliconeProduction(true).mul(3).mul(getArtifactsSimpleBoost("clicksi")).mul(clickButtonMulti);
@@ -1473,6 +1470,7 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "WGGJ loading";
     GAMENAME = "Minigames";
     FONT = "Rw";
+    wggjRunning = false;
 
     wggjCanvasDesiredSquare = true;
     wggjCanvasDesiredMobileWidthMulti = 0.96;
