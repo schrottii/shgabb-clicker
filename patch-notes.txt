@@ -2269,7 +2269,7 @@ Version v3.4.8 Winter Lunar:
 - Integrated these new pages and lore currencies into their events
 
 -> Other:
-- Added 5 new Quotes (80 total)
+- Added 5 new Quotes (100 total)
 - Added 7 new Achievements (190 total)
 - Fixed description of Luckily it's in English Achievement
 - Luck now also affects the base Fishgang chance, but also gets reduced every reel (5x if missed)

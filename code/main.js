@@ -257,7 +257,7 @@ const quotes = [
     "edison intensifies - elmenda452",
     "why do i want to know how much qian, eggs and cakes i got today am i a time traveller - elmenda452",
 
-    // 2.6 (+2 -> 70) & 2.7.1 (+5 -> 75)
+    // 2.6 (+2 -> 90) & 2.7.1 (+5 -> 95)
     "happily :) - elmenda452",
     "grats on the cheese - Phazer",
     "More like Miner's Pray. - Slowmerger - DaGame",
@@ -266,7 +266,7 @@ const quotes = [
     "smash your record on new laptop maybe? - Barduzzi",
     "now make an x with x's - Tpot",
 
-    // 3.4.8 (+5 -> 80)
+    // 3.4.8 (+5 -> 100)
     "catastrophic lack of common sense - elmenda452",
     "my bus sometimes teleports - K. Whale",
     "i can't believe i even have to debate this - elmenda452",
