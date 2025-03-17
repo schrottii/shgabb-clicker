@@ -10,6 +10,7 @@ function calcSandwiches(critMulti = 1) {
         .mul(getArtifactsSimpleBoost("sw"))
         .mul(goldenShgabbUpgrades.formaggi.currentEffect())
         .mul(ameliorerUpgrades.sandwichBoost.currentEffect())
+        .mul(bananaUpgrades.banSw.currentEffect())
         .mul(Math.ceil(1 + (critMulti * ameliorerUpgrades.critsAffectSW.currentEffect())))
         .mul(getArtifact(307).isEquipped() ? getArtifact(307).getValue(0) : 1)
         .mul(getChallenge(1).getBoost())

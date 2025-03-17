@@ -1,6 +1,6 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 
-// sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper
+// sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper - bananas
 // sel 2: gems - artifacts - shgic
 // sel 3: cheats - stats - achievements - other (social, patch notes)
 // sel 4: shbook: lore - currencies - features
@@ -16,6 +16,7 @@ var sections = {
     ameliorer: document.getElementById("ameliorerSection"),
     bags: document.getElementById("bagSection"),
     copper: document.getElementById("copperShgabbSection"),
+    bananas: document.getElementById("bananaSection"),
 
     // sel 2
     gems: document.getElementById("gemSection"),
@@ -46,7 +47,7 @@ var sections = {
 
 var selections = ["shgabb", "none", "social", "currencies"];
 var selectionTypes = [
-    ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper"],
+    ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper", "bananas"],
     ["gems", "artifacts", "challenges", "minigames", "events"],
     ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
     ["lore", "currencies", "features"]
@@ -59,7 +60,7 @@ function renderSelection(sel) {
     // Buttons
     sels = selectionTypes[sel - 1];
     if (sel == 1) {
-        selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag"), cImg("copper")];
+        selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag"), cImg("copper"), cImg("banana")];
     }
     if (sel == 2) {
         selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenges/challenge1.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
@@ -106,6 +107,8 @@ function isSelectionUnlocked(name) {
             return unlockedBags();
         case "copper":
             return unlockedCopper();
+        case "bananas":
+            return unlockedBananas();
 
         case "gems":
             return unlockedGems();

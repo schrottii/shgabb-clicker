@@ -264,6 +264,8 @@ function updateUpgrades() {
     ui.copupgradesrender.innerHTML = renderUpgrades(copperShgabbUpgrades);
 
     ui.pearlupgradesrender.innerHTML = renderUpgrades(pearlUpgrades);
+
+    ui.bananaupgradesrender.innerHTML = renderUpgrades(bananaUpgrades);
 }
 
 // classes for other currencies
@@ -320,6 +322,14 @@ class PearlUpgrade extends Upgrade {
         super(ID, name, description, price, effect, config);
         this.currency = "pearls";
         this.type = "pearlUpgrades";
+    }
+}
+
+class BananaUpgrade extends Upgrade {
+    constructor(ID, name, description, price, effect, config) {
+        super(ID, name, description, price, effect, config);
+        this.currency = "bananas";
+        this.type = "bananaUpgrades";
     }
 }
 
@@ -431,4 +441,10 @@ var copperShgabbUpgrades = {
 var pearlUpgrades = {
     prlShgabb: new PearlUpgrade("prlShgabb", "Shgabb Boost", "Spend Pearls to get more Shgabb (x1.1 every level)", level => level + 1, level => new Decimal(1.1).pow(level), { prefix: "x" }),
     prlGS: new PearlUpgrade("prlGS", "GS Boost", "Spend Pearls to get more GS (x1.05 every level)", level => level + 1, level => new Decimal(1.05).pow(level), { prefix: "x" }),
+}
+
+var bananaUpgrades = {
+    bananaChance: new BananaUpgrade("bananaChance", "Banana Chance", "Every click, there is a chance for every tree to produce Bananas. This upgrade increases that chance.", level => Math.pow(2, level + 4), level => level + 1, { maxLevel: 9, suffix: "% chance" }),
+    banSw: new BananaUpgrade("banSw", "More Sandwiches", "Get more Sandwiches", level => 10 * Math.pow(level + 1, 1.08), level => 1 + (level / 10), { prefix: "x" }),
+    banGS: new BananaUpgrade("banGS", "Wisdomnana", "Increases GS gain for every Banana that can be claimed", level => 100 * level + 200, level => 0.01 * level, { prefix: "x", suffix: "/Banana", current: level => "x" + fn(0.01 * level * calcClaimableBananas()) })
 }

@@ -14,6 +14,7 @@ function calcGS() {
         .mul(ameliorerUpgrades.amegsBoost.currentEffect())
         .mul(sandwichUpgrades.twoTwoFive.currentEffect())
         .mul(1 + (getSiliconeBoost() * siliconeShgabbUpgrades.siliconeAffectsGS.currentEffect()))
+        .mul(bananaUpgrades.banGS.currentEffect() * calcClaimableBananas())
         .mul(getArtifactsSimpleBoost("gs"))
         .mul(game.upgradeLevels.moreShgabb >= 1000 ? (Math.max(1, Math.min(3, 3 * (game.upgradeLevels.moreShgabb / game.stats.hms)))) : 1)
         .mul(getAchievementBoost())
@@ -51,6 +52,7 @@ function prestigeButton() {
         let amount = increaseGS(1 * getArtifactsSimpleBoost("prestigegs"));
 
         prestigeGems();
+        prestigeBananaSeeds();
 
         artifactEvent("onPrestige");
 

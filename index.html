@@ -135,6 +135,19 @@
         <span id="copupgradesrender"></span>
     </div>
 
+    <!-- Bananas -->
+    <div id="bananaSection" style="display: none">
+        <h3>Bananas</h3>
+        <span id="bananaAmount"></span><br />
+
+        <h3>Banana Trees</h3>
+        <button class="grayButton" id="bananaSeedButton" onclick="bananaTreePlant()"></button> <br />
+        <span id="bananatreesrender"></span> <br />
+
+        <h3>Banana Upgrades</h3>
+        <span id="bananaupgradesrender"></span>
+    </div>
+
     <hr style="clear:both" />
 
     <!--
@@ -307,7 +320,7 @@
             <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
             <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
 
-            <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a></div>
+            <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a id="frWeb" href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a><a id="frGalaxy" href="https://galaxy.click/play/474">Play one of my other games on galaxy!</a></div>
             <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
         </div>
         <div class="patchNotesContainerSquare">
@@ -332,7 +345,7 @@
         //                 Shbook                  //
         /////////////////////////////////////////////
     -->
-    <div id="shbook" class="grayButton" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
+    <div id="shbook" class="shbookClass" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
         <h3 id="shbookHeader">Shbook</h3>
         <span id="selection4"></span> <br />
 
@@ -400,6 +413,7 @@
     <script src="code\currencies\ameliorer.js"></script>
     <script src="code\currencies\bags.js"></script>
     <script src="code\currencies\copper.js"></script>
+    <script src="code\currencies\bananas.js"></script>
 
     <script src="code\games\wggj.js"></script>
     <script src="code\games\minigameSelection.js"></script>

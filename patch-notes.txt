@@ -74,6 +74,7 @@ January - March 2025:
 3.4.6
 3.4.7
 3.4.8
+3.5
 
 
 
@@ -2274,3 +2275,34 @@ Version v3.4.8 Winter Lunar:
 - Fixed description of Luckily it's in English Achievement
 - Luck now also affects the base Fishgang chance, but also gets reduced every reel (5x if missed)
 - Updated WGGJ from v1.1 to v1.2.1
+
+
+
+2025/03/17 v3.5:
+Version v3.5 This Update Is Bananas:
+-> Bananas:
+- New main currency! Unlocked at 15k HMS
+- Added Banana Seeds, Banana Trees (and their UI) and 3 Upgrades
+- Added stats for Bananas, Seeds and Trees
+- Added Bananas Currenciary entry
+- Added 10 Banana Achievements (200 total)
+
+-> How Bananas work:
+- You can get Banana Seeds from Prestige
+- The chance increases up to 18% at 15 minutes since last prestige, nothing gained below 1 minute
+- A seed can be used to create a Banana Tree, of which you can have up to 4
+- Every click there is a chance for every tree to produce Bananas
+- The Bananas need to be claimed from the trees, but it has a chance of destroying the tree
+- Every day where you play the trees age, increasing their production but also their death chance
+
+-> Banana Upgrades:
+- Bananas can be spent on three upgrades:
+- Banana Chance (9 levels) - higher chance to get Bananas
+- More Sandwiches - a simple Sandwich boost
+- Wisdomnana - get more GS for every unclaimed Banana
+
+-> Other:
+- Hovering over the Shbook now increases its contrast rather than just brightness
+- (Experimental) Changed font of Shbook texts
+- The three bars now tell what they are for (Auto, Fridge, Prestige)
+- The link to SC2FMFR now links to the galaxy version if you are playing on galaxy

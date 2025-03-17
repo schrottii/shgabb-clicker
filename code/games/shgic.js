@@ -89,6 +89,13 @@ function checkNewDay() {
         game.dgo = newDailyArtifact;
         updateGems();
 
+        // update bananas
+        if (unlockedBananas()) {
+            for (let tree in game.bananatrees) {
+                game.bananatrees[tree].days++;
+            }
+        }
+
         // daily stats reset
         for (stat in game.stats_today) {
             if (game.stats_today[stat] != undefined && game.stats_today[stat].mantissa != undefined) {

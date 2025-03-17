@@ -245,6 +245,17 @@ var achievements = [
     new Achievement(140, "clicks.png", "Clicker VI", "Click 5M times", () => game.stats.clicks >= 5000000),
     new Achievement(89, "hms.png", "Shgabb Conqueror VI", "Reach More Shgabb level 20000", () => game.stats.hms >= 20000),
 
+    new Achievement(191, "unlock.png", "The Republic", "Unlock Bananas (15 000 HMS)", () => unlockedBananas()),
+    new Achievement(192, "banana.png", "This is Bananas!", "Get your first Banana!", () => game.bananas >= 1),
+    new Achievement(193, "banana.png", "Long Fruit I", "Get 100 Bananas (total)", () => game.stats.bananas >= 100),
+    new Achievement(194, "banana.png", "Long Fruit II", "Get 1000 Bananas (total)", () => game.stats.bananas >= 1000),
+    new Achievement(195, "banana.png", "Long Fruit III", "Get 10k Bananas (total)", () => game.stats.bananas >= 10000),
+    new Achievement(196, "banana.png", "Long Fruit IV", "Get 100k Bananas (total)", () => game.stats.bananas >= 100000),
+    new Achievement(197, "banana.png", "Long Fruit V", "Get 1M Bananas (total)", () => game.stats.bananas >= 1e6),
+    new Achievement(198, "bananatree.png", "Bananensamen", "Find your first Banana Seed!", () => game.stats.bananaseeds > 0),
+    new Achievement(199, "bananatree.png", "Beautiful Palms", "Get your first Banana Tree!", () => game.stats.bananatrees > 0),
+    new Achievement(200, "bananatree.png", "Beautiful Palms", "Have four Banana Trees at once!", () => getBananaTreeAmount() == 4),
+
     new Achievement(101, "achievement.png", "Achiever I", "Get 10 Achievements", () => game.ach.length >= 10),
     new Achievement(102, "achievement.png", "Achiever II", "Get 25 Achievements", () => game.ach.length >= 25),
     new Achievement(103, "achievement.png", "Achiever III", "Get 50 Achievements", () => game.ach.length >= 50),

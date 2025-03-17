@@ -81,6 +81,7 @@ var ui = {
     bagupgradesrender: document.getElementById("bagupgradesrender"),
     copupgradesrender: document.getElementById("copupgradesrender"),
     pearlupgradesrender: document.getElementById("pearlupgradesrender"),
+    bananaupgradesrender: document.getElementById("bananaupgradesrender"),
 
     // Cheats
     cheatCurrency: document.getElementById("cheatCurrency"),
@@ -143,6 +144,12 @@ var ui = {
     challengeRender: document.getElementById("challengeRender"),
     autoInfo: document.getElementById("autoInfo"),
     gameLoadingText: document.getElementById("gameLoadingText"),
+    bananaSection: document.getElementById("bananaSection"),
+    bananaAmount: document.getElementById("bananaAmount"),
+    bananaSeedButton: document.getElementById("bananaSeedButton"),
+    bananatreesrender: document.getElementById("bananatreesrender"),
+    frWeb: document.getElementById("frWeb"),
+    frGalaxy: document.getElementById("frGalaxy"),
 }
 
 // Quotes
@@ -507,6 +514,7 @@ function clickButton() {
             if (luck > 0) luck -= clickButtonMulti; // reduce luck
 
             clickLunar(clickButtonMulti);
+            increaseBananas(clickButtonMulti);
 
             if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
                 let amount = getSiliconeProduction(true).mul(3).mul(getArtifactsSimpleBoost("clicksi")).mul(clickButtonMulti);
@@ -603,8 +611,8 @@ function updateTopSquare() {
     if (settings.topSquare != 1) {
         let render = "";
 
-        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
-        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper"];
+        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
+        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper", " Bananas"];
 
         render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
 
@@ -625,6 +633,8 @@ function updateTopSquare() {
         if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
 
         if (unlockedCopper()) render = render + " " + ui.copAmount.innerHTML.split(currencyNames[8]).shift();
+
+        if (unlockedBananas()) render = render + " " + ui.bananaAmount.innerHTML.split(currencyNames[9]).shift();
 
         ui.topSquareDisplay.innerHTML = render;
     }
@@ -660,6 +670,9 @@ function updateCurrencies() {
 
     if (unlockedFishing() && ui.pearlSection.style.display != "none") ui.pearlAmount.innerHTML = cImg("pearl") + fn(game.pearls) + " Pearls";
     else ui.pearlAmount.innerHTML = "";
+
+    if (unlockedBananas()) ui.bananaAmount.innerHTML = cImg("banana") + fn(game.bananas) + " Bananas";
+    else ui.bananaAmount.innerHTML = "";
 }
 
 // stats stuff
@@ -684,7 +697,6 @@ function statsSet(no) {
     statDisplay = no;
     updateStats();
 }
-
 
 var higherStatsSize = 200;
 function updateStats() {
@@ -711,6 +723,8 @@ function updateStats() {
         + "<br />Total Copper Shgabb: " + statLoader("cop")
         + "<br />Total Copper Clicks: " + statLoader("copClicks")
         + "<br />Total Chengas: " + statLoader("chenga")
+        + "<br />Total Bananas: " + statLoader("bananas")
+        + "<br />Total Banana Seeds: " + statLoader("bananaseeds")
         + "<br />"
 
         + "<br /><b>Events:</b>"
@@ -833,7 +847,7 @@ function updateUI() {
 
     ui.sandwichBar.value = sandwichFreezeTime;
     ui.sandwichBar.max = getFreezeTime();
-    ui.sandwichBarText.innerHTML = ui.sandwichBar.value.toFixed(1) + "s/" + ui.sandwichBar.max + "s";
+    ui.sandwichBarText.innerHTML = "<sup>(Fridge)</sup> " + ui.sandwichBar.value.toFixed(1) + "s/" + ui.sandwichBar.max + "s";
 
     // Ads
     if (unlockedAds() && !settings.noAds) {
@@ -866,6 +880,8 @@ function updateUI() {
         if (game.stats_prestige.playTime >= 600) ui.ameResetText.innerHTML = "";
         else ui.ameResetText.innerHTML = "<br />Available in " + Math.round(600 - game.stats_prestige.playTime) + "s!";
     }
+
+    ui.bananaSeedButton.innerHTML = "<b>Plant a Banana Tree (" + getBananaTreeAmount() + "/4)</b><br />Banana Seeds: " + game.bananaseeds;
 
     updateTopSquare();
     updateCurrencies();
@@ -1189,11 +1205,11 @@ function shgabbClickerLoop(tick) {
         ui.threeBars.style.display = "flex";
 
         ui.autoBar.value = sandwichTime;
-        ui.autoBarText.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+        ui.autoBarText.innerHTML = "<sup>(Auto)</sup> " + ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
 
         ui.prestigeBar.value = game.stats_prestige.playTime;
         ui.prestigeBar.max = game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
-        ui.prestigeBarText.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
+        ui.prestigeBarText.innerHTML = "<sup>(Prestige)</sup> " + ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
     }
     else {
         ui.threeBars.style.display = "none";
@@ -1327,6 +1343,7 @@ function updateEVERYTHING() {
     renderPlayerProfile();
     renderSettings();
     renderShbook();
+    renderBananaTrees();
 }
 
 // hotkey stuff
@@ -1407,6 +1424,19 @@ document.addEventListener('keydown', function (e) {
 document.addEventListener('keyup', function (e) {
     if (e.key == "m") doBuyMax = false;
 }, false);
+
+function getOrigin() {
+    if (document.URL.includes("github")) {
+        return "web";
+    }
+    else if (document.URL.includes("galaxy")) {
+        return "galaxy";
+    }
+    return "private";
+}
+
+ui.frWeb.style.display = getOrigin() != "galaxy" ? "" : "none";
+ui.frGalaxy.style.display = getOrigin() == "galaxy" ? "" : "none";
 
 // minigames setup WGGJ
 images = {
@@ -1521,4 +1551,5 @@ try {
 }
 catch(e){
     ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br /><br />";
+    console.log(e);
 }

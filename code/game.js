@@ -26,6 +26,9 @@ var game = {
     artifactScrap: 0,
     chenga: 0,
     pearls: 0,
+    bananas: 0,
+    bananaseeds: 0,
+    bananatrees: [],
     // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,
@@ -163,6 +166,11 @@ var game = {
         // Pearls
         prlShgabb: 0,
         prlGS: 0,
+
+        // Bananas
+        bananaChance: 0,
+        banSw: 0,
+        banGS: 0,
     },
     // stats (all time)
     stats: {
@@ -182,6 +190,9 @@ var game = {
         cop: 0,
         copClicks: 0,
         chenga: 0,
+        bananas: 0,
+        bananaseeds: 0,
+        bananatrees: 0,
 
         gifts: 0,
         cakes: 0,

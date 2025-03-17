@@ -2,37 +2,36 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.4.8";
-const versionTitle = "Winter Lunar";
+const gameVersion  = "3.5";
+const versionTitle = "This Update Is Bananas";
 
 const currentPatchNotes = [
-    "-> Lunar New Year Event:",
-    "- The Lunar New Year Event is back for Year 2",
-    "- Duration changed to February 4th - February 18th (6 days earlier)",
-    "- This chosen duration is based on an average (since it shifts by up to a month every time)",
-    "- 5 event lore pages can be found, and unlocked with Red Envelopes",
-    "- Added 3 new Banners and 2 new Frames (still 3 PFPs)",
-    "- Reduced cosmetic cost from 888 to 188 (total: 2664 to 1504)",
-    "- Cosmetics are now given out randomly rather than in order",
-    "- Added a new Achievement for getting all 8 cosmetics",
-    "- Extended event description",
+    "-> Bananas:",
+    "- New main currency! Unlocked at 15k HMS",
+    "- Added Banana Seeds, Banana Trees (and their UI) and 3 Upgrades",
+    "- Added stats for Bananas, Seeds and Trees",
+    "- Added Bananas Currenciary entry",
+    "- Added 10 Banana Achievements (200 total)",
 
-    "-> Lore:",
-    "- Added 15 new lore pages (35 total)",
-    "- 5 belated pages for the Christmas Event",
-    "- 5 belated pages for the Anniversary Event",
-    "- 5 pages for the Lunar New Year Event",
-    "- Added 3 new lore currencies: Memory Snowflakes, Birthday Candles & Red Envelopes",
-    "- Their chances: 1/1200, 1/1000 & 1/888",
-    "- Lore currency is now shown next to the name/not found/locked",
-    "- Integrated these new pages and lore currencies into their events",
+    "-> How Bananas work:",
+    "- You can get Banana Seeds from Prestige",
+    "- The chance increases up to 18% at 15 minutes since last prestige, nothing gained below 1 minute",
+    "- A seed can be used to create a Banana Tree, of which you can have up to 4",
+    "- Every click there is a chance for every tree to produce Bananas",
+    "- The Bananas need to be claimed from the trees, but it has a chance of destroying the tree",
+    "- Every day where you play the trees age, increasing their production but also their death chance",
+
+    "-> Banana Upgrades:",
+    "- Bananas can be spent on three upgrades:",
+    "- Banana Chance (9 levels) - higher chance to get Bananas",
+    "- More Sandwiches - a simple Sandwich boost",
+    "- Wisdomnana - get more GS for every unclaimed Banana",
 
     "-> Other:",
-    "- Added 5 new Quotes (80 total)",
-    "- Added 7 new Achievements (190 total)",
-    "- Fixed description of Luckily it's in English Achievement",
-    "- Luck now also affects the base Fishgang chance, but also gets reduced every reel (5x if missed)",
-    "- Updated WGGJ from v1.1 to v1.2.1"
+    "- Hovering over the Shbook now increases its contrast rather than just brightness",
+    "- (Experimental) Changed font of Shbook texts",
+    "- The three bars now tell what they are for (Auto, Fridge, Prestige)",
+    "- The link to SC2FMFR now links to the galaxy version if you are playing on galaxy"
 ];
 
 function generatePatchNotes() {
