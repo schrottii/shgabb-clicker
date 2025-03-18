@@ -6,6 +6,8 @@ function unlockedBananas() {
 }
 
 function prestigeBananaSeeds() {
+    if (!unlockedBananas()) return false;
+
     let time = Math.min(15 * 60, game.stats_prestige.playTime);
 
     // no banana seeds below 1 minute
