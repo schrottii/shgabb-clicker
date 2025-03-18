@@ -45,7 +45,7 @@ function calcShgabbClick(sosnog = false) {
         .mul(getArtifactsSimpleBoost("clickshgabb"))
         .mul((getArtifact(211).isEquipped() ? 0.6 : 1))
         .mul(getChallenge(3).getBoost())
-        .mul((currentBoost == "strongerClicks" ? 5 : 1))
+        .mul(ads.strongerClicks.getCurrentBoost())
         .mul((getArtifact(200).isEquipped() ? 0 : 1))
         .ceil();
 
@@ -72,7 +72,7 @@ function calcShgabbAuto(sosnog2 = false, returnType = "all") {
             .mul(goldenShgabbUpgrades.gsBoost2.currentEffect())
             .mul(getArtifactsSimpleBoost("autoshgabb"))
             .mul(getChallenge(4).getBoost())
-            .mul(currentBoost == "strongerAuto" ? 5 : 1)
+            .mul(ads.strongerAuto.getCurrentBoost())
             .ceil();
 
         if (isChallenge(2)) prod = prod.pow(1 / (2 + 0.5 * getChallenge(2).getTier()));

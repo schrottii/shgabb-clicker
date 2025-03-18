@@ -325,7 +325,7 @@ scenes["fishgang"] = new Scene(
 
                         let caughtValue = Math.ceil(thisFish[1] * thisFish[2] * Math.random());
                         let caughtWeight = "" + (thisFish[2] * Math.random()).toPrecision(2);
-                        let caughtXP = caughtValue * 2;
+                        let caughtXP = (caughtValue * 2) + 4;
 
                         game.fishxp += caughtXP;
                         game.gems += caughtGems;

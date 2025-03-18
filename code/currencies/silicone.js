@@ -3,7 +3,7 @@
 
 function getSiliconeProduction(isClicks = false) {
     return new Decimal(siliconeShgabbUpgrades.moreSilicone.currentEffect())
-        .mul(currentBoost == "moreSilicone" ? 10 : 1)
+        .mul(ads.moreSilicone.getCurrentBoost())
         .mul(goldenShgabbUpgrades.formaggi.currentEffect())
         .mul(goldenShgabbUpgrades.moreSilicone2.currentEffect())
         .mul(bagUpgrades.moreSilicone3.currentEffect())

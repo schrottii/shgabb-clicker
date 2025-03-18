@@ -523,7 +523,7 @@ function clickButton() {
                 if (getArtifact(312).isEquipped() && Math.random() > 0.9 && currentGems() > 0) game.gems -= 1;
             }
 
-            if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1) * applyLuck(100)) {
+            if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (ads.moreSandwiches.getCurrentBoost()) * applyLuck(100)) {
                 amount = calcSandwiches(critMulti).mul(clickButtonMulti);
                 game.sw = game.sw.add(amount);
                 statIncrease("sw", amount);
@@ -565,7 +565,7 @@ function getCooldown() {
     // click cooldown
     if (lunarAntiCooldown > 0) return 0;
     let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
-        / (currentBoost == "fasterShgabb" ? 5 : 1)
+        / (ads.fasterShgabb.getCurrentBoost())
         / getArtifactsSimpleBoost("clickspeed")
         / cakeValue(5, 1)
         * (getArtifact(156).isEquipped() ? getArtifact(156).getEffect() : 1)
@@ -580,9 +580,9 @@ function getCooldown() {
 
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
-    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1) * applyLuck(100)) {
+    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (ads.moreCrits.getCurrentBoost()[0]) * applyLuck(100)) {
         createNotification("Critical Hit!");
-        return shgabbUpgrades.critBoost.currentEffect() * (currentBoost == "moreCrits" ? 3 : 1);
+        return shgabbUpgrades.critBoost.currentEffect() * (ads.moreCrits.getCurrentBoost()[1]);
     }
     return 1;
 }
@@ -755,8 +755,8 @@ function updateStats() {
         // RIGHT SIDE
         + "<b>Chances:</b>"
         + "<br />Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
-        + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * (currentBoost == "moreCrits" ? 5 : 1)) + "%"
-        + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (currentBoost == "moreSandwiches" ? 4 : 1)).toFixed(2) + "%"
+        + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * ads.moreCrits.getCurrentBoost()[0]) + "%"
+        + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (ads.moreSandwiches.getCurrentBoost())).toFixed(2) + "%"
         + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + getArtifact(308).getValue(0) ? " [MAX]" : "") + " (+" + getArtifactsSimpleBoost("gems").toFixed(2) + ")"
         + "<br />Copper Chance: " + getCopperChance().toFixed(1) + "%"
         + "<br />Luck: " + Math.floor(luck)
@@ -829,7 +829,11 @@ function updateUI() {
     else {
         let diceRender = (getArtifact(307).isEquipped() ? ("<img src='images/arti/dice-" + getArtifact(307).getValue(0) + ".png' width='32px'>") : "");
         let gooRender = (getArtifact(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
-        ui.clickButton.innerHTML = diceRender + gooRender + "+" + (hoodGoo != 0 ? fn(hoodGoo) : fn(calcShgabbClick().mul(currentBoost == "strongerClicks" ? 3 : 1))) + " Shgabb" + diceRender;
+
+        ui.clickButton.innerHTML = diceRender + gooRender + "+"
+            + (hoodGoo != 0 ? fn(hoodGoo) : fn(calcShgabbClick()))
+            + " Shgabb" + diceRender;
+
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
     }

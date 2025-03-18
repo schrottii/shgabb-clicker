@@ -1,5 +1,5 @@
 // Game made by Schrottii - editing or stealing is prohibited!
-// This file contains (almost) everything regarding ads - both the funny ingame ones made by Barduzzi, and Google AdSense
+// This file contains (almost) everything regarding ads - the funny ingame ones made by Barduzzi (no real ads)
 // view main.js for AdButton, AdStartButton and AdHandler inside the ui variable
 
 
@@ -15,25 +15,51 @@ var currentBoost = "none";
 var adTime = 20;
 var adMax = 20;
 
-const boosts = ["strongerClicks", "strongerAuto", "moreSandwiches", "fasterShgabb", "moreCrits", "moreSilicone", "moreGems"];
-const boostTexts = {
-    strongerClicks: "Stronger Clicks: 5x click Shgabb (5:00)",
-    strongerAuto: "Stronger Auto: 5x auto Shgabb (10:00)",
-    moreSandwiches: "More Sandwiches: 4x Sandwiches (3:00)",
-    fasterShgabb: "Faster Shgabb: 5x shorter click CD (1:00)",
-    moreCrits: "More Crits: 5x chance and 3x boost (3:00)",
-    moreSilicone: "More Silicone: 10x Silicone Shgabb (5:00)",
-    moreGems: "More Gems: 3x Gem chance (8:00)",
-};
+// Class and definition
+class Ad {
+    constructor(name, title, description, length, effect, unlock) {
+        this.name = name;
+        this.title = title;
+        this.description = description;
+        this.length = length;
+        this.effect = effect;
+        this.unlock = unlock;
+    }
 
-const adTimes = {
-    strongerClicks: 300,
-    strongerAuto: 600,
-    moreSandwiches: 180,
-    fasterShgabb: 60,
-    moreCrits: 180,
-    moreSilicone: 300,
-    moreGems: 480,
+    getLength() {
+        return this.length;
+    }
+
+    getBoost() {
+        return this.effect();
+    }
+
+    getCurrentBoost() {
+        // only applies when active
+        if (currentBoost == this.name) return this.getBoost();
+        else return this.name == "moreCrits" ? [1, 1] : 1;
+    }
+
+    isAvailable() {
+        return this.unlock();
+    }
+}
+
+const ads = {
+    strongerClicks: new Ad("strongerClicks", "Stronger Clicks", "5x click Shgabb (5:00)",
+        5 * 60, () => 5, () => true),
+    strongerAuto: new Ad("strongerAuto", "Stronger Auto", "5x auto Shgabb (10:00)",
+        10 * 60, () => 5, () => true),
+    moreSandwiches: new Ad("moreSandwiches", "More Sandwiches", "4x Sandwich chance (3:00)",
+        3 * 60, () => 4, () => true),
+    fasterShgabb: new Ad("fasterShgabb", "Faster Shgabb", "5x shorter click CD (1:00)",
+        1 * 60, () => 5, () => true),
+    moreCrits: new Ad("moreCrits", "More Crits", "5x chance and 3x boost (3:00)",
+        3 * 60, () => [5, 3], () => true),
+    moreSilicone: new Ad("moreSilicone", "More Silicone", "10x Silicone Shgabb (5:00)",
+        5 * 60, () => 10, () => unlockedSilicone()),
+    moreGems: new Ad("moreGems", "More Gems", "3x Gem chance (8:00)",
+        8 * 60, () => 3, () => unlockedGems())
 };
 
 // unlocked functions
@@ -48,10 +74,22 @@ function unlockedChengas() {
 
 
 // functions
+function renderAllAdTexts() {
+    let adTextRender = "";
+
+    for (let ad in ads) {
+        if (ads[ad].isAvailable()) adTextRender = adTextRender + "- " + ads[ad].title + ": " + ads[ad].description + " [Unlocked]<br />";
+        else adTextRender = adTextRender + "- Locked<br />";
+    }
+
+    return adTextRender;
+}
+
 function setRandomAd() {
-    let possibleBoosts = boosts;
-    if (!unlockedGems() && availableBoost == "moreGems") possibleBoosts.splice(possibleBoosts.indexOf("moreGems"), 1);
-    if (!unlockedSilicone() && availableBoost == "moreSilicone") possibleBoosts.splice(possibleBoosts.indexOf("moreSilicone"), 1);
+    let possibleBoosts = [];
+    for (let potentialAd in ads) {
+        if (ads[potentialAd].isAvailable()) possibleBoosts.push(ads[potentialAd].name);
+    }
 
     availableBoost = possibleBoosts[Math.floor(possibleBoosts.length * Math.random())];
 
@@ -93,7 +131,7 @@ function adButtonHandler() {
 
             setRandomAd();
 
-            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + boostTexts[availableBoost];
+            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + ads[availableBoost].title + ": " + ads[availableBoost].description;
             ui.adButton.innerHTML = cImg("chenga");
 
             break;
@@ -123,7 +161,7 @@ function adSwitcher() {
             ui.adBar.style.display = "none";
 
             adStatus = "possible";
-            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + boostTexts[availableBoost];
+            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + ads[availableBoost].title + ": " + ads[availableBoost].description;
             if (unlockedChengas()) ui.adButton.innerHTML = cImg("chenga") + game.chenga;
             else ui.adButton.innerHTML = "HMS 5000";
         }
@@ -174,7 +212,7 @@ function onAdEnded() {
     adStatus = "boosted";
 
     ui.adContent.style.display = "";
-    ui.adButton.innerHTML = "Cancel<br />" + boostTexts[currentBoost].split(":")[0];
+    ui.adButton.innerHTML = "Cancel<br />" + ads[currentBoost].title;
     adHandler.style.display = "none";
 
     statIncrease("ads", 1);
@@ -204,8 +242,8 @@ function onAdEnded() {
 
     lastAdTimer = 0;
     availableBoost = "none";
-    adTime = adTimes[currentBoost];
-    adMax = adTimes[currentBoost];
+    adTime = adMax = ads[currentBoost].getLength();
+    console.log(adTime + "==" + adMax)
 
     if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
         ui.clickButton.classList.add("buffedProgress")

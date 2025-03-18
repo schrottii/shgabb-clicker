@@ -2,10 +2,23 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.5";
-const versionTitle = "This Update Is Bananas";
+const gameVersion  = "3.5.1";
+const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Ads:",
+    "- Reworked code of ad boosts, making it more organized and allowing for fancier things (like upgrades) in the future",
+    "- Changed how locked ad boosts are treated",
+    "- Shbook: Added an entry for Ads, listing all possible ad boosts",
+    "- Specified the More Sandwiches boost affects the chance, not amount",
+    "- Fixed click button showing 3x too much during Stronger Clicks boost",
+
+    "-> Other:",
+    "- Every fish now gives 4XP more (meaning the minimum is 6XP)",
+    "- Fixed an 0 GS issue",
+    "- Fixed being able to get Banana Seeds too early",
+
+    "v3.5 This Update Is Bananas",
     "-> Bananas:",
     "- New main currency! Unlocked at 15k HMS",
     "- Added Banana Seeds, Banana Trees (and their UI) and 3 Upgrades",

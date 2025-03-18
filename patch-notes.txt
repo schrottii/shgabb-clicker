@@ -2306,3 +2306,19 @@ Version v3.5 This Update Is Bananas:
 - (Experimental) Changed font of Shbook texts
 - The three bars now tell what they are for (Auto, Fridge, Prestige)
 - The link to SC2FMFR now links to the galaxy version if you are playing on galaxy
+
+
+
+2025/03/18 v3.5.1:
+Version v3.5.1:
+-> Ads:
+- Reworked code of ad boosts, making it more organized and allowing for fancier things (like upgrades) in the future
+- Changed how locked ad boosts are treated
+- Shbook: Added an entry for Ads, listing all possible ad boosts
+- Specified the More Sandwiches boost affects the chance, not amount
+- Fixed click button showing 3x too much during Stronger Clicks boost
+
+-> Other:
+- Every fish now gives 4XP more (meaning the minimum is 6XP)
+- Fixed an 0 GS issue
+- Fixed being able to get Banana Seeds too early

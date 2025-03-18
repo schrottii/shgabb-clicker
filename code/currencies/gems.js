@@ -12,7 +12,7 @@ function getGemChance(cap = 10) {
 
     return (Math.min(cap, getArtifactsSimpleBoost("gemchance")
         * (getArtifact(200).isEquipped() ? 0.1 : 1)
-        * (currentBoost == "moreGems" ? 3 : 1)
+        * ads.moreGems.getCurrentBoost()
         * cakeValue(3, 1)
     ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1)) : 0)) * (previousClickAwardedGem ? ameliorerUpgrades.chainGems.currentEffect() : 1);
 }
