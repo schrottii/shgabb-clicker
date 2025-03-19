@@ -2,10 +2,25 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.5.1";
+const gameVersion  = "3.5.2";
 const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Bananas:",
+    "- Added a Banana PFP, unlocked at 10k total Bananas (third Achievement)",
+    "- Moved Banana Achievements based on progression",
+    "- Fixed Tree ID starting with #0, all new trees are one higher now",
+    '- Tree age is now shown as "Age" instead of "Days" (starting at 1 now)',
+
+    "-> Other:",
+    "- Added 5 new Quotes (105 total)",
+    "- Minigames no longer pause when a different selection is used",
+    "- Fishgang: Re-added Your Mom and Pirate Piss",
+    "- Achievements: Added page buttons to the top as well",
+    "- Challenges: Goal, Price and Boost are now bold, and added a line above them",
+    "- Expanded Featuriary text for Shgic",
+
+    "v3.5.1",
     "-> Ads:",
     "- Reworked code of ad boosts, making it more organized and allowing for fancier things (like upgrades) in the future",
     "- Changed how locked ad boosts are treated",

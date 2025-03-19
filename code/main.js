@@ -279,6 +279,13 @@ const quotes = [
     "i can't believe i even have to debate this - elmenda452",
     "how do you even get coins I want the 9/11 skin - shgabb",
     "Such a weird game for people to go einstein on - myllääjä",
+
+    // 3.5.2 (+5 -> 105)
+    "they do breed again - snekrot",
+    "why not 2? are you a first prime number hater???? - snekrot",
+    "LETS MAKE 1 THE ZEROTH PRIME NUMBER - snekrot",
+    "blud about to get 1,000,000 gems lel - elmenda452",
+    "time to bombard shgabb inc with some good old l e v e l 6 4 p i z z a - elmenda452",
 ];
 
 // Notations

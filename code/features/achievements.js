@@ -13,6 +13,9 @@ var achievementsPage = 0;
 function renderAchievements() {
     let render = "";
 
+    render = render + "<button class='grayButton' onclick='changeAchievementPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
+    render = render + "<button class='grayButton' onclick='changeAchievementPage(1)' class='artifactLoadoutButton'>Next Page</button><br />";
+
     for (a = achievementsPage * 50; a < achievementsPage * 50 + 50; a++) {
         if (a > achievements.length - 1) continue;
         render = render + "<button class='artifact' style='color: black; background-color: " + (game.ach.includes(achievements[a].ID) ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (game.ach.includes(achievements[a].ID) ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</button>"
@@ -220,6 +223,10 @@ var achievements = [
     new Achievement(160, "chenga.png", "Collecta II", "Get 100 Chengas (total)", () => game.stats.chenga >= 100),
     new Achievement(186, "shbook.png", "Librarian II", "Unlock 10 lore pages", () => game.lore.length >= 10),
     new Achievement(51, "hms.png", "Shgabb Conqueror V", "Reach More Shgabb level 15000", () => game.stats.hms >= 15000),
+    new Achievement(191, "unlock.png", "The Republic", "Unlock Bananas (15 000 HMS)", () => unlockedBananas()),
+    new Achievement(198, "bananatree.png", "Bananensamen", "Find your first Banana Seed!", () => game.stats.bananaseeds > 0),
+    new Achievement(199, "bananatree.png", "Beautiful Palms", "Get your first Banana Tree!", () => game.stats.bananatrees > 0),
+    new Achievement(192, "banana.png", "This is Bananas!", "Get your first Banana!", () => game.bananas >= 1),
     new Achievement(167, "fishlvl.png", "Cod of Dedication I", "Reach Fish Level 10", () => game.fishlvl >= 10),
     new Achievement(168, "fishlvl.png", "Cod of Dedication II", "Reach Fish Level 25", () => game.fishlvl >= 25),
     new Achievement(169, "fishlvl.png", "Cod of Dedication III", "Reach Fish Level 50", () => game.fishlvl >= 50),
@@ -228,10 +235,14 @@ var achievements = [
     new Achievement(188, "fishing.png", "Pearly I", "Get a Pearl upgrade to level 1", () => pearlUpgrades.prlShgabb.currentLevel() >= 1 || pearlUpgrades.prlGS.currentLevel() >= 1),
     new Achievement(189, "fishing.png", "Pearly II", "Get a Pearl upgrade to level 10", () => pearlUpgrades.prlShgabb.currentLevel() >= 10 || pearlUpgrades.prlGS.currentLevel() >= 10),
     new Achievement(190, "fishing.png", "Pearly III", "Get a Pearl upgrade to level 25", () => pearlUpgrades.prlShgabb.currentLevel() >= 25 || pearlUpgrades.prlGS.currentLevel() >= 25),
+    new Achievement(193, "banana.png", "Long Fruit I", "Get 100 Bananas (total)", () => game.stats.bananas >= 100),
+    new Achievement(194, "banana.png", "Long Fruit II", "Get 1000 Bananas (total)", () => game.stats.bananas >= 1000),
     new Achievement(100, "ttt.png", "Phallic Plays", "Win Shgic Shgac Shgoe with an interesting formation", () => false),
     new Achievement(110, "bags.png", "Beating DaGame", () => "Have " + fn(1000000) + " Bags at the same time", () => game.bags >= 1000000),
     new Achievement(126, "ameliorer.png", "Amé: Part VII", "Unlock the seventh set of Améliorer upgrades (225 Amé levels)", () => getTotalAme() >= 225),
     new Achievement(128, "gem.png", "The Whale", "Unlock Infinite Gems To Amé (Améliorer Upgrade)", () => ameliorerUpgrades.infiniteGems2ame.currentLevel() > 0),
+    new Achievement(195, "banana.png", "Long Fruit III", "Get 10k Bananas (total)", () => game.stats.bananas >= 10000),
+    new Achievement(200, "bananatree.png", "Beautiful Palms", "Have four Banana Trees at once!", () => getBananaTreeAmount() == 4),
     new Achievement(64, "clicks.png", "Clicker V", "Click 1M times", () => game.stats.clicks >= 1000000),
     new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
     new Achievement(130, "ameliorer.png", "Vaméni, Vamidi, Vamici", "Increase max. levels of Améliorer upgrades... what?!", () => ameliorerUpgrades.AMECAME.currentLevel() > 0),
@@ -241,20 +252,11 @@ var achievements = [
     new Achievement(149, "ameliorer.png", "Cap Bro V", "Get 2500 Améliorer", () => game.stats.ame >= 2500),
     new Achievement(161, "chenga.png", "Collecta III", "Get 1000 Chengas (total)", () => game.stats.chenga >= 1000),
     new Achievement(139, "challenge.png", "Challenger III", "Complete Challenges 25 times", () => getTotalTiers() >= 25),
+    new Achievement(196, "banana.png", "Long Fruit IV", "Get 100k Bananas (total)", () => game.stats.bananas >= 100000),
+    new Achievement(197, "banana.png", "Long Fruit V", "Get 1M Bananas (total)", () => game.stats.bananas >= 1e6),
     new Achievement(187, "shbook.png", "Librarian III", "Unlock all lore pages", () => game.lore.length == lore.length - 1),
     new Achievement(140, "clicks.png", "Clicker VI", "Click 5M times", () => game.stats.clicks >= 5000000),
     new Achievement(89, "hms.png", "Shgabb Conqueror VI", "Reach More Shgabb level 20000", () => game.stats.hms >= 20000),
-
-    new Achievement(191, "unlock.png", "The Republic", "Unlock Bananas (15 000 HMS)", () => unlockedBananas()),
-    new Achievement(192, "banana.png", "This is Bananas!", "Get your first Banana!", () => game.bananas >= 1),
-    new Achievement(193, "banana.png", "Long Fruit I", "Get 100 Bananas (total)", () => game.stats.bananas >= 100),
-    new Achievement(194, "banana.png", "Long Fruit II", "Get 1000 Bananas (total)", () => game.stats.bananas >= 1000),
-    new Achievement(195, "banana.png", "Long Fruit III", "Get 10k Bananas (total)", () => game.stats.bananas >= 10000),
-    new Achievement(196, "banana.png", "Long Fruit IV", "Get 100k Bananas (total)", () => game.stats.bananas >= 100000),
-    new Achievement(197, "banana.png", "Long Fruit V", "Get 1M Bananas (total)", () => game.stats.bananas >= 1e6),
-    new Achievement(198, "bananatree.png", "Bananensamen", "Find your first Banana Seed!", () => game.stats.bananaseeds > 0),
-    new Achievement(199, "bananatree.png", "Beautiful Palms", "Get your first Banana Tree!", () => game.stats.bananatrees > 0),
-    new Achievement(200, "bananatree.png", "Beautiful Palms", "Have four Banana Trees at once!", () => getBananaTreeAmount() == 4),
 
     new Achievement(101, "achievement.png", "Achiever I", "Get 10 Achievements", () => game.ach.length >= 10),
     new Achievement(102, "achievement.png", "Achiever II", "Get 25 Achievements", () => game.ach.length >= 25),

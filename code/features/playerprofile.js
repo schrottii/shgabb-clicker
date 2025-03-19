@@ -206,6 +206,7 @@ var pfps = [
     new PFP(305, "Gem", "images/currencies/gem.png", () => game.ach.includes(55)),
     new PFP(306, "Bag", "images/currencies/bag.png", () => game.ach.includes(109)),
     new PFP(307, "Copper", "images/currencies/copper.png", () => game.ach.includes(146)),
+    new PFP(308, "Banana", "images/currencies/banana.png", () => game.ach.includes(195)),
 
     // 400 - 599 | Event PFPs
     new PFP(400, "Gift 1", "images/currencies/gift.png", () => game.evpfps.includes(400)),

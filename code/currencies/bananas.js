@@ -38,7 +38,7 @@ function getBananaTreeAmount() {
 function bananaTreePlant() {
     if (game.bananaseeds > 0 && getBananaTreeAmount() < 4) {
         game.bananatrees.push({
-            id: game.stats.bananatrees,
+            id: game.stats.bananatrees + 1,
             active: true,
             date: today(),
             days: 0,
@@ -113,7 +113,7 @@ function renderBananaTrees() {
     for (let tree in game.bananatrees) {
         t = game.bananatrees[tree];
         render = render + '<button class="grayButton" onclick="clickBananaTree(' + getTreeByID(t.id) + ')"><img src="images/' + (t.bananas > 0 ? "bananatree" : "bananatree-empty") + '.png" /><br />Banana Tree #' + t.id
-            + '<br />Days: ' + t.days + ' (Planted: ' + formatDate(t.date) + ')'
+            + '<br />Age: ' + (t.days + 1) + ' (Planted: ' + formatDate(t.date) + ')'
             + '<br />Click to earn ' + t.bananas + cImg("banana") + '! (' + calcTreeDeathChance(t) + '% chance of destroying the tree)'
             + '</button>';
     }

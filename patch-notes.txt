@@ -75,6 +75,8 @@ January - March 2025:
 3.4.7
 3.4.8
 3.5
+3.5.1
+3.5.2
 
 
 
@@ -2322,3 +2324,21 @@ Version v3.5.1:
 - Every fish now gives 4XP more (meaning the minimum is 6XP)
 - Fixed an 0 GS issue
 - Fixed being able to get Banana Seeds too early
+
+
+
+2025/03/20 v3.5.2:
+Version v3.5.2:
+-> Bananas:
+- Added a Banana PFP, unlocked at 10k total Bananas (third Achievement)
+- Moved Banana Achievements based on progression
+- Fixed Tree ID starting with #0, all new trees are one higher now
+- Tree age is now shown as "Age" instead of "Days" (starting at 1 now)
+
+-> Other:
+- Added 5 new Quotes (105 total)
+- Minigames no longer pause when a different selection is used
+- Fishgang: Re-added Your Mom and Pirate Piss
+- Achievements: Added page buttons to the top as well
+- Challenges: Goal, Price and Boost are now bold, and added a line above them
+- Expanded Featuriary text for Shgic
