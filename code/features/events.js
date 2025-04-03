@@ -22,22 +22,22 @@ class LimitedEvent {
     }
 }
 
-// Anniversary Event | Jan 6 - Jan 20
-// Lunar New Year Event | Feb 10 - Feb 24
-// Egg Hunt | Mar 29 - Apr 12
-// Pride Event | Jun 8 - Jun 22
-// Hot Hot Summer Event | Jul 28 - Aug 18
-// Shgabb The Witch Event | Oct 28 - Nov 17
-// Christmas Event | Dec 14 - Dec 28
+// Y2 Anniversary Event | Jan 6 - Jan 19
+// Y2 Lunar New Year Event | Feb 4 - Feb 17
+// Y2 Egg Hunt | April 2 - April 15
+// Y1 Pride Event | Jun 8 - Jun 22
+// Y1 Hot Hot Summer Event | Jul 28 - Aug 18
+// Y1 Shgabb The Witch Event | Oct 28 - Nov 17
+// Y2 Christmas Event | Dec 15 - Dec 28
 
 const events = {
-    anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 120, "renderAnniversary"),
-    lunar: new LimitedEvent("lunar", "Lunar New Year Event", 204, 218, "renderLunar"),
-    egg: new LimitedEvent("egg", "Egg Hunt", 329, 419, "renderEgg"),
+    anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 119, "renderAnniversary"),
+    lunar: new LimitedEvent("lunar", "Lunar New Year Event", 204, 217, "renderLunar"),
+    egg: new LimitedEvent("egg", "Egg Hunt", 402, 415, "renderEgg"),
     pride: new LimitedEvent("pride", "Pride Event", 608, 622, "renderPride"),
     summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
     shgabbthewitch: new LimitedEvent("shgabbthewitch", "Shgabb The Witch Event", 1028, 1117, "renderShgabbTheWitch"),
-    christmas: new LimitedEvent("christmas", "Christmas Event", 1214, 1228, "renderChristmas"),
+    christmas: new LimitedEvent("christmas", "Christmas Event", 1215, 1228, "renderChristmas"),
 };
 
 ///////////////////////////////////
@@ -100,7 +100,7 @@ var previousGiftText = "";
 function renderChristmas() {
     let collectedPages = calcCollectedPages(3);
 
-    let render = "<h3>Christmas Event (Year 2)</h3><br /><b>December 14th - December 28th</b>";
+    let render = "<h3>Christmas Event (Year 2)</h3><br /><b>December 15th - December 28th</b>";
     render = render + "<br />The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! Gifts are earned by clicking, regardless of speed (average 180s per Gift), or 10 can be earned per day from Shgic. Merry christmas and happy holidays everyone!";
 
 
@@ -224,7 +224,7 @@ function renderAnniversary() {
     }
 
     // HEADER AND DESCRIPTION
-    let render = "<h3>Anniversary Event (Year 2)</h3><b>January 6th - January 20th</b>";
+    let render = "<h3>Anniversary Event (Year 2)</h3><b>January 6th - January 19th</b>";
     render = render + "<br />Celebrate the anniversary of Shgabb Clicker! During the event, all Shgabb production is tripled, and Artifacts are 50% easier to find. Click to bake a Cake - up to 15 000 times - after 10 000 clicks it's done and can be eaten. After eating a Cake, you get x5 click speed, x10 Shgabb production and x3 Gem Chance for three minutes. Get 3 PFPs, 0 Banners and 0 Frames to celebrate!";
     render = render + "<br />" + cImg("birthdayCandle") + (getLoreByID(game.loreSel).source == 4 ? game.loreP : 0) + " Birthday Candles (" + collectedPages + "/5 Pages)";
 
@@ -279,7 +279,7 @@ var luck = 0;
 function renderLunar() {
     let collectedPages = calcCollectedPages(5);
 
-    let render = "<h3>Lunar New Year Event (Year 2)</h3><br /><b>February 4th - February 18th</b>";
+    let render = "<h3>Lunar New Year Event (Year 2)</h3><br /><b>February 4th - February 17th</b>";
     render = render + "<br />Celebrate the Chinese New Year, or, Lunar New Year, with us. x8 Shgabb production. Earn Qian by clicking (with a chance every 100th click) and spend them on 8 different offers. You can get 3 PFPs, 3 Banners and 2 Frames, and also find 5 exclusive Lore Pages and unlock them with Red Envelopes.";
     render = render + "<br />" + cImg("qian") + game.qian + " Qian";
     render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)<br /><br />";
@@ -461,10 +461,16 @@ var eggNumber = 1;
 var eggTime = 10;
 
 function renderEgg() {
-    let render = "<h3>Egg Hunt Event</h3><br /><b>March 29th - April 19th</b>";
-    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
+    let collectedPages = calcCollectedPages(6);
 
-    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>100 " + cImg("egg") + "</button>";
+    let render = "<h3>Egg Hunt Event</h3><br /><b>April 2nd - April 15th</b>";
+    render = render + "<br />The green bunnies are on the run and it's time to find their eggs! Celebrate the beginning of Spring and the joy of the hunt with this event. Find eggs that are hiding in the game, click to collect, and buy prizes! They include 6 PFPs, 2 Banners and 2 Frames.";
+    render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
+    render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
+
+
+    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>50 " + cImg("egg") + "</button>";
+    if (!game.evframes.includes(408)) render = render + "<button class='chineseOffer' onclick='useEggs(5)'>Buy an Easter Banner or Frame!<br/>50 " + cImg("egg") + "</button>";
     render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
     render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
     render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
@@ -473,7 +479,7 @@ function renderEgg() {
 }
 
 function refreshEgg() {
-    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades);
+    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades, copperShgabbUpgrades, bananaUpgrades);
     let randomNumber = Math.floor(Math.random() * Object.keys(allUpgrades).length - 1);
 
     eggUpgrade = Object.keys(allUpgrades)[randomNumber];
@@ -495,7 +501,7 @@ function useEggs(offerNR) {
     switch (offerNR) {
         case 1:
             // buy PFP
-            if (game.eggs < 100) {
+            if (game.eggs < 50) {
                 createNotification("Not enough Eggs!");
                 return false;
             }
@@ -524,8 +530,8 @@ function useEggs(offerNR) {
                 return false;
             }
             // bought one of them
-            game.eggs -= 100;
-            createNotification("Bought PFP for 100 Eggs!");
+            game.eggs -= 50;
+            createNotification("Bought PFP for 50 Eggs!");
 
             break;
         case 2:
@@ -550,6 +556,35 @@ function useEggs(offerNR) {
             game.eggs -= 100;
             if (!allArtifactsOfRarity(3)) gambleArtifact(3);
             else artifactDuplicate(3);
+
+            break;
+        case 5:
+            // buy banner or frame
+            if (game.eggs < 50) {
+                createNotification("Not enough Eggs!");
+                return false;
+            }
+
+            if (!game.evbans.includes(427)) {
+                game.evbans.push(427);
+            }
+            else if (!game.evframes.includes(407)) {
+                game.evframes.push(407);
+            }
+            else if (!game.evbans.includes(428)) {
+                game.evbans.push(428);
+            }
+            else if (!game.evframes.includes(408)) {
+                game.evframes.push(408);
+            }
+            else {
+                // has all
+                createNotification("You already own these Cosmetics!");
+                return false;
+            }
+            // bought one of them
+            game.eggs -= 50;
+            createNotification("Bought Cosmetic for 50 Eggs!");
 
             break;
     }

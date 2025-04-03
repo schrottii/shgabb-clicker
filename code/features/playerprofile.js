@@ -287,6 +287,9 @@ var banners = [
     new Banner(425, "Sacred Envelope", "images/playerprofile/banners/lunar2.png", () => game.evbans.includes(425)),
     new Banner(426, "Qianmania", "images/playerprofile/banners/lunar3.png", () => game.evbans.includes(426)),
 
+    new Banner(427, "Sweet Dreams", "images/playerprofile/banners/easter-banner1.png", () => game.evbans.includes(427)),
+    new Banner(428, "Eggs by the Pond", "images/playerprofile/banners/easter-banner2.png", () => game.evbans.includes(428)),
+
     // 600 - 699 | Challenge Banners
     new Banner(600, "Challenger", "images/playerprofile/banners/challenge-banner.png", () => getHighestTier() >= 3),
     new Banner(601, "Basic Climb", "images/challenges/challenge1.png", () => game.clg[1] >= 3),
@@ -317,6 +320,9 @@ var frames = [
 
     new Frame(405, "Hen Duo Qian", "images/playerprofile/frames/lunarframe.png", () => game.evframes.includes(405)),
     new Frame(406, "Red Lanterns", "images/playerprofile/frames/lunarframe2.png", () => game.evframes.includes(406)),
+
+    new Frame(407, "My Nest", "images/playerprofile/frames/nestframe.png", () => game.evframes.includes(407)),
+    new Frame(408, "Egged", "images/playerprofile/frames/eggsframe.png", () => game.evframes.includes(408)),
 ];
 
 function calcProfileCanvasSize() {

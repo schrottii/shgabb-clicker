@@ -76,6 +76,8 @@ function getWispType(typeID) {
             return "Birthday Candles";
         case 5:
             return "Red Envelopes";
+        case 6:
+            return "Baskets";
     }
 }
 
@@ -93,6 +95,8 @@ function getWispEvent(typeID) {
             return isEvent("anniversary");
         case 5:
             return isEvent("lunar");
+        case 6:
+            return isEvent("easter");
     }
 }
 
@@ -110,6 +114,8 @@ function getWispImage(typeID) {
             return "birthdayCandle";
         case 5:
             return "redEnvelope";
+        case 6:
+            return "basket";
     }
 }
 
@@ -127,6 +133,8 @@ function getWispRarity(typeID) {
             return 1 / 1000;
         case 5:
             return 1 / 888;
+        case 6:
+            return 1 / 2000;
     }
 }
 
@@ -213,19 +221,26 @@ const lore = [
     new BookEntry(213, "In The Mall", 3, 7, `"sI won't give up. I'm almost there."e he says, and only a minute later, he arrives at the main entrance of the mall. "sI... can't... open... thissh ahh!"e he says and falls. The door is frozen. No way to open that. "sI have to get in there some other way... but how?"e he asks himself, trying to find a new way to enter the mall. Experts all around the country are unsure why he is so fixated on finding the lost things THERE, but what do you expect from someone with mediocre intelligence? He steps through the snow, every breath a breeze, not falling from the freeze. Eventually, he reaches an alternative entrance. It's not frozen. (Let's not tell him that the main entrance wasn't frozen either, it was just closed. Don't tell him.)"sI'm finally in. Lots of people here. Bananas for sale. I'll go to the criminals, down there, about 150 bananas for scale."e he stupidly says, and who talks about criminals in public? When talking to yourself, even? Right before he reaches the stairs, someone familiar strikes his eye's glance... "sMom? Why are you here?"e - Shganta`),
     new BookEntry(214, "Peace and Love", 3, 10, `He runs to her. "sMom, why are you here? I looked for you everywhere!"e (Didn't you literally go here expecting to find her? Moron.) "sOh, my little one... it's probably best if I tell you the truth. I forgot to get you the gift. That's why I'm here."e Realization. Reality shattered. Re-assessing the situation. The gift was not stolen. It was never there in the first place. "sBut I have the gift now. Let's go home, and open each other's gifts, and those from Santa too."e, she says. Her son nearly in tears. They go back home, everyone is together, the entire family. Everyone gets good gifts, eats the good food, and there is something special on TV. It's all about peace and love, as it should be. The worries are forgotten, and put aside for a week - no matter if heavy or weak, this is not the time to feel bad. It's aaaaall peace and love. The gift in question... it's a new console. Merry Christmas everyone! - Shganta`),
 
-    // 215-219: Anniversary Event
+    // 215 - 219: Anniversary Event
     new BookEntry(215, "Take Control", 4, 2, `Dear diary, tomorrow will be my birthday. I have spent a lot of time thinking about how I want it to be. My family treats me well. I can get what I want for my birthday. Last year, I failed. My birthday was bad, and it was my fault. I didn't wish for enough. I just let it happen, and it was just a normal day. This year it will be different. I will take control. The birthday will be great. - Lilly`),
     new BookEntry(216, "What I Want", 4, 4, `They know what I want. For my birthday tomorrow. Looooots of presents. I wrote a looong list. Last year I was uninspired and wrote down lots of random stuff, but this year I got my priorities straight. The issue was that some things changed in my life, and my interests changed, and the direction my desires were heading to was uncertain. But this year I know what things and objects I want. Games. Clothes. Tools. I got it. I will get it. I'm so excited for tomorrow! - Lilly`),
     new BookEntry(217, "Year Culture", 4, 6, `I have spectated the culture of this species. It seems like Shgabbs have a big culture around years. They see a new year as a new beginning, where you can leave behind plagues and miseries from the previous year, and new things are often started at the beginning of a new year. Things like moving to a new location, or buying something important. Every new year is different. They draw a strict line between years. Birthdays are quite relevant too. They celebrate them just like how humans do. But even bigger. When you are a Shgabb and it's your birthday, you get a lot of gifts, and are treated like a king, or like a princess, for one day. Of course there are limits, but it's really one day where everything is about YOU. And I think that's great. - Pierre`),
     new BookEntry(218, "Birthday: Before", 4, 8, `Today is the day. Today is MY day. Today I am the princess. It's my birthday. It's early in the morning, so the celebrations haven't started yet. But soon they will. I will report back. The others aren't awake yet, so I'll take some time and do things that make me happy. - Lilly`),
     new BookEntry(219, "Birthday: After", 4, 10, `My birthday is over, and waow, that was quite the day. I am so happy. One of the best days of the year. I got everything I wanted. Some of the stuff they gifted me... is very hard to get. I wouldn't have managed to find it on my own. I'm so grateful for my positive life and great family and friends. I wish that everyone could have it. Wait... there's still 4 minutes until the day is over. Maybe this final wish can come true? :) - Lilly`),
 
-    // 220-224(?): Lunar New Year Event
+    // 220 - 224: Lunar New Year Event
     new BookEntry(220, "A bit poor", 5, 8, `I am Yúzé. A young Shgabboy from the East. A bit poor. Every new year, we celebrate. Our date might be different than yours. I want to buy Dragon Cake. It is sweet, but also spicy. Most cakes are not spicy. I ate it for the first time last year, and it was very delicious. This year, I want to eat it again. But I don't have enough Qian to buy it. It is not a cheap cake. - Yúzé`),
     new BookEntry(221, "Working for Qian", 5, 8, `Today, I worked very hard. I went to the bigger city and offered my strength and work, in exchange for payment. There was one store where I helped re-organize the products and update a list of how many are left. They paid me some Qian. I also helped some good men and polished their shoes. Their shoes became shiny. Some had a lot of mud under them. These good men paid me some Qian, but not much. It is not a very grateful work. But I also helped out an elder woman, who is too broken to get to the store on her own. She gave me Qian to buy these things for her, and I was allowed to keep the rest. This was very much worth it. It was a productive day. I helped people, and they helped me. A well working society. - Yúzé`),
     new BookEntry(222, "Luck", 5, 8, `Luck is a part of life. Whether you believe in it or not, sometimes you are lucky, sometimes you are unlucky. Some things that happen may be outside of your control. Qian are lucky coins. You work to get them, and you get rewarded. Or you spend them and reward yourself. Luck is invisible, but you feel the good feelings. Life can give you what you want. You just need to prove that you are worthy. - Yúzé`),
     new BookEntry(223, "Dragon Cake", 5, 8, `I have finally gathered enough Qian. I went to the Dragon Bakery. They sell lots of fancy looking food. A lot of it is spicy. But it is not normal spices. They have a secret ingredient, that tickles your tongue like no other. "sHello. I would like to buy a Dragon Cake. Medium size. Here is the Qian."e "sWe see that you worked hard. You are a valuable member of society. Luck is with you. You are getting a 10% sale. Here is your cake. Enjoy."e the shop owner replied. I was rewarded for my good work. I ate the cake at home, with a glass of milk in the other hand, because I don't want my tongue to burn to ashes. - Yúzé`),
     new BookEntry(224, "New Year Celebrations", 5, 8, `I took the final two slices of cake with me. In the bigger city, the new year is celebrated today. The lunar new year. I sat down on one of the long benches. Many shows. Some are funny, some are poetry, some are very traditional. Later, at night, there's fireworks. Beautiful fireworks. The sky never looks this beautiful. The moon shines bright and is happy to be here with us tonight. - Yúzé`),
+
+    // 225 - 229: Egg Hunt Event
+    new BookEntry(225, "Shgabb Spring", 6, 1, `The world of the Shgabb has strong seasonal differences and culture. The seasons consistently begin around the same time, the 21st of a month, they are reliable. The Winters are quite cold, but not too cold for a fun snowball fight. The Summers are quite hot, but you don't sweat too much. And when March comes to an end, you might find a new friend. The beginning of Spring is one of the highlights of Shgabb culture. - Penny, organizer of the local Spring celebrations`),
+    new BookEntry(226, "Green Bunnies", 6, 2, `The Easter Bunny is actually real on this planet... but it's not just one, there are many of them. Or did you really expect one animal to hide millions of eggs? Also, they are green. Every year, the green bunnies energetically hide the eggs and other presents all around. The families gather and look for their loot. It's my job, every year, to help make this happen. I clean the parks, seek out hiding spots, take care of traffic, and more. Soon, it will begin. - Penny`),
+    new BookEntry(227, "The Hunt Begins", 6, 3, `Spring has begun 1.5 weeks ago, now it's time. The event that many families claim their favorite, the scavenger hunt, the journey to find what will soon be yours. I do the countdown for the local park. "s3... 2... 1... GO!"e Everyone starts looking. I walk around and make sure nobody gets lost or stuck in a bush. I am eating a Sandwich while doing so. It's a chill job, I really like it. A young Shgabb has found a toy. - Penny`),
+    new BookEntry(228, "The Legend of Shjassus", 6, 4, `There once was a man, in this land long ago, he was the most beloved Shgabb then, and we still praise his holy glow. His name is Shjassus. He had magic powers and healed all the sick Shgabb, the cure to everything even when he is not around. Long dead but still around, listening to our weekly sound. Shjassus, the holy Shgabb, is an inspiration to many, and helps us get along and cooperate. He had a positive mind and positive principles, follow them and your soul is pure. - Shgappope`),
+    new BookEntry(229, "The Return of Shjassus", 6, 5, `They say, every year Shjassus returns to us. That is why we celebrate the beginning of every Spring. The search for eggs, and other things, is symbolic and represents the search for Shjassus. If he is somewhere out there, on this day, someone will find him. It's very unlikely, but even if you don't, you find other things that you may need... such as eggs. It's a metaphor for life. Aim high, try to find the best you can get, and be satisfied when it's just an egg. - Shgappope`),
 
     // new BookEntry(100, "", 1, 10, ``),
 ]

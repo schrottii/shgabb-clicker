@@ -2,10 +2,26 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.5.2";
+const gameVersion  = "3.5.3";
 const versionTitle = "";
 
 const currentPatchNotes = [
+    "-> Egg Hunt Event:",
+    "- The Egg Hunt Event is back for Year 2",
+    "- Duration changed to April 2nd - April 15th (4 days later, 22 days -> 14 days)",
+    "- 5 event lore pages can be found, and unlocked with the new lore currency Baskets",
+    "- Added event description",
+    "- Added 2 new Banners and 2 new Frames (still 6 PFPs)",
+    "- Reduced Event Cosmetic price from 100 to 50",
+    "- Added a new offer for banners and frames",
+    "- (The event was active for a few days before this, and egg images weren't working)",
+
+    "-> Other Events:",
+    "- Christmas Event: Changed start date from December 14th to December 15th (15 days -> 14 days)",
+    "- Anniversary Event: Changed end date from January 20th to January 19th (15 days -> 14 days)",
+    "- Lunar New Year Event: Changed end date from February 18th to February 17th (15 days -> 14 days)",
+
+    "v3.5.2",
     "-> Bananas:",
     "- Added a Banana PFP, unlocked at 10k total Bananas (third Achievement)",
     "- Moved Banana Achievements based on progression",

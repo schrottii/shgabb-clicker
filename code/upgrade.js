@@ -134,7 +134,7 @@ class Upgrade {
         // egg hunt
         let egg = "";
         if (eggUpgrade == this.ID) {
-            egg = "<img src='images/eggs/egg" + eggNumber + ".png' onclick='clickEgg()' width=32 height=32>";
+            egg = "<img src='images/playerprofile/pfps/egg" + eggNumber + ".png' onclick='clickEgg()' width=32 height=32>";
         }
 
         // level
