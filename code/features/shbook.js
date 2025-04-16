@@ -96,7 +96,7 @@ function getWispEvent(typeID) {
         case 5:
             return isEvent("lunar");
         case 6:
-            return isEvent("easter");
+            return isEvent("egg");
     }
 }
 
@@ -134,7 +134,7 @@ function getWispRarity(typeID) {
         case 5:
             return 1 / 888;
         case 6:
-            return 1 / 2000;
+            return 1 / 200;
     }
 }
 
