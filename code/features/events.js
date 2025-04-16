@@ -33,7 +33,7 @@ class LimitedEvent {
 const events = {
     anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 119, "renderAnniversary"),
     lunar: new LimitedEvent("lunar", "Lunar New Year Event", 204, 217, "renderLunar"),
-    egg: new LimitedEvent("egg", "Egg Hunt", 402, 415, "renderEgg"),
+    egg: new LimitedEvent("egg", "Egg Hunt", 402, 418, "renderEgg"),
     pride: new LimitedEvent("pride", "Pride Event", 608, 622, "renderPride"),
     summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
     shgabbthewitch: new LimitedEvent("shgabbthewitch", "Shgabb The Witch Event", 1028, 1117, "renderShgabbTheWitch"),
