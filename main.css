@@ -504,10 +504,10 @@ progress {
     }
 
 .settingButton, .settingButton2 {
-    background-color: #01f8fd;
-    color: black;
-    border-color: darkblue;
-    border: 4px solid darkblue;
+    background-color: darkblue;
+    color: #01f8fd;
+    border-color: rgb(6, 6, 170);
+    border: 4px solid rgb(6, 6, 170);
     font-size: 20px;
     text-align: center;
     font-family: Rw;

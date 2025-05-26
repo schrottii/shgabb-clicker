@@ -104,7 +104,7 @@ function renderGemOffers() {
     if (unlockedArtifacts()) {
         ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + (getArtifactAmount() == totalAmountOfArtifacts() ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
         ui.gemOffer4.innerHTML = "<b>Artifact Loadout</b><br />" + (game.al >= 8 + ameliorerUpgrades.moreLoadouts.currentLevel() ? "Not available... you know too much...<br />..." : "Spend " + (game.al * 25 * (game.al >= 8 ? game.al : 1)) + " Gems for another Artifact loadout slot!<br>(Max. 12)");
-        ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifact(game.dgo).isUnlocked() ? "You already own today's artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifact(game.dgo).render(false));
+        ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifact(game.dgo).isUnlocked() ? "You already own today's Artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifact(game.dgo).render(false));
     }
     else {
         ui.gemOffer3.innerHTML = "Unlocked at 1000 More Shgabb!";

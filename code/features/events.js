@@ -25,7 +25,7 @@ class LimitedEvent {
 // Y2 Anniversary Event | Jan 6 - Jan 19
 // Y2 Lunar New Year Event | Feb 4 - Feb 17
 // Y2 Egg Hunt | April 2 - April 15
-// Y1 Pride Event | Jun 8 - Jun 22
+// Y2 Pride Event | Jun 1 - Jun 14
 // Y1 Hot Hot Summer Event | Jul 28 - Aug 18
 // Y1 Shgabb The Witch Event | Oct 28 - Nov 17
 // Y2 Christmas Event | Dec 15 - Dec 28
@@ -33,8 +33,8 @@ class LimitedEvent {
 const events = {
     anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 119, "renderAnniversary"),
     lunar: new LimitedEvent("lunar", "Lunar New Year Event", 204, 217, "renderLunar"),
-    egg: new LimitedEvent("egg", "Egg Hunt", 402, 418, "renderEgg"),
-    pride: new LimitedEvent("pride", "Pride Event", 608, 622, "renderPride"),
+    egg: new LimitedEvent("egg", "Egg Hunt", 402, 415, "renderEgg"),
+    pride: new LimitedEvent("pride", "Pride Event", 601, 614, "renderPride"),
     summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
     shgabbthewitch: new LimitedEvent("shgabbthewitch", "Shgabb The Witch Event", 1028, 1117, "renderShgabbTheWitch"),
     christmas: new LimitedEvent("christmas", "Christmas Event", 1215, 1228, "renderChristmas"),
@@ -463,7 +463,7 @@ var eggTime = 10;
 function renderEgg() {
     let collectedPages = calcCollectedPages(6);
 
-    let render = "<h3>Egg Hunt Event</h3><br /><b>April 2nd - April 15th</b>";
+    let render = "<h3>Egg Hunt Event (Year 2)</h3><br /><b>April 2nd - April 15th</b>";
     render = render + "<br />The green bunnies are on the run and it's time to find their eggs! Celebrate the beginning of Spring and the joy of the hunt with this event. Find eggs that are hiding in the game, click to collect, and buy prizes! They include 6 PFPs, 2 Banners and 2 Frames.";
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
@@ -600,9 +600,9 @@ var shgaybbMode = false;
 var shgaybbFound = "";
 
 function renderPride() {
-    let render = "<h3>Pride Event</h3><br /><b>June 8th - June 22nd</b>";
-    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production!";
-    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward! 3 PFPs and 10 Banners. Getting Pan Shgabb second counts as a joker.";
+    let render = "<h3>Pride Event (Year 2)</h3><br /><b>June 1st - June 14th</b>";
+    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production during the event.";
+    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Banners can also be found. Getting Pan Shgabb second counts as a joker, it works with anyone. Every couple found gives 20 Gems.";
     render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
 
     ui.eventRender.innerHTML = render;
@@ -664,7 +664,7 @@ function shgaybbID() {
 function findShgaybb() {
     if (!shgaybbMode) return false;
 
-    if (Math.random() < 1 / 5) {
+    if (Math.random() < 1 / 3) {
         let seed = Math.ceil(game.stats_today.playTime * game.stats.clicks) % shgaybbList.length;
 
         if (shgaybbFound == "") {
@@ -673,8 +673,12 @@ function findShgaybb() {
             createNotification("Found: " + shgaybbFound + " Shgabb");
         }
         else if (shgaybbFound == shgaybbList[seed] || shgaybbList[seed] == "Pan") {
-            // second
+            // second -> couple found
             createNotification("Couple found! " + shgaybbFound + " Shgabb");
+            statIncrease("couples", 1);
+
+            game.gems += 20;
+            statIncrease("tgems", 20);
 
             // award the reward
             let foundID = shgaybbID();
@@ -684,36 +688,70 @@ function findShgaybb() {
                 else createNotification("You already own this reward...");
             }
             else {
-                // one of the 3 pfps, random
-                seed = seed % 3;
-
-                switch (seed) {
-                    case 0:
-                        if (!game.evpfps.includes(415)) game.evpfps.push(415);
-                        else {
-                            seed += 1;
-                        }
-                    case 1:
-                        if (!game.evpfps.includes(416)) game.evpfps.push(416);
-                        else {
-                            seed += 1;
-                        }
-                    case 2:
-                        if (!game.evpfps.includes(417)) game.evpfps.push(417);
-                        else if (!game.evpfps.includes(415)) game.evpfps.push(415);
-                        else createNotification("You already own this reward...");
-                        break;
-                }
+                // give reward
+                awardPrideReward(seed);
             }
 
             shgaybbFound = "";
             //shgaybbMode = false;
         }
         else {
+            // second, but not fitting
             createNotification("Found: " + shgaybbList[seed] + " Shgabb. Not a couple... forever alone...");
             shgaybbFound = "";
             //shgaybbMode = false;
         }
+    }
+}
+
+function awardPrideReward(seed, repeat = false) {
+    // one of the 3 pfps or 3 frames, random
+    seed = seed % 6;
+
+    switch (seed) {
+        case 0:
+            if (!game.evpfps.includes(415)) {
+                game.evpfps.push(415);
+                break;
+            }
+            else seed += 1;
+        case 1:
+            if (!game.evpfps.includes(416)) {
+                game.evpfps.push(416);
+                break;
+            }
+            else seed += 1;
+        case 2:
+            if (!game.evpfps.includes(417)) {
+                game.evpfps.push(417);
+                break;
+            }
+            else seed += 1;
+        case 3:
+            if (!game.evframes.includes(409)) {
+                game.evframes.push(409);
+                break;
+            }
+            else seed += 1;
+        case 4:
+            if (!game.evframes.includes(410)) {
+                game.evframes.push(410);
+                break;
+            }
+            else seed += 1;
+        case 5:
+            if (!game.evframes.includes(411)) {
+                game.evframes.push(411);
+                break;
+            }
+            else if (!repeat) {
+                // got this one? try again from the start
+                awardPrideReward(0, true);
+            }
+            else {
+                createNotification("You already own this reward...");
+                break;
+            }
     }
 }
 

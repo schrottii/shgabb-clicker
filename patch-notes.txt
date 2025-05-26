@@ -79,6 +79,7 @@ January - March 2025:
 3.5.2
 April - June 2025:
 3.5.3
+3.6
 
 
 
@@ -2363,3 +2364,33 @@ Version v3.5.3:
 - Christmas Event: Changed start date from December 14th to December 15th (15 days -> 14 days)
 - Anniversary Event: Changed end date from January 20th to January 19th (15 days -> 14 days)
 - Lunar New Year Event: Changed end date from February 18th to February 17th (15 days -> 14 days)
+
+
+
+2025/05/26 v3.6:
+Version v3.6:
+-> Daily Challenge:
+- New feature: Daily Challenge (10k HMS)
+- Every day, random Artifacts are chosen (same for everyone)
+- Get as far as you can with those Artifacts
+- Artifacts can't be changed at all during the Challenge to prevent exploiting
+- Costs 10 Gems to enter, no HMS requirement
+- Rewards 1 Daily Challenge Point for every HMS
+- Rewards 1 Gem for every 150 HMS
+- Daily Challenge Points serve no use yet, but soon they will
+
+-> Pride Event:
+- The Pride Event is back for Year 2
+- Duration changed to June 1st - June 14th (7 days earlier, 15 days -> 14 days)
+- Added 3 Frames, gathered like the PFPs
+- Finding a couple now gives 20 Gems (previously no gameplay rewards)
+- Added Found couples stat (sorry those who grinded last year!)
+- Increased chance to find someone from 20% to 33.3%
+- Changed "United against loneliness" from 1 PFP to all PFPs
+- Changed "United Love" from all PFPs to all Frames
+- Updated event description
+
+-> Other:
+- Changed setting button colors
+- New image for Player Profile section
+- Changed generation of patch notes

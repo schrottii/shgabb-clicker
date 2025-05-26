@@ -50,6 +50,7 @@ function prestigeButton() {
     }
     if (!settings.confirm || confirm("Do you really want to prestige?")) {
         let amount = increaseGS(1 * getArtifactsSimpleBoost("prestigegs"));
+        let hms = game.stats_prestige.hms;
 
         prestigeGems();
         prestigeBananaSeeds();
@@ -74,7 +75,18 @@ function prestigeButton() {
 
         if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg).getGoal()) {
             // Challenge completed
-            game.clg[game.aclg] += 1; // increase tier aka reward n shd
+            if (game.aclg != 999) game.clg[game.aclg] += 1; // increase tier aka reward n shd
+            else {
+                game.dclg = [];
+                game.dclp += hms;
+
+                let gemAmount = Math.floor(hms / 150);
+                game.gems += gemAmount;
+                statIncrease("tgems", gemAmount);
+
+                renderChallenges();
+                createNotification("Daily Challenge complete: +" + hms + " points, +" + gemAmount + " Gems");
+            }
             getNewArtifact(8000);
         }
 

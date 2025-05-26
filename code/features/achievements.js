@@ -289,8 +289,8 @@ var achievements = [
     new Achievement(115, "eggs.png", "I'm an Egg", "Get all Easter PFPs", () => game.evpfps.includes(414)),
 
     new Achievement(116, "pride.png", "Love is love", "Play during the Pride Event", () => isEvent("pride")),
-    new Achievement(117, "pride.png", "United against loneliness", "Get a Pride Event PFP", () => game.evpfps.includes(415) || game.evpfps.includes(416) || game.evpfps.includes(417)),
-    new Achievement(118, "pride.png", "United Love", "Get all Pride Event PFPs", () => game.evpfps.includes(415) && game.evpfps.includes(416) && game.evpfps.includes(417)),
+    new Achievement(117, "pride.png", "United against loneliness", "Get all Pride Event PFPs", () => game.evpfps.includes(415) && game.evpfps.includes(416) && game.evpfps.includes(417)),
+    new Achievement(118, "pride.png", "United Love", "Get all Pride Event Frames", () => game.evframes.includes(409) && game.evframes.includes(410) && game.evframes.includes(411)),
     new Achievement(119, "pride.png", "Who do I love", "Get a Pride Event Banner", () => game.evbans.includes(400) || game.evbans.includes(401) || game.evbans.includes(402) || game.evbans.includes(403) || game.evbans.includes(404) || game.evbans.includes(405) || game.evbans.includes(406) || game.evbans.includes(407) || game.evbans.includes(408) || game.evbans.includes(409)),
     new Achievement(120, "pride.png", "I love all of you", "Get all Pride Event Banners", () => game.evbans.includes(400) && game.evbans.includes(401) && game.evbans.includes(402) && game.evbans.includes(403) && game.evbans.includes(404) && game.evbans.includes(405) && game.evbans.includes(406) && game.evbans.includes(407) && game.evbans.includes(408) && game.evbans.includes(409)),
 

@@ -27,6 +27,7 @@ class Challenge {
     }
 
     getPrice() {
+        if (this.ID == 999) return 10;
         return 10 + 10 * this.ID * (this.getTier() + 1);
     }
 
@@ -34,6 +35,20 @@ class Challenge {
         if (level == -1) level = this.getTier();
         if (level == 0) return 1;
         return Math.max(1, this.boost(level));
+    }
+
+    render() {
+        return "<button onclick='startChallenge(" + (parseInt(this.ID)) + ")' class='challenge' style='" + (game.aclg == this.ID ? "background-color: rgb(225, 225, 225); " : "")
+            + "background-image: url(images/challenges/challenge" + (parseInt(this.ID)) + ".png); background-size: cover; background-blend-mode: lighten;"
+            + "'><img src='images/challenges/challenge" + (parseInt(this.ID)) + ".png' style='min-width: 160px; max-width: 288px'><br><b>"
+            + this.name
+            + "<br />Tier " + this.getTier()
+            + "</b><br>" + this.description
+            + "<hr /><b>Goal:</b> " + this.getGoal() + " More Shgabb"
+            + "<br /><b>Price:</b> " + this.getPrice() + " Gems to start"
+            + (this.ID != 999 ? "<br /><b>Boost:</b> x" + fn(this.getBoost()) + " " + this.boostTypeDisplay
+            : "<br /><b>Daily Challenge Points:</b> " + game.dclp)
+            + "</button>";
     }
 }
 
@@ -44,6 +59,7 @@ var enableThisChallenge = 0;
 
 function getChallenge(ID) {
     // 1 is the first one
+    if (ID == 999) return dailyChallenge;
     return challenges[ID - 1];
 }
 
@@ -65,6 +81,21 @@ function unlockedChallenges() {
 }
 
 function startChallenge(ID) {
+    if (ID == 999){
+        // daily
+        if (game.dclg.length == 0){
+            alert("You already completed today's challenge");
+            return false;
+        }
+
+        for (let c in game.dclg){
+            if (!getArtifact(game.dclg[c]).isEquipped()) {
+                // not equipped
+                alert("You need to equip these Artifacts!");
+                return false;
+            }
+        }
+    }
     if (game.stats_prestige.playTime < 15) {
         alert("Can't prestige yet! " + game.stats_prestige.playTime.toFixed(0) + "/15");
         return false;
@@ -90,19 +121,59 @@ function startChallenge(ID) {
 function renderChallenges() {
     let render = "";
 
+    // normal challenges
     for (c in challenges) {
         let cha = getChallenge(parseInt(c) + 1);
-        if (challenges[c].isUnlocked()) render = render + "<button onclick='startChallenge(" + (parseInt(c) + 1) + ")' class='challenge' style='" + (game.aclg == cha.ID ? "background-color: rgb(225, 225, 225); " : "") + "background-image: url(images/challenges/challenge" + (parseInt(c) + 1) + ".png); background-size: cover; background-blend-mode: lighten;" + "'><img src='images/challenges/challenge" + (parseInt(c) + 1) + ".png' style='min-width: 160px; max-width: 288px'><br><b>" + cha.name
-            + "<br />Tier " + cha.getTier()
-            + "</b><br>" + cha.description
-            + "<hr /><b>Goal:</b> " + cha.getGoal() + " More Shgabb"
-            + "<br /><b>Price:</b> " + cha.getPrice() + " Gems to start"
-            + "<br /><b>Boost:</b> x" + fn(cha.getBoost()) + " " + cha.boostTypeDisplay
-            + "</button>"
-
+        if (challenges[c].isUnlocked()) render = render + challenges[c].render();
         else render = render + "<button class='challenge'><b>" + cha.name + "</b><br>Unlocked at " + cha.unlock + " More Shgabb</button>"
     }
+
+    // daily challenge
+    if (game.stats.hms >= 10000) {
+        if (game.dclp == 0 && game.dclg.length == 0) refreshDailyChallenge(); // first day
+
+        render = render + "<br /><h3>Daily Challenge</h3>";
+
+        if (game.dclg.length > 0) {
+            for (let c in game.dclg) {
+                render = render + getArtifact(game.dclg[c]).render();
+            }
+            render = render + "<br /><button class='grayButton' onclick='equipDaily()'>Quick Equip</button>"
+        }
+
+        render = render + "<br />" + dailyChallenge.render();
+    }
+
     ui.challengeRender.innerHTML = render;
+}
+
+function refreshDailyChallenge() {
+    game.dclg = [];
+    for (let c = 0; c < getMaxArtifactAmount(); c++) {
+        game.dclg.push(artifacts[(parseInt(today()) * c * Math.pow(c + 11, 6) + c) % (artifacts.length - 1)].ID);
+    }
+}
+
+function equipDaily() {
+    let hasAll = true;
+    for (let c in game.dclg) {
+        if (!getArtifact(game.dclg[c]).isUnlocked()) hasAll = false;
+    }
+
+    // does not have all
+    if (!hasAll){
+        alert("You are missing some of these Artifacts!");
+        return false;
+    }
+
+    // has all, equip
+    game.aeqi = [];
+    for (let c in game.dclg) {
+        game.aeqi.push(game.dclg[c]);
+    }
+
+    updateArtifacts();
+    renderChallenges();
 }
 
 function getTotalTiers() {
@@ -129,3 +200,5 @@ var challenges = [
     new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.25 * t, "Artifact drop rate"),
     new Challenge(6, 12000, t => 400 + 100 * t, "Inflation", "Upgrades are far more expensive", t => 2 * Math.pow(1.25, t), "cheaper Shgabb upgrades"),
 ];
+
+var dailyChallenge = new Challenge(999, 10000, t => 0, "Daily Challenge", "Get as far as you can with these Artifacts!", t => game.dclp, "daily challenge points");

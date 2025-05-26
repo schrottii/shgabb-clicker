@@ -96,6 +96,9 @@ function checkNewDay() {
             }
         }
 
+        // daily challenge
+        refreshDailyChallenge();
+
         // daily stats reset
         for (stat in game.stats_today) {
             if (game.stats_today[stat] != undefined && game.stats_today[stat].mantissa != undefined) {

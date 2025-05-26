@@ -739,6 +739,7 @@ function updateStats() {
         + "<br />Total Cakes: " + statLoader("cakes")
         + "<br />Total Qian: " + statLoader("qian")
         + "<br />Total Eggs: " + statLoader("eggs")
+        + "<br />Found Couples: " + statLoader("couples")
         + "<br />Total Shorts: " + statLoader("shorts")
         + "<br />Total Witch Shgabb: " + statLoader("witchshgabb")
         + "<br />Total Event currencies: " + (new Decimal(statLoader("gifts")).add(statLoader("cakes")).add(statLoader("qian")).add(statLoader("eggs")).add(statLoader("shorts")).add(statLoader("witchshgabb")))

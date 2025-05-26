@@ -36,16 +36,20 @@ class Upgrade {
 
     buy(isBuyingMax = false) {
         if (settings.noUpgrading) return false;
+
+        // prefer MS setting
         if (settings.preferMS && this.currency == "shgabb" && this.name != "moreShgabb") {
             if (shgabbUpgrades.moreShgabb.currentPrice().lt(this.currentPrice())) {
                 shgabbUpgrades.moreShgabb.buy(isBuyingMax);
                 return false;
             }
         }
+
         if (doesUnlevel == true) {
             doesUnlevel = false;
             return false;
         }
+        
         if (this.isUnlocked()) {
             if (this.canBuy()) {
                 if (game[this.currency].mantissa != undefined) game[this.currency] = game[this.currency].sub(this.currentPrice());

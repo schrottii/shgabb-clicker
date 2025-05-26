@@ -601,6 +601,8 @@ function exportArtifactLoadout(){
 }
 
 async function importArtifactLoadout() {
+    if (isChallenge(999)) return false;
+    
     let importer = await navigator.clipboard.readText();
 
     try {
@@ -644,6 +646,8 @@ function handleArtifactsFirstTime() {
 */
 
 function artifactLoadout(l, source = "key") {
+    if (isChallenge(999)) return false;
+
     // select a different loadout, yeah this one looks a bit messy so let's explain it
     // game.aeqi is your currently selected artis
     // game.alo[l] is the loadout we are looking at
@@ -844,6 +848,7 @@ function clickArtifact(id) {
 }
 
 function unequipCurrentArtifacts() {
+    if (isChallenge(999)) return false;
     if (game.aeqi.length == 0) return false;
 
     let tempEquipped = [];
@@ -858,6 +863,8 @@ function unequipCurrentArtifacts() {
 }
 
 function switchArtifact(id) {
+    if (isChallenge(999)) return false;
+
     if (getArtifact(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
     else if (game.aeqi.length < getMaxArtifactAmount()) game.aeqi.push(id);
     game.alo[selectedLoadout] = game.aeqi;
@@ -880,11 +887,13 @@ function upgradeArtifact(id) {
 }
 
 function destroyArtifact(id) {
+    if (isChallenge(999)) return false;
+
     let rarity = getArtifact(id).rarity;
     let level = game.alvl[id];
     let amount = Math.floor(getScrapCost(level, rarity) / 5);
-    if (!settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
 
+    if (!settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
         game.a.splice(game.a.indexOf(id), 1);
         delete game.alvl[id];
         if (game.aeqi.indexOf(id) != -1) game.aeqi.splice(game.aeqi.indexOf(id), 1);

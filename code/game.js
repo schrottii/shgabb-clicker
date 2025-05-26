@@ -11,6 +11,7 @@ var game = {
         banner: 100,
         frame: 100,
     },
+
     // currencies
     shgabb: new Decimal(0),
     sw: new Decimal(0),
@@ -29,6 +30,7 @@ var game = {
     bananas: 0,
     bananaseeds: 0,
     bananatrees: [],
+
     // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,
@@ -36,12 +38,14 @@ var game = {
     eggs: 0,
     shorts: 0,
     witchshgabb: 0,
+
     // other stuff
     lore: [],
     lorepg: [],
     loreSel: 0,
     loreP: 0,
     clickCooldown: 0,
+    
     // artifact stuff
     a: [],
     alvl: {},
@@ -49,6 +53,7 @@ var game = {
     alo: [[], [], []],
     al: 2,
     alnames: [""],
+
     // fishing
     fishxp: 0,
     fishlvl: 0,
@@ -57,6 +62,7 @@ var game = {
     fishvalue: new Decimal(0),
     bfishweight: 0, // best
     bfishvalue: 0, // best
+
     // more other
     ach: [],
     nexgai: [0, 0, 0, 0],
@@ -70,6 +76,9 @@ var game = {
 
     clg: [],
     aclg: 0,
+    dclg: [],
+    dclp: 0,
+
     // upgrade levels
     upgradeLevels: {
         // Shgabb
@@ -172,6 +181,7 @@ var game = {
         banSw: 0,
         banGS: 0,
     },
+
     // stats (all time)
     stats: {
         shgabb: 0,
@@ -198,6 +208,7 @@ var game = {
         cakes: 0,
         qian: 0,
         eggs: 0,
+        couples: 0,
         shorts: 0,
         witchshgabb: 0,
 
