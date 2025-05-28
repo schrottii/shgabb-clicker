@@ -2,10 +2,26 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.6";
+const gameVersion  = "3.6.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
+-> Daily Challenge:
+- Much better RNG for picking Artifacts
+- Legenary Artifacts are replaced if you don't have them
+- The shown Artifacts can be individually equipped/unequipped and refresh
+
+-> Pride Event:
+- 5 event lore pages can be found, and unlocked with the new lore currency Sharks
+- Sharks are only found during Shgaybb mode (10% chance per click)
+
+-> Lore:
+- Added 5 new lore pages for the event (45 total)
+- Added button to stop collecting (no refund)
+- Added button to throw a page away (to make space, useful during events)
+- Lore can now contain paragraphs
+
+v3.6
 -> Daily Challenge:
 - New feature: Daily Challenge (10k HMS)
 - Every day, random Artifacts are chosen (same for everyone)

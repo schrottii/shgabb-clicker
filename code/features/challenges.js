@@ -136,7 +136,7 @@ function renderChallenges() {
 
         if (game.dclg.length > 0) {
             for (let c in game.dclg) {
-                render = render + getArtifact(game.dclg[c]).render();
+                render = render + getArtifact(game.dclg[c]).render(true, true);
             }
             render = render + "<br /><button class='grayButton' onclick='equipDaily()'>Quick Equip</button>"
         }
@@ -147,11 +147,29 @@ function renderChallenges() {
     ui.challengeRender.innerHTML = render;
 }
 
+function seede(seed) {
+    let sx = Math.sin(seed) * 10000;
+    return sx - Math.floor(sx);
+}
+
 function refreshDailyChallenge() {
     game.dclg = [];
+    let possibleArtifact = 0;
+    let rolls = 0;
+
     for (let c = 0; c < getMaxArtifactAmount(); c++) {
-        game.dclg.push(artifacts[(parseInt(today()) * c * Math.pow(c + 11, 6) + c) % (artifacts.length - 1)].ID);
+        // re-roll if duplicate, or legendary you don't own
+        rolls = 0;
+        while (possibleArtifact == 0 || game.dclg.includes(possibleArtifact.ID) || (possibleArtifact.getRarity() == "Legendary" && !possibleArtifact.isUnlocked())) {
+            possibleArtifact = artifacts[Math.floor(seede(parseInt(today()) + (c + rolls) * 991) * artifacts.length)];
+            //console.log(possibleArtifact.name);
+            rolls++;
+        }
+
+        game.dclg.push(possibleArtifact.ID);
     }
+
+    renderChallenges();
 }
 
 function equipDaily() {

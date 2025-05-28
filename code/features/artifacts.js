@@ -286,9 +286,9 @@ class Artifact {
         }
     }
 
-    render(clickable = true) {
+    render(clickable = true, clg = false) {
         // what you see is what you get.
-        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
+        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
             + (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "")
             + (cursedArtifacts.includes(this.ID) ? "<br><b>[CURSED]</b>" : "")
             + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
@@ -830,7 +830,7 @@ function artifactDuplicate(rarity) {
     newArtifactDisplayTimer = 5;
 }
 
-function clickArtifact(id) {
+function clickArtifact(id, clg = false) {
     // apply the arti mode depending on which one is selected
     // these three functions are below, in order
     switch (artifactMode) {
@@ -845,6 +845,7 @@ function clickArtifact(id) {
             break;
     }
     updateArtifacts();
+    if (clg) renderChallenges();
 }
 
 function unequipCurrentArtifacts() {

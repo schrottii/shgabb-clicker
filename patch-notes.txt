@@ -80,6 +80,7 @@ January - March 2025:
 April - June 2025:
 3.5.3
 3.6
+3.6.1
 
 
 
@@ -2394,3 +2395,22 @@ Version v3.6:
 - Changed setting button colors
 - New image for Player Profile section
 - Changed generation of patch notes
+
+
+
+2025/05/28 v3.6.1:
+Version v3.6.1:
+-> Daily Challenge:
+- Much better RNG for picking Artifacts
+- Legenary Artifacts are replaced if you don't have them
+- The shown Artifacts can be individually equipped/unequipped and refresh
+
+-> Pride Event:
+- 5 event lore pages can be found, and unlocked with the new lore currency Sharks
+- Sharks are only found during Shgaybb mode (10% chance per click)
+
+-> Lore:
+- Added 5 new lore pages for the event (45 total)
+- Added button to stop collecting (no refund)
+- Added button to throw a page away (to make space, useful during events)
+- Lore can now contain paragraphs
