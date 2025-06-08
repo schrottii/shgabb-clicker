@@ -83,7 +83,7 @@ function getWispType(typeID) {
     }
 }
 
-function getWispEvent(typeID) {
+function getLoreReq(typeID) {
     switch (typeID) {
         case 0:
             return true;
@@ -100,14 +100,21 @@ function getWispEvent(typeID) {
         case 6:
             return isEvent("egg");
         case 7:
-            return isEvent("pride") && shgaybbMode == true;
+            return isEvent("pride");
+    }
+}
+
+function getWispReq(typeID) {
+    switch (typeID) {
+        case 7:
+            return isEvent("pride") ? shgaybbMode == true : getCooldown() >= 3;
+        default:
+            return true;
     }
 }
 
 function getWispImage(typeID) {
     switch (typeID) {
-        case 0:
-            return "memoryWisp";
         case 1:
             return "memoryWisp";
         case 2:
@@ -122,6 +129,8 @@ function getWispImage(typeID) {
             return "basket";
         case 7:
             return "shark";
+        default:
+            return "memoryWisp";
     }
 }
 
@@ -148,6 +157,7 @@ function getWispRarity(typeID) {
 
 function getWisp(multi = 1) {
     if (game.stats.hms >= 4000 && game.loreSel != 0 &&
+        getWispReq(getLoreByID(game.loreSel).source) &&
         Math.random() <= getWispRarity(getLoreByID(game.loreSel).source) * multi * eventValue("shgabbthewitch", 6, 1)) {
         game.loreP += 1;
 
@@ -171,10 +181,10 @@ function checkCollectingLorePageCompleted() {
 // lore page functions
 function getLorePage(multi = 1) {
     if (game.stats.hms >= 4000 && game.lorepg.length < 5 &&
-        Math.random() <= 1 / 25000 * multi * eventValue("shgabbthewitch", 6, 1)) {
+        Math.random() <= 1 / 7000 * multi * eventValue("shgabbthewitch", 6, 1)) {
         let availablePages = [];
         for (l in lore) {
-            if (!lore[l].isFound() && getWispEvent(lore[l].source)) availablePages.push(lore[l].ID);
+            if (!lore[l].isFound() && getLoreReq(lore[l].source)) availablePages.push(lore[l].ID);
         }
         if (availablePages.length > 0) {
             createNotification("Found new lore!");

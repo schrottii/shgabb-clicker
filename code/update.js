@@ -2,10 +2,15 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.6.1";
+const gameVersion  = "3.6.2";
 const versionTitle = "";
 
 const currentPatchNotes = `
+- Fixed Shgaybb mode requirement incorrectly applying to lore pages, rather than Sharks
+- Sharks now have that requirement (plus: outside of the event, click cooldown needs to be 3s or slower)
+- Increased lore page chance from 1/25k to 1/7k
+
+v3.6.1
 -> Daily Challenge:
 - Much better RNG for picking Artifacts
 - Legenary Artifacts are replaced if you don't have them
