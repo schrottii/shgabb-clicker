@@ -871,22 +871,7 @@ function updateUI() {
     }
 
     // GS
-    if (game.shgabb >= 1000000 && game.stats_prestige.playTime >= 15) {
-        let challengeText = "";
-        if (!isChallenge(0)) {
-            challengeText = "<br />Challenge Goal: " + game.upgradeLevels.moreShgabb + "/" + getChallenge(game.aclg).getGoal();
-        }
-
-        ui.prestigeButton.style.display = "inline";
-        ui.prestigeButton.innerHTML = "<b>Prestige!</b><br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
-            + "<br />Prestige to get: " + fn(calcGS().mul(getArtifactsSimpleBoost("prestigegs"))) + " GS!"
-            + (bagUpgrades.prestigeGems.currentLevel() > 0 ? "<br />" + fn(Math.floor(game.stats_prestige.hms / 1000)) + " Gems!" : "")
-            + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained!" : "")
-            + challengeText
-    }
-    else {
-        ui.prestigeButton.style.display = "none";
-    }
+    updatePrestigeButton();
 
     if (selection("ameliorer")) {
         if (game.stats_prestige.playTime >= 600) ui.ameResetText.innerHTML = "";

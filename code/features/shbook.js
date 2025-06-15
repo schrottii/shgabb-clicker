@@ -158,7 +158,7 @@ function getWispRarity(typeID) {
 function getWisp(multi = 1) {
     if (game.stats.hms >= 4000 && game.loreSel != 0 &&
         getWispReq(getLoreByID(game.loreSel).source) &&
-        Math.random() <= getWispRarity(getLoreByID(game.loreSel).source) * multi * eventValue("shgabbthewitch", 6, 1)) {
+        Math.random() <= getWispRarity(getLoreByID(game.loreSel).source) * multi * getArtifactsSimpleBoost("wispchance") * eventValue("shgabbthewitch", 6, 1)) {
         game.loreP += 1;
 
         checkCollectingLorePageCompleted();
@@ -181,7 +181,8 @@ function checkCollectingLorePageCompleted() {
 // lore page functions
 function getLorePage(multi = 1) {
     if (game.stats.hms >= 4000 && game.lorepg.length < 5 &&
-        Math.random() <= 1 / 7000 * multi * eventValue("shgabbthewitch", 6, 1)) {
+        Math.random() <= 
+        1 / 7000 * multi * getArtifactsSimpleBoost("lorechance") * eventValue("shgabbthewitch", 6, 1)) {
         let availablePages = [];
         for (l in lore) {
             if (!lore[l].isFound() && getLoreReq(lore[l].source)) availablePages.push(lore[l].ID);

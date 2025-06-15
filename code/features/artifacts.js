@@ -146,6 +146,12 @@ class Artifact {
                 return "Copper";
             case "copchance":
                 return "Copper chance";
+            case "lorechance":
+                return "Lore page chance";
+            case "wispchance":
+                return "Wisp chance";
+            default:
+                return "";
         }
     }
 
@@ -477,6 +483,7 @@ function getBoostImage(boost) {
         case "copchance":
             return "boostimages/copperchance.png";
         case undefined:
+        default:
             return "boostimages/special.png";
     }
 }
@@ -664,6 +671,7 @@ function artifactLoadout(l, source = "key") {
                 game.alo[l].pop();
             }
 
+            // remove artis you do not have anymore
             for (let arti in game.alo[l]) {
                 if (!getArtifact(game.alo[l][arti]).isUnlocked()) {
                     game.alo[l].splice(arti, 1);
@@ -868,7 +876,7 @@ function switchArtifact(id) {
 
     if (getArtifact(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
     else if (game.aeqi.length < getMaxArtifactAmount()) game.aeqi.push(id);
-    game.alo[selectedLoadout] = game.aeqi;
+    if (selectedLoadout != -1) game.alo[selectedLoadout] = game.aeqi;
 
     // value and timer
     if (getArtifact(id).value != undefined) getArtifact(id).resetValue();
@@ -887,14 +895,14 @@ function upgradeArtifact(id) {
     }
 }
 
-function destroyArtifact(id) {
+function destroyArtifact(id, confirm = true) {
     if (isChallenge(999)) return false;
 
     let rarity = getArtifact(id).rarity;
     let level = game.alvl[id];
     let amount = Math.floor(getScrapCost(level, rarity) / 5);
 
-    if (!settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
+    if (!confirm || !settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
         game.a.splice(game.a.indexOf(id), 1);
         delete game.alvl[id];
         if (game.aeqi.indexOf(id) != -1) game.aeqi.splice(game.aeqi.indexOf(id), 1);
@@ -912,7 +920,11 @@ function destroyArtifact(id) {
         checkForZeroNext();
 
         createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifact(id).name + "!");
+        return true;
     }
+
+    // not destroyed
+    return false;
 }
 
 
@@ -985,6 +997,51 @@ var artifacts = [
             timer: [15, 0],
             onClick: () => {
                 getArtifact(107).fillTimer();
+            }
+        }),
+    
+    new Artifact(108, 1, 3, "Paper Ring", "ring.png",
+        {
+            simpleBoost: ["lorechance", level => 1 + 0.25 * level]
+        }),
+    
+    new Artifact(109, 1, 3, "Ghost Ring", "ring.png",
+        {
+            simpleBoost: ["wispchance", level => 1 + 0.2 * level]
+        }),
+
+    new Artifact(110, 1, 3, "Fading Paper Ring", "ring.png",
+        {
+            desc: "For 15s after a click",
+            simpleBoost: ["lorechance", level => 1.25 + 0.25 * level, () => getArtifact(110).getTimer(0) > 0],
+            timer: [15, 0],
+            onClick: () => {
+                getArtifact(110).fillTimer();
+            }
+        }),
+
+    new Artifact(111, 1, 3, "Fading Ghost Ring", "ring.png",
+        {
+            desc: "For 15s after a click",
+            simpleBoost: ["wispchance", level => 1.2 + 0.2 * level, () => getArtifact(111).getTimer(0) > 0],
+            timer: [15, 0],
+            onClick: () => {
+                getArtifact(111).fillTimer();
+            }
+        }),
+
+    new Artifact(112, 1, 1, "Gem Gift", "gemgift.png",
+        {
+            desc: level => level + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 25) + 3) + " Gems",
+            onClick: (level) => {
+                if (Math.random() <= 1 / 100 * level) {
+                    let gemAmount = (Math.floor(game.a.length / 25) + 3);
+                    if (destroyArtifact(112, false)) {
+                        game.gems += gemAmount;
+                        statIncrease("tgems", gemAmount);
+                        createNotification("Gem Gift: +" + gemAmount + " Gems");
+                    }
+                }
             }
         }),
 
@@ -1323,6 +1380,32 @@ var artifacts = [
             }
         }),
 
+    new Artifact(234, 2, 3, "Amulet of Slowwriting", "amulet.png",
+        {
+            prefix: "x", desc: "If the cooldown is 7s or longer (not current)",
+            simpleBoost: ["lorechance", level => 3 + 1 * level, () => getCooldown() >= 7]
+        }),
+    new Artifact(235, 2, 3, "Amulet of Slowghosting", "amulet.png",
+        {
+            prefix: "x", desc: "If the cooldown is 7s or longer (not current)",
+            simpleBoost: ["wispchance", level => 2.5 + 0.5 * level, () => getCooldown() >= 7]
+        }),
+
+    new Artifact(236, 2, 1, "Super Gem Gift", "gemgift.png",
+        {
+            desc: level => (level / 3) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 10) + 5) + " Gems",
+            onClick: (level) => {
+                if (Math.random() <= 1 / 300 * level) {
+                    let gemAmount = (Math.floor(game.a.length / 10) + 5);
+                    if (destroyArtifact(236, false)) {
+                        game.gems += gemAmount;
+                        statIncrease("tgems", gemAmount);
+                        createNotification("Gem Gift: +" + gemAmount + " Gems");
+                    }
+                }
+            }
+        }),
+
 
 
 
@@ -1498,6 +1581,38 @@ var artifacts = [
                 }
                 document.getElementById("fart").currentTime = 0.1;
                 document.getElementById("fart").play();
+            }
+        }),
+
+    new Artifact(319, 3, 3, "Flame Ritual", "flameritual.png",
+        {
+            desc: level => "(+" + level + "multi/click) chance to get a Wisp when timer ends",
+            value: [1, 1, 1000],
+            timer: [6, 6],
+            onClick: (level) => {
+                if (getArtifact(319).getTimer(6) <= 0) {
+                    getWisp(getArtifact(319).getValue(0) * level);
+                    getArtifact(319).setValue(0);
+                }
+                else {
+                    getArtifact(319).increaseValue(1);
+                }
+                getArtifact(319).setTimer(6);
+            }
+        }),
+
+    new Artifact(320, 3, 1, "Epic Gem Gift", "gemgift.png",
+        {
+            desc: level => (level / 10) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 5) + 10) + " Gems",
+            onClick: (level) => {
+                if (Math.random() <= 1 / 1000 * level) {
+                    let gemAmount = (Math.floor(game.a.length / 5) + 10);
+                    if (destroyArtifact(320, false)) {
+                        game.gems += gemAmount;
+                        statIncrease("tgems", gemAmount);
+                        createNotification("Gem Gift: +" + gemAmount + " Gems");
+                    }
+                }
             }
         }),
 

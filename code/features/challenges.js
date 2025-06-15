@@ -16,9 +16,11 @@ class Challenge {
     }
 
     getTier() {
+        if (this.ID == 999) return 0;
         while (game.clg[this.ID] == undefined) {
             game.clg.push(0);
         }
+        if (game.clg.length > challenges.length + 1) game.clg.splice(challenges.length + 1, 999);
         return game.clg[this.ID];
     }
 
@@ -185,13 +187,29 @@ function equipDaily() {
     }
 
     // has all, equip
+    selectedLoadout = -1;
     game.aeqi = [];
     for (let c in game.dclg) {
-        game.aeqi.push(game.dclg[c]);
+        switchArtifact(game.dclg[c]);
     }
 
     updateArtifacts();
     renderChallenges();
+}
+
+function completedDaily(hms) {
+    // daily complete, more in gs.js
+    game.dclg = [];
+    game.dclp += hms;
+
+    if (selectedLoadout == -1) selectedLoadout = 0;
+
+    let gemAmount = Math.floor(hms / 150);
+    game.gems += gemAmount;
+    statIncrease("tgems", gemAmount);
+
+    renderChallenges();
+    createNotification("Daily Challenge complete: +" + hms + " points, +" + gemAmount + " Gems");
 }
 
 function getTotalTiers() {

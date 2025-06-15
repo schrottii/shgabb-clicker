@@ -5,7 +5,7 @@ function unlockedGS() {
     return game.shgabb >= 1000000 || game.stats.pr > 0;
 }
 
-function calcGS() {
+function calcPrestigeGS() {
     return new Decimal(Math.max(10, (1 + Math.log(1 + game.stats_prestige.shgabb)) * (1 + Math.log(game.stats_prestige.sw + 1))))
         .mul(Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25)))
         .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000))
@@ -28,7 +28,7 @@ function calcGS() {
 }
 
 function increaseGS(multi) {
-    let amount = calcGS().mul(multi).floor();
+    let amount = calcPrestigeGS().mul(multi).floor();
     game.gs = game.gs.add(amount);
     statIncrease("gs", amount);
     return amount;
@@ -76,17 +76,7 @@ function prestigeButton() {
         if (game.aclg != 0 && game.upgradeLevels.moreShgabb >= getChallenge(game.aclg).getGoal()) {
             // Challenge completed
             if (game.aclg != 999) game.clg[game.aclg] += 1; // increase tier aka reward n shd
-            else {
-                game.dclg = [];
-                game.dclp += hms;
-
-                let gemAmount = Math.floor(hms / 150);
-                game.gems += gemAmount;
-                statIncrease("tgems", gemAmount);
-
-                renderChallenges();
-                createNotification("Daily Challenge complete: +" + hms + " points, +" + gemAmount + " Gems");
-            }
+            else completedDaily(hms);
             getNewArtifact(8000);
         }
 
@@ -104,6 +94,7 @@ function prestigeButton() {
         statIncrease("pr", 1);
         game.stats_prestige.hms = 0;
 
+        // start a challenge
         game.aclg = 0;
         if (enableThisChallenge != 0) {
             game.aclg = enableThisChallenge;
@@ -114,5 +105,28 @@ function prestigeButton() {
         updateUpgrades();
         renderChallenges();
         createNotification("Prestiged for " + fn(amount) + " Golden Shgabb!");
+    }
+}
+
+function updatePrestigeButton() {
+    if (game.shgabb >= 1000000 && game.stats_prestige.playTime >= 15) {
+        let challengeText = "";
+        if (!isChallenge(0)) {
+            challengeText = "<br />Challenge Goal: " + game.upgradeLevels.moreShgabb + "/" + getChallenge(game.aclg).getGoal();
+        }
+
+        let jims = bagUpgrades.prestigeGems.currentLevel() > 0 ? Math.floor(game.stats_prestige.hms / 1000) : 0;
+        if (game.aclg == 999) jims += Math.floor(game.stats_prestige.hms / 150);
+
+        ui.prestigeButton.style.display = "inline";
+        ui.prestigeButton.innerHTML = "<b>Prestige!</b><br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
+            + "<br />Prestige to get: "
+            + fn(calcPrestigeGS().mul(getArtifactsSimpleBoost("prestigegs"))) + " GS!"
+            + (jims > 0 ? "<br />" + fn(jims) + " Gems!" : "")
+            + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained!" : "")
+            + challengeText;
+    }
+    else {
+        ui.prestigeButton.style.display = "none";
     }
 }

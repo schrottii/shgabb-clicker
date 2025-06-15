@@ -82,6 +82,7 @@ April - June 2025:
 3.6
 3.6.1
 3.6.2
+3.6.3
 
 
 
@@ -2422,3 +2423,17 @@ Version v3.6.1:
 - Fixed Shgaybb mode requirement incorrectly applying to lore pages, rather than Sharks
 - Sharks now have that requirement (plus: outside of the event, click cooldown needs to be 3s or slower)
 - Increased lore page chance from 1/25k to 1/7k
+
+
+
+2025/06/15 v3.6.3:
+-> Artifacts:
+- 10 new Artifacts (95 total)
+- Common: Paper Ring, Ghost Ring, Fading Paper Ring, Fading Ghost Ring, Gem Gift
+- Uncommon: Amulet of Slowwriting, Amulet of Slowghosting, Super Gem Gift
+- Epic: Flame Ritual, Epic Gem Gift
+
+-> Daily Challenge:
+- Quick Equip is now separate from loadouts, when leaving the first loadout is loaded
+- Prestige Button includes Gems (1 per 150 MS)
+- Fixed related save size issue
