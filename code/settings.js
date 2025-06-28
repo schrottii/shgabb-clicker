@@ -74,6 +74,7 @@ var settingButtons = [
     new ToggleSetting("design", "toggleSettingDescriptions", "settingDesc", "Show Setting Descriptions", "When enabled, descriptions for settings are shown. Disable to achieve more compact settings."),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", "Adjust the colors of the three types of upgrades (can afford, too expensive, maxed)!", () => "Current: " + settings.upgradeColors),
     new Setting("design", "updateEVERYTHING", "Refresh page", "Updates everything UI-related", () => "Last full update: " + timeSinceFullUIUpdate),
+    new ToggleSetting("design", "togglePopups", "popups", "Toggle Popups", "The large notifications that appear when you get an Artifact or Achievement"),
 
     // audio
     new ToggleSetting("audio", "toggleMusic", "music", "Music", "Turn ALL music on or off."),
@@ -251,6 +252,10 @@ function toggleSettingDescriptions() {
     renderSettings();
 }
 
+function togglePopups() {
+    createNotification("Popups " + (settings.popups ? "ON" : "OFF"));
+}
+
 // these five below are all for the Upgrade Colors setting
 function toggleUpgradeColors() {
     settings.upgradeColors = (upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] != undefined ? upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] : upgradeColors[0]);
@@ -277,7 +282,7 @@ function exportCustomColors() {
     exporter = exporter.replace("W1", "colorshgabb");
 
     navigator.clipboard.writeText(exporter);
-    createNotification("Custom colors exported to clipboard!");
+    createNotification("Custom colors exported to clipboard");
 }
 
 function importCustomColors() {
@@ -289,7 +294,7 @@ function importCustomColors() {
     settings.customColors = importGame;
     updateUpgradeColors();
 
-    createNotification("Custom colors imported!");
+    createNotification("Custom colors imported");
 }
 
 var upgradeColorsRender = "";
@@ -363,7 +368,7 @@ function redeemCode() {
                 game.profile.startDay = importGame.data;
                 break;
         }
-        createNotification("Redeemed successfully!");
+        createNotification("Redeemed successfully");
     }
     else {
         createNotification("This is not for you!");
@@ -402,5 +407,5 @@ function importSettings() {
     settings = importGame;
 
     updateEVERYTHING();
-    createNotification("Custom colors imported!");
+    createNotification("Custom colors imported");
 }

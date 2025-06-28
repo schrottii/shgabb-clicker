@@ -2,68 +2,36 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.6.3";
+const gameVersion  = "3.7";
 const versionTitle = "";
 
 const currentPatchNotes = `
--> Artifacts:
-- 10 new Artifacts (95 total)
-- Common: Paper Ring, Ghost Ring, Fading Paper Ring, Fading Ghost Ring, Gem Gift
-- Uncommon: Amulet of Slowwriting, Amulet of Slowghosting, Super Gem Gift
-- Epic: Flame Ritual, Epic Gem Gift
+2025/06/28 v3.7:
+-> Events and Etenvs:
+- Added Events section to Shbook, showing all Events, with their descriptions and cosmetics!
+- Added Etenvs, new token currency unlocked at HMS 10 000
+- Gain one Etenv during every event
+- Everyone who plays now also gets one Etenv for free, to try it! (if unlocked)
+- Spend one Etenv and 10 000 Gems to summon an Event for 24 hours
+- Summoning is done in the Shbook, on the Event's page
+- Summoned Events are the same as real ones, with their boosts, cosmetics, Achievements and everything else
+- Note: Hot Hot Summer and Shgabb the Witch do not have their Year 2 versions yet
+- Added Shbook entry and stats for Etenvs and Events summoned
 
--> Daily Challenge:
-- Quick Equip is now separate from loadouts, when leaving the first loadout is loaded
-- Prestige Button includes Gems (1 per 150 MS)
-- Fixed related save size issue
+-> Fishgang:
+- Now framerate independent
+- Improved design for player level/bar, including your PFP
+- Bar fill is now based on progress to next level, rather than total
 
-v3.6.2
-- Fixed Shgaybb mode requirement incorrectly applying to lore pages, rather than Sharks
-- Sharks now have that requirement (plus: outside of the event, click cooldown needs to be 3s or slower)
-- Increased lore page chance from 1/25k to 1/7k
-
-v3.6.1
--> Daily Challenge:
-- Much better RNG for picking Artifacts
-- Legenary Artifacts are replaced if you don't have them
-- The shown Artifacts can be individually equipped/unequipped and refresh
-
--> Pride Event:
-- 5 event lore pages can be found, and unlocked with the new lore currency Sharks
-- Sharks are only found during Shgaybb mode (10% chance per click)
-
--> Lore:
-- Added 5 new lore pages for the event (45 total)
-- Added button to stop collecting (no refund)
-- Added button to throw a page away (to make space, useful during events)
-- Lore can now contain paragraphs
-
-v3.6
--> Daily Challenge:
-- New feature: Daily Challenge (10k HMS)
-- Every day, random Artifacts are chosen (same for everyone)
-- Get as far as you can with those Artifacts
-- Artifacts can't be changed at all during the Challenge to prevent exploiting
-- Costs 10 Gems to enter, no HMS requirement
-- Rewards 1 Daily Challenge Point for every HMS
-- Rewards 1 Gem for every 150 HMS
-- Daily Challenge Points serve no use yet, but soon they will
-
--> Pride Event:
-- The Pride Event is back for Year 2
-- Duration changed to June 1st - June 14th (7 days earlier, 15 days -> 14 days)
-- Added 3 Frames, gathered like the PFPs
-- Finding a couple now gives 20 Gems (previously no gameplay rewards)
-- Added Found couples stat (sorry those who grinded last year!)
-- Increased chance to find someone from 20% to 33.3%
-- Changed "United against loneliness" from 1 PFP to all PFPs
-- Changed "United Love" from all PFPs to all Frames
-- Updated event description
+-> Design:
+- Cut down exclamation mark usage
+- Removed hearty wording from the info section
 
 -> Other:
-- Changed setting button colors
-- New image for Player Profile section
-- Changed generation of patch notes
+- Sections for Challenges and Minigames get a red background when their daily isn't complete yet
+- Added Setting to disable Popups (new Artifacts, duplicates, Achievements)
+- Finding or unlocking a lore page shows its name
+- Code and file organization improvements
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

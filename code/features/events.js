@@ -5,12 +5,15 @@
 ///////////////////////////////////
 
 class LimitedEvent {
-    constructor(name, displayName, startDate, endDate, renderFunction) {
+    constructor(ID, name, displayName, description, startDate, endDate, renderFunction, cosmetics) {
+        this.ID = ID;
         this.name = name;
         this.displayName = displayName;
+        this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.renderFunction = renderFunction;
+        this.cosmetics = cosmetics;
     }
 
     render() {
@@ -30,14 +33,71 @@ class LimitedEvent {
 // Y1 Shgabb The Witch Event | Oct 28 - Nov 17
 // Y2 Christmas Event | Dec 15 - Dec 28
 
+var forceEvent = "none"; // cheat to test an event
+
 const events = {
-    anniversary: new LimitedEvent("anniversary", "Anniversary Event", 106, 119, "renderAnniversary"),
-    lunar: new LimitedEvent("lunar", "Lunar New Year Event", 204, 217, "renderLunar"),
-    egg: new LimitedEvent("egg", "Egg Hunt", 402, 415, "renderEgg"),
-    pride: new LimitedEvent("pride", "Pride Event", 601, 614, "renderPride"),
-    summer: new LimitedEvent("summer", "Hot Hot Summer Event", 728, 818, "renderSummer"),
-    shgabbthewitch: new LimitedEvent("shgabbthewitch", "Shgabb The Witch Event", 1028, 1117, "renderShgabbTheWitch"),
-    christmas: new LimitedEvent("christmas", "Christmas Event", 1215, 1228, "renderChristmas"),
+    anniversary: new LimitedEvent(1, "anniversary", "Anniversary Event",
+        "Celebrate the anniversary of Shgabb Clicker! During the event, all Shgabb production is tripled, and Artifacts are 50% easier to find. Click to bake a Cake - up to 15 000 times - after 10 000 clicks it's done and can be eaten. After eating a Cake, you get x5 click speed, x10 Shgabb production and x3 Gem Chance for three minutes. Get 3 PFPs, 3 Banners and 2 Frames to celebrate!",
+        106, 119, "renderAnniversary",
+        {
+            pfps: [404, 405],
+            bans: [421, 422, 423],
+            frames: [403, 404]
+        }),
+
+    lunar: new LimitedEvent(2, "lunar", "Lunar New Year Event",
+        "Celebrate the Chinese New Year, or, Lunar New Year, with us. x8 Shgabb production. Earn Qian by clicking (with a chance every 100th click) and spend them on 8 different offers. You can get 3 PFPs, 3 Banners and 2 Frames, and also find 5 exclusive Lore Pages and unlock them with Red Envelopes.",
+        204, 217, "renderLunar",
+        {
+            pfps: [406, 407, 408],
+            bans: [424, 425, 426],
+            frames: [405, 406]
+        }),
+    
+    egg: new LimitedEvent(3, "egg", "Egg Hunt", 
+        "The green bunnies are on the run and it's time to find their eggs! Celebrate the beginning of Spring and the joy of the hunt with this event. Find eggs that are hiding in the game, click to collect, and buy prizes! They include 6 PFPs, 2 Banners and 2 Frames.",
+        402, 415, "renderEgg", 
+        {
+            pfps: [409, 410, 411, 412, 413, 414],
+            bans: [427, 428],
+            frames: [407, 408]
+        }),
+    
+    pride: new LimitedEvent(4, "pride", "Pride Event", 
+        "Happy pride month! Spread love and happiness! x10 Shgabb production during the event.",
+        601, 614, "renderPride", 
+        {
+            pfps: [415, 416, 417],
+            bans: [400, 401, 402, 403, 404, 405, 406, 407, 408, 409],
+            frames: [409, 410, 411]
+        }),
+    
+    summer: new LimitedEvent(5, "summer", "Hot Hot Summer Event", 
+        "It's so hot! Don't forget your suncream! x10 Sandwiches and x10 GS! Shorts, the event currency, can be found by clicking with a low chance. Use Heat Mode for faster clicks and more Shorts.",
+        728, 818, "renderSummer", 
+        {
+            pfps: [418, 419, 420],
+            bans: [410, 411, 412, 413],
+            frames: []
+        }),
+    
+    shgabbthewitch: new LimitedEvent(6, "shgabbthewitch", "Shgabb The Witch Event", 
+        "It's time for the scary, the painful and the evil things! Find event pages and their Candles by clicking, or equip the buffed-up cursed Artifacts to gain Witch Shgabb, which can be used to create spells with over a dozen different effects! x6 lore pages, x6 page progress and x6 Bags during the event!",
+        1028, 1117, "renderShgabbTheWitch", 
+        {
+            pfps: [421, 422, 423, 424, 425],
+            bans: [414, 415, 416, 417],
+            frames: []
+        }),
+    
+    christmas: new LimitedEvent(0, "christmas", "Christmas Event", 
+        "The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! Gifts are earned by clicking, regardless of speed (average 180s per Gift), or 10 can be earned per day from Shgic. Merry christmas and happy holidays everyone!",
+        1215, 1228, "renderChristmas", 
+        {
+            pfps: [400, 401, 402, 426],
+            bans: [418, 419, 420],
+            frames: [400, 401, 402]
+        }),
 };
 
 ///////////////////////////////////
@@ -51,8 +111,19 @@ function isEvent(eventName) {
     if (game.stats.hms < 2000) return false; // not unlocked
 
     let currentDate = today().substr(4);
-    //// debug:
-    //currentDate = events.lunar.startDate;
+
+    // force cheat
+    if (forceEvent != "none") {
+        game.sus += 3;
+        currentDate = events[forceEvent].startDate;
+    }
+
+    // etenv active
+    if (game.event != "") {
+        stopEtenv();
+        if (eventName == "any") return true;
+        return game.event == eventName;
+    }
 
     if (eventName != "any") {
         // We are looking for one specific event
@@ -68,24 +139,119 @@ function isEvent(eventName) {
     return false; // none
 }
 
-function eventValue(eventName, trueValue, falseValue) {
-    if (isEvent(eventName)) return trueValue;
-    else return falseValue;
-}
-
 function getCurrentEvent(currentDate = today().substr(4)) {
-    //// debug:
-    //return "lunar";
+    // what is the current event?
+    // force cheat
+    if (forceEvent != "none") {
+        game.sus += 3;
+        return forceEvent;
+    }
 
+    // etenv active
+    if (game.event != "") {
+        stopEtenv();
+        return game.event;
+    }
+
+    // look through events
     for (let checkEvent in events) {
         if (events[checkEvent].isActive(currentDate)) return checkEvent;
     }
     return "none";
 }
 
+function eventValue(eventName, trueValue, falseValue) {
+    if (isEvent(eventName)) return trueValue;
+    else return falseValue;
+}
+
 function renderCurrentEvent() {
     if (getCurrentEvent() == "none") return false;
     events[getCurrentEvent()].render();
+}
+
+function unlockedEtenvs() {
+    return game.stats.hms >= 10000;
+}
+
+function useEtenv(choice) {
+    if (unlockedEtenvs() && game.event == "" && game.etenvs > 0 && game.gems >= 10000) {
+        game.event = choice;
+
+        game.eventd = today();
+        game.eventh = new Date().getUTCHours(); // to make it 24h
+
+        game.etenvs -= 1;
+        game.gems -= 10000;
+
+        statIncrease("events", 1);
+
+        updateUI();
+        renderShbookEvent();
+        updateBG();
+    }
+}
+
+function stopEtenv() {
+    // end etenv fake event
+    if (game.event != "" && 
+        (parseInt(today()) > parseInt(game.eventd + 1) || // it's been a while
+        (parseInt(today()) > parseInt(game.eventd) && new Date().getUTCHours() > parseInt(game.eventh)))) { // same day
+        game.event = ""; // you only get to have fun for 24 hours
+
+        updateUI();
+        renderShbookEvent();
+        updateBG();
+    }
+}
+
+function getCosmetic(typeID){
+    // typeID = type and ID, like b409
+    if (typeID.substr(0, 1) == "p") return getPFPByID(typeID.substr(1));
+    if (typeID.substr(0, 1) == "b") return getBannerByID(typeID.substr(1));
+    if (typeID.substr(0, 1) == "f") return getFrameByID(typeID.substr(1));
+}
+
+function getEventRewards(event, type = "all") {
+    // grabs rewards (of a type or all) for an event, does not give
+    let eventRewards = [];
+    let types = ["pfps", "bans", "frames"];
+
+    for (let t in types) {
+        if (type == "all" || type == types[t]) {
+            for (let r in events[event].cosmetics[types[t]]) {
+                eventRewards.push(["p", "b", "f"][t] + events[event].cosmetics[types[t]][r]);
+            }
+        }
+    }
+
+    return eventRewards;
+}
+
+function awardEventReward(event, type = "all") {
+    // gets you a cosmetic that you don't have yet from an event
+    // before they all had their own functions and it was messy and different for every event
+
+    // get the rewards that exist
+    let possibleRewards = getEventRewards(event, type);
+    let unownedRewards = [];
+
+    for (let r in possibleRewards) {
+        if (!getCosmetic(possibleRewards[r]).isUnlocked()) unownedRewards.push(possibleRewards[r]);
+    }
+
+    // got all?
+    if (unownedRewards.length == 0) {
+        createNotification("You already have all possible rewards");
+        return false;
+    }
+
+    // grab a random reward from the array
+    let selectedReward = unownedRewards[Math.floor(Math.random() * unownedRewards.length)];
+    
+    // award it
+    selectedReward = getCosmetic(selectedReward);
+    selectedReward.eventAward();
 }
 
 ///////////////////////////////////
@@ -101,7 +267,7 @@ function renderChristmas() {
     let collectedPages = calcCollectedPages(3);
 
     let render = "<h3>Christmas Event (Year 2)</h3><br /><b>December 15th - December 28th</b>";
-    render = render + "<br />The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! Gifts are earned by clicking, regardless of speed (average 180s per Gift), or 10 can be earned per day from Shgic. Merry christmas and happy holidays everyone!";
+    render = render + "<br />" + events.christmas.description;
 
 
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
@@ -131,52 +297,52 @@ function openGifts(amount) {
     for (ogi = 0; ogi < amount; ogi++) {
         let random = Math.random();
         if (random < 0.02 && !game.evpfps.includes(400)) {
-            createNotification("Received a Christmas PFP!");
+            createNotification("Received a Christmas PFP");
             giftContents[3] += 1;
             game.evpfps.push(400);
         }
         else if (random < 0.02 && !game.evpfps.includes(401)) {
-            createNotification("Received a Christmas PFP!");
+            createNotification("Received a Christmas PFP");
             giftContents[3] += 1;
             game.evpfps.push(401);
         }
         else if (random < 0.02 && !game.evpfps.includes(402)) {
-            createNotification("Received a Christmas PFP!");
+            createNotification("Received a Christmas PFP");
             giftContents[3] += 1;
             game.evpfps.push(402);
         }
         else if (random < 0.02 && !game.evpfps.includes(426)) {
-            createNotification("Received a Christmas PFP!");
+            createNotification("Received a Christmas PFP");
             giftContents[3] += 1;
             game.evpfps.push(426);
         }
         else if (random < 0.02 && !game.evbans.includes(418)) {
-            createNotification("Received a Christmas Banner!");
+            createNotification("Received a Christmas Banner");
             giftContents[3] += 1;
             game.evbans.push(418);
         }
         else if (random < 0.02 && !game.evbans.includes(419)) {
-            createNotification("Received a Christmas Banner!");
+            createNotification("Received a Christmas Banner");
             giftContents[3] += 1;
             game.evbans.push(419);
         }
         else if (random < 0.02 && !game.evbans.includes(420)) {
-            createNotification("Received a Christmas Banner!");
+            createNotification("Received a Christmas Banner");
             giftContents[3] += 1;
             game.evbans.push(420);
         }
         else if (random < 0.02 && !game.evframes.includes(400)) {
-            createNotification("Received a Christmas Frame!");
+            createNotification("Received a Christmas Frame");
             giftContents[3] += 1;
             game.evframes.push(400);
         }
         else if (random < 0.02 && !game.evframes.includes(401)) {
-            createNotification("Received a Christmas Frame!");
+            createNotification("Received a Christmas Frame");
             giftContents[3] += 1;
             game.evframes.push(401);
         }
         else if (random < 0.02 && !game.evframes.includes(402)) {
-            createNotification("Received a Christmas Frame!");
+            createNotification("Received a Christmas Frame");
             giftContents[3] += 1;
             game.evframes.push(402);
         }
@@ -225,7 +391,7 @@ function renderAnniversary() {
 
     // HEADER AND DESCRIPTION
     let render = "<h3>Anniversary Event (Year 2)</h3><b>January 6th - January 19th</b>";
-    render = render + "<br />Celebrate the anniversary of Shgabb Clicker! During the event, all Shgabb production is tripled, and Artifacts are 50% easier to find. Click to bake a Cake - up to 15 000 times - after 10 000 clicks it's done and can be eaten. After eating a Cake, you get x5 click speed, x10 Shgabb production and x3 Gem Chance for three minutes. Get 3 PFPs, 0 Banners and 0 Frames to celebrate!";
+    render = render + "<br />" + events.anniversary.description;
     render = render + "<br />" + cImg("birthdayCandle") + (getLoreByID(game.loreSel).source == 4 ? game.loreP : 0) + " Birthday Candles (" + collectedPages + "/5 Pages)";
 
     // CAKE
@@ -280,7 +446,7 @@ function renderLunar() {
     let collectedPages = calcCollectedPages(5);
 
     let render = "<h3>Lunar New Year Event (Year 2)</h3><br /><b>February 4th - February 17th</b>";
-    render = render + "<br />Celebrate the Chinese New Year, or, Lunar New Year, with us. x8 Shgabb production. Earn Qian by clicking (with a chance every 100th click) and spend them on 8 different offers. You can get 3 PFPs, 3 Banners and 2 Frames, and also find 5 exclusive Lore Pages and unlock them with Red Envelopes.";
+    render = render + "<br />" + events.lunar.description;
     render = render + "<br />" + cImg("qian") + game.qian + " Qian";
     render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)<br /><br />";
 
@@ -344,7 +510,7 @@ function useQian(offerNR) {
 
             // bought one of them
             game.qian -= 888;
-            createNotification("Bought Cosmetic for 888 Qian!");
+            createNotification("Bought Cosmetic for 888 Qian");
 
             break;
         case 2:
@@ -464,7 +630,7 @@ function renderEgg() {
     let collectedPages = calcCollectedPages(6);
 
     let render = "<h3>Egg Hunt Event (Year 2)</h3><br /><b>April 2nd - April 15th</b>";
-    render = render + "<br />The green bunnies are on the run and it's time to find their eggs! Celebrate the beginning of Spring and the joy of the hunt with this event. Find eggs that are hiding in the game, click to collect, and buy prizes! They include 6 PFPs, 2 Banners and 2 Frames.";
+    render = render + "<br />" + events.egg.description;
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
 
@@ -490,7 +656,7 @@ function clickEgg() {
     doesUnlevel = true;
     eggUpgrade = "";
 
-    createNotification("Egg found!");
+    createNotification("Egg found");
     game.eggs += 1;
     statIncrease("eggs", 1);
 
@@ -531,7 +697,7 @@ function useEggs(offerNR) {
             }
             // bought one of them
             game.eggs -= 50;
-            createNotification("Bought PFP for 50 Eggs!");
+            createNotification("Bought PFP for 50 Eggs");
 
             break;
         case 2:
@@ -584,7 +750,7 @@ function useEggs(offerNR) {
             }
             // bought one of them
             game.eggs -= 50;
-            createNotification("Bought Cosmetic for 50 Eggs!");
+            createNotification("Bought Cosmetic for 50 Eggs");
 
             break;
     }
@@ -601,7 +767,7 @@ var shgaybbFound = "";
 
 function renderPride() {
     let render = "<h3>Pride Event (Year 2)</h3><br /><b>June 1st - June 14th</b>";
-    render = render + "<br />Happy pride month! Spread love and happiness! x10 Shgabb production during the event.";
+    render = render + "<br />" + events.pride.description;
     render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Banners can also be found. Getting Pan Shgabb second counts as a joker, it works with anyone. Every couple found gives 20 Gems.";
     render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
 
@@ -763,7 +929,7 @@ var heatMode = false;
 
 function renderSummer() {
     let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 18th</b>";
-    render = render + "<br />It's so hot! Don't forget your suncream! x10 Sandwiches and x10 GS! Shorts, the event currency, can be found by clicking with a low chance. Use Heat Mode for faster clicks and more Shorts.";
+    render = render + "<br />" + events.summer.description;
     render = render + "<br />" + cImg("shorts") + game.shorts + " Shorts";
 
     render = render + "<br /><br />Press the button below to activate Heat Mode. Every perfectly timed click reduces the cooldown (up to x3 speed), but clicking too slow resets it, and clicking too fast causes you to overheat. At a high speed, you can find Shorts at a 100x higher rate.";
@@ -813,7 +979,7 @@ function useShorts(offerNR) {
             }
             // bought one of them
             game.shorts -= 80;
-            createNotification("Bought PFP for 80 Shorts!");
+            createNotification("Bought PFP for 80 Shorts");
 
             break;
         case 2:
@@ -842,7 +1008,7 @@ function useShorts(offerNR) {
             }
             // bought one of them
             game.shorts -= 100;
-            createNotification("Bought Banner for 100 Shorts!");
+            createNotification("Bought Banner for 100 Shorts");
 
             break;
         case 3:
@@ -923,7 +1089,7 @@ function renderShgabbTheWitch() {
     let collectedPages = calcCollectedPages(2);
 
     let render = "<h3>Shgabb The Witch</h3><br /><b>October 28th - November 17th</b>";
-    render = render + "<br />It's time for the scary, the painful and the evil things! Find event pages and their Candles by clicking, or equip the buffed-up cursed Artifacts to gain Witch Shgabb, which can be used to create spells with over a dozen different effects! x6 lore pages, x6 page progress and x6 Bags during the event!";
+    render = render + "<br />" + events.shgabbthewitch.description;
 
     render = render + "<br />" + cImg("witchshgabb") + game.witchshgabb + " Witch Shgabb";
     render = render + "<br />" + cImg("candle") + (getLoreByID(game.loreSel).source == 2 ? game.loreP : 0) + " Candles (" + collectedPages + "/10 Pages)";
@@ -1006,8 +1172,8 @@ function castSpell() {
             game.gems += 80;
             statIncrease("tgems", 80);
 
-            recentSpellText = recentSpellText + "+80 Gems!" + "<br />";
-            createNotification("+80 Gems!");
+            recentSpellText = recentSpellText + "+80 Gems" + "<br />";
+            createNotification("+80 Gems");
         }
         if (Math.random() <= 0.3) {
             effectAmount++;
@@ -1016,8 +1182,8 @@ function castSpell() {
             game.shgabb = game.shgabb.add(shgabbAmount);
             //statIncrease("shgabb", shgabbAmount); DO NOT!!!
 
-            recentSpellText = recentSpellText + "+" + fn(shgabbAmount) + " Shgabb!" + "<br />";
-            createNotification("+" + fn(shgabbAmount) + " Shgabb!");
+            recentSpellText = recentSpellText + "+" + fn(shgabbAmount) + " Shgabb" + "<br />";
+            createNotification("+" + fn(shgabbAmount) + " Shgabb");
         }
         if (Math.random() <= 0.05) {
             effectAmount++;
@@ -1025,8 +1191,8 @@ function castSpell() {
             game.chenga += 5;
             statIncrease("chenga", 5);
 
-            recentSpellText = recentSpellText + "+5 Chengas!" + "<br />";
-            createNotification("+5 Chengas!");
+            recentSpellText = recentSpellText + "+5 Chengas" + "<br />";
+            createNotification("+5 Chengas");
         }
         if (Math.random() <= 0.2) {
             effectAmount++;
@@ -1041,8 +1207,8 @@ function castSpell() {
 
             game.loreP++;
 
-            recentSpellText = recentSpellText + "+1 lore page progress!" + "<br />";
-            createNotification("+1 lore page progress!");
+            recentSpellText = recentSpellText + "+1 lore page progress" + "<br />";
+            createNotification("+1 lore page progress");
         }
 
         if (effectAmount == 0) {
@@ -1110,8 +1276,8 @@ function castSpell() {
             game.gems += 10;
             statIncrease("tgems", 10);
 
-            recentSpellText = recentSpellText + "+10 Gems!" + "<br />";
-            createNotification("+10 Gems!");
+            recentSpellText = recentSpellText + "+10 Gems" + "<br />";
+            createNotification("+10 Gems");
         }
         if (Math.random() <= 0.2) {
             effectAmount++;
@@ -1120,8 +1286,8 @@ function castSpell() {
             game.shgabb = game.shgabb.add(shgabbAmount);
             //statIncrease("shgabb", shgabbAmount); DO NOT!!!
 
-            recentSpellText = recentSpellText + "+" + fn(shgabbAmount) + " Shgabb!" + "<br />";
-            createNotification("+" + fn(shgabbAmount) + " Shgabb!");
+            recentSpellText = recentSpellText + "+" + fn(shgabbAmount) + " Shgabb" + "<br />";
+            createNotification("+" + fn(shgabbAmount) + " Shgabb");
         }
         if (Math.random() <= 0.05) {
             effectAmount++;
@@ -1129,8 +1295,8 @@ function castSpell() {
             game.chenga++;
             statIncrease("chenga", 1);
 
-            recentSpellText = recentSpellText + "+1 Chenga!" + "<br />";
-            createNotification("+1 Chenga!");
+            recentSpellText = recentSpellText + "+1 Chenga" + "<br />";
+            createNotification("+1 Chenga");
         }
         if (Math.random() <= 0.2) {
             effectAmount++;
@@ -1138,8 +1304,8 @@ function castSpell() {
             game.witchshgabb += 2;
             statIncrease("witchshgabb", 2);
 
-            recentSpellText = recentSpellText + "+2 Witch Shgabb!" + "<br />";
-            createNotification("+2 Witch Shgabb!");
+            recentSpellText = recentSpellText + "+2 Witch Shgabb" + "<br />";
+            createNotification("+2 Witch Shgabb");
         }
         if (Math.random() <= 0.2) {
             effectAmount++;
@@ -1156,8 +1322,8 @@ function castSpell() {
 
             luck += 66;
 
-            recentSpellText = recentSpellText + "+66 Luck!" + "<br />";
-            createNotification("+66 Luck!");
+            recentSpellText = recentSpellText + "+66 Luck" + "<br />";
+            createNotification("+66 Luck");
         }
 
 

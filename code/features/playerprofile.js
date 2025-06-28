@@ -36,6 +36,10 @@ class PFP {
         if (this.ID >= 100) return "Normal";
     }
 
+    isUnlocked() {
+        return this.unlock();
+    }
+
     isEquipped() {
         return game.profile.pfp == this.ID;
     }
@@ -43,6 +47,11 @@ class PFP {
     isSpecial() {
         if (this.config == undefined) return false;
         return this.config.special != undefined ? this.config.special : false;
+    }
+
+    eventAward() {
+        game.evpfps.push(this.ID);
+        createNotification("New PFP: #" + this.ID + " " + this.name);
     }
 
     renderBorder() {
@@ -65,6 +74,11 @@ class Banner extends PFP {
         return "None";
     }
 
+    eventAward() {
+        game.evbans.push(this.ID);
+        createNotification("New Banner: #" + this.ID + " " + this.name);
+    }
+
     isEquipped() {
         return game.profile.banner == this.ID;
     }
@@ -81,6 +95,11 @@ class Frame extends PFP {
         if (this.ID >= 300) return "Currency";
         if (this.ID >= 100) return "Normal";
         return "None";
+    }
+
+    eventAward() {
+        game.evframes.push(this.ID);
+        createNotification("New Frame: #" + this.ID + " " + this.name);
     }
 
     isEquipped() {

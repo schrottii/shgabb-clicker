@@ -26,6 +26,11 @@ var game = {
     gemb: 0,
     artifactScrap: 0,
     chenga: 0,
+    etenvs: 0,
+    etenvev: "",
+    event: "", // for etenvs (temp events)
+    eventd: 0, // day
+    eventh: 0, // hour
     pearls: 0,
     bananas: 0,
     bananaseeds: 0,
@@ -200,6 +205,8 @@ var game = {
         cop: 0,
         copClicks: 0,
         chenga: 0,
+        etenvs: 0,
+        events: 0,
         bananas: 0,
         bananaseeds: 0,
         bananatrees: 0,
@@ -239,6 +246,7 @@ var game = {
 
     },
     cheated: false,
+    sus: 0,
 }
 
 const emptyGame = Object.assign({}, game, {});
@@ -267,6 +275,7 @@ var settings = {
     threeBars: true,
     preferMS: false,
     settingDesc: true,
+    popups: true,
 }
 
 // BETA (cheating)

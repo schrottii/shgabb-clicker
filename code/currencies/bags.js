@@ -24,7 +24,7 @@ function getBags() {
             if (bagAmount > 0) {
                 game.bags += bagAmount;
                 statIncrease("bags", bagAmount);
-                createNotification("+" + bagAmount + " Bags!");
+                createNotification("+" + bagAmount + " Bags");
             }
         }
     }

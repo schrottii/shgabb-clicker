@@ -33,7 +33,7 @@ function getGem(multi = 1) {
         game.gems += amount;
         statIncrease("tgems", amount);
 
-        createNotification("+" + amount + " Gem" + (amount > 1 ? "s" : "") + "!");
+        createNotification("+" + amount + " Gem" + (amount > 1 ? "s" : ""));
     }
     else {
         // No Gem
@@ -99,7 +99,7 @@ function gemOffer(i) {
 }
 
 function renderGemOffers() {
-    ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately!";
+    ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately";
     ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 25% more Shgabb!<br>Current: +" + fn((game.gemboost - 1) * 25) + "%";
     if (unlockedArtifacts()) {
         ui.gemOffer3.innerHTML = "<b>Artifact Gift</b><br />" + (getArtifactAmount() == totalAmountOfArtifacts() ? "Spend 30 Gems for some Artifact Scrap!<br />(3000x chance)" : "Spend 30 Gems for a high chance to get an Artifact!<br>(3000x chance)");
@@ -107,9 +107,9 @@ function renderGemOffers() {
         ui.gemOffer5.innerHTML = "<b>Artifact Offer</b><br />" + (getArtifact(game.dgo).isUnlocked() ? "You already own today's Artifact! Check back tomorrow!" : "Spend 50 Gems to get the following Artifact:<br>" + getArtifact(game.dgo).render(false));
     }
     else {
-        ui.gemOffer3.innerHTML = "Unlocked at 1000 More Shgabb!";
-        ui.gemOffer4.innerHTML = "Unlocked at 1000 More Shgabb!";
-        ui.gemOffer5.innerHTML = "Unlocked at 1000 More Shgabb!";
+        ui.gemOffer3.innerHTML = "Unlocked at 1000 More Shgabb";
+        ui.gemOffer4.innerHTML = "Unlocked at 1000 More Shgabb";
+        ui.gemOffer5.innerHTML = "Unlocked at 1000 More Shgabb";
     }
 
     if (unlockedBags()) {
@@ -150,6 +150,6 @@ function prestigeGems() {
         let gemAmount = Math.floor(game.stats_prestige.hms / 1000);
         game.gems += gemAmount;
         statIncrease("tgems", gemAmount);
-        createNotification("+" + gemAmount + " Gems!");
+        createNotification("+" + gemAmount + " Gems");
     }
 }

@@ -96,6 +96,14 @@ function checkNewDay() {
             }
         }
 
+        // get etenv
+        if (game.etenvev != getCurrentEvent() && getCurrentEvent() != "none" && unlockedEtenvs() && game.event == "") {
+            // you get one per event, if you unlocked the feature, and it's a REAL event
+            game.etenvev = getCurrentEvent();
+            game.etenvs += 1;
+            statIncrease("etenvs", 1);
+        }
+
         // daily challenge
         refreshDailyChallenge();
 
@@ -199,12 +207,12 @@ function shgicFindWinners() {
     if (winner == 1) {
         shgicPointsPlayer += 1;
         statIncrease("tttpw", 1);
-        createNotification("+1 point for you!");
+        createNotification("+1 point for you");
     }
     if (winner == 2) {
         shgicPointsEnemy += 1;
         statIncrease("tttpl", 1);
-        createNotification("+1 point for shgabb!");
+        createNotification("+1 point for shgabb");
     }
 
     if (shgicPointsPlayer > 2 && canPlayTTT) {
@@ -213,12 +221,12 @@ function shgicFindWinners() {
         statIncrease("tttw", 1);
 
         createNotification("You won!");
-        createNotification("+2 Améliorer!");
+        createNotification("+2 Améliorer");
 
         if (isEvent("christmas")) {
             game.gifts += 10;
             statIncrease("gifts", 10);
-            createNotification("+10 Gifts!");
+            createNotification("+10 Gifts");
             renderCurrentEvent();
         }
         createNotification("Come back tomorrow!");

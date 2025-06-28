@@ -3,7 +3,7 @@
 // sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper - bananas
 // sel 2: gems - artifacts - shgic
 // sel 3: cheats - stats - achievements - other (social, patch notes)
-// sel 4: shbook: lore - currencies - features
+// sel 4: shbook: lore - currencies - features - events
 
 var selectedSelection = 1;
 
@@ -34,9 +34,10 @@ var sections = {
     social: document.getElementById("socialSection"),
 
     // sel 4
-    lore: document.getElementById("loreSection"),
-    currencies: document.getElementById("currenciesSection"),
-    features: document.getElementById("featuresSection"),
+    shbook1: document.getElementById("shbookSection"),
+    shbook2: document.getElementById("shbookSection"),
+    shbook3: document.getElementById("shbookSection"),
+    shbook4: document.getElementById("shbookSection"),
 
     // sels
     selection1: document.getElementById("selection1"),
@@ -45,12 +46,12 @@ var sections = {
     selection4: document.getElementById("selection4"),
 }
 
-var selections = ["shgabb", "none", "social", "currencies"];
+var selections = ["shgabb", "none", "social", "shbook2"];
 var selectionTypes = [
     ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper", "bananas"],
     ["gems", "artifacts", "challenges", "minigames", "events"],
     ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
-    ["lore", "currencies", "features"]
+    ["shbook1", "shbook2", "shbook3", "shbook4"]
     ];
 
 function renderSelection(sel) {
@@ -69,11 +70,16 @@ function renderSelection(sel) {
         selsDisplay = ["Cheats", '<img class="currency" src="images/playerprofile/icon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
     if (sel == 4) {
-        selsDisplay = ["Lore", "Currenciary", "Featuriary"];
+        selsDisplay = ["Lore", "Currenciary", "Featuriary", "Events"];
     }
 
+    let bgColor = "white";
     for (s in sels) {
-        if (isSelectionUnlocked(sels[s])) render = render + `<button class="grayButton" style="border: 2px solid ` + (selectedSelection == sel ? "darkorange" : "darkgray") + `; background-color: ` + (selections[sel - 1] == sels[s] ? "yellow" : "white") + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
+        bgColor = selections[sel - 1] == sels[s] ? "yellow" : "white";
+        if (sels[s] == "challenges" && game.dclg.length > 0 && game.stats.hms >= 10000) bgColor = "red";
+        if (sels[s] == "minigames" && canPlayTTT) bgColor = "red";
+
+        if (isSelectionUnlocked(sels[s], selsDisplay)) render = render + `<button class="grayButton" style="border: 2px solid ` + (selectedSelection == sel ? "darkorange" : "darkgray") + `; background-color: ` + bgColor + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 
@@ -81,7 +87,7 @@ function renderSelection(sel) {
     sections["cheats"].style.display = "none";
     for (s in sels) {
         if (selections[sel - 1] == sels[s]) sections[sels[s]].style.display = "unset";
-        else sections[sels[s]].style.display = "none";
+        else if (sel != 4) sections[sels[s]].style.display = "none";
     }
 }
 
@@ -90,8 +96,7 @@ function selection(name) {
     return false;
 }
 
-function isSelectionUnlocked(name) {
-    // if (typeof (knifeBoost) == "undefined") return false; // what the heck is this line T_T
+function isSelectionUnlocked(name, name2 = "") {
     switch (name) {
         case "shgabb":
             return true;
@@ -134,12 +139,14 @@ function isSelectionUnlocked(name) {
         case "social":
             return true;
 
-        case "lore":
+        case "shbook1":
             return game.stats.hms >= 4000;
-        case "currencies":
+        case "shbook2":
             return game.stats.hms >= 25;
-        case "features":
+        case "shbook3":
             return game.stats.hms >= 25;
+        case "shbook4":
+            return game.stats.hms >= 2000;
 
         case "none":
             return true;
@@ -161,6 +168,7 @@ function changeSelection(sel, sels) {
 
     // custom onclicks
     if (selections[sel - 1] == "playerprofile") renderPlayerProfile();
+    if (sel == 4) renderShbook();
     if (selections[1] == "minigames") {
         if (!wggjRunning) {
             wggjRunning = true;

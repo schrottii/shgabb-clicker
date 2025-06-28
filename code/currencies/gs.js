@@ -104,7 +104,7 @@ function prestigeButton() {
         updateBG();
         updateUpgrades();
         renderChallenges();
-        createNotification("Prestiged for " + fn(amount) + " Golden Shgabb!");
+        createNotification("Prestiged for " + fn(amount) + " Golden Shgabb");
     }
 }
 
@@ -121,9 +121,9 @@ function updatePrestigeButton() {
         ui.prestigeButton.style.display = "inline";
         ui.prestigeButton.innerHTML = "<b>Prestige!</b><br />Lose your Shgabb and Sandwiches, as well as their upgrades, but keep stats and get Golden Shgabb!"
             + "<br />Prestige to get: "
-            + fn(calcPrestigeGS().mul(getArtifactsSimpleBoost("prestigegs"))) + " GS!"
-            + (jims > 0 ? "<br />" + fn(jims) + " Gems!" : "")
-            + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained!" : "")
+            + fn(calcPrestigeGS().mul(getArtifactsSimpleBoost("prestigegs"))) + " GS"
+            + (jims > 0 ? "<br />" + fn(jims) + " Gems" : "")
+            + (unlockedBags() ? "<br />" + fn(game.stats_prestige.bags) + " Bags gained" : "")
             + challengeText;
     }
     else {

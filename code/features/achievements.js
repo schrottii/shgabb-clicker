@@ -25,7 +25,7 @@ function renderAchievements() {
     render = render + "<button class='grayButton' onclick='changeAchievementPage(1)' class='artifactLoadoutButton'>Next Page</button>";
 
     ui.achievements.innerHTML = render;
-    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: x" + fn(getAchievementBoost()) + " GS!";
+    ui.achievementsamount.innerHTML = game.ach.length + "/" + achievements.length + " Achievements unlocked! Boost: x" + fn(getAchievementBoost()) + " GS";
 }
 
 function changeAchievementPage(change) {
@@ -50,12 +50,7 @@ function awardAchievement(id) {
 
     game.ach.push(thisAchievement.ID);
     createNotification("New achievement: " + thisAchievement.name);
-
-    ui.newArtifactText = "Achievement Unlocked!";
-    ui.newArtifactImage.src = "images/achievements/" + thisAchievement.image;
-    ui.newArtifactName.innerHTML = thisAchievement.name;
-    ui.newArtifact.style.display = "block";
-    newArtifactDisplayTimer = 5;
+    createPopup("Achievement Unlocked!", thisAchievement.name, "achievements/" + thisAchievement.image);
 
     renderAchievements();
     renderPlayerProfile();
@@ -116,36 +111,36 @@ var achievements = [
     new Achievement(12, "unlock.png", "Stolen from somewhere", "Unlock Gems by reaching HMS 500", () => unlockedGems()),
     new Achievement(68, "clicks2.png", "Fast Clicks II", "Reduce the click cooldown to 2.5s or less", () => clickCooldown <= 2.5),
     new Achievement(13, "gs.png", "Golden Shgabb II", () => "Get " + fn(25000) + " Golden Shgabb", () => game.gs >= 25000),
-    new Achievement(42, "gem.png", "Shiny", "Get your first Gem!", () => game.stats.tgems > 0),
+    new Achievement(42, "gem.png", "Shiny", "Get your first Gem", () => game.stats.tgems > 0),
     new Achievement(62, "clicks.png", "Clicker III", "Click 25000 times", () => game.stats.clicks >= 25000),
     new Achievement(14, "shgabb.png", "Shgabb IV", () => "Get " + fn(1e12) + " Shgabb", () => game.shgabb >= 1e12),
     new Achievement(15, "sandwich.png", "Sandwiches III", () => "Get " + fn(25000) + " Sandwiches", () => game.sw >= 25000),
     new Achievement(16, "unlock.png", "Do we have dinosaurs???", "Unlock Artifacts by reaching HMS 1000", () => unlockedArtifacts()),
-    new Achievement(95, "artifact.png", "Finite Stones", "Equip an Artifact!", () => game.aeqi.length > 0),
+    new Achievement(95, "artifact.png", "Finite Stones", "Equip an Artifact", () => game.aeqi.length > 0),
     new Achievement(17, "gs.png", "Golden Shgabb III", () => "Get " + fn(1e6) + " Golden Shgabb", () => game.gs >= 1e6),
     new Achievement(18, "silicone.png", "Silicone III", () => "Get " + fn(5e7) + " Silicone Shgabb", () => game.si >= 5e7),
     new Achievement(19, "sandwich.png", "Sandwiches IV", () => "Get " + fn(1e6) + " Sandwiches", () => game.sw >= 1e6),
-    new Achievement(43, "gem.png", "The Red Gems I", "Get your 10th Gem!", () => game.stats.tgems >= 10),
-    new Achievement(20, "artifact.png", "Indian Jones", "Get your first Artifact!", () => getArtifactAmount() >= 1),
+    new Achievement(43, "gem.png", "The Red Gems I", "Get your 10th Gem", () => game.stats.tgems >= 10),
+    new Achievement(20, "artifact.png", "Indian Jones", "Get your first Artifact", () => getArtifactAmount() >= 1),
     new Achievement(21, "shgabb.png", "Shgabb V", () => "Get " + fn(1e15) + " Shgabb", () => game.shgabb >= 1e15),
     new Achievement(31, "hms.png", "Shgabb Conqueror I", "Reach More Shgabb level 1500", () => game.stats.hms >= 1500),
-    new Achievement(133, "artifact.png", "Come On", "Get a common Artifact!", () => anyArtifactsOfRarity(1) == true),
+    new Achievement(133, "artifact.png", "Come On", "Get a common Artifact", () => anyArtifactsOfRarity(1) == true),
     new Achievement(57, "shgabb.png", "Pizza!!!!!", "Upgrade cheese to level 80 to learn how to make pizza", () => game.upgradeLevels.cheese >= 80),
     new Achievement(22, "gs.png", "Golden Shgabb IV", () => "Get " + fn(1e9) + " Golden Shgabb", () => game.gs >= 1e9),
     new Achievement(23, "silicone.png", "Silicone IV", () => "Get " + fn(2e8) + " Silicone Shgabb", () => game.si >= 2e8),
     new Achievement(36, "unlock.png", "What language is this?!", "Unlock Améliorer by reaching HMS 2000", () => unlockedAmeliorer()),
-    new Achievement(28, "artifact.png", "Treasure Hunter", "Get your 10th Artifact!", () => getArtifactAmount() >= 10),
+    new Achievement(28, "artifact.png", "Treasure Hunter", "Get your 10th Artifact", () => getArtifactAmount() >= 10),
     new Achievement(47, "ttt.png", "Shgiccer I", "Win Shgic Shgac Shgoe once", () => game.stats.tttw > 0),
     new Achievement(39, "ameliorer.png", "Amé: Part II", "Unlock the second set of Améliorer upgrades (10 Amé levels)", () => getTotalAme() >= 10),
     new Achievement(32, "hms.png", "Shgabb Conqueror II", "Reach More Shgabb level 2500", () => game.stats.hms >= 2500),
     new Achievement(129, "empty.png", "Nothing", "Buy nothing", () => ameliorerUpgrades.nothing.currentLevel() > 0),
-    new Achievement(134, "artifact.png", "Should we raid the pyramids?", "Get a rare Artifact!", () => anyArtifactsOfRarity(2) == true),
+    new Achievement(134, "artifact.png", "Should we raid the pyramids?", "Get a rare Artifact", () => anyArtifactsOfRarity(2) == true),
     new Achievement(37, "ameliorer.png", "Cap Bro I", "Get 50 Amélorier", () => game.stats.ame >= 50),
-    new Achievement(44, "gem.png", "The Red Gems II", "Get your 100th Gem!", () => game.stats.tgems >= 100),
+    new Achievement(44, "gem.png", "The Red Gems II", "Get your 100th Gem", () => game.stats.tgems >= 100),
     new Achievement(24, "sandwich.png", "Sandwiches V", () => "Get " + fn(1e8) + " Sandwiches", () => game.sw >= 1e8),
     new Achievement(40, "ameliorer.png", "Amé: Part III", "Unlock the third set of Améliorer upgrades (25 Amé levels)", () => getTotalAme() >= 25),
     new Achievement(48, "ttt.png", "Shgiccer II", "Win Shgic Shgac Shgoe 5 times", () => game.stats.tttw >= 5),
-    new Achievement(35, "artifact.png", "Artifactfan", "Get your 25th Artifact!", () => getArtifactAmount() >= 25),
+    new Achievement(35, "artifact.png", "Artifactfan", "Get your 25th Artifact", () => getArtifactAmount() >= 25),
     new Achievement(69, "clicks2.png", "Fastest Clicks", "Reduce the click cooldown to 0.2s", () => clickCooldown == 0.2),
     new Achievement(63, "clicks.png", "Clicker IV", "Click 250k times", () => game.stats.clicks >= 250000),
     new Achievement(25, "silicone.png", "Silicone V", () => "Get " + fn(1e12) + " Silicone Shgabb", () => game.si >= 1e12),
@@ -153,7 +148,7 @@ var achievements = [
     new Achievement(41, "ameliorer.png", "Amé: Part IV", "Unlock the fourth set of Améliorer upgrades (40 Amé levels)", () => getTotalAme() >= 40),
     new Achievement(53, "artifact.png", "FOUR", "Find a way to equip 4 Artifacts at once", () => game.upgradeLevels.fourthArtifactSlot > 0),
     new Achievement(122, "shbook.png", "This game has lore now?!", "Unlock the Lore by reaching HMS 4000", () => game.stats.hms >= 4000),
-    new Achievement(135, "artifact.png", "Epic Gamer Moment", "Get an epic Artifact!", () => anyArtifactsOfRarity(3) == true),
+    new Achievement(135, "artifact.png", "Epic Gamer Moment", "Get an epic Artifact", () => anyArtifactsOfRarity(3) == true),
     new Achievement(38, "ameliorer.png", "Cap Bro II", "Get 100 Améliorer", () => game.stats.ame >= 100),
     new Achievement(123, "shbook.png", "The older scrolls", "Find a lore page", () => game.lorepg.length > 0),
     new Achievement(124, "shbook.png", "I rember", "Find a Memory Wisp", () => game.loreP > 0),
@@ -163,21 +158,21 @@ var achievements = [
     new Achievement(27, "shgabb.png", "Shgabb VI", () => "Get " + fn(1e21) + " Shgabb", () => game.shgabb >= 1e21),
     new Achievement(29, "shgabb.png", "Shgabb VII", () => "Get " + fn(1e30) + " Shgabb", () => game.shgabb >= 1e30),
     new Achievement(157, "chenga.png", "Adrunic Tokenic", "Get a Chenga", () => game.chenga > 0),
-    new Achievement(52, "artifact.png", "My little collection", "Get your 40th Artifact!", () => getArtifactAmount() >= 40),
+    new Achievement(52, "artifact.png", "My little collection", "Get your 40th Artifact", () => getArtifactAmount() >= 40),
     new Achievement(158, "chenga.png", "I Cheng-ya", "Use a Chenga", () => false),
-    new Achievement(65, "shgabb.png", "Build builder I", "Buy another Artifact loadout!", () => game.al >= 3),
+    new Achievement(65, "shgabb.png", "Build builder I", "Buy another Artifact loadout", () => game.al >= 3),
     new Achievement(70, "clicks2.png", "Slowest Clicks", "Increase the click cooldown to 25s or more", () => clickCooldown >= 25),
     new Achievement(45, "gem.png", "Sarah's Gems", "Have 500 Gems at the same time", () => game.gems >= 2000),
     new Achievement(80, "ameliorer.png", "Amé: Part V", "Unlock the fifth set of Améliorer upgrades (100 Amé levels)", () => getTotalAme() >= 100),
     new Achievement(88, "ameliorer.png", "French equality", "Have the Améliorer currency boost upgrades on the same level", () => game.upgradeLevels.shgabbBoost > 0 && game.upgradeLevels.shgabbBoost == game.upgradeLevels.sandwichBoost),
     new Achievement(59, "shgabb.png", "eolm terrible headache", "it hurts", () => autoNotifications >= 5000),
     new Achievement(49, "ttt.png", "Shgiccer III", "Win Shgic Shgac Shgoe 14 times", () => game.stats.tttw >= 14),
-    new Achievement(46, "gem.png", "The Red Gems III", "Get your 1000th Gem!", () => game.stats.tgems >= 1000),
-    new Achievement(66, "shgabb.png", "Build builder II", "Buy all Artifact loadouts!", () => game.al >= 8),
+    new Achievement(46, "gem.png", "The Red Gems III", "Get your 1000th Gem", () => game.stats.tgems >= 1000),
+    new Achievement(66, "shgabb.png", "Build builder II", "Buy all Artifact loadouts", () => game.al >= 8),
     new Achievement(127, "gem.png", "Dirty Gemmer", "Unlock Gems To Amé (Améliorer Upgrade)", () => ameliorerUpgrades.gems2ame.currentLevel() > 0),
     new Achievement(90, "unlock.png", "Challenge Me!", "Unlock Challenges by reaching HMS 4000", () => unlockedChallenges()),
-    new Achievement(54, "gem.png", "The Red Gems IV", "Get your 2500th Gem!", () => game.stats.tgems >= 2500),
-    new Achievement(136, "artifact.png", "Rarity Surge", "Get a legendary Artifact!", () => anyArtifactsOfRarity(4) == true),
+    new Achievement(54, "gem.png", "The Red Gems IV", "Get your 2500th Gem", () => game.stats.tgems >= 2500),
+    new Achievement(136, "artifact.png", "Rarity Surge", "Get a legendary Artifact", () => anyArtifactsOfRarity(4) == true),
     new Achievement(56, "shgabb.png", "Shgabb VIII", () => "Get " + fn(1e60) + " Shgabb", () => game.shgabb >= 1e60),
     new Achievement(99, "challenge.png", "The New Playstyle", "Complete any Challenge", () => getTotalTiers() > 0),
     new Achievement(81, "challenge.png", "The Tallest Ladder", "Complete Challenge 1", () => game.clg[1] >= 1),
@@ -191,7 +186,7 @@ var achievements = [
     new Achievement(164, "artifact.png", "high seeds yes goo", "Oh my god. Why. No. No. Why are you doing this.", () => getArtifact(314).isEquipped() && getArtifact(302).isEquipped() && game.stats_prestige.clicks % 1000 >= 900),
     new Achievement(165, "artifact.png", "Artifacts in Paris", "Who was in Paris?", () => getArtifact(400).isEquipped() && getArtifact(405).isEquipped()),
     new Achievement(97, "unlock.png", "DaBag", "Unlock Bags by reaching HMS 8000", () => unlockedBags()),
-    new Achievement(98, "bags.png", "I Bag You", "Get your first Bag!", () => game.stats.bags > 0),
+    new Achievement(98, "bags.png", "I Bag You", "Get your first Bag", () => game.stats.bags > 0),
     new Achievement(83, "challenge.png", "Hard Work", "Complete Challenge 3", () => game.clg[3] >= 1),
     new Achievement(105, "bags.png", "Playing DaGame I", "Get 100 Bags (total)", () => game.stats.bags >= 100),
     new Achievement(159, "chenga.png", "Collecta I", "Get 25 Chengas (total)", () => game.stats.chenga >= 25),
@@ -208,14 +203,14 @@ var achievements = [
     new Achievement(138, "challenge.png", "Challenger II", "Complete Challenges 10 times", () => getTotalTiers() >= 10),
     new Achievement(107, "bags.png", "Playing DaGame III", () => "Get " + fn(50000) + " Bags (total)", () => game.stats.bags >= 50000),
     new Achievement(166, "unlock.png", "Wet Gang", "Unlock Fishgang by reaching HMS 12000", () => unlockedFishing()),
-    new Achievement(172, "fishing.png", "Goldy Depp", "Catch a fish!", () => game.stats.fish >= 1),
-    new Achievement(173, "fishing.png", "Trash Metal", "Catch trash!", () => game.stats.trash >= 1),
+    new Achievement(172, "fishing.png", "Goldy Depp", "Catch a fish", () => game.stats.fish >= 1),
+    new Achievement(173, "fishing.png", "Trash Metal", "Catch trash", () => game.stats.trash >= 1),
     new Achievement(185, "shbook.png", "Librarian I", "Unlock 5 lore pages", () => game.lore.length >= 5),
     new Achievement(148, "ameliorer.png", "Cap Bro IV", "Get 800 Améliorer", () => game.stats.ame >= 800),
     new Achievement(50, "ttt.png", "Shgiccer IV", "Win Shgic Shgac Shgoe 30 times", () => game.stats.tttw >= 30),
     new Achievement(108, "bags.png", "Playing DaGame IV", () => "Get " + fn(250000) + " Bags (total)", () => game.stats.bags >= 250000),
     new Achievement(30, "artifact.png", "Alexander Cunningham", "Get all Artifacts!", () => getArtifactAmount() == totalAmountOfArtifacts()),
-    new Achievement(55, "gem.png", "The Red Gems V", "Get your 10000th Gem!", () => game.stats.tgems >= 10000),
+    new Achievement(55, "gem.png", "The Red Gems V", "Get your 10000th Gem", () => game.stats.tgems >= 10000),
     new Achievement(131, "challenge.png", "How upgrades disappear completely", "Complete Challenge 5", () => game.clg[5] >= 1),
     new Achievement(132, "challenge.png", "Welcome to Capitalism", "Complete Challenge 6", () => game.clg[6] >= 1),
     new Achievement(96, "ameliorer.png", "Amé: Part VI", "Unlock the sixth set of Améliorer upgrades (150 Amé levels)", () => getTotalAme() >= 150),
@@ -224,9 +219,9 @@ var achievements = [
     new Achievement(186, "shbook.png", "Librarian II", "Unlock 10 lore pages", () => game.lore.length >= 10),
     new Achievement(51, "hms.png", "Shgabb Conqueror V", "Reach More Shgabb level 15000", () => game.stats.hms >= 15000),
     new Achievement(191, "unlock.png", "The Republic", "Unlock Bananas (15 000 HMS)", () => unlockedBananas()),
-    new Achievement(198, "bananatree.png", "Bananensamen", "Find your first Banana Seed!", () => game.stats.bananaseeds > 0),
-    new Achievement(199, "bananatree.png", "Beautiful Palms", "Get your first Banana Tree!", () => game.stats.bananatrees > 0),
-    new Achievement(192, "banana.png", "This is Bananas!", "Get your first Banana!", () => game.bananas >= 1),
+    new Achievement(198, "bananatree.png", "Bananensamen", "Find your first Banana Seed", () => game.stats.bananaseeds > 0),
+    new Achievement(199, "bananatree.png", "Beautiful Palms", "Get your first Banana Tree", () => game.stats.bananatrees > 0),
+    new Achievement(192, "banana.png", "This is Bananas!", "Get your first Banana", () => game.bananas >= 1),
     new Achievement(167, "fishlvl.png", "Cod of Dedication I", "Reach Fish Level 10", () => game.fishlvl >= 10),
     new Achievement(168, "fishlvl.png", "Cod of Dedication II", "Reach Fish Level 25", () => game.fishlvl >= 25),
     new Achievement(169, "fishlvl.png", "Cod of Dedication III", "Reach Fish Level 50", () => game.fishlvl >= 50),
@@ -242,7 +237,7 @@ var achievements = [
     new Achievement(126, "ameliorer.png", "Amé: Part VII", "Unlock the seventh set of Améliorer upgrades (225 Amé levels)", () => getTotalAme() >= 225),
     new Achievement(128, "gem.png", "The Whale", "Unlock Infinite Gems To Amé (Améliorer Upgrade)", () => ameliorerUpgrades.infiniteGems2ame.currentLevel() > 0),
     new Achievement(195, "banana.png", "Long Fruit III", "Get 10k Bananas (total)", () => game.stats.bananas >= 10000),
-    new Achievement(200, "bananatree.png", "Beautiful Palms", "Have four Banana Trees at once!", () => getBananaTreeAmount() == 4),
+    new Achievement(200, "bananatree.png", "Beautiful Palms", "Have four Banana Trees at once", () => getBananaTreeAmount() == 4),
     new Achievement(64, "clicks.png", "Clicker V", "Click 1M times", () => game.stats.clicks >= 1000000),
     new Achievement(75, "artifact.png", "Mr. President", "Find the secret Artifact", () => game.a.includes(400)),
     new Achievement(130, "ameliorer.png", "Vaméni, Vamidi, Vamici", "Increase max. levels of Améliorer upgrades... what?!", () => ameliorerUpgrades.AMECAME.currentLevel() > 0),
@@ -266,7 +261,7 @@ var achievements = [
 
     new Achievement(182, "gift.png", "Shgannta Claubb", "Play during the Christmas Event", () => isEvent("christmas")),
     new Achievement(71, "gift.png", "Gifted Kid", "Receive the rarest prize", () => game.evpfps.includes(400) || game.evpfps.includes(401)),
-    new Achievement(72, "gift.png", "Merry Christmas", "Open a gift!", () => false),
+    new Achievement(72, "gift.png", "Merry Christmas", "Open a gift", () => false),
     new Achievement(73, "gift.png", "Milk And Cookies I", "Get 25 Gifts total", () => game.stats.gifts >= 25),
     new Achievement(74, "gift.png", "Milk And Cookies II", "Get 1000 Gifts total", () => game.stats.gifts >= 1000),
 

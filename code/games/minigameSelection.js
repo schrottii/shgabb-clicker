@@ -10,7 +10,7 @@ scenes["mainmenu"] = new Scene(
         createSquare("gamesBg", 0, 0.1, 0.3, 0.8, "rgb(64, 64, 120)");
 
         createText("title", 0.08, 0.1, "Minigames Selection", { color: "white", size: 32, align: "left" });
-        createText("selgam", 0.92, 0.975, "Select a game!", { color: "white", size: 32, align: "right" });
+        createText("selgam", 0.92, 0.975, "Select a game", { color: "white", size: 32, align: "right" });
 
         createImage("aniImage1", 0.75, 0.5, 0.2, 0.2, "minigames", { quadratic: true, centered: true });
         createImage("aniImage2", 0.72, 0.55, 0.05, 0.05, "minigames2", { quadratic: true, centered: true });

@@ -2,10 +2,6 @@
 
 // Main JS File
 
-// Various variables
-
-//var doubleClick = 0;
-
 // some timers
 var autoSaveTime = 10;
 var quoteTime = 0;
@@ -13,10 +9,6 @@ var sandwichTime = 1;
 var sandwichFreezeTime = 60;
 var time = 0;
 var oldTime = 0;
-
-// notifications
-var currentNotifications = [];
-var autoNotifications = 0;
 
 // UI, display, render stuf
 var ui = {
@@ -89,10 +81,10 @@ var ui = {
     cheatDisplay: document.getElementById("cheatDisplay"),
 
     // New Artifact display thing
-    newArtifact: document.getElementById("newArtifact"),
-    newArtifactImage: document.getElementById("newArtifactImage"),
-    newArtifactName: document.getElementById("newArtifactName"),
-    newArtifactText: document.getElementById("newArtifactText"),
+    popup: document.getElementById("popup"),
+    popupImage: document.getElementById("popupImage"),
+    popupName: document.getElementById("popupName"),
+    popupText: document.getElementById("popupText"),
 
     // notifications
     notifications: document.getElementById("notifications"),
@@ -111,14 +103,11 @@ var ui = {
     artifactSearch: document.getElementById("artifactSearch"),
 
     // shbook
-    shbook: document.getElementById("shbook"),
+    shbookArea: document.getElementById("shbookArea"),
     shbookHeader: document.getElementById("shbookHeader"),
-    shbookLore: document.getElementById("shbookLore"),
-    shbookLore2: document.getElementById("shbookLore2"),
-    shbookCurrenciary: document.getElementById("shbookCurrenciary"),
-    shbookCurrenciary2: document.getElementById("shbookCurrenciary2"),
-    shbookFeaturiary: document.getElementById("shbookFeaturiary"),
-    shbookFeaturiary2: document.getElementById("shbookFeaturiary2"),
+    shbookSectionTitle: document.getElementById("shbookSectionTitle"),
+    shbookLeft: document.getElementById("shbookLeft"),
+    shbookRight: document.getElementById("shbookRight"),
     shbookSizeSlider: document.getElementById("shbookSizeSlider"),
     patchNotesSizeSlider: document.getElementById("patchNotesSizeSlider"),
 
@@ -534,7 +523,7 @@ function clickButton() {
                 amount = calcSandwiches(critMulti).mul(clickButtonMulti);
                 game.sw = game.sw.add(amount);
                 statIncrease("sw", amount);
-                createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : "") + "!");
+                createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : ""));
             }
 
             findShgaybb();
@@ -592,12 +581,6 @@ function criticalHit() {
         return shgabbUpgrades.critBoost.currentEffect() * (ads.moreCrits.getCurrentBoost()[1]);
     }
     return 1;
-}
-
-// Notifications
-function createNotification(text) {
-    currentNotifications.push(text);
-    if (currentNotifications.length > 20) currentNotifications.shift();
 }
 
 // Update functions
@@ -732,6 +715,7 @@ function updateStats() {
         + "<br />Total Chengas: " + statLoader("chenga")
         + "<br />Total Bananas: " + statLoader("bananas")
         + "<br />Total Banana Seeds: " + statLoader("bananaseeds")
+        + "<br />Total Etenvs: " + statLoader("etenvs")
         + "<br />"
 
         + "<br /><b>Events:</b>"
@@ -743,6 +727,7 @@ function updateStats() {
         + "<br />Total Shorts: " + statLoader("shorts")
         + "<br />Total Witch Shgabb: " + statLoader("witchshgabb")
         + "<br />Total Event currencies: " + (new Decimal(statLoader("gifts")).add(statLoader("cakes")).add(statLoader("qian")).add(statLoader("eggs")).add(statLoader("shorts")).add(statLoader("witchshgabb")))
+        + "<br />Total Events Summoned: " + statLoader("events")
         + "<br />"
 
         + "<br /><b>Shgic Shgac Shgoe:</b>"
@@ -908,8 +893,6 @@ function updateUI() {
     ui.newestNotification.innerHTML = topNotifsRender;
 }
 
-var newArtifactDisplayTimer = 0;
-
 // Core
 function autoSave(manual=true) {
     autoNotifications += 1;
@@ -1003,7 +986,7 @@ function exportGame(destination = "gimme") {
 
     if (destination == "gimme") {
         navigator.clipboard.writeText(exporter);
-        createNotification("Game exported to clipboard!");
+        createNotification("Game exported to clipboard");
     }
     if (destination == "cache") {
         localStorage.setItem("shgabbClicker", exporter);
@@ -1150,7 +1133,7 @@ function importGame(source) {
 
     updateEVERYTHING();
 
-    createNotification("Save imported successfully!");
+    createNotification("Save imported successfully");
 }
 
 function deleteGame() {
@@ -1184,19 +1167,12 @@ function shgabbClickerLoop(tick) {
     quoteTime += time;
     sandwichTime -= time;
     sandwichFreezeTime -= time;
-    newArtifactDisplayTimer -= time;
     cakeDuration -= time;
     statIncrease("playTime", time);
-    eggTime -= time;
 
     for (aqq in game.aeqi) {
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
     }
-
-    /* Minigame
-    if (selection("minigames")) {
-        gamesLoop(tick);
-    } */
 
     if (unlockedSandwiches() && settings.threeBars) {
         ui.threeBars.style.display = "flex";
@@ -1214,6 +1190,7 @@ function shgabbClickerLoop(tick) {
 
     // Egg Hunt
     if (isEvent("egg")) {
+        eggTime -= time;
         if (eggTime <= 0) {
             eggTime = 10;
             refreshEgg();
@@ -1222,9 +1199,7 @@ function shgabbClickerLoop(tick) {
 
     if (adStatus != "loading" && unlockedAds()) adTime -= time;
 
-    if (newArtifactDisplayTimer <= 0 && newArtifactDisplayTimer > -15) {
-        ui.newArtifact.style.display = "none";
-    }
+    tickPopup(time);
     if (autoSaveTime <= 0) {
         autoSaveTime = 10;
         autoSave(false);
@@ -1265,7 +1240,7 @@ function shgabbClickerLoop(tick) {
                     game.witchshgabb += witchesEarned;
                     statIncrease("witchshgabb", witchesEarned);
 
-                    createNotification("+" + witchesEarned + " Witch Shgabb!");
+                    createNotification("+" + witchesEarned + " Witch Shgabb");
                     renderCurrentEvent();
                 }
 

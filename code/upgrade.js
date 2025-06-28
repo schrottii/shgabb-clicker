@@ -363,7 +363,7 @@ var sandwichUpgrades = {
 }
 
 var goldenShgabbUpgrades = {
-    divineShgabb: new GoldenShgabbUpgrade("divineShgabb", "Divine Shgabb", "Get even more Shgabb - from clicks and auto!", level => new Decimal(1.02).pow(level).mul(10 + level * 2), level => 1 + level * 0.2 + (0.1 * Math.max(level - 50, 0)) + (0.2 * Math.max(level - 100, 0)), { prefix: "x" }),
+    divineShgabb: new GoldenShgabbUpgrade("divineShgabb", "Divine Shgabb", "Get even more Shgabb - from clicks and auto", level => new Decimal(1.02).pow(level).mul(10 + level * 2), level => 1 + level * 0.2 + (0.1 * Math.max(level - 50, 0)) + (0.2 * Math.max(level - 100, 0)), { prefix: "x" }),
     shortCD: new GoldenShgabbUpgrade("shortCD", "Even Shorter Cooldown", "Reduces the click cooldown", level => 100 * level + 100, level => level * 0.1, { maxLevel: 5, prefix: "-", suffix: "s" }),
     gsBoost1: new GoldenShgabbUpgrade("gsBoost1", "GS boosts Shgabb 1", "Get more Shgabb from clicks based on current Golden Shgabb", level => (20 + level * 5) * Math.pow(1.06, level), level => new Decimal(game.gs.add(1).ln()).ceil().mul(level).add(1), { maxLevel: 100, prefix: "x", unlock: () => game.upgradeLevels.shortCD > 4 || game.upgradeLevels.gsBoost1 > 0}),
     gsBoost2: new GoldenShgabbUpgrade("gsBoost2", "GS boosts Shgabb 2", "Get more auto Shgabb based on total Golden Shgabb", level => (20 + level * 5) * Math.pow(1.04, level), level => 1 + level * Math.ceil(1.6 * Math.log(game.stats.gs.add(1))), { maxLevel: 100, prefix: "x", unlock: () => game.stats.gs > 2999 }),

@@ -8,7 +8,7 @@
 /* ===================================================== */
 body {
     /*    background-color: black;*/
-    background-image: url("images/backgrounds/bg-normal.png");
+    background-image: url("../images/backgrounds/bg-normal.png");
     background-size: 100vw 100vh;
     image-rendering: pixelated;
     color: white;
@@ -341,7 +341,7 @@ progress {
 
 .prestigeButton {
     /* background-color: palegoldenrod; */
-    background-image: url("images/prestigebutton.png");
+    background-image: url("../images/prestigebutton.png");
     background-size: 100% 100%;
     padding: 0px 16% 0px 16%;
     border: 3px solid gold;

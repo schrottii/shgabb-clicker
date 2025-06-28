@@ -132,12 +132,27 @@ scenes["fishgang"] = new Scene(
         }, { quadratic: true, centered: true });
 
         // player info
-        createImage("fishlvl1", 0.3, 0, 0.1, 0.1, "fishlvl", { quadratic: true, centered: true });
-        createText("fishlvl2", 0.3, 0.0725, "?", { color: "darkblue", size: 20 });
-        createImage("fishlvl5", 0.3125, 0, 0.175, 0.1, "fishlvl");
-        createSquare("fishlvl3", 0.325, 0.02, 0.15, 0.06, "black");
-        createSquare("fishlvl4", 0.3275, 0.02, 0.145, 0.06, "blue");
+        createImage("fishlvl_FishyPic", 0.3, 0, 0.1, 0.1, "fishlvl", { quadratic: true, centered: true });
+        createImage("fishlvl_PFP", 0.305, 0.01, 0.08, 0.08, "fishlvl", { quadratic: true, centered: true });
+        
+        createImage("fishlvl_FishyPic2", 0.325, 0.035, 0.14, 0.06, "fishlvl");
+        createSquare("fishlvl_LvlBg", 0.33, 0.05, 0.02, 0.03, "#6F8A69");
+        createSquare("fishlvl_LvlBg2", 0.33 + 0.001, 0.05 + 0.003, 0.018, 0.024, "#2C312B");
+        createText("fishlvl_Level", 0.34, 0.0775, "?", { color: "#01f8fd", size: 20 });
 
+        createSquare("fishlvl_BarBg", 0.35, 0.05, 0.1, 0.03, "black");
+        createSquare("fishlvl_BarFill", 0.3525, 0.05, 0.1, 0.03, "#01f8fd");
+        createText("fishlvl_BarText", 0.4, 0.0775, "?", { color: "#2e269a", size: 20 });
+
+        let img = new Image();
+        img.src = getPFPByID(game.profile.pfp).image;
+        img.onload = () => {
+            console.log("loaded")
+            objects["fishlvl_PFP"].image = "pfp";
+        }
+        images["pfp"] = img;
+
+        // stats
         createText("trashamount", 0.6, 0.075, "Trash: 0", { color: "white", size: 16, align: "left" });
         createText("fishamount", 0.7, 0.075, "Fish: 0", { color: "white", size: 16, align: "left" });
         createText("value", 0.8, 0.075, "(Value: 0)", { color: "white", size: 16, align: "left" });
@@ -220,8 +235,9 @@ scenes["fishgang"] = new Scene(
         }
 
         // Value / info
-        objects["fishlvl2"].text = game.fishlvl;
-        objects["fishlvl4"].w = Math.min(0.145, 0.145 * (game.fishxp / fishingLevelUpFormula(game.fishlvl + 1)));
+        objects["fishlvl_Level"].text = game.fishlvl;
+        objects["fishlvl_BarFill"].w = Math.min(0.095, 0.095 * ((game.fishxp - fishingLevelUpFormula(game.fishlvl)) / (fishingLevelUpFormula(game.fishlvl + 1) - fishingLevelUpFormula(game.fishlvl))));
+        objects["fishlvl_BarText"].text = game.fishxp + "/" + fishingLevelUpFormula(game.fishlvl + 1);
 
         objects["trashamount"].text = "Trash: " + game.trash;
         objects["fishamount"].text = "Fish: " + game.fish;
@@ -230,11 +246,11 @@ scenes["fishgang"] = new Scene(
         // Slider
         if (objects["slider"].sliderDirection == 0) {
             if (objects["slider"].sliderMove >= 100) objects["slider"].sliderDirection = 1;
-            else objects["slider"].sliderMove += objects["slider"].sliderSpeed;
+            else objects["slider"].sliderMove = Math.min(100, objects["slider"].sliderMove + objects["slider"].sliderSpeed * tick * 60);
         }
         else if (objects["slider"].sliderDirection == 1) {
             if (objects["slider"].sliderMove <= 0) objects["slider"].sliderDirection = 0;
-            else objects["slider"].sliderMove -= objects["slider"].sliderSpeed;
+            else objects["slider"].sliderMove = Math.max(0, objects["slider"].sliderMove - objects["slider"].sliderSpeed * tick * 60);
         }
 
         if (objects["bobby"].mode == 0 || objects["bobby"].mode == 2) {
@@ -243,7 +259,7 @@ scenes["fishgang"] = new Scene(
             if (objects["bobby"].mode == 0) objects["slideButtonText"].text = "Throw";
         }
         else if (objects["bobby"].mode == 3) {
-            objects["slider"].w = 0.1 * objects["bobby"].cooldown;
+            objects["slider"].w = objects["bobby"].cooldown * 0.1;
             objects["slider"].x = 0.35;
             objects["slideButtonText"].text = "Cooldown";
         }
@@ -289,8 +305,8 @@ scenes["fishgang"] = new Scene(
 
         // Bobby reel it in
         if (objects["bobby"].mode == 2) {
-            objects["bobby"].distance -= 0.1; // come closer baby
-            objects["bobby"].chance -= objects["slider"].sliderSpeed / 60; // keep reducing the chance to make it exciting
+            objects["bobby"].distance -= 0.1 * tick * 60; // come closer baby
+            objects["bobby"].chance -= objects["slider"].sliderSpeed * tick; // keep reducing the chance to make it exciting
 
             if (objects["bobby"].reelCD > 0) objects["bobby"].reelCD -= 1 / 60; // reduce cd that comes from hitting/missing
             else {
@@ -311,7 +327,6 @@ scenes["fishgang"] = new Scene(
                 if (Math.random() * 100 < objects["bobby"].chance) {
                     if (Math.random() >= 0.75 || objects["bobby"].quality >= 5) {
                         // got a fish
-
                         let caughtFish = -1;
 
                         while (caughtFish == -1) {
@@ -352,7 +367,6 @@ scenes["fishgang"] = new Scene(
                     }
                     else {
                         // got a trash
-
                         let caughtTrash = trashDictionary[Math.floor(Math.random() * (trashDictionary.length - 1))];
 
                         game.fishxp += 3;

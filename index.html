@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Shgabb Clicker</title>
-    <link href="main.css" rel="stylesheet" type="text/css">
+    <link href="style/main.css" rel="stylesheet" type="text/css">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
@@ -61,10 +61,10 @@
     <hr style="clear:both" />
 
     <!-- New artifact / achievement popup -->
-    <div id="newArtifact" style="display: none">
-        <h2><span id="newArtifactText"></span></h2>
-        <img id="newArtifactImage" width="128" , height="128" />
-        <h3><span id="newArtifactName"></span></h3>
+    <div id="popup" style="display: none">
+        <h2><span id="popupText"></span></h2>
+        <img id="popupImage" width="128" , height="128" />
+        <h3><span id="popupName"></span></h3>
     </div>
 
     <!--
@@ -301,11 +301,11 @@
             <h3>Info</h3>
             Shgabb Clicker - developed by Schrottii ©2023-2025<br />
             <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
-            This game uses WGGJ v1.1 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
+            This game uses WGGJ v1.2.1 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
             <br />
 
-            Based on the lovely person known as shgabb<br />
-            Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! &lt;3<br />
+            Based on the player and friend known as shgabb<br />
+            Special thanks to the beta testers and most dedicated players, DaGame and elmenda452!<br />
             <hr class="socialHr" style="clear:both" />
 
             <h3>Donate</h3>
@@ -345,42 +345,18 @@
         //                 Shbook                  //
         /////////////////////////////////////////////
     -->
-    <div id="shbook" class="shbookClass" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
+    <div id="shbookArea" class="shbookClass" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
         <h3 id="shbookHeader">Shbook</h3>
         <span id="selection4"></span> <br />
 
-        <div id="loreSection">
-            <h3>Lore</h3>
+        <div id="shbookSection">
+            <h3 id="shbookSectionTitle">---</h3>
             <div style="float: left; width: 29%;">
-                <span id="shbookLore"></span>
+                <span id="shbookLeft"></span>
             </div>
             <div style="float: left; width: 1%; background-color: black; color: black; min-height: 50vh;">I</div>
             <div style="float: right; width: 70%; background-image: url('images/rough.png'); background-size: 100%;">
-                <span id="shbookLore2"></span>
-            </div>
-            <hr style="clear:both" />
-        </div>
-
-        <div id="currenciesSection">
-            <h3>Currenciary</h3>
-            <div style="float: left; width: 29%;">
-                <span id="shbookCurrenciary"></span>
-            </div>
-            <div style="float: left; width: 1%; background-color: black; color: black; min-height: 50vh;">I</div>
-            <div style="float: right; width: 70%; background-image: url('images/rough.png'); background-size: 100%;">
-                <span id="shbookCurrenciary2"></span>
-            </div>
-            <hr style="clear:both" />
-        </div>
-
-        <div id="featuresSection">
-            <h3>Featuriary</h3>
-            <div style="float: left; width: 29%;">
-                <span id="shbookFeaturiary"></span>
-            </div>
-            <div style="float: left; width: 1%; background-color: black; color: black; min-height: 50vh;">I</div>
-            <div style="float: right; width: 70%; background-image: url('images/rough.png'); background-size: 100%;">
-                <span id="shbookFeaturiary2"></span>
+                <span id="shbookRight"></span>
             </div>
             <hr style="clear:both" />
         </div>
@@ -392,11 +368,14 @@
     <audio src="audio\fart.mp3" id="fart"></audio>
 
     <!-- Scripts -->
-    <script src="code\breakinfinity.js"></script>
+    <script src="code\lib\breakinfinity.js"></script>
+    <script src="code\lib\wggj.js"></script>
+
     <script src="code\ads.js"></script>
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
     <script src="code\settings.js"></script>
+    <script src="code\notifications.js"></script>
 
     <script src="code\features\achievements.js"></script>
     <script src="code\features\artifacts.js"></script>
@@ -415,7 +394,6 @@
     <script src="code\currencies\copper.js"></script>
     <script src="code\currencies\bananas.js"></script>
 
-    <script src="code\games\wggj.js"></script>
     <script src="code\games\minigameSelection.js"></script>
     <script src="code\games\shgic.js"></script>
     <script src="code\games\fishgang.js"></script>

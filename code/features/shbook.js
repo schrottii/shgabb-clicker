@@ -1,6 +1,6 @@
 ﻿// Schrottii - editing or stealing is prohibited!
 
-var shbookSelections = [0, "Shgabb", "Shbook"];
+var shbookSelections = [0, 1, 1, 0];
 var shbookSizeFactor = 10;
 
 // Book Entry Class
@@ -174,7 +174,7 @@ function checkCollectingLorePageCompleted() {
         game.lorepg.splice(game.lorepg.indexOf(game.loreSel), 1);
         game.loreSel = 0;
         game.loreP = 0;
-        createNotification("Unlocked new lore!");
+        createNotification("Unlocked new lore: " + getLoreByID(game.loreSel).name);
     }
 }
 
@@ -188,8 +188,10 @@ function getLorePage(multi = 1) {
             if (!lore[l].isFound() && getLoreReq(lore[l].source)) availablePages.push(lore[l].ID);
         }
         if (availablePages.length > 0) {
-            createNotification("Found new lore!");
-            game.lorepg.push(availablePages[Math.ceil(Math.random() * (availablePages.length - 1))]);
+            let foundPage = availablePages[Math.ceil(Math.random() * (availablePages.length - 1))];
+
+            game.lorepg.push(foundPage);
+            createNotification("Found new lore: " + getLoreByID(foundPage).name);
         }
         else {
             createNotification("All lore pages already found...");
@@ -284,6 +286,7 @@ const currenciary = [
     new BookEntry(10, "Copper Shgabb", () => unlockedCopper(), "HMS 10 000", "Copper is the seventh main currency, unlocked at HMS 10 000. It can be earned by clicking, starting with a 1% chance. Its value inflates quickly."),
     new BookEntry(11, "Pearls", () => unlockedFishing(), "HMS 12 000", "Pearls are the fourth side currency, earned from Fishgang level ups. They can be spent on minor boosts. It is possible to reset and refund all Pearls every new level up."),
     new BookEntry(12, "Bananas", () => unlockedBananas(), "HMS 15 000", "Bananas are the eighth main currency. Seeds can be found from Prestiges (more time -> higher chance, min. 1 minute, max. 15 minutes) and used to plant Banana Trees. Every click can make the trees grow Bananas. Every day where you log in, the trees get older, making them generate more Bananas per click, but also easier to break. You need to collect the Bananas from the trees, which has a chance of destroying the tree. Bananas can be spent on upgrades."),
+    new BookEntry(13, "Etenvs", () => unlockedEtenvs(), "HMS 10 000", "Etenvs are the fifth side currency, unlocked at HMS 10 000. Every event you play, you get one Etenv. In the Events section of the Shbook, you can spend one Etenv and 10 000 Gems to summon an Event for 24 hours!"),
 ];
 
 const featuriary = [
@@ -334,65 +337,80 @@ function throwLore(id) {
     }
 }
 
-// the 4 renders: currenciary, featuriary, lore and shbook in general
-function renderCurrenciary() {
-    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Currencies</div><hr>";
+// partial renders
+function renderGetShbookTitle(title){
+    ui.shbookSectionTitle.innerHTML = title;
+}
 
-    for (s in currenciary) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[1] == currenciary[s].getName() ? "yellow" : "white") + `" onclick="changeShbook(1, '` + currenciary[s].getName() + `')">` + (currenciary[s].isUnlocked() ? currenciary[s].getName() : "Locked [" + currenciary[s].lockedText + "]") + `</button>`
+function renderGetShbookLeft(index, title, list, sName) {
+    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>" + title + "</div><hr>";
+
+    for (let s in list) {
+        render = render + `<br /><button class="grayButton" 
+        style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; 
+        background-color: ` + (shbookSelections[index] == list[s].ID ? "yellow" : "white")
+        + `" onclick="changeShbook(` + index + `, '` + list[s].ID + `')">`
+        + sName(s) + `</button>`
     }
+    return render;
+}
 
+// the 5 main renders: currenciary, featuriary, lore, events and shbook in general
+function renderCurrenciary() {
+    renderGetShbookTitle("Currenciary");
+
+    // left side
+    ui.shbookLeft.innerHTML = renderGetShbookLeft(1, "Currenciary", currenciary, (s) => (currenciary[s].isUnlocked() ? currenciary[s].getName() : "Locked [" + currenciary[s].lockedText + "]"));
+
+    // right side
     let thisCurrency = "";
     for (s in currenciary) {
-        if (currenciary[s].getName() == shbookSelections[1]) thisCurrency = currenciary[s];
+        if (currenciary[s].ID == shbookSelections[1]) thisCurrency = currenciary[s];
     }
-
-    ui.shbookCurrenciary.innerHTML = render;
-    render = "<div style='font-size: 40px'>" + (thisCurrency.isUnlocked() ? thisCurrency.getName() : "Locked") + "</div><hr><br />";
+    
+    let render = "<div style='font-size: 40px'>" + (thisCurrency.isUnlocked() ? thisCurrency.getName() : "Locked") + "</div><hr><br />";
 
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisCurrency.isUnlocked() ? thisCurrency.unlockedText : "Locked [" + thisCurrency.lockedText + "]") + "</div>";
     render = render + "<br /><br /><button class='grayButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + shbookSelections[1] + "'>" + (thisCurrency.isUnlocked() ? "Learn more (Wiki)" : "Wiki (Spoilers)") + "</a></button>";
 
-    ui.shbookCurrenciary2.innerHTML = render;
+    ui.shbookRight.innerHTML = render;
 }
 
 function renderFeaturiary() {
-    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Features</div><hr>";
+    renderGetShbookTitle("Featuriary");
 
-    for (s in featuriary) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[2] == featuriary[s].getName() ? "yellow" : "white") + `" onclick="changeShbook(2, '` + featuriary[s].getName() + `')">` + (featuriary[s].isUnlocked() ? featuriary[s].getName() : "Locked [" + featuriary[s].lockedText + "]") + `</button>`
-    }
+    // left side
+    ui.shbookLeft.innerHTML = renderGetShbookLeft(2, "Featuriary", featuriary, (s) => (featuriary[s].isUnlocked() ? featuriary[s].getName() : "Locked [" + featuriary[s].lockedText + "]"));
 
+    // right side
     let thisFeature = "";
     for (s in featuriary) {
-        if (featuriary[s].getName() == shbookSelections[2]) thisFeature = featuriary[s];
+        if (featuriary[s].ID == shbookSelections[2]) thisFeature = featuriary[s];
     }
-
-    ui.shbookFeaturiary.innerHTML = render;
-    render = "<div style='font-size: 40px'>" + (thisFeature.isUnlocked() ? thisFeature.getName() : "Locked") + "</div><hr><br />";
+    
+    let render = "<div style='font-size: 40px'>" + (thisFeature.isUnlocked() ? thisFeature.getName() : "Locked") + "</div><hr><br />";
 
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisFeature.isUnlocked() ?
         (typeof (thisFeature.unlockedText) == "function" ? thisFeature.unlockedText() : thisFeature.unlockedText)
         : "Locked [" + thisFeature.lockedText + "]") + "</div>";
     render = render + "<br /><br /><button class='grayButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + shbookSelections[2] + "'>" + (thisFeature.isUnlocked() ? "Learn more (Wiki)" : "Wiki (Spoilers)") + "</a></button>";
 
-    ui.shbookFeaturiary2.innerHTML = render;
+    ui.shbookRight.innerHTML = render;
 }
 
 function renderLore() {
-    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>Lore</div><hr>";
+    renderGetShbookTitle("Lore");
 
-    for (s in lore) {
-        render = render + `<br /><button class="grayButton" style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; background-color: ` + (shbookSelections[0] == lore[s].ID ? "yellow" : "white") + `" onclick="changeShbook(0, '` + lore[s].ID + `')">` + (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName())) + `</button>`
-    }
+    // left side
+    ui.shbookLeft.innerHTML = renderGetShbookLeft(0, "Lore", lore, (s) => (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName())));
 
+    // right side
     let thisLore = "";
     for (s in lore) {
         if (lore[s].ID == shbookSelections[0]) thisLore = lore[s];
     }
-
-    ui.shbookLore.innerHTML = render;
-    render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : thisLore.getLockedName()) + "</div><hr><br />";
+    
+    let render = "<div style='font-size: 40px'>" + (thisLore.isUnlocked() ? thisLore.getName() : thisLore.getLockedName()) + "</div><hr><br />";
 
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText.replace(new RegExp('@s', 'g'), `<br>>>"`).replace(new RegExp('@e', 'g'), `"<<`).replace(new RegExp('@p', 'g'), `"<br /><br />`) : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
 
@@ -411,19 +429,61 @@ function renderLore() {
         render = render + "<br />" + "<button class='grayButton' onclick=throwLore(" + thisLore.ID + ") style='font-size: 40px'>Throw page away</button>";
     }
 
-    ui.shbookLore2.innerHTML = render;
+    ui.shbookRight.innerHTML = render;
+}
+
+function renderShbookEvent() {
+    renderGetShbookTitle("Event List (" + game.etenvs + " " + cImg("etenv") + ")");
+
+    // left side
+    ui.shbookLeft.innerHTML = renderGetShbookLeft(3, "Events", events, (s) => events[s].displayName);
+
+    // right side
+    let selected = "";
+    for (s in events) {
+        if (events[s].ID == shbookSelections[3]) selected = events[s];
+    }
+    
+    let render = "<div style='font-size: 40px'>" + selected.displayName + "</div><hr><br />";
+    let rew;
+
+    render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>";
+    render = render + selected.description + "<br />";
+
+    // cosmetics
+    for (let i = 0; i < 3; i++) {
+        render = render + "<h3>" + ["PFPs", "Banners", "Frames"][i] + "</h3>";
+        rew = getEventRewards(selected.name, ["pfps", "bans", "frames"][i]);
+        for (let j in rew) {
+            render = render
+            + "#" + getCosmetic(rew[j]).ID + ": "
+            + (getCosmetic(rew[j]).isUnlocked() ? getCosmetic(rew[j]).name : "??? (Locked)") + "<br />";
+        }
+    }
+
+    // etenv button
+    if (unlockedEtenvs() && game.stats.etenvs == 0) {
+        // fwiend get 1 free etenv ^w^
+        game.etenvs++;
+        statIncrease("etenvs", 1);
+    }
+    if (unlockedEtenvs() && game.event == "" && game.etenvs > 0) render = render + "<button class='grayButton' onclick=useEtenv('" + selected.name + "') style='font-size: 40px'>Summon Event (1 " + cImg("etenv") + ", 10k " + cImg("gem") + ")</button>";
+
+    ui.shbookRight.innerHTML = render;
 }
 
 function renderShbook() {
     if (game.stats.hms >= 25) {
         ui.shbookHeader.innerHTML = "Shbook";
-        ui.shbook.style.display = "";
-        renderLore();
-        renderCurrenciary();
-        renderFeaturiary();
+        ui.shbookArea.style.display = "";
+
+        if (selections[3] == "shbook1") renderLore();
+        if (selections[3] == "shbook2") renderCurrenciary();
+        if (selections[3] == "shbook3") renderFeaturiary();
+        if (selections[3] == "shbook4") renderShbookEvent();
     }
     else {
         ui.shbookHeader.innerHTML = "<div class='grayubtton'>Upgrade More Shgabb to level 25 to unlock the Shbook!</div>";
-        ui.shbook.style.display = "none";
+        ui.shbookArea.style.display = "none";
     }
 }

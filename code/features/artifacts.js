@@ -567,7 +567,7 @@ function updateArtifacts() {
     // Artifacts
     if (unlockedArtifacts()) {
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + totalAmountOfArtifacts() + " Artifacts unlocked!";
+        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + totalAmountOfArtifacts() + " Artifacts unlocked";
     }
     else {
         ui.artifacts.innerHTML = "";
@@ -604,7 +604,7 @@ function exportArtifactLoadout(){
     exporter = exporter.replace("Wz", "ARTILOADOUT");
 
     navigator.clipboard.writeText(exporter);
-    createNotification("Artifact loadout exported to clipboard!");
+    createNotification("Artifact loadout exported to clipboard");
 }
 
 async function importArtifactLoadout() {
@@ -626,7 +626,7 @@ async function importArtifactLoadout() {
             game.alo[selectedLoadout] = importer;
             game.aeqi = importer;
 
-            createNotification("Artifact loadout imported!");
+            createNotification("Artifact loadout imported");
         }
         else {
             createNotification("It seems like you don't own some of these Artifacts");
@@ -647,7 +647,7 @@ function handleArtifactsFirstTime() {
             getNewArtifact(0.5);
         }
         game.a.push(0);
-        createNotification("Artifacts awarded for past clicks successfully!");
+        createNotification("Artifacts awarded for past clicks successfully");
     }
 }
 */
@@ -795,14 +795,10 @@ function gambleArtifact(r) {
     r -= 1;
     // New artifact!
     game.a.push(game.nexgai[r]);
-    createNotification("New Artifact: " + getArtifact(game.nexgai[r]).name);
-    updateArtifacts();
 
-    ui.newArtifactText = "New Artifact!";
-    ui.newArtifactImage.src = "images/arti/" + getArtifact(game.nexgai[r]).image;
-    ui.newArtifactName.innerHTML = getArtifact(game.nexgai[r]).name + " (" + getArtifact(game.nexgai[r]).getRarity() + ")";
-    ui.newArtifact.style.display = "block";
-    newArtifactDisplayTimer = 5;
+    createNotification("New Artifact: " + getArtifact(game.nexgai[r]).name);
+    createPopup("New Artifact:", getArtifact(game.nexgai[r]).name + " (" + getArtifact(game.nexgai[r]).getRarity() + ")", "arti/" + getArtifact(game.nexgai[r]).image);
+    updateArtifacts();
 
     game.nexgai[r] = setNextArtifact(r);
 }
@@ -827,15 +823,11 @@ function artifactDuplicate(rarity) {
 
     // Duplicate...
     let amount = (allArtifactsOfRarity(rarity) ? 2 : 1) * (getScrapCost(1, rarity) / 10);
-    createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifact(gainedID).name + "!");
     game.artifactScrap += amount;
     statIncrease("artifactScrap", amount);
 
-    ui.newArtifactText = "Duplicate!";
-    ui.newArtifactImage.src = "images/currencies/artifactscrap.png";
-    ui.newArtifactName.innerHTML = getArtifact(gainedID).name + " (" + getArtifact(gainedID).getRarity() + ")";
-    ui.newArtifact.style.display = "block";
-    newArtifactDisplayTimer = 5;
+    createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifact(gainedID).name);
+    createPopup("Duplicate:", getArtifact(gainedID).name + " (" + getArtifact(gainedID).getRarity() + ")", "currencies/artifactscrap.png");
 }
 
 function clickArtifact(id, clg = false) {
@@ -919,7 +911,7 @@ function destroyArtifact(id, confirm = true) {
 
         checkForZeroNext();
 
-        createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifact(id).name + "!");
+        createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifact(id).name);
         return true;
     }
 
@@ -1637,7 +1629,7 @@ var artifacts = [
                 if (game.bags >= 10 * level && game.clickCooldown <= 0) {
                     if (Math.random() * 100 <= 25 * level) {
                         game.bags -= 10 * level;
-                        createNotification("DaGame clicked!");
+                        createNotification("DaGame clicked");
 
                         clickButton();
                     }
