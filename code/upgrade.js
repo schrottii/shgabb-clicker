@@ -158,7 +158,7 @@ class Upgrade {
             else myColor = "rgb(150, 175, 255)";
         }
         if (settings.upgradeColors == "custom") {
-            if (this.canBuy() || isChallenge(5)) "rgb(" + settings.customColors[0][0] + ", " + settings.customColors[0][1] + ", " + settings.customColors[0][2] + ")";
+            if (this.canBuy() || isChallenge(5)) myColor = "rgb(" + settings.customColors[0][0] + ", " + settings.customColors[0][1] + ", " + settings.customColors[0][2] + ")";
             else if (this.isMax()) myColor = "rgb(" + settings.customColors[2][0] + ", " + settings.customColors[2][1] + ", " + settings.customColors[2][2] + ")";
             else myColor = "rgb(" + settings.customColors[1][0] + ", " + settings.customColors[1][1] + ", " + settings.customColors[1][2] + ")";
         }
