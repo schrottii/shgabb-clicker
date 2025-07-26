@@ -29,7 +29,7 @@ class LimitedEvent {
 // Y2 Lunar New Year Event | Feb 4 - Feb 17
 // Y2 Egg Hunt | April 2 - April 15
 // Y2 Pride Event | Jun 1 - Jun 14
-// Y1 Hot Hot Summer Event | Jul 28 - Aug 18
+// Y2 Hot Hot Summer Event | Jul 28 - Aug 10
 // Y1 Shgabb The Witch Event | Oct 28 - Nov 17
 // Y2 Christmas Event | Dec 15 - Dec 28
 
@@ -74,11 +74,11 @@ const events = {
     
     summer: new LimitedEvent(5, "summer", "Hot Hot Summer Event", 
         "It's so hot! Don't forget your suncream! x10 Sandwiches and x10 GS! Shorts, the event currency, can be found by clicking with a low chance. Use Heat Mode for faster clicks and more Shorts.",
-        728, 818, "renderSummer", 
+        728, 810, "renderSummer", 
         {
             pfps: [418, 419, 420],
             bans: [410, 411, 412, 413],
-            frames: []
+            frames: [412, 413]
         }),
     
     shgabbthewitch: new LimitedEvent(6, "shgabbthewitch", "Shgabb The Witch Event", 
@@ -205,7 +205,8 @@ function stopEtenv() {
     }
 }
 
-function getCosmetic(typeID){
+function getCosmetic(typeID) {
+    // v3.7's new, random, consistent system
     // typeID = type and ID, like b409
     if (typeID.substr(0, 1) == "p") return getPFPByID(typeID.substr(1));
     if (typeID.substr(0, 1) == "b") return getBannerByID(typeID.substr(1));
@@ -213,6 +214,7 @@ function getCosmetic(typeID){
 }
 
 function getEventRewards(event, type = "all") {
+    // v3.7's new, random, consistent system
     // grabs rewards (of a type or all) for an event, does not give
     let eventRewards = [];
     let types = ["pfps", "bans", "frames"];
@@ -228,7 +230,18 @@ function getEventRewards(event, type = "all") {
     return eventRewards;
 }
 
+function hasEventRewards(event, type = "all") {
+    // v3.7's new, random, consistent system
+    // see if you have ALL the possible rewards
+    let rew = getEventRewards(event, type);
+    for (let t in rew) {
+        if (!getCosmetic(rew[t]).isUnlocked()) return false;
+    }
+    return true;
+}
+
 function awardEventReward(event, type = "all") {
+    // v3.7's new, random, consistent system
     // gets you a cosmetic that you don't have yet from an event
     // before they all had their own functions and it was messy and different for every event
 
@@ -928,24 +941,29 @@ var summerClicks = 0;
 var heatMode = false;
 
 function renderSummer() {
-    let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 18th</b>";
+    let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 10th</b>";
     render = render + "<br />" + events.summer.description;
     render = render + "<br />" + cImg("shorts") + game.shorts + " Shorts";
 
-    render = render + "<br /><br />Press the button below to activate Heat Mode. Every perfectly timed click reduces the cooldown (up to x3 speed), but clicking too slow resets it, and clicking too fast causes you to overheat. At a high speed, you can find Shorts at a 100x higher rate.";
+    render = render + "<br /><br />Press the button below to activate Heat Mode.<br>Every perfectly timed click reduces the cooldown (up to x3 speed), but clicking too slow resets it, and clicking too fast causes you to overheat.<br>At a high speed, you can find Shorts at a 10x higher rate.";
     render = render + "<br /><button class='grayButton' onclick='toggleHeatMode()'>" + (heatMode ? "Disable Heat Mode" : "Enable Heat Mode") + "</button>";
-    render = render + "<br />" + summerClicks + " clicks";
+    render = render + "<br />" + summerClicks + " clicks<br />" + calcShortsChance().toFixed(2) + "% Shorts chance";
 
-    if (getCooldown() <= 0.5 && !game.evpfps.includes(420)) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(1)'>#1 Buy a PFP<br/>80 " + cImg("shorts") + "</button>";
-    if (getCooldown() >= 25 && !game.evbans.includes(413)) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(2)'>#2 Buy a Banner<br/>100 " + cImg("shorts") + "</button>";
+    if (getCooldown() <= 0.5 && !hasEventRewards("summer", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(1)'>#1 Buy a PFP<br/>80 " + cImg("shorts") + "</button>";
+    if (getCooldown() >= 25 && !hasEventRewards("summer", "bans")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(2)'>#2 Buy a Banner<br/>80 " + cImg("shorts") + "</button>";
+    if (getCooldown() == 5 && !hasEventRewards("summer", "frames")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(3)'>#3 Buy a Frame<br/>80 " + cImg("shorts") + "</button>";
 
-    if (getCooldown() <= 0.5) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(3)'>#3 Instant Faster Shgabb boost! (1 minute)<br/>60 " + cImg("shorts") + "</button>";
-    if (getCooldown() >= 25) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(4)'>#4 Reset the click cooldown and the next 10 clicks have no cooldown!<br/>40 " + cImg("shorts") + "</button>";
+    if (getCooldown() <= 0.5) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(4)'>#4 Instant Faster Shgabb boost! (1 minute)<br/>60 " + cImg("shorts") + "</button>";
+    if (getCooldown() >= 25) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(5)'>#5 Reset the click cooldown and the next 10 clicks have no cooldown!<br/>40 " + cImg("shorts") + "</button>";
 
-    if (getCooldown() <= 1) render = render + "<br /><br /><button onclick='useShorts(5)'>" + getArtifact(313).render(false) + "<div class='chineseOffer'>#5<br/>200 " + cImg("shorts") + "</div></button>";
-    if (getCooldown() >= 5) render = render + "<br /><br /><button onclick='useShorts(6)'>" + getArtifact(200).render(false) + "<div class='chineseOffer'>#6<br/>100 " + cImg("shorts") + "</div></button>";
+    if (getCooldown() <= 1) render = render + "<br /><br /><button onclick='useShorts(6)'>" + getArtifact(313).render(false) + "<div class='chineseOffer'>#6<br/>200 " + cImg("shorts") + "</div></button>";
+    if (getCooldown() >= 5) render = render + "<br /><br /><button onclick='useShorts(7)'>" + getArtifact(200).render(false) + "<div class='chineseOffer'>#7<br/>100 " + cImg("shorts") + "</div></button>";
 
     ui.eventRender.innerHTML = render;
+}
+
+function calcShortsChance() {
+    return (0.1 + (summerClicks * 0.01)) * (summerClicks >= 200 ? 10 : 1);
 }
 
 function toggleHeatMode() {
@@ -957,61 +975,54 @@ function toggleHeatMode() {
 function useShorts(offerNR) {
     switch (offerNR) {
         case 1:
-            // buy PFP
+            // PFP offer
             if (game.shorts < 80) {
                 createNotification("Not enough Shorts!");
                 return false;
             }
-
-            if (!game.evpfps.includes(418)) {
-                game.evpfps.push(418);
-            }
-            else if (!game.evpfps.includes(419)) {
-                game.evpfps.push(419);
-            }
-            else if (!game.evpfps.includes(420)) {
-                game.evpfps.push(420);
-            }
-            else {
+            if (hasEventRewards("summer", "pfps")) {
                 // has all
                 createNotification("You already own these PFPs!");
                 return false;
             }
-            // bought one of them
+            // buy one
+            awardEventReward("summer", "pfps");
             game.shorts -= 80;
             createNotification("Bought PFP for 80 Shorts");
-
             break;
         case 2:
-            // buy Banner
-            if (game.shorts < 100) {
+            // Banner offer
+            if (game.shorts < 80) {
                 createNotification("Not enough Shorts!");
                 return false;
             }
-
-            if (!game.evbans.includes(410)) {
-                game.evbans.push(410);
-            }
-            else if (!game.evbans.includes(411)) {
-                game.evbans.push(411);
-            }
-            else if (!game.evbans.includes(412)) {
-                game.evbans.push(412);
-            }
-            else if (!game.evbans.includes(413)) {
-                game.evbans.push(413);
-            }
-            else {
+            if (hasEventRewards("summer", "bans")) {
                 // has all
                 createNotification("You already own these Banners!");
                 return false;
             }
-            // bought one of them
-            game.shorts -= 100;
-            createNotification("Bought Banner for 100 Shorts");
-
+            // buy one
+            awardEventReward("summer", "bans");
+            game.shorts -= 80;
+            createNotification("Bought Banner for 80 Shorts");
             break;
         case 3:
+            // Frame offer
+            if (game.shorts < 80) {
+                createNotification("Not enough Shorts!");
+                return false;
+            }
+            if (hasEventRewards("summer", "frames")) {
+                // has all
+                createNotification("You already own these Frames!");
+                return false;
+            }
+            // buy one
+            awardEventReward("summer", "frames");
+            game.shorts -= 80;
+            createNotification("Bought Frame for 80 Shorts");
+            break;
+        case 4:
             // instant faster shgabb
             if (game.shorts < 60) return false;
             game.shorts -= 60;
@@ -1024,7 +1035,7 @@ function useShorts(offerNR) {
             game.stats.wads.fs += 1;
 
             break;
-        case 4:
+        case 5:
             // click cooldown thing
             if (game.shorts < 40 || lunarAntiCooldown == 10) return false;
             game.shorts -= 40;
@@ -1034,7 +1045,7 @@ function useShorts(offerNR) {
             lunarAntiCooldown = 10;
 
             break;
-        case 5:
+        case 6:
             if (game.shorts < 200) return false;
 
             if (!game.a.includes(313)) {
@@ -1049,7 +1060,7 @@ function useShorts(offerNR) {
 
             updateArtifacts();
             break;
-        case 6:
+        case 7:
             if (game.shorts < 100) return false;
 
             if (!game.a.includes(200)) {

@@ -96,6 +96,13 @@ function checkNewDay() {
             }
         }
 
+        // amess
+        if (ameliorerUpgrades.unstableAMESS.currentLevel() > 0) {
+            game.amess += 1;
+            game.ame += 1;
+            statIncrease("amess", 1);
+        }
+
         // get etenv
         if (game.etenvev != getCurrentEvent() && getCurrentEvent() != "none" && unlockedEtenvs() && game.event == "") {
             // you get one per event, if you unlocked the feature, and it's a REAL event

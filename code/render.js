@@ -73,13 +73,14 @@ function renderSelection(sel) {
         selsDisplay = ["Lore", "Currenciary", "Featuriary", "Events"];
     }
 
+    // render le area
     let bgColor = "white";
     for (s in sels) {
         bgColor = selections[sel - 1] == sels[s] ? "yellow" : "white";
         if (sels[s] == "challenges" && game.dclg.length > 0 && game.stats.hms >= 10000) bgColor = "red";
         if (sels[s] == "minigames" && canPlayTTT) bgColor = "red";
 
-        if (isSelectionUnlocked(sels[s], selsDisplay)) render = render + `<button class="grayButton" style="border: 2px solid ` + (selectedSelection == sel ? "darkorange" : "darkgray") + `; background-color: ` + bgColor + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
+        if (isSelectionUnlocked(sels[s], selsDisplay)) render = render + `<button class="grayButton sectionSelection" style="border-color: ` + (selectedSelection == sel ? "darkorange" : "darkgray") + `; background-color: ` + bgColor + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 

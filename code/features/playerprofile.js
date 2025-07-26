@@ -346,6 +346,9 @@ var frames = [
     new Frame(409, "Proud Frame", "images/playerprofile/frames/prideframe.png", () => game.evframes.includes(409)),
     new Frame(410, "Gender Frame", "images/playerprofile/frames/prideframe2.png", () => game.evframes.includes(410)),
     new Frame(411, "Love Frame", "images/playerprofile/frames/prideframe3.png", () => game.evframes.includes(411)),
+
+    new Frame(412, "Hot Frame", "images/playerprofile/frames/hotframe.png", () => game.evframes.includes(412)),
+    new Frame(413, "Cool Frame", "images/playerprofile/frames/coolframe.png", () => game.evframes.includes(413)),
 ];
 
 function calcProfileCanvasSize() {

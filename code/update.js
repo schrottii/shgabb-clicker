@@ -2,36 +2,38 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.7";
+const gameVersion  = "3.8";
 const versionTitle = "";
 
 const currentPatchNotes = `
-2025/06/28 v3.7:
--> Events and Etenvs:
-- Added Events section to Shbook, showing all Events, with their descriptions and cosmetics!
-- Added Etenvs, new token currency unlocked at HMS 10 000
-- Gain one Etenv during every event
-- Everyone who plays now also gets one Etenv for free, to try it! (if unlocked)
-- Spend one Etenv and 10 000 Gems to summon an Event for 24 hours
-- Summoning is done in the Shbook, on the Event's page
-- Summoned Events are the same as real ones, with their boosts, cosmetics, Achievements and everything else
-- Note: Hot Hot Summer and Shgabb the Witch do not have their Year 2 versions yet
-- Added Shbook entry and stats for Etenvs and Events summoned
+-> Améliorer:
+- Added the 9th set of Améliorer Upgrades (400 Amé)
+- New Améliorer Upgrade: Bag Boost (Set 9, 400): Get more Bags
+- New Améliorer Upgrade: Efficient Destruction (Set 9, 400): Get more Artifact Scrap from destroying Artifacts
+- New Améliorer Upgrade: Challenger (Set 9, 400): Reduce goals for Challenges based on Daily Challenge Points
+- New Améliorer Upgrade: Unstable AMESS (Set 9, 420): Get +1 Amé for every 15min+ Prestige or new day. They are lost when you reset Amé Upgrades.
+- Added Amess stat
 
--> Fishgang:
-- Now framerate independent
-- Improved design for player level/bar, including your PFP
-- Bar fill is now based on progress to next level, rather than total
+-> Hot Hot Summer Event:
+- This Event is back for Year 2
+- Duration changed to July 28th - August 10th (22 days -> 14 days)
+- Added 2 Frames, can be bought for 80 Shorts from 3rd Offer, if click speed is 5s
+- Reduced Banner price from 100 to 80 (same as others)
+- Shorts chance now increases every click (base still 0.1%, increase +0.01%/click, 2.1% at 200)
+- Reduced boost at 200 clicks from 100x to 10x (before: 0.1% -> 10%, after: 2.1% -> 21%)
+- Shorts chance is now displayed
+- Implemented v3.7's event cosmetic awarding system, which gives the cosmetics randomly, to replace the own inconsistent (and often going in order) awarding systems of events (the other events will follow)
 
 -> Design:
-- Cut down exclamation mark usage
-- Removed hearty wording from the info section
-
--> Other:
-- Sections for Challenges and Minigames get a red background when their daily isn't complete yet
-- Added Setting to disable Popups (new Artifacts, duplicates, Achievements)
-- Finding or unlocking a lore page shows its name
-- Code and file organization improvements
+- Sections: added rounded transparent backgrounds, covering the whole area, for all 3 sections
+- Selections: increased width and spacing (more on PC than on mobile), round border
+- Upgrade buttons: rounded and colored borders (black -> darker)
+- Upgrade buttons: slightly changed colors (new)
+- Gray buttons: changed colors and border
+- Click button: changed click animation's colors and border
+- Quote: changed font (and bigger on PC), background and round edges
+- Game title: round edges and bigger size on PC
+- Banana Trees: completely changed button design
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

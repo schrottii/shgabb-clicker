@@ -18,6 +18,7 @@ var game = {
     gs: new Decimal(0),
     si: new Decimal(0),
     ame: 0,
+    amess: 0,
     ameUp: [0, 0, 0, 0, 0],
     bags: 0,
     cop: new Decimal(0),
@@ -163,6 +164,11 @@ var game = {
         chainGems: 0,
         moreLoadouts: 0,
 
+        ameBagBoost: 0,
+        efficientDestruction: 0,
+        challenger: 0,
+        unstableAMESS: 0,
+
         // Bag
         challengeShgabb: 0,
         moreSilicone3: 0,
@@ -201,6 +207,7 @@ var game = {
         artifactScrap: 0,
         si: 0,
         ame: 0,
+        amess: 0,
         bags: 0,
         cop: 0,
         copClicks: 0,

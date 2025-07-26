@@ -480,7 +480,7 @@ function clickButton() {
                     renderCurrentEvent();
                 }
 
-                if (Math.random() * 100 < 0.1 * (summerClicks >= 200 ? 100 : 1)) {
+                if (Math.random() * 100 < calcShortsChance()) {
                     game.shorts += 1;
                     statIncrease("shorts", 1);
                 }
@@ -709,6 +709,7 @@ function updateStats() {
         + "<br />Total Silicone Shgabb: " + statLoader("si")
         + "<br />Total Artifact Scrap: " + statLoader("artifactScrap")
         + "<br />Total Améliorer: " + statLoader("ame")
+        + "<br />Total Amess: " + statLoader("amess")
         + "<br />Total Bags: " + statLoader("bags")
         + "<br />Total Copper Shgabb: " + statLoader("cop")
         + "<br />Total Copper Clicks: " + statLoader("copClicks")

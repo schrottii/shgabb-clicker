@@ -25,7 +25,7 @@ class Challenge {
     }
 
     getGoal() {
-        return this.goal(this.getTier());
+        return Math.max(100, Math.ceil(this.goal(this.getTier()) / ameliorerUpgrades.challenger.currentEffect()));
     }
 
     getPrice() {

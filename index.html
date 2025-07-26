@@ -14,8 +14,8 @@
 </head>
 <body>
     <!-- Top, Quote, Click Button, Notifs -->
-    <h2 class="gameName" style="max-width: 420px"><span id="gametitle">Shgabb Clicker</span></h2>
-    <span id="quote" class="quoteClass" style="background-color: black"></span>
+    <h2 class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
+    <span id="quote" class="quoteClass"></span>
     <br />
 
     <!-- is loading -->
@@ -52,7 +52,7 @@
     <br />
 
     <!-- Joke Ads -->
-    <div id="adContent" style="display: none; width: 100%; height: 44px; background-color: darkblue">
+    <div id="adContent" style="width: 100%; height: 44px; background-color: darkblue">
         <progress min="0" max="100" value="0" id="adBar" class="adBar"></progress>
         <button id="adStartButton" class="grayButton" style="display: none; width: 70%; height: 100%; float: left" onclick="adStartButtonHandler()"></button>
         <button id="adButton" class="grayButton" style="width: 25%; height: 100%; float: right" onclick="adButtonHandler()"></button><br />
@@ -72,80 +72,82 @@
         //         Selection      1                //
         /////////////////////////////////////////////
     -->
-    <span id="selection1"></span>
+    <div class="sectionBG">
+        <span id="selection1"></span>
 
-    <!-- Shgabb -->
-    <div id="shgabbSection" style="display: none">
-        <h3>Shgabb Upgrades</h3>
-        <span id="shgabbAmount">0 Shgabb</span><br />
-        <span id="upgradesrender"></span>
-    </div>
-
-    <!-- Sandwiches -->
-    <div id="sandwichSection" style="display: none">
-        <h3>Sandwich Upgrades</h3>
-        <span id="swAmount"></span><br />
-        <span id="swupgradesrender"></span>
-        <br />
-        <div class="grayButton" style="width: 50%; margin: 0 auto;">
-            <span id="autoInfo"></span><br />
+        <!-- Shgabb -->
+        <div id="shgabbSection" style="display: none">
+            <h3>Shgabb Upgrades</h3>
+            <span id="shgabbAmount">0 Shgabb</span><br />
+            <span id="upgradesrender"></span>
         </div>
-    </div>
 
-    <!-- Golden Shgabb -->
-    <div id="goldenShgabbSection" style="display: none">
-        <h3>Golden Shgabb</h3>
-        <button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
-        <span id="gsAmount"></span><br />
-        <span id="gsupgradesrender"></span>
-    </div>
-
-    <!-- Silicone Shgabb -->
-    <div id="siliconeShgabbSection" style="display: none">
-        <h3>Silicone Shgabb</h3>
-        <span id="siAmount"></span><br />
-        <span id="siupgradesrender"></span>
-    </div>
-
-    <!-- Ameliorer -->
-    <div id="ameliorerSection" style="display: none">
-        <h3>Améliorer</h3>
-        <span id="ameAmount"></span><br />
-        <span id="ameconvert"></span><br />
-        <span id="ameupgradesrender"></span>
-        <br style="clear:both" />
-        <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto;" onclick="toggleAmeReset()">
-            <div style="height: 50%"> X </div>
-            <input type="checkbox" id="amereset" value="true" onclick="toggleAmeReset2()">
-            <label for="amereset" id="amereset2">Reset Améliorer Upgrades on the next Prestige (100% refund)<span id="ameResetText"></span></label>
+        <!-- Sandwiches -->
+        <div id="sandwichSection" style="display: none">
+            <h3>Sandwich Upgrades</h3>
+            <span id="swAmount"></span><br />
+            <span id="swupgradesrender"></span>
+            <br />
+            <div class="grayButton" style="width: 50%; margin: 0 auto;">
+                <span id="autoInfo"></span><br />
+            </div>
         </div>
-    </div>
 
-    <!-- Bags -->
-    <div id="bagSection" style="display: none">
-        <h3>Bags</h3>
-        <span id="bagAmount"></span><br />
-        <span id="bagupgradesrender"></span>
-    </div>
+        <!-- Golden Shgabb -->
+        <div id="goldenShgabbSection" style="display: none">
+            <h3>Golden Shgabb</h3>
+            <button id="prestigebutton" class="prestigeButton" style="display: none" onclick="prestigeButton()">Prestige!</button><br />
+            <span id="gsAmount"></span><br />
+            <span id="gsupgradesrender"></span>
+        </div>
 
-    <!-- Copper Shgabb -->
-    <div id="copperShgabbSection" style="display: none">
-        <h3>Copper Shgabb</h3>
-        <span id="copAmount"></span><br />
-        <span id="copupgradesrender"></span>
-    </div>
+        <!-- Silicone Shgabb -->
+        <div id="siliconeShgabbSection" style="display: none">
+            <h3>Silicone Shgabb</h3>
+            <span id="siAmount"></span><br />
+            <span id="siupgradesrender"></span>
+        </div>
 
-    <!-- Bananas -->
-    <div id="bananaSection" style="display: none">
-        <h3>Bananas</h3>
-        <span id="bananaAmount"></span><br />
+        <!-- Ameliorer -->
+        <div id="ameliorerSection" style="display: none">
+            <h3>Améliorer</h3>
+            <span id="ameAmount"></span><br />
+            <span id="ameconvert"></span><br />
+            <span id="ameupgradesrender"></span>
+            <br style="clear:both" />
+            <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto;" onclick="toggleAmeReset()">
+                <div style="height: 50%"> X </div>
+                <input type="checkbox" id="amereset" value="true" onclick="toggleAmeReset2()">
+                <label for="amereset" id="amereset2">Reset Améliorer Upgrades on the next Prestige (100% refund)<span id="ameResetText"></span></label>
+            </div>
+        </div>
 
-        <h3>Banana Trees</h3>
-        <button class="grayButton" id="bananaSeedButton" onclick="bananaTreePlant()"></button> <br />
-        <span id="bananatreesrender"></span> <br />
+        <!-- Bags -->
+        <div id="bagSection" style="display: none">
+            <h3>Bags</h3>
+            <span id="bagAmount"></span><br />
+            <span id="bagupgradesrender"></span>
+        </div>
 
-        <h3>Banana Upgrades</h3>
-        <span id="bananaupgradesrender"></span>
+        <!-- Copper Shgabb -->
+        <div id="copperShgabbSection" style="display: none">
+            <h3>Copper Shgabb</h3>
+            <span id="copAmount"></span><br />
+            <span id="copupgradesrender"></span>
+        </div>
+
+        <!-- Bananas -->
+        <div id="bananaSection" style="display: none">
+            <h3>Bananas</h3>
+            <span id="bananaAmount"></span><br />
+
+            <h3>Banana Trees</h3>
+            <button class="bananaButton" id="bananaSeedButton" onclick="bananaTreePlant()"></button> <br />
+            <span id="bananatreesrender"></span> <br />
+
+            <h3>Banana Upgrades</h3>
+            <span id="bananaupgradesrender"></span>
+        </div>
     </div>
 
     <hr style="clear:both" />
@@ -155,66 +157,68 @@
         //         Selection      2                //
         /////////////////////////////////////////////
     -->
-    <span id="selection2"></span>
+    <div class="sectionBG">
+        <span id="selection2"></span>
 
-    <!-- Gems -->
-    <div id="gemSection" style="display: none">
-        <h3>Gems</h3>
-        <span id="gemAmount"></span><br /><br />
-        <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
-        <button class="upgrade" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
-        <button class="upgrade" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
-        <button class="upgrade" onclick="gemOffer(4)"><span id="gemOffer4"></span></button><br />
-        <button class="upgrade" onclick="gemOffer(5)"><span id="gemOffer5"></span></button>
+        <!-- Gems -->
+        <div id="gemSection" style="display: none">
+            <h3>Gems</h3>
+            <span id="gemAmount"></span><br /><br />
+            <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
+            <button class="upgrade" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
+            <button class="upgrade" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
+            <button class="upgrade" onclick="gemOffer(4)"><span id="gemOffer4"></span></button><br />
+            <button class="upgrade" onclick="gemOffer(5)"><span id="gemOffer5"></span></button>
 
-        <br />
-        <div id="gemStorageContainer" style="display: none">
-            <span id="gemStorageDisplay"></span><input type="number" id="gemStorageAmount" onblur="gemStorage()" onchange="gemStorage()" /><br />
-            Gems in the Gem Storage still count towards boosts, Achievements, etc. but can't be accidentally spent!
-        </div>
-    </div>
-
-    <!-- Artifacts -->
-    <div id="artifactSection" style="display: none">
-        <h3>Artifacts</h3>
-        <span id="artifactScrapAmount"></span>    <span id="artifactamount"></span> <br />
-
-        <label for="artifactSearch">Search:</label>
-        <input type="text" id="artifactSearch" name="artifactSearch">
-
-        <br />
-        <span id="artifacts" style="width: 80%"></span>
-    </div>
-
-    <!-- Challenges -->
-    <div id="challengeSection" class="square2" style="display: none">
-        <h3>Challenges</h3>
-        <span id="challengeRender"></span>
-    </div>
-
-    <!-- Minigame -->
-    <div id="minigamesSection" style="display: none">
-        <h3>Minigames</h3>
-        <canvas id="wggjCanvas" width=256 height=256 style="margin-left: 0px; margin-right: 0px"></canvas>
-        <audio id="wggjAudio" type="audio/ogg" preload="auto"></audio>
-
-        <div id="pearlSection" style="display: none">
-            <h3>Pearls</h3>
-            <span id="pearlAmount"></span><br />
-            <span id="pearlupgradesrender"></span>
-
-            <br style="clear:both" />
-            <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto;" onclick="togglePearlReset()">
-                <div style="height: 50%"> X </div>
-                <input type="checkbox" id="pearlreset" value="true" onclick="togglePearlReset2()">
-                <label for="pearlreset" id="pearlreset2">Reset Pearl Upgrades on the next level up</label>
+            <br />
+            <div id="gemStorageContainer" style="display: none">
+                <span id="gemStorageDisplay"></span><input type="number" id="gemStorageAmount" onblur="gemStorage()" onchange="gemStorage()" /><br />
+                Gems in the Gem Storage still count towards boosts, Achievements, etc. but can't be accidentally spent!
             </div>
         </div>
-    </div>
 
-    <!-- Event -->
-    <div id="eventsSection" class="square2" style="display: none">
-        <span id="eventRender"></span>
+        <!-- Artifacts -->
+        <div id="artifactSection" style="display: none">
+            <h3>Artifacts</h3>
+            <span id="artifactScrapAmount"></span>    <span id="artifactamount"></span> <br />
+
+            <label for="artifactSearch">Search:</label>
+            <input type="text" id="artifactSearch" name="artifactSearch">
+
+            <br />
+            <span id="artifacts" style="width: 80%"></span>
+        </div>
+
+        <!-- Challenges -->
+        <div id="challengeSection" class="square2" style="display: none">
+            <h3>Challenges</h3>
+            <span id="challengeRender"></span>
+        </div>
+
+        <!-- Minigame -->
+        <div id="minigamesSection" style="display: none">
+            <h3>Minigames</h3>
+            <canvas id="wggjCanvas" width=256 height=256 style="margin-left: 0px; margin-right: 0px"></canvas>
+            <audio id="wggjAudio" type="audio/ogg" preload="auto"></audio>
+
+            <div id="pearlSection" style="display: none">
+                <h3>Pearls</h3>
+                <span id="pearlAmount"></span><br />
+                <span id="pearlupgradesrender"></span>
+
+                <br style="clear:both" />
+                <div class="settingButton" style="max-width: 60%; margin-left: auto; margin-right: auto;" onclick="togglePearlReset()">
+                    <div style="height: 50%"> X </div>
+                    <input type="checkbox" id="pearlreset" value="true" onclick="togglePearlReset2()">
+                    <label for="pearlreset" id="pearlreset2">Reset Pearl Upgrades on the next level up</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event -->
+        <div id="eventsSection" class="square2" style="display: none">
+            <span id="eventRender"></span>
+        </div>
     </div>
 
     <hr style="clear:both" />
@@ -224,116 +228,119 @@
         //         Selection      3                //
         /////////////////////////////////////////////
     -->
-    <span id="selection3"></span>
 
-    <!-- Cheating -->
-    <div id="cheatSection" style="display: none">
-        <h3>Cheats [Beta only]</h3>
+    <div class="sectionBG">
+        <span id="selection3"></span>
 
-        <select id="cheatCurrency" name="Currency">
-            <option value="shgabb">Shgabb</option>
-            <option value="sw">Sandwiches</option>
-            <option value="gs">Golden Shgabb</option>
-            <option value="si">Silicone Shgabb</option>
-            <option value="ame">Améliorer</option>
-            <option value="gems">Gems</option>
-            <option value="artifactScrap">Artifact Scrap</option>
-            <option value="stats.playTime">Playtime</option>
-        </select>
+        <!-- Cheating -->
+        <div id="cheatSection" style="display: none">
+            <h3>Cheats [Beta only]</h3>
 
-        <input id="cheatAmount" name="Amount" />
-        <button onclick="cheatEngine('add')">+</button>
-        <button onclick="cheatEngine('set')">Set</button>
-        <button onclick="cheatEngine('sub')">-</button><br />
-        <span id="cheatDisplay"></span>
-        <hr style="clear:both" />
-    </div>
+            <select id="cheatCurrency" name="Currency">
+                <option value="shgabb">Shgabb</option>
+                <option value="sw">Sandwiches</option>
+                <option value="gs">Golden Shgabb</option>
+                <option value="si">Silicone Shgabb</option>
+                <option value="ame">Améliorer</option>
+                <option value="gems">Gems</option>
+                <option value="artifactScrap">Artifact Scrap</option>
+                <option value="stats.playTime">Playtime</option>
+            </select>
 
-    <!-- Player Profile -->
-    <div id="playerprofileSection" style="display: none">
-        <h3>Player Profile</h3>
-        <canvas id="profileCanvas" class="playerProfile"></canvas><br />
-
-        <button id="playerProfileButton1" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(1)">PFPs</button>
-        <button id="playerProfileButton2" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(2)">Banners</button>
-        <button id="playerProfileButton3" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(3)">Frames</button>
-        <button id="playerProfileButton4" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(4)">All</button> <br />
-        <span id="playerProfileRender"></span>
-
-        <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
-    </div>
-
-    <!-- Stats -->
-    <div id="statsSection" style="display: none">
-        <h3>Stats</h3>
-        <button id="statsTime1" class="grayButton" style="background-color: yellow" onclick="statsSet(1)">All time</button>
-        <button id="statsTime2" class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
-        <button id="statsTime3" class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
-        <span id="stats"></span>
-    </div>
-
-    <!-- Achievements -->
-    <div id="achievementsSection" style="display: none">
-        <h3>Achievements</h3>
-        <span id="achievementsamount"></span><br />
-        <span id="achievements" style="width: 80%"></span>
-        <hr style="clear:both" />
-    </div>
-
-    <!-- Settings -->
-    <div id="settingsSection" style="display: none">
-        <h3>Settings</h3>
-        <span id="settings"></span>
-
-        <hr style="clear:both" />
-    </div>
-
-    <!-- Other -->
-    <div id="socialSection" style="display: none">
-        <br style="clear:both" />
-        <div class="socialContainerSquare">
-            <!-- Notifications -->
-            <h3>Notifications</h3>
-            <span id="notifications"></span>
-            <hr class="socialHr" style="clear:both" />
-
-            <!-- Info -->
-            <h3>Info</h3>
-            Shgabb Clicker - developed by Schrottii ©2023-2025<br />
-            <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
-            This game uses WGGJ v1.2.1 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
-            <br />
-
-            Based on the player and friend known as shgabb<br />
-            Special thanks to the beta testers and most dedicated players, DaGame and elmenda452!<br />
-            <hr class="socialHr" style="clear:both" />
-
-            <h3>Donate</h3>
-            If you enjoy the game and have money, consider donating some! It is my only income source and supports me a lot: <br />
-            <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-            <script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#2e269a', 'Y8Y2XMZX1'); kofiwidget2.draw();</script>
-            <br />
-            <hr class="socialHr" style="clear:both" />
-
-            <!-- Social -->
-            <h3>Social</h3>
-            <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
-            <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
-
-            <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a id="frWeb" href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a><a id="frGalaxy" href="https://galaxy.click/play/474">Play one of my other games on galaxy!</a></div>
-            <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+            <input id="cheatAmount" name="Amount" />
+            <button onclick="cheatEngine('add')">+</button>
+            <button onclick="cheatEngine('set')">Set</button>
+            <button onclick="cheatEngine('sub')">-</button><br />
+            <span id="cheatDisplay"></span>
+            <hr style="clear:both" />
         </div>
-        <div class="patchNotesContainerSquare">
-            <!-- Patch Notes -->
-            <h3>Patch Notes</h3>
-            <span id="patchNotes">...</span>
 
-            <br />
-            <hr class="socialHr" style="clear:both" />
-            <input type="range" min="10" max="24" value="16" step="2" class="slider" id="patchNotesSizeSlider" onchange="patchNotesSize()">
-            <br />
-            <div style="display: flex; align-items: center; justify-content: center; ">
-                <div class="grayButton" style="width: 25%;"><a href="patch-notes.txt" target="_blank">(All patch notes)</a></div>
+        <!-- Player Profile -->
+        <div id="playerprofileSection" style="display: none">
+            <h3>Player Profile</h3>
+            <canvas id="profileCanvas" class="playerProfile"></canvas><br />
+
+            <button id="playerProfileButton1" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(1)">PFPs</button>
+            <button id="playerProfileButton2" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(2)">Banners</button>
+            <button id="playerProfileButton3" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(3)">Frames</button>
+            <button id="playerProfileButton4" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(4)">All</button> <br />
+            <span id="playerProfileRender"></span>
+
+            <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
+        </div>
+
+        <!-- Stats -->
+        <div id="statsSection" style="display: none">
+            <h3>Stats</h3>
+            <button id="statsTime1" class="grayButton" style="background-color: yellow" onclick="statsSet(1)">All time</button>
+            <button id="statsTime2" class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
+            <button id="statsTime3" class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
+            <span id="stats"></span>
+        </div>
+
+        <!-- Achievements -->
+        <div id="achievementsSection" style="display: none">
+            <h3>Achievements</h3>
+            <span id="achievementsamount"></span><br />
+            <span id="achievements" style="width: 80%"></span>
+            <hr style="clear:both" />
+        </div>
+
+        <!-- Settings -->
+        <div id="settingsSection" style="display: none">
+            <h3>Settings</h3>
+            <span id="settings"></span>
+
+            <hr style="clear:both" />
+        </div>
+
+        <!-- Other -->
+        <div id="socialSection" style="display: none">
+            <br style="clear:both" />
+            <div class="socialContainerSquare">
+                <!-- Notifications -->
+                <h3>Notifications</h3>
+                <span id="notifications"></span>
+                <hr class="socialHr" style="clear:both" />
+
+                <!-- Info -->
+                <h3>Info</h3>
+                Shgabb Clicker - developed by Schrottii ©2023-2025<br />
+                <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
+                This game uses WGGJ v1.2.1 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
+                <br />
+
+                Based on the player and friend known as shgabb<br />
+                Special thanks to the beta testers and most dedicated players, DaGame and elmenda452!<br />
+                <hr class="socialHr" style="clear:both" />
+
+                <h3>Donate</h3>
+                If you enjoy the game and have money, consider donating some! It is my only income source and supports me a lot: <br />
+                <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+                <script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#2e269a', 'Y8Y2XMZX1'); kofiwidget2.draw();</script>
+                <br />
+                <hr class="socialHr" style="clear:both" />
+
+                <!-- Social -->
+                <h3>Social</h3>
+                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
+                <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
+
+                <div class="grayButton" style="float: left; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a id="frWeb" href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a><a id="frGalaxy" href="https://galaxy.click/play/474">Play one of my other games on galaxy!</a></div>
+                <div class="grayButton" style="float: right; width: 48%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+            </div>
+            <div class="patchNotesContainerSquare">
+                <!-- Patch Notes -->
+                <h3>Patch Notes</h3>
+                <span id="patchNotes">...</span>
+
+                <br />
+                <hr class="socialHr" style="clear:both" />
+                <input type="range" min="10" max="24" value="16" step="2" class="slider" id="patchNotesSizeSlider" onchange="patchNotesSize()">
+                <br />
+                <div style="display: flex; align-items: center; justify-content: center; ">
+                    <div class="grayButton" style="width: 25%;"><a href="patch-notes.txt" target="_blank">(All patch notes)</a></div>
+                </div>
             </div>
         </div>
     </div>
@@ -345,7 +352,7 @@
         //                 Shbook                  //
         /////////////////////////////////////////////
     -->
-    <div id="shbookArea" class="shbookClass" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
+    <div id="shbookArea" class="sectionBG shbookClass" style="background-image: url('images/rough2.png'); background-size: 100%; display: none">
         <h3 id="shbookHeader">Shbook</h3>
         <span id="selection4"></span> <br />
 

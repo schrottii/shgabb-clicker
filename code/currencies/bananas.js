@@ -112,7 +112,7 @@ function renderBananaTrees() {
 
     for (let tree in game.bananatrees) {
         t = game.bananatrees[tree];
-        render = render + '<button class="grayButton" onclick="clickBananaTree(' + getTreeByID(t.id) + ')"><img src="images/' + (t.bananas > 0 ? "bananatree" : "bananatree-empty") + '.png" /><br />Banana Tree #' + t.id
+        render = render + '<button class="bananaButton" onclick="clickBananaTree(' + getTreeByID(t.id) + ')"><img src="images/' + (t.bananas > 0 ? "bananatree" : "bananatree-empty") + '.png" /><br /><b>Banana Tree #' + t.id + '</b>'
             + '<br />Age: ' + (t.days + 1) + ' (Planted: ' + formatDate(t.date) + ')'
             + '<br />Click to earn ' + t.bananas + cImg("banana") + '! (' + calcTreeDeathChance(t) + '% chance of destroying the tree)'
             + '</button>';

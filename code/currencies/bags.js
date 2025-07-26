@@ -11,6 +11,7 @@ function calcBags(hmsBefore = game.stats_prestige.hms, hmsAfter = game.upgradeLe
     return Math.ceil((ameliorerUpgrades.tiersBoostBags.currentEffect() > 0 ? getTotalTiers() : 1)
         * (Math.floor(hmsAfter / 1000) - Math.floor(hmsBefore / 1000))
         * getArtifactsSimpleBoost("bags"))
+        * ameliorerUpgrades.ameBagBoost.currentEffect()
         * eventValue("shgabbthewitch", 6, 1);
 }
 

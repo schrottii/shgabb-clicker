@@ -51,6 +51,7 @@ function prestigeButton() {
     if (!settings.confirm || confirm("Do you really want to prestige?")) {
         let amount = increaseGS(1 * getArtifactsSimpleBoost("prestigegs"));
         let hms = game.stats_prestige.hms;
+        let runDuration = game.stats_prestige.playTime;
 
         prestigeGems();
         prestigeBananaSeeds();
@@ -89,7 +90,16 @@ function prestigeButton() {
             if (ameliorerUpgrades.keepSWU.currentLevel() < keepSWU.indexOf(sandwichUpgrades[u].name)) game.upgradeLevels[u] = 0;
         }
 
-        if (ui.ameReset.checked == true) ameReset();
+        // ame
+        if (ui.ameReset.checked == true) {
+            ameReset();
+            game.amess = 0;
+        }
+        else if (runDuration >= 900 && ameliorerUpgrades.unstableAMESS.currentLevel() > 0) {
+            game.amess += 1;
+            game.ame += 1;
+            statIncrease("amess", 1);
+        }
 
         statIncrease("pr", 1);
         game.stats_prestige.hms = 0;

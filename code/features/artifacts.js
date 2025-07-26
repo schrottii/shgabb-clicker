@@ -893,6 +893,7 @@ function destroyArtifact(id, confirm = true) {
     let rarity = getArtifact(id).rarity;
     let level = game.alvl[id];
     let amount = Math.floor(getScrapCost(level, rarity) / 5);
+    amount = Math.floor(amount * ameliorerUpgrades.efficientDestruction.currentEffect());
 
     if (!confirm || !settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
         game.a.splice(game.a.indexOf(id), 1);

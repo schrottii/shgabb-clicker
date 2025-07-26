@@ -146,21 +146,53 @@ class Upgrade {
         if (isChallenge(5)) levelDisplay = "?";
 
         // color
-        let myColor = settings.upgradeColors == "old" ? (this.canBuy() || isChallenge(5) ? "rgb(180, 255, 200)" : (this.isMax() ? "lightgray" : "whitesmoke"))
-            : settings.upgradeColors == "normal" ? (this.canBuy() || isChallenge(5) ? "rgb(90, 200, 120)" : (this.isMax() ? "rgb(45, 45, 45)" : "rgb(120, 160, 255)"))
-                : (this.canBuy() || isChallenge(5) ? "rgb(" + settings.customColors[0][0] + ", " + settings.customColors[0][1] + ", " + settings.customColors[0][2] + ")" : (this.isMax() ? "rgb(" + settings.customColors[2][0] + ", " + settings.customColors[2][1] + ", " + settings.customColors[2][2] + ")" : "rgb(" + settings.customColors[1][0] + ", " + settings.customColors[1][1] + ", " + settings.customColors[1][2] + ")"));
-        let textColor = settings.upgradeColors == "old" ? 0
-            : settings.upgradeColors == "normal" ? 255
-                : (this.canBuy() || isChallenge(5) ? settings.customColors[0][3] : (this.isMax() ? settings.customColors[2][3] : settings.customColors[1][3]));
+        let myColor = 0;
+        if (settings.upgradeColors == "old") {
+            if (this.canBuy() || isChallenge(5)) myColor = "rgb(180, 255, 200)";
+            else if (this.isMax()) myColor = "rgb(211,211,211)";
+            else myColor = "rgb(245,245,245)";
+        }
+        if (settings.upgradeColors == "normal") {
+            if (this.canBuy() || isChallenge(5)) myColor = "rgb(120, 200, 145)";
+            else if (this.isMax()) myColor = "rgb(120, 120, 120)";
+            else myColor = "rgb(150, 175, 255)";
+        }
+        if (settings.upgradeColors == "custom") {
+            if (this.canBuy() || isChallenge(5)) "rgb(" + settings.customColors[0][0] + ", " + settings.customColors[0][1] + ", " + settings.customColors[0][2] + ")";
+            else if (this.isMax()) myColor = "rgb(" + settings.customColors[2][0] + ", " + settings.customColors[2][1] + ", " + settings.customColors[2][2] + ")";
+            else myColor = "rgb(" + settings.customColors[1][0] + ", " + settings.customColors[1][1] + ", " + settings.customColors[1][2] + ")";
+        }
+
+        // border color
+        let borderColor = rgbManipulator(myColor, 0.75); // genius rgb
+
+        // text color
+        let textColor = 0;
+        if (settings.upgradeColors == "old") textColor = 0;
+        if (settings.upgradeColors == "normal") textColor = 12;
+        if (settings.upgradeColors == "custom") {
+            if (this.canBuy() || isChallenge(5)) textColor = settings.customColors[0][3];
+            else if (this.isMax()) textColor = settings.customColors[2][3];
+            else textColor = settings.customColors[1][3];
+        }
 
         // for ame upg
         let ameExtraText = "";
         if (this.type == "ameliorerUpgrades") ameExtraText = "[S" + this.ameSet + "/" + (this.ameAmount != undefined ? this.ameAmount : 0) + "] ";
 
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>" + ameExtraText + this.description + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /> Cost: " + fn(this.currentPrice()))) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button>";
+        // actual render
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>" + ameExtraText + this.description + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /> Cost: " + fn(this.currentPrice()))) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button>";
         else if (this.type == "ameliorerUpgrades") return "<button class='upgrade' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>" + ameExtraText + "<br />" + getTotalAme() + "/" + this.ameAmount + "</button>";
         else return "";
     }
+}
+
+function rgbManipulator(color, diff) {
+    color = color.replace("rgb(", "").replace(")", "").split(",");
+    for (let bC in color) {
+        color[bC] *= diff;
+    }
+    return "rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")";
 }
 
 // Buy functions
@@ -421,9 +453,13 @@ var ameliorerUpgrades = {
     chainGems: new AmeliorerUpgrade("chainGems", "Chain Gems", "Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems", level => Math.ceil(level / 2) + 1, level => 1 + Math.floor((level * 0.1) * 10) / 10, { prefix: "x", maxLevel: 30, ameSet: 8, ameAmount: 300 }),
     moreLoadouts: new AmeliorerUpgrade("moreLoadouts", "More Loadouts", "Be able to buy more Artifact loadouts, and get a Bags boost for every loadout you own", level => 4 * (level + 1), level => 1 + (game.al * level) / 100, { maxLevel: 4, prefix: "x", suffix: " Bags", ameSet: 8, ameAmount: 320 }),
 
+    ameBagBoost: new AmeliorerUpgrade("ameBagBoost", "Bag Boost", "Get more Bags", level => 5, level => 1 + (level * 0.02), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 9, ameAmount: 400 }),
+    efficientDestruction: new AmeliorerUpgrade("efficientDestruction", "Efficient Destruction", "Get more Artifact Scrap from destroying Artifacts", level => Math.ceil((level + 1) / 50) * 2, level => 1 + level * 0.01, { prefix: "x", maxLevel: 400, ameSet: 9, ameAmount: 400 }),
+    challenger: new AmeliorerUpgrade("challenger", "Challenger", "Reduce goals for Challenges based on Daily Challenge Points", level => Math.ceil(Math.pow(level + 1, 1.25)) * 3, level => level > 0 ? Math.pow(game.dclp / 10000, 0.10 + 0.01 * level) : 1, { prefix: "/", maxLevel: 10, ameSet: 9, ameAmount: 400 }),
+    unstableAMESS: new AmeliorerUpgrade("unstableAMESS", "Unstable AMESS", "Get +1 Amé for every 15min+ Prestige or new day. They are lost when you reset Amé Upgrades.", level => 0, level => level, { maxLevel: 1, ameSet: 9, ameAmount: 420 })
+
     // insert upgrade that gives boost based on time since last amé reset
     // insert shgabb(?) boost for every arti you own
-    // efficientDestruction: new AmeliorerUpgrade("efficientDestruction", "Efficient Destruction", "Get more Artifact Scrap from destroying Artifacts", level => 2, level => 1 + level * 0.01, { prefix: "x", maxLevel: 400, ameSet: 9, ameAmount: 400 }),
 }
 
 var bagUpgrades = {
