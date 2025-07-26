@@ -887,7 +887,7 @@ function upgradeArtifact(id) {
     }
 }
 
-function destroyArtifact(id, confirm = true) {
+function destroyArtifact(id, doConfirm = true) {
     if (isChallenge(999)) return false;
 
     let rarity = getArtifact(id).rarity;
@@ -895,7 +895,7 @@ function destroyArtifact(id, confirm = true) {
     let amount = Math.floor(getScrapCost(level, rarity) / 5);
     amount = Math.floor(amount * ameliorerUpgrades.efficientDestruction.currentEffect());
 
-    if (!confirm || !settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
+    if (!doConfirm || !settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
         game.a.splice(game.a.indexOf(id), 1);
         delete game.alvl[id];
         if (game.aeqi.indexOf(id) != -1) game.aeqi.splice(game.aeqi.indexOf(id), 1);
