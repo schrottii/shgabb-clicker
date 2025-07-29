@@ -6,7 +6,7 @@ function unlockedGS() {
 }
 
 function calcPrestigeGS() {
-    return new Decimal(Math.max(10, (1 + Math.log(1 + game.stats_prestige.shgabb)) * (1 + Math.log(game.stats_prestige.sw + 1))))
+    return new Decimal(Math.max(10, (1 + Math.log(1 + game.stats_prestige.shgabb)) * (1 + Math.log(1 + game.stats_prestige.sw))))
         .mul(Math.max(1, Math.floor(shgabbUpgrades.moreShgabb.currentLevel() / 100 - 25)))
         .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 1000))
         .mul(Math.ceil((1 + shgabbUpgrades.moreShgabb.currentLevel()) / 10000))
