@@ -410,14 +410,22 @@ function setPlayerProfileSelection(no) {
     document.getElementById("playerProfileButton1").style.backgroundColor = "white";
     document.getElementById("playerProfileButton2").style.backgroundColor = "white";
     document.getElementById("playerProfileButton3").style.backgroundColor = "white";
-    document.getElementById("playerProfileButton" + no).style.backgroundColor = "yellow";
+    document.getElementById("playerProfileButton4").style.backgroundColor = "white";
 
-    selectedPlayerProfile = no;
+    if (selectedPlayerProfile == no) {
+        // click same again
+        selectedPlayerProfile = 0;
+    }
+    else {
+        document.getElementById("playerProfileButton" + no).style.backgroundColor = "yellow";
+        selectedPlayerProfile = no;
+    }
 
     renderPlayerProfile();
 }
 
 function renderPlayerProfile() {
+    if (selectedPlayerProfile == 0) ui.playerprofile.innerHTML = "";
     if (selectedPlayerProfile == 1) renderPFPs();
     if (selectedPlayerProfile == 2) renderBanners();
     if (selectedPlayerProfile == 3) renderFrames();

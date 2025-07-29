@@ -73,7 +73,7 @@ function gemOffer(i) {
         case 3:
             if (unlockedArtifacts() && currentGems() > 29) {
                 game.gems -= 30;
-                getNewArtifact(3000);
+                getNewArtifact(3000, true);
                 autoSave();
             }
             break;

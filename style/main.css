@@ -421,8 +421,7 @@ progress {
     margin: 0px 0px 0px 0px;
     border: 4px ridge white;
     height: 160px;
-    width: 6%;
-    width: 116px;
+    width: 32%;
     vertical-align: top;
     font-family: Rw;
     position: sticky;
@@ -439,7 +438,12 @@ progress {
 
 @media only screen and (min-width: 768px) {
     .artifact {
-        width: 140px;
+        width: 19%;
+    }
+}
+@media only screen and (min-width: 1440px) {
+    .artifact {
+        width: 9.5%;
     }
 }
 

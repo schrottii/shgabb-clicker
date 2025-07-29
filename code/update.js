@@ -2,10 +2,41 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.8";
+const gameVersion  = "3.8.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
+-> Boost Filters:
+- Combined some boost filters (like GS and Prestige GS)
+- Added filter for lore/wisps
+- Special Filter (last one) now only has the Artifacts that are not anywhere else
+- Artifacts can now be in multiple filters, for example Sloth and Lazy Bags in click cooldown
+- Filters of locked content get hidden
+- Reworked boost filter code
+
+-> Artifacts:
+- Made Artifacts wider, to occupy most of the screen's width, giving the text enough size
+- 3 or 5 or 10 Artifacts per row depending on size
+- Reduced Artifacts per page from 50 to 15 (mobile, PC is still 50)
+- Ring of Depression: now shows accurate number
+- Amulet of Gem Mines: x1.5/x1.75/x2/x2.25 -> x2/x2.5/x3/x3.5
+- Gem Gift: Artifact scaling 25 -> 10
+- Super Gem Gift: Artifact scaling 10 -> 3
+- Epic Gem Gift: Artifact scaling 5 -> 1.5
+
+-> Other:
+- Challenger: reduced effect slightly
+- Artifacts Gift offer can now give Artifacts while having Bloody Red Ring equipped (it was intended, but unfair)
+- Changed Setting title color to white
+- Shbook's selected section can be re-clicked to hide it, again
+- Player Profile cosmetic buttons can now be clicked again to show nothing
+
+-> Fixes:
+- Fixed All cosmetics button staying yellow
+- Fixed odd gapping in Social section (mobile)
+- Fixed Shbook entry for Lore still saying 1/25k (instead of 1/7k)
+
+v3.8
 -> Améliorer:
 - Added the 9th set of Améliorer Upgrades (400 Amé)
 - New Améliorer Upgrade: Bag Boost (Set 9, 400): Get more Bags

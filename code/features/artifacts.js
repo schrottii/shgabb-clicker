@@ -31,6 +31,8 @@ class Artifact {
             // decorative stuff
             if (config.prefix) this.prefix = config.prefix; // prefix before its number
             if (config.desc) this.desc = config.desc; // custom description (most non-simple artis have this)
+            if (config.desconly) this.desconly = config.desconly;
+            if (config.filter) this.filter = config.filter;
 
             // important values
             if (config.maxLevel) this.maxLevel = config.maxLevel; // set a max. level, gem and speed artis have this
@@ -179,6 +181,11 @@ class Artifact {
         return false;
     }
 
+    getFilterCategories() {
+        if (this.filter != undefined) return this.filter;
+        return [];
+    }
+
     // everything related to values and timers
     // a value can have a custom min and max, as well as a custom starting point
     // a timer can have a custom starting point and custom max, but the min is always 0 which it ticks down to
@@ -251,7 +258,7 @@ class Artifact {
 
     renderSimpleEffect() {
         // the effect (simple effect only)
-        if (this.boost == undefined) return "";
+        if (this.boost == undefined || this.desconly == true) return "";
 
         let render = (this.boost == undefined ? "" : "<br />" + this.prefix + fn(this.getEffect()) + " " + this.getBoostType());
         if (this.isUpgradable()) render = render + " → " + (this.boost == undefined ? "" : "<br />" + this.prefix + fn(this.getEffect(this.getLevel() + 1)) + " " + this.getBoostType());
@@ -272,7 +279,7 @@ class Artifact {
 
     obeysSearch() {
         // if a boost filter is active, check if it fits the criteria
-        if (artifactBoostFilter != "" && this.boost != artifactBoostFilter) return false;
+        if (currentFilter != "none" && !boostFilters[currentFilter].check(this.boost, this.getFilterCategories())) return false;
 
         // this handles the artifact search
         // it searches through the innerRender and is case insensitive
@@ -321,8 +328,61 @@ var artifactTimers = {};
 var hoodGoo = 0;
 var techCollection = 0;
 
-var artifactBoostTypes = ["shgabb", "clickshgabb", "autoshgabb", "resetshgabb", "sw", "gs", "prestigegs", "si", "clickspeed", "gemchance", "gems", "artifactchance", "clicksi", "bags", "cop", "copchance", undefined];
-var artifactBoostFilter = "";
+// boost filters
+class boostFilter {
+    constructor(name, image, filters, unlock) {
+        this.name = name;
+        this.image = image;
+        this.filters = filters;
+        this.unlock = unlock;
+    }
+
+    isUnlocked() {
+        if (this.unlock == undefined) return true;
+        return this.unlock();
+    }
+
+    check(myBoost, myFilters) {
+        if (currentFilter == "none") return true;
+
+        if (this.filters == "SPECIAL") {
+            // special filter
+            for (let fil = 0; fil < boostFilters.length - 1; fil++) {
+                if (boostFilters[fil].check(myBoost, myFilters) == true) return false;
+            }
+            return true;
+        }
+        else {
+            for (let fil in this.filters) {
+                if (myBoost == this.filters[fil] || myFilters.includes(this.filters[fil])) return true;
+            }
+            return false;
+        }
+    }
+}
+
+var boostFilters = [
+    new boostFilter("Shgabb", "currencies/shgabb.png", ["shgabb", "clickshgabb", "autoshgabb", "resetshgabb"]),
+    new boostFilter("Clicks", "boostimages/cooldown.png", ["clickspeed"]),
+    new boostFilter("Sandwiches", "currencies/sandwich.png", ["sw"]),
+    new boostFilter("GS", "currencies/gs.png", ["gs", "prestigegs"]),
+    new boostFilter("Silicone", "currencies/silicone.png", ["si", "clicksi"], () => unlockedSilicone()),
+    new boostFilter("Gems", "currencies/gem.png", ["gemchance", "gems"]),
+    new boostFilter("Artifacts", "currencies/artifactscrap.png", ["artifactchance"]),
+    new boostFilter("Lore", "currencies/memoryWisp.png", ["lorechance", "wispchance"], () => game.stats.hms >= 4000),
+    new boostFilter("Bags", "currencies/bag.png", ["bags"], () => unlockedBags()),
+    new boostFilter("Copper", "currencies/copper.png", ["cop", "copchance"], () => unlockedCopper()),
+    new boostFilter("Special", "boostimages/special.png", "SPECIAL"),
+];
+var currentFilter = "none";
+
+function setBoostFilter(num) {
+    if (num == "undefined") num = undefined;
+    if (currentFilter == num) currentFilter = "none";
+    else currentFilter = num;
+
+    updateArtifacts();
+}
 
 // toc_arti_global
 // Global Artifact functions, used anywhere
@@ -448,62 +508,19 @@ function getScrapCost(level, rarity) {
 // Artifact functions really only needed for the Artifact section itself
 //
 
-function getBoostImage(boost) {
-    switch (boost) {
-        case "shgabb":
-            return "currencies/shgabb.png";
-        case "clickshgabb":
-            return "boostimages/clickshgabb.png";
-        case "autoshgabb":
-            return "boostimages/autoshgabb.png";
-        case "resetshgabb":
-            return "boostimages/prestigeshgabb.png";
-        case "sw":
-            return "currencies/sandwich.png";
-        case "gs":
-            return "currencies/gs.png";
-        case "prestigegs":
-            return "prestige.png";
-        case "si":
-            return "currencies/silicone.png";
-        case "clickspeed":
-            return "boostimages/cooldown.png";
-        case "gemchance":
-            return "boostimages/gemchance.png";
-        case "gems":
-            return "currencies/gem.png";
-        case "artifactchance":
-            return "currencies/artifactscrap.png";
-        case "clicksi":
-            return "boostimages/clicksi.png";
-        case "bags":
-            return "currencies/bag.png";
-        case "cop":
-            return "currencies/copper.png";
-        case "copchance":
-            return "boostimages/copperchance.png";
-        case undefined:
-        default:
-            return "boostimages/special.png";
-    }
-}
-
-function setBoostFilter(boost) {
-    if (boost == "undefined") boost = undefined;
-    if (artifactBoostFilter == boost) artifactBoostFilter = "";
-    else artifactBoostFilter = boost;
-
-    updateArtifacts();
+function getArtifactsPerPage() {
+    return window.innerWidth < 780 ? 15 : 50;
 }
 
 function renderArtifacts() {
     // used by the artifacts section, this renders all the artifacts on the current page
     let render = "";
+    let artifactsPerPage = getArtifactsPerPage();
 
     // boost filter buttons
     if (settings.boostFilters) {
-        for (let boostType in artifactBoostTypes) {
-            render = render + "<button onclick='setBoostFilter(`" + artifactBoostTypes[boostType] + "`)' style='width: 64px; background-color: " + (artifactBoostFilter == artifactBoostTypes[boostType] ? "yellow" : "white") + ";'><img class='currency' src='images/" + getBoostImage(artifactBoostTypes[boostType]) + "' /></button>";
+        for (let filter in boostFilters) {
+            if (boostFilters[filter].isUnlocked()) render = render + "<button onclick='setBoostFilter(" + filter + ")' style='width: 64px; background-color: " + (currentFilter == filter ? "yellow" : "white") + ";'><img class='currency' src='images/" + boostFilters[filter].image + "' /></button>";
         }
         render = render + "<br />";
     }
@@ -546,16 +563,16 @@ function renderArtifacts() {
         }
     }
 
-    if (renderTheseArtifacts.length < 50) artifactPage = 1;
+    if (renderTheseArtifacts.length < artifactsPerPage) artifactPage = 1;
 
     // Render the Artifacts that were gathered
-    for (ara = 0; ara < Math.min(50, renderTheseArtifacts.length); ara++) {
-        if (getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * 50)]) == undefined) break;
-        render = render + getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * 50)]).render();
+    for (ara = 0; ara < Math.min(artifactsPerPage, renderTheseArtifacts.length); ara++) {
+        if (getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * artifactsPerPage)]) == undefined) break;
+        render = render + getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * artifactsPerPage)]).render();
     }
 
     // Page buttons
-    if (renderTheseArtifacts.length > 50) {
+    if (renderTheseArtifacts.length > artifactsPerPage) {
         render = render + "<br /><button class='grayButton' onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
         render = render + "<button class='grayButton' onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
     }
@@ -594,7 +611,7 @@ function changeArtifactMode(nr) {
 function changeArtifactPage(change) {
     // swap between the pages
     if (change == 0 && artifactPage > 1) artifactPage -= 1;
-    if (change == 1 && artifactPage < getArtifactAmount() / 50) artifactPage += 1;
+    if (change == 1 && artifactPage < getArtifactAmount() / getArtifactsPerPage()) artifactPage += 1;
     updateArtifacts();
 }
 
@@ -727,11 +744,11 @@ function getArtifactGainBoost() {
 
 }
 
-function getNewArtifact(multi = 1) {
+function getNewArtifact(multi = 1, guaranteed = false) {
     // (Chance TO GET)
     // Chance to get an artifact
 
-    if (getArtifact(158).isEquipped()) return 0; // the no artifacts artifact
+    if (getArtifact(158).isEquipped() && !guaranteed) return 0; // the no artifacts artifact
 
     // Artifact chance artifacts only work from clicks, not the gem offer
     if (multi == 1) multi = getArtifactGainBoost();
@@ -1025,17 +1042,18 @@ var artifacts = [
 
     new Artifact(112, 1, 1, "Gem Gift", "gemgift.png",
         {
-            desc: level => level + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 25) + 3) + " Gems",
+            desc: level => level + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 10) + 3).toFixed(0) + " Gems",
             onClick: (level) => {
                 if (Math.random() <= 1 / 100 * level) {
-                    let gemAmount = (Math.floor(game.a.length / 25) + 3);
+                    let gemAmount = (Math.floor(game.a.length / 10) + 3);
                     if (destroyArtifact(112, false)) {
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
                         createNotification("Gem Gift: +" + gemAmount + " Gems");
                     }
                 }
-            }
+            },
+            filter: ["gems"]
         }),
 
     new Artifact(150, 1, 1, "Ring of Productivity", "ring.png",
@@ -1067,6 +1085,8 @@ var artifacts = [
 
     new Artifact(155, 1, 1, "Ring of Depression", "ring.png",
         {
+            desc: level => "x0." + "00".repeat(level) + "1 Shgabb",
+            desconly: true,
             prefix: "x",
             simpleBoost: ["shgabb", level => 0.1 / Math.pow(100, level)]
         }),
@@ -1086,13 +1106,15 @@ var artifacts = [
     new Artifact(158, 1, 1, "Bloody Red Ring", "ring.png",
         {
             desc: "But no Artifacts", prefix: "x",
-            simpleBoost: ["gemchance", level => 1.25 + 0.25 * level]
+            simpleBoost: ["gemchance", level => 1.25 + 0.25 * level],
+            filter: ["artifactchance"]
         }),
 
     new Artifact(159, 1, 2, "Bloody Gray Ring", "ring.png",
         {
             desc: "But no Gems", prefix: "x", maxLevel: 3,
-            simpleBoost: ["artifactchance", level => 1.1 + 0.3 * level]
+            simpleBoost: ["artifactchance", level => 1.1 + 0.3 * level],
+            filter: ["gems"]
         }),
 
     new Artifact(160, 1, 3, "Plastic Ring", "ring.png",
@@ -1146,7 +1168,8 @@ var artifacts = [
     new Artifact(200, 2, 1, "Amulet of Paroxysm", "amulet.png",
         {
             prefix: "/", desc: "But no Shgabb from clicks and /10 Gem chance", maxLevel: 3,
-            simpleBoost: ["clickspeed", level => 2 + level]
+            simpleBoost: ["clickspeed", level => 2 + level],
+            filter: ["gems", "shgabb"]
         }),
 
     new Artifact(201, 2, 1, "Amulet of Saving", "amulet.png",
@@ -1164,7 +1187,8 @@ var artifacts = [
     new Artifact(203, 2, 1, "Amulet of Sloth", "amulet.png",
         {
             desc: "But 5x longer click cooldown",
-            simpleBoost: ["autoshgabb", level => 2 + level]
+            simpleBoost: ["autoshgabb", level => 2 + level],
+            filter: ["clickspeed"]
         }),
 
     new Artifact(204, 2, 1, "Amulet of Golden Bank", "amulet.png",
@@ -1212,7 +1236,8 @@ var artifacts = [
     new Artifact(211, 2, 2, "Amulet of Condone", "amulet.png",
         {
             prefix: "x", desc: "But x0.6 Shgabb gain",
-            simpleBoost: ["si", level => 2 * level]
+            simpleBoost: ["si", level => 2 * level],
+            filter: ["shgabb"]
         }),
 
     new Artifact(212, 2, 1, "Amulet of Sluggard", "amulet.png",
@@ -1224,19 +1249,22 @@ var artifacts = [
     new Artifact(213, 2, 3, "Amulet of Golden Clicks", "amulet.png",
         {
             prefix: "x", desc: level => "Get " + 0.02 * level + "% of your GS every click",
-            onClick: (level, v) => { increaseGS(v.multi * (0.02 * level) / 100) }
+            onClick: (level, v) => { increaseGS(v.multi * (0.02 * level) / 100) },
+            filter: ["gs"]
         }),
 
     new Artifact(214, 2, 3, "Amulet of Golden Idle", "amulet.png",
         {
             prefix: "x", desc: level => "Get " + 0.01 * level + "% of your GS every second",
-            onAuto: (level, v) => { increaseGS((0.01 * level) / 100) }
+            onAuto: (level, v) => { increaseGS((0.01 * level) / 100) },
+            filter: ["gs"]
         }),
 
     new Artifact(215, 2, 3, "Amulet of Golden Upgrades", "amulet.png",
         {
             prefix: "x", desc: level => "Get " + 0.001 * level + "% of your GS every upgrade",
-            onUpgrade: (level, v) => { increaseGS(v.multi * (0.001 * level) / 100) }
+            onUpgrade: (level, v) => { increaseGS(v.multi * (0.001 * level) / 100) },
+            filter: ["gs"]
         }),
 
     new Artifact(216, 2, 3, "Amulet of Dinosaurs", "amulet.png",
@@ -1284,7 +1312,7 @@ var artifacts = [
     new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png",
         {
             desc: "If owning less than 300 Gems", 
-            simpleBoost: ["gemchance", level => 1.25 + 0.25 * level, () => game.gems < 300]
+            simpleBoost: ["gemchance", level => 1.5 + 0.5 * level, () => game.gems < 300]
         }),
 
     new Artifact(224, 2, 4, "Amulet of Molten Bags", "amulet.png",
@@ -1296,7 +1324,8 @@ var artifacts = [
     new Artifact(225, 2, 4, "Amulet of Lazy Bags", "amulet.png",
         {
             desc: "But 5x longer click cooldown",
-            simpleBoost: ["bags", level => 1 + 0.2 * level]
+            simpleBoost: ["bags", level => 1 + 0.2 * level],
+            filter: ["clickspeed"]
         }),
 
     new Artifact(226, 2, 4, "Amulet of Bag Bank", "amulet.png",
@@ -1322,7 +1351,8 @@ var artifacts = [
             },
             onTimerZero: () => {
                 getArtifact(228).boost = "clickshgabb";
-            }
+            },
+            filter: ["autoshgabb"]
         }),
 
     new Artifact(229, 2, 4, "Amulet of Ore Rush", "amulet.png",
@@ -1333,7 +1363,8 @@ var artifacts = [
             timer: [6, 0],
             onGem: () => {
                 getArtifact(229).fillTimer();
-            }
+            },
+            filter: ["gems"]
         }),
 
     new Artifact(230, 2, 4, "Amulet of Ore Vein", "amulet.png",
@@ -1342,7 +1373,8 @@ var artifacts = [
             simpleBoost: ["cop", level => Math.pow(1.5, level)],
             onGem: () => {
                 getCopper();
-            }
+            },
+            filter: ["gems"]
         }),
 
     new Artifact(231, 2, 1, "Amulet of Golden Past", "amulet.png",
@@ -1370,7 +1402,8 @@ var artifacts = [
             onTimerZero: (level) => {
                 getArtifact(233).boost = "clickshgabb";
                 getArtifact(233).amount = 8 * level;
-            }
+            },
+            filter: ["bags"]
         }),
 
     new Artifact(234, 2, 3, "Amulet of Slowwriting", "amulet.png",
@@ -1386,17 +1419,18 @@ var artifacts = [
 
     new Artifact(236, 2, 1, "Super Gem Gift", "gemgift.png",
         {
-            desc: level => (level / 3) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 10) + 5) + " Gems",
+            desc: level => (level / 3).toFixed(2) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 3) + 5).toFixed(0) + " Gems",
             onClick: (level) => {
                 if (Math.random() <= 1 / 300 * level) {
-                    let gemAmount = (Math.floor(game.a.length / 10) + 5);
+                    let gemAmount = (Math.floor(game.a.length / 3) + 5);
                     if (destroyArtifact(236, false)) {
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
                         createNotification("Gem Gift: +" + gemAmount + " Gems");
                     }
                 }
-            }
+            },
+            filter: ["gems"]
         }),
 
 
@@ -1464,7 +1498,8 @@ var artifacts = [
             onClick: () => {
                 getArtifact(307).setValue(Math.ceil(Math.random() * (7 - getArtifact(307).getLevel())) + (getArtifact(307).getLevel() - 1));
                 updateArtifacts();
-            }
+            },
+            filter: ["shgabb", "sw"]
         }),
 
     new Artifact(308, 3, 1, "Gem Frustration", "frustration.png",
@@ -1574,7 +1609,8 @@ var artifacts = [
                 }
                 document.getElementById("fart").currentTime = 0.1;
                 document.getElementById("fart").play();
-            }
+            },
+            filter: ["shgabb"]
         }),
 
     new Artifact(319, 3, 3, "Flame Ritual", "flameritual.png",
@@ -1591,22 +1627,24 @@ var artifacts = [
                     getArtifact(319).increaseValue(1);
                 }
                 getArtifact(319).setTimer(6);
-            }
+            },
+            filter: ["wispchance"]
         }),
 
     new Artifact(320, 3, 1, "Epic Gem Gift", "gemgift.png",
         {
-            desc: level => (level / 10) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 5) + 10) + " Gems",
+            desc: level => (level / 10).toFixed(2) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 1.5) + 10).toFixed(0) + " Gems",
             onClick: (level) => {
                 if (Math.random() <= 1 / 1000 * level) {
-                    let gemAmount = (Math.floor(game.a.length / 5) + 10);
+                    let gemAmount = (Math.floor(game.a.length / 1.5) + 10);
                     if (destroyArtifact(320, false)) {
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
                         createNotification("Gem Gift: +" + gemAmount + " Gems");
                     }
                 }
-            }
+            },
+            filter: ["gems"]
         }),
 
 
@@ -1683,7 +1721,8 @@ var artifacts = [
                     getArtifact(403).prefix = "/";
                     getArtifact(403).amount = (level) => 1.25;
                 }
-            }
+            },
+            filter: ["shgabb"]
         }),
 
     new Artifact(404, 4, 4, "Snake Oil Salesman", "snakeoilsalesman.png",
@@ -1721,7 +1760,8 @@ var artifacts = [
 
                     updateArtifacts();
                 }
-            }
+            },
+            filter: ["shgabb", "sw", "gemchance", "si", "gems", "cop"]
         }),
 
     new Artifact(405, 4, 1, "Tower", "tower.png",

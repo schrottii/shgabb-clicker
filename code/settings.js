@@ -25,7 +25,7 @@ class Setting {
 
     render() {
         return `<button onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` +
-            `<b><u>` + this.title + `</u></b><br />`
+            `<b><u style="color: white">` + this.title + `</u></b><br />`
             + (settings.settingDesc ? (`<span style="font-size: 14px; line-height: 0.5;">` + this.getDescription() + `</span><hr />`) : ``)
             + this.getCurrentEffect() + `</button>`;
     }

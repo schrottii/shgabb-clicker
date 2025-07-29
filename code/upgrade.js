@@ -455,7 +455,7 @@ var ameliorerUpgrades = {
 
     ameBagBoost: new AmeliorerUpgrade("ameBagBoost", "Bag Boost", "Get more Bags", level => 5, level => 1 + (level * 0.02), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 9, ameAmount: 400 }),
     efficientDestruction: new AmeliorerUpgrade("efficientDestruction", "Efficient Destruction", "Get more Artifact Scrap from destroying Artifacts", level => Math.ceil((level + 1) / 50) * 2, level => 1 + level * 0.01, { prefix: "x", maxLevel: 400, ameSet: 9, ameAmount: 400 }),
-    challenger: new AmeliorerUpgrade("challenger", "Challenger", "Reduce goals for Challenges based on Daily Challenge Points", level => Math.ceil(Math.pow(level + 1, 1.25)) * 3, level => level > 0 ? Math.pow(game.dclp / 10000, 0.10 + 0.01 * level) : 1, { prefix: "/", maxLevel: 10, ameSet: 9, ameAmount: 400 }),
+    challenger: new AmeliorerUpgrade("challenger", "Challenger", "Reduce goals for Challenges based on Daily Challenge Points", level => Math.ceil(Math.pow(level + 1, 1.25)) * 3, level => level > 0 ? Math.pow(game.dclp / 10000, 0.09 + 0.01 * level) : 1, { prefix: "/", maxLevel: 10, ameSet: 9, ameAmount: 400 }),
     unstableAMESS: new AmeliorerUpgrade("unstableAMESS", "Unstable AMESS", "Get +1 Amé for every 15min+ Prestige or new day. They are lost when you reset Amé Upgrades.", level => 0, level => level, { maxLevel: 1, ameSet: 9, ameAmount: 420 })
 
     // insert upgrade that gives boost based on time since last amé reset

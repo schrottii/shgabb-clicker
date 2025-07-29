@@ -209,11 +209,11 @@ function getLoreByID(id) {
 
 // THE BIG DICTIONARIES
 const lore = [
-    new BookEntry(0, "Info", 0, 0, "Lore pages can be found by clicking (1/25k base chance). When one is found, it is added to your inventory, which can store up to 5 pages. Found pages can be selected to start collecting progress for them. Depending on the page this can be Memory Wisps or Candles, which are both gained by simply clicking. Once a page is fully collected/researched, it is unlocked, and can be read, and can provide a GS boost. Only one page can be selected at the same time, and when there is no page selected, zero Wisps are earned."),
+    new BookEntry(0, "Info", 0, 0, "Lore pages can be found by clicking (1/7k base chance). When one is found, it is added to your inventory, which can store up to 5 pages. Found pages can be selected to start collecting progress for them. Depending on the page this can be Memory Wisps or Candles, which are both gained by simply clicking. Once a page is fully collected/researched, it is unlocked, and can be read, and can provide a GS boost. Only one page can be selected at the same time, and when there is no page selected, zero Wisps are earned."),
 
     // 100 - 199: Basic information about the lore, just rough edges
     new BookEntry(100, "Fascinating", 1, 4, `Fascinating. It's simply fascinating. I've seen many things in my life, and discovered more than Joe did - even if he says otherwise - and have seen some things you wouldn't believe... including my wife, hehe. But this thing, it's fascinating. What is this creature? It's fascinating. - Pierre`),
-    new BookEntry(101, "A Shgabb", 1, 4, `This creature is fascinating. It's called @shgabb", very weird name, it does not quite fit in with the language's usual combinations of vowels and consonants, it's like a foreign sound, but what I know for sure, is that this creature is as foreign as one can get. I haven't spectated it for long yet. This definitely needs more research. - Pierre`),
+    new BookEntry(101, "A Shgabb", 1, 4, `This creature is fascinating. It's called "shgabb", very weird name, it does not quite fit in with the language's usual combinations of vowels and consonants, it's like a foreign sound, but what I know for sure, is that this creature is as foreign as one can get. I haven't spectated it for long yet. This definitely needs more research. - Pierre`),
     new BookEntry(102, "The Blues", 1, 4, `I should describe this creature's appearance, this creature being, this @shgabb" thing, the recently discovered whatever. It's round. That's the best way I can describe the shape. The color scheme is fascinating. Think of this creature as a light blue ball, with a capital S written all over its forehead in a dark blue shade, like a tattoo. A Shgabb is blotchy. Skin not very clean, but who knows about the skincare in this world? Overall a wild appearance, but also soft, and clean, like a diamond, but of a different substance. Want me to describe it in one word? Blue. - Pierre`),
     new BookEntry(103, "Not Alone", 1, 6, `I thought I was alone, just me and this blue blob, yes! A blob! It's a blob! Anyway - just me, and this little blob, but no. I was wrong. Yet again. Luckily the others are not here to laugh at me... whatever. There are many of them. It's not just one. This is an entire species. I have discovered something big. There is not just one Shgabb. There are many... what's the plural? Shgabbs? Shgabb? Shgabbou? What do I know. - Pierre`),
     new BookEntry(104, "Following It", 1, 10, `I've managed to follow one of these Shgabb beings, and track its path and activities. I caught it between the trees, if you can even call these things trees. Its movement is hypnotizing. Mesmerizing. Wicked. This little fella walked down the hill, very smooth, no knees hurt. Well, except mine. But that's a different story. I kept following it, trying to not get caught. These leaves are loud enough to wake a giant, but these blobs either don't hear well, or they're not paying attention. I was not sure if this thing knows where it's going. But I kept following it. We approached a river, I was afraid that I had to swim now, but was also excited in case it happens to show me how it drinks fluids. Neither happened, it took a big left turn and walked parallel to the river. Eventually we approached a less open area, with trees and other objects. A structure. The Shgabb entered the structure, it's gone. I don't fit in there. What is this thing? Regardless, this adventure was successful. I need to analyze this data. I was following it. - Pierre`),
@@ -398,6 +398,10 @@ function renderFeaturiary() {
     ui.shbookRight.innerHTML = render;
 }
 
+function theShbookIsDead() {
+    sections.shbook1.style.display = "none";
+}
+
 function renderLore() {
     renderGetShbookTitle("Lore");
 
@@ -474,9 +478,11 @@ function renderShbookEvent() {
 
 function renderShbook() {
     if (game.stats.hms >= 25) {
+        sections.shbook1.style.display = "";
         ui.shbookHeader.innerHTML = "Shbook";
         ui.shbookArea.style.display = "";
 
+        if (selections[3] == "none") theShbookIsDead();
         if (selections[3] == "shbook1") renderLore();
         if (selections[3] == "shbook2") renderCurrenciary();
         if (selections[3] == "shbook3") renderFeaturiary();
