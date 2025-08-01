@@ -80,6 +80,8 @@ function getWispType(typeID) {
             return "Baskets";
         case 7:
             return "Sharks";
+        case 8:
+            return "Sunglasses";
     }
 }
 
@@ -101,6 +103,8 @@ function getLoreReq(typeID) {
             return isEvent("egg");
         case 7:
             return isEvent("pride");
+        case 8:
+            return isEvent("summer");
     }
 }
 
@@ -108,6 +112,8 @@ function getWispReq(typeID) {
     switch (typeID) {
         case 7:
             return isEvent("pride") ? shgaybbMode == true : getCooldown() >= 3;
+        case 8:
+            return getCooldown() <= 0.5;
         default:
             return true;
     }
@@ -129,6 +135,8 @@ function getWispImage(typeID) {
             return "basket";
         case 7:
             return "shark";
+        case 8:
+            return "sunglasses";
         default:
             return "memoryWisp";
     }
@@ -152,6 +160,8 @@ function getWispRarity(typeID) {
             return 1 / 200;
         case 7:
             return 1 / 10;
+        case 8:
+            return 1 / 120;
     }
 }
 
@@ -263,12 +273,19 @@ const lore = [
     new BookEntry(228, "The Legend of Shjassus", 6, 4, `There once was a man, in this land long ago, he was the most beloved Shgabb then, and we still praise his holy glow. His name is Shjassus. He had magic powers and healed all the sick Shgabb, the cure to everything even when he is not around. Long dead but still around, listening to our weekly sound. Shjassus, the holy Shgabb, is an inspiration to many, and helps us get along and cooperate. He had a positive mind and positive principles, follow them and your soul is pure. - Shgappope`),
     new BookEntry(229, "The Return of Shjassus", 6, 5, `They say, every year Shjassus returns to us. That is why we celebrate the beginning of every Spring. The search for eggs, and other things, is symbolic and represents the search for Shjassus. If he is somewhere out there, on this day, someone will find him. It's very unlikely, but even if you don't, you find other things that you may need... such as eggs. It's a metaphor for life. Aim high, try to find the best you can get, and be satisfied when it's just an egg. - Shgappope`),
 
-    // 230 - 235: Pride Event
+    // 230 - 234: Pride Event
     new BookEntry(230, "Wanna Climb?", 7, 10, `Between the plants of the Fernroot Grove, in its cool and chilling atmosphere, a Shgabb named Leafi sat on the ground and stares at a tree. They were again pondering about their own being. People always ask, @sAre you a boy or a girl?@e but Leafi doesn't know. Neither feels right. They met another Shgabb called Juno, with green mossy curls and bright eyes, and they did not ask. They only asked, @sHi, wanna climb?@e They spent that whole Summer together, climbing, playing, catching bugs and having fun. One evening, Leafi whispered: @sDo you ever feel like you are not what others say you are?@e and Juno nodded. @sI'm not what they say either. But when we play, I feel like I can be myself.@e They held hands and watched the sunset together.`),
     new BookEntry(231, "Expectations", 7, 10, `Sallo got tired of the expectations and having to pretend. Pretending to crush on another Shgabb to seem normal. The expectation to fall in love and marry some guy some day. When Kerryn, one of her friends, said @sI've got a crush on you...@e she panicked, ran away, and hid in her room for the rest of the day. A few days later, Kerryn found her on the large field, grabbing apples from the trees. @sYou don't have to like me, or be with me, THAT way...@e Kerryn said, and added: @s...I like being around you... that's enough.@e The tension passed. Sallo realized that it is okay to not feel love for others, and to live differently.`),
     new BookEntry(232, "Becoming Yourself", 7, 10, `Luna, a Shgabb from the west, always knew that something is wrong, but couldn't point out what it is. Her body was born male, and forced to grow up that way, and face disgusting changes. But her mind and true self was always female. @sI am a girl!@e she shouted at age 11, which all saw as a phase, but it was just a temporary step forward, before going back and curling up into a tiny ball, hiding in a corner. Many years later, she found online spaces of what seemed to be fun people. But it turned out, they were I-am-one-of-them people. A life-changing moment. More and more changed. She told her family and friends about it, all being accepting enough. Her name changed to Luna, as the old one always caused physical pain. And while her life may still be miserable at times, and the world can be cruel, she can finally be happy with who she is, and what she looks like. @p Becoming yourself opens up lots of doors. It might close some, but change needs to be dealt with. What a Shgabb she has become. And finally, after years, she found another Shgabb to be with. She, a girl Shgabb, fell in love with another girl. Kept giving her best, and it paid off. After years and years of unrest and problems, she could finally settle down and live a peaceful life, with a perfect partner. Some might not like how she is living, but she has learned to ignore such people, or fight back with words. Love will always win.`),
     new BookEntry(233, "Every Spark", 7, 10, `Epphi had always been fascinated by all the things. A color, whether it's blue or red, yellow or green, or pink or brown. A shape, no matter if square or triangle, torus or pentagon. Anything is good. Her parents kept asking when she will find someone, and she only said @sI like sparks.@e without explaining what it means. What a spark is. @p It was never clear what she meant or wanted, until she met Ossa, and Berrilyn, and Mitch. Ossa was an energetic and bold person, not a boy nor a girl, with a clear and defined presence. Berrilyn was a soft and shy lady, always humming and keeping things peaceful. Mitch was a very creative man, but often stuck in the past and doing things others didn't like. When asked again what her "type" is, Epphi could finally find the words. @sOssa, Berrilyn, Mitch. Sparks come with everyone, in all forms. I like them all. It doesn't matter who they are. My type is every color, every shape, every spark.@e`),
     new BookEntry(234, "Pride", 7, 10, `Many years later. Juno and Leafi had grown closer, but never specified what it is between them. Leafi said @sSome days I love you like a storm ... and other days like a river. Is that okay?@e Juno grinned and replied @sI love all your weathers.@e Along their path, and on the grand parade, they met new Shgabbs. All with their own names and lives, like Sallo, Epphi or Luna. They exchanged their stories of pride, laughed, loved and lit the lights in the forest. For some their feelings are more clear, for others less, or not there. Everyone is different, and that is okay. That is good. Everyone should be able to express their personality, as long as no others are harmed, and love who they love, no matter if they are a guy or a gal or something else, or a Shgabb or a cat or something else. (Happy pride month!)`),
+
+    // 235 - 239: Hot Hot Summer Event
+    new BookEntry(235, "Summer Summoner", 8, 5, `Rere is a Shgabb of an element. A magician of the fire nation. And as the seasons come and go, their favorite time arrives. As the region gets warm, and the shines get bright, they can collect the resources to prepare for any fight. @sPotions and spells sometimes require you to collect very uncommon things, sometimes you don't find them for months. But during this time of the year, the nature is blooming, and those of my magic alike's warm nature peek out of the ground.@e With these ingredients, they are planning to perform summoning magic.`),
+    new BookEntry(236, "Hot, Hot", 8, 5, `When it gets very warm, it can be difficult for Shgabbs to deal with the heat. They do not sweat. When it becomes too hot, they might just become a sticky puddle and wait until things cool down. Some can deal with the heat better than others. And, as we do, they might wear less clothes to avoid extra heat generation from those. And during my research on this topic, on a very hot day, I... uhhmm... I saw... she... hot, hot. - Pierre`),
+    new BookEntry(237, "Summer Swimmer", 8, 5, `@sI never liked water, I was afraid of it. Bad things happened in the past. But only two months ago...@e Luna says as she is looking through the shop next to the pool, looking at various clothes and tools. @sNow I like water, it's an unique feeling that you don't get anywhere else. Pools, rivers, bathtubs, lakes. It doesn't matter, I swim in all of them. You can't stop me.@e She dives into the pool, which isn't too deep. Cooled water helps battle the heat... metaphorically.`),
+    new BookEntry(238, "On The Road", 8, 5, `Smell the burning road, because a hot hot race is about to begin! 4 contestants are vroom'ing their automobiles, ready to go full speed and inflict literal fire on the road. It is a tradition in the South, where these rather pastcenturied means of transportation represent the common Shgabb. It's the Summer of Shorts, Sunglasses, and fast speeds. And they will go really fast. Accelerate and accelerate, and reach new speeds, new heights.`),
+    new BookEntry(239, "Off The Road", 8, 5, `Rere is almost done collecting the final ingredient, some Sunflowers. @sThis one took me four days to get, but now I'm finally here. This thin, but long field by the road has the type of Sunflowers I need to summon the Sun God. What's this noise?@e they say, as the drivers are arriving with a burning speed. Rere jumps to the side before getting burnt, but the basket with all the ingredients, all the hard work, has been turned to ashes. And their shorts have a hole now, from the thorny bushes behind the field. @sThese thorns hurt... but what hurts more is what I lost. Exactly two months ago I lost what was more important. And now my work is getting hindered by these lawless madmen. I will get my revenge...@e they finally had enough, and throw the special seeds (now ash) into the burning trail on the road. The flame becomes a concentrated beam. The drivers never arrive at the finish line.`),
 
     // new BookEntry(100, "", 1, 10, ``),
 ]

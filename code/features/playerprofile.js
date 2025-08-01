@@ -254,7 +254,7 @@ var pfps = [
 
     new PFP(418, "Shorts", "images/currencies/shorts.png", () => game.evpfps.includes(418)),
     new PFP(419, "Smiling Sun", "images/playerprofile/pfps/sun.png", () => game.evpfps.includes(419)),
-    new PFP(420, "Sunglasses", "images/playerprofile/pfps/sunglasses.png", () => game.evpfps.includes(420)),
+    new PFP(420, "Sunglasses", "images/currencies/sunglasses.png", () => game.evpfps.includes(420)),
 
     new PFP(421, "Evil Candle", "images/playerprofile/pfps/stw-pfp1.png", () => game.evpfps.includes(421)),
     new PFP(422, "Creature of the Void", "images/playerprofile/pfps/stw-pfp2.png", () => game.evpfps.includes(422)),

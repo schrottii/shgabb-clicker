@@ -76,11 +76,11 @@ function renderSelection(sel) {
     // render le area
     let bgColor = "white";
     for (s in sels) {
-        bgColor = selections[sel - 1] == sels[s] ? "yellow" : "white";
-        if (sels[s] == "challenges" && game.dclg.length > 0 && game.stats.hms >= 10000) bgColor = "red";
-        if (sels[s] == "minigames" && canPlayTTT) bgColor = "red";
+        bgColor = selections[sel - 1] == sels[s] ? "rgb(186, 186, 48)" : "rgb(225, 225, 225)";
+        if (sels[s] == "challenges" && game.dclg.length > 0 && game.stats.hms >= 10000) bgColor = "rgb(255, 78, 78)";
+        if (sels[s] == "minigames" && canPlayTTT) bgColor = "rgb(255, 78, 78)";
 
-        if (isSelectionUnlocked(sels[s], selsDisplay)) render = render + `<button class="grayButton sectionSelection" style="border-color: ` + (selectedSelection == sel ? "darkorange" : "darkgray") + `; background-color: ` + bgColor + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
+        if (isSelectionUnlocked(sels[s], selsDisplay)) render = render + `<button class="grayButton sectionSelection" style="border-color: ` + (selectedSelection == sel ? "darkorange" : rgbManipulator(bgColor, 0.75)) + `; background-color: ` + bgColor + `" onclick="changeSelection(` + sel + `,'` + sels[s] + `')">` + selsDisplay[s] + `</button>`
     }
     sections["selection" + sel].innerHTML = render;
 

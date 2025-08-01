@@ -73,7 +73,7 @@ const events = {
         }),
     
     summer: new LimitedEvent(5, "summer", "Hot Hot Summer Event", 
-        "It's so hot! Don't forget your suncream! x10 Sandwiches and x10 GS! Shorts, the event currency, can be found by clicking with a low chance. Use Heat Mode for faster clicks and more Shorts.",
+        "It's so hot! Don't forget your suncream! x10 Sandwiches and x10 GS! Shorts, the event currency, can be found by clicking with a low chance. Use Heat Mode for faster clicks and more Shorts. Shorts can be spent on various offers appearing depending on your click speed. At 0.5s or faster, you can also find event lore",
         728, 810, "renderSummer", 
         {
             pfps: [418, 419, 420],
@@ -950,14 +950,28 @@ function renderSummer() {
     render = render + "<br />" + summerClicks + " clicks<br />" + calcShortsChance().toFixed(2) + "% Shorts chance";
 
     if (getCooldown() <= 0.5 && !hasEventRewards("summer", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(1)'>#1 Buy a PFP<br/>80 " + cImg("shorts") + "</button>";
+    else if (hasEventRewards("summer", "pfps")) render = render + "<br /><br /><button class='chineseOffer'>#1 Buy a PFP<br/>You own all PFPs of this event</button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>#1 Buy a PFP<br/>Needs to be 0.5s or faster</button>";
+
     if (getCooldown() >= 25 && !hasEventRewards("summer", "bans")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(2)'>#2 Buy a Banner<br/>80 " + cImg("shorts") + "</button>";
+    else if (hasEventRewards("summer", "bans")) render = render + "<br /><br /><button class='chineseOffer'>#2 Buy a Banner<br/>You own all Banners of this event</button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>#2 Buy a Banner<br/>Needs to be 25s or slower</button>";
+
     if (getCooldown() == 5 && !hasEventRewards("summer", "frames")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(3)'>#3 Buy a Frame<br/>80 " + cImg("shorts") + "</button>";
+    else if (hasEventRewards("summer", "frames")) render = render + "<br /><br /><button class='chineseOffer'>#3 Buy a Frame<br/>You own all Frames of this event</button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>#3 Buy a Frame<br/>Needs to be exactly 5s</button>";
 
     if (getCooldown() <= 0.5) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(4)'>#4 Instant Faster Shgabb boost! (1 minute)<br/>60 " + cImg("shorts") + "</button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>#4 Instant Faster Shgabb boost! (1 minute)<br/>Needs to be 0.5s or faster</button>";
+
     if (getCooldown() >= 25) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(5)'>#5 Reset the click cooldown and the next 10 clicks have no cooldown!<br/>40 " + cImg("shorts") + "</button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>#5 Reset the click cooldown and the next 10 clicks have no cooldown!<br/>Needs to be 25s or slower</button>";
 
     if (getCooldown() <= 1) render = render + "<br /><br /><button onclick='useShorts(6)'>" + getArtifact(313).render(false) + "<div class='chineseOffer'>#6<br/>200 " + cImg("shorts") + "</div></button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>Artifact<br />Needs to be 1s or faster</button>";
+
     if (getCooldown() >= 5) render = render + "<br /><br /><button onclick='useShorts(7)'>" + getArtifact(200).render(false) + "<div class='chineseOffer'>#7<br/>100 " + cImg("shorts") + "</div></button>";
+    else render = render + "<br /><br /><button class='chineseOffer'>Artifact<br />Needs to be 5s or slower</button>";
 
     ui.eventRender.innerHTML = render;
 }

@@ -2,10 +2,21 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.8.1";
+const gameVersion  = "3.8.2";
 const versionTitle = "";
 
 const currentPatchNotes = `
+-> Hot Hot Summer Event:
+- 5 event lore pages can be found, and unlocked with the new lore currency Sunglasses
+- Sunglasses are only found if click cooldown is 0.5s or faster
+- Unavailable offers are now shown as locked
+- Updated event description
+
+-> Other:
+- Changed selection colors slightly
+- Note: v3.8.1's wider Artifacts also affects Cosmetics and Achievements
+
+v3.8.1
 -> Boost Filters:
 - Combined some boost filters (like GS and Prestige GS)
 - Added filter for lore/wisps
