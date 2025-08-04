@@ -159,17 +159,12 @@ function renderAllSelection() {
     renderSelection(2);
     renderSelection(3);
     renderSelection(4);
-}
-
-function changeSelection(sel, sels) {
-    if (selections[sel - 1] == sels) selections[sel - 1] = "none";
-    else selections[sel - 1] = sels;
-
-    selectedSelection = sel;
 
     // custom onclicks
-    if (selections[sel - 1] == "playerprofile") renderPlayerProfile();
-    if (sel == 4) renderShbook();
+    if (selections[2] == "playerprofile") renderPlayerProfile();
+    renderShbook();
+    if (selections[0] == "shgabb") renderIdleMode();
+
     if (selections[1] == "minigames") {
         if (!wggjRunning) {
             wggjRunning = true;
@@ -179,7 +174,13 @@ function changeSelection(sel, sels) {
     else if (wggjRunning) {
         wggjRunning = false;
     }
+}
 
-    // renderSelection(sel);
+function changeSelection(sel, sels) {
+    if (selections[sel - 1] == sels) selections[sel - 1] = "none";
+    else selections[sel - 1] = sels;
+
+    selectedSelection = sel;
+
     renderAllSelection();
 }

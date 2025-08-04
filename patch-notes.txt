@@ -88,6 +88,7 @@ July - September 2025:
 3.8
 3.8.1
 3.8.2
+3.9
 
 
 
@@ -2549,3 +2550,37 @@ Version v3.6.1:
 -> Other:
 - Changed selection colors slightly
 - Note: v3.8.1's wider Artifacts also affects Cosmetics and Achievements
+
+
+
+2025/08/04 v3.9:
+-> Idle Mode:
+- New feature unlocked from the start
+- Found below Shgabb Upgrades
+- Can be toggled on or off at any time
+- It automatically clicks for you, as long as fridge is active
+- 2x slower than manual clicking, and can't go faster than 1s
+- Manual clicking gets disabled, but still refreshes Fridge
+- Added separate Idle Clicks stat, changed Total Clicks to Normal Clicks, and added Total Clicks which combines both
+- Idle clicks count the same for basically anything (getting Shgabb, Sandwiches, Artifact conditions, etc.)
+- Its purpose is to make the game a lot more accessible for players who do not want to click buttons a lot, and prefer a more passive gameplay
+
+-> Shbook:
+- New background textures (higher resolution)
+- Reworked design of the list buttons, with new colors and borders
+- List is now scrollable when it gets long (Lore)
+- Reduced effect when hovering over Shbook
+- Changed headers for the currency/feature lists from Currenciary/Featuriary to Currencies/Features
+
+-> Balance:
+- Challenger: reduced effect slightly
+- Snake Oil Salesman: boost goes away when you can't afford it anymore
+- Snake Oil Salesman: Gem boost reduced from x2/x4/x6/x8 to x1.5/x3/x4.5/x6
+- Tower: changed tier from 1 to 4 (as other legendaries)
+
+-> Other:
+- Fastest Clicks Achievement: can now be gotten with a cooldown below 0.2s
+- Added lore chance and wisp chance (from Artifacts) to stats
+- Amé converts now support break infinity
+- Fixed hotkey selection not updating some stuff
+- Fixed getting Dragon's Money Achievement from Hot Hot Summer Event

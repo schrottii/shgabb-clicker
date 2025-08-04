@@ -12,6 +12,9 @@ var game = {
         frame: 100,
     },
 
+    idleMode: false,
+    idleModeTime: 0,
+
     // currencies
     shgabb: new Decimal(0),
     sw: new Decimal(0),
@@ -197,6 +200,7 @@ var game = {
     stats: {
         shgabb: 0,
         clicks: 0,
+        idleClicks: 0,
         playTime: 0,
         pr: 0, // prestiges
         hms: 0,

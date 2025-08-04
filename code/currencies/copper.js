@@ -21,6 +21,8 @@ function getCopperChance() {
 }
 
 function getCopper(multi = 1) {
+    if (typeof (game.cop) == "string") return false;
+
     if (Math.random() * multi * 100 < getCopperChance()) { // chance to get copper, starts at 1%
         // we get copper. increase copper clicks by 1 (starts at 0)
         statIncrease("copClicks", 1);

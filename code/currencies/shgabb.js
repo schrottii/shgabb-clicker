@@ -86,3 +86,25 @@ function calcShgabbAuto(sosnog2 = false, returnType = "all") {
 
     return prod;
 }
+
+function renderIdleMode() {
+    let render = "<br style='clear:both' /> <button class='clickButton' style='background-color: rgb(0, 0, 80)' onclick='toggleIdleMode()'>";
+
+    render = render + "<b>Idle Mode: " + (game.idleMode == true ? "Enabled" : "Disabled") + "</b>";
+    render = render + "<br />Click to toggle:";
+    render = render + "<br />Speed: " + getCooldown(game.idleMode).toFixed(2) + "s -> " + getCooldown(!game.idleMode).toFixed(2) + "s";
+    if (game.idleMode) render = render + "<br />Time remaining: " + sandwichFreezeTime.toFixed(0) + "s / " + getFreezeTime().toFixed(0) + "s";
+
+    render = render + "</button>";
+
+    ui.idleModeRender.innerHTML = render;
+}
+
+function toggleIdleMode() {
+    game.idleModeTime = 0;
+    game.idleMode = !game.idleMode;
+
+    //clickButton("idlemode");
+    freezeTime();
+    renderIdleMode();
+}

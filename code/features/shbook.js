@@ -360,16 +360,24 @@ function renderGetShbookTitle(title){
 }
 
 function renderGetShbookLeft(index, title, list, sName) {
-    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px'>" + title + "</div><hr>";
+    let scrollBefore = document.getElementById("shbookList") != null ? document.getElementById("shbookList").scrollTop : 0;
+    let render = "<div style='font-size: " + (innerWidth >= 768 ? 40 : 20) + "px;'>" + title + "</div><hr>";
 
+    render = render + "<div id='shbookList' style='text-align: center; max-height: 640px; width: 100%; overflow-y: scroll; overflow-x: none'>";
+
+    let bgColor;
     for (let s in list) {
-        render = render + `<br /><button class="grayButton" 
-        style="width: 100%; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; 
-        background-color: ` + (shbookSelections[index] == list[s].ID ? "yellow" : "white")
+        bgColor = (shbookSelections[index] == list[s].ID ? "rgb(80, 160, 20)" : "rgb(40, 40, 40)");
+        render = render + `<button class="grayButton" 
+        style="width: 95%; margin-bottom: 2px; color: white; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; 
+        background-color: ` + bgColor + `; border-radius: 8px; border-color: ` + rgbManipulator(bgColor, 0.75)
         + `" onclick="changeShbook(` + index + `, '` + list[s].ID + `')">`
         + sName(s) + `</button>`
     }
-    return render;
+
+    render = render + "</div>";
+    ui.shbookLeft.innerHTML = render;
+    document.getElementById("shbookList").scrollTop = scrollBefore;
 }
 
 // the 5 main renders: currenciary, featuriary, lore, events and shbook in general
@@ -377,7 +385,7 @@ function renderCurrenciary() {
     renderGetShbookTitle("Currenciary");
 
     // left side
-    ui.shbookLeft.innerHTML = renderGetShbookLeft(1, "Currenciary", currenciary, (s) => (currenciary[s].isUnlocked() ? currenciary[s].getName() : "Locked [" + currenciary[s].lockedText + "]"));
+    renderGetShbookLeft(1, "Currencies", currenciary, (s) => (currenciary[s].isUnlocked() ? currenciary[s].getName() : "Locked [" + currenciary[s].lockedText + "]"));
 
     // right side
     let thisCurrency = "";
@@ -397,7 +405,7 @@ function renderFeaturiary() {
     renderGetShbookTitle("Featuriary");
 
     // left side
-    ui.shbookLeft.innerHTML = renderGetShbookLeft(2, "Featuriary", featuriary, (s) => (featuriary[s].isUnlocked() ? featuriary[s].getName() : "Locked [" + featuriary[s].lockedText + "]"));
+    renderGetShbookLeft(2, "Features", featuriary, (s) => (featuriary[s].isUnlocked() ? featuriary[s].getName() : "Locked [" + featuriary[s].lockedText + "]"));
 
     // right side
     let thisFeature = "";
@@ -423,7 +431,7 @@ function renderLore() {
     renderGetShbookTitle("Lore");
 
     // left side
-    ui.shbookLeft.innerHTML = renderGetShbookLeft(0, "Lore", lore, (s) => (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName())));
+    renderGetShbookLeft(0, "Lore", lore, (s) => (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName())));
 
     // right side
     let thisLore = "";
@@ -457,7 +465,7 @@ function renderShbookEvent() {
     renderGetShbookTitle("Event List (" + game.etenvs + " " + cImg("etenv") + ")");
 
     // left side
-    ui.shbookLeft.innerHTML = renderGetShbookLeft(3, "Events", events, (s) => events[s].displayName);
+    renderGetShbookLeft(3, "Events", events, (s) => events[s].displayName);
 
     // right side
     let selected = "";

@@ -139,6 +139,7 @@ var ui = {
     bananatreesrender: document.getElementById("bananatreesrender"),
     frWeb: document.getElementById("frWeb"),
     frGalaxy: document.getElementById("frGalaxy"),
+    idleModeRender: document.getElementById("idleModeRender"),
 }
 
 // Quotes
@@ -446,8 +447,14 @@ function cImg(imgname) {
     return '<img class="currency" src="images/currencies/' + imgname + '.png" />';
 }
 
-function clickButton() {
+function clickButton(source = "click") {
     // Click button handler (the button that gives you shgabb)
+    if (source == "click" && game.idleMode) {
+        // clicking when idle mode is on -> refreeze fridge, but don't actually click
+        freezeTime();
+        return false;
+    }
+
     if (game.clickCooldown <= 0) {
         let clickButtonMulti = 1;
 
@@ -455,8 +462,11 @@ function clickButton() {
             if (techCollection < getArtifact(402).getLevel() * 10) {
                 techCollection += 1;
 
-                statIncrease("clicks", 1);
+                if (!game.idleMode) statIncrease("clicks", 1);
+                else statIncrease("idleClicks", 1);
+
                 game.clickCooldown = getCooldown();
+                if (game.idleMode) game.idleModeTime = 0;
             }
             else {
                 clickButtonMulti = techCollection;
@@ -490,7 +500,10 @@ function clickButton() {
             statIncrease("shgabb", amount);
 
             game.clickCooldown = getCooldown();
-            statIncrease("clicks", 1);
+            if (game.idleMode) game.idleModeTime = 0;
+
+            if (!game.idleMode) statIncrease("clicks", 1);
+            else statIncrease("idleClicks", 1);
 
             artifactEvent("onClick", { "multi": clickButtonMulti });
             if (getArtifact(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
@@ -553,11 +566,13 @@ function clickButton() {
         }
     }
 
-    freezeTime();
+    if (source != "idlemode") freezeTime();
 }
 
 var clickCooldown = 5;
-function getCooldown() {
+function getCooldown(idleMode = "auto") {
+    if (idleMode == "auto") idleMode = game.autoMode;
+
     // click cooldown
     if (lunarAntiCooldown > 0) return 0;
     let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
@@ -570,7 +585,15 @@ function getCooldown() {
         / (heatMode ? Math.max(1, Math.min(3, Math.log(summerClicks / 22.5))) : 1))
     if (isChallenge(3)) CD = 20;
     if (shgaybbMode) CD = Math.max(2, CD);
+
+    // idle mode
+    if (idleMode == true) {
+        CD = CD * 2;
+        CD = Math.max(1, CD);
+    }
+
     clickCooldown = CD; // Why T_T
+
     return CD;
 }
 
@@ -694,7 +717,9 @@ function updateStats() {
     ui.stats.innerHTML = "<div style='float: left; width: 50%; min-height: " + higherStatsSize + "px' class='square2' id='statsDisplayLeft'>"
         + "<b>Progress:</b>"
         + "<br />Highest More Shgabb: " + statLoader("hms")
-        + "<br />Total Clicks: " + statLoader("clicks")
+        + "<br />Total Clicks: " + (parseInt(statLoader("clicks", false)) + parseInt(statLoader("idleClicks", false)))
+        + "<br />Normal Clicks: " + statLoader("clicks")
+        + "<br />Idle Clicks: " + statLoader("idleClicks")
         + "<br />Total Time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime"))
         + "<br />Total Prestiges: " + statLoader("pr")
         + "<br />Total Ads watched: " + statLoader("ads")
@@ -796,6 +821,8 @@ function updateStats() {
         + (getArtifactsSimpleBoost("cop") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("cop")) + " Copper") : "")
         + (getArtifactsSimpleBoost("copChance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("copChance")) + " Copper Chance") : "")
         + (getArtifactsSimpleBoost("artifactchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("artifactchance")) + " Artifact chance") : "")
+        + (getArtifactsSimpleBoost("lorechance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("lorechance")) + " Lore chance") : "")
+        + (getArtifactsSimpleBoost("wispchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("wispchance")) + " Wisp chance") : "")
 
         + "</div>";
     
@@ -821,6 +848,7 @@ function updateUI() {
         ui.clickButton.style.backgroundSize = 100 * (game.clickCooldown / clickCooldown) + "% 100%";
     }
     else {
+        // clickable
         let diceRender = (getArtifact(307).isEquipped() ? ("<img src='images/arti/dice-" + getArtifact(307).getValue(0) + ".png' width='32px'>") : "");
         let gooRender = (getArtifact(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
 
@@ -830,6 +858,8 @@ function updateUI() {
 
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
+
+        if (game.idleMode == true && game.idleModeTime >= getCooldown(true)) clickButton("idlemode");
     }
     //ui.cooldownBar.value = game.clickCooldown;
     //ui.cooldownBar.max = getCooldown();
@@ -1169,6 +1199,7 @@ function shgabbClickerLoop(tick) {
     sandwichTime -= time;
     sandwichFreezeTime -= time;
     cakeDuration -= time;
+    if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
     statIncrease("playTime", time);
 
     for (aqq in game.aeqi) {
@@ -1226,6 +1257,8 @@ function shgabbClickerLoop(tick) {
     }
     if (sandwichTime <= 0 && sandwichFreezeTime > 0) {
         sandwichTime = 1;
+
+        if (game.idleMode) renderIdleMode();
         sandwich();
         silicone();
         artifactEvent("onAuto", {});
@@ -1334,6 +1367,8 @@ function hotkeyNextSelection() {
     else {
         selections[selectedSelection - 1] = "none";
     }
+
+    renderAllSelection();
 }
 
 function hotkeyPreviousSelection() {
@@ -1347,6 +1382,8 @@ function hotkeyPreviousSelection() {
     else {
         selections[selectedSelection - 1] = "none";
     }
+
+    renderAllSelection();
 }
 
 document.addEventListener('keypress', function (e) {
@@ -1457,6 +1494,7 @@ images = {
 var GAMELOADED = false;
 var gameLoadingProgress = 0;
 var gameLoadingPhaseName = "Loading files";
+
 function shgabbClickerSetup() {
     // Generate Patch Notes
     gameLoadingPhaseName = "Generating patch notes";

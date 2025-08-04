@@ -17,11 +17,11 @@ function getGemChance(cap = 10) {
     ) + (getArtifact(308).isEquipped() ? (getArtifact(308).getEffect() * (getArtifact(200).isEquipped() ? 0.1 : 1)) : 0)) * (previousClickAwardedGem ? ameliorerUpgrades.chainGems.currentEffect() : 1);
 }
 
-function getGem(multi = 1) {
+function getGem(multi = 1, chanceMulti = 1) {
     let amount = 0;
 
     // Chance to get a gem
-    if (Math.random() < 1 / 100 * getGemChance() * applyLuck(100)) {
+    if (Math.random() < 1 / 100 * getGemChance() * applyLuck(100) * chanceMulti) {
         previousClickAwardedGem = true;
         amount = getArtifactsSimpleBoost("gems") * multi;
 

@@ -1730,7 +1730,7 @@ var artifacts = [
             desc: level => "Buy my amazing products for only " + (level * 2) + " Gems/offer! (20% chance/second)",
             simpleBoost: ["shgabb", 1],
             onAuto: (level) => {
-                if (currentGems() >= level * 2 && Math.random() >= 0.8) {
+                if (Math.random() >= 0.8) {
                     game.gems -= level * 2;
 
                     if (Math.random() <= 0.25) {
@@ -1751,7 +1751,7 @@ var artifacts = [
                     }
                     else if (Math.random() <= 0.25) {
                         getArtifact(404).boost = "gems";
-                        getArtifact(404).amount = 2 * level;
+                        getArtifact(404).amount = 1.5 * level;
                     }
                     else {
                         getArtifact(404).boost = "cop";
@@ -1760,11 +1760,15 @@ var artifacts = [
 
                     updateArtifacts();
                 }
+                else if (currentGems() < level * 2) {
+                    getArtifact(404).boost = "shgabb";
+                    getArtifact(404).amount = 1;
+                }
             },
             filter: ["shgabb", "sw", "gemchance", "si", "gems", "cop"]
         }),
 
-    new Artifact(405, 4, 1, "Tower", "tower.png",
+    new Artifact(405, 4, 4, "Tower", "tower.png",
         {
             desc: level => "Builds up auto boost, released after 5s of no clicks",
             simpleBoost: ["autoshgabb", level => 1 + (level * getArtifact(405).getValue(1) / 5), () => getArtifact(405).getTimer() == 0],

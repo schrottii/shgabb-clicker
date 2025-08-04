@@ -141,7 +141,7 @@ var achievements = [
     new Achievement(40, "ameliorer.png", "Amé: Part III", "Unlock the third set of Améliorer upgrades (25 Amé levels)", () => getTotalAme() >= 25),
     new Achievement(48, "ttt.png", "Shgiccer II", "Win Shgic Shgac Shgoe 5 times", () => game.stats.tttw >= 5),
     new Achievement(35, "artifact.png", "Artifactfan", "Get your 25th Artifact", () => getArtifactAmount() >= 25),
-    new Achievement(69, "clicks2.png", "Fastest Clicks", "Reduce the click cooldown to 0.2s", () => clickCooldown == 0.2),
+    new Achievement(69, "clicks2.png", "Fastest Clicks", "Reduce the click cooldown to 0.2s", () => clickCooldown < 0.2),
     new Achievement(63, "clicks.png", "Clicker IV", "Click 250k times", () => game.stats.clicks >= 250000),
     new Achievement(25, "silicone.png", "Silicone V", () => "Get " + fn(1e12) + " Silicone Shgabb", () => game.si >= 1e12),
     new Achievement(26, "gs.png", "Golden Shgabb V", () => "Get " + fn(1e12) + " Golden Shgabb", () => game.gs >= 1e12),

@@ -8,13 +8,13 @@ function unlockedAmeliorer() {
 function getAmeliorerConvertCosts(type) {
     switch (type) {
         case "shgabb":
-            return Math.ceil(Math.pow(1e12, (game.ameUp[0] / 8) + 1));
+            return new Decimal(1e12).pow(game.ameUp[0] / 8 + 1).ceil();
         case "sw":
-            return Math.ceil(Math.pow(1000, (game.ameUp[1] / 10) + 1));
+            return new Decimal(1000).pow(game.ameUp[1] / 10 + 1).ceil();
         case "gs":
-            return Math.ceil(Math.pow(1e6, (game.ameUp[2] / 12) + 1));
+            return new Decimal(1e6).pow(game.ameUp[2] / 12 + 1).ceil();
         case "si":
-            return Math.ceil(Math.pow(1e5, (game.ameUp[3] / 15) + 1));
+            return new Decimal(1e5).pow(game.ameUp[3] / 15 + 1).ceil();
         case "gems":
             return game.ameUp[4] >= highestAmeConvert() ? 1000 : 500;
     }
@@ -22,7 +22,7 @@ function getAmeliorerConvertCosts(type) {
 
 function canAffordAmeliorer(type) {
     let costs = getAmeliorerConvertCosts(type);
-    if (type != "gems") return game[type] >= costs;
+    if (type != "gems") return game[type].gte(costs);
     else {
         return game[type] >= costs && (highestAmeConvert() > game.ameUp[4] || ameliorerUpgrades.infiniteGems2ame.currentLevel() > 0);
     }

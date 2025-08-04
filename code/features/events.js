@@ -1091,7 +1091,6 @@ function useShorts(offerNR) {
             break;
     }
 
-    checkAchievement(94);
     renderCurrentEvent();
 }
 

@@ -635,6 +635,6 @@ progress {
 }
 
     .shbookClass:hover {
-        filter: brightness(80%) contrast(160%);
+        filter: brightness(80%) contrast(120%);
         transition: 0.3s;
     }
