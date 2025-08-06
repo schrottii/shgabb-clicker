@@ -1463,8 +1463,8 @@ var artifacts = [
 
     new Artifact(302, 3, 1, "Shgabb Seeds", "seeds.png",
         {
-            desc: level => "+" + 2 * level + "% per click, resets every 1000 clicks (" + game.stats_prestige.clicks % 1000 + "/1000)",
-            simpleBoost: ["shgabb", level => 1 + ((game.stats_prestige.clicks % 1000) * 0.02 * level)]
+            desc: level => "+" + 2 * level + "% per click, resets every 1000 clicks (" + getClicks("stats_prestige") % 1000 + "/1000)",
+            simpleBoost: ["shgabb", level => 1 + ((getClicks("stats_prestige") % 1000) * 0.02 * level)]
         }),
 
     new Artifact(303, 3, 1, "P2W", "p2w.png",
@@ -1550,17 +1550,29 @@ var artifacts = [
         }),
 
     new Artifact(314, 3, 3, "Hood Goo", "hoodgoo.png",
-        { // TAKE A LOOK AT THIS ONE
-            desc: level => 10 * level + "% chance to save your Shgabb production after a click, 5% to stop saving it",
+        { // has one in click button render
+            desc: level => 10 * level + "% chance to save your Shgabb production after a click, 5% on click/auto to stop saving it",
             onClick: (level, v) => {
+                // lose
                 if (Math.random() * applyLuck(50) < 0.05 && hoodGoo > 0) {
                     hoodGoo = 0;
                     createNotification("Goo is gone...");
                 }
+                // gain
                 if (Math.random() < level / 10 && v.amount > hoodGoo) {
                     hoodGoo = v.amount;
                     createNotification("Goo: " + fn(v.amount));
                 }
+            },
+            onAuto: (level, v) => {
+                // lose
+                if (Math.random() * applyLuck(50) < 0.05 && hoodGoo > 0) {
+                    hoodGoo = 0;
+                    createNotification("Goo is gone...");
+                }
+            },
+            onPrestige: () => {
+                hoodGoo = 0;
             }
         }),
 

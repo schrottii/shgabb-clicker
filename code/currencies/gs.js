@@ -61,7 +61,6 @@ function prestigeButton() {
         // Reset Shgabb, Sandwiches, some stat stuff
         game.shgabb = new Decimal(0 + (isChallenge(2) ? 0 : getArtifactsSimpleBoost("resetshgabb")));
         game.sw = new Decimal(0);
-        hoodGoo = 0;
         //game.gemboost = 1; // 2nd Gem offer
 
         for (stat in game.stats_prestige) {

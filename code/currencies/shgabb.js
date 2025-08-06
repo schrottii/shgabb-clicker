@@ -1,12 +1,16 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 // Currency file
 
+function getClicks(source = "stats") {
+    return game[source].clicks + game[source].idleClicks;
+}
+
 // Various production functions
 function calcShgabbGlobal() {
     // these will be applied to auto AND clicks
 
     let prod = new Decimal(1)
-        .mul(game.stats.clicks % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
+        .mul(getClicks() % 3 == 0 ? shgabbUpgrades.goodJoke.currentEffect() : 1)
         .mul(shgabbUpgrades.bomblike.currentEffect())
         .mul(shgabbUpgrades.bomblike2.currentEffect())
         .mul(goldenShgabbUpgrades.divineShgabb.currentEffect())
@@ -87,13 +91,25 @@ function calcShgabbAuto(sosnog2 = false, returnType = "all") {
     return prod;
 }
 
+function produceAutoShgabb() {
+    let amount = calcShgabbAuto();
+
+    if (amount > 0) {
+        game.shgabb = game.shgabb.add(amount);
+        statIncrease("shgabb", amount);
+        //createNotification("+" + amount + " shgabb");
+    }
+
+    updateUpgrades();
+}
+
 function renderIdleMode() {
-    let render = "<br style='clear:both' /> <button class='clickButton' style='background-color: rgb(0, 0, 80)' onclick='toggleIdleMode()'>";
+    let render = "<br style='clear:both' /> <button class='clickButton' style='background-color: rgb(0, 0, " + (game.idleMode ? 160 : 80) + ")' onclick='toggleIdleMode()'>";
 
     render = render + "<b>Idle Mode: " + (game.idleMode == true ? "Enabled" : "Disabled") + "</b>";
     render = render + "<br />Click to toggle:";
     render = render + "<br />Speed: " + getCooldown(game.idleMode).toFixed(2) + "s -> " + getCooldown(!game.idleMode).toFixed(2) + "s";
-    if (game.idleMode) render = render + "<br />Time remaining: " + sandwichFreezeTime.toFixed(0) + "s / " + getFreezeTime().toFixed(0) + "s";
+    if (game.idleMode) render = render + "<br />Time remaining: " + Math.max(0, sandwichFreezeTime).toFixed(0) + "s / " + getFreezeTime().toFixed(0) + "s";
 
     render = render + "</button>";
 

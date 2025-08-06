@@ -25,22 +25,3 @@ function getFreezeTime() {
 function freezeTime() {
     sandwichFreezeTime = getFreezeTime();
 }
-
-function sandwich() {
-    let amount = calcShgabbAuto();
-    if (getArtifact(314).isEquipped()) {
-        if (hoodGoo > amount) amount = hoodGoo;
-        if (Math.random() < 0.05) {
-            hoodGoo = 0;
-            createNotification("Goo is gone...");
-        }
-    }
-
-    if (amount > 0) {
-        game.shgabb = game.shgabb.add(amount);
-        statIncrease("shgabb", amount);
-        //createNotification("+" + amount + " shgabb");
-    }
-
-    updateUpgrades();
-}

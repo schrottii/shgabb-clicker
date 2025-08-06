@@ -475,6 +475,7 @@ function clickButton(source = "click") {
         }
 
         if (techCollection == 0) {
+            // no tech c. active, let's do the click thing
             let critMulti = criticalHit();
             let amount = calcShgabbClick().mul(critMulti).mul(clickButtonMulti).floor();
 
@@ -496,6 +497,8 @@ function clickButton(source = "click") {
                 }
             }
 
+            if (getArtifact(314).isEquipped() && hoodGoo > amount) amount = hoodGoo; // apply the goo
+
             game.shgabb = game.shgabb.add(amount);
             statIncrease("shgabb", amount);
 
@@ -505,8 +508,7 @@ function clickButton(source = "click") {
             if (!game.idleMode) statIncrease("clicks", 1);
             else statIncrease("idleClicks", 1);
 
-            artifactEvent("onClick", { "multi": clickButtonMulti });
-            if (getArtifact(314).isEquipped() && hoodGoo > amount) amount = hoodGoo;
+            artifactEvent("onClick", { "multi": clickButtonMulti, "amount": amount });
 
             // EVENTS
             if (isEvent("christmas")) {
@@ -866,11 +868,11 @@ function updateUI() {
 
     // Sandwiches
     if (selection("sandwich")) {
-        ui.autoInfo.innerHTML = "<span><b>Auto info:</b>"
+        ui.autoInfo.innerHTML = "<b>Auto info:</b>"
             + "<br />Fridge Time: " + sandwichFreezeTime.toFixed(1) + "s/" + getFreezeTime().toFixed(0) + "s"
             + "<br />Normal Auto Prod.: " + fn(calcShgabbAuto(false, "auto")) + (calcShgabbAuto(false, "auto") > 0 ? " (" + (100 * calcShgabbAuto(false, "auto") / calcShgabbAuto()).toFixed(1) + "%)" : "")
             + "<br />Cheese Prod.: " + fn(calcShgabbAuto(false, "cheese")) + (calcShgabbAuto(false, "cheese") > 0 ? " (" + (100 * calcShgabbAuto(false, "cheese") / calcShgabbAuto()).toFixed(1) + "%)" : "")
-            + "<br />Total Prod.: " + fn(calcShgabbAuto()) + "</span>";
+            + "<br />Total Prod.: " + fn(calcShgabbAuto());
     }
 
     ui.sandwichBar.value = sandwichFreezeTime;
@@ -1259,7 +1261,7 @@ function shgabbClickerLoop(tick) {
         sandwichTime = 1;
 
         if (game.idleMode) renderIdleMode();
-        sandwich();
+        produceAutoShgabb();
         silicone();
         artifactEvent("onAuto", {});
 

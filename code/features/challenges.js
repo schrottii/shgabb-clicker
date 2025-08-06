@@ -24,6 +24,11 @@ class Challenge {
         return game.clg[this.ID];
     }
 
+    getDescription() {
+        if (typeof (this.description) == "function") return this.description(this.getTier());
+        return this.description;
+    }
+
     getGoal() {
         return Math.max(100, Math.ceil(this.goal(this.getTier()) / ameliorerUpgrades.challenger.currentEffect()));
     }
@@ -45,7 +50,7 @@ class Challenge {
             + "'><img src='images/challenges/challenge" + (parseInt(this.ID)) + ".png' style='min-width: 160px; max-width: 288px'><br><b>"
             + this.name
             + "<br />Tier " + this.getTier()
-            + "</b><br>" + this.description
+            + "</b><br>" + this.getDescription()
             + "<hr /><b>Goal:</b> " + this.getGoal() + " More Shgabb"
             + "<br /><b>Price:</b> " + this.getPrice() + " Gems to start"
             + (this.ID != 999 ? "<br /><b>Boost:</b> x" + fn(this.getBoost()) + " " + this.boostTypeDisplay
@@ -230,11 +235,11 @@ function getHighestTier() {
 
 var challenges = [
     new Challenge(1, 6000, t => 4000 + 1000 * t, "Basic Climb", "Only the first two Shgabb Upgrades are available, and no Sandwich Upgrades!", t => Math.floor(4 * Math.pow(1.5, t)), "Sandwiches"),
-    new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", "Shgabb production is reduced MASSIVELY", t =>  Math.floor(6 * Math.pow(6, t)), "Shgabb"),
+    new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", tier => "Shgabb production is reduced MASSIVELY (^" + (1 / (2 + 0.5 * tier)).toFixed(3) + ")", t =>  Math.floor(6 * Math.pow(6, t)), "Shgabb"),
     new Challenge(3, 8000, t => 6000 + 2000 * t, "Manual Grind", "Click cooldown is fixed at 20s and auto is disabled", t =>  Math.floor(5 * Math.pow(2.2, t)), "Click Shgabb"),
-    new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", "Shgabb Upgrades lose levels all the time", t =>  Math.floor(5 * Math.pow(2.2, t)), "Auto Shgabb"),
+    new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", tier => "Shgabb Upgrades lose levels every second (" + (4 * (tier + 1)) + " for MS, " + (tier + 1) + " for others)", t =>  Math.floor(5 * Math.pow(2.2, t)), "Auto Shgabb"),
     new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.25 * t, "Artifact drop rate"),
-    new Challenge(6, 12000, t => 400 + 100 * t, "Inflation", "Upgrades are far more expensive", t => 2 * Math.pow(1.25, t), "cheaper Shgabb upgrades"),
+    new Challenge(6, 12000, t => 400 + 100 * t, "Inflation", tier => "Upgrades are far more expensive (" + (1.1 + tier / 10) + "^level for MS, " + (4 + tier / 10) + "^level for others)", t => 2 * Math.pow(1.25, t), "cheaper Shgabb upgrades"),
 ];
 
 var dailyChallenge = new Challenge(999, 10000, t => 0, "Daily Challenge", "Get as far as you can with these Artifacts!", t => game.dclp, "daily challenge points");

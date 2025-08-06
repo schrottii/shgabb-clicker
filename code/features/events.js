@@ -616,7 +616,7 @@ function useQian(offerNR) {
 
 function clickLunar(clickButtonMulti) {
     if (isEvent("lunar")) {
-        if (game.stats.clicks % 100 == 0 && Math.random() < 0.8) {
+        if (getClicks() % 100 == 0 && Math.random() < 0.8) {
             // every 100th click an 80% chance, ~120 clicks per qian drop, ~50 clicks per qian (if you bought the upgrade)
             let amount = (game.ach.includes(92) ? 2 : 1) * clickButtonMulti;
             if (Math.random() < (1 / 8)) amount = 8;
@@ -844,7 +844,7 @@ function findShgaybb() {
     if (!shgaybbMode) return false;
 
     if (Math.random() < 1 / 3) {
-        let seed = Math.ceil(game.stats_today.playTime * game.stats.clicks) % shgaybbList.length;
+        let seed = Math.ceil(game.stats_today.playTime * getClicks()) % shgaybbList.length;
 
         if (shgaybbFound == "") {
             // first of the couple

@@ -2,10 +2,28 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.9";
+const gameVersion  = "3.9.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
+-> Achievements:
+- Added 10 new Achievements (210 total)
+- New Achievements: Achiever V, VI, VII, VIII, IX, Amé: Part VIII, IX, Librarian III, Librarian IV, Idle Game
+- Achiever IV: 100 -> 75 Achievements
+- eolm terrible headache: 5000 -> 3000
+- Librarian III (all lore pages): renamed to Library of Babel
+
+-> Idle Mode:
+- Idle Mode now affects Good Joke (Shgabb Upgrade), Qian, Shgaybb, Clicks Boost GS (Bag Upgrade) and Shgabb Seeds
+- Button gets lighter when it's enabled
+- Remaining time can no longer show a negative number xd
+
+-> Other:
+- The Challenges Blue Cuts, Dementia and Inflation now show their exact effects
+- Auto info: changed its design, and it can be clicked to refresh fridge
+- Hood Goo: description now specifies that the loss can be on click AND auto, cleaned up its code a bit
+
+v3.9
 -> Idle Mode:
 - New feature unlocked from the start
 - Found below Shgabb Upgrades
