@@ -44,7 +44,7 @@ const trashDictionary = [
 ];
 
 function unlockedFishing() {
-    return game.stats.hms >= 12000;
+    return game.stats.hms >= 5000;
 }
 
 function updateFishingLevel() {
@@ -128,12 +128,13 @@ scenes["fishgang"] = new Scene(
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
             ui.pearlSection.style.display = "none";
-            loadScene("mainmenu");
+            createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
         // player info
         createImage("fishlvl_FishyPic", 0.3, 0, 0.1, 0.1, "fishlvl", { quadratic: true, centered: true });
-        createImage("fishlvl_PFP", 0.305, 0.01, 0.08, 0.08, "fishlvl", { quadratic: true, centered: true });
+        createImage("fishlvl_PFP", 0.3, 0.02, 0.06, 0.06, "fishlvl", { quadratic: true, centered: true });
         
         createImage("fishlvl_FishyPic2", 0.325, 0.035, 0.14, 0.06, "fishlvl");
         createSquare("fishlvl_LvlBg", 0.33, 0.05, 0.02, 0.03, "#6F8A69");
@@ -141,8 +142,8 @@ scenes["fishgang"] = new Scene(
         createText("fishlvl_Level", 0.34, 0.0775, "?", { color: "#01f8fd", size: 20 });
 
         createSquare("fishlvl_BarBg", 0.35, 0.05, 0.1, 0.03, "black");
-        createSquare("fishlvl_BarFill", 0.3525, 0.05, 0.1, 0.03, "#01f8fd");
-        createText("fishlvl_BarText", 0.4, 0.0775, "?", { color: "#2e269a", size: 20 });
+        createSquare("fishlvl_BarFill", 0.3525, 0.05, 0.1, 0.03, "#2e269a");
+        createText("fishlvl_BarText", 0.4, 0.0775, "?", { color: "white", size: 20 });
 
         let img = new Image();
         img.src = getPFPByID(game.profile.pfp).image;
@@ -153,12 +154,12 @@ scenes["fishgang"] = new Scene(
         images["pfp"] = img;
 
         // stats
-        createText("trashamount", 0.6, 0.075, "Trash: 0", { color: "white", size: 16, align: "left" });
-        createText("fishamount", 0.7, 0.075, "Fish: 0", { color: "white", size: 16, align: "left" });
-        createText("value", 0.8, 0.075, "(Value: 0)", { color: "white", size: 16, align: "left" });
+        createText("trashamount", 0.6, 0.075, "Trash: 0", { color: "white", size: 24, align: "left" });
+        createText("fishamount", 0.7, 0.075, "Fish: 0", { color: "white", size: 24, align: "left" });
+        createText("value", 0.8, 0.075, "(Value: 0)", { color: "white", size: 24, align: "left" });
 
         createText("infotext", 0.03, 0.95, "", { color: "white", size: 24, align: "left" });;
-        createImage("recentfish", 50, 0.5, 0.2, 0.2, "button", { quadratic: true, centered: true });
+        createImage("recentfish", 0.5, 0.5, 0.2, 0.2, "button", { quadratic: true, centered: true, alpha: 0 });
         // You caught a rare Leaoodandingzumn (Weight: 50kg, Value: 80M)
 
 
@@ -206,6 +207,7 @@ scenes["fishgang"] = new Scene(
 
                         if (Math.random() * 80 >= (objects["bobby"].chance + 20)) {
                             objects["bobby"].mode = 3;
+                            objects["bobby"].y = 0.75;
 
                             objects["bobby"].distance = 0;
                             objects["bobby"].cooldown = 3;
@@ -216,12 +218,16 @@ scenes["fishgang"] = new Scene(
                 }
             }
         })
-        createText("slideButtonText", 0.15, 0.85, "", { size: 24 });
+        createText("slideButtonText", 0.15, 0.85, "", { size: 48 });
 
         createText("catchQuality", 0.7, 0.775, "", { size: 40, align: "left" });
         createText("catchChance", 0.7, 0.85, "", { size: 40, align: "left" });
 
         ui.pearlSection.style.display = "";
+
+        // black overlay fade transition
+        createImage("transition", 0, 0, 1, 1, "black");
+        createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
@@ -253,6 +259,14 @@ scenes["fishgang"] = new Scene(
             else objects["slider"].sliderMove = Math.max(0, objects["slider"].sliderMove - objects["slider"].sliderSpeed * tick * 60);
         }
 
+        if (objects["bobby"].mode == 0) {
+            if (objects["slider"].sliderMove < 25) objects["slider"].color = "yellow";
+            else if (objects["slider"].sliderMove < 50) objects["slider"].color = "orange";
+            else if (objects["slider"].sliderMove < 75) objects["slider"].color = "red";
+            else objects["slider"].color = "blue";
+        }
+        else objects["slider"].color = "orange";
+
         if (objects["bobby"].mode == 0 || objects["bobby"].mode == 2) {
             objects["slider"].w = Math.min(0.3, 0.3 * (objects["slider"].sliderSize / 100));
             objects["slider"].x = 0.35 + Math.min(0.3 - objects["slider"].w, (0.3 - objects["slider"].w) * (objects["slider"].sliderMove / 100));
@@ -281,13 +295,21 @@ scenes["fishgang"] = new Scene(
         }
 
         // Animate Bobby
-        if (Math.random() >= 0.92) {
-            objects["bobby"].x = 0.5 + 0.003 * Math.random();
-            objects["bobby"].y = 0.75 - 0.5 * (objects["bobby"].distance / 100) + 0.003 * Math.random();
+        if (Math.random() >= 0.98) {
+            createAnimation("bobbyX", "bobby", (t, d, a) => { a.dur < 0.5 ? t.x -= d / 200 : t.x += d / 200 }, 1, true);
         }
-        else {
-            objects["bobby"].y = 0.75 - 0.5 * (objects["bobby"].distance / 100);
+        if (Math.random() >= 0.98) {
+            createAnimation("bobbyX", "bobby", (t, d, a) => { a.dur < 0.5 ? t.x += d / 200 : t.x -= d / 200 }, 1, true);
         }
+        if (Math.random() >= 0.98) {
+            createAnimation("bobbyY", "bobby", (t, d, a) => { a.dur < 0.5 ? t.y -= d / 200 : t.y += d / 200 }, 1, true);
+        }
+        if (Math.random() >= 0.98) {
+            createAnimation("bobbyY", "bobby", (t, d, a) => { a.dur < 0.5 ? t.y += d / 200 : t.y -= d / 200 }, 1, true);
+        }
+        objects["bobby"].x = Math.max(0.4, Math.min(0.6, objects["bobby"].x));
+
+        //objects["bobby"].y = 0.75 - 0.5 * (objects["bobby"].distance / 100);
 
         // Bobby waiting for fish
         if (objects["bobby"].mode == 1) {
@@ -300,12 +322,15 @@ scenes["fishgang"] = new Scene(
                 objects["bobby"].quality = Math.min(10, Math.ceil(10 * objects["slider"].sliderSpeed / objects["slider"].sliderSize)); // 1 - 20 (capped at 10)
                 if (objects["bobby"].distance < 25) objects["bobby"].quality = Math.min(3, objects["bobby"].quality);
                 objects["bobby"].chance = 30 - (objects["bobby"].distance / 2) + applyLuck(60);
+
+                createAnimation("bobbyThrow", "bobby", (t, d, a) => { t.y = 0.75 - (0.5 * (objects["bobby"].distance / 100) * a.dur * 4) }, 0.25, true);
             }
         }
 
         // Bobby reel it in
         if (objects["bobby"].mode == 2) {
             objects["bobby"].distance -= 0.1 * tick * 60; // come closer baby
+            objects["bobby"].y += 0.1 * tick * 60 / 100 / 2; // come closer baby
             objects["bobby"].chance -= objects["slider"].sliderSpeed * tick; // keep reducing the chance to make it exciting
 
             if (objects["bobby"].reelCD > 0) objects["bobby"].reelCD -= 1 / 60; // reduce cd that comes from hitting/missing
@@ -315,6 +340,7 @@ scenes["fishgang"] = new Scene(
             }
 
             if (objects["bobby"].distance < -5) {
+                objects["bobby"].y = 0.75;
                 objects["bobby"].mode = 3;
 
                 objects["bobby"].distance = 0;
@@ -363,7 +389,7 @@ scenes["fishgang"] = new Scene(
                         objects["infotext"].text = "You caught a " + thisFish[0] + "! (Weight: " + caughtWeight + "kg, Value: " + fn(caughtValue) + ") +" + caughtGems + " Gems +" + caughtXP + "XP";
 
                         objects["recentfish"].image = thisFish[3];
-                        objects["recentfish"].x = 0.5;
+                        createAnimation("fishPopup", "recentfish", (t, d) => { t.alpha += d }, 1, true);
                     }
                     else {
                         // got a trash
@@ -378,7 +404,7 @@ scenes["fishgang"] = new Scene(
                         objects["infotext"].text = "You caught " + caughtTrash + "! +3XP";
 
                         objects["recentfish"].image = "trash";
-                        objects["recentfish"].x = 0.5;
+                        createAnimation("fishPopup", "recentfish", (t, d) => { t.alpha += d }, 1, true);
                     }
                 }
                 else {
@@ -397,8 +423,7 @@ scenes["fishgang"] = new Scene(
                 objects["slider"].sliderSize = 10;
                 objects["slider"].sliderSpeed = 1;
 
-                objects["recentfish"].image = "button";
-                objects["recentfish"].x = 50;
+                createAnimation("fishPopup", "recentfish", (t, d) => { t.alpha -= d * 2 }, 0.5, true);
             }
         }
     }

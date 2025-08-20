@@ -2,58 +2,54 @@
 
 // Game version and patch notes
 
-const gameVersion  = "3.9.1";
+const gameVersion  = "4.0";
 const versionTitle = "";
 
 const currentPatchNotes = `
--> Achievements:
-- Added 10 new Achievements (210 total)
-- New Achievements: Achiever V, VI, VII, VIII, IX, Amé: Part VIII, IX, Librarian III, Librarian IV, Idle Game
-- Achiever IV: 100 -> 75 Achievements
-- eolm terrible headache: 5000 -> 3000
-- Librarian III (all lore pages): renamed to Library of Babel
+-> The Mine:
+- New minigame/feature, unlocked at HMS 12k
+- Explore the mine and collect resources
+- Move into the four directions by clicking-hovering
+- There can be walls and water
+- To mine something, walk on it, and then click the click button or get auto prod x times
+- Golden Shgabb: 40, previous Prestige GS / 10
+- Silicone Shgabb: 20, click Silicone * 10
+- Copper Shgabb: 10, Copper worth one click
+- Added stats: time, tiles walked, total progress, GS, Silicone, Copper
 
--> Idle Mode:
-- Idle Mode now affects Good Joke (Shgabb Upgrade), Qian, Shgaybb, Clicks Boost GS (Bag Upgrade) and Shgabb Seeds
-- Button gets lighter when it's enabled
-- Remaining time can no longer show a negative number xd
+-> Minigames:
+- New Minigame (12k): The Mine
+- Graphical improvements for Shgic and Fishgang (see below)
+- Added black fade transitions between the minigames
 
--> Other:
-- The Challenges Blue Cuts, Dementia and Inflation now show their exact effects
-- Auto info: changed its design, and it can be clicked to refresh fridge
-- Hood Goo: description now specifies that the loss can be on click AND auto, cleaned up its code a bit
+-> Shgic:
+- Added a fade in animation when placing Xs and Os
+- Added a delay before the enemy plays (no longer instant)
+- Added a delay before board gets cleared
+- Re-added the infamous kiss animation, now auto save independent, much faster and smoother
+- Fixed top and bottom bar color change being inverted (light blue when idle, rather than after clicking)
 
-v3.9
--> Idle Mode:
-- New feature unlocked from the start
-- Found below Shgabb Upgrades
-- Can be toggled on or off at any time
-- It automatically clicks for you, as long as fridge is active
-- 2x slower than manual clicking, and can't go faster than 1s
-- Manual clicking gets disabled, but still refreshes Fridge
-- Added separate Idle Clicks stat, changed Total Clicks to Normal Clicks, and added Total Clicks which combines both
-- Idle clicks count the same for basically anything (getting Shgabb, Sandwiches, Artifact conditions, etc.)
-- Its purpose is to make the game a lot more accessible for players who do not want to click buttons a lot, and prefer a more passive gameplay
+-> Fishgang:
+- Moved Fishgang unlock from 12k to 5k
+- Added fade in/out animation for fish/trash images
+- Gave Bobby more meds and animations
+- Slider now changes color according to the 4 quarters (yellow, orange, red, blue)
+- Increased size of Throw, Trash, Fish and Value texts
+- Reduced PFP size
+- Level up bar: light blue -> dark blue
+- Level up text: dark blue -> white
+- Added time stat (sadly not retroactive)
 
--> Shbook:
-- New background textures (higher resolution)
-- Reworked design of the list buttons, with new colors and borders
-- List is now scrollable when it gets long (Lore)
-- Reduced effect when hovering over Shbook
-- Changed headers for the currency/feature lists from Currenciary/Featuriary to Currencies/Features
-
--> Balance:
-- Challenger: reduced effect slightly
-- Snake Oil Salesman: boost goes away when you can't afford it anymore
-- Snake Oil Salesman: Gem boost reduced from x2/x4/x6/x8 to x1.5/x3/x4.5/x6
-- Tower: changed tier from 1 to 4 (as other legendaries)
+-> Sidebar:
+- Experimental new feature (must be enabled by Setting)
+- Takes up the left 20% of the screen, the rest gets reduced to 80%
+- Always on the screen, no scrolling
+- Contains click button, Idle Mode, currencies and notifications
 
 -> Other:
-- Fastest Clicks Achievement: can now be gotten with a cooldown below 0.2s
-- Added lore chance and wisp chance (from Artifacts) to stats
-- Amé converts now support break infinity
-- Fixed hotkey selection not updating some stuff
-- Fixed getting Dragon's Money Achievement from Hot Hot Summer Event
+- Moved Chengas unlock from 5k to 7k
+- New Setting: (Experimental) Sidebar
+- Updated WGGJ from v1.2.1 to v1.4
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

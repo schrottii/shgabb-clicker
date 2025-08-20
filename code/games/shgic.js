@@ -7,23 +7,12 @@ let shgicPointsEnemy = 0;
 var canPlayTTT = false;
 var completedTTT = false;
 var shicTimeSinceLastMove = 0;
+var turn = "player";
 
 let shgicField =
     [[0, 0, 0],
     [0, 0, 0],
     [0, 0, 0]];
-
-function shgicClickField(x, y) {
-    if (shgicField[x][y] == 0 && canPlayTTT && shicTimeSinceLastMove < 0.8) {
-        shgicField[x][y] = 1;
-        // shgicLastMovePlayer = [x, y, 0];
-        shicTimeSinceLastMove = 1;
-
-        if (shgicFindWinners()) {
-            shgicEnemyMove();
-        }
-    }
-}
 
 // TIME RELATED FUNCTIONS
 
@@ -70,6 +59,8 @@ function checkNewDay() {
         shgicPointsPlayer = 0;
         shgicPointsEnemy = 0;
         canPlayTTT = true;
+        turn = "player";
+        shgicResetField();
     }
 
     if (isNewDay()) {
@@ -126,37 +117,64 @@ function checkNewDay() {
     }
 }
 
+function shgicClickField(x, y) {
+    if (shgicField[x][y] == 0 && canPlayTTT && shicTimeSinceLastMove > 0.2 && turn == "player") {
+        shgicField[x][y] = 1;
+        // shgicLastMovePlayer = [x, y, 0];
+        shicTimeSinceLastMove = 0;
+
+        objects["i" + x + "." + y].image = "sssx";
+        createAnimation("shgic" + x + "." + y, "i" + x + "." + y, (t, d, a) => { t.alpha = a.dur * 2; }, 0.5, false);
+        turn = "enemy";
+
+        if (shgicFindWinners()) {
+            setTimeout("shgicEnemyMove()", Math.ceil(400 * Math.random()) + 100);
+        }
+    }
+}
+
 function shgicEnemyMove() {
     let enemyMove = 0;
-    for (y in shgicField) {
+    let px, py;
+
+    for (let y in shgicField) {
+        px = y;
+
         if (shgicField[y][0] == 2 && shgicField[y][1] == 2 && shgicField[y][2] == 0) {
             shgicField[y][2] = 2;
+            py = 2;
             enemyMove = 1;
             break;
         }
         if (shgicField[y][0] == 2 && shgicField[y][1] == 0 && shgicField[y][2] == 2) {
             shgicField[y][1] = 2;
+            py = 1;
             enemyMove = 1;
             break;
         }
         if (shgicField[y][0] == 0 && shgicField[y][1] == 2 && shgicField[y][2] == 2) {
             shgicField[y][0] = 2;
+            py = 0;
             enemyMove = 1;
             break;
         }
 
+        py = y;
         if (shgicField[0][y] == 2 && shgicField[1][y] == 2 && shgicField[2][y] == 0) {
             shgicField[2][y] = 2;
+            px = 2;
             enemyMove = 1;
             break;
         }
         if (shgicField[0][y] == 2 && shgicField[1][y] == 0 && shgicField[2][y] == 2) {
             shgicField[1][y] = 2;
+            px = 1;
             enemyMove = 1;
             break;
         }
         if (shgicField[0][y] == 0 && shgicField[1][y] == 2 && shgicField[2][y] == 2) {
             shgicField[0][y] = 2;
+            px = 0;
             enemyMove = 1;
             break;
         }
@@ -166,11 +184,16 @@ function shgicEnemyMove() {
         let randomPlaced = Math.floor(Math.random() * 9);
         if (shgicField[Math.floor(randomPlaced / 3)][randomPlaced % 3] == 0) {
             shgicField[Math.floor(randomPlaced / 3)][randomPlaced % 3] = 2;
-            // shgicLastMoveEnemy = [Math.floor(randomPlaced / 3), randomPlaced % 3, 0.1];
+            px = Math.floor(randomPlaced / 3);
+            py = randomPlaced % 3;
             enemyMove = 1;
         }
     }
 
+    objects["i" + px + "." + py].image = "ssso";
+    createAnimation("shgic" + px + "." + py, "i" + px + "." + py, (t, d, a) => { t.alpha = a.dur * 2 }, 0.5, false);
+
+    turn = "player";
     shgicFindWinners();
 }
 
@@ -223,6 +246,8 @@ function shgicFindWinners() {
     }
 
     if (shgicPointsPlayer > 2 && canPlayTTT) {
+        turn = "none";
+
         game.ame += 2;
         statIncrease("ame", 2);
         statIncrease("tttw", 1);
@@ -246,6 +271,8 @@ function shgicFindWinners() {
         return false;
     }
     else if (shgicPointsEnemy > 2 && canPlayTTT) {
+        turn = "none";
+
         game.tttd = game.day;
         completedTTT = true;
         canPlayTTT = false;
@@ -257,10 +284,18 @@ function shgicFindWinners() {
         return false;
     }
     else if (winner != 0) {
-        shgicResetField();
-        if (Math.random() > 0.6) {
-            shgicEnemyMove();
-        }
+        // board is full, but nobody won
+        // clear board for the next round
+        turn = "none";
+
+        setTimeout(() => {
+            shgicResetField();
+            if (Math.random() > 0.6) {
+                setTimeout("shgicEnemyMove()", Math.ceil(400 * Math.random()) + 100);
+            }
+            else turn = "player";
+        }, 500);
+
         return false;
     }
     return true;
@@ -273,6 +308,15 @@ function shgicResetField() {
             [0, 0, 0],
             [0, 0, 0]
         ];
+
+    if (objects["i0.0"] != undefined) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                killAnimation("shgic" + j + "." + i);
+                objects["i" + j + "." + i].image = "sssn";
+            }
+        }
+    }
 }
 
 function shgicUpdateText(text) {
@@ -291,7 +335,8 @@ scenes["shgic"] = new Scene(
         createText("title", 0.08, 0.1, "Shgic Shgac Shgoe", { color: "white", size: 32, align: "left" });
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
-            loadScene("mainmenu");
+            createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
         let ignoreW = 1 / wggjCanvasWidth * wggjCanvasHeight;
@@ -311,28 +356,47 @@ scenes["shgic"] = new Scene(
             }
         }
 
-        // shgicEnemyMove();
+        createImage("gay", 0.3, 0.45, 0.1, 0.1, "sssx", { power: false, centered: true });
+        createImage("gay2", 0.7, 0.45, 0.1, 0.1, "ssso", { power: false, centered: true });
+
+        // black overlay fade transition
+        createImage("transition", 0, 0, 1, 1, "black");
+        createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
-        if (canPlayTTT || completedTTT) {
+        if (objects["gay"].x == 0.48) {
+            shgicUpdateText("Kiss! <3");
+        }
+        else if (canPlayTTT || completedTTT) {
             // can play / currently playing
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    objects["i" + j + "." + i].image = ["sssn", "sssx", "ssso"][shgicField[j][i]];
-                }
-            }
-
             if (shgicPointsPlayer > 2) shgicUpdateText("You won!");
             else if (shgicPointsEnemy > 2) shgicUpdateText("shgabb won!");
             else shgicUpdateText(shgicPointsPlayer + ":" + shgicPointsEnemy);
         }
         else {
             // the kiss thing (finished playing)
-            shgicUpdateText(autoNotifications % 50 == 49 ? "Kiss! <3" : "Come back tomorrow!");
+            shgicUpdateText("Come back tomorrow!");
         }
 
-        shicTimeSinceLastMove -= tick;
+        // hide/show
+        if (objects["gay"].power == canPlayTTT) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    killAnimation("shgic" + j + "." + i);
+                    objects["i" + j + "." + i].power = canPlayTTT;
+                }
+            }
+            objects["verticalA"].power = objects["verticalB"].power = canPlayTTT;
+            objects["horizontalA"].power = objects["horizontalB"].power = canPlayTTT;
+
+            objects["gay"].power = objects["gay2"].power = !canPlayTTT;
+            createAnimation("gaysex", "gay", (t, d, a) => { t.x = Math.min(0.48, 0.3 + a.dur / 25) }, 10, true);
+            createAnimation("2gay2sex", "gay2", (t, d, a) => { t.x = Math.max(0.52, 0.7 - a.dur / 25) }, 10, true);
+        }
+
+        // other
+        shicTimeSinceLastMove += tick;
         if (shicTimeSinceLastMove < 0.5) objects["colorchangertop"].color = "lightblue";
         else {
             let becomeWhite = Math.floor(((game.stats.playTime * 10) % 255) / 1.5);

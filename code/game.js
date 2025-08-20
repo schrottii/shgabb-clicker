@@ -234,6 +234,14 @@ var game = {
         fish: 0,
         fishweight: 0,
         fishvalue: 0,
+        playTimeFish: 0,
+
+        playTimeMine: 0,
+        mineTiles: 0,
+        mineProgress: 0,
+        mineGS: 0,
+        mineSI: 0,
+        mineCOP: 0,
 
         tttpw: 0,
         tttpl: 0,
@@ -287,6 +295,7 @@ var settings = {
     preferMS: false,
     settingDesc: true,
     popups: true,
+    sidebar: false
 }
 
 // BETA (cheating)

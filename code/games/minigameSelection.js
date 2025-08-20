@@ -24,6 +24,7 @@ scenes["mainmenu"] = new Scene(
         // Buttons
         createImage("gameCD1", 0.05, 0.4, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
         createImage("gameCD2", 0.05, 0.55, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
+        createImage("gameCD3", 0.05, 0.7, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
 
         createButton("gameSel1", 0.05, 0.4, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 1;
@@ -35,21 +36,33 @@ scenes["mainmenu"] = new Scene(
             objects["selgam"].text = unlockedFishing() ? "Selected: Fishgang" : "Locked";
         }, { quadratic: true, centered: true })
 
+        createButton("gameSel3", 0.05, 0.7, 0.1, 0.1, "cd1", () => {
+            selectedMinigame = 3;
+            objects["selgam"].text = unlockedFishing() ? "Selected: The Mine" : "Locked";
+        }, { quadratic: true, centered: true })
+
         createText("gameText1", 0.08, 0.475 - 0.02, "Shgic", { color: "white", size: 32, align: "left" });
         createText("gameText1b", 0.08, 0.475 + 0.02, "Shgac Shgoe", { color: "white", size: 32, align: "left" });
         createText("gameText2", 0.08, 0.625, "Fishgang", { color: "white", size: 32, align: "left" });
+        createText("gameText3", 0.08, 0.775, "The Mine", { color: "white", size: 32, align: "left" });
 
 
 
         createImage("gameCDStart", 0.625, 2, 0.1, 0.1, "cd2", { quadratic: true, centered: true });
         objects["gameCDStart"].status = "none";
         createButton("pressStart", 0.65, 0.75, 0.2, 0.1, "button", () => {
-            if (selectedMinigame != 0) objects["gameCDStart"].status = "move";
+            if (selectedMinigame != 0) {
+                objects["gameCDStart"].status = "move";
+            }
         })
         createText("startText", 0.75, 0.825, "Play Minigame", { size: 32 });
 
         createSquare("CDPlayer1", 0.6, 0.55, 0.05, 0.12, "black");
         createImage("CDPlayer3", 0.6, 0.55, 0.05, 0.17, "cd3");
+
+        // black overlay fade transition
+        createImage("transition", 0, 0, 1, 1, "black");
+        createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop
@@ -68,7 +81,8 @@ scenes["mainmenu"] = new Scene(
             }
         }
 
-        objects["gameText2"].text = unlockedFishing() ? "Fishgang" : "Locked (12 000 HMS)";
+        objects["gameText2"].text = unlockedFishing() ? "Fishgang" : "Locked (5 000 HMS)";
+        objects["gameText3"].text = unlockedMine() ? "The Mine" : "Locked (12 000 HMS)";
 
         objects["aniImage3"].x += 0.001;
         if (objects["aniImage3"].x > 1.2) objects["aniImage3"].x = -0.2;
@@ -82,7 +96,7 @@ scenes["mainmenu"] = new Scene(
         // CD disc stuff
         if (objects["gameCDStart"].status == "none") {
             // Move CD from the case to the right side of the minigame's name
-            for (let i = 1; i < 3; i++) {
+            for (let i = 1; i <= 3; i++) {
                 if (selectedMinigame == i) {
                     if (objects["gameCD" + i].x != 0.25) {
                         objects["gameCD" + i].x = Math.min(0.35, objects["gameCD" + i].x + 0.012);
@@ -102,6 +116,7 @@ scenes["mainmenu"] = new Scene(
             objects["gameCD" + selectedMinigame].y = Math.min(0.75, objects["gameCD" + selectedMinigame].y + 0.02);
 
             if (objects["gameCD" + selectedMinigame].x == 0.625 && objects["gameCD" + selectedMinigame].y == 0.75) {
+                createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 2 }, 0.6, true);
                 objects["gameCDStart"].status = "insert";
             }
         }
@@ -113,6 +128,7 @@ scenes["mainmenu"] = new Scene(
                 // START THE MINIGAME
                 if (selectedMinigame == 1 && unlockedAmeliorer()) loadScene("shgic");
                 else if (selectedMinigame == 2 && unlockedFishing()) loadScene("fishgang");
+                else if (selectedMinigame == 3 && unlockedMine()) loadScene("mine");
                 else {
                     objects["gameCD" + selectedMinigame].x == 0.05
                     objects["gameCDStart"].status = "none";

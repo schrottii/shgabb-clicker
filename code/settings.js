@@ -63,6 +63,7 @@ var settingButtons = [
     new ToggleSetting("gameplay", "toggleConfirm", "confirm", "Confirmation Dialogs", "If this setting is disabled, most confirmation dialogs stop appearing, including Prestige and destroying Artifacts."),
     new ToggleSetting("gameplay", "toggleThreeBars", "threeBars", "Three Bars", "If this setting is disabled, the three bars at the top are hidden. Ineffective before unlocking Sandwiches."),
     new ToggleSetting("gameplay", "togglePreferMS", "preferMS", "Prefer More Shgabb", "When enabled, and trying to buy a Shgabb Upgrade, the game will buy More Shgabb instead if it's cheaper. Works with buy max too."),
+    new ToggleSetting("gameplay", "toggleSidebar", "sidebar", "(Experimental) Sidebar", "The left 20% gets replaced with the Sidebar, offering a constant click button, currency overview and more"),
 
     // design
     new ToggleSetting("design", "toggleBG", "background", "Black Background", "When enabled, the background image gets replaced by a black color. Also active during events."),
@@ -191,6 +192,19 @@ function toggleThreeBars() {
 
 function togglePreferMS() {
     createNotification("Prefer More Shgabb " + (settings.preferMS ? "ON" : "OFF"));
+}
+
+function toggleSidebar() {
+    createNotification("Sidebar " + (settings.sidebar ? "ON" : "OFF"));
+
+    if (settings.sidebar) {
+        ui.SIDEBAR.style.display = "";
+        ui.GAMECONTENT.style.width = "80%";
+    }
+    else {
+        ui.SIDEBAR.style.display = "none";
+        ui.GAMECONTENT.style.width = "100%";
+    }
 }
 
 ///////////////////////////////////

@@ -68,7 +68,7 @@ function unlockedAds() {
 }
 
 function unlockedChengas() {
-    return game.stats.hms >= 5000;
+    return game.stats.hms >= 7000;
 }
 
 
@@ -146,6 +146,7 @@ function adButtonHandler() {
 
             ui.sandwichBar.classList.remove("buffedProgress");
             ui.clickButton.classList.remove("buffedProgress");
+            ui.clickButton2.classList.remove("buffedProgress");
             ui.adButton.innerHTML = "";
             break;
     }
@@ -163,7 +164,7 @@ function adSwitcher() {
             adStatus = "possible";
             ui.adStartButton.innerHTML = "Watch a joke ad to get: " + ads[availableBoost].title + ": " + ads[availableBoost].description;
             if (unlockedChengas()) ui.adButton.innerHTML = cImg("chenga") + game.chenga;
-            else ui.adButton.innerHTML = "HMS 5000";
+            else ui.adButton.innerHTML = "HMS 7000";
         }
         else if (adTime <= 0 && adStatus == "boosted") {
             // Ad is over! (as in, the boost is over. not the video. for that, scroll down to the onended)
@@ -172,6 +173,7 @@ function adSwitcher() {
 
             ui.sandwichBar.classList.remove("buffedProgress");
             ui.clickButton.classList.remove("buffedProgress");
+            ui.clickButton2.classList.remove("buffedProgress");
 
             adStatus = "loaded";
             currentBoost = "none";
@@ -247,6 +249,7 @@ function onAdEnded() {
 
     if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
         ui.clickButton.classList.add("buffedProgress")
+        ui.clickButton2.classList.add("buffedProgress")
     }
     if (currentBoost == "moreSandwiches") {
         ui.sandwichBar.classList.add("buffedProgress")

@@ -12,6 +12,9 @@ var oldTime = 0;
 
 // UI, display, render stuf
 var ui = {
+    SIDEBAR: document.getElementById("SIDEBAR"),
+    GAMECONTENT: document.getElementById("GAMECONTENT"),
+
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
     adBar: document.getElementById("adBar"),
@@ -28,6 +31,7 @@ var ui = {
     // essential displays
     gameTitle: document.getElementById("gametitle"),
     clickButton: document.getElementById("clickButton"),
+    clickButton2: document.getElementById("clickButton2"),
     music: document.getElementById("music"),
     quote: document.getElementById("quote"),
     patchNotes: document.getElementById("patchNotes"),
@@ -56,6 +60,7 @@ var ui = {
 
     topSquare: document.getElementById("topSquare"),
     topSquareDisplay: document.getElementById("topSquareDisplay"),
+    topSquareDisplay2: document.getElementById("topSquareDisplay2"),
 
     // Images of currencies
     swImage: document.getElementById("swImage"),
@@ -89,6 +94,7 @@ var ui = {
     // notifications
     notifications: document.getElementById("notifications"),
     newestNotification: document.getElementById("newestnotif"),
+    newestNotification2: document.getElementById("newestnotif2"),
 
     // Gem offers
     gemOffer1: document.getElementById("gemOffer1"),
@@ -140,6 +146,7 @@ var ui = {
     frWeb: document.getElementById("frWeb"),
     frGalaxy: document.getElementById("frGalaxy"),
     idleModeRender: document.getElementById("idleModeRender"),
+    idleModeRender2: document.getElementById("idleModeRender2"),
 }
 
 // Quotes
@@ -510,6 +517,8 @@ function clickButton(source = "click") {
 
             artifactEvent("onClick", { "multi": clickButtonMulti, "amount": amount });
 
+            gatherMineProgress();
+
             // EVENTS
             if (isEvent("christmas")) {
                 if (Math.random() < 1 / (180 / getCooldown())) {
@@ -622,36 +631,49 @@ window.addEventListener('keydown', function (e) {
     }
 }, true);
 
-function updateTopSquare() {
-    if (settings.topSquare != 1) {
+function updateTopSquare(long = false) {
+    if (settings.topSquare != 1 || false) {
         let render = "";
 
         let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
         if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper", " Bananas"];
 
         render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedSandwiches()) render = render + " " + ui.swAmount.innerHTML.split(currencyNames[1]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedGS()) render = render + " " + ui.gsAmount.innerHTML.split(currencyNames[2]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedSilicone()) render = render + " " + ui.siAmount.innerHTML.split(currencyNames[3]).shift();
+        if (long) render = render + "<br />";
 
         if (settings.topSquare == 0) render = render + "<br />";
 
         if (unlockedGems()) render = render + " " + ui.gemAmount.innerHTML.split(currencyNames[4]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedAmeliorer()) render = render + " " + ui.ameAmount.innerHTML.split(currencyNames[5]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedArtifactUpgrading()) render = render + " " + ui.artifactScrapAmount.innerHTML.split(currencyNames[6]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedCopper()) render = render + " " + ui.copAmount.innerHTML.split(currencyNames[8]).shift();
+        if (long) render = render + "<br />";
 
         if (unlockedBananas()) render = render + " " + ui.bananaAmount.innerHTML.split(currencyNames[9]).shift();
 
-        ui.topSquareDisplay.innerHTML = render;
+        if (!long) {
+            ui.topSquareDisplay.innerHTML = render;
+            updateTopSquare(true);
+        }
+        else ui.topSquareDisplay2.innerHTML = render;
     }
 }
 
@@ -768,6 +790,16 @@ function updateStats() {
         + "<br />Total Fish: " + statLoader("fish")
         + "<br />Total Fish Weight: " + statLoader("fishweight") + " (Best: " + game.bfishweight + ")"
         + "<br />Total Fish Value: " + statLoader("fishvalue") + " (Best: " + game.bfishvalue + ")"
+        + "<br />Total Time: " + (game.stats.playTimeFish > 18000 ? (statLoader("playTimeFish", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeFish"))
+        + "<br />"
+
+        + "<br /><b>The Mine:</b>"
+        + "<br />Tiles walked: " + statLoader("mineTiles")
+        + "<br />Total mining progress: " + statLoader("mineProgress")
+        + "<br />Mined GS: " + statLoader("mineGS")
+        + "<br />Mined Silicone: " + statLoader("mineSI")
+        + "<br />Mined Copper: " + statLoader("mineCOP")
+        + "<br />Total Time: " + (game.stats.playTimeMine > 18000 ? (statLoader("playTimeMine", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeMine"))
         + "<br />"
 
 
@@ -844,25 +876,32 @@ function updateUI() {
     if (game.profile.startDay == "20240100") game.profile.startDay = "20241101";
 
     // Click Button
+    let CBRender;
     if (game.clickCooldown > 0) {
-        ui.clickButton.innerHTML = getArtifact(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
+        CBRender = getArtifact(307).isEquipped() ? ("<img src='images/arti/dice-" + Math.ceil((game.clickCooldown % 0.6) * 10) + ".png' width='32px'>") : game.clickCooldown.toFixed(2);
         ui.clickButton.style["background-color"] = "#01f8fd";
         ui.clickButton.style.backgroundSize = 100 * (game.clickCooldown / clickCooldown) + "% 100%";
+        ui.clickButton2.style["background-color"] = "#01f8fd";
+        ui.clickButton2.style.backgroundSize = 100 * (game.clickCooldown / clickCooldown) + "% 100%";
     }
     else {
         // clickable
         let diceRender = (getArtifact(307).isEquipped() ? ("<img src='images/arti/dice-" + getArtifact(307).getValue(0) + ".png' width='32px'>") : "");
         let gooRender = (getArtifact(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
 
-        ui.clickButton.innerHTML = diceRender + gooRender + "+"
+        CBRender = diceRender + gooRender + "+"
             + (hoodGoo != 0 ? fn(hoodGoo) : fn(calcShgabbClick()))
             + " Shgabb" + diceRender;
 
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
+        ui.clickButton2.style["background-color"] = "#2e269a";
+        ui.clickButton2.style.backgroundSize = "0% 100%";
 
         if (game.idleMode == true && game.idleModeTime >= getCooldown(true)) clickButton("idlemode");
     }
+    ui.clickButton.innerHTML = ui.clickButton2.innerHTML = CBRender;
+
     //ui.cooldownBar.value = game.clickCooldown;
     //ui.cooldownBar.max = getCooldown();
 
@@ -923,7 +962,9 @@ function updateUI() {
         }
         else topNotifsRender = topNotifsRender + (i != settings.topNotifs ? "-<br />" : "-");
     }
+
     ui.newestNotification.innerHTML = topNotifsRender;
+    ui.newestNotification2.innerHTML = topNotifsRender;
 }
 
 // Core
@@ -1203,6 +1244,8 @@ function shgabbClickerLoop(tick) {
     cakeDuration -= time;
     if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
     statIncrease("playTime", time);
+    if (selections[1] == "minigames" && currentScene == "fishgang") statIncrease("playTimeFish", time);
+    if (selections[1] == "minigames" && currentScene == "mine") statIncrease("playTimeMine", time);
 
     for (aqq in game.aeqi) {
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
@@ -1454,6 +1497,7 @@ ui.frGalaxy.style.display = getOrigin() == "galaxy" ? "" : "none";
 images = {
     button: "rough.png",
     empty: "empty.png",
+    black: "minigames/black.png",
 
     minigames: "minigames/selection/minigames.png",
     minigames2: "minigames/selection/minigames2.png",
@@ -1491,6 +1535,20 @@ images = {
     tuna: "minigames/fishgang/fish/tuna.png",
     zander: "minigames/fishgang/fish/zander.png",
     trash: "currencies/artifactscrap.png",
+
+    floor: "minigames/mine/floor.png",
+    floorgs: "minigames/mine/floor_gs.png",
+    floorsi: "minigames/mine/floor_si.png",
+    floorcop: "minigames/mine/floor_cop.png",
+    wall: "minigames/mine/wall.png",
+    transwall: "minigames/mine/transwall.png",
+    wwall: "minigames/mine/water.png",
+
+    shgabb: "currencies/shgabb.png",
+    up: "minigames/mine/up.png",
+    down: "minigames/mine/down.png",
+    left: "minigames/mine/left.png",
+    right: "minigames/mine/right.png",
 }
 
 var GAMELOADED = false;
@@ -1540,7 +1598,8 @@ function shgabbClickerSetup() {
     // Some UI preparations
     gameLoadingPhaseName = "UI preparations";
     ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
-    
+
+    toggleSidebar();
     updateEVERYTHING();
     checkNewDay();
     gameLoadingProgress++;
