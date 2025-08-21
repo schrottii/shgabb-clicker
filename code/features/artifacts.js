@@ -299,9 +299,9 @@ class Artifact {
         }
     }
 
-    render(clickable = true, clg = false) {
+    render(clickable = true, clg = false, width = 50) {
         // what you see is what you get.
-        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: 50%;") + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
+        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: " + width + "%;" + (width < 50 ? " display: inline-block;" : "")) + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
             + (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "")
             + (cursedArtifacts.includes(this.ID) ? "<br><b>[CURSED]</b>" : "")
             + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
@@ -575,6 +575,16 @@ function renderArtifacts() {
     if (renderTheseArtifacts.length > artifactsPerPage) {
         render = render + "<br /><button class='grayButton' onclick='changeArtifactPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
         render = render + "<button class='grayButton' onclick='changeArtifactPage(1)' class='artifactLoadoutButton'>Next Page</button>";
+    }
+
+    if (settings.sidebar) {
+        let sRender = "<div style='color: black'>";
+        for (let aq in game.aeqi) {
+            if (aq % 2 == 0) sRender = sRender + "<br />";
+            sRender = sRender + (getArtifact(game.aeqi[aq]).render(false, false, 45));
+        }
+        sRender = sRender + "</div>";
+        ui.currentArtis.innerHTML = sRender;
     }
 
     return render;

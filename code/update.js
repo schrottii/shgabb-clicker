@@ -2,10 +2,36 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.0";
+const gameVersion  = "4.0.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
+-> Sidebar:
+- Shortened Idle Mode button even more (into just a check/X), put it into same row as click button
+- Changed currencies display (depending on setting: normal, hidden, compact)
+- Added the three bars (hides normal three bars)
+- Added popup notifications
+- Added currently equipped Artifacts
+- Having Sidebar enabled now hides the normal notification area and top currency display
+- It also hides the normal three bars and popups
+- Minigames are now slightly smaller with Sidebar enabled, to avoid going offscreen
+
+-> The Mine:
+- Arrow keys can now be used for moving (space to stop)
+- Hovering the arrows is no longer needed for moving
+- New tile: Web (takes 2s to get out of, rather than 0.4s)
+- Silicone is 2x more common
+- Copper is 5x more common
+- Silicone is worth 4x more
+- Copper is worth 64x more
+- Added notifications when finishing mining
+- Fixed mining progress stat going up when not actively mining
+
+-> Shbook:
+- Featuriary: Added The Mine
+- Currenciary: Moved Pearls
+
+v4.0
 -> The Mine:
 - New minigame/feature, unlocked at HMS 12k
 - Explore the mine and collect resources

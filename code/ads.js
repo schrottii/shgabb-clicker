@@ -145,6 +145,7 @@ function adButtonHandler() {
             adStatus = "loaded";
 
             ui.sandwichBar.classList.remove("buffedProgress");
+            ui.sandwichBar2.classList.remove("buffedProgress");
             ui.clickButton.classList.remove("buffedProgress");
             ui.clickButton2.classList.remove("buffedProgress");
             ui.adButton.innerHTML = "";
@@ -172,6 +173,7 @@ function adSwitcher() {
             adMax = 5;
 
             ui.sandwichBar.classList.remove("buffedProgress");
+            ui.sandwichBar2.classList.remove("buffedProgress");
             ui.clickButton.classList.remove("buffedProgress");
             ui.clickButton2.classList.remove("buffedProgress");
 
@@ -248,11 +250,12 @@ function onAdEnded() {
     console.log(adTime + "==" + adMax)
 
     if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
-        ui.clickButton.classList.add("buffedProgress")
-        ui.clickButton2.classList.add("buffedProgress")
+        ui.clickButton.classList.add("buffedProgress");
+        ui.clickButton2.classList.add("buffedProgress");
     }
     if (currentBoost == "moreSandwiches") {
-        ui.sandwichBar.classList.add("buffedProgress")
+        ui.sandwichBar.classList.add("buffedProgress");
+        ui.sandwichBar2.classList.add("buffedProgress");
     }
 
     // chenga

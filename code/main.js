@@ -19,14 +19,21 @@ var ui = {
     cooldownBar: document.getElementById("cooldownBar"),
     adBar: document.getElementById("adBar"),
     threeBars: document.getElementById("threeBars"),
+    threeBars2: document.getElementById("threeBars2"),
 
     sandwichBar: document.getElementById("sandwichBar"),
+    sandwichBar2: document.getElementById("sandwichBar2"),
     autoBar: document.getElementById("autoBar"),
+    autoBar2: document.getElementById("autoBar2"),
     prestigeBar: document.getElementById("prestigeBar"),
+    prestigeBar2: document.getElementById("prestigeBar2"),
 
     sandwichBarText: document.getElementById("sandwichBarText"),
+    sandwichBarText2: document.getElementById("sandwichBarText2"),
     autoBarText: document.getElementById("autoBarText"),
+    autoBarText2: document.getElementById("autoBarText2"),
     prestigeBarText: document.getElementById("prestigeBarText"),
+    prestigeBarText2: document.getElementById("prestigeBarText2"),
 
     // essential displays
     gameTitle: document.getElementById("gametitle"),
@@ -87,9 +94,13 @@ var ui = {
 
     // New Artifact display thing
     popup: document.getElementById("popup"),
+    popup2: document.getElementById("popup2"),
     popupImage: document.getElementById("popupImage"),
+    popupImage2: document.getElementById("popupImage2"),
     popupName: document.getElementById("popupName"),
+    popupName2: document.getElementById("popupName2"),
     popupText: document.getElementById("popupText"),
+    popupText2: document.getElementById("popupText2"),
 
     // notifications
     notifications: document.getElementById("notifications"),
@@ -147,6 +158,7 @@ var ui = {
     frGalaxy: document.getElementById("frGalaxy"),
     idleModeRender: document.getElementById("idleModeRender"),
     idleModeRender2: document.getElementById("idleModeRender2"),
+    currentArtis: document.getElementById("currentArtis"),
 }
 
 // Quotes
@@ -631,49 +643,74 @@ window.addEventListener('keydown', function (e) {
     }
 }, true);
 
-function updateTopSquare(long = false) {
+function updateTopSquare() {
+    let long = settings.sidebar;
     if (settings.topSquare != 1 || false) {
         let render = "";
 
         let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
         if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper", " Bananas"];
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
         render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
         if (unlockedSandwiches()) render = render + " " + ui.swAmount.innerHTML.split(currencyNames[1]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long) render = render + "<br style='clear: both' />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
         if (unlockedGS()) render = render + " " + ui.gsAmount.innerHTML.split(currencyNames[2]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
         if (unlockedSilicone()) render = render + " " + ui.siAmount.innerHTML.split(currencyNames[3]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long || settings.topSquare == 0) render = render + "<br style='clear: both' />";
 
-        if (settings.topSquare == 0) render = render + "<br />";
-
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
         if (unlockedGems()) render = render + " " + ui.gemAmount.innerHTML.split(currencyNames[4]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
         if (unlockedAmeliorer()) render = render + " " + ui.ameAmount.innerHTML.split(currencyNames[5]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long) render = render + "<br style='clear: both' />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
         if (unlockedArtifactUpgrading()) render = render + " " + ui.artifactScrapAmount.innerHTML.split(currencyNames[6]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
         if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long) render = render + "<br style='clear: both' />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
         if (unlockedCopper()) render = render + " " + ui.copAmount.innerHTML.split(currencyNames[8]).shift();
-        if (long) render = render + "<br />";
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
 
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
         if (unlockedBananas()) render = render + " " + ui.bananaAmount.innerHTML.split(currencyNames[9]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        //if (long) render = render + "<br style='clear: both' />";
 
         if (!long) {
             ui.topSquareDisplay.innerHTML = render;
-            updateTopSquare(true);
+            ui.topSquareDisplay.style.display = "";
+            ui.topSquareDisplay2.style.display = "none";
         }
-        else ui.topSquareDisplay2.innerHTML = render;
+        else {
+            ui.topSquareDisplay2.innerHTML = render;
+            ui.topSquareDisplay.style.display = "none";
+            ui.topSquareDisplay2.style.display = "";
+        }
     }
 }
 
@@ -915,8 +952,11 @@ function updateUI() {
     }
 
     ui.sandwichBar.value = sandwichFreezeTime;
+    ui.sandwichBar2.value = sandwichFreezeTime;
     ui.sandwichBar.max = getFreezeTime();
+    ui.sandwichBar2.max = getFreezeTime();
     ui.sandwichBarText.innerHTML = "<sup>(Fridge)</sup> " + ui.sandwichBar.value.toFixed(1) + "s/" + ui.sandwichBar.max + "s";
+    ui.sandwichBarText2.innerHTML = ui.sandwichBar.value.toFixed(1) + "s/" + ui.sandwichBar.max + "s";
 
     // Ads
     if (unlockedAds() && !settings.noAds) {
@@ -963,8 +1003,16 @@ function updateUI() {
         else topNotifsRender = topNotifsRender + (i != settings.topNotifs ? "-<br />" : "-");
     }
 
-    ui.newestNotification.innerHTML = topNotifsRender;
-    ui.newestNotification2.innerHTML = topNotifsRender;
+    if (settings.sidebar) {
+        ui.newestNotification2.innerHTML = topNotifsRender;
+        ui.newestNotification.style.display = "none";
+        ui.newestNotification2.style.display = "";
+    }
+    else {
+        ui.newestNotification.innerHTML = topNotifsRender;
+        ui.newestNotification.style.display = "";
+        ui.newestNotification2.style.display = "none";
+    }
 }
 
 // Core
@@ -1252,17 +1300,29 @@ function shgabbClickerLoop(tick) {
     }
 
     if (unlockedSandwiches() && settings.threeBars) {
-        ui.threeBars.style.display = "flex";
+        if (settings.sidebar) {
+            ui.threeBars.style.display = "none";
+            ui.threeBars2.style.display = "flex";
+        }
+        else {
+            ui.threeBars.style.display = "flex";
+            ui.threeBars2.style.display = "none";
+        }
 
         ui.autoBar.value = sandwichTime;
+        ui.autoBar2.value = sandwichTime;
         ui.autoBarText.innerHTML = "<sup>(Auto)</sup> " + ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+        ui.autoBarText2.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
 
         ui.prestigeBar.value = game.stats_prestige.playTime;
-        ui.prestigeBar.max = game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
+        ui.prestigeBar2.value = game.stats_prestige.playTime;
+        ui.prestigeBar.max = ui.prestigeBar2.max =  game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
         ui.prestigeBarText.innerHTML = "<sup>(Prestige)</sup> " + ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
+        ui.prestigeBarText2.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
     }
     else {
         ui.threeBars.style.display = "none";
+        ui.threeBars2.style.display = "none";
     }
 
     // Egg Hunt
@@ -1431,7 +1491,7 @@ function hotkeyPreviousSelection() {
     renderAllSelection();
 }
 
-document.addEventListener('keypress', function (e) {
+document.addEventListener('keydown', function (e) {
     if (!hotkeysEnabled) return false;
     if (unlockedArtifacts()) {
         if (e.key == '1') artifactLoadout(0);
@@ -1468,6 +1528,15 @@ document.addEventListener('keypress', function (e) {
     if (e.key == 'c') {
         selections[selectedSelection - 1] = "none";
         renderAllSelection();
+    }
+
+    if (selections[1] == "minigames" && currentScene == "mine") {
+        if (e.key == 'ArrowUp') direction = "up";
+        if (e.key == 'ArrowDown') direction = "down";
+        if (e.key == 'ArrowLeft') direction = "left";
+        if (e.key == 'ArrowRight') direction = "right";
+        if (e.key == ' ') direction = "";
+        e.preventDefault();
     }
     
 }, false);
@@ -1540,6 +1609,7 @@ images = {
     floorgs: "minigames/mine/floor_gs.png",
     floorsi: "minigames/mine/floor_si.png",
     floorcop: "minigames/mine/floor_cop.png",
+    floorweb: "minigames/mine/floorweb.png",
     wall: "minigames/mine/wall.png",
     transwall: "minigames/mine/transwall.png",
     wwall: "minigames/mine/water.png",
@@ -1572,12 +1642,6 @@ function shgabbClickerSetup() {
     GAMENAME = "Minigames";
     FONT = "Rw";
     wggjRunning = false;
-
-    wggjCanvasDesiredSquare = true;
-    wggjCanvasDesiredMobileWidthMulti = 0.96;
-    wggjCanvasDesiredMobileHeightMulti = 0.96 / 1.7777777777777777777777777777778;
-    wggjCanvasDesiredPCWidthMulti = 0.8;
-    wggjCanvasDesiredPCHeightMulti = 0.8 / 1.7777777777777777777777777777778;
 
     wggjLoadImages();
     wggjLoop();

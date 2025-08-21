@@ -91,6 +91,7 @@ July - September 2025:
 3.9
 3.9.1
 4.0
+4.0.1
 
 
 
@@ -2654,3 +2655,31 @@ Version v3.6.1:
 - Moved Chengas unlock from 5k to 7k
 - New Setting: (Experimental) Sidebar
 - Updated WGGJ from v1.2.1 to v1.4
+
+
+
+2025/08/21 v4.0.1:
+-> Sidebar:
+- Shortened Idle Mode button even more (into just a check/X), put it into same row as click button
+- Changed currencies display (depending on setting: normal, hidden, compact)
+- Added the three bars (hides normal three bars)
+- Added popup notifications
+- Added currently equipped Artifacts
+- Having Sidebar enabled now hides the normal notification area and top currency display
+- It also hides the normal three bars and popups
+- Minigames are now slightly smaller with Sidebar enabled, to avoid going offscreen
+
+-> The Mine:
+- Arrow keys can now be used for moving (space to stop)
+- Hovering the arrows is no longer needed for moving
+- New tile: Web (takes 2s to get out of, rather than 0.4s)
+- Silicone is 2x more common
+- Copper is 5x more common
+- Silicone is worth 4x more
+- Copper is worth 64x more
+- Added notifications when finishing mining
+- Fixed mining progress stat going up when not actively mining
+
+-> Shbook:
+- Featuriary: Added The Mine
+- Currenciary: Moved Pearls

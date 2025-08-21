@@ -1,4 +1,4 @@
-// Game made by Schrottii - editing or stealing is prohibited!
+﻿// Game made by Schrottii - editing or stealing is prohibited!
 // Currency file
 
 function getClicks(source = "stats") {
@@ -106,12 +106,17 @@ function produceAutoShgabb() {
 }
 
 function renderIdleMode(short = false) {
-    let render = "<br style='clear:both' /> <button class='clickButton' style='background-color: rgb(0, 0, " + (game.idleMode ? 160 : 80) + ")' onclick='toggleIdleMode()'>";
+    let render = "<button class='clickButton' style='background-color: rgb(0, 0, " + (game.idleMode ? 160 : 80) + ")' onclick='toggleIdleMode()'>";
 
-    render = render + "<b>Idle Mode: " + (game.idleMode == true ? "Enabled" : "Disabled") + "</b>";
-    if (!short) render = render + "<br />Click to toggle:";
-    if (!short) render = render + "<br />Speed: " + getCooldown(game.idleMode).toFixed(2) + "s -> " + getCooldown(!game.idleMode).toFixed(2) + "s";
-    if (game.idleMode && !short) render = render + "<br />Time remaining: " + Math.max(0, sandwichFreezeTime).toFixed(0) + "s / " + getFreezeTime().toFixed(0) + "s";
+    if (!short) {
+        render = render + "<b>Idle Mode: " + (game.idleMode == true ? "Enabled" : "Disabled") + "</b>";
+        render = render + "<br />Click to toggle:";
+        render = render + "<br />Speed: " + getCooldown(game.idleMode).toFixed(2) + "s -> " + getCooldown(!game.idleMode).toFixed(2) + "s";
+        if (game.idleMode) render = render + "<br />Time remaining: " + Math.max(0, sandwichFreezeTime).toFixed(0) + "s / " + getFreezeTime().toFixed(0) + "s";
+    }
+    else {
+        render = render + (game.idleMode == true ? "✓" : "X");
+    }
 
     render = render + "</button>";
 

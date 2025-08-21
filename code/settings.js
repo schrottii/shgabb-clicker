@@ -239,6 +239,7 @@ function toggleCurrenciesDisplay() {
     }
 
     ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
+    ui.topSquareDisplay2.style.display = ["", "none", ""][settings.topSquare];
 
     updateTopSquare();
 }

@@ -10,10 +10,14 @@ function createNotification(text) {
 function createPopup(title, text, img) {
     if (!settings.popups) return false;
 
-    ui.popupText.innerHTML = title;
-    ui.popupImage.src = "images/" + img;
-    ui.popupName.innerHTML = text;
-    ui.popup.style.display = "block";
+    let num = settings.sidebar ? "2" : "";
+    ui.popup.style.display = settings.sidebar ? "none" : "";
+    ui.popup2.style.display = settings.sidebar ? "" : "none";
+
+    ui["popupText" + num].innerHTML = title;
+    ui["popupImage" + num].src = "images/" + img;
+    ui["popupName" + num].innerHTML = text;
+    ui["popup" + num].style.display = "block";
     popupDisplayTimer = 5;
 }
 

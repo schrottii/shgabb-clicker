@@ -167,6 +167,13 @@ function renderAllSelection() {
 
     if (selections[1] == "minigames") {
         if (!wggjRunning) {
+            let ww = settings.sidebar ? 0.95 : 1;
+            wggjCanvasDesiredSquare = true;
+            wggjCanvasDesiredMobileWidthMulti = 0.96 * ww;
+            wggjCanvasDesiredMobileHeightMulti = 0.96 * ww / 1.7777777777777777777777777777778;
+            wggjCanvasDesiredPCWidthMulti = 0.8 * ww;
+            wggjCanvasDesiredPCHeightMulti = 0.8 * ww / 1.7777777777777777777777777777778;
+
             wggjRunning = true;
             wggjLoop();
         }

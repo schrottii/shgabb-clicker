@@ -17,8 +17,10 @@ function randomTile(x = minePosition[0], y = minePosition[1]) {
     if (getSurroundingTiles(x, y).includes("wall") && Math.random() > 0.1) return "wall";
 
     if (Math.random() > 0.999) return "floorgs";
-    if (Math.random() > 0.999) return "floorsi";
-    if (Math.random() > 0.999) return "floorcop";
+    if (Math.random() > 0.998) return "floorsi";
+    if (Math.random() > 0.995) return "floorcop";
+
+    if (Math.random() > 0.995) return "floorweb";
 
     return Math.random() > 0.15 ? "floor" : "wall";
 }
@@ -35,17 +37,23 @@ function getSurroundingTiles(x, y) {
 
 const mineDir = {
     floorgs: ["Golden Shgabb", 40,
-        () => { let amount = game.stats_prestige.gs.div(10); game.gs = game.gs.add(amount); statIncrease("gs", amount); statIncrease("mineGS", 1); }],
+        () => { return game.stats_prestige.gs.div(10); },
+        (amount) => { game.gs = game.gs.add(amount); statIncrease("gs", amount); statIncrease("mineGS", 1); }],
+
     floorsi: ["Silicone", 20,
-        () => { let amount = getSiliconeProduction(true).mul(10); game.si = game.si.add(amount); statIncrease("si", amount); statIncrease("mineSI", 1); }],
+        () => { return getSiliconeProduction(true).mul(40) },
+        (amount) => { game.si = game.si.add(amount); statIncrease("si", amount); statIncrease("mineSI", 1); }],
+
     floorcop: ["Copper", 10,
-        () => { let amount = calcCopper(); game.cop = game.cop.add(amount); statIncrease("cop", amount); statIncrease("mineCOP", 1); }],
+        () => { return calcCopper().mul(64); },
+        (amount) => { game.cop = game.cop.add(amount); statIncrease("cop", amount); statIncrease("mineCOP", 1); }],
 };
 
 var mineProgress = 0;
+var currentlyMining = false;
 
 function gatherMineProgress() {
-    if (unlockedMine()) {
+    if (unlockedMine() && currentlyMining) {
         mineProgress++;
         statIncrease("mineProgress", 1);
     }
@@ -77,22 +85,18 @@ scenes["mine"] = new Scene(
         createButton("up", 1 / 16 * 7, 1 / 8 * 3, 1 / 16, 1 / 8, "up", () => {
             direction = "up";
         });
-        objects["up"].onHover = () => { if (direction == "up" && walkTimer < 0) { walkTimer = 0.4; minePosition[1] -= 1; statIncrease("mineTiles", 1); } }
 
         createButton("down", 1 / 16 * 7, 1 / 8 * 5, 1 / 16, 1 / 8, "down", () => {
             direction = "down";
         });
-        objects["down"].onHover = () => { if (direction == "down" && walkTimer < 0) { walkTimer = 0.4; minePosition[1] += 1; statIncrease("mineTiles", 1); } }
 
         createButton("left", 1 / 16 * 6, 1 / 8 * 4, 1 / 16, 1 / 8, "left", () => {
             direction = "left";
         });
-        objects["left"].onHover = () => { if (direction == "left" && walkTimer < 0) { walkTimer = 0.4; minePosition[0] -= 1; statIncrease("mineTiles", 1); } }
 
         createButton("right", 1 / 16 * 8, 1 / 8 * 4, 1 / 16, 1 / 8, "right", () => {
             direction = "right";
         });
-        objects["right"].onHover = () => { if (direction == "right" && walkTimer < 0) { walkTimer = 0.4; minePosition[0] += 1; statIncrease("mineTiles", 1); } }
 
 
         createSquare("colorchangertop", 0, 0, 1, 0.025, "black");
@@ -129,7 +133,7 @@ scenes["mine"] = new Scene(
             if (tiles[tx] == undefined) tiles[tx] = [];
             for (let ty = -4 + minePosition[1]; ty < -4 + minePosition[1] + 8; ty++) {
                 if (tiles[tx][ty] == undefined) tiles[tx][ty] = randomTile();
-                if (tiles[tx][ty + 1] != undefined && tiles[tx][ty + 1] == "floor" && tiles[tx][ty] == "wall") tiles[tx][ty] = "transwall";
+                if (tiles[tx][ty + 1] != undefined && tiles[tx][ty + 1] != "wall" && tiles[tx][ty + 1] != "transwall" && tiles[tx][ty] == "wall") tiles[tx][ty] = "transwall";
                 objects["tile" + (tx - minePosition[0] +7) + "." + (ty - minePosition[1] +4)].image = tiles[tx][ty];
             }
         }
@@ -144,7 +148,14 @@ scenes["mine"] = new Scene(
         objects["left"].alpha = direction == "left" ? 1 : 0.5;
         objects["right"].alpha = direction == "right" ? 1 : 0.5;
 
+        let moved = false;
+        if (direction == "up"    && walkTimer < 0 && objects["up"].power)    { walkTimer = 0.4; minePosition[1] -= 1; statIncrease("mineTiles", 1); moved = true; };
+        if (direction == "down"  && walkTimer < 0 && objects["down"].power)  { walkTimer = 0.4; minePosition[1] += 1; statIncrease("mineTiles", 1); moved = true; };
+        if (direction == "left"  && walkTimer < 0 && objects["left"].power)  { walkTimer = 0.4; minePosition[0] -= 1; statIncrease("mineTiles", 1); moved = true; };
+        if (direction == "right" && walkTimer < 0 && objects["right"].power) { walkTimer = 0.4; minePosition[0] += 1; statIncrease("mineTiles", 1); moved = true; };
+
         if (mineDir[tiles[minePosition[0]][minePosition[1]]] != undefined) {
+            currentlyMining = true;
             objects["mineButtonText"].text = "Mine " + mineDir[tiles[minePosition[0]][minePosition[1]]][0];
             objects["mineButtonText2"].text = Math.min(mineProgress, mineDir[tiles[minePosition[0]][minePosition[1]]][1]) + "/" + mineDir[tiles[minePosition[0]][minePosition[1]]][1];
 
@@ -154,7 +165,9 @@ scenes["mine"] = new Scene(
 
             if (mineProgress >= mineDir[tiles[minePosition[0]][minePosition[1]]][1]) {
                 // mining is done
-                mineDir[tiles[minePosition[0]][minePosition[1]]][2]();
+                let amount = mineDir[tiles[minePosition[0]][minePosition[1]]][2]();
+                createNotification("Mined " + fn(amount) + " " + mineDir[tiles[minePosition[0]][minePosition[1]]][0]);
+                mineDir[tiles[minePosition[0]][minePosition[1]]][3](amount);
 
                 tiles[minePosition[0]][minePosition[1]] = "floor";
             }
@@ -164,6 +177,9 @@ scenes["mine"] = new Scene(
             objects["mineButtonText"].power = false;
             objects["mineButtonText2"].power = false;
             mineProgress = 0;
+            currentlyMining = false;
+
+            if (moved && tiles[minePosition[0]][minePosition[1]] == "floorweb") walkTimer = 2;
         }
     }
 );
