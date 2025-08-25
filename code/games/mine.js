@@ -19,6 +19,7 @@ function randomTile(x = minePosition[0], y = minePosition[1]) {
     if (Math.random() > 0.999) return "floorgs";
     if (Math.random() > 0.998) return "floorsi";
     if (Math.random() > 0.995) return "floorcop";
+    if (Math.random() > 0.999) return "flooriron";
 
     if (Math.random() > 0.995) return "floorweb";
 
@@ -47,10 +48,15 @@ const mineDir = {
     floorcop: ["Copper", 10,
         () => { return calcCopper().mul(64); },
         (amount) => { game.cop = game.cop.add(amount); statIncrease("cop", amount); statIncrease("mineCOP", 1); }],
+
+    flooriron: ["Iron", 100,
+        () => { return 1; },
+        (amount) => { game.iron += amount; statIncrease("iron", amount); statIncrease("mineIRON", 1); }],
 };
 
 var mineProgress = 0;
 var currentlyMining = false;
+var movs = [0, 0, 0];
 
 function gatherMineProgress() {
     if (unlockedMine() && currentlyMining) {
@@ -63,12 +69,11 @@ scenes["mine"] = new Scene(
     () => {
         // Init
         createSquare("bg", 0, 0, 1, 1, "rgb(40, 40, 40)");
-        createSquare("bg2", 0, 0.1, 1, 0.8, "rgb(220, 220, 220)");
 
         // the children yearn for the mines
-        for (let tx = 0; tx < 16; tx++) {
-            tiles.push([]);
-            for (let ty = 0; ty < 8; ty++) {
+        for (let tx = -1; tx < 17; tx++) {
+            tiles[tx] = [];
+            for (let ty = -1; ty < 9; ty++) {
                 tiles[tx][ty] = randomTile();
                 createButton("tile" + tx + "." + ty, 1 / 16 * tx, 1 / 8 * ty, 1 / 16, 1 / 8, "floor", () => {
 
@@ -105,18 +110,30 @@ scenes["mine"] = new Scene(
         createText("title", 0.08, 0.1, "The Mine", { color: "white", size: 32, align: "left" });
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
+            ui.ironSection.style.display = "none";
             createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
         // mining
-        createButton("mineButton", 0.7, 0.8, 0.25, 0.1, "button", () => {
+        createButton("mineButton", 0.7, 0.8, 0.25, 0.1, "button", (o) => {
+            let clicked = clickButton();
 
+            if (clicked) {
+                createAnimation("mineClick", o, (t, d, a) => { t.h = 0.1 * a.dur / a.maxDur; t.y = 0.85 - t.h / 2 }, 0.33);
+            }
+            else {
+                // click unsuccessful
+                objects[o].image = "rough2";
+                setTimeout(() => objects[o].image = "button", 333);
+            }
         }, { power: false });
         createText("mineButtonText", 0.7 + 0.25 / 2, 0.835, "Mine", { size: 40, power: false })
         createText("mineButtonText2", 0.7 + 0.25 / 2, 0.885, "Mine", { size: 40, power: false })
 
-
+        for (let i = 0; i < 10; i++) {
+            createImage("collecteda" + i, 0.05 + 0.1 * i, 1, 0.1, 0.1, "wall", { quadratic: true, centered: true, alpha: 0 });
+        }
 
 
 
@@ -124,19 +141,21 @@ scenes["mine"] = new Scene(
         // black overlay fade transition
         createImage("transition", 0, 0, 1, 1, "black");
         createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        ui.ironSection.style.display = "";
     },
     (tick) => {
         // Loop
         walkTimer -= tick;
 
-        for (let tx = -7 + minePosition[0]; tx < -7 + minePosition[0] + 16; tx++) {
-            if (tiles[tx] == undefined) tiles[tx] = [];
-            for (let ty = -4 + minePosition[1]; ty < -4 + minePosition[1] + 8; ty++) {
-                if (tiles[tx][ty] == undefined) tiles[tx][ty] = randomTile();
-                if (tiles[tx][ty + 1] != undefined && tiles[tx][ty + 1] != "wall" && tiles[tx][ty + 1] != "transwall" && tiles[tx][ty] == "wall") tiles[tx][ty] = "transwall";
-                objects["tile" + (tx - minePosition[0] +7) + "." + (ty - minePosition[1] +4)].image = tiles[tx][ty];
-            }
+        if (movs[2] > 0) {
+            if (movs[0] > 0) movs[0] = Math.max(movs[0] - tick / movs[2], 0);
+            if (movs[0] < 0) movs[0] = Math.min(movs[0] + tick / movs[2], 0);
+            if (movs[1] > 0) movs[1] = Math.max(movs[1] - tick / movs[2], 0);
+            if (movs[1] < 0) movs[1] = Math.min(movs[1] + tick / movs[2], 0);
+            movs[2] = Math.max(movs[2] - tick, 0);
+            if (movs[2] <= 0) movs = [0, 0, 0];
         }
+        if (movs[2] <= 0) movs = [0, 0, 0];
 
         objects["up"].power = !tiles[minePosition[0]][minePosition[1] - 1].includes("wall");
         objects["down"].power = !tiles[minePosition[0]][minePosition[1] + 1].includes("wall");
@@ -149,9 +168,9 @@ scenes["mine"] = new Scene(
         objects["right"].alpha = direction == "right" ? 1 : 0.5;
 
         let moved = false;
-        if (direction == "up"    && walkTimer < 0 && objects["up"].power)    { walkTimer = 0.4; minePosition[1] -= 1; statIncrease("mineTiles", 1); moved = true; };
-        if (direction == "down"  && walkTimer < 0 && objects["down"].power)  { walkTimer = 0.4; minePosition[1] += 1; statIncrease("mineTiles", 1); moved = true; };
-        if (direction == "left"  && walkTimer < 0 && objects["left"].power)  { walkTimer = 0.4; minePosition[0] -= 1; statIncrease("mineTiles", 1); moved = true; };
+        if (direction == "up" && walkTimer < 0 && objects["up"].power) { walkTimer = 0.4; minePosition[1] -= 1; statIncrease("mineTiles", 1); moved = true; };
+        if (direction == "down" && walkTimer < 0 && objects["down"].power) { walkTimer = 0.4; minePosition[1] += 1; statIncrease("mineTiles", 1); moved = true; };
+        if (direction == "left" && walkTimer < 0 && objects["left"].power) { walkTimer = 0.4; minePosition[0] -= 1; statIncrease("mineTiles", 1); moved = true; };
         if (direction == "right" && walkTimer < 0 && objects["right"].power) { walkTimer = 0.4; minePosition[0] += 1; statIncrease("mineTiles", 1); moved = true; };
 
         if (mineDir[tiles[minePosition[0]][minePosition[1]]] != undefined) {
@@ -169,6 +188,13 @@ scenes["mine"] = new Scene(
                 createNotification("Mined " + fn(amount) + " " + mineDir[tiles[minePosition[0]][minePosition[1]]][0]);
                 mineDir[tiles[minePosition[0]][minePosition[1]]][3](amount);
 
+                for (let i = 0; i < 10; i++) {
+                    objects["collecteda" + i].image = tiles[minePosition[0]][minePosition[1]];
+                    objects["collecteda" + i].y = 1;
+                    objects["collecteda" + i].alpha = 1;
+                    createAnimation("collectedone" + i, "collecteda" + i, (t, d) => { t.y -= d / 4; t.alpha -= d / 2; }, 2000);
+                }
+
                 tiles[minePosition[0]][minePosition[1]] = "floor";
             }
         }
@@ -180,6 +206,28 @@ scenes["mine"] = new Scene(
             currentlyMining = false;
 
             if (moved && tiles[minePosition[0]][minePosition[1]] == "floorweb") walkTimer = 2;
+        }
+
+        // smooth animation yahoo
+        if (direction != "" && moved) {
+            if (movs[2] == 0) {
+                if (direction == "up") movs = [0, -1, walkTimer];
+                if (direction == "down") movs = [0, 1, walkTimer];
+                if (direction == "left") movs = [-1, 0, walkTimer];
+                if (direction == "right") movs = [1, 0, walkTimer];
+            }
+        }
+
+        for (let tx = -8 + minePosition[0]; tx < -7 + minePosition[0] + 17; tx++) {
+            if (tiles[tx] == undefined) tiles[tx] = [];
+            for (let ty = -5 + minePosition[1]; ty < -4 + minePosition[1] + 9; ty++) {
+                if (tiles[tx][ty] == undefined) tiles[tx][ty] = randomTile();
+                if (tiles[tx][ty + 1] != undefined && tiles[tx][ty + 1] != "wall" && tiles[tx][ty + 1] != "transwall" && tiles[tx][ty] == "wall") tiles[tx][ty] = "transwall";
+                objects["tile" + (tx - minePosition[0] + 7) + "." + (ty - minePosition[1] + 4)].image = tiles[tx][ty];
+
+                objects["tile" + (tx - minePosition[0] + 7) + "." + (ty - minePosition[1] + 4)].x = (1 / 16 * ((tx - minePosition[0] + 7) + movs[0]));
+                objects["tile" + (tx - minePosition[0] + 7) + "." + (ty - minePosition[1] + 4)].y = (1 / 8 * ((ty - minePosition[1] + 4) + movs[1]));
+            }
         }
     }
 );

@@ -64,6 +64,8 @@ var ui = {
     bagAmount: document.getElementById("bagAmount"),
     copAmount: document.getElementById("copAmount"),
     pearlAmount: document.getElementById("pearlAmount"),
+    bananaAmount: document.getElementById("bananaAmount"),
+    ironAmount: document.getElementById("ironAmount"),
 
     topSquare: document.getElementById("topSquare"),
     topSquareDisplay: document.getElementById("topSquareDisplay"),
@@ -86,6 +88,7 @@ var ui = {
     copupgradesrender: document.getElementById("copupgradesrender"),
     pearlupgradesrender: document.getElementById("pearlupgradesrender"),
     bananaupgradesrender: document.getElementById("bananaupgradesrender"),
+    ironupgradesrender: document.getElementById("ironupgradesrender"),
 
     // Cheats
     cheatCurrency: document.getElementById("cheatCurrency"),
@@ -144,6 +147,9 @@ var ui = {
     pearlreset: document.getElementById("pearlreset"),
     pearlreset2: document.getElementById("pearlreset2"),
 
+    // iron man vs captain america who will win
+    ironSection: document.getElementById("ironSection"),
+
     // Other
     prestigeButton: document.getElementById("prestigebutton"),
     eventRender: document.getElementById("eventRender"),
@@ -151,7 +157,6 @@ var ui = {
     autoInfo: document.getElementById("autoInfo"),
     gameLoadingText: document.getElementById("gameLoadingText"),
     bananaSection: document.getElementById("bananaSection"),
-    bananaAmount: document.getElementById("bananaAmount"),
     bananaSeedButton: document.getElementById("bananaSeedButton"),
     bananatreesrender: document.getElementById("bananatreesrender"),
     frWeb: document.getElementById("frWeb"),
@@ -576,6 +581,8 @@ function clickButton(source = "click") {
         updateUpgrades();
         renderCurrentEvent();
 
+        if (source != "idlemode") freezeTime();
+        return true;
     }
     else {
         createNotification("Cooldown: " +
@@ -587,9 +594,10 @@ function clickButton(source = "click") {
             summerClicks = 0;
             game.clickCooldown = 60;
         }
-    }
 
-    if (source != "idlemode") freezeTime();
+        if (source != "idlemode") freezeTime();
+        return false;
+    }
 }
 
 var clickCooldown = 5;
@@ -605,6 +613,7 @@ function getCooldown(idleMode = "auto") {
         * (getArtifact(156).isEquipped() ? getArtifact(156).getEffect() : 1)
         * (getArtifact(203).isEquipped() ? 5 : 1)
         * (getArtifact(225).isEquipped() ? 5 : 1)
+        / (currentlyMining == true ? ironUpgrades.ironPickaxes.currentEffect() : 1)
         / (heatMode ? Math.max(1, Math.min(3, Math.log(summerClicks / 22.5))) : 1))
     if (isChallenge(3)) CD = 20;
     if (shgaybbMode) CD = Math.max(2, CD);
@@ -747,6 +756,9 @@ function updateCurrencies() {
 
     if (unlockedBananas()) ui.bananaAmount.innerHTML = cImg("banana") + fn(game.bananas) + " Bananas";
     else ui.bananaAmount.innerHTML = "";
+
+    if (unlockedMine() && ui.ironSection.style.display != "none") ui.ironAmount.innerHTML = cImg("iron") + fn(game.iron) + " Iron Shgabb";
+    else ui.ironAmount.innerHTML = "";
 }
 
 // stats stuff
@@ -983,36 +995,7 @@ function updateUI() {
     if (selection("stats")) updateStats();
 
     // Notifications
-    ui.notifications.innerHTML = "";
-    let n2 = 15;
-    for (n in currentNotifications) {
-        if (n == currentNotifications.length - 1) ui.notifications.innerHTML = ui.notifications.innerHTML + "<b>" + currentNotifications[n] + "</b><br />";
-        else ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n] + "<br />";
-        n2 -= 1;
-    }
-    while (n2 > 0) {
-        ui.notifications.innerHTML = ui.notifications.innerHTML + "<br />";
-        n2 -= 1;
-    }
-
-    let topNotifsRender = "";
-    for (i = 1; i < settings.topNotifs + 1; i++) {
-        if (currentNotifications[(Object.keys(currentNotifications).length - i)] != undefined && currentNotifications[Object.keys(currentNotifications).length - i].substr(0, 10) != "Game saved") {
-            topNotifsRender = topNotifsRender + currentNotifications[Object.keys(currentNotifications).length - i] + (i != settings.topNotifs ? "<br />" : "");
-        }
-        else topNotifsRender = topNotifsRender + (i != settings.topNotifs ? "-<br />" : "-");
-    }
-
-    if (settings.sidebar) {
-        ui.newestNotification2.innerHTML = topNotifsRender;
-        ui.newestNotification.style.display = "none";
-        ui.newestNotification2.style.display = "";
-    }
-    else {
-        ui.newestNotification.innerHTML = topNotifsRender;
-        ui.newestNotification.style.display = "";
-        ui.newestNotification2.style.display = "none";
-    }
+    renderNotifications();
 }
 
 // Core
@@ -1565,6 +1548,7 @@ ui.frGalaxy.style.display = getOrigin() == "galaxy" ? "" : "none";
 // minigames setup WGGJ
 images = {
     button: "rough.png",
+    rough2: "rough2.png",
     empty: "empty.png",
     black: "minigames/black.png",
 
@@ -1609,6 +1593,7 @@ images = {
     floorgs: "minigames/mine/floor_gs.png",
     floorsi: "minigames/mine/floor_si.png",
     floorcop: "minigames/mine/floor_cop.png",
+    flooriron: "minigames/mine/floor_iron.png",
     floorweb: "minigames/mine/floorweb.png",
     wall: "minigames/mine/wall.png",
     transwall: "minigames/mine/transwall.png",

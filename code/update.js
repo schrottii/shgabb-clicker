@@ -2,80 +2,47 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.0.1";
+const gameVersion  = "4.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
--> Sidebar:
-- Shortened Idle Mode button even more (into just a check/X), put it into same row as click button
-- Changed currencies display (depending on setting: normal, hidden, compact)
-- Added the three bars (hides normal three bars)
-- Added popup notifications
-- Added currently equipped Artifacts
-- Having Sidebar enabled now hides the normal notification area and top currency display
-- It also hides the normal three bars and popups
-- Minigames are now slightly smaller with Sidebar enabled, to avoid going offscreen
-
 -> The Mine:
-- Arrow keys can now be used for moving (space to stop)
-- Hovering the arrows is no longer needed for moving
-- New tile: Web (takes 2s to get out of, rather than 0.4s)
-- Silicone is 2x more common
-- Copper is 5x more common
-- Silicone is worth 4x more
-- Copper is worth 64x more
-- Added notifications when finishing mining
-- Fixed mining progress stat going up when not actively mining
+- Added new currency and tile Iron Shgabb, about as common as GS, takes 100 to finish
+- Added smooth moving
+- Mine button is now clickable (acts like the click button), with animations
+- Added animation when mining is complete
 
--> Shbook:
-- Featuriary: Added The Mine
-- Currenciary: Moved Pearls
+-> Iron Shgabb:
+- New currency, unlocked along The Mine (like Pearls)
+- Can be found in The Mine (similar to Pearls in Fishgang)
+- Can be spent on four upgrades:
+- Speed Miner: flat reduces time of Deep Miner (max lvl. 500, as after that it would do nothing)
+- CuFe: get more Copper based on how much Iron Shgabb you have
+- Pickaxes: faster cooldown while mining something (max lvl. 5, x1.5 speed)
+- Copper Miner: base Copper gains get multiplied by how many Copper tiles you mined (max lvl. 1)
+- Added Currenciary entry
 
-v4.0
--> The Mine:
-- New minigame/feature, unlocked at HMS 12k
-- Explore the mine and collect resources
-- Move into the four directions by clicking-hovering
-- There can be walls and water
-- To mine something, walk on it, and then click the click button or get auto prod x times
-- Golden Shgabb: 40, previous Prestige GS / 10
-- Silicone Shgabb: 20, click Silicone * 10
-- Copper Shgabb: 10, Copper worth one click
-- Added stats: time, tiles walked, total progress, GS, Silicone, Copper
-
--> Minigames:
-- New Minigame (12k): The Mine
-- Graphical improvements for Shgic and Fishgang (see below)
-- Added black fade transitions between the minigames
-
--> Shgic:
-- Added a fade in animation when placing Xs and Os
-- Added a delay before the enemy plays (no longer instant)
-- Added a delay before board gets cleared
-- Re-added the infamous kiss animation, now auto save independent, much faster and smoother
-- Fixed top and bottom bar color change being inverted (light blue when idle, rather than after clicking)
-
--> Fishgang:
-- Moved Fishgang unlock from 12k to 5k
-- Added fade in/out animation for fish/trash images
-- Gave Bobby more meds and animations
-- Slider now changes color according to the 4 quarters (yellow, orange, red, blue)
-- Increased size of Throw, Trash, Fish and Value texts
-- Reduced PFP size
-- Level up bar: light blue -> dark blue
-- Level up text: dark blue -> white
-- Added time stat (sadly not retroactive)
+-> Settings:
+- Added sections (like with stats or player profile)
+- Reworked design of buttons, with new colors (blue -> dark gray/white) and round border
+- All Settings in a row now have the same height
+- New Setting: Sidebar Width (19%, 24%, 29%, 34%, 4%, 9%, 14%)
+- Reworked Setting rendering code
 
 -> Sidebar:
-- Experimental new feature (must be enabled by Setting)
-- Takes up the left 20% of the screen, the rest gets reduced to 80%
-- Always on the screen, no scrolling
-- Contains click button, Idle Mode, currencies and notifications
+- It is no longer considered experimental
+- Popups disappear after the usual amount of time
+- Removed "Sidebar" text from the top
+- Its width can be adjusted with the new Setting (default is still 19%)
+- Reduced empty space
+
+-> Artifacts:
+- Stabilized Boost Filters for Artifacts that change what they boost
+- Fixed Snake Oil Salesman issue
 
 -> Other:
-- Moved Chengas unlock from 5k to 7k
-- New Setting: (Experimental) Sidebar
-- Updated WGGJ from v1.2.1 to v1.4
+- New colors for Améliorer convert buttons
+- Increased size of Player Profile
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

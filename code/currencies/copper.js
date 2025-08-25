@@ -6,11 +6,12 @@ function unlockedCopper() {
 }
 
 function calcCopper() {
-    return new Decimal(game.stats.copClicks)
+    return new Decimal(game.stats.copClicks * (ironUpgrades.ironCopperMiner.currentLevel() > 0 ? game.stats.mineCOP : 1))
         .mul(copperShgabbUpgrades.moreCopper.currentEffect())
         .mul(ameliorerUpgrades.copperBoost.currentEffect())
         .mul(ameliorerUpgrades.tiersBoostCopper.currentEffect())
         .mul(shgabbUpgrades.deepMiner.currentEffect())
+        .mul(ironUpgrades.ironCuFe.currentEffect())
         .mul(getArtifactsSimpleBoost("cop"))
         .ceil();
 }

@@ -23,7 +23,41 @@ function createPopup(title, text, img) {
 
 function tickPopup(time) {
     popupDisplayTimer -= time;
-    if (popupDisplayTimer <= 0 && ui.popup.style.display != "none") {
+    if (popupDisplayTimer <= 0 && (ui.popup.style.display != "none" || ui.popup2.style.display != "none")) {
         ui.popup.style.display = "none";
+        ui.popup2.style.display = "none";
+    }
+}
+
+function renderNotifications() {
+    ui.notifications.innerHTML = "";
+    let n2 = 15;
+    for (n in currentNotifications) {
+        if (n == currentNotifications.length - 1) ui.notifications.innerHTML = ui.notifications.innerHTML + "<b>" + currentNotifications[n] + "</b><br />";
+        else ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n] + "<br />";
+        n2 -= 1;
+    }
+    while (n2 > 0) {
+        ui.notifications.innerHTML = ui.notifications.innerHTML + "<br />";
+        n2 -= 1;
+    }
+
+    let topNotifsRender = "";
+    for (i = 1; i < settings.topNotifs + 1; i++) {
+        if (currentNotifications[(Object.keys(currentNotifications).length - i)] != undefined && currentNotifications[Object.keys(currentNotifications).length - i].substr(0, 10) != "Game saved") {
+            topNotifsRender = topNotifsRender + currentNotifications[Object.keys(currentNotifications).length - i] + (i != settings.topNotifs ? "<br />" : "");
+        }
+        else topNotifsRender = topNotifsRender + (i != settings.topNotifs ? "-<br />" : "-");
+    }
+
+    if (settings.sidebar) {
+        ui.newestNotification2.innerHTML = topNotifsRender;
+        ui.newestNotification.style.display = "none";
+        ui.newestNotification2.style.display = "";
+    }
+    else {
+        ui.newestNotification.innerHTML = topNotifsRender;
+        ui.newestNotification.style.display = "";
+        ui.newestNotification2.style.display = "none";
     }
 }

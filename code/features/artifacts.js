@@ -1362,7 +1362,7 @@ var artifacts = [
             onTimerZero: () => {
                 getArtifact(228).boost = "clickshgabb";
             },
-            filter: ["autoshgabb"]
+            filter: ["autoshgabb", "clickshgabb"]
         }),
 
     new Artifact(229, 2, 4, "Amulet of Ore Rush", "amulet.png",
@@ -1413,7 +1413,7 @@ var artifacts = [
                 getArtifact(233).boost = "clickshgabb";
                 getArtifact(233).amount = 8 * level;
             },
-            filter: ["bags"]
+            filter: ["bags", "clickshgabb"]
         }),
 
     new Artifact(234, 2, 3, "Amulet of Slowwriting", "amulet.png",
@@ -1486,7 +1486,8 @@ var artifacts = [
     new Artifact(304, 3, 2, "Silicone implants", "implants.png",
         { // has outside GetArtifact
             desc: level => "Completely stops Silicone production, but its effects are +" + (100 + 100 * level) + "%",
-            simpleBoost: ["si", level => 0]
+            simpleBoost: ["si", level => 0],
+            filter: ["gs"]
         }),
 
     new Artifact(305, 3, 1, "Sosnog", "sosnog.png",
@@ -1619,7 +1620,8 @@ var artifacts = [
                 getArtifact(317).increaseValue(1);
                 if (getArtifact(317).getValue() >= 7) getArtifact(317).resetValue();
                 updateArtifacts();
-            }
+            },
+            filter: ["si", "sw"]
         }),
 
     new Artifact(318, 3, 1, "Shgabb's Fart", "fart.png",
@@ -1744,7 +1746,7 @@ var artifacts = [
                     getArtifact(403).amount = (level) => 1.25;
                 }
             },
-            filter: ["shgabb"]
+            filter: ["shgabb", "clickspeed"]
         }),
 
     new Artifact(404, 4, 4, "Snake Oil Salesman", "snakeoilsalesman.png",
@@ -1752,7 +1754,11 @@ var artifacts = [
             desc: level => "Buy my amazing products for only " + (level * 2) + " Gems/offer! (20% chance/second)",
             simpleBoost: ["shgabb", 1],
             onAuto: (level) => {
-                if (Math.random() >= 0.8) {
+                if (currentGems() < level * 2) {
+                    getArtifact(404).boost = "shgabb";
+                    getArtifact(404).amount = 1;
+                }
+                else if (Math.random() >= 0.8) {
                     game.gems -= level * 2;
 
                     if (Math.random() <= 0.25) {
@@ -1781,10 +1787,6 @@ var artifacts = [
                     }
 
                     updateArtifacts();
-                }
-                else if (currentGems() < level * 2) {
-                    getArtifact(404).boost = "shgabb";
-                    getArtifact(404).amount = 1;
                 }
             },
             filter: ["shgabb", "sw", "gemchance", "si", "gems", "cop"]

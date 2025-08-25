@@ -388,6 +388,7 @@ progress {
 .ameliorerButton {
     width: 24%;
     min-height: 48px;
+    color: rgb(240, 240, 255);
 }
 
 .bananaButton {
@@ -569,18 +570,17 @@ progress {
     }
 
 .settingButton, .settingButton2 {
-    background-color: darkblue;
-    color: #01f8fd;
-    border-color: rgb(6, 6, 170);
-    border: 4px solid rgb(6, 6, 170);
-    font-size: 20px;
+    background-color: rgb(20, 20, 30);
+    color: rgb(240, 240, 255);
+    border: 4px solid rgb(40, 40, 60);
+    border-radius: 12px;
+    font-size: 24px;
     text-align: center;
     font-family: Rw;
     margin: 2px 2px 2px 2px;
+    padding: 4px 8px 4px 8px;
     width: 48%;
     vertical-align: top;
-    min-height: 78px;
-    position: sticky;
 }
 
     .settingButton:hover {
@@ -599,20 +599,20 @@ progress {
 }
 
 .playerProfile {
-    width: 100%;
+    width: 98%;
     text-align: center;
     position: sticky;
 }
 
 @media only screen and (min-width: 768px) {
     .playerProfile {
-        width: 67%;
+        width: 86%;
     }
 }
 
 @media only screen and (min-width: 1280px) {
     .playerProfile {
-        width: 50%;
+        width: 74%;
     }
 }
 

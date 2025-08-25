@@ -39,6 +39,7 @@ var game = {
     bananas: 0,
     bananaseeds: 0,
     bananatrees: [],
+    iron: 0,
 
     // event currencies / event stuff
     gifts: 0,
@@ -194,6 +195,12 @@ var game = {
         bananaChance: 0,
         banSw: 0,
         banGS: 0,
+
+        // Iron
+        ironSpeedMiner: 0,
+        ironCuFe: 0,
+        ironPickaxes: 0,
+        ironCopperMiner: 0,
     },
 
     // stats (all time)
@@ -221,6 +228,7 @@ var game = {
         bananas: 0,
         bananaseeds: 0,
         bananatrees: 0,
+        iron: 0,
 
         gifts: 0,
         cakes: 0,
@@ -242,6 +250,7 @@ var game = {
         mineGS: 0,
         mineSI: 0,
         mineCOP: 0,
+        mineIRON: 0,
 
         tttpw: 0,
         tttpl: 0,
@@ -295,7 +304,8 @@ var settings = {
     preferMS: false,
     settingDesc: true,
     popups: true,
-    sidebar: false
+    sidebar: false,
+    sidebarWidth: 19,
 }
 
 // BETA (cheating)

@@ -164,6 +164,7 @@ function renderAllSelection() {
     if (selections[2] == "playerprofile") renderPlayerProfile();
     renderShbook();
     if (selections[0] == "shgabb") renderIdleMode();
+    if (selections[2] == "settings") renderSettings();
 
     if (selections[1] == "minigames") {
         if (!wggjRunning) {

@@ -302,6 +302,8 @@ function updateUpgrades() {
     ui.pearlupgradesrender.innerHTML = renderUpgrades(pearlUpgrades);
 
     ui.bananaupgradesrender.innerHTML = renderUpgrades(bananaUpgrades);
+
+    ui.ironupgradesrender.innerHTML = renderUpgrades(ironUpgrades);
 }
 
 // classes for other currencies
@@ -369,6 +371,14 @@ class BananaUpgrade extends Upgrade {
     }
 }
 
+class IronUpgrade extends Upgrade {
+    constructor(ID, name, description, price, effect, config) {
+        super(ID, name, description, price, effect, config);
+        this.currency = "iron";
+        this.type = "ironUpgrades";
+    }
+}
+
 var shgabbUpgrades = {                                                                 
     moreShgabb: new Upgrade("moreShgabb", "More Shgabb", "Get more Shgabb per click, and unlock new content.", level => new Decimal(1).max(level / 25).mul(2).mul(level).add(2).mul(new Decimal(1.01).pow(level - 500).max(1)), level => level, { prefix: "+", suffix: " Shgabb" }),
     shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 10 * Math.max(1, level / 4) + 5, level => (level / 10), { maxLevel: 20, prefix: "-", suffix: "s" }),
@@ -382,7 +392,7 @@ var shgabbUpgrades = {
     critBoost: new Upgrade("critBoost", "Crit. Boost", "Increase the strength of critical hits", level => level * 25 * Math.max(1, level / 2) + 50 * (level > 19 ? Math.pow(1.75, level - 19) : 1), level => 3 + (level / 10), { maxLevel: 20, prefix: "x", unlock: () => game.stats.hms >= 70 && !isChallenge(1) }),
 
     bomblike2: new Upgrade("bomblike2", "Bomblike 2", "Get even more Shgabb", level => new Decimal(1e5).pow(level).mul(1e60), level => new Decimal(3).pow(level), { maxLevel: 30, prefix: "x", unlock: () => game.stats.hms >= 10000 && !isChallenge(1) }),
-    deepMiner: new Upgrade("deepMiner", "Deep Miner", "Get more Copper, as well as +1% GS per level (multiplicative). Every level takes 10 minutes.", level => game.stats_prestige.playTime / 600 >= (level + 1) ? new Decimal(1e10).pow(level).mul(1e50) : new Decimal("1e100").pow(level).mul("1e500"), level => new Decimal(4).pow(level), { maxLevel: 50, prefix: "x", unlock: () => game.stats.hms >= 12000 && !isChallenge(1), current: level => "x" + fn(new Decimal(1.01).pow(level)) + " GS" }),
+    deepMiner: new Upgrade("deepMiner", "Deep Miner", "Get more Copper, as well as +1% GS per level (multiplicative). Every level takes 10 minutes.", level => (game.stats_prestige.playTime / 600) + (ironUpgrades.ironSpeedMiner.currentEffect() / 10) >= (level + 1) ? new Decimal(1e10).pow(level).mul(1e50) : new Decimal("1e100").pow(level).mul("1e500"), level => new Decimal(4).pow(level), { maxLevel: 50, prefix: "x", unlock: () => game.stats.hms >= 12000 && !isChallenge(1), current: level => "x" + fn(new Decimal(1.01).pow(level)) + " GS" }),
 }
 
 var sandwichUpgrades = {
@@ -487,4 +497,11 @@ var bananaUpgrades = {
     bananaChance: new BananaUpgrade("bananaChance", "Banana Chance", "Every click, there is a chance for every tree to produce Bananas. This upgrade increases that chance.", level => Math.pow(2, level + 4), level => level + 1, { maxLevel: 9, suffix: "% chance" }),
     banSw: new BananaUpgrade("banSw", "More Sandwiches", "Get more Sandwiches", level => 10 * Math.pow(level + 1, 1.08), level => 1 + (level / 10), { prefix: "x" }),
     banGS: new BananaUpgrade("banGS", "Wisdomnana", "Increases GS gain for every Banana that can be claimed", level => 100 * level + 200, level => 0.01 * level, { prefix: "x", suffix: "/Banana", current: level => "x" + fn(0.01 * level * calcClaimableBananas()) })
+}
+
+var ironUpgrades = {
+    ironSpeedMiner: new IronUpgrade("ironSpeedMiner", "Speed Miner", "Reduces time of Deep Miner by 1 minute per level", level => 12 + 8 * level, level => level, { prefix: "-", effectMulti: 10, suffix: "s", maxLevel: 500 }),
+    ironCuFe: new IronUpgrade("ironCuFe", "CuFe", "Get more Copper based on stored Iron Shgabb", level => Math.pow(2, level + 2), level => Math.max(1, game.iron * level), { prefix: "x" }),
+    ironPickaxes: new IronUpgrade("ironPickaxes", "Pickaxes", "Faster clicks when mining something", level => 30 + level * 20, level => 1 + level / 10, { maxLevel: 5, prefix: "/" }),
+    ironCopperMiner: new IronUpgrade("ironCopperMiner", "Copper Miner", "Collected Copper counts like Copper clicks, but multiplied", level => 64, level => 0, { maxLevel: 1 }),
 }

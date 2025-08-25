@@ -23,10 +23,10 @@ class Setting {
         return false;
     }
 
-    render() {
-        return `<button onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` +
-            `<b><u style="color: white">` + this.title + `</u></b><br />`
-            + (settings.settingDesc ? (`<span style="font-size: 14px; line-height: 0.5;">` + this.getDescription() + `</span><hr />`) : ``)
+    render(count) {
+        return `<button id="set` + count + `" onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` +
+            `<b><u style="color: white; text-underline-offset: 4px;">` + this.title + `</u></b><br />`
+            + (settings.settingDesc ? (`<span style="font-size: 16px;">` + this.getDescription() + `</span><hr />`) : ``)
             + this.getCurrentEffect() + `</button>`;
     }
 }
@@ -49,6 +49,7 @@ class ToggleSetting extends Setting {
 // VARIABLES
 const settingSections = ["gameplay", "design", "audio", "save"];
 const settingSectionsDisplay = ["Gameplay", "Design", "Audio", "Savefile"];
+var currentSettingSection = 0;
 
 // ALL THE SETTINGS
 var settingButtons = [
@@ -63,7 +64,9 @@ var settingButtons = [
     new ToggleSetting("gameplay", "toggleConfirm", "confirm", "Confirmation Dialogs", "If this setting is disabled, most confirmation dialogs stop appearing, including Prestige and destroying Artifacts."),
     new ToggleSetting("gameplay", "toggleThreeBars", "threeBars", "Three Bars", "If this setting is disabled, the three bars at the top are hidden. Ineffective before unlocking Sandwiches."),
     new ToggleSetting("gameplay", "togglePreferMS", "preferMS", "Prefer More Shgabb", "When enabled, and trying to buy a Shgabb Upgrade, the game will buy More Shgabb instead if it's cheaper. Works with buy max too."),
-    new ToggleSetting("gameplay", "toggleSidebar", "sidebar", "(Experimental) Sidebar", "The left 20% gets replaced with the Sidebar, offering a constant click button, currency overview and more"),
+    new ToggleSetting("gameplay", "toggleSidebar", "sidebar", "Sidebar", "The left side gets replaced with the Sidebar, offering a constant click button, currency overview and more"),
+    new Setting("gameplay", "adjustSidebarWidth", "Sidebar Width", "Change size of the sidebar", () => "Current: " + settings.sidebarWidth),
+
 
     // design
     new ToggleSetting("design", "toggleBG", "background", "Black Background", "When enabled, the background image gets replaced by a black color. Also active during events."),
@@ -87,10 +90,10 @@ var settingButtons = [
     new Setting("save", "importButton", "Import Game", "[IMPORT - CODE] Import a savefile, obtained from the Export Game setting.", ""),
     new Setting("save", "createBackup", "Create Backup", "[EXPORT - BACKUP] Create an additional save in the cache, independent from the normal save.", ""),
     new Setting("save", "loadBackup", "Load Backup", "[IMPORT - BACKUP] Load the additional cached backup, that you created with the Create Backup setting.", () => localStorage.getItem("shgabbBackup") != null ? "Exists" : "Does not exist"),
-    new Setting("save", "exportToFile", "Export to file", "[EXPORT - FILE] Save to a .txt file", ""),
-    new Setting("save", "importFromFile", "Import from file", `[IMPORT - FILE] Load the .txt file. Select the .txt file with the button below, then click this to load it.`, () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
     new Setting("save", "manualSave", "Save", "Saves the game, like auto save (cache). Does not affect the clipboard or anything else.", ""),
     new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)!", ""),
+    new Setting("save", "exportToFile", "Export to file", "[EXPORT - FILE] Save to a .txt file", ""),
+    new Setting("save", "importFromFile", "Import from file", `[IMPORT - FILE] Load the .txt file. Select the .txt file with the button below, then click this to load it.`, () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
     new Setting("save", "redeemCode", "Redeem Code", "Use this to import a special gift from Schrottii. They are given out extremely rarely.", ""),
     new Setting("save", "exportSettings", "Export Settings", "[EXPORT - SETTINGS CODE] Copy the a code for settings to the clipboard. Store it somewhere and use it to load this set of settings later.", ""),
     new Setting("save", "importSettings", "Import Settings", "[IMPORT - SETTINGS CODE] Import a settings code, obtained from the Export Settings setting.", ""),
@@ -98,29 +101,51 @@ var settingButtons = [
 
 // GENERAL SETTING FUNCTIONS
 function onSettingClick(toggle) {
-    if(toggle != "false") settings[toggle] = !settings[toggle];
+    if (toggle != "false") settings[toggle] = !settings[toggle];
+}
+
+function settingsSet(r) {
+    currentSettingSection = r;
+    renderSettings();
 }
 
 function renderSettings() {
     let render = "";
-    let sortedSettings;
+    let counter = 0;
 
-    for (se in settingSections) {
-        sortedSettings = [];
-        render = render + "<h3>" + settingSectionsDisplay[se] + "</h3>";
-
-        for (b in settingButtons) {
-            if (settingButtons[b].category == settingSections[se]) sortedSettings.push(settingButtons[b]);
-        }
-        for (b in sortedSettings) {
-            render = render + sortedSettings[b].render();
-            if (sortedSettings[b].title == "Import from file") render = render + `<br><input id="myFile" type="file"><br>`;
-        }
-
-        if (settingSections[se] == "design") render = render + "<br />" + upgradeColorsRender;
+    for (let r in settingSections) {
+        render = render + `<button class="grayButton" style="background-color: ` + (currentSettingSection == r ? "yellow" : "white") + `" onclick="settingsSet(` + r + `)">` + settingSectionsDisplay[r] + `</button>`;
     }
 
+    render = render + "<br /><h3>" + settingSectionsDisplay[currentSettingSection] + "</h3>";
+
+    for (let s in settingButtons) {
+        if (settingButtons[s].category == settingSections[currentSettingSection]) {
+            render = render + settingButtons[s].render(counter);
+            counter++;
+
+            if (settingButtons[s].title == "Import from file") render = render + `<br style='clear: both' /><input id="myFile" type="file"><br style='clear: both' />`;
+        }
+    }
+    if (settingSections[currentSettingSection] == "design") render = render + "<br style='clear: both' />" + upgradeColorsRender;
+
     ui.settings.innerHTML = render;
+
+    let sCount = 0;
+    let height = 0;
+    for (let s = 0; s < counter; s++) {
+        height = Math.max(height, document.getElementById("set" + s).clientHeight);
+        sCount = sCount + 1;
+
+        if (sCount == 4 || s == counter - 1) {
+            for (let ss = s; ss > s - sCount; ss--) {
+                document.getElementById("set" + ss).style.height = height + "px";
+            }
+
+            sCount = 0;
+            height = 0;
+        }
+    }
 }
 
 ///////////////////////////////////
@@ -199,11 +224,47 @@ function toggleSidebar() {
 
     if (settings.sidebar) {
         ui.SIDEBAR.style.display = "";
-        ui.GAMECONTENT.style.width = "80%";
+        ui.SIDEBAR.style.width = settings.sidebarWidth + "%";
+        changeSidebarWidth();
     }
     else {
         ui.SIDEBAR.style.display = "none";
         ui.GAMECONTENT.style.width = "100%";
+    }
+}
+
+function adjustSidebarWidth() {
+    switch (settings.sidebarWidth) {
+        case 19:
+            settings.sidebarWidth = 24;
+            break;
+        case 24:
+            settings.sidebarWidth = 29;
+            break;
+        case 29:
+            settings.sidebarWidth = 34;
+            break;
+        case 34:
+            settings.sidebarWidth = 4;
+            break;
+        case 4:
+            settings.sidebarWidth = 9;
+            break;
+        case 9:
+            settings.sidebarWidth = 14;
+            break;
+        case 14:
+            settings.sidebarWidth = 19;
+            break;
+    }
+    ui.SIDEBAR.style.width = settings.sidebarWidth + "%";
+
+    changeSidebarWidth();
+}
+
+function changeSidebarWidth() {
+    if (settings.sidebar) {
+        ui.GAMECONTENT.style.width = (99 - settings.sidebarWidth) + "%";
     }
 }
 
