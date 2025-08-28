@@ -335,7 +335,7 @@ scenes["shgic"] = new Scene(
         createText("title", 0.08, 0.1, "Shgic Shgac Shgoe", { color: "white", size: 32, align: "left" });
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
-            createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            createAnimation("trans2b", "transition2", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
@@ -360,8 +360,8 @@ scenes["shgic"] = new Scene(
         createImage("gay2", 0.7, 0.45, 0.1, 0.1, "ssso", { power: false, centered: true });
 
         // black overlay fade transition
-        createImage("transition", 0, 0, 1, 1, "black");
-        createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        createImage("transition2", 0, 0, 1, 1, "black");
+        createAnimation("trans2", "transition2", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop

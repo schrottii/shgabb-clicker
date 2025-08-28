@@ -128,7 +128,7 @@ scenes["fishgang"] = new Scene(
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
             ui.pearlSection.style.display = "none";
-            createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            createAnimation("trans3b", "transition3", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
@@ -226,8 +226,8 @@ scenes["fishgang"] = new Scene(
         ui.pearlSection.style.display = "";
 
         // black overlay fade transition
-        createImage("transition", 0, 0, 1, 1, "black");
-        createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        createImage("transition3", 0, 0, 1, 1, "black");
+        createAnimation("trans3", "transition3", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
     },
     (tick) => {
         // Loop

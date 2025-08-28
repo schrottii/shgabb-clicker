@@ -2,10 +2,17 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.1";
+const gameVersion  = "4.1.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
+- Reduced costs of Iron upgrades (except CuFe)
+- Total Pearls, Total Iron and Mined Iron stats are now displayed
+- Moved Chengas and Etenvs stats
+- Added Gem Storage section header
+- Updated WGGJ from v1.4 to v1.4.1 (fixing a mobile tap issue)
+
+v4.1
 -> The Mine:
 - Added new currency and tile Iron Shgabb, about as common as GS, takes 100 to finish
 - Added smooth moving

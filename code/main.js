@@ -808,13 +808,15 @@ function updateStats() {
         + "<br />Total Artifact Scrap: " + statLoader("artifactScrap")
         + "<br />Total Améliorer: " + statLoader("ame")
         + "<br />Total Amess: " + statLoader("amess")
+        + "<br />Total Pearls: " + calcPearls()
+        + "<br />Total Chengas: " + statLoader("chenga")
         + "<br />Total Bags: " + statLoader("bags")
         + "<br />Total Copper Shgabb: " + statLoader("cop")
         + "<br />Total Copper Clicks: " + statLoader("copClicks")
-        + "<br />Total Chengas: " + statLoader("chenga")
+        + "<br />Total Etenvs: " + statLoader("etenvs")
+        + "<br />Total Iron: " + statLoader("iron")
         + "<br />Total Bananas: " + statLoader("bananas")
         + "<br />Total Banana Seeds: " + statLoader("bananaseeds")
-        + "<br />Total Etenvs: " + statLoader("etenvs")
         + "<br />"
 
         + "<br /><b>Events:</b>"
@@ -848,6 +850,7 @@ function updateStats() {
         + "<br />Mined GS: " + statLoader("mineGS")
         + "<br />Mined Silicone: " + statLoader("mineSI")
         + "<br />Mined Copper: " + statLoader("mineCOP")
+        + "<br />Mined Iron: " + statLoader("mineIRON")
         + "<br />Total Time: " + (game.stats.playTimeMine > 18000 ? (statLoader("playTimeMine", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeMine"))
         + "<br />"
 

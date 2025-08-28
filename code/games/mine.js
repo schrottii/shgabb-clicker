@@ -111,7 +111,7 @@ scenes["mine"] = new Scene(
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
             ui.ironSection.style.display = "none";
-            createAnimation("trans", "transition", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
+            createAnimation("trans4b", "transition4", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
@@ -139,8 +139,8 @@ scenes["mine"] = new Scene(
 
 
         // black overlay fade transition
-        createImage("transition", 0, 0, 1, 1, "black");
-        createAnimation("trans", "transition", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
+        createImage("transition4", 0, 0, 1, 1, "black");
+        createAnimation("trans4", "transition4", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
         ui.ironSection.style.display = "";
     },
     (tick) => {

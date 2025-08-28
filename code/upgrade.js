@@ -500,8 +500,8 @@ var bananaUpgrades = {
 }
 
 var ironUpgrades = {
-    ironSpeedMiner: new IronUpgrade("ironSpeedMiner", "Speed Miner", "Reduces time of Deep Miner by 1 minute per level", level => 12 + 8 * level, level => level, { prefix: "-", effectMulti: 10, suffix: "s", maxLevel: 500 }),
+    ironSpeedMiner: new IronUpgrade("ironSpeedMiner", "Speed Miner", "Reduces time of Deep Miner by 1 minute per level", level => 10 + 5 * level, level => level, { prefix: "-", effectMulti: 10, suffix: "s", maxLevel: 500 }),
     ironCuFe: new IronUpgrade("ironCuFe", "CuFe", "Get more Copper based on stored Iron Shgabb", level => Math.pow(2, level + 2), level => Math.max(1, game.iron * level), { prefix: "x" }),
-    ironPickaxes: new IronUpgrade("ironPickaxes", "Pickaxes", "Faster clicks when mining something", level => 30 + level * 20, level => 1 + level / 10, { maxLevel: 5, prefix: "/" }),
-    ironCopperMiner: new IronUpgrade("ironCopperMiner", "Copper Miner", "Collected Copper counts like Copper clicks, but multiplied", level => 64, level => 0, { maxLevel: 1 }),
+    ironPickaxes: new IronUpgrade("ironPickaxes", "Pickaxes", "Faster clicks when mining something", level => 15 + level * 10, level => 1 + level / 10, { maxLevel: 5, prefix: "/" }),
+    ironCopperMiner: new IronUpgrade("ironCopperMiner", "Copper Miner", "Collected Copper counts like Copper clicks, but multiplied", level => 32, level => 0, { maxLevel: 1 }),
 }
