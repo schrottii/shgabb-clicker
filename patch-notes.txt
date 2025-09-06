@@ -94,6 +94,7 @@ July - September 2025:
 4.0.1
 4.1
 4.1.1
+4.1.2
 
 
 
@@ -2735,3 +2736,17 @@ Version v3.6.1:
 - Moved Chengas and Etenvs stats
 - Added Gem Storage section header
 - Updated WGGJ from v1.4 to v1.4.1 (fixing a mobile tap issue)
+
+
+
+2025/09/06 v4.1.2:
+-> Hotkeys:
+- New hotkey: Space bar triggers the click button (inside and outside of The Mine)
+- Added Shbook entry with all hotkeys (also see: wiki)
+
+-> Other:
+- Added display below Silicone upgrades to show its boost to Shgabb, and how close its playtime part is to MAX
+- Shbook shows start and end of events
+- Added quote fade in (every time it changes)
+- Click button lights up a bit when hovering over it
+- Improved ad security

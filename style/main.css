@@ -295,6 +295,10 @@ progress {
     }
 }
 
+.clickButton:hover {
+    filter: brightness(120%);
+}
+
 .currency {
     width: 32px;
     height: 32px;

@@ -23,6 +23,10 @@ function getSiliconeBoost(level = "current") {
         .add(1);
 }
 
+function renderSiliconeBoost() {
+    ui.siliconeBoost.innerHTML = "x" + fn(getSiliconeBoost()) + " Shgabb<br />Playtime boost: " + (game.stats.playTime >= 3000000 ? "MAXED" : (game.stats.playTime / 3000000 * 100).toFixed(1) + "%");
+}
+
 function silicone() {
     if (!unlockedSilicone()) return false;
     if (getArtifact(304).isEquipped()) return false;
@@ -34,6 +38,7 @@ function silicone() {
         if (getArtifact(312).isEquipped() && Math.random() * applyLuck(100) > 0.9 && currentGems() > 0) game.gems -= 1;
     }
 
+    renderSiliconeBoost();
     updateUpgrades();
 }
 

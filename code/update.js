@@ -2,10 +2,22 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.1.1";
+const gameVersion  = "4.1.2";
 const versionTitle = "";
 
 const currentPatchNotes = `
+-> Hotkeys:
+- New hotkey: Space bar triggers the click button (inside and outside of The Mine)
+- Added Shbook entry with all hotkeys (also see: wiki)
+
+-> Other:
+- Added display below Silicone upgrades to show its boost to Shgabb, and how close its playtime part is to MAX
+- Shbook shows start and end of events
+- Added quote fade in (every time it changes)
+- Click button lights up a bit when hovering over it
+- Improved ad security
+
+v4.1.1
 - Reduced costs of Iron upgrades (except CuFe)
 - Total Pearls, Total Iron and Mined Iron stats are now displayed
 - Moved Chengas and Etenvs stats

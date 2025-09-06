@@ -62,7 +62,7 @@
     <!-- 80% -->
         <!-- Top, Quote, Click Button, Notifs -->
         <h2 class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
-        <span id="quote" class="quoteClass"></span>
+        <span id="quoteText" class="quoteClass"></span>
         <br />
 
         <!-- is loading -->
@@ -104,7 +104,7 @@
             <button id="adStartButton" class="grayButton" style="display: none; width: 70%; height: 100%; float: left" onclick="adStartButtonHandler()"></button>
             <button id="adButton" class="grayButton" style="width: 25%; height: 100%; float: right" onclick="adButtonHandler()"></button><br />
         </div>
-        <video playsinline src="videos/Helmet452_Trailer.mp4" style="width:75%; max-width: 760px; display: none" id="baldad" oncanplay="setTimeout(() => canPlayAds(), 500)" onended="onAdEnded()" ontimeupdate="onAdTimeUpdate()"></video>
+        <video oncontextmenu="return false;" playsinline src="videos/Helmet452_Trailer.mp4" style="width:75%; max-width: 760px; display: none" id="baldad" oncanplay="setTimeout(() => canPlayAds(), 500)" onended="onAdEnded()" ontimeupdate="onAdTimeUpdate()"></video>
         <hr style="clear:both" />
 
         <!-- New artifact / achievement popup -->
@@ -153,6 +153,7 @@
                 <h3>Silicone Shgabb</h3>
                 <span id="siAmount"></span><br />
                 <span id="siupgradesrender"></span>
+                <button id="siliconeBoost" class="clickButton" style="width: 40%; min-width: 400px; margin: 0 auto; background-color: rgb(0, 0, 80)"></button><br />
             </div>
 
             <!-- Ameliorer -->

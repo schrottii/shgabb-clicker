@@ -198,7 +198,8 @@ function adSwitcher() {
     }
 }
 
-
+//var adRan = 0;
+//var adRanPrev = 0;
 
 // Ad init
 function canPlayAds() {
@@ -208,6 +209,7 @@ function canPlayAds() {
 
         ui.adContent.style.display = "";
         adHandler.volume = 0.2;
+        adHandler.disablePictureInPicture = true
     }
 }
 
@@ -216,7 +218,7 @@ function onAdEnded() {
     adStatus = "boosted";
 
     ui.adContent.style.display = "";
-    ui.adButton.innerHTML = "Cancel<br />" + ads[currentBoost].title;
+    if (currentBoost != "screwyou" && currentBoost != "none") ui.adButton.innerHTML = "Cancel<br />" + ads[currentBoost].title;
     adHandler.style.display = "none";
 
     statIncrease("ads", 1);
@@ -268,9 +270,14 @@ function onAdEnded() {
 }
 
 function onAdTimeUpdate() {
-    if (adHandler.controls == true) {
+    //adRanPrev = adRan;
+    //adRan = adHandler.currentTime;
+    //console.log(adRanPrev, adRan, adRan - adRanPrev)
+
+    if (adHandler.controls == true || adHandler.playbackRate > 1) {
         adHandler.onended();
 
+        game.sus++;
         adTime = -50000000000;
         currentBoost = "screwyou";
         availableBoost = "noneeeeeee";

@@ -40,7 +40,7 @@ var ui = {
     clickButton: document.getElementById("clickButton"),
     clickButton2: document.getElementById("clickButton2"),
     music: document.getElementById("music"),
-    quote: document.getElementById("quote"),
+    quote: document.getElementById("quoteText"),
     patchNotes: document.getElementById("patchNotes"),
     settings: document.getElementById("settings"),
     stats: document.getElementById("stats"),
@@ -155,6 +155,7 @@ var ui = {
     eventRender: document.getElementById("eventRender"),
     challengeRender: document.getElementById("challengeRender"),
     autoInfo: document.getElementById("autoInfo"),
+    siliconeBoost: document.getElementById("siliconeBoost"),
     gameLoadingText: document.getElementById("gameLoadingText"),
     bananaSection: document.getElementById("bananaSection"),
     bananaSeedButton: document.getElementById("bananaSeedButton"),
@@ -1327,12 +1328,15 @@ function shgabbClickerLoop(tick) {
         autoSaveTime = 10;
         autoSave(false);
     }
+
+    // quote
     if (quoteTime >= 18) {
         quoteTime = 0;
         updateQuote();
     }
     if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
     else ui.quote.style["margin-left"] = "-0%";
+    ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
 
     if (sandwichTime <= 0) {
         if (isChallenge(4)) {
@@ -1477,6 +1481,7 @@ function hotkeyPreviousSelection() {
     renderAllSelection();
 }
 
+// hotkeys
 document.addEventListener('keydown', function (e) {
     if (!hotkeysEnabled) return false;
     if (unlockedArtifacts()) {
@@ -1522,6 +1527,11 @@ document.addEventListener('keydown', function (e) {
         if (e.key == 'ArrowLeft') direction = "left";
         if (e.key == 'ArrowRight') direction = "right";
         if (e.key == ' ') direction = "";
+        e.preventDefault();
+    }
+
+    if (e.key == ' ') {
+        clickButton();
         e.preventDefault();
     }
     
