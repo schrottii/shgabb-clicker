@@ -12,6 +12,12 @@ var oldTime = 0;
 
 // UI, display, render stuf
 var ui = {
+    tutorial: {
+        container: "tutorial",
+        image: "tutorialImage",
+        text: "tutorialText",
+        next: "tutorialNext"
+    },
     SIDEBAR: document.getElementById("SIDEBAR"),
     GAMECONTENT: document.getElementById("GAMECONTENT"),
 
@@ -39,7 +45,6 @@ var ui = {
     gameTitle: document.getElementById("gametitle"),
     clickButton: document.getElementById("clickButton"),
     clickButton2: document.getElementById("clickButton2"),
-    music: document.getElementById("music"),
     quote: document.getElementById("quoteText"),
     patchNotes: document.getElementById("patchNotes"),
     settings: document.getElementById("settings"),
@@ -165,6 +170,10 @@ var ui = {
     idleModeRender: document.getElementById("idleModeRender"),
     idleModeRender2: document.getElementById("idleModeRender2"),
     currentArtis: document.getElementById("currentArtis"),
+}
+
+for (let u in ui.tutorial) {
+    ui.tutorial[u] = document.getElementById(ui.tutorial[u]);
 }
 
 // Quotes
@@ -1617,11 +1626,38 @@ images = {
     down: "minigames/mine/down.png",
     left: "minigames/mine/left.png",
     right: "minigames/mine/right.png",
-}
+};
+
+audio = {
+    // music
+    "Shgame (Remix)": "music/Shgame_(Remix).mp3",
+    "Silicone Business": "music/Silicone_Business.mp3",
+    "0.2s": "music/0.2s.mp3",
+    "Kate Blen": "music/Kate_Blen.mp3",
+
+    // sounds
+    "fart": "sounds/fart.mp3",
+    "click": "sounds/448086__breviceps__normal-click.wav",
+    "upgrade": "sounds/538146__fupicat__plingy-coin.wav",
+    "evil_upgrade": "sounds/evil_upgrade.wav",
+    "voice": "sounds/female_talking.wav",
+};
 
 var GAMELOADED = false;
 var gameLoadingProgress = 0;
 var gameLoadingPhaseName = "Loading files";
+
+var songs = ["Shgame (Remix)", "Silicone Business", "0.2s", "Kate Blen"];
+var firstClick = true;
+
+document.addEventListener("mousedown", () => {
+    if (firstClick) {
+        audioChangeVolume("music", settings.musicVolume);
+        audioChangeVolume("sound", settings.soundVolume);
+        audioPlayMusic(songs[settings.song]);
+        firstClick = false;
+    }
+});
 
 function shgabbClickerSetup() {
     // Generate Patch Notes
@@ -1637,11 +1673,12 @@ function shgabbClickerSetup() {
 
     // Init. WGGJ - also see images dict
     gameLoadingPhaseName = "WGGJ loading";
-    GAMENAME = "Minigames";
-    FONT = "Rw";
-    wggjRunning = false;
+    wggj.config.gameName = "Minigames";
+    wggj.config.font = "Rw";
+    wggj.time.running = false;
 
     wggjLoadImages();
+    wggjLoadAudio();
     wggjLoop();
 
     gameLoadingProgress++;
@@ -1652,8 +1689,11 @@ function shgabbClickerSetup() {
     if (localStorage.getItem("shgabbSettings") != undefined) {
         settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
 
-        music.muted = !settings.music;
+        // music n audio
+        wggj.audio.musicMuted = !settings.music;
         adHandler.muted = !(settings.music && settings.adMusic);
+
+        
     }
     gameLoadingProgress++;
 
@@ -1687,3 +1727,56 @@ catch(e){
     ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br /><br />";
     console.log(e);
 }
+
+// tutorial
+var tutorialProgress = -1;
+var tutorialInterval = -1;
+
+// title, text, req for next button to appear
+const tutorialTexts = [
+    ["Welcome to Shgabb Clicker (Tutorial)", "Welcome, I am Lucie, and here to guide you through the game's basics", () => true],
+    ["Progression", "The goal is to earn Shgabb and other currencies. Most new things are unlocked by the first upgrade.", () => true],
+    ["Let's make progress", "Either click the button to earn some Shgabb, or enable Idle Mode (slower, but less active) and lean back and watch the numbers go up.", () => game.shgabb.gte(shgabbUpgrades.moreShgabb.price(0))],
+    ["Upgrades", "You can afford your first upgrade! Buy it and keep going for a while~", () => shgabbUpgrades.moreShgabb.currentLevel() >= 10],
+    ["New unlocks", "You're making good progress! At HMS 25, you will unlock the Shbook (a guidebook), and an upgrade to get your second currency: Sandwiches.", () => shgabbUpgrades.moreShgabb.currentLevel() >= 25],
+    ["Have fun", "You have completed the tutorial. Keep unlocking new things, and maybe look at the Shbook or Settings if you get a bit bored, cyaa", () => true],
+];
+
+function startTutorial() {
+    tutorialProgress = 0;
+    ui.tutorial.container.style.display = "";
+    audioPlaySound("voice");
+
+    tutorialInterval = setInterval(() => {
+        if (tutorialProgress == -1) {
+            endTutorial();
+            return false;
+        }
+
+        if (ui.tutorial.image.src.includes("images/slimegirl.png")) ui.tutorial.image.src = "images/slimegirl2.png";
+        else ui.tutorial.image.src = "images/slimegirl.png";
+
+        if (tutorialTexts[tutorialProgress][2]() == true) ui.tutorial.next.style.display = "";
+        else ui.tutorial.next.style.display = "none";
+        ui.tutorial.text.innerHTML = "<h2>" + tutorialTexts[tutorialProgress][0] + "</h2><p>" + tutorialTexts[tutorialProgress][1] + "</p>";
+    }, 250);
+}
+
+function continueTutorial() {
+    if (tutorialProgress + 1 > tutorialTexts.length - 1) endTutorial();
+    else {
+        tutorialProgress++;
+        audioPlaySound("voice");
+    }
+}
+
+function endTutorial() {
+    // guys... it's over
+    tutorialProgress = -1;
+    ui.tutorial.container.style.display = "none";
+    clearInterval(tutorialInterval);
+
+    checkAchievement(211);
+}
+
+if (!game.ach.includes(211)) startTutorial();

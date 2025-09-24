@@ -167,20 +167,20 @@ function renderAllSelection() {
     if (selections[2] == "settings") renderSettings();
 
     if (selections[1] == "minigames") {
-        if (!wggjRunning) {
+        if (!wggj.time.running) {
             let ww = settings.sidebar ? 0.95 : 1;
-            wggjCanvasDesiredSquare = true;
-            wggjCanvasDesiredMobileWidthMulti = 0.96 * ww;
-            wggjCanvasDesiredMobileHeightMulti = 0.96 * ww / 1.7777777777777777777777777777778;
-            wggjCanvasDesiredPCWidthMulti = 0.8 * ww;
-            wggjCanvasDesiredPCHeightMulti = 0.8 * ww / 1.7777777777777777777777777777778;
+            wggj.canvas.quadratic = true;
+            wggj.canvas.mobileWidthMulti = 0.96 * ww;
+            wggj.canvas.mobileWidthMulti = 0.96 * ww / 1.7777777777777777777777777777778;
+            wggj.canvas.pcWidthMulti = 0.8 * ww;
+            wggj.canvas.pcHeightMulti = 0.8 * ww / 1.7777777777777777777777777777778;
 
-            wggjRunning = true;
+            wggj.time.running = true;
             wggjLoop();
         }
     }
-    else if (wggjRunning) {
-        wggjRunning = false;
+    else if (wggj.time.running) {
+        wggj.time.running = false;
     }
 }
 
@@ -190,5 +190,6 @@ function changeSelection(sel, sels) {
 
     selectedSelection = sel;
 
+    audioPlaySound("click");
     renderAllSelection();
 }

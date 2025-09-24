@@ -56,7 +56,10 @@ class Upgrade {
                 else game[this.currency] -= this.currentPrice();
                 game.upgradeLevels[this.ID] += 1;
 
-                if (!isBuyingMax) artifactEvent("onUpgrade", {});
+                if (!isBuyingMax) {
+                    artifactEvent("onUpgrade", {});
+                    audioPlaySound("upgrade");
+                }
 
                 // if (!isChallenge(5) && !isBuyingMax) createNotification("Upgrade bought successfully");
                 return true;
@@ -79,6 +82,7 @@ class Upgrade {
             game.upgradeLevels[this.ID] -= 1;
             createNotification("Upgrade unbought successfully");
         }
+        audioPlaySound("evil_upgrade");
         return true;
     }
 
@@ -255,6 +259,7 @@ function buyMaxFunction(id) {
         }
 
         artifactEvent("onUpgrade", { "multi": id.currentLevel() - levelStart });
+        audioPlaySound("upgrade");
         createNotification("Upgrade bought max. successfully");
 
         updateUpgrades();

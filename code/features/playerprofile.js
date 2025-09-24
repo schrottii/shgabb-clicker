@@ -215,6 +215,7 @@ var pfps = [
     new PFP(100, "Shgabb", "images/playerprofile/pfps/shgabbicon.png", () => true, { special: true }),
     new PFP(101, "Winner", "images/playerprofile/pfps/winner.png", () => game.stats.hms >= 5000),
     new PFP(102, "Mobile", "images/playerprofile/pfps/phone.png", () => game.stats.hms >= 10000),
+    new PFP(103, "Lucie", "images/slimegirl.png", () => game.ach.includes(211)),
 
     // 300 - 399 | Currency PFPs
     new PFP(300, "Shgabb", "images/currencies/shgabb.png", () => game.ach.includes(21)),

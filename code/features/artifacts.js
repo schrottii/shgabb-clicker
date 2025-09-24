@@ -262,7 +262,13 @@ class Artifact {
 
         let render = (this.boost == undefined ? "" : "<br />" + this.prefix + fn(this.getEffect()) + " " + this.getBoostType());
         if (this.isUpgradable()) render = render + " → " + (this.boost == undefined ? "" : "<br />" + this.prefix + fn(this.getEffect(this.getLevel() + 1)) + " " + this.getBoostType());
-        return render;
+        return render + "<br />";
+    }
+
+    renderRarityText() {
+        let color = ["black", "black", "green", "purple", "yellow"][this.rarity];
+
+        return "<span style='color: " + color + "'>" + this.getRarity() + "</span>";
     }
 
     renderDescription() {
@@ -301,12 +307,15 @@ class Artifact {
 
     render(clickable = true, clg = false, width = 50) {
         // what you see is what you get.
-        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: " + width + "%;" + (width < 50 ? " display: inline-block;" : "")) + "'>" + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px'>" : "")
-            + (this.isEquipped() && !this.isUpgradable() ? "<br><b>[EQUIPPED]</b>" : "")
-            + (cursedArtifacts.includes(this.ID) ? "<br><b>[CURSED]</b>" : "")
-            + "<br/><span style='font-size: 14px'>" + this.name + "</span><br />"
-            + (!this.isUpgradable() ? (this.getRarity() + " L" + this.getLevel()) : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
-            + this.renderSimpleEffect() + "<br />" + this.renderDescription()
+        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: " + width + "%;" + (width < 50 ? " display: inline-block;" : "")) + "'>"
+            + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px' style='float: left; top: 0px; left: 0px; position: absolute; top: 0;'>" : "")
+            + "<span style='float: right; position: absolute; top: 0; right: 0; text-align: right;'>"
+            + (this.isEquipped() && !this.isUpgradable() ? "<b>[EQUIPPED]</b><br>" : "")
+            + (cursedArtifacts.includes(this.ID) ? "<b>[CURSED]</b><br>" : "")
+            + (!this.isUpgradable() ? (this.renderRarityText() + " L" + this.getLevel()) : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
+            + "</span>"
+            + "<br style='clear: both;' /><br /><span style='font-size: 14px'><b>" + this.name + "</b></span><br />"
+            + this.renderSimpleEffect() + this.renderDescription()
             // + (this.value != undefined ? ("<br />Value: " + this.getValue("?") + "/" + this.getValueMax()) : "")
             + (this.timer != undefined ? ("<br />Timer: " + this.getTimer(0).toFixed(0) + "/" + this.timerMax) : "")
             + `</` + (clickable ? "button" : "div") + `>`;
@@ -1631,8 +1640,7 @@ var artifacts = [
                 if (isChallenge(0) && !getArtifact(200).isEquipped()) {
                     game.shgabb = game.shgabb.add(Math.max(10000, Math.ceil(Math.min(game.shgabb.div(10).mul(level), game.stats.shgabb.div(1000)))));
                 }
-                document.getElementById("fart").currentTime = 0.1;
-                document.getElementById("fart").play();
+                audioPlaySound("fart");
             },
             filter: ["shgabb"]
         }),

@@ -284,6 +284,10 @@ var settings = {
     music: false,
     sounds: false,
     adMusic: true,
+    song: 0,
+    musicVolume: 0.5,
+    soundVolume: 0.5,
+
     background: false,
     displayCurrent: false,
     hideMaxed: false,

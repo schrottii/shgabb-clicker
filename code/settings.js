@@ -23,10 +23,15 @@ class Setting {
         return false;
     }
 
+    renderSlider() {
+        return "";
+    }
+
     render(count) {
         return `<button id="set` + count + `" onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` +
             `<b><u style="color: white; text-underline-offset: 4px;">` + this.title + `</u></b><br />`
             + (settings.settingDesc ? (`<span style="font-size: 16px;">` + this.getDescription() + `</span><hr />`) : ``)
+            + this.renderSlider()
             + this.getCurrentEffect() + `</button>`;
     }
 }
@@ -45,6 +50,34 @@ class ToggleSetting extends Setting {
         return this.variable;
     }
 }
+
+class SliderSetting extends Setting {
+    constructor(category, setting, min, max, title, description) {
+        super(category, "toggleNone", title, description);
+        this.setting = setting;
+        this.min = min;
+        this.max = max;
+    }
+
+    renderSlider() {
+        return "<input id='" + this.setting + "' type='range' value='" + settings[this.setting] + "' min='" + this.min + "' max='" + this.max + "' step='" + (this.max / 10) + "'"
+            + "onchange='sliderChange(`" + this.setting + "`)' /> ";
+    }
+
+    getCurrentEffect() {
+        return this.max == 1 ? settings[this.setting] * 100 + "%" : settings[this.setting];
+    }
+}
+
+function sliderChange(setting) {
+    if (document.getElementById(setting) != undefined) settings[setting] = document.getElementById(setting).value;
+    renderSettings();
+
+    if (setting == "musicVolume") audioChangeVolume("music", settings[setting]);
+    if (setting == "soundVolume") audioChangeVolume("sound", settings[setting]);
+}
+
+function toggleNone() { }
 
 // VARIABLES
 const settingSections = ["gameplay", "design", "audio", "save"];
@@ -66,7 +99,7 @@ var settingButtons = [
     new ToggleSetting("gameplay", "togglePreferMS", "preferMS", "Prefer More Shgabb", "When enabled, and trying to buy a Shgabb Upgrade, the game will buy More Shgabb instead if it's cheaper. Works with buy max too."),
     new ToggleSetting("gameplay", "toggleSidebar", "sidebar", "Sidebar", "The left side gets replaced with the Sidebar, offering a constant click button, currency overview and more"),
     new Setting("gameplay", "adjustSidebarWidth", "Sidebar Width", "Change size of the sidebar", () => "Current: " + settings.sidebarWidth),
-
+    new Setting("gameplay", "startTutorial", "Tutorial", "Repeat the tutorial", () => ""),
 
     // design
     new ToggleSetting("design", "toggleBG", "background", "Black Background", "When enabled, the background image gets replaced by a black color. Also active during events."),
@@ -82,7 +115,10 @@ var settingButtons = [
 
     // audio
     new ToggleSetting("audio", "toggleMusic", "music", "Music", "Turn ALL music on or off."),
+    new SliderSetting("audio", "musicVolume", 0, 1, "Music Volume", "Adjust volume of music"),
+    new Setting("audio", "changeSong", "Selected Song", "Select which song to play", () => songs[settings.song]),
     new ToggleSetting("audio", "toggleSounds", "sounds", "Sounds", "Turn ALL sounds on or off."),
+    new SliderSetting("audio", "soundVolume", 0, 1, "Sound Volume", "Adjust volume of sound effects"),
     new ToggleSetting("audio", "toggleAdMusic", "adMusic", "Ad Music", "Turn the music from joke ads on or off."),
 
     // save
@@ -102,6 +138,7 @@ var settingButtons = [
 // GENERAL SETTING FUNCTIONS
 function onSettingClick(toggle) {
     if (toggle != "false") settings[toggle] = !settings[toggle];
+    renderSettings();
 }
 
 function settingsSet(r) {
@@ -137,7 +174,7 @@ function renderSettings() {
         height = Math.max(height, document.getElementById("set" + s).clientHeight);
         sCount = sCount + 1;
 
-        if (sCount == 4 || s == counter - 1) {
+        if (sCount == (document.body.clientWidth >= 768 ? 2 : 4) || s == counter - 1) {
             for (let ss = s; ss > s - sCount; ss--) {
                 document.getElementById("set" + ss).style.height = height + "px";
             }
@@ -403,21 +440,26 @@ function updateUpgradeColors() {
 ///////////////////////////////////
 function toggleMusic() {
     createNotification("Music " + (settings.music ? "ON" : "OFF"));
-    music.muted = !settings.music;
-    if (!music.muted) {
-        music.currentTime = 0;
-        music.play();
+    wggj.audio.musicMuted = !settings.music;
+    wggj.audio.musicPlayer.muted = wggj.audio.musicMuted;
+    if (!wggj.audio.musicMuted) {
+        //audioPlayMusic();
     }
 }
 
 function toggleSounds() {
     createNotification("Sounds " + (settings.sounds ? "ON" : "OFF"));
-    document.getElementById("fart").muted = !settings.sounds;
+    wggj.audio.soundMuted = !settings.sounds;
 }
 
 function toggleAdMusic() {
     createNotification("Ad Music " + (settings.adMusic ? "ON" : "OFF"));
     adHandler.muted = !(settings.music && settings.adMusic);
+}
+
+function changeSong() {
+    settings.song = (settings.song + 1) % songs.length;
+    audioPlayMusic(songs[settings.song]);
 }
 
 ///////////////////////////////////

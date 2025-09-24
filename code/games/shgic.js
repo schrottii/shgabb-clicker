@@ -339,7 +339,7 @@ scenes["shgic"] = new Scene(
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
 
-        let ignoreW = 1 / wggjCanvasWidth * wggjCanvasHeight;
+        let ignoreW = 1 / wggj.canvas.w * wggj.canvas.h;
         createSquare("verticalA", 0.433, 0.25, 0.02 * ignoreW, 0.55, "black");
         createSquare("verticalB", 0.566, 0.25, 0.02 * ignoreW, 0.55, "black");
 

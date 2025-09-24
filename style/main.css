@@ -422,8 +422,9 @@ progress {
 /* ===================================================== */
 .artifact {
     text-align: center;
-    margin: 0px 0px 0px 0px;
-    border: 4px ridge white;
+    margin: 1px 1px 1px 1px;
+    border: 4px ridge pink;
+    border-radius: 6px;
     height: 160px;
     width: 32%;
     vertical-align: top;

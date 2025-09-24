@@ -2,66 +2,48 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.1.2";
+const gameVersion  = "4.2";
 const versionTitle = "";
 
 const currentPatchNotes = `
--> Hotkeys:
-- New hotkey: Space bar triggers the click button (inside and outside of The Mine)
-- Added Shbook entry with all hotkeys (also see: wiki)
+2025-09-24 v4.2:
+-> Tutorial:
+- Added a tutorial with 6 parts
+- The first visible character, Lucie, guides you through the beginning
+- Can be freely skipped
+- Ends at Shbook/Sandwich unlock (HMS 25)
 
--> Other:
-- Added display below Silicone upgrades to show its boost to Shgabb, and how close its playtime part is to MAX
-- Shbook shows start and end of events
-- Added quote fade in (every time it changes)
-- Click button lights up a bit when hovering over it
-- Improved ad security
-
-v4.1.1
-- Reduced costs of Iron upgrades (except CuFe)
-- Total Pearls, Total Iron and Mined Iron stats are now displayed
-- Moved Chengas and Etenvs stats
-- Added Gem Storage section header
-- Updated WGGJ from v1.4 to v1.4.1 (fixing a mobile tap issue)
-
-v4.1
--> The Mine:
-- Added new currency and tile Iron Shgabb, about as common as GS, takes 100 to finish
-- Added smooth moving
-- Mine button is now clickable (acts like the click button), with animations
-- Added animation when mining is complete
-
--> Iron Shgabb:
-- New currency, unlocked along The Mine (like Pearls)
-- Can be found in The Mine (similar to Pearls in Fishgang)
-- Can be spent on four upgrades:
-- Speed Miner: flat reduces time of Deep Miner (max lvl. 500, as after that it would do nothing)
-- CuFe: get more Copper based on how much Iron Shgabb you have
-- Pickaxes: faster cooldown while mining something (max lvl. 5, x1.5 speed)
-- Copper Miner: base Copper gains get multiplied by how many Copper tiles you mined (max lvl. 1)
-- Added Currenciary entry
+-> Audio:
+- Added four new songs: Shgame (Remix), Silicone Business, 0.2s, Kate Blen
+- Removed old Shgame song
+- Music now starts playing on first click
+- Added three new audio settings (see below)
+- Finally added more sounds than just the fart xd:
+- Added upgrade sound
+- Added unlevel sound
+- Added click sound (when changing sections)
+- Added tutorial talking sound
+- Migrated to WGGJ's new audio system
 
 -> Settings:
-- Added sections (like with stats or player profile)
-- Reworked design of buttons, with new colors (blue -> dark gray/white) and round border
-- All Settings in a row now have the same height
-- New Setting: Sidebar Width (19%, 24%, 29%, 34%, 4%, 9%, 14%)
-- Reworked Setting rendering code
-
--> Sidebar:
-- It is no longer considered experimental
-- Popups disappear after the usual amount of time
-- Removed "Sidebar" text from the top
-- Its width can be adjusted with the new Setting (default is still 19%)
-- Reduced empty space
+- Added a new type of setting; slider settings
+- New Gameplay Setting: Tutorial (repeat tutorial)
+- New Audio Setting: Music Volume
+- New Audio Setting: Selected Song
+- New Audio Setting: Sound Volume
+- Improved height on mobile
 
 -> Artifacts:
-- Stabilized Boost Filters for Artifacts that change what they boost
-- Fixed Snake Oil Salesman issue
+- Overhauled Artifact design, with image, rarity and level at the top
+- Names are bold, reduced empty space
+- Added rarity colors: black, green, purple, yellow
+- Different border
+- Also applies to Achievements and cosmetics
 
 -> Other:
-- New colors for Améliorer convert buttons
-- Increased size of Player Profile
+- Added Achievement for completing the tutorial
+- Added Lucie PFP (unlocked by completing tutorial)
+- Updated WGGJ from v1.4.1 to v1.5
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

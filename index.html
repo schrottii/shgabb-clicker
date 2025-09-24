@@ -13,6 +13,16 @@
     <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico">
 </head>
 <body>
+    <!-- TUTORIAL -->
+    <div id="tutorial" style="display: none; position: fixed; z-index: 5; bottom: 0px; right: 0px; max-width: 100%; max-height: 306px; background-color: black;">
+        <button class="grayButton" style="height: 46px; margin-bottom: 4px; width: 30%; margin-left: 8%;" onclick="endTutorial();">Skip</button>
+        <button id="tutorialNext" class="grayButton" style="display: none; height: 46px; margin-bottom: 4px; width: 30%; margin-right: 8%;" onclick="continueTutorial();">Next</button>
+        <div style="float: left; margin-left: 8px; margin-top: 8px; max-width: 60%;">
+            <span id="tutorialText"></span>
+        </div>
+        <img id="tutorialImage" src="images/slimegirl.png" style="float: right; bottom: 0px; width: 128px; height: 128px;" />
+    </div>
+
     <UBERDIV>
         <div id="SIDEBAR" class="sectionBG" style="display: none; position: fixed; width: 19%; height: 97.5%">
             <!-- 19% -->
@@ -427,8 +437,7 @@
     </UBERDIV>
 
     <!-- Audio -->
-    <audio src="audio\shgame.mp3" loop muted id="music"></audio>
-    <audio src="audio\fart.mp3" id="fart"></audio>
+    <audio id="wggjAudio" type="audio/ogg" preload="auto"></audio>
 
     <!-- Scripts -->
     <script src="code\lib\breakinfinity.js"></script>
