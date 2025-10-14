@@ -350,6 +350,11 @@ var frames = [
 
     new Frame(412, "Hot Frame", "images/playerprofile/frames/hotframe.png", () => game.evframes.includes(412)),
     new Frame(413, "Cool Frame", "images/playerprofile/frames/coolframe.png", () => game.evframes.includes(413)),
+    
+    new Frame(414, "Splattered", "images/playerprofile/frames/stwframe1.png", () => game.evframes.includes(414)),
+    new Frame(415, "Bleeding", "images/playerprofile/frames/stwframe2.png", () => game.evframes.includes(415)),
+    new Frame(416, "In-Pump-In", "images/playerprofile/frames/stwframe3.png", () => game.evframes.includes(416)),
+    new Frame(417, "Hollow Skies", "images/playerprofile/frames/stwframe4.png", () => game.evframes.includes(417)),
 ];
 
 function calcProfileCanvasSize() {

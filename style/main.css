@@ -330,11 +330,6 @@ progress {
     font-family: Rw-title;
 }
 
-@media only screen and (min-width: 768px) {
-    .maxButton {
-    }
-}
-
 /* an upgrade (like More Shgabb) */
 .upgrade {
     text-align: center;
@@ -412,7 +407,25 @@ progress {
     max-width: 92%;
 }
 
-    .grayButton:hover {
+    .bananaButton:hover {
+        filter: brightness(120%);
+        transition: 0.3s;
+    }
+    
+.witchButton {
+    background-color: rgb(8, 8, 8);
+    background-image: url("../images/texture-witch.png");
+    background-size: 100%;
+    color: white;
+    border: 2px solid;
+    border-color: rgb(40, 20, 60);
+    border-radius: 12px;
+    margin: 4px 2px 4px 2px;
+    padding: 6px 0px 2px 0px;
+    width: 420px;
+}
+
+    .witchButton:hover {
         filter: brightness(120%);
         transition: 0.3s;
     }

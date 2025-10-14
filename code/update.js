@@ -2,7 +2,7 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.2";
+const gameVersion  = "4.2.1";
 const versionTitle = "";
 
 const currentPatchNotes = `

@@ -30,7 +30,7 @@ class LimitedEvent {
 // Y2 Egg Hunt | April 2 - April 15
 // Y2 Pride Event | Jun 1 - Jun 14
 // Y2 Hot Hot Summer Event | Jul 28 - Aug 10
-// Y1 Shgabb The Witch Event | Oct 28 - Nov 17
+// Y2 Shgabb The Witch Event | Oct 24 - Nov 16
 // Y2 Christmas Event | Dec 15 - Dec 28
 
 var forceEvent = "none"; // cheat to test an event
@@ -83,11 +83,11 @@ const events = {
     
     shgabbthewitch: new LimitedEvent(6, "shgabbthewitch", "Shgabb The Witch Event", 
         "It's time for the scary, the painful and the evil things! Find event pages and their Candles by clicking, or equip the buffed-up cursed Artifacts to gain Witch Shgabb, which can be used to create spells with over a dozen different effects! x6 lore pages, x6 page progress and x6 Bags during the event!",
-        1028, 1117, "renderShgabbTheWitch", 
+        1024, 1106, "renderShgabbTheWitch", 
         {
             pfps: [421, 422, 423, 424, 425],
             bans: [414, 415, 416, 417],
-            frames: []
+            frames: [414, 415, 416, 417]
         }),
     
     christmas: new LimitedEvent(0, "christmas", "Christmas Event", 
@@ -240,7 +240,7 @@ function hasEventRewards(event, type = "all") {
     return true;
 }
 
-function awardEventReward(event, type = "all") {
+function awardEventReward(event, type = "all", gemCompensation = 0) {
     // v3.7's new, random, consistent system
     // gets you a cosmetic that you don't have yet from an event
     // before they all had their own functions and it was messy and different for every event
@@ -256,6 +256,12 @@ function awardEventReward(event, type = "all") {
     // got all?
     if (unownedRewards.length == 0) {
         createNotification("You already have all possible rewards");
+
+        if (gemCompensation > 0) {
+            game.gems += gemCompensation;
+            statIncrease("tgems", gemCompensation);
+            createNotification("+" + gemCompensation + " Gems");
+        }
         return false;
     }
 
@@ -941,7 +947,7 @@ var summerClicks = 0;
 var heatMode = false;
 
 function renderSummer() {
-    let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 10th</b>";
+    let render = "<h3>Hot Hot Summer (Year 2)</h3><br /><b>July 28th - August 10th</b>";
     render = render + "<br />" + events.summer.description;
     render = render + "<br />" + cImg("shorts") + game.shorts + " Shorts";
 
@@ -1109,10 +1115,18 @@ function calcCollectedPages(type) {
     return collectedPages;
 }
 
+function STWButton(id, img, name, desc) {
+    return "<br /><button onclick='" + (id != -1 ? "spendWitches(" + id : "castSpell(") + ")' class='witchButton'>"
+    + "<b>" + name
+    + (id != -1 ? " (" + witchesSpent[id] + "/10)" : "") + "</b><br />"
+    + "<div style='float: left; max-width: 20%;'><img src='images/" + img + ".png' /></div>" 
+    + "<div style='float: right; width: 75%;'>" + desc + "</div></button>";
+}
+
 function renderShgabbTheWitch() {
     let collectedPages = calcCollectedPages(2);
 
-    let render = "<h3>Shgabb The Witch</h3><br /><b>October 28th - November 17th</b>";
+    let render = "<h3>Shgabb The Witch (Year 2)</h3><br /><b>October 24th - November 6th</b>";
     render = render + "<br />" + events.shgabbthewitch.description;
 
     render = render + "<br />" + cImg("witchshgabb") + game.witchshgabb + " Witch Shgabb";
@@ -1122,13 +1136,12 @@ function renderShgabbTheWitch() {
     render = render + "<br />Every spell needs at least one ingredient, and can have up to 10. Every added ingredient costs 1 Witch Shgabb. Select the ingredient(s) you want, then cast the spell.";
     render = render + "<br />Spell density: " + witchesSpent[0] + "/10";
 
-    render = render + "<br /><button onclick='spendWitches(1)' class='grayButton'><b>Push Virtue (" + witchesSpent[1] + "/10)</b><br />Increases chance of receiving a more positive effect</button>";
-    render = render + "<br /><button onclick='spendWitches(2)' class='grayButton'><b>Defensive Herbs (" + witchesSpent[2] + "/10)</b><br />Decreases chance of negative effect</button>";
-    render = render + "<br /><button onclick='spendWitches(3)' class='grayButton'><b>Hair Odor (" + witchesSpent[3] + "/10)</b><br />Increases chance of getting cosmetics</button>";
-    render = render + "<br /><button onclick='castSpell()' class='grayButton'><b>Cast Spell</b><br />Prove your witchery skills!</button>";
+    render = render + STWButton(1, "virtue", "Push Virtue", "Increases chance of receiving a more positive effect, and slightly increases cosmetic chance and slightly decreases chance for negative effects.");
+    render = render + STWButton(2, "herbs", "Defensive Herbs", "Decreases chance of negative effects significantly");
+    render = render + STWButton(3, "hair", "Hair Odor", "Increases chance of getting cosmetics");
+    render = render + STWButton(-1, "castspell", "Cast Spell", "After using 1-10 Witch Shgabb, cast a spell to get an effect. (holy, cosmetic, negative, positive)");
 
     render = render + "<br /><br />" + recentSpellText;
-
 
     ui.eventRender.innerHTML = render;
 }
@@ -1148,44 +1161,16 @@ function castSpell() {
     recentSpellText = "";
 
     // Random effect
-    if (Math.random() * 100 < (witchesSpent[3] * 2) + (witchesSpent[1] / 2.5)) {
+    if (Math.random() * 100 < (witchesSpent[3] * 3) + (witchesSpent[1] / 2.5)) {
         // Cosmetics
-        // Base chance: 0%, +2% per Odor, +0.4% per Virtue
+        // Base chance: 0%, +3% per Odor, +0.4% per Virtue
         recentSpellText = recentSpellText + "The spell contains cosmetic effects:" + "<br />";
         createNotification("The spell contains cosmetic effects:");
 
-        let availableCosmetics = [421, 422, 423, 424, 425, 414, 415, 416, 417];
-        for (let runWitch = 414; runWitch <= 417; runWitch++) {
-            if (game.evbans.includes(runWitch)) availableCosmetics.splice(availableCosmetics.indexOf(runWitch), 1);
-        }
-        for (let runWitch = 421; runWitch <= 425; runWitch++) {
-            if (game.evpfps.includes(runWitch)) availableCosmetics.splice(availableCosmetics.indexOf(runWitch), 1);
-        }
-        if (availableCosmetics.length == 0) {
-            // You have all cosmetics
-            game.gems += 30;
-            statIncrease("tgems", 30);
-        }
-        else {
-            // You don't have all of them, here, a new one
-            let randomlySelected = availableCosmetics[Math.floor(Math.random() * (availableCosmetics.length - 1))];
-
-            if (randomlySelected <= 417) {
-                game.evbans.push(randomlySelected);
-
-                recentSpellText = recentSpellText + "New Profile Banner unlocked!" + "<br />";
-                createNotification("New Profile Banner unlocked!");
-            }
-            else {
-                game.evpfps.push(randomlySelected);
-
-                recentSpellText = recentSpellText + "New PFP unlocked!" + "<br />";
-                createNotification("New PFP unlocked!");
-            }
-        }
+        awardEventReward("shgabbthewitch", "all", 30);
     }
     else if (Math.random() * 100 < (witchesSpent[1] * 2) + 5 + (witchesSpent[2] / 5)) {
-        // Very good stuff
+        // Very good stuff (holy)
         // Base chance: 5%, +2% per Virtue, +0.2% per Herbs
         recentSpellText = recentSpellText + "The spell contains holy effects:" + "<br />";
         createNotification("The spell contains holy effects:");
@@ -1213,10 +1198,10 @@ function castSpell() {
             effectAmount++;
 
             game.chenga += 5;
-            statIncrease("chenga", 5);
+            statIncrease("chenga", 3);
 
-            recentSpellText = recentSpellText + "+5 Chengas" + "<br />";
-            createNotification("+5 Chengas");
+            recentSpellText = recentSpellText + "+3 Chengas" + "<br />";
+            createNotification("+3 Chengas");
         }
         if (Math.random() <= 0.2) {
             effectAmount++;
@@ -1240,9 +1225,9 @@ function castSpell() {
             createNotification("Your soul has been blessed.");
         }
     }
-    else if (Math.random() * 100 < 50 - (witchesSpent[2] * 5) - witchesSpent[1] - (witchesSpent[2] > 0 ? 15 : 0)) {
+    else if (Math.random() * 100 < 50 - (witchesSpent[2] * 10) - witchesSpent[1] - (witchesSpent[2] > 0 ? 15 : 0)) {
         // Bad stuff
-        // Base chance: 50%, -5% per Herbs, -1% per Virtue
+        // Base chance: 50%, -10% per Herbs, -1% per Virtue
         createNotification("The spell contains evil effects:");
         let effectAmount = 0;
 
@@ -1283,14 +1268,13 @@ function castSpell() {
             createNotification("Horrible things are approaching...");
         }
 
-
         if (effectAmount == 0) {
             recentSpellText = recentSpellText + "Doom is coming closer..." + "<br />";
             createNotification("Doom is coming closer...");
         }
     }
     else {
-        // Good stuff
+        // positive stuff
         recentSpellText = recentSpellText + "The spell contains positive effects:" + "<br />";
         createNotification("The spell contains positive effects:");
         let effectAmount = 0;
@@ -1325,11 +1309,11 @@ function castSpell() {
         if (Math.random() <= 0.2) {
             effectAmount++;
 
-            game.witchshgabb += 2;
-            statIncrease("witchshgabb", 2);
+            game.witchshgabb += 1;
+            statIncrease("witchshgabb", 1);
 
-            recentSpellText = recentSpellText + "+2 Witch Shgabb" + "<br />";
-            createNotification("+2 Witch Shgabb");
+            recentSpellText = recentSpellText + "+1 Witch Shgabb" + "<br />";
+            createNotification("+1 Witch Shgabb");
         }
         if (Math.random() <= 0.2) {
             effectAmount++;
