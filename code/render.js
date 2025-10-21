@@ -171,7 +171,7 @@ function renderAllSelection() {
             let ww = settings.sidebar ? 0.95 : 1;
             wggj.canvas.quadratic = true;
             wggj.canvas.mobileWidthMulti = 0.96 * ww;
-            wggj.canvas.mobileWidthMulti = 0.96 * ww / 1.7777777777777777777777777777778;
+            wggj.canvas.mobileHeightMulti = 0.96 * ww / 1.7777777777777777777777777777778;
             wggj.canvas.pcWidthMulti = 0.8 * ww;
             wggj.canvas.pcHeightMulti = 0.8 * ww / 1.7777777777777777777777777777778;
 

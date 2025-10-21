@@ -1047,16 +1047,21 @@ function loadBackup() {
 function importFromFile() {
     if (document.getElementById("myFile").value != "") {
         if (confirm("Do you really want to import from this file?")) {
-            file = document.getElementById("myFile").files[0];
-            reader = new FileReader();
-            let filecontent;
+            try {
+                file = document.getElementById("myFile").files[0];
+                reader = new FileReader();
+                let filecontent;
 
-            reader.addEventListener('load', function (e) {
-                filecontent = e.target.result;
-                if (filecontent != undefined) importGame(filecontent);
-            });
+                reader.addEventListener('load', function (e) {
+                    filecontent = e.target.result;
+                    if (filecontent != undefined) importGame(filecontent);
+                });
 
-            reader.readAsText(file);
+                reader.readAsText(file);
+            }
+            catch {
+                console.log("Something went wrong while loading the file");
+            }
         }
     }
     // this does not work for some reason. it's meant to trigger the click on the "select file" thing and while the file selection screen does pop up, it does not set the value at all, for some reason
@@ -1288,8 +1293,8 @@ function shgabbClickerLoop(tick) {
     cakeDuration -= time;
     if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
     statIncrease("playTime", time);
-    if (selections[1] == "minigames" && currentScene == "fishgang") statIncrease("playTimeFish", time);
-    if (selections[1] == "minigames" && currentScene == "mine") statIncrease("playTimeMine", time);
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "fishgang") statIncrease("playTimeFish", time);
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") statIncrease("playTimeMine", time);
 
     for (aqq in game.aeqi) {
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
@@ -1530,7 +1535,7 @@ document.addEventListener('keydown', function (e) {
         renderAllSelection();
     }
 
-    if (selections[1] == "minigames" && currentScene == "mine") {
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") {
         if (e.key == 'ArrowUp') direction = "up";
         if (e.key == 'ArrowDown') direction = "down";
         if (e.key == 'ArrowLeft') direction = "left";
