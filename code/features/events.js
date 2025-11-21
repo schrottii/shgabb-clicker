@@ -271,6 +271,7 @@ function awardEventReward(event, type = "all", gemCompensation = 0) {
     // award it
     selectedReward = getCosmetic(selectedReward);
     selectedReward.eventAward();
+    return selectedReward.name;
 }
 
 ///////////////////////////////////
@@ -1167,7 +1168,7 @@ function castSpell() {
         recentSpellText = recentSpellText + "The spell contains cosmetic effects:" + "<br />";
         createNotification("The spell contains cosmetic effects:");
 
-        awardEventReward("shgabbthewitch", "all", 30);
+        recentSpellText = recentSpellText + awardEventReward("shgabbthewitch", "all", 30);
     }
     else if (Math.random() * 100 < (witchesSpent[1] * 2) + 5 + (witchesSpent[2] / 5)) {
         // Very good stuff (holy)

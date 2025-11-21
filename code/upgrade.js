@@ -185,8 +185,17 @@ class Upgrade {
         if (this.type == "ameliorerUpgrades") ameExtraText = "[S" + this.ameSet + "/" + (this.ameAmount != undefined ? this.ameAmount : 0) + "] ";
 
         // actual render
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'><div class='upgradeButtons'>" + maxButton + unlevelButton + "</div><div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>" + ameExtraText + this.description + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /> Cost: " + fn(this.currentPrice()))) + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "") + "</button>";
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>"
+            + "<div class='upgradeButtons'>" + maxButton + unlevelButton + "</div>"
+            + "<div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>"
+            + ameExtraText
+            + this.description
+            + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /> Cost: " + fn(this.currentPrice()) + cImg(currencyFullName(this.currency), 24)))
+            + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "")
+            + "</button>";
+        // locked ame upgs (visible)
         else if (this.type == "ameliorerUpgrades") return "<button class='upgrade' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>" + ameExtraText + "<br />" + getTotalAme() + "/" + this.ameAmount + "</button>";
+        // locked upgs (invisible)
         else return "";
     }
 }
@@ -197,6 +206,26 @@ function rgbManipulator(color, diff) {
         color[bC] *= diff;
     }
     return "rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")";
+}
+
+function currencyFullName(short) {
+    switch (short) {
+        case "sw":
+            return "sandwich";
+        case "si":
+            return "silicone";
+        case "ame":
+            return "ameliorer";
+        case "bags":
+            return "bag";
+        case "cop":
+            return "copper";
+        case "pearls":
+            return "pearl";
+        case "bananas":
+            return "banana";
+    }
+    return short;
 }
 
 // Buy functions

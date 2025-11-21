@@ -98,6 +98,7 @@ July - September 2025:
 4.2
 October - December 2025:
 4.2.1
+4.2.2
 
 
 
@@ -2809,3 +2810,16 @@ Version v3.6.1:
 - Buffed Odor from 2% to 3%
 - Reduced +2 Witch Shgabb effect to +1
 - Reduced +5 Chengas effect to +3
+
+
+
+2025-11-21 v4.2.2:
+-> Upgrade design:
+- All upgrades in the same row now have the same height
+- Currency image now is shown next to the cost
+- Increased description size based on screen width
+- Changed MAX/-1/-MAX design
+
+-> Other:
+- Added currency images to all currencies in the Shbook
+- Fixed issue with STW event gained cosmetic text

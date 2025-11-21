@@ -312,6 +312,13 @@ progress {
 /* UPGRADES */
 /* ===================================================== */
 /* this contains the upgrade buttons */
+.upgradesContainer {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .upgradeButtons {
     display: flex;
     flex-direction: row;
@@ -323,8 +330,8 @@ progress {
     width: 32%;
     height: 20px;
     margin: 0px 1px 1px 1px;
-    border: 2px solid black;
-    background-color: lightgray;
+    border: 2px solid rgb(120, 120, 120);
+    background-color: rgb(160, 160, 160, 0.7);
     font-weight: bold;
     color: black;
     font-family: Rw-title;
@@ -339,6 +346,7 @@ progress {
     width: 48%;
     min-height: 98px;
     font-family: Rw;
+    font-size: 12px;
     vertical-align: top;
 }
 
@@ -354,12 +362,14 @@ progress {
 @media only screen and (min-width: 768px) {
     .upgrade {
         width: 32%;
+        font-size: 14px;
     }
 }
 
 @media only screen and (min-width: 1280px) {
     .upgrade {
         width: 24%;
+        font-size: 16px;
     }
 }
 

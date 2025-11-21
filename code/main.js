@@ -477,8 +477,8 @@ function fn(number) {
 }
 
 // currency image
-function cImg(imgname) {
-    return '<img class="currency" src="images/currencies/' + imgname + '.png" />';
+function cImg(imgname, size = 0) {
+    return '<img class="currency"' + (size != 0 ? ' style="width: ' + size + 'px; height: ' + size + 'px;"' : '') + ' src="images/currencies/' + imgname + '.png" />';
 }
 
 function clickButton(source = "click") {

@@ -2,11 +2,34 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.2.1";
+const gameVersion  = "4.2.2";
 const versionTitle = "";
 
 const currentPatchNotes = `
-2025-09-24 v4.2:
+-> Upgrade design:
+- All upgrades in the same row now have the same height
+- Currency image now is shown next to the cost
+- Increased description size based on screen width
+- Changed MAX/-1/-MAX design
+
+-> Other:
+- Added currency images to all currencies in the Shbook
+- Fixed issue with STW event gained cosmetic text
+
+v4.2.1
+-> Shgabb the Witch:
+- Event is back for Year 2 - all events have been updated now!
+- Duration changed to October 24th - November 6th (21 days -> 14 days)
+- Added 4 Frames
+- Added images and new buttons for Push Virtue, Defensive Herbs, Hair Odor, and Cast Spell
+- Made their descriptions longer
+- Implemented v3.7's event cosmetic awarding system
+- Buffed Herbs from 5% to 10% (5 are enough to guarantee no negative effect)
+- Buffed Odor from 2% to 3%
+- Reduced +2 Witch Shgabb effect to +1
+- Reduced +5 Chengas effect to +3
+
+v4.2
 -> Tutorial:
 - Added a tutorial with 6 parts
 - The first visible character, Lucie, guides you through the beginning
