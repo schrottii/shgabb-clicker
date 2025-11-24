@@ -277,7 +277,7 @@ function onAdTimeUpdate() {
     if (adHandler.controls == true || adHandler.playbackRate > 1) {
         adHandler.onended();
 
-        game.sus++;
+        report("adControlling", 3);
         adTime = -50000000000;
         currentBoost = "screwyou";
         availableBoost = "noneeeeeee";

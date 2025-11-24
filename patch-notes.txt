@@ -99,6 +99,7 @@ July - September 2025:
 October - December 2025:
 4.2.1
 4.2.2
+4.3
 
 
 
@@ -2823,3 +2824,30 @@ Version v3.6.1:
 -> Other:
 - Added currency images to all currencies in the Shbook
 - Fixed issue with STW event gained cosmetic text
+
+
+
+2025-11-24 v4.3:
+-> Upgrade Calculator:
+- Found in the Shbook, unlocked with it (25 HMS)
+- Select a group of upgrades, then the desired upgrade
+- Only unlocked groups and upgrades are shown
+- Selecting an upgrade shows: current level, current price, price one level higher, price to max, current effect, effect one level higherk, effect at max
+- You can select a range from level x to level y:
+- It shows: levels, total price for that range, effect at level x, effect at level y
+- You can select a single level:
+- It shows: level, price to next level, price to max, effect, effect at next level
+
+-> Settings:
+- All settings in the same row now have the same height
+- New Audio Setting: Autoplay Songs
+- Moved "Hide Maxed Upgrades" and "Current Effect Display" from Gameplay to Design
+- Moved "Show Artifact Boost Filters" from Design to Gameplay
+- Moved Ad Music setting next to the other music (not sound) ones
+
+-> Other:
+- Upgrades: moved MAX/-1/-MAX to the top, content below gets spaced out
+- "Not enough ..." text now has proper currency names rather than abbreviations (sw)
+- Good Joke Shgabb Upgrade now shows if it's currently active or inactive
+- Basic anti cheat
+- Code improvements

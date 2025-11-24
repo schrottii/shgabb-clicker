@@ -114,7 +114,7 @@ function isEvent(eventName) {
 
     // force cheat
     if (forceEvent != "none") {
-        game.sus += 3;
+        report("forceEvent", 3);
         currentDate = events[forceEvent].startDate;
     }
 
@@ -143,7 +143,7 @@ function getCurrentEvent(currentDate = today().substr(4)) {
     // what is the current event?
     // force cheat
     if (forceEvent != "none") {
-        game.sus += 3;
+        report("forceEvent", 3);
         return forceEvent;
     }
 

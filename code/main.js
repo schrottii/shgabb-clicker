@@ -1019,7 +1019,7 @@ function autoSave(manual=true) {
 
     // Le rare renderes
     renderAmeConvert();
-    renderAllSelection();
+    renderAllSelection(true);
 
     // if (!manual) adInject();
 
@@ -1450,14 +1450,14 @@ function updateEVERYTHING() {
     renderAmeConvert();
     renderUpgrades();
     renderAchievements();
-    renderAllSelection();
+    renderAllSelection(true);
     updateArtifacts();
     renderChallenges();
     renderCurrentEvent();
     renderGemOffers();
     renderPlayerProfile();
     renderSettings();
-    renderShbook();
+    renderShbook(true);
     renderBananaTrees();
 }
 
@@ -1497,6 +1497,12 @@ function hotkeyPreviousSelection() {
 
 // hotkeys
 document.addEventListener('keydown', function (e) {
+    if (!BETA.isBeta && e.key == 'F12') {
+        report("F12", 1);
+        e.preventDefault();
+        return false;
+    }
+
     if (!hotkeysEnabled) return false;
     if (unlockedArtifacts()) {
         if (e.key == '1') artifactLoadout(0);
@@ -1548,7 +1554,7 @@ document.addEventListener('keydown', function (e) {
         clickButton();
         e.preventDefault();
     }
-    
+    return true;
 }, false);
 
 document.addEventListener('keydown', function (e) {
@@ -1655,11 +1661,24 @@ var gameLoadingPhaseName = "Loading files";
 var songs = ["Shgame (Remix)", "Silicone Business", "0.2s", "Kate Blen"];
 var firstClick = true;
 
+wggjAudio.ondurationchange = () => {
+    wggjAudio.loop = !settings.autoplaySongs;
+}
+
+wggjAudio.onended = () => {
+    if (settings.autoplaySongs == true) {
+        changeSong();
+        renderSettings();
+    }
+}
+
 document.addEventListener("mousedown", () => {
     if (firstClick) {
         audioChangeVolume("music", settings.musicVolume);
         audioChangeVolume("sound", settings.soundVolume);
+
         audioPlayMusic(songs[settings.song]);
+        wggjAudio.loop = !settings.autoplaySongs;
         firstClick = false;
     }
 });

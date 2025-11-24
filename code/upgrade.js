@@ -65,7 +65,7 @@ class Upgrade {
                 return true;
             }
             else {
-                if (!isChallenge(5)) !this.isMax() ? createNotification("Not enough " + this.currency + "!") : createNotification("Upgrade is maxed!");
+                if (!isChallenge(5)) !this.isMax() ? createNotification("Not enough " + currencyFullName(this.currency, true) + "!") : createNotification("Upgrade is maxed!");
                 else if (!isBuyingMax) this.unlevel(true);
                 return false;
             }
@@ -86,14 +86,30 @@ class Upgrade {
         return true;
     }
 
-    currentPrice() {
+    getPrice(level) {
         let returnPrice;
-        if (this.price(1).mantissa != undefined) returnPrice = this.price(this.currentLevel() + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0));
-        else returnPrice = new Decimal(this.price(this.currentLevel() + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0)));
+        if (this.price(1).mantissa != undefined) returnPrice = this.price(level + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0));
+        else returnPrice = new Decimal(this.price(level + (isChallenge(4) && this.currency == "shgabb" ? (this.ID == "moreShgabb" ? (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1) * 5) : (game.stats_prestige.playTime * (getChallenge(4).getTier() + 1))) : 0)));
 
         if (this.currency == "shgabb") returnPrice = returnPrice.div(getChallenge(6).getBoost());
-        if (isChallenge(6)) returnPrice = returnPrice.mul(new Decimal((this.ID == "moreShgabb" ? 1.1 : 4) + getChallenge(6).getTier() / 10).pow(this.currentLevel()));
+        if (isChallenge(6)) returnPrice = returnPrice.mul(new Decimal((this.ID == "moreShgabb" ? 1.1 : 4) + getChallenge(6).getTier() / 10).pow(level));
         return returnPrice.max(1).floor(); // let's be nice ;)
+    }
+
+    getPriceRange(from, to) {
+        // 0 means from 0 to 1
+        // from is included, to is excluded
+        if (to - from > 100000) return 0;
+        let combinedCosts = new Decimal(0); 
+
+        for (let l = from; l < to; l++) {
+            combinedCosts = combinedCosts.add(this.getPrice(l));
+        }
+        return combinedCosts;
+    }
+
+    currentPrice() {
+        return this.getPrice(this.currentLevel());
     }
 
     currentEffect(level = 0) {
@@ -184,15 +200,18 @@ class Upgrade {
         let ameExtraText = "";
         if (this.type == "ameliorerUpgrades") ameExtraText = "[S" + this.ameSet + "/" + (this.ameAmount != undefined ? this.ameAmount : 0) + "] ";
 
+        let hasButtons = maxButton != "" || unlevelButton != "";
+
         // actual render
         if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>"
-            + "<div class='upgradeButtons'>" + maxButton + unlevelButton + "</div>"
+            + (hasButtons ? "<div style='height: 100%;display: flex; flex-direction: column; '>" : "")
+            + "<div class='upgradeButtons'>" + maxButton + unlevelButton + "</div>" + (hasButtons ? "<div style='display: grid; place-items: center; flex: 1; align-items: center;'>" : "")
             + "<div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>"
             + ameExtraText
-            + this.description
-            + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /> Cost: " + fn(this.currentPrice()) + cImg(currencyFullName(this.currency), 24)))
+            + (typeof (this.description) == "function" ? this.description() : this.description)
+            + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /><div style='display: inline-block;'>Cost: " + fn(this.currentPrice()) + " " + cImg(currencyFullName(this.currency), 24)) + "</div>")
             + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "")
-            + "</button>";
+            + (hasButtons ? "</div></div>" : "") + "</button>";
         // locked ame upgs (visible)
         else if (this.type == "ameliorerUpgrades") return "<button class='upgrade' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>" + ameExtraText + "<br />" + getTotalAme() + "/" + this.ameAmount + "</button>";
         // locked upgs (invisible)
@@ -208,22 +227,22 @@ function rgbManipulator(color, diff) {
     return "rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")";
 }
 
-function currencyFullName(short) {
+function currencyFullName(short, plural = false) {
     switch (short) {
         case "sw":
-            return "sandwich";
+            return "sandwich" + (plural ? "es" : "");
         case "si":
             return "silicone";
         case "ame":
             return "ameliorer";
         case "bags":
-            return "bag";
+            return "bag" + (plural ? "s" : "");
         case "cop":
             return "copper";
         case "pearls":
-            return "pearl";
+            return "pearl" + (plural ? "s" : "");
         case "bananas":
-            return "banana";
+            return "banana" + (plural ? "s" : "");
     }
     return short;
 }
@@ -254,6 +273,7 @@ function buyUpgrade(id) {
             console.log("Cheating? Really?");
             game.cheated = true;
             game.shgabb = "cheater";
+            report("evilGalaxyUser", 100);
         }
     }
 
@@ -417,7 +437,7 @@ var shgabbUpgrades = {
     moreShgabb: new Upgrade("moreShgabb", "More Shgabb", "Get more Shgabb per click, and unlock new content.", level => new Decimal(1).max(level / 25).mul(2).mul(level).add(2).mul(new Decimal(1.01).pow(level - 500).max(1)), level => level, { prefix: "+", suffix: " Shgabb" }),
     shorterCD: new Upgrade("shorterCD", "Shorter Cooldown", "Reduces the click cooldown", level => level * 10 * Math.max(1, level / 4) + 5, level => (level / 10), { maxLevel: 20, prefix: "-", suffix: "s" }),
     bomblike: new Upgrade("bomblike", "Bomblike", "Get even more Shgabb", level => Math.pow(10, level) * 30, level => Math.max(1, level * 3), { maxLevel: 10, prefix: "x", unlock: () => game.stats.hms >= 10 && !isChallenge(1) }),
-    goodJoke: new Upgrade("goodJoke", "Good Joke", "Every third click gives more Shgabb", level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.stats.hms >= 15 && !isChallenge(1) }),
+    goodJoke: new Upgrade("goodJoke", "Good Joke", () => "Every third click gives more Shgabb" + (getClicks() % 3 == 0 ? " (Active)" : " (Inactive)"), level => level * 5 * Math.max(1, level / 8) + 20, level => 1 + (level / 50), { maxLevel: 100, prefix: "x", unlock: () => game.stats.hms >= 15 && !isChallenge(1) }),
 
     swChance: new Upgrade("swChance", "Sandwich Chance", "Increase the chance to make a delicious Sandwich when clicking", level => level * 50 * Math.max(1, level / 5) + 50, level => 0.5 * level, { maxLevel: 50, suffix: "%", unlock: () => game.stats.hms >= 25 && !isChallenge(1) }),
     moreSw: new Upgrade("moreSw", "Sandwich Amount", "Get more Sandwiches (by using more cheese)", level => 250 * Math.pow(4, level), level => level, { maxLevel: 24, prefix: "+", suffix: " Sandwiches/click", unlock: () => (game.upgradeLevels.swChance >= 10 || game.stats.hms >= 50) && !isChallenge(1) }),

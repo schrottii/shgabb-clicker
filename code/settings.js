@@ -88,15 +88,14 @@ var currentSettingSection = 0;
 var settingButtons = [
     // gameplay
     new Setting("gameplay", "toggleNotation", "Change Notation", "Change how big numbers are displayed", () => "Current: " + settings.notation + "<br>(Examples: " + fn(1e6) + ", " + fn(1e7) + ", " + fn(1e9) + ", " + fn(1e12) + ")"),
-    new ToggleSetting("gameplay", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades", "When enabled, upgrades that are at max. level are hidden. When disabled, they simply appear in a different color."),
     new ToggleSetting("gameplay", "toggleUnlevel", "hideUnlevel", "Hide Unlevel Button", "When enabled, the -1 and -MAX buttons (unlevel) are hidden. Ineffective if unlevel hasn't been bought."),
-    new ToggleSetting("gameplay", "toggleCurrent", "displayCurrent", "Current Effect Display", "When enabled, a few upgrades show more details about their boost"),
     new Setting("gameplay", "toggleLeastAd", "Least watched ad setting", "This setting can be used to make the least used joke ad boost appear more often than others, or less often, or to keep the chances equal/unchanged.", () => "Current: " + ["Appears less often", "Unchanged", "Appears more often"][typeof (settings.leastAdLess) != "boolean" ? settings.leastAdLess : (settings.leastAdLess == true ? 1 : 0)]),
     new ToggleSetting("gameplay", "toggleNoUpgrading", "noUpgrading", "Disable Upgrading", "When enabled, no upgrades can be bought."),
     new ToggleSetting("gameplay", "toggleNoAds", "noAds", "Disable Ads", "When enabled, no joke ads appear - meaning their boosts are unavailable too."),
     new ToggleSetting("gameplay", "toggleConfirm", "confirm", "Confirmation Dialogs", "If this setting is disabled, most confirmation dialogs stop appearing, including Prestige and destroying Artifacts."),
     new ToggleSetting("gameplay", "toggleThreeBars", "threeBars", "Three Bars", "If this setting is disabled, the three bars at the top are hidden. Ineffective before unlocking Sandwiches."),
     new ToggleSetting("gameplay", "togglePreferMS", "preferMS", "Prefer More Shgabb", "When enabled, and trying to buy a Shgabb Upgrade, the game will buy More Shgabb instead if it's cheaper. Works with buy max too."),
+    new ToggleSetting("gameplay", "toggleBoostFilters", "boostFilters", "Show Artifact Boost Filters", "When enabled, Artifact Boost Filters are visible. They can be used to quickly filter the Artifact inventory for certain types of Artifacts."),
     new ToggleSetting("gameplay", "toggleSidebar", "sidebar", "Sidebar", "The left side gets replaced with the Sidebar, offering a constant click button, currency overview and more"),
     new Setting("gameplay", "adjustSidebarWidth", "Sidebar Width", "Change size of the sidebar", () => "Current: " + settings.sidebarWidth),
     new Setting("gameplay", "startTutorial", "Tutorial", "Repeat the tutorial", () => ""),
@@ -106,8 +105,9 @@ var settingButtons = [
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events", "When enabled, the background image is different during events. When disabled, the background image is always the normal one."),
     new Setting("design", "toggleCurrenciesDisplay", "Currencies Display", "Change the Top/Currencies display. Compact mode removes their names and productions.", () => "Current: " + ["Visible", "Hidden", "Compact"][typeof (settings.topSquare) != "boolean" ? settings.topSquare : (settings.topSquare == true ? 1 : 0)]),
     new Setting("design", "topNotifs", "Top Notification Amount", "Adjust how many of the most recent notifications are shown at the top.", () => "Current: " + settings.topNotifs),
+    new ToggleSetting("design", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades", "When enabled, upgrades that are at max. level are hidden. When disabled, they simply appear in a different color."),
+    new ToggleSetting("design", "toggleCurrent", "displayCurrent", "Current Effect Display", "When enabled, a few upgrades show more details about their boost"),
     new ToggleSetting("design", "toggleArtifactImages", "artifactImages", "Show Artifact Images", "If this is disabled, the images of Artifacts are hidden. Can make the Artifact inventory more clear."),
-    new ToggleSetting("design", "toggleBoostFilters", "boostFilters", "Show Artifact Boost Filters", "When enabled, Artifact Boost Filters are visible. They can be used to quickly filter the Artifact inventory for certain types of Artifacts."),
     new ToggleSetting("design", "toggleSettingDescriptions", "settingDesc", "Show Setting Descriptions", "When enabled, descriptions for settings are shown. Disable to achieve more compact settings."),
     new Setting("design", "toggleUpgradeColors", "Upgrade Colors", "Adjust the colors of the three types of upgrades (can afford, too expensive, maxed)!", () => "Current: " + settings.upgradeColors),
     new Setting("design", "updateEVERYTHING", "Refresh page", "Updates everything UI-related", () => "Last full update: " + timeSinceFullUIUpdate),
@@ -116,10 +116,11 @@ var settingButtons = [
     // audio
     new ToggleSetting("audio", "toggleMusic", "music", "Music", "Turn ALL music on or off."),
     new SliderSetting("audio", "musicVolume", 0, 1, "Music Volume", "Adjust volume of music"),
+    new ToggleSetting("audio", "toggleAdMusic", "adMusic", "Ad Music", "Turn the music from joke ads on or off."),
     new Setting("audio", "changeSong", "Selected Song", "Select which song to play", () => songs[settings.song]),
     new ToggleSetting("audio", "toggleSounds", "sounds", "Sounds", "Turn ALL sounds on or off."),
     new SliderSetting("audio", "soundVolume", 0, 1, "Sound Volume", "Adjust volume of sound effects"),
-    new ToggleSetting("audio", "toggleAdMusic", "adMusic", "Ad Music", "Turn the music from joke ads on or off."),
+    new ToggleSetting("audio", "toggleAutoplaySongs", "autoplaySongs", "Autoplay Songs", "After a song is finished, play the next song"),
 
     // save
     new Setting("save", "exportGame", "Export Game", "[EXPORT - CODE] Copy the savefile to the clipboard. Store it somewhere and use it to load your progress later.", ""),
@@ -154,7 +155,7 @@ function renderSettings() {
         render = render + `<button class="grayButton" style="background-color: ` + (currentSettingSection == r ? "yellow" : "white") + `" onclick="settingsSet(` + r + `)">` + settingSectionsDisplay[r] + `</button>`;
     }
 
-    render = render + "<br /><h3>" + settingSectionsDisplay[currentSettingSection] + "</h3>";
+    render = render + "<br /><h3>" + settingSectionsDisplay[currentSettingSection] + "</h3><div class='upgradesContainer'>";
 
     for (let s in settingButtons) {
         if (settingButtons[s].category == settingSections[currentSettingSection]) {
@@ -166,8 +167,9 @@ function renderSettings() {
     }
     if (settingSections[currentSettingSection] == "design") render = render + "<br style='clear: both' />" + upgradeColorsRender;
 
-    ui.settings.innerHTML = render;
+    ui.settings.innerHTML = "</div>" + render;
 
+    /*
     let sCount = 0;
     let height = 0;
     for (let s = 0; s < counter; s++) {
@@ -183,6 +185,7 @@ function renderSettings() {
             height = 0;
         }
     }
+    */
 }
 
 ///////////////////////////////////
@@ -198,18 +201,8 @@ function toggleNotation() {
     updateUpgrades();
 }
 
-function hideMaxed() {
-    createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
-    updateUpgrades();
-}
-
 function toggleUnlevel() {
     createNotification("Unlevel button " + (settings.hideUnlevel ? "ON" : "OFF"));
-    updateUpgrades();
-}
-
-function toggleCurrent() {
-    createNotification("Current Effect " + (settings.displayCurrent ? "ON" : "OFF"));
     updateUpgrades();
 }
 
@@ -254,6 +247,12 @@ function toggleThreeBars() {
 
 function togglePreferMS() {
     createNotification("Prefer More Shgabb " + (settings.preferMS ? "ON" : "OFF"));
+}
+
+function toggleBoostFilters() {
+    createNotification("Artifact Boost Filters " + (settings.boostFilters ? "ON" : "OFF"));
+
+    updateArtifacts();
 }
 
 function toggleSidebar() {
@@ -347,14 +346,18 @@ function topNotifs() {
     createNotification("Amount of notifications shown: " + settings.topNotifs);
 }
 
-function toggleArtifactImages() {
-    createNotification("Artifact images " + (settings.artifactImages ? "ON" : "OFF"));
-
-    updateArtifacts();
+function hideMaxed() {
+    createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
+    updateUpgrades();
 }
 
-function toggleBoostFilters() {
-    createNotification("Artifact Boost Filters " + (settings.boostFilters ? "ON" : "OFF"));
+function toggleCurrent() {
+    createNotification("Current Effect " + (settings.displayCurrent ? "ON" : "OFF"));
+    updateUpgrades();
+}
+
+function toggleArtifactImages() {
+    createNotification("Artifact images " + (settings.artifactImages ? "ON" : "OFF"));
 
     updateArtifacts();
 }
@@ -447,19 +450,24 @@ function toggleMusic() {
     }
 }
 
-function toggleSounds() {
-    createNotification("Sounds " + (settings.sounds ? "ON" : "OFF"));
-    wggj.audio.soundMuted = !settings.sounds;
-}
-
 function toggleAdMusic() {
     createNotification("Ad Music " + (settings.adMusic ? "ON" : "OFF"));
     adHandler.muted = !(settings.music && settings.adMusic);
 }
 
+function toggleSounds() {
+    createNotification("Sounds " + (settings.sounds ? "ON" : "OFF"));
+    wggj.audio.soundMuted = !settings.sounds;
+}
+
 function changeSong() {
     settings.song = (settings.song + 1) % songs.length;
     audioPlayMusic(songs[settings.song]);
+}
+
+function toggleAutoplaySongs() {
+    wggjAudio.loop = !settings.autoplaySongs;
+    createNotification("Autoplay Songs " + (settings.autoplaySongs ? "ON" : "OFF"));
 }
 
 ///////////////////////////////////

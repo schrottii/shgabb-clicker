@@ -317,12 +317,15 @@ progress {
     align-items: stretch;
     flex-wrap: wrap;
     justify-content: center;
+    vertical-align: middle;
 }
 
 .upgradeButtons {
     display: flex;
     flex-direction: row;
     text-align: center;
+    flex-basis: 22px;
+    vertical-align: top;
 }
 
 /* this is for a the upgrade buttons, the buttons inside the upgrades, such as MAX */
@@ -340,6 +343,7 @@ progress {
 /* an upgrade (like More Shgabb) */
 .upgrade {
     text-align: center;
+    padding-top: 0px;
     margin: 0px 2px 4px 2px;
     border: 4px solid;
     border-radius: 12px;
@@ -347,7 +351,6 @@ progress {
     min-height: 98px;
     font-family: Rw;
     font-size: 12px;
-    vertical-align: top;
 }
 
     .upgrade:hover {

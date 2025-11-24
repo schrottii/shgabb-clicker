@@ -38,6 +38,7 @@ var sections = {
     shbook2: document.getElementById("shbookSection"),
     shbook3: document.getElementById("shbookSection"),
     shbook4: document.getElementById("shbookSection"),
+    shbook5: document.getElementById("shbookSection"),
 
     // sels
     selection1: document.getElementById("selection1"),
@@ -51,7 +52,7 @@ var selectionTypes = [
     ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper", "bananas"],
     ["gems", "artifacts", "challenges", "minigames", "events"],
     ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
-    ["shbook1", "shbook2", "shbook3", "shbook4"]
+    ["shbook1", "shbook2", "shbook3", "shbook4", "shbook5"]
     ];
 
 function renderSelection(sel) {
@@ -70,7 +71,7 @@ function renderSelection(sel) {
         selsDisplay = ["Cheats", '<img class="currency" src="images/playerprofile/icon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
     if (sel == 4) {
-        selsDisplay = ["Lore", "Currenciary", "Featuriary", "Events"];
+        selsDisplay = ["Lore", "Currenciary", "Featuriary", "Upgrade Calculator", "Events"];
     }
 
     // render le area
@@ -147,6 +148,8 @@ function isSelectionUnlocked(name, name2 = "") {
         case "shbook3":
             return game.stats.hms >= 25;
         case "shbook4":
+            return game.stats.hms >= 25;
+        case "shbook5":
             return game.stats.hms >= 2000;
 
         case "none":
@@ -154,7 +157,7 @@ function isSelectionUnlocked(name, name2 = "") {
     }
 }
 
-function renderAllSelection() {
+function renderAllSelection(auto = false) {
     renderSelection(1);
     renderSelection(2);
     renderSelection(3);
@@ -162,7 +165,7 @@ function renderAllSelection() {
 
     // custom onclicks
     if (selections[2] == "playerprofile") renderPlayerProfile();
-    renderShbook();
+    renderShbook(auto);
     if (selections[0] == "shgabb") renderIdleMode();
     if (selections[2] == "settings") renderSettings();
 

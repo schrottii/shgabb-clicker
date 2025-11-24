@@ -275,41 +275,48 @@ var game = {
     },
     cheated: false,
     sus: 0,
+    susq: 0,
+    flags: {},
 }
 
 const emptyGame = Object.assign({}, game, {});
 
 // SETTINGS
 var settings = {
-    music: false,
-    sounds: false,
-    adMusic: true,
-    song: 0,
-    musicVolume: 0.5,
-    soundVolume: 0.5,
-
-    background: false,
-    displayCurrent: false,
-    hideMaxed: false,
-    hideUnlevel: false,
-    upgradeColors: "normal",
-    customColors: [[0, 0, 0, 255], [100, 100, 100, 255], [255, 255, 255, 0]],
+    // gameplay
     notation: "normal",
-    topSquare: true,
+    hideUnlevel: false,
     leastAdLess: true,
-    eventBG: true,
-    topNotifs: 1,
-    artifactImages: true,
     noUpgrading: false,
     noAds: false,
     confirm: true,
-    boostFilters: true,
     threeBars: true,
     preferMS: false,
-    settingDesc: true,
-    popups: true,
+    boostFilters: true,
     sidebar: false,
     sidebarWidth: 19,
+
+    // design
+    background: false,
+    eventBG: true,
+    topSquare: true,
+    topNotifs: 1,
+    hideMaxed: false,
+    displayCurrent: false,
+    artifactImages: true,
+    settingDesc: true,
+    upgradeColors: "normal",
+    customColors: [[0, 0, 0, 255], [100, 100, 100, 255], [255, 255, 255, 0]],
+    popups: true,
+
+    // audio
+    music: false,
+    musicVolume: 0.5,
+    adMusic: true,
+    song: 0,
+    sounds: false,
+    soundVolume: 0.5,
+    autoplaySongs: false
 }
 
 // BETA (cheating)
@@ -320,3 +327,13 @@ Object.defineProperty(BETA, 'isBeta', {
     enumerable: true,
     configurable: false
 });
+
+function report(flagName, susAmount) {
+    if (game.flags[flagName] == undefined) {
+        game.susq += susAmount;
+        game.flags[flagName] = 0;
+    }
+
+    game.sus += susAmount;
+    game.flags[flagName] += susAmount;
+}

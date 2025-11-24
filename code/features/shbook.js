@@ -174,7 +174,7 @@ function getWisp(multi = 1) {
 
         checkCollectingLorePageCompleted();
 
-        renderShbook();
+        renderShbook(true);
     }
 }
 
@@ -207,9 +207,9 @@ function getLorePage(multi = 1) {
         else {
             createNotification("All lore pages already found...");
         }
-    }
 
-    renderShbook();
+        renderShbook(true);
+    }
 }
 
 function getLoreByID(id) {
@@ -328,11 +328,11 @@ function shbookSize() {
 }
 
 function changeShbook(id, sel) {
-    // id: 0 lore 1 currenciary 2 featuriary
+    // id: 0 lore 1 currenciary 2 featuriary 3 calculator 4 events
+    selectedCalcUpg = "";
     shbookSelections[id] = sel;
 
     if (id == 0 && sel == game.loreSel) checkCollectingLorePageCompleted();
-
     renderShbook();
 }
 
@@ -371,11 +371,11 @@ function renderGetShbookLeft(index, title, list, sName) {
 
     let bgColor;
     for (let s in list) {
-        bgColor = (shbookSelections[index] == list[s].ID ? "rgb(80, 160, 20)" : "rgb(40, 40, 40)");
+        bgColor = (shbookSelections[index] == (index == 3 ? s : list[s].ID) ? "rgb(80, 160, 20)" : "rgb(40, 40, 40)");
         render = render + `<button class="grayButton" 
         style="width: 95%; margin-bottom: 2px; color: white; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; 
         background-color: ` + bgColor + `; border-radius: 8px; border-color: ` + rgbManipulator(bgColor, 0.75)
-        + `" onclick="changeShbook(` + index + `, '` + list[s].ID + `')">`
+        + `" onclick="changeShbook(` + index + `, '` + (index == 3 ? s : list[s].ID) + `')">`
         + sName(s) + `</button>`
     }
 
@@ -465,18 +465,111 @@ function renderLore() {
     ui.shbookRight.innerHTML = render;
 }
 
+var allUpgrades = [
+    ["Shgabb", "shgabb", shgabbUpgrades],
+    ["Sandwich", "sw", sandwichUpgrades],
+    ["Golden Shgabb", "gs", goldenShgabbUpgrades],
+    ["Silicone Shgabb", "si", siliconeShgabbUpgrades],
+    ["Améliorer", "ame", ameliorerUpgrades],
+    ["Pearl", "pearl", pearlUpgrades],
+    ["Bag", "bag", bagUpgrades],
+    ["Copper Shgabb", "cop", copperShgabbUpgrades],
+    ["Iron", "iron", ironUpgrades],
+    ["Banana", "banana", bananaUpgrades],
+];
+var selectedCalcUpg = "";
+
+function renderUpgradeCalculator() {
+    renderGetShbookTitle("Upgrade Calculator");
+
+    // left side
+    renderGetShbookLeft(3, "Upgrades", allUpgrades, (s) => game.stats[allUpgrades[s][1]] > 0 ? (cImg(currencyFullName(allUpgrades[s][1])) + allUpgrades[s][0]) : "???");
+
+    // right side
+    let selected = allUpgrades[shbookSelections[3]];
+
+    if (!(game.stats[selected[1]] > 0)) {
+        ui.shbookRight.innerHTML = "<div style='font-size: 40px'>? Upgrades" + "</div><hr />Play more to unlock these upgrades";
+        return false;
+    }
+
+    let render = "<div style='font-size: 40px'>" + selected[0] + " Upgrades" + "</div><hr />";
+
+    for (let upg in selected[2]) {
+        if (selected[2][upg].isUnlocked()) render = render + "<button class='grayButton' onclick='selectedCalcUpg = `"+ upg + "`; renderUpgradeCalculator();'>" + selected[2][upg].name + "</button>";
+    }
+    render = render + "<hr />";
+
+    let selUpg = selected[2][selectedCalcUpg];
+    render = render + "<h3>Selected upgrade: " + (selectedCalcUpg == "" ? "-" : selUpg.name) + "</h3>"
+    if (selectedCalcUpg != "") {
+        // basic values
+        render = render + "      Current level:  " + selUpg.currentLevel() + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "");
+
+        render = render + "<br />Current price:  " + fn(selUpg.currentPrice());
+        if (selUpg.getMax() == undefined || selUpg.currentLevel() + 1 < selUpg.getMax()) render = render + "<br />Level+1 price:  " + fn(selUpg.getPrice(selUpg.currentLevel() + 1));
+        if (selUpg.getMax() != undefined) render = render + "<br />Price to max:   " + fn(selUpg.getPriceRange(selUpg.currentLevel(), selUpg.getMax()));
+
+        render = render + "<br />Current effect: " + selUpg.effectDisplay();
+        if (selUpg.getMax() == undefined || selUpg.currentLevel() + 1 < selUpg.getMax()) render = render + "<br />Level+1 effect: " + selUpg.effectDisplay(selUpg.currentLevel() + 1);
+        if (selUpg.getMax() != undefined) render = render + "<br />Effect at max:   " + selUpg.effectDisplay(selUpg.getMax());
+
+        // from to
+        render = render + "<hr />";
+        render = render + "From: <input id='upgradeCalcFrom' type='number' name='From' onchange='renderCalc();' />  ";
+        render = render + "To: <input id='upgradeCalcTo' type='number' name='To' onchange='renderCalc();' />";
+        render = render + "<br />OR single level: <input id='upgradeCalcSingleLevel' type='number' name='SingleLevel' onchange='renderCalc();' />";
+
+        render = render + "<span id='lvlsDisplay'></span>";
+    }
+
+    ui.shbookRight.innerHTML = render;
+}
+
+function renderCalc() {
+    let render = "";
+    let selected = allUpgrades[shbookSelections[3]];
+    let selUpg = selected[2][selectedCalcUpg];
+
+    let input = [
+        parseInt(document.getElementById("upgradeCalcFrom").value),
+        parseInt(document.getElementById("upgradeCalcTo").value),
+        parseInt(document.getElementById("upgradeCalcSingleLevel").value)
+    ];
+
+    if (isValid(input[2]) && !isNaN(input[2])) {
+        render = render + "<br />Level: " + input[2] + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "");
+
+        render = render + "<br />Price to L+1:  " + fn(selUpg.getPrice(input[2]));
+        render = render + "<br />Price to max:  " + fn(selUpg.getPriceRange(input[2], selUpg.getMax()));
+
+        render = render + "<br />Effect: " + selUpg.effectDisplay(input[2]);
+        render = render + "<br />Effect at L+1: " + selUpg.effectDisplay(input[2] + 1);
+    }
+    else if (isValid(input[0]) && isValid(input[1]) && !isNaN(input[0]) && !isNaN(input[1])) {
+        render = render + "<br />Level: " + input[0] + "->" + input[1] + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "");
+
+        render = render + "<br />Price:  " + fn(selUpg.getPriceRange(input[0], input[1]));
+
+        render = render + "<br />Effect at " + input[0] + ": " + selUpg.effectDisplay(input[0]);
+        render = render + "<br />Effect at " + input[1] + ": " + selUpg.effectDisplay(input[1]);
+    }
+
+    document.getElementById("lvlsDisplay").innerHTML = render;
+}
+
 var currentYear = new Date().getUTCFullYear();
 
 function renderShbookEvent() {
     renderGetShbookTitle("Event List (" + game.etenvs + " " + cImg("etenv") + ")");
 
     // left side
-    renderGetShbookLeft(3, "Events", events, (s) => events[s].displayName);
+    renderGetShbookLeft(4, "Events", events, (s) => events[s].displayName);
 
     // right side
     let selected = "";
     for (s in events) {
-        if (events[s].ID == shbookSelections[3]) selected = events[s];
+        if (events[s].ID == shbookSelections[4]) selected = events[s];
     }
     
     let render = "<div style='font-size: 40px'>" + selected.displayName + "</div><hr><br />";
@@ -509,7 +602,7 @@ function renderShbookEvent() {
     ui.shbookRight.innerHTML = render;
 }
 
-function renderShbook() {
+function renderShbook(auto = false) {
     if (game.stats.hms >= 25) {
         sections.shbook1.style.display = "";
         ui.shbookHeader.innerHTML = "Shbook";
@@ -519,10 +612,11 @@ function renderShbook() {
         if (selections[3] == "shbook1") renderLore();
         if (selections[3] == "shbook2") renderCurrenciary();
         if (selections[3] == "shbook3") renderFeaturiary();
-        if (selections[3] == "shbook4") renderShbookEvent();
+        if (selections[3] == "shbook4" && !auto) renderUpgradeCalculator();
+        if (selections[3] == "shbook5") renderShbookEvent();
     }
     else {
-        ui.shbookHeader.innerHTML = "<div class='grayubtton'>Upgrade More Shgabb to level 25 to unlock the Shbook!</div>";
+        ui.shbookHeader.innerHTML = "<div class='graybutton'>Upgrade More Shgabb to level 25 to unlock the Shbook!</div>";
         ui.shbookArea.style.display = "none";
     }
 }
