@@ -466,16 +466,16 @@ function renderLore() {
 }
 
 var allUpgrades = [
-    ["Shgabb", "shgabb", shgabbUpgrades],
-    ["Sandwich", "sw", sandwichUpgrades],
-    ["Golden Shgabb", "gs", goldenShgabbUpgrades],
-    ["Silicone Shgabb", "si", siliconeShgabbUpgrades],
-    ["Améliorer", "ame", ameliorerUpgrades],
-    ["Pearl", "pearl", pearlUpgrades],
-    ["Bag", "bag", bagUpgrades],
-    ["Copper Shgabb", "cop", copperShgabbUpgrades],
-    ["Iron", "iron", ironUpgrades],
-    ["Banana", "banana", bananaUpgrades],
+    ["Shgabb", "shgabb", shgabbUpgrades, "shgabb"],
+    ["Sandwich", "sw", sandwichUpgrades, "sw"],
+    ["Golden Shgabb", "gs", goldenShgabbUpgrades, "gs"],
+    ["Silicone Shgabb", "si", siliconeShgabbUpgrades, "si"],
+    ["Améliorer", "ame", ameliorerUpgrades, "ame"],
+    ["Pearl", "pearl", pearlUpgrades, "fish"],
+    ["Bag", "bag", bagUpgrades, "bags"],
+    ["Copper Shgabb", "cop", copperShgabbUpgrades, "cop"],
+    ["Iron", "iron", ironUpgrades, "iron"],
+    ["Banana", "banana", bananaUpgrades, "bananas"],
 ];
 var selectedCalcUpg = "";
 
@@ -483,12 +483,12 @@ function renderUpgradeCalculator() {
     renderGetShbookTitle("Upgrade Calculator");
 
     // left side
-    renderGetShbookLeft(3, "Upgrades", allUpgrades, (s) => game.stats[allUpgrades[s][1]] > 0 ? (cImg(currencyFullName(allUpgrades[s][1])) + allUpgrades[s][0]) : "???");
+    renderGetShbookLeft(3, "Upgrades", allUpgrades, (s) => game.stats[allUpgrades[s][3]] > 0 ? (cImg(currencyFullName(allUpgrades[s][1])) + allUpgrades[s][0]) : "???");
 
     // right side
     let selected = allUpgrades[shbookSelections[3]];
 
-    if (!(game.stats[selected[1]] > 0)) {
+    if (!(game.stats[selected[3]] > 0)) {
         ui.shbookRight.innerHTML = "<div style='font-size: 40px'>? Upgrades" + "</div><hr />Play more to unlock these upgrades";
         return false;
     }
