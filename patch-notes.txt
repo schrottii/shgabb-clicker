@@ -100,6 +100,7 @@ October - December 2025:
 4.2.1
 4.2.2
 4.3
+4.4
 
 
 
@@ -2851,3 +2852,38 @@ Version v3.6.1:
 - Good Joke Shgabb Upgrade now shows if it's currently active or inactive
 - Basic anti cheat
 - Code improvements
+
+
+
+2025-11-28 v4.4:
+-> Generators:
+- New feature, unlocked at 3000 HMS
+- Spend GS to upgrade Generators
+- The higher the level, the more their Genpoint prod boost increases
+- Every Generator multiplies the Genpoint/s gain
+- Genpoints boost Shgabb (^0.1~^0.5 depending on Generators at level 1+)
+- Added 5 Generators:
+- Cheap: e2^L, x1.20^L
+- Balanced: e4^L, x1.30^L
+- Boost: e10^L, x2^L
+- Weak: e15^L, x1.20^L
+- Powerful: e25^L, x3^L
+- Added Featuriary entry
+
+-> Events:
+- Added new cosmetic reward system to: 
+- Christmas Event (10x2% chance -> 8% chance per Gift)
+- Anniversary Event (7x33% chance -> 60% chance per Cake), no free Banner anymore, first PFP still guaranteed
+- Lunar New Year Event (same as before)
+- Egg Hunt Event (not in order anymore, split Banners/Frames into 2 separate offers)
+- Pride Event (same as before, Banners still tied to couples)
+- Hot Hot Summer and Shgabb the Witch already have this system
+
+-> Notifications:
+- Popups can now be clicked away
+- Auto save notifs no longer mess with the top/sidebar notif display (- or pushing other notifs away)
+
+-> Other:
+- Added Pearls, Etenvs and Iron Shgabb to Unlocks list in Shbook
+- Reduced visibility of section backgrounds for darker appearance
+- Fixed issue that cleared selected file (for loading a save)

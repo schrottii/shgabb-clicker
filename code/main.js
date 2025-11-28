@@ -170,6 +170,7 @@ var ui = {
     idleModeRender: document.getElementById("idleModeRender"),
     idleModeRender2: document.getElementById("idleModeRender2"),
     currentArtis: document.getElementById("currentArtis"),
+    generatorsRender: document.getElementById("generatorsRender"),
 }
 
 for (let u in ui.tutorial) {
@@ -1090,6 +1091,14 @@ function exportGame(destination = "gimme") {
     exporter.gs = numberSaver(exporter.gs);
     exporter.si = numberSaver(exporter.si);
     exporter.fishvalue = numberSaver(exporter.fishvalue);
+    exporter.genpoints = numberSaver(exporter.genpoints);
+    exporter.generators = [];
+    for (let g in game.generators) {
+        exporter.generators[g] = [0, new Decimal(0), 0];
+        exporter.generators[g][0] = game.generators[g][0];
+        exporter.generators[g][1] = numberSaver(game.generators[g][1]);
+        exporter.generators[g][2] = game.generators[g][2];
+    }
 
     for (let statHandler in statTypes) {
         exporter[statTypes[statHandler]] = {};
@@ -1191,6 +1200,14 @@ function importGame(source) {
     game.gs = numberLoader(game.gs);
     game.si = numberLoader(game.si);
     game.fishvalue = numberLoader(game.fishvalue);
+    game.genpoints = numberLoader(game.genpoints);
+    game.generators = [];
+    for (let g in source.generators) {
+        game.generators[g] = [];
+        game.generators[g][0] = source.generators[g][0];
+        game.generators[g][1] = numberLoader(source.generators[g][1]);
+        game.generators[g][2] = source.generators[g][2];
+    }
 
     // Some adjustments
     shgicPointsPlayer = 0;
@@ -1372,6 +1389,8 @@ function shgabbClickerLoop(tick) {
         silicone();
         artifactEvent("onAuto", {});
 
+        updateGenerators(time);
+
         if (isEvent("shgabbthewitch")) {
             for (let witchArtis = 0; witchArtis <= 5; witchArtis++) {
                 let witchesEarned = 0;
@@ -1456,7 +1475,7 @@ function updateEVERYTHING() {
     renderCurrentEvent();
     renderGemOffers();
     renderPlayerProfile();
-    renderSettings();
+    if (currentSettingSection != 3) renderSettings();
     renderShbook(true);
     renderBananaTrees();
 }
@@ -1668,7 +1687,7 @@ wggjAudio.ondurationchange = () => {
 wggjAudio.onended = () => {
     if (settings.autoplaySongs == true) {
         changeSong();
-        renderSettings();
+        if (currentSettingSection == 2) renderSettings();
     }
 }
 

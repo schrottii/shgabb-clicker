@@ -139,7 +139,7 @@ var settingButtons = [
 // GENERAL SETTING FUNCTIONS
 function onSettingClick(toggle) {
     if (toggle != "false") settings[toggle] = !settings[toggle];
-    renderSettings();
+    //renderSettings(); no!!
 }
 
 function settingsSet(r) {
@@ -435,7 +435,7 @@ function updateUpgradeColors() {
     else {
         upgradeColorsRender = "";
     }
-    renderSettings();
+    if (currentSettingSection == 1) renderSettings();
 }
 
 ///////////////////////////////////

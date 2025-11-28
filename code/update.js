@@ -2,33 +2,39 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.3";
+const gameVersion  = "4.4";
 const versionTitle = "";
 
 const currentPatchNotes = `
--> Upgrade Calculator:
-- Found in the Shbook, unlocked with it (25 HMS)
-- Select a group of upgrades, then the desired upgrade
-- Only unlocked groups and upgrades are shown
-- Selecting an upgrade shows: current level, current price, price one level higher, price to max, current effect, effect one level higherk, effect at max
-- You can select a range from level x to level y:
-- It shows: levels, total price for that range, effect at level x, effect at level y
-- You can select a single level:
-- It shows: level, price to next level, price to max, effect, effect at next level
+-> Generators:
+- New feature, unlocked at 3000 HMS
+- Spend GS to upgrade Generators
+- The higher the level, the more their Genpoint prod boost increases
+- Every Generator multiplies the Genpoint/s gain
+- Genpoints boost Shgabb (^0.1~^0.5 depending on Generators at level 1+)
+- Added 5 Generators:
+- Cheap: e2^L, x1.20^L
+- Balanced: e4^L, x1.30^L
+- Boost: e10^L, x2^L
+- Weak: e15^L, x1.20^L
+- Powerful: e25^L, x3^L
 
--> Settings:
-- All settings in the same row now have the same height
-- New Audio Setting: Autoplay Songs
-- Moved "Hide Maxed Upgrades" and "Current Effect Display" from Gameplay to Design
-- Moved "Show Artifact Boost Filters" from Design to Gameplay
-- Moved Ad Music setting next to the other music (not sound) ones
+-> Events:
+- Added new cosmetic reward system to: 
+- Christmas Event (10x2% chance -> 8% chance per Gift)
+- Anniversary Event (7x33% chance -> 60% chance per Cake), no free Banner anymore, first PFP still guaranteed
+- Lunar New Year Event (same as before)
+- Egg Hunt Event (not in order anymore, split Banners/Frames into 2 separate offers)
+- Pride Event (same as before, Banners still tied to couples)
+- Hot Hot Summer and Shgabb the Witch already have this system
+
+-> Notifications:
+- Popups can now be clicked away
+- Auto save notifs no longer mess with the top/sidebar notif display (- or pushing other notifs away)
 
 -> Other:
-- Upgrades: moved MAX/-1/-MAX to the top, content below gets spaced out
-- "Not enough ..." text now has proper currency names rather than abbreviations (sw)
-- Good Joke Shgabb Upgrade now shows if it's currently active or inactive
-- Basic anti cheat
-- Code improvements
+- Added Pearls, Etenvs and Iron Shgabb to Unlocks list in Shbook
+- Fixed issue that cleared selected file (for loading a save)
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

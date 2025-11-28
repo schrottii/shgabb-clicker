@@ -31,7 +31,8 @@ function calcShgabbGlobal() {
         .mul(eventValue("pride", 10, 1))
         .mul(bagUpgrades.adsWatchedBoostShgabb.currentEffect())
         .mul(copperShgabbUpgrades.copShgabbBoost.currentEffect())
-        .mul(pearlUpgrades.prlShgabb.currentEffect());
+        .mul(pearlUpgrades.prlShgabb.currentEffect())
+        .mul(game.genpoints > 0 ? getGenpointBoost() : 1);
 
     return prod;
 }

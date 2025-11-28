@@ -29,10 +29,16 @@ function tickPopup(time) {
     }
 }
 
+function popupClick() {
+    popupDisplayTimer = 0;
+}
+
 function renderNotifications() {
     ui.notifications.innerHTML = "";
+
+    // notifications area
     let n2 = 15;
-    for (n in currentNotifications) {
+    for (let n in currentNotifications) {
         if (n == currentNotifications.length - 1) ui.notifications.innerHTML = ui.notifications.innerHTML + "<b>" + currentNotifications[n] + "</b><br />";
         else ui.notifications.innerHTML = ui.notifications.innerHTML + currentNotifications[n] + "<br />";
         n2 -= 1;
@@ -42,12 +48,18 @@ function renderNotifications() {
         n2 -= 1;
     }
 
+    // top / sidebar
     let topNotifsRender = "";
-    for (i = 1; i < settings.topNotifs + 1; i++) {
-        if (currentNotifications[(Object.keys(currentNotifications).length - i)] != undefined && currentNotifications[Object.keys(currentNotifications).length - i].substr(0, 10) != "Game saved") {
-            topNotifsRender = topNotifsRender + currentNotifications[Object.keys(currentNotifications).length - i] + (i != settings.topNotifs ? "<br />" : "");
+    let n = 0;
+    let line = "";
+    for (let i = 1; n < settings.topNotifs && i < Object.keys(currentNotifications).length; i++) {
+        line = currentNotifications[(Object.keys(currentNotifications).length - i)];
+        //console.log("i:" + i + ", n: " + n + ", l: " + line);
+        if (line != undefined && line.substr(0, 10) != "Game saved") {
+            topNotifsRender = topNotifsRender + line + (n != settings.topNotifs ? "<br />" : "");
+            n++;
         }
-        else topNotifsRender = topNotifsRender + (i != settings.topNotifs ? "-<br />" : "-");
+        else continue; // auto notifs
     }
 
     if (settings.sidebar) {

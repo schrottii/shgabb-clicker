@@ -58,7 +58,7 @@
 
             <div id="popup2" style="display: none">
                 <h2><span id="popupText2"></span></h2>
-                <img id="popupImage2" width="128" , height="128" />
+                <img id="popupImage2" width="128" , height="128" onclick="popupClick();" />
                 <h3><span id="popupName2"></span></h3>
             </div>
 
@@ -120,7 +120,7 @@
         <!-- New artifact / achievement popup -->
         <div id="popup" style="display: none">
             <h2><span id="popupText"></span></h2>
-            <img id="popupImage" width="128" , height="128" />
+            <img id="popupImage" width="128" , height="128" onclick="popupClick();" />
             <h3><span id="popupName"></span></h3>
         </div>
 
@@ -252,6 +252,11 @@
             <div id="challengeSection" class="square2" style="display: none">
                 <h3>Challenges</h3>
                 <span id="challengeRender"></span>
+            </div>
+
+            <!-- Generators -->
+            <div id="generatorsSection" class="square2" style="display: none">
+                <span id="generatorsRender"></span>
             </div>
 
             <!-- Minigame -->
@@ -455,6 +460,7 @@
     <script src="code\features\playerprofile.js"></script>
     <script src="code\features\events.js"></script>
     <script src="code\features\shbook.js"></script>
+    <script src="code\features\generators.js"></script>
 
     <script src="code\currencies\shgabb.js"></script>
     <script src="code\currencies\sandwiches.js"></script>

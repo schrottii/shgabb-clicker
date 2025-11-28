@@ -41,6 +41,11 @@ var game = {
     bananatrees: [],
     iron: 0,
 
+    generators: [
+        [],
+    ],
+    genpoints: new Decimal(0),
+
     // event currencies / event stuff
     gifts: 0,
     cakeProgress: 0,

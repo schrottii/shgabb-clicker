@@ -214,6 +214,7 @@ function getCosmetic(typeID) {
 }
 
 function getEventRewards(event, type = "all") {
+    if (event == undefined) return [];
     // v3.7's new, random, consistent system
     // grabs rewards (of a type or all) for an event, does not give
     let eventRewards = [];
@@ -271,6 +272,7 @@ function awardEventReward(event, type = "all", gemCompensation = 0) {
     // award it
     selectedReward = getCosmetic(selectedReward);
     selectedReward.eventAward();
+    renderShbookEvent();
     return selectedReward.name;
 }
 
@@ -310,65 +312,25 @@ function openGifts(amount) {
     game.gifts -= amount;
     checkAchievement(72);
 
-    // Cosmetic 2% - Gems 18% - SW 40% - Shgabb 40%
+    // Cosmetic 8% - Gems 18% - SW 40% - Shgabb 40%
     // giftContents: gems / sw / shgabb / cosmetic
     let giftContents = [0, 0, 0, 0];
 
     for (ogi = 0; ogi < amount; ogi++) {
         let random = Math.random();
-        if (random < 0.02 && !game.evpfps.includes(400)) {
-            createNotification("Received a Christmas PFP");
-            giftContents[3] += 1;
-            game.evpfps.push(400);
+        if (random < 0.08) {
+            let reward = awardEventReward("christmas", "all");
+            if (reward != false) {
+                createNotification("Received " + reward);
+                giftContents[3] += 1;
+            }
         }
-        else if (random < 0.02 && !game.evpfps.includes(401)) {
-            createNotification("Received a Christmas PFP");
-            giftContents[3] += 1;
-            game.evpfps.push(401);
+
+        if (giftContents[3] == 0) {
+            if (random < 0.2) giftContents[0] += 2;
+            else if (random < 0.6) giftContents[1] += 1;
+            else giftContents[2] += 1;
         }
-        else if (random < 0.02 && !game.evpfps.includes(402)) {
-            createNotification("Received a Christmas PFP");
-            giftContents[3] += 1;
-            game.evpfps.push(402);
-        }
-        else if (random < 0.02 && !game.evpfps.includes(426)) {
-            createNotification("Received a Christmas PFP");
-            giftContents[3] += 1;
-            game.evpfps.push(426);
-        }
-        else if (random < 0.02 && !game.evbans.includes(418)) {
-            createNotification("Received a Christmas Banner");
-            giftContents[3] += 1;
-            game.evbans.push(418);
-        }
-        else if (random < 0.02 && !game.evbans.includes(419)) {
-            createNotification("Received a Christmas Banner");
-            giftContents[3] += 1;
-            game.evbans.push(419);
-        }
-        else if (random < 0.02 && !game.evbans.includes(420)) {
-            createNotification("Received a Christmas Banner");
-            giftContents[3] += 1;
-            game.evbans.push(420);
-        }
-        else if (random < 0.02 && !game.evframes.includes(400)) {
-            createNotification("Received a Christmas Frame");
-            giftContents[3] += 1;
-            game.evframes.push(400);
-        }
-        else if (random < 0.02 && !game.evframes.includes(401)) {
-            createNotification("Received a Christmas Frame");
-            giftContents[3] += 1;
-            game.evframes.push(401);
-        }
-        else if (random < 0.02 && !game.evframes.includes(402)) {
-            createNotification("Received a Christmas Frame");
-            giftContents[3] += 1;
-            game.evframes.push(402);
-        }
-        else if (random < 0.2) giftContents[0] += 2;
-        else if (random < 0.6) giftContents[1] += 1;
-        else giftContents[2] += 1;
     }
 
     let sandwichAmount = calcSandwiches().mul(50).ceil().mul(giftContents[1]);
@@ -390,6 +352,7 @@ function openGifts(amount) {
     previousGiftText = "Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb" : "") + (sandwichAmount != 0 ? ", " + fn(sandwichAmount) + " Sandwiches" : "") + (giftContents[0] != 0 ? ", " + giftContents[0] + " Gems" : "") + (giftContents[3] != 0 ? ", " + giftContents[3] + " Cosmetics" : "");
     createNotification(previousGiftText);
 
+    //if (giftContents[3] > 0) renderShbookEvent();
     renderCurrentEvent();
 }
 
@@ -402,11 +365,10 @@ function renderAnniversary() {
     let collectedPages = calcCollectedPages(4);
 
     // SAVE EDITING
-    if (!game.evbans.includes(423) && new Date().getYear() + 1900 == 2025 && isEvent("anniversary")) game.evbans.push(423); // free banner for everyone in the second year
-    if (!game.evpfps.includes(403)) { // give PFPs to those who played in the first year
+    //if (!game.evbans.includes(423) && new Date().getYear() + 1900 == 2025 && isEvent("anniversary")) game.evbans.push(423); // free banner for everyone in the second year
+    
+    if (!game.evpfps.includes(403)) {
         if (game.ach.includes(77)) game.evpfps.push(403);
-        if (game.ach.includes(78)) game.evpfps.push(404);
-        if (game.ach.includes(79)) game.evpfps.push(405);
     }
 
     // HEADER AND DESCRIPTION
@@ -421,7 +383,7 @@ function renderAnniversary() {
 
     if (cakeDuration <= 0) render = render + "Cake Progress: " + game.cakeProgress + (game.cakeProgress >= 10000 ? "/15000" : "/10000");
     else render = render + "Cake Duration: " + cakeDuration.toFixed(0) + "s<br />x10 Shgabb! x5 Faster Clicks! x3 Gem Chance!";
-    if (game.cakeProgress >= 10000) render = render + "<br /><button class='grayButton' onclick='eatCake()'>Eat Cake</button>";
+    if (game.cakeProgress >= 10000) render = render + "<br /><button class='grayButton' onclick='eatCake();'>Eat Cake</button>";
 
     // FINISH
     ui.eventRender.innerHTML = render;
@@ -438,14 +400,8 @@ function eatCake() {
     statIncrease("cakes", 1);
 
     if (game.evpfps.includes(403)) {
-        // first cake is guaranteed to give the first PFP, after that, this happens:
-        if (Math.random() < 0.33 && !game.evpfps.includes(404)) game.evpfps.push(404);
-        else if (Math.random() < 0.33 && !game.evpfps.includes(405)) game.evpfps.push(405);
-        else if (Math.random() < 0.33 && !game.evbans.includes(421)) game.evbans.push(421);
-        else if (Math.random() < 0.33 && !game.evbans.includes(422)) game.evbans.push(422);
-        else if (Math.random() < 0.33 && !game.evbans.includes(423)) game.evbans.push(423);
-        else if (Math.random() < 0.33 && !game.evframes.includes(403)) game.evframes.push(403);
-        else if (Math.random() < 0.33 && !game.evframes.includes(404)) game.evframes.push(404);
+        // first cake is guaranteed to give the first PFP (via achievement), after that, this happens:
+        if (Math.random() < 0.6) awardEventReward("anniversary", "all");
     }
     
     renderCurrentEvent();
@@ -470,9 +426,7 @@ function renderLunar() {
     render = render + "<br />" + cImg("qian") + game.qian + " Qian";
     render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)<br /><br />";
 
-    if (!(game.evpfps.includes(406) && game.evpfps.includes(407) && game.evpfps.includes(408)
-        && game.evbans.includes(424) && game.evbans.includes(425) && game.evbans.includes(426)
-        && game.evframes.includes(405) && game.evframes.includes(406))) {
+    if (!hasEventRewards("lunar", "all")) {
         render = render + "<button class='chineseOffer' onclick='useQian(1)'>Buy a Cosmetic!<br/>188 " + cImg("qian") + "</button>";
     }
     else checkAchievement(184);;
@@ -499,34 +453,14 @@ function useQian(offerNR) {
                 return false;
             }
 
-            let availableCosmetics = [];
-            if (!game.evpfps.includes(406)) availableCosmetics.push("pfp406");
-            if (!game.evpfps.includes(407)) availableCosmetics.push("pfp407");
-            if (!game.evpfps.includes(408)) availableCosmetics.push("pfp408");
-            if (!game.evbans.includes(424)) availableCosmetics.push("ban424");
-            if (!game.evbans.includes(425)) availableCosmetics.push("ban425");
-            if (!game.evbans.includes(426)) availableCosmetics.push("ban426");
-            if (!game.evframes.includes(405)) availableCosmetics.push("fra405");
-            if (!game.evframes.includes(406)) availableCosmetics.push("fra406");
+            let reward = awardEventReward("lunar", "all");
 
-            if (availableCosmetics.length == 0) {
+            if (reward == false) {
                 // has all
                 createNotification("You already own all of these cosmetics");
                 checkAchievement(184);
                 return false;
             }
-
-            let selectedCosmetic = availableCosmetics[Math.floor(availableCosmetics.length * Math.random())]
-
-            if (selectedCosmetic == "pfp406") game.evpfps.push(406);
-            else if (selectedCosmetic == "pfp407") game.evpfps.push(407);
-            else if (selectedCosmetic == "pfp408") game.evpfps.push(408);
-            else if (selectedCosmetic == "ban424") game.evbans.push(424);
-            else if (selectedCosmetic == "ban425") game.evbans.push(425);
-            else if (selectedCosmetic == "ban426") game.evbans.push(426);
-            else if (selectedCosmetic == "fra405") game.evframes.push(405);
-            else if (selectedCosmetic == "fra406") game.evframes.push(406);
-            else return false; // this shouldn't happen, but just in case
 
             // bought one of them
             game.qian -= 888;
@@ -654,9 +588,9 @@ function renderEgg() {
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
 
-
-    if (!game.evpfps.includes(414)) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP!<br/>50 " + cImg("egg") + "</button>";
-    if (!game.evframes.includes(408)) render = render + "<button class='chineseOffer' onclick='useEggs(5)'>Buy an Easter Banner or Frame!<br/>50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP<br/>50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "bans")) render = render + "<button class='chineseOffer' onclick='useEggs(5)'>Buy an Easter Banner<br/>50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "frames")) render = render + "<button class='chineseOffer' onclick='useEggs(6)'>Buy an Easter Frame<br/>50 " + cImg("egg") + "</button>";
     render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
     render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
     render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
@@ -684,6 +618,7 @@ function clickEgg() {
 }
 
 function useEggs(offerNR) {
+    let reward;
     switch (offerNR) {
         case 1:
             // buy PFP
@@ -692,29 +627,14 @@ function useEggs(offerNR) {
                 return false;
             }
 
-            if (!game.evpfps.includes(409)) {
-                game.evpfps.push(409);
-            }
-            else if (!game.evpfps.includes(410)) {
-                game.evpfps.push(410);
-            }
-            else if (!game.evpfps.includes(411)) {
-                game.evpfps.push(411);
-            }
-            else if (!game.evpfps.includes(412)) {
-                game.evpfps.push(412);
-            }
-            else if (!game.evpfps.includes(413)) {
-                game.evpfps.push(413);
-            }
-            else if (!game.evpfps.includes(414)) {
-                game.evpfps.push(414);
-            }
-            else {
+            reward = awardEventReward("egg", "pfps");
+
+            if (reward == false) {
                 // has all
                 createNotification("You already own these PFPs!");
                 return false;
             }
+
             // bought one of them
             game.eggs -= 50;
             createNotification("Bought PFP for 50 Eggs");
@@ -751,26 +671,37 @@ function useEggs(offerNR) {
                 return false;
             }
 
-            if (!game.evbans.includes(427)) {
-                game.evbans.push(427);
-            }
-            else if (!game.evframes.includes(407)) {
-                game.evframes.push(407);
-            }
-            else if (!game.evbans.includes(428)) {
-                game.evbans.push(428);
-            }
-            else if (!game.evframes.includes(408)) {
-                game.evframes.push(408);
-            }
-            else {
+            reward = awardEventReward("egg", "bans");
+
+            if (reward == false) {
                 // has all
-                createNotification("You already own these Cosmetics!");
+                createNotification("You already own these Banners!");
                 return false;
             }
+
             // bought one of them
             game.eggs -= 50;
-            createNotification("Bought Cosmetic for 50 Eggs");
+            createNotification("Bought Banner for 50 Eggs");
+
+            break;
+        case 6:
+            // buy banner or frame
+            if (game.eggs < 50) {
+                createNotification("Not enough Eggs!");
+                return false;
+            }
+
+            reward = awardEventReward("egg", "frames");
+
+            if (reward == false) {
+                // has all
+                createNotification("You already own these Frames!");
+                return false;
+            }
+
+            // bought one of them
+            game.eggs -= 50;
+            createNotification("Bought Frame for 50 Eggs");
 
             break;
     }
@@ -871,11 +802,19 @@ function findShgaybb() {
             if (foundID != 999) {
                 // one of the 10 banners
                 if (!game.evbans.includes(foundID)) game.evbans.push(foundID);
-                else createNotification("You already own this reward...");
+                else createNotification("You already own this banner...");
             }
             else {
-                // give reward
-                awardPrideReward(seed);
+                // give cosmetic reward
+                let reward = awardEventReward("pride", "pfps");
+                if (reward == false) {
+                    reward = awardEventReward("pride", "frames");
+                    /*
+                    if (reward == false) {
+                        createNotification("You already the cosmetics...");
+                    }
+                    */
+                }
             }
 
             shgaybbFound = "";
@@ -887,57 +826,6 @@ function findShgaybb() {
             shgaybbFound = "";
             //shgaybbMode = false;
         }
-    }
-}
-
-function awardPrideReward(seed, repeat = false) {
-    // one of the 3 pfps or 3 frames, random
-    seed = seed % 6;
-
-    switch (seed) {
-        case 0:
-            if (!game.evpfps.includes(415)) {
-                game.evpfps.push(415);
-                break;
-            }
-            else seed += 1;
-        case 1:
-            if (!game.evpfps.includes(416)) {
-                game.evpfps.push(416);
-                break;
-            }
-            else seed += 1;
-        case 2:
-            if (!game.evpfps.includes(417)) {
-                game.evpfps.push(417);
-                break;
-            }
-            else seed += 1;
-        case 3:
-            if (!game.evframes.includes(409)) {
-                game.evframes.push(409);
-                break;
-            }
-            else seed += 1;
-        case 4:
-            if (!game.evframes.includes(410)) {
-                game.evframes.push(410);
-                break;
-            }
-            else seed += 1;
-        case 5:
-            if (!game.evframes.includes(411)) {
-                game.evframes.push(411);
-                break;
-            }
-            else if (!repeat) {
-                // got this one? try again from the start
-                awardPrideReward(0, true);
-            }
-            else {
-                createNotification("You already own this reward...");
-                break;
-            }
     }
 }
 
