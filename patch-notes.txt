@@ -2887,3 +2887,8 @@ Version v3.6.1:
 - Added Pearls, Etenvs and Iron Shgabb to Unlocks list in Shbook
 - Reduced visibility of section backgrounds for darker appearance
 - Fixed issue that cleared selected file (for loading a save)
+
+
+
+x 
+- Fixed UTC issue at end of year
