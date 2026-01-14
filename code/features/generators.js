@@ -24,11 +24,11 @@ class Generator {
         return game.generators[this.ID][1].add(1);
     }
 
-    tick(tick) {
+    tick(t) {
         if (!isValid(game.generators[this.ID])) game.generators[this.ID] = [0, new Decimal(0), 0];
         if (this.getLevel() == 0) return false;
-        game.generators[this.ID][1] = game.generators[this.ID][1].add(this.currentEffect().mul(tick));
-        game.genpoints = game.genpoints.add(this.currentProd().mul(tick));
+        game.generators[this.ID][1] = game.generators[this.ID][1].add(this.currentEffect().mul(t));
+        game.genpoints = game.genpoints.add(this.currentProd().mul(t));
     }
 
     upgrade() {
@@ -77,7 +77,7 @@ function calcGenPointsProd() {
 function updateGenerators(tick) {
     // tick
     for (let g in generators) {
-        generators[g].tick(tick * 60);
+        generators[g].tick(Math.min(tick * 60, 6));
     }
 
     // render

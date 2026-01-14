@@ -22,7 +22,9 @@ function createPopup(title, text, img) {
 }
 
 function tickPopup(time) {
-    popupDisplayTimer -= time;
+    if (!settings.popups) popupDisplayTimer = 0;
+    else popupDisplayTimer -= time;
+
     if (popupDisplayTimer <= 0 && (ui.popup.style.display != "none" || ui.popup2.style.display != "none")) {
         ui.popup.style.display = "none";
         ui.popup2.style.display = "none";

@@ -2891,4 +2891,10 @@ Version v3.6.1:
 
 
 x 
+-> Fixes:
+- Turning off popups now immediately terminates the currently displayed popup
+- Having the daily loadout selected (from quick equip) is now remembered instead of half-loading the first
+- Fixed issue with Gift Artifacts in daily challenge
+- Fixed Sarah's Gems Achievement saying 500 Gems when it is 2000 Gems
+- Fixed excessive Genpoint gains when turning off the phone screen
 - Fixed UTC issue at end of year

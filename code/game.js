@@ -327,7 +327,7 @@ var settings = {
 // BETA (cheating)
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: false,
+    value: true,
     writable: false,
     enumerable: true,
     configurable: false

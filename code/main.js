@@ -1251,6 +1251,7 @@ function importGame(source) {
         game.upgradeLevels.autoShgabb = 0;
     } */
 
+    if (game.stats.hms >= 10000) selectedLoadout = -1;
     for (l in game.alo) {
         if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
     }

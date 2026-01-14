@@ -165,7 +165,7 @@ var achievements = [
     new Achievement(158, "chenga.png", "I Cheng-ya", "Use a Chenga", () => false),
     new Achievement(65, "shgabb.png", "Build builder I", "Buy another Artifact loadout", () => game.al >= 3),
     new Achievement(70, "clicks2.png", "Slowest Clicks", "Increase the click cooldown to 25s or more", () => clickCooldown >= 25),
-    new Achievement(45, "gem.png", "Sarah's Gems", "Have 500 Gems at the same time", () => game.gems >= 2000),
+    new Achievement(45, "gem.png", "Sarah's Gems", "Have 2000 Gems at the same time", () => game.gems >= 2000),
     new Achievement(80, "ameliorer.png", "Amé: Part V", "Unlock the fifth set of Améliorer upgrades (100 Amé levels)", () => getTotalAme() >= 100),
     new Achievement(88, "ameliorer.png", "French equality", "Have the Améliorer currency boost upgrades on the same level", () => game.upgradeLevels.shgabbBoost > 0 && game.upgradeLevels.shgabbBoost == game.upgradeLevels.sandwichBoost),
     new Achievement(59, "shgabb.png", "eolm terrible headache", "it hurts", () => autoNotifications >= 3000),

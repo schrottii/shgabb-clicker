@@ -696,7 +696,7 @@ function artifactLoadout(l, source = "key") {
     // game.alo[l] is the loadout we are looking at
 
     if (game.al > l) { // only execute if you have bought this (gem offer)
-        // if it's not in the dict yet, add it
+        // if it's not in the array yet, add it
         while (game.alo[l] == undefined) {
             game.alo.push([]);
         }
@@ -925,11 +925,14 @@ function upgradeArtifact(id) {
 
 function destroyArtifact(id, doConfirm = true) {
     if (isChallenge(999)) return false;
+    if (!getArtifact(id).isUnlocked()) return false;
 
     let rarity = getArtifact(id).rarity;
     let level = game.alvl[id];
     let amount = Math.floor(getScrapCost(level, rarity) / 5);
     amount = Math.floor(amount * ameliorerUpgrades.efficientDestruction.currentEffect());
+
+    if (level == undefined) return false;
 
     if (!doConfirm || !settings.confirm || confirm("Do you really want to destroy this Artifact for " + amount + " Artifact Scrap?")) {
         game.a.splice(game.a.indexOf(id), 1);
@@ -1064,8 +1067,8 @@ var artifacts = [
             desc: level => level + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 10) + 3).toFixed(0) + " Gems",
             onClick: (level) => {
                 if (Math.random() <= 1 / 100 * level) {
-                    let gemAmount = (Math.floor(game.a.length / 10) + 3);
                     if (destroyArtifact(112, false)) {
+                        let gemAmount = (Math.floor(game.a.length / 10) + 3);
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
                         createNotification("Gem Gift: +" + gemAmount + " Gems");
@@ -1441,8 +1444,8 @@ var artifacts = [
             desc: level => (level / 3).toFixed(2) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 3) + 5).toFixed(0) + " Gems",
             onClick: (level) => {
                 if (Math.random() <= 1 / 300 * level) {
-                    let gemAmount = (Math.floor(game.a.length / 3) + 5);
                     if (destroyArtifact(236, false)) {
+                        let gemAmount = (Math.floor(game.a.length / 3) + 5);
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
                         createNotification("Gem Gift: +" + gemAmount + " Gems");
@@ -1668,8 +1671,8 @@ var artifacts = [
             desc: level => (level / 10).toFixed(2) + "% chance/click to be opened, giving " + (Math.floor(game.a.length / 1.5) + 10).toFixed(0) + " Gems",
             onClick: (level) => {
                 if (Math.random() <= 1 / 1000 * level) {
-                    let gemAmount = (Math.floor(game.a.length / 1.5) + 10);
                     if (destroyArtifact(320, false)) {
+                        let gemAmount = (Math.floor(game.a.length / 1.5) + 10);
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
                         createNotification("Gem Gift: +" + gemAmount + " Gems");
