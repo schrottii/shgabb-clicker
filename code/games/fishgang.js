@@ -76,7 +76,7 @@ function updateFishingLevel() {
         }
 
         updateUpgrades();
-        createNotification("Fish level up! New level: " + game.fishlvl + ", gained Pearls: " + pearlsGained);
+        createNotification("Fish level up! New level: LVL, gained Pearls: AMOUNT", [["LVL", game.fishlvl], ["AMOUNT", pearlsGained]]);
     }
 }
 

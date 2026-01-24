@@ -85,14 +85,25 @@ var game = {
     day: 1,
     dgo: 100,
 
+    // cosmetics
     evpfps: [],
     evbans: [],
     evframes: [],
 
+    // challenges, daily
     clg: [],
     aclg: 0,
     dclg: [],
     dclp: 0,
+
+    // missions
+    missions: {
+        selected: 0,
+        progress: 0,
+        rewards: [],
+        completed: [],
+        steppro: 0
+    },
 
     // upgrade levels
     upgradeLevels: {
@@ -220,7 +231,14 @@ var game = {
         sw: 0,
         gs: 0,
         tgems: 0,
+
+        artisFound: 0,
+        artiDupesFound: 0,
+        artisUpgraded: 0,
+        artisDestroyed: 0,
+        artisEquipped: 0,
         artifactScrap: 0,
+
         si: 0,
         ame: 0,
         amess: 0,
@@ -282,6 +300,7 @@ var game = {
     sus: 0,
     susq: 0,
     flags: {},
+    red_rew: []
 }
 
 const emptyGame = Object.assign({}, game, {});
@@ -300,6 +319,7 @@ var settings = {
     boostFilters: true,
     sidebar: false,
     sidebarWidth: 19,
+    notifications: {},
 
     // design
     background: false,
@@ -327,7 +347,7 @@ var settings = {
 // BETA (cheating)
 var BETA = {};
 Object.defineProperty(BETA, 'isBeta', {
-    value: true,
+    value: false,
     writable: false,
     enumerable: true,
     configurable: false
@@ -342,3 +362,14 @@ function report(flagName, susAmount) {
     game.sus += susAmount;
     game.flags[flagName] += susAmount;
 }
+
+/*
+function tester() {
+    if (confirm("reset artis?")) {
+        game.a = [];
+    }
+    game.dgo = 0;
+    newArtifactOffers();
+    updateEVERYTHING();
+}
+*/

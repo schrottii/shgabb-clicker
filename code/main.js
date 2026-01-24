@@ -2,6 +2,10 @@
 
 // Main JS File
 
+///////////////////////////////////
+// Variables and UI   #6D61696E736563
+///////////////////////////////////
+
 // some timers
 var autoSaveTime = 10;
 var quoteTime = 0;
@@ -19,6 +23,7 @@ var ui = {
         next: "tutorialNext"
     },
     SIDEBAR: document.getElementById("SIDEBAR"),
+    sosobar: document.getElementById("sosobar"),
     GAMECONTENT: document.getElementById("GAMECONTENT"),
 
     // Bars
@@ -121,6 +126,8 @@ var ui = {
     gemOffer3: document.getElementById("gemOffer3"),
     gemOffer4: document.getElementById("gemOffer4"),
     gemOffer5: document.getElementById("gemOffer5"),
+    gemOffer6: document.getElementById("gemOffer6"),
+    gemOffer7: document.getElementById("gemOffer7"),
 
     // artifacts stuff
     artifacts: document.getElementById("artifacts"),
@@ -171,11 +178,17 @@ var ui = {
     idleModeRender2: document.getElementById("idleModeRender2"),
     currentArtis: document.getElementById("currentArtis"),
     generatorsRender: document.getElementById("generatorsRender"),
+    helpButton: document.getElementById("helpButton"),
+    gameName: document.getElementById("gameName")
 }
 
 for (let u in ui.tutorial) {
     ui.tutorial[u] = document.getElementById(ui.tutorial[u]);
 }
+
+///////////////////////////////////
+// Quotes   #6D61696E736563
+///////////////////////////////////
 
 // Quotes
 const quotes = [
@@ -313,6 +326,10 @@ const quotes = [
     "time to bombard shgabb inc with some good old l e v e l 6 4 p i z z a - elmenda452",
 ];
 
+///////////////////////////////////
+// Notations, hotkeys and beta   #6D61696E736563
+///////////////////////////////////
+
 // Notations
 const upgradeColors = ["normal", "old", "custom"]
 const notations = ["normal", "scientific", "engineering", "alphabet"];
@@ -352,6 +369,113 @@ function cheatEngine(type) {
     updateGems();
 }
 
+var hotkeysEnabled = true;
+var doBuyMax = false;
+
+function hotkeyNextSelection() {
+    let nextOne = selectionTypes[selectedSelection - 1][selectionTypes[selectedSelection - 1].indexOf(selections[selectedSelection - 1]) - 1];
+    if (nextOne != undefined) {
+        selections[selectedSelection - 1] = nextOne;
+    }
+    else if (selections[selectedSelection - 1] == "none") {
+        selections[selectedSelection - 1] = selectionTypes[selectedSelection - 1][selectionTypes[selectedSelection - 1].length - 1];
+    }
+    else {
+        selections[selectedSelection - 1] = "none";
+    }
+
+    renderAllSelection();
+}
+
+function hotkeyPreviousSelection() {
+    let nextOne = selectionTypes[selectedSelection - 1][selectionTypes[selectedSelection - 1].indexOf(selections[selectedSelection - 1]) + 1];
+    if (nextOne != undefined) {
+        selections[selectedSelection - 1] = nextOne;
+    }
+    else if (selections[selectedSelection - 1] == "none") {
+        selections[selectedSelection - 1] = selectionTypes[selectedSelection - 1][0];
+    }
+    else {
+        selections[selectedSelection - 1] = "none";
+    }
+
+    renderAllSelection();
+}
+
+// hotkeys
+let recentKeys = [];
+document.addEventListener('keydown', function (e) {
+    recentKeys.push(e.key);
+    if (!BETA.isBeta && (e.key == 'F12' || (recentKeys.includes("Control") && recentKeys.includes("Shift") && (recentKeys.includes("i") || recentKeys.includes("I"))))) {
+        if (e.key == 'F12') report("F12", 1);
+        else report("CTRLSHIFTI", 1);
+        recentKeys = [];
+        e.preventDefault();
+        return false;
+    }
+
+    if (!hotkeysEnabled) return false;
+    if (unlockedArtifacts()) {
+        if (e.key == '1') artifactLoadout(0);
+        if (e.key == '2') artifactLoadout(1);
+        if (e.key == '3') artifactLoadout(2);
+        if (e.key == '4') artifactLoadout(3);
+        if (e.key == '5') artifactLoadout(4);
+        if (e.key == '6') artifactLoadout(5);
+        if (e.key == '7') artifactLoadout(6);
+        if (e.key == '8') artifactLoadout(7);
+    }
+    if (game.shgabb >= 1000000 && game.stats_prestige.playTime >= 15) {
+        if (e.key == 'p') prestigeButton();
+    }
+
+    if (e.key == 'w' && selectedSelection > 1) {
+        selectedSelection -= 1;
+        renderAllSelection();
+    }
+    if (e.key == 's' && selectedSelection < 4) {
+        selectedSelection += 1;
+        renderAllSelection();
+    }
+    if (e.key == 'a') {
+        hotkeyNextSelection();
+        while (!isSelectionUnlocked(selections[selectedSelection - 1])) hotkeyNextSelection(); // these two are in case you don't have it (like event)
+        renderAllSelection();
+    }
+    if (e.key == 'd') {
+        hotkeyPreviousSelection();
+        while (!isSelectionUnlocked(selections[selectedSelection - 1])) hotkeyPreviousSelection();
+        renderAllSelection();
+    }
+    if (e.key == 'c') {
+        selections[selectedSelection - 1] = "none";
+        renderAllSelection();
+    }
+
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") {
+        if (e.key == 'ArrowUp') direction = "up";
+        if (e.key == 'ArrowDown') direction = "down";
+        if (e.key == 'ArrowLeft') direction = "left";
+        if (e.key == 'ArrowRight') direction = "right";
+        if (e.key == ' ') direction = "";
+        e.preventDefault();
+    }
+
+    if (e.key == ' ') {
+        clickButton();
+        e.preventDefault();
+    }
+    return true;
+}, false);
+
+document.addEventListener('keydown', function (e) {
+    if (e.key == "m") doBuyMax = true;
+}, false);
+
+document.addEventListener('keyup', function (e) {
+    if (e.key == "m") doBuyMax = false;
+}, false);
+
 ui.cheatAmount.oninput = () => {
     ui.cheatDisplay.innerHTML = fn(ui.cheatAmount.value);
 }
@@ -376,6 +500,19 @@ ui.artifactSearch.oninput = () => {
     updateArtifacts();
 }
 
+window.addEventListener('keydown', function (e) {
+    if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+        if (e.target.nodeName == 'BUTTON' || e.target.nodeName == 'BODY') {
+            e.preventDefault();
+            return false;
+        }
+    }
+}, true);
+
+///////////////////////////////////
+// Stats   #6D61696E736563
+///////////////////////////////////
+
 function statIncrease(name, number) {
     if (game.stats[name].mantissa != undefined) {
         if (isNaN(game.stats_prestige[name])) game.stats_prestige[name] = new Decimal(0);
@@ -393,9 +530,11 @@ function statIncrease(name, number) {
         game.stats_prestige[name] += number;
         game.stats_today[name] += number;
     }
-}
 
-// ALL THE NUMBER SHIT YEE COWBOYS
+    if (game.stats.hms >= 1000 && currentMStep() != undefined) {
+        currentMStep().conditionProgress(name, number);
+    }
+}
 
 var statCurr = ["shgabb", "sw", "gs", "si", "cop", "fishvalue"];
 var statTypes = ["stats", "stats_prestige", "stats_today"];
@@ -427,7 +566,7 @@ function fn(number) {
     // return basic number if it is 0 - 999 999
     if (number < 1000000) return (number < 100) ? ((number * 1).toFixed(2).substr((number * 1).toFixed(2).length - 2, 2) == "00" ? (number * 1).toFixed(2).split(".")[0] : (number * 1).toFixed(2)) : (number * 1).toFixed(0);
 
-    // 1 million or more? do notation shitz
+    // 1 million or more? do notation stuff
     let notationSymbol = ""; // M, :joy:, etc.
 
     // Breakinfinity numbers
@@ -474,307 +613,10 @@ function fn(number) {
     if (numberDisplay.substr(-1) == ".") numberDisplay = numberDisplay.split(".")[0];
 
     return numberDisplay + notationSymbol;
-
 }
 
-// currency image
-function cImg(imgname, size = 0) {
-    return '<img class="currency"' + (size != 0 ? ' style="width: ' + size + 'px; height: ' + size + 'px;"' : '') + ' src="images/currencies/' + imgname + '.png" />';
-}
-
-function clickButton(source = "click") {
-    // Click button handler (the button that gives you shgabb)
-    if (source == "click" && game.idleMode) {
-        // clicking when idle mode is on -> refreeze fridge, but don't actually click
-        freezeTime();
-        return false;
-    }
-
-    if (game.clickCooldown <= 0) {
-        let clickButtonMulti = 1;
-
-        if (getArtifact(402).isEquipped()) {
-            if (techCollection < getArtifact(402).getLevel() * 10) {
-                techCollection += 1;
-
-                if (!game.idleMode) statIncrease("clicks", 1);
-                else statIncrease("idleClicks", 1);
-
-                game.clickCooldown = getCooldown();
-                if (game.idleMode) game.idleModeTime = 0;
-            }
-            else {
-                clickButtonMulti = techCollection;
-                techCollection = 0;
-            }
-        }
-
-        if (techCollection == 0) {
-            // no tech c. active, let's do the click thing
-            let critMulti = criticalHit();
-            let amount = calcShgabbClick().mul(critMulti).mul(clickButtonMulti).floor();
-
-            artifactEvent("onClickBefore", { "multi": clickButtonMulti });
-
-            if (isEvent("summer")) {
-                if (heatMode) {
-                    if (game.clickCooldown > -0.33) summerClicks += clickButtonMulti;
-                    else if (summerClicks > 0) {
-                        heatMode = false;
-                        summerClicks = 0;
-                    }
-                    renderCurrentEvent();
-                }
-
-                if (Math.random() * 100 < calcShortsChance()) {
-                    game.shorts += 1;
-                    statIncrease("shorts", 1);
-                }
-            }
-
-            if (getArtifact(314).isEquipped() && hoodGoo > amount) amount = hoodGoo; // apply the goo
-
-            game.shgabb = game.shgabb.add(amount);
-            statIncrease("shgabb", amount);
-
-            game.clickCooldown = getCooldown();
-            if (game.idleMode) game.idleModeTime = 0;
-
-            if (!game.idleMode) statIncrease("clicks", 1);
-            else statIncrease("idleClicks", 1);
-
-            artifactEvent("onClick", { "multi": clickButtonMulti, "amount": amount });
-
-            gatherMineProgress();
-
-            // EVENTS
-            if (isEvent("christmas")) {
-                if (Math.random() < 1 / (180 / getCooldown())) {
-                    game.gifts += clickButtonMulti;
-                    statIncrease("gifts", clickButtonMulti);
-                    createNotification("+" + clickButtonMulti + " Gift!");
-                }
-            }
-
-            if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + clickButtonMulti);
-
-            if (lunarAntiCooldown > 0) lunarAntiCooldown -= clickButtonMulti;
-            if (luck > 0) luck -= clickButtonMulti; // reduce luck
-
-            clickLunar(clickButtonMulti);
-            increaseBananas(clickButtonMulti);
-
-            if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
-                let amount = getSiliconeProduction(true).mul(3).mul(getArtifactsSimpleBoost("clicksi")).mul(clickButtonMulti);
-                game.si = game.si.add(amount);
-                statIncrease("si", amount);
-                if (getArtifact(312).isEquipped() && Math.random() > 0.9 && currentGems() > 0) game.gems -= 1;
-            }
-
-            if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (ads.moreSandwiches.getCurrentBoost()) * applyLuck(100)) {
-                amount = calcSandwiches(critMulti).mul(clickButtonMulti);
-                game.sw = game.sw.add(amount);
-                statIncrease("sw", amount);
-                createNotification("+" + fn(amount) + " Sandwich" + (amount > 1 ? "es" : ""));
-            }
-
-            findShgaybb();
-            if (unlockedGems()) getGem(clickButtonMulti);
-            if (unlockedArtifacts()) getNewArtifact(clickButtonMulti);
-            if (unlockedCopper()) getCopper(clickButtonMulti);
-
-            getLorePage(clickButtonMulti);
-            if (game.loreSel != 0) getWisp(clickButtonMulti);
-        }
-
-        updateArtifacts();
-        updateGems();
-        updateUpgrades();
-        renderCurrentEvent();
-
-        if (source != "idlemode") freezeTime();
-        return true;
-    }
-    else {
-        createNotification("Cooldown: " +
-            (game.clickCooldown < 0.1 ? game.clickCooldown.toFixed(2) : game.clickCooldown.toFixed(1))
-            + "s");
-
-        if (isEvent("summer") && heatMode) {
-            heatMode = false;
-            summerClicks = 0;
-            game.clickCooldown = 60;
-        }
-
-        if (source != "idlemode") freezeTime();
-        return false;
-    }
-}
-
-var clickCooldown = 5;
-function getCooldown(idleMode = "auto") {
-    if (idleMode == "auto") idleMode = game.autoMode;
-
-    // click cooldown
-    if (lunarAntiCooldown > 0) return 0;
-    let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
-        / (ads.fasterShgabb.getCurrentBoost())
-        / getArtifactsSimpleBoost("clickspeed")
-        / cakeValue(5, 1)
-        * (getArtifact(156).isEquipped() ? getArtifact(156).getEffect() : 1)
-        * (getArtifact(203).isEquipped() ? 5 : 1)
-        * (getArtifact(225).isEquipped() ? 5 : 1)
-        / (currentlyMining == true ? ironUpgrades.ironPickaxes.currentEffect() : 1)
-        / (heatMode ? Math.max(1, Math.min(3, Math.log(summerClicks / 22.5))) : 1))
-    if (isChallenge(3)) CD = 20;
-    if (shgaybbMode) CD = Math.max(2, CD);
-
-    // idle mode
-    if (idleMode == true) {
-        CD = CD * 2;
-        CD = Math.max(1, CD);
-    }
-
-    clickCooldown = CD; // Why T_T
-
-    return CD;
-}
-
-function criticalHit() {
-    // Critical hit handler, returns multi (default 3)
-    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (ads.moreCrits.getCurrentBoost()[0]) * applyLuck(100)) {
-        createNotification("Critical Hit!");
-        return shgabbUpgrades.critBoost.currentEffect() * (ads.moreCrits.getCurrentBoost()[1]);
-    }
-    return 1;
-}
-
-// Update functions
-function updateQuote() {
-    ui.quote.innerHTML = " >  " + quotes[Math.ceil(Math.random() * quotes.length - 1)] + "  < ";
-}
-
-window.addEventListener('keydown', function (e) {
-    if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
-        if (e.target.nodeName == 'BUTTON' || e.target.nodeName == 'BODY') {
-            e.preventDefault();
-            return false;
-        }
-    }
-}, true);
-
-function updateTopSquare() {
-    let long = settings.sidebar;
-    if (settings.topSquare != 1 || false) {
-        let render = "";
-
-        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
-        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper", " Bananas"];
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
-        render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long && settings.topSquare == 0) render = render + "<br />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
-        if (unlockedSandwiches()) render = render + " " + ui.swAmount.innerHTML.split(currencyNames[1]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long) render = render + "<br style='clear: both' />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
-        if (unlockedGS()) render = render + " " + ui.gsAmount.innerHTML.split(currencyNames[2]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long && settings.topSquare == 0) render = render + "<br />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
-        if (unlockedSilicone()) render = render + " " + ui.siAmount.innerHTML.split(currencyNames[3]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long || settings.topSquare == 0) render = render + "<br style='clear: both' />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
-        if (unlockedGems()) render = render + " " + ui.gemAmount.innerHTML.split(currencyNames[4]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long && settings.topSquare == 0) render = render + "<br />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
-        if (unlockedAmeliorer()) render = render + " " + ui.ameAmount.innerHTML.split(currencyNames[5]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long) render = render + "<br style='clear: both' />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
-        if (unlockedArtifactUpgrading()) render = render + " " + ui.artifactScrapAmount.innerHTML.split(currencyNames[6]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long && settings.topSquare == 0) render = render + "<br />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
-        if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long) render = render + "<br style='clear: both' />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
-        if (unlockedCopper()) render = render + " " + ui.copAmount.innerHTML.split(currencyNames[8]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        if (long && settings.topSquare == 0) render = render + "<br />";
-
-        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
-        if (unlockedBananas()) render = render + " " + ui.bananaAmount.innerHTML.split(currencyNames[9]).shift();
-        if (long && settings.topSquare == 2) render = render + "</span>";
-        //if (long) render = render + "<br style='clear: both' />";
-
-        if (!long) {
-            ui.topSquareDisplay.innerHTML = render;
-            ui.topSquareDisplay.style.display = "";
-            ui.topSquareDisplay2.style.display = "none";
-        }
-        else {
-            ui.topSquareDisplay2.innerHTML = render;
-            ui.topSquareDisplay.style.display = "none";
-            ui.topSquareDisplay2.style.display = "";
-        }
-    }
-}
-
-function updateCurrencies() {
-    if (unlockedSandwiches()) ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb (" + fn(calcShgabbAuto()) + "/s)";
-    else ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb";
-
-    if (unlockedSandwiches()) ui.swAmount.innerHTML = cImg("sandwich") + fn(game.sw) + " Sandwiches";
-    else ui.swAmount.innerHTML = "";
-
-    if (unlockedGS()) ui.gsAmount.innerHTML = cImg("gs") + fn(game.gs) + " Golden Shgabb";
-    else ui.gsAmount.innerHTML = "";
-
-    if (unlockedSilicone()) ui.siAmount.innerHTML = cImg("silicone") + fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
-    else ui.siAmount.innerHTML = "";
-
-    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + fn(game.gems) + " Gems";
-    else ui.gemAmount.innerHTML = "";
-
-    if (unlockedAmeliorer()) ui.ameAmount.innerHTML = cImg("ameliorer") + game.ame + " Améliorer";
-    else ui.ameAmount.innerHTML = "";
-
-    if (unlockedArtifactUpgrading()) ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
-    else ui.artifactScrapAmount.innerHTML = "";
-
-    if (unlockedBags()) ui.bagAmount.innerHTML = cImg("bag") + fn(game.bags) + " Bags";
-    else ui.bagAmount.innerHTML = "";
-
-    if (unlockedCopper()) ui.copAmount.innerHTML = cImg("copper") + fn(game.cop) + " Copper";
-    else ui.copAmount.innerHTML = "";
-
-    if (unlockedFishing() && ui.pearlSection.style.display != "none") ui.pearlAmount.innerHTML = cImg("pearl") + fn(game.pearls) + " Pearls";
-    else ui.pearlAmount.innerHTML = "";
-
-    if (unlockedBananas()) ui.bananaAmount.innerHTML = cImg("banana") + fn(game.bananas) + " Bananas";
-    else ui.bananaAmount.innerHTML = "";
-
-    if (unlockedMine() && ui.ironSection.style.display != "none") ui.ironAmount.innerHTML = cImg("iron") + fn(game.iron) + " Iron Shgabb";
-    else ui.ironAmount.innerHTML = "";
-}
-
-// stats stuff
 var statDisplay = 1;
-function statLoader(title, format=true) {
+function statLoader(title, format = true) {
     switch (statDisplay) {
         case 1:
             return format ? fn(game.stats[title]) : game.stats[title];
@@ -922,8 +764,163 @@ function updateStats() {
         + (getArtifactsSimpleBoost("wispchance") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("wispchance")) + " Wisp chance") : "")
 
         + "</div>";
-    
+
     higherStatsSize = Math.max(document.getElementById("statsDisplayLeft").offsetHeight, document.getElementById("statsDisplayRight").offsetHeight);
+}
+
+///////////////////////////////////
+// rendering   #6D61696E736563
+///////////////////////////////////
+
+// currency image
+function cImg(imgname, inline = false) {
+    return '<img class="' + (inline ? "inlineCurrency" : "currency") + '" src="images/currencies/' + imgname + '.png" />';
+}
+
+// Update functions
+function updateQuote() {
+    ui.quote.innerHTML = " >  " + quotes[Math.ceil(Math.random() * quotes.length - 1)] + "  < ";
+    /*
+    console.log(ui.gameName.offsetWidth, ui.quote.offsetWidth, ui.gameName.style.width, ui.quote.style.width);
+    if (ui.gameName.offsetWidth > ui.quote.offsetWidth) ui.quote.style.width = ui.gameName.offsetWidth + "px";
+    if (ui.quote.offsetWidth > ui.gameName.offsetWidth) ui.gameName.style.width = ui.quote.offsetWidth + "px";
+    console.log(ui.gameName.offsetWidth, ui.quote.offsetWidth, ui.gameName.style.width, ui.quote.style.width);
+    */
+}
+
+function updateBG() {
+    var body = document.getElementsByTagName('body')[0];
+    if (settings.background || isChallenge(5)) {
+        // No background (-> black)
+        body.style.backgroundImage = "none";
+        body.style.backgroundColor = "black";
+    }
+    else {
+        // Background is enabled
+        body.style.backgroundColor = "none";
+
+        if (settings.eventBG && isEvent("any")) {
+            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-christmas.png)";
+            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-anniversary.png)";
+            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-lunar.png)";
+            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-easter.png)";
+            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-pride.png)";
+            else if (isEvent("summer") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-summer.png)";
+            else if (isEvent("shgabbthewitch") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-stw.png)";
+        }
+        else {
+            body.style.backgroundImage = "url(images/backgrounds/bg-normal.png)";
+        }
+    }
+}
+
+function updateTopSquare() {
+    let long = settings.sidebar;
+    if (settings.topSquare != 1 || false) {
+        let render = "";
+
+        let currencyNames = ["öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö", "öö"];
+        if (settings.topSquare == 2) currencyNames = [" Shgabb", " Sandwiches", " Golden Shgabb", " Silicone Shgabb", " Gems", " Améliorer", " Artifact Scrap", " Bags", " Copper", " Bananas"];
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
+        render = render + " " + ui.shgabbAmount.innerHTML.split(currencyNames[0]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
+        if (unlockedSandwiches()) render = render + " " + ui.swAmount.innerHTML.split(currencyNames[1]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long) render = render + "<br style='clear: both' />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
+        if (unlockedGS()) render = render + " " + ui.gsAmount.innerHTML.split(currencyNames[2]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
+        if (unlockedSilicone()) render = render + " " + ui.siAmount.innerHTML.split(currencyNames[3]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long || settings.topSquare == 0) render = render + "<br style='clear: both' />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
+        if (unlockedGems()) render = render + " " + ui.gemAmount.innerHTML.split(currencyNames[4]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
+        if (unlockedAmeliorer()) render = render + " " + ui.ameAmount.innerHTML.split(currencyNames[5]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long) render = render + "<br style='clear: both' />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
+        if (unlockedArtifactUpgrading()) render = render + " " + ui.artifactScrapAmount.innerHTML.split(currencyNames[6]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
+        if (unlockedBags()) render = render + " " + ui.bagAmount.innerHTML.split(currencyNames[7]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long) render = render + "<br style='clear: both' />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: left'>";
+        if (unlockedCopper()) render = render + " " + ui.copAmount.innerHTML.split(currencyNames[8]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        if (long && settings.topSquare == 0) render = render + "<br />";
+
+        if (long && settings.topSquare == 2) render = render + "<span style='float: right'>";
+        if (unlockedBananas()) render = render + " " + ui.bananaAmount.innerHTML.split(currencyNames[9]).shift();
+        if (long && settings.topSquare == 2) render = render + "</span>";
+        //if (long) render = render + "<br style='clear: both' />";
+
+        if (!long) {
+            ui.topSquareDisplay.innerHTML = render;
+            ui.topSquareDisplay.style.display = "";
+            ui.topSquareDisplay2.style.display = "none";
+        }
+        else {
+            ui.topSquareDisplay2.innerHTML = render;
+            ui.topSquareDisplay.style.display = "none";
+            ui.topSquareDisplay2.style.display = "";
+        }
+    }
+}
+
+function updateCurrencies() {
+    if (unlockedSandwiches()) ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb (" + fn(calcShgabbAuto()) + "/s)";
+    else ui.shgabbAmount.innerHTML = cImg("shgabb") + fn(game.shgabb) + " Shgabb";
+
+    if (unlockedSandwiches()) ui.swAmount.innerHTML = cImg("sandwich") + fn(game.sw) + " Sandwiches";
+    else ui.swAmount.innerHTML = "";
+
+    if (unlockedGS()) ui.gsAmount.innerHTML = cImg("gs") + fn(game.gs) + " Golden Shgabb";
+    else ui.gsAmount.innerHTML = "";
+
+    if (unlockedSilicone()) ui.siAmount.innerHTML = cImg("silicone") + fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
+    else ui.siAmount.innerHTML = "";
+
+    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + fn(game.gems) + " Gems";
+    else ui.gemAmount.innerHTML = "";
+
+    if (unlockedAmeliorer()) ui.ameAmount.innerHTML = cImg("ameliorer") + game.ame + " Améliorer";
+    else ui.ameAmount.innerHTML = "";
+
+    if (unlockedArtifactUpgrading()) ui.artifactScrapAmount.innerHTML = cImg("artifactscrap") + game.artifactScrap + " Artifact Scrap";
+    else ui.artifactScrapAmount.innerHTML = "";
+
+    if (unlockedBags()) ui.bagAmount.innerHTML = cImg("bag") + fn(game.bags) + " Bags";
+    else ui.bagAmount.innerHTML = "";
+
+    if (unlockedCopper()) ui.copAmount.innerHTML = cImg("copper") + fn(game.cop) + " Copper";
+    else ui.copAmount.innerHTML = "";
+
+    if (unlockedFishing() && ui.pearlSection.style.display != "none") ui.pearlAmount.innerHTML = cImg("pearl") + fn(game.pearls) + " Pearls";
+    else ui.pearlAmount.innerHTML = "";
+
+    if (unlockedBananas()) ui.bananaAmount.innerHTML = cImg("banana") + fn(game.bananas) + " Bananas";
+    else ui.bananaAmount.innerHTML = "";
+
+    if (unlockedMine() && ui.ironSection.style.display != "none") ui.ironAmount.innerHTML = cImg("iron") + fn(game.iron) + " Iron Shgabb";
+    else ui.ironAmount.innerHTML = "";
 }
 
 function updateUI() {
@@ -954,7 +951,7 @@ function updateUI() {
 
         CBRender = diceRender + gooRender + "+"
             + (hoodGoo != 0 ? fn(hoodGoo) : fn(calcShgabbClick()))
-            + " Shgabb" + diceRender;
+            + cImg("shgabb") + diceRender;
 
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
@@ -1012,7 +1009,43 @@ function updateUI() {
     renderNotifications();
 }
 
-// Core
+var dateload = new Date();
+var timeSinceFullUIUpdate = dateload.getHours() + ":" + dateload.getMinutes();
+function updateEVERYTHING() {
+    dateload = new Date();
+    timeSinceFullUIUpdate = dateload.getHours() + ":" + dateload.getMinutes();
+
+    ui.helpButton.style.display = game.stats.hms >= 25 ? "" : "none";
+
+    updateArtifacts();
+    updateBG();
+    updateCurrencies();
+    updateGems();
+    updateQuote();
+    updateStats();
+    updateTopSquare();
+    updateUI();
+    updateUpgradeColors();
+    updateUpgrades();
+
+    renderAmeConvert();
+    renderUpgrades();
+    renderAchievements();
+    renderAllSelection(true);
+    updateArtifacts();
+    renderChallenges();
+    renderCurrentEvent();
+    renderGemOffers();
+    renderPlayerProfile();
+    if (currentSettingSection != 3) renderSettings();
+    renderShbook(true);
+    renderBananaTrees();
+}
+
+///////////////////////////////////
+// save related   #6D61696E736563
+///////////////////////////////////
+
 function autoSave(manual=true) {
     autoNotifications += 1;
 
@@ -1021,8 +1054,7 @@ function autoSave(manual=true) {
     // Le rare renderes
     renderAmeConvert();
     renderAllSelection(true);
-
-    // if (!manual) adInject();
+    recentKeys = [];
 
     // Every save, check if a new day has risen
     checkNewDay()
@@ -1033,7 +1065,7 @@ function autoSave(manual=true) {
 
     checkForNewAchievements();
 
-    if (!manual) createNotification("Game saved automatically " + autoNotifications);
+    if (!manual) createNotification("Game saved automatically HEADACHE", [["HEADACHE", autoNotifications]]);
 }
 
 function createBackup() {
@@ -1251,9 +1283,32 @@ function importGame(source) {
         game.upgradeLevels.autoShgabb = 0;
     } */
 
+    // figure out the last selected loadout
     if (game.stats.hms >= 10000) selectedLoadout = -1;
-    for (l in game.alo) {
-        if (JSON.stringify(game.alo[l]) == JSON.stringify(game.aeqi)) selectedLoadout = l;
+    let allArtifactsSame = false;
+    let loadout;
+    for (let l in game.alo) {
+        loadout = game.alo[l];
+        // loadout is empty
+        if (loadout.length == 0) {
+            if (game.alo.length == 0) {
+                selectedLoadout = l;
+                break;
+            }
+            continue;
+        }
+
+        // go through all artifacts
+        allArtifactsSame = true;
+        for (let a in loadout) {
+            if (a <= loadout.length && a <= game.aeqi.length && loadout[a] != game.aeqi[a]) allArtifactsSame = false;
+        }
+
+        // set if it's the same
+        if (allArtifactsSame) {
+            selectedLoadout = l;
+            break;
+        }
     }
 
     let ownedArtisList = [];
@@ -1297,293 +1352,64 @@ function deleteGame() {
     }
 }
 
-function shgabbClickerLoop(tick) {
-    // Main Game Loop
-    let time = (tick - oldTime) / 1000;
-    oldTime = tick;
+///////////////////////////////////
+// Tutorial   #6D61696E736563
+///////////////////////////////////
 
-    //doubleClick -= time;
-    game.clickCooldown -= time;
-    autoSaveTime -= time;
-    quoteTime += time;
-    sandwichTime -= time;
-    sandwichFreezeTime -= time;
-    cakeDuration -= time;
-    if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
-    statIncrease("playTime", time);
-    if (selections[1] == "minigames" && wggj.canvas.currentScene == "fishgang") statIncrease("playTimeFish", time);
-    if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") statIncrease("playTimeMine", time);
+// tutorial
+var tutorialProgress = -1;
+var tutorialInterval = -1;
 
-    for (aqq in game.aeqi) {
-        if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
-    }
+// title, text, req for next button to appear
+const tutorialTexts = [
+    ["Welcome to Shgabb Clicker (Tutorial)", "Welcome, I am Lucie, and here to guide you through the game's basics", () => true],
+    ["Progression", "The goal is to earn Shgabb and other currencies. Most new things are unlocked by the first upgrade.", () => true],
+    ["Let's make progress", "Either click the button to earn some Shgabb, or enable Idle Mode (slower, but less active) and lean back and watch the numbers go up.", () => game.shgabb.gte(shgabbUpgrades.moreShgabb.price(0))],
+    ["Upgrades", "You can afford your first upgrade! Buy it and keep going for a while~", () => shgabbUpgrades.moreShgabb.currentLevel() >= 10],
+    ["New unlocks", "You're making good progress! At HMS 25, you will unlock the Shbook (a guidebook), and an upgrade to get your second currency: Sandwiches.", () => shgabbUpgrades.moreShgabb.currentLevel() >= 25],
+    ["Have fun", "You have completed the tutorial. Keep unlocking new things, and maybe look at the Shbook or Settings if you get a bit bored, cyaa", () => true],
+];
 
-    if (unlockedSandwiches() && settings.threeBars) {
-        if (settings.sidebar) {
-            ui.threeBars.style.display = "none";
-            ui.threeBars2.style.display = "flex";
-        }
-        else {
-            ui.threeBars.style.display = "flex";
-            ui.threeBars2.style.display = "none";
+function startTutorial() {
+    tutorialProgress = 0;
+    ui.tutorial.container.style.display = "";
+    audioPlaySound("voice");
+
+    tutorialInterval = setInterval(() => {
+        if (tutorialProgress == -1) {
+            endTutorial();
+            return false;
         }
 
-        ui.autoBar.value = sandwichTime;
-        ui.autoBar2.value = sandwichTime;
-        ui.autoBarText.innerHTML = "<sup>(Auto)</sup> " + ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
-        ui.autoBarText2.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+        if (ui.tutorial.image.src.includes("images/slimegirl.png")) ui.tutorial.image.src = "images/slimegirl2.png";
+        else ui.tutorial.image.src = "images/slimegirl.png";
 
-        ui.prestigeBar.value = game.stats_prestige.playTime;
-        ui.prestigeBar2.value = game.stats_prestige.playTime;
-        ui.prestigeBar.max = ui.prestigeBar2.max =  game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
-        ui.prestigeBarText.innerHTML = "<sup>(Prestige)</sup> " + ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
-        ui.prestigeBarText2.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
-    }
+        if (tutorialTexts[tutorialProgress][2]() == true) ui.tutorial.next.style.display = "";
+        else ui.tutorial.next.style.display = "none";
+        ui.tutorial.text.innerHTML = "<h2>" + tutorialTexts[tutorialProgress][0] + "</h2><p>" + tutorialTexts[tutorialProgress][1] + "</p>";
+    }, 250);
+}
+
+function continueTutorial() {
+    if (tutorialProgress + 1 > tutorialTexts.length - 1) endTutorial();
     else {
-        ui.threeBars.style.display = "none";
-        ui.threeBars2.style.display = "none";
-    }
-
-    // Egg Hunt
-    if (isEvent("egg")) {
-        eggTime -= time;
-        if (eggTime <= 0) {
-            eggTime = 10;
-            refreshEgg();
-        }
-    }
-
-    if (adStatus != "loading" && unlockedAds()) adTime -= time;
-
-    tickPopup(time);
-    if (autoSaveTime <= 0) {
-        autoSaveTime = 10;
-        autoSave(false);
-    }
-
-    // quote
-    if (quoteTime >= 18) {
-        quoteTime = 0;
-        updateQuote();
-    }
-    if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
-    else ui.quote.style["margin-left"] = "-0%";
-    ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
-
-    if (sandwichTime <= 0) {
-        if (isChallenge(4)) {
-            for (u in shgabbUpgrades) {
-                game.upgradeLevels[shgabbUpgrades[u].ID] = Math.max(0, game.upgradeLevels[shgabbUpgrades[u].ID] - (getChallenge(4).getTier() + 1));
-            }
-            game.upgradeLevels.moreShgabb = Math.max(0, game.upgradeLevels.moreShgabb - (4 * (getChallenge(4).getTier() + 1)));
-            if (sandwichFreezeTime < 0) {
-                sandwichTime = 1;
-                updateUpgrades();
-            }
-        }
-    }
-    if (sandwichTime <= 0 && sandwichFreezeTime > 0) {
-        sandwichTime = 1;
-
-        if (game.idleMode) renderIdleMode();
-        produceAutoShgabb();
-        silicone();
-        artifactEvent("onAuto", {});
-
-        updateGenerators(time);
-
-        if (isEvent("shgabbthewitch")) {
-            for (let witchArtis = 0; witchArtis <= 5; witchArtis++) {
-                let witchesEarned = 0;
-                if (game.aeqi.includes(cursedArtifacts[witchArtis]) && Math.random() <= 0.03) {
-                    witchesEarned += 1;
-                }
-
-                if (witchesEarned > 0) {
-                    game.witchshgabb += witchesEarned;
-                    statIncrease("witchshgabb", witchesEarned);
-
-                    createNotification("+" + witchesEarned + " Witch Shgabb");
-                    renderCurrentEvent();
-                }
-
-                if (Math.random() <= 0.003 || cursedArtifacts[witchArtis] == 0) {
-                    cursedArtifacts[witchArtis] = artifacts[Math.floor(Math.random() * (artifacts.length - 1))].ID;
-                    createNotification(getArtifact(cursedArtifacts[witchArtis]).name + " has been cursed!");
-                }
-            }
-
-            updateArtifacts();
-        }
-    }
-
-    adSwitcher();
-
-    updateUI();
-    window.requestAnimationFrame(shgabbClickerLoop);
-}
-
-function updateBG() {
-    var body = document.getElementsByTagName('body')[0];
-    if (settings.background || isChallenge(5)) {
-        // No background (-> black)
-        body.style.backgroundImage = "none";
-        body.style.backgroundColor = "black";
-    }
-    else {
-        // Background is enabled
-        body.style.backgroundColor = "none";
-        
-        if (settings.eventBG && isEvent("any")) {
-            if (isEvent("christmas") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-christmas.png)";
-            else if (isEvent("anniversary") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-anniversary.png)";
-            else if (isEvent("lunar") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-lunar.png)";
-            else if (isEvent("egg") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-easter.png)";
-            else if (isEvent("pride") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-pride.png)";
-            else if (isEvent("summer") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-summer.png)";
-            else if (isEvent("shgabbthewitch") && settings.eventBG) body.style.backgroundImage = "url(images/backgrounds/bg-stw.png)";
-        }
-        else {
-            body.style.backgroundImage = "url(images/backgrounds/bg-normal.png)";
-        }
+        tutorialProgress++;
+        audioPlaySound("voice");
     }
 }
 
-// Update UI
-var dateload = new Date();
-var timeSinceFullUIUpdate = dateload.getHours() + ":" + dateload.getMinutes();
-function updateEVERYTHING() {
-    dateload = new Date();
-    timeSinceFullUIUpdate = dateload.getHours() + ":" + dateload.getMinutes();
+function endTutorial() {
+    // guys... it's over
+    tutorialProgress = -1;
+    ui.tutorial.container.style.display = "none";
+    clearInterval(tutorialInterval);
 
-    updateArtifacts();
-    updateBG();
-    updateCurrencies();
-    updateGems();
-    updateQuote();
-    updateStats();
-    updateTopSquare();
-    updateUI();
-    updateUpgradeColors();
-    updateUpgrades();
-
-    renderAmeConvert();
-    renderUpgrades();
-    renderAchievements();
-    renderAllSelection(true);
-    updateArtifacts();
-    renderChallenges();
-    renderCurrentEvent();
-    renderGemOffers();
-    renderPlayerProfile();
-    if (currentSettingSection != 3) renderSettings();
-    renderShbook(true);
-    renderBananaTrees();
+    checkAchievement(211);
 }
 
-// hotkey stuff
-var hotkeysEnabled = true;
-var doBuyMax = false;
-
-function hotkeyNextSelection() {
-    let nextOne = selectionTypes[selectedSelection - 1][selectionTypes[selectedSelection - 1].indexOf(selections[selectedSelection - 1]) - 1];
-    if (nextOne != undefined) {
-        selections[selectedSelection - 1] = nextOne;
-    }
-    else if (selections[selectedSelection - 1] == "none") {
-        selections[selectedSelection - 1] = selectionTypes[selectedSelection - 1][selectionTypes[selectedSelection - 1].length - 1];
-    }
-    else {
-        selections[selectedSelection - 1] = "none";
-    }
-
-    renderAllSelection();
-}
-
-function hotkeyPreviousSelection() {
-    let nextOne = selectionTypes[selectedSelection - 1][selectionTypes[selectedSelection - 1].indexOf(selections[selectedSelection - 1]) + 1];
-    if (nextOne != undefined) {
-        selections[selectedSelection - 1] = nextOne;
-    }
-    else if (selections[selectedSelection - 1] == "none") {
-        selections[selectedSelection - 1] = selectionTypes[selectedSelection - 1][0];
-    }
-    else {
-        selections[selectedSelection - 1] = "none";
-    }
-
-    renderAllSelection();
-}
-
-// hotkeys
-document.addEventListener('keydown', function (e) {
-    if (!BETA.isBeta && e.key == 'F12') {
-        report("F12", 1);
-        e.preventDefault();
-        return false;
-    }
-
-    if (!hotkeysEnabled) return false;
-    if (unlockedArtifacts()) {
-        if (e.key == '1') artifactLoadout(0);
-        if (e.key == '2') artifactLoadout(1);
-        if (e.key == '3') artifactLoadout(2);
-        if (e.key == '4') artifactLoadout(3);
-        if (e.key == '5') artifactLoadout(4);
-        if (e.key == '6') artifactLoadout(5);
-        if (e.key == '7') artifactLoadout(6);
-        if (e.key == '8') artifactLoadout(7);
-    }
-    if (game.shgabb >= 1000000 && game.stats_prestige.playTime >= 15) {
-        if (e.key == 'p') prestigeButton();
-    }
-
-    if (e.key == 'w' && selectedSelection > 1) {
-        selectedSelection -= 1;
-        renderAllSelection();
-    }
-    if (e.key == 's' && selectedSelection < 4) {
-        selectedSelection += 1;
-        renderAllSelection();
-    }
-    if (e.key == 'a') {
-        hotkeyNextSelection();
-        while (!isSelectionUnlocked(selections[selectedSelection - 1])) hotkeyNextSelection(); // these two are in case you don't have it (like event)
-        renderAllSelection();
-    }
-    if (e.key == 'd') {
-        hotkeyPreviousSelection();
-        while (!isSelectionUnlocked(selections[selectedSelection - 1])) hotkeyPreviousSelection();
-        renderAllSelection();
-    }
-    if (e.key == 'c') {
-        selections[selectedSelection - 1] = "none";
-        renderAllSelection();
-    }
-
-    if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") {
-        if (e.key == 'ArrowUp') direction = "up";
-        if (e.key == 'ArrowDown') direction = "down";
-        if (e.key == 'ArrowLeft') direction = "left";
-        if (e.key == 'ArrowRight') direction = "right";
-        if (e.key == ' ') direction = "";
-        e.preventDefault();
-    }
-
-    if (e.key == ' ') {
-        clickButton();
-        e.preventDefault();
-    }
-    return true;
-}, false);
-
-document.addEventListener('keydown', function (e) {
-    if (e.key == "m") doBuyMax = true;
-}, false);
-
-document.addEventListener('keyup', function (e) {
-    if (e.key == "m") doBuyMax = false;
-}, false);
+///////////////////////////////////
+// WGGJ setup   #6D61696E736563
+///////////////////////////////////
 
 function getOrigin() {
     if (document.URL.includes("github")) {
@@ -1674,10 +1500,6 @@ audio = {
     "voice": "sounds/female_talking.wav",
 };
 
-var GAMELOADED = false;
-var gameLoadingProgress = 0;
-var gameLoadingPhaseName = "Loading files";
-
 var songs = ["Shgame (Remix)", "Silicone Business", "0.2s", "Kate Blen"];
 var firstClick = true;
 
@@ -1703,20 +1525,165 @@ document.addEventListener("mousedown", () => {
     }
 });
 
+///////////////////////////////////
+// CORE   #6D61696E736563
+///////////////////////////////////
+
+var GAMELOADED = false;
+var gameLoadingProgress = 0;
+var gameLoadingPhaseName = "Loading files";
+
+function shgabbClickerLoop(tick) {
+    // Main Game Loop
+    let time = (tick - oldTime) / 1000;
+    oldTime = tick;
+
+    //doubleClick -= time;
+    game.clickCooldown -= time;
+    autoSaveTime -= time;
+    quoteTime += time;
+    sandwichTime -= time;
+    sandwichFreezeTime -= time;
+    cakeDuration -= time;
+    if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
+    statIncrease("playTime", time);
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "fishgang") statIncrease("playTimeFish", time);
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") statIncrease("playTimeMine", time);
+
+    for (aqq in game.aeqi) {
+        if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
+    }
+
+    if (unlockedSandwiches() && settings.threeBars) {
+        if (settings.sidebar) {
+            ui.threeBars.style.display = "none";
+            ui.threeBars2.style.display = "flex";
+        }
+        else {
+            ui.threeBars.style.display = "flex";
+            ui.threeBars2.style.display = "none";
+        }
+
+        ui.autoBar.value = sandwichTime;
+        ui.autoBar2.value = sandwichTime;
+        ui.autoBarText.innerHTML = "<sup>(Auto)</sup> " + ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+        ui.autoBarText2.innerHTML = ui.autoBar.value.toFixed(1) + "s/" + ui.autoBar.max + "s";
+
+        ui.prestigeBar.value = game.stats_prestige.playTime;
+        ui.prestigeBar2.value = game.stats_prestige.playTime;
+        ui.prestigeBar.max = ui.prestigeBar2.max = game.stats_prestige.playTime > 5 * 60 ? 15 * 60 : (game.stats_prestige.playTime > 3 * 60 ? 5 * 60 : (game.stats_prestige.playTime > 15 ? 3 * 60 : 15));
+        ui.prestigeBarText.innerHTML = "<sup>(Prestige)</sup> " + ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
+        ui.prestigeBarText2.innerHTML = ui.prestigeBar.value.toFixed(0) + "s/" + ui.prestigeBar.max + "s";
+    }
+    else {
+        ui.threeBars.style.display = "none";
+        ui.threeBars2.style.display = "none";
+    }
+
+    // Egg Hunt
+    if (isEvent("egg")) {
+        eggTime -= time;
+        if (eggTime <= 0) {
+            eggTime = 10;
+            refreshEgg();
+        }
+    }
+
+    if (adStatus != "loading" && unlockedAds()) adTime -= time;
+
+    tickPopup(time);
+    if (autoSaveTime <= 0) {
+        autoSaveTime = 10;
+        autoSave(false);
+    }
+
+    // quote
+    if (quoteTime >= 18) {
+        quoteTime = 0;
+        updateQuote();
+    }
+    if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
+    else ui.quote.style["margin-left"] = "-0%";
+    ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
+
+    if (sandwichTime <= 0) {
+        if (isChallenge(4)) {
+            for (u in shgabbUpgrades) {
+                game.upgradeLevels[shgabbUpgrades[u].ID] = Math.max(0, game.upgradeLevels[shgabbUpgrades[u].ID] - (getChallenge(4).getTier() + 1));
+            }
+            game.upgradeLevels.moreShgabb = Math.max(0, game.upgradeLevels.moreShgabb - (4 * (getChallenge(4).getTier() + 1)));
+            if (sandwichFreezeTime < 0) {
+                sandwichTime = 1;
+                updateUpgrades();
+            }
+        }
+    }
+    if (sandwichTime <= 0 && sandwichFreezeTime > 0) {
+        sandwichTime = 1;
+
+        if (game.idleMode) renderIdleMode();
+        produceAutoShgabb();
+        silicone();
+        artifactEvent("onAuto", {});
+
+        updateGenerators(time);
+
+        if (isEvent("shgabbthewitch")) {
+            for (let witchArtis = 0; witchArtis <= 5; witchArtis++) {
+                let witchesEarned = 0;
+                if (game.aeqi.includes(cursedArtifacts[witchArtis]) && Math.random() <= 0.03) {
+                    witchesEarned += 1;
+                }
+
+                if (witchesEarned > 0) {
+                    game.witchshgabb += witchesEarned;
+                    statIncrease("witchshgabb", witchesEarned);
+
+                    createNotification("+AMOUNT Witch Shgabb", [["AMOUNT", witchesEarned]]);
+                    renderCurrentEvent();
+                }
+
+                if (Math.random() <= 0.003 || cursedArtifacts[witchArtis] == 0) {
+                    cursedArtifacts[witchArtis] = artifacts[Math.floor(Math.random() * (artifacts.length - 1))].ID;
+                    createNotification("NAME has been cursed!", [["NAME", getArtifact(cursedArtifacts[witchArtis]).name]]);
+                }
+            }
+
+            updateArtifacts();
+        }
+    }
+
+    checkMissionProgress();
+    adSwitcher();
+
+    updateUI();
+    window.requestAnimationFrame(shgabbClickerLoop);
+}
+
 function shgabbClickerSetup() {
-    // Generate Patch Notes
-    gameLoadingPhaseName = "Generating patch notes";
-    generatePatchNotes();
     gameLoadingProgress++;
 
-    // pls dont hax kthx
+    // 1. Generate Patch Notes
+    gameLoadingPhaseName = "Generating patch notes";
+    updateGameLoadingText();
+
+    if (location.href.includes('#shbookArea')) location.href = '';
+    generatePatchNotes();
+
+    gameLoadingProgress++;
+
+    // 2. pls dont hax kthx
     gameLoadingPhaseName = "Fairness measures";
+    updateGameLoadingText();
+
     if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
     console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
     gameLoadingProgress++;
 
-    // Init. WGGJ - also see images dict
+    // 3. Init. WGGJ - also see images dict
     gameLoadingPhaseName = "WGGJ loading";
+    updateGameLoadingText();
+
     wggj.config.gameName = "Minigames";
     wggj.config.font = "Rw";
     wggj.time.running = false;
@@ -1727,100 +1694,100 @@ function shgabbClickerSetup() {
 
     gameLoadingProgress++;
 
-    // Load your savefile
+    // 4. Load your savefile
     gameLoadingPhaseName = "Loading save from cache";
+    updateGameLoadingText();
+
     importGame(localStorage.getItem("shgabbClicker"));
     if (localStorage.getItem("shgabbSettings") != undefined) {
         settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
 
+        if (!game.ach.includes(211)) startTutorial();
+
         // music n audio
         wggj.audio.musicMuted = !settings.music;
         adHandler.muted = !(settings.music && settings.adMusic);
-
-        
     }
+
     gameLoadingProgress++;
 
-    // Some UI preparations
+    // 5. Some UI preparations
     gameLoadingPhaseName = "UI preparations";
+    updateGameLoadingText();
+    
     ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
 
     toggleSidebar();
     updateEVERYTHING();
     checkNewDay();
+
     gameLoadingProgress++;
 
-    // Start game loop (30 FPS)
+    // 6. Start game loop (30 FPS)
     gameLoadingPhaseName = "Starting game loop";
+    updateGameLoadingText();
+
     window.requestAnimationFrame(shgabbClickerLoop);
+
     gameLoadingProgress++;
 
-    // Game is loaded! Yay
+    // 7. Game is loaded! Yay
     gameLoadingPhaseName = "Finishing loading process";
+    updateGameLoadingText();
+
     createNotification("Game loaded");
     GAMELOADED = true;
     ui.gameLoadingText.style.display = "none";
     ui.gameLoadingText.innerHTML = "Game loaded!";
+
     gameLoadingProgress++;
+}
+
+function updateGameLoadingText() {
+    ui.gameLoadingText.innerHTML = "Loading game. Progress: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br />";
 }
 
 try {
     shgabbClickerSetup();
 }
 catch(e){
-    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br /><br />";
+    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")";
     console.log(e);
+    let bob = "" + e;
+    ui.gameLoadingText.innerHTML += "<br /><button onclick='reportCrash(`" + bob + "`)'>Report to dev?</button><br /><br />";
 }
 
-// tutorial
-var tutorialProgress = -1;
-var tutorialInterval = -1;
-
-// title, text, req for next button to appear
-const tutorialTexts = [
-    ["Welcome to Shgabb Clicker (Tutorial)", "Welcome, I am Lucie, and here to guide you through the game's basics", () => true],
-    ["Progression", "The goal is to earn Shgabb and other currencies. Most new things are unlocked by the first upgrade.", () => true],
-    ["Let's make progress", "Either click the button to earn some Shgabb, or enable Idle Mode (slower, but less active) and lean back and watch the numbers go up.", () => game.shgabb.gte(shgabbUpgrades.moreShgabb.price(0))],
-    ["Upgrades", "You can afford your first upgrade! Buy it and keep going for a while~", () => shgabbUpgrades.moreShgabb.currentLevel() >= 10],
-    ["New unlocks", "You're making good progress! At HMS 25, you will unlock the Shbook (a guidebook), and an upgrade to get your second currency: Sandwiches.", () => shgabbUpgrades.moreShgabb.currentLevel() >= 25],
-    ["Have fun", "You have completed the tutorial. Keep unlocking new things, and maybe look at the Shbook or Settings if you get a bit bored, cyaa", () => true],
-];
-
-function startTutorial() {
-    tutorialProgress = 0;
-    ui.tutorial.container.style.display = "";
-    audioPlaySound("voice");
-
-    tutorialInterval = setInterval(() => {
-        if (tutorialProgress == -1) {
-            endTutorial();
-            return false;
-        }
-
-        if (ui.tutorial.image.src.includes("images/slimegirl.png")) ui.tutorial.image.src = "images/slimegirl2.png";
-        else ui.tutorial.image.src = "images/slimegirl.png";
-
-        if (tutorialTexts[tutorialProgress][2]() == true) ui.tutorial.next.style.display = "";
-        else ui.tutorial.next.style.display = "none";
-        ui.tutorial.text.innerHTML = "<h2>" + tutorialTexts[tutorialProgress][0] + "</h2><p>" + tutorialTexts[tutorialProgress][1] + "</p>";
-    }, 250);
-}
-
-function continueTutorial() {
-    if (tutorialProgress + 1 > tutorialTexts.length - 1) endTutorial();
-    else {
-        tutorialProgress++;
-        audioPlaySound("voice");
+async function reportCrash(text) {
+    const webhookUrl = 'https://discord.com/api/webhooks/1461862584880992442/S3rr0kWGDcSriWxUH07lFDFita86p0yqDIpKCdB5GcTW_Zudi9dxV3sEg5qM0R59gJ3X';
+    let playerInfo = "";
+    if (game != undefined && game.stats.hms > 0) {
+        playerInfo = game.profile.name + " (" + game.stats.hms + " HMS, v" + game.profile.startVer + ", " + (game.stats.playTime / 3600).toFixed(0) + "h, " + game.sus + ")";
     }
+    updateGameLoadingText();
+
+    try {
+        let discordData = new FormData();
+
+        discordData.append('payload_json', JSON.stringify({
+            embeds: [{
+                title: "Shgabb Clicker v" + gameVersion + " crashed on loading:",
+                fields: [
+                    { name: 'Info: ', value: text || '' },
+                    { name: 'Loading progress: ', value: ui.gameLoadingText.innerHTML || '' },
+                    { name: 'Player: ', value: playerInfo || '' },
+                ],
+                timestamp: new Date().toISOString()
+            }]
+        }));
+
+        await fetch(webhookUrl, {
+            method: 'POST',
+            body: discordData
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+    ui.gameLoadingText.innerHTML = "Thanks for reporting and sorry for the inconvenience...<br /><br />";
 }
-
-function endTutorial() {
-    // guys... it's over
-    tutorialProgress = -1;
-    ui.tutorial.container.style.display = "none";
-    clearInterval(tutorialInterval);
-
-    checkAchievement(211);
-}
-
-if (!game.ach.includes(211)) startTutorial();

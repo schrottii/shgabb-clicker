@@ -113,7 +113,7 @@ function prestigeButton() {
         updateBG();
         updateUpgrades();
         renderChallenges();
-        createNotification("Prestiged for " + fn(amount) + " Golden Shgabb");
+        createNotification("Prestiged for AMOUNT Golden Shgabb", [["AMOUNT"], fn(amount)]);
     }
 }
 

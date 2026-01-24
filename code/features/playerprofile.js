@@ -51,7 +51,7 @@ class PFP {
 
     eventAward() {
         game.evpfps.push(this.ID);
-        createNotification("New PFP: #" + this.ID + " " + this.name);
+        createNotification("New PFP: #ID NAME", [["ID", this.ID], ["NAME", this.name]]);
     }
 
     renderBorder() {
@@ -76,7 +76,7 @@ class Banner extends PFP {
 
     eventAward() {
         game.evbans.push(this.ID);
-        createNotification("New Banner: #" + this.ID + " " + this.name);
+        createNotification("New Banner: #ID NAME", [["ID", this.ID], ["NAME", this.name]]);
     }
 
     isEquipped() {
@@ -99,7 +99,7 @@ class Frame extends PFP {
 
     eventAward() {
         game.evframes.push(this.ID);
-        createNotification("New Frame: #" + this.ID + " " + this.name);
+        createNotification("New FRAME: #ID NAME", [["ID", this.ID], ["NAME", this.name]]);
     }
 
     isEquipped() {

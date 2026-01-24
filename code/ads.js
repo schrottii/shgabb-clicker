@@ -249,7 +249,7 @@ function onAdEnded() {
     lastAdTimer = 0;
     availableBoost = "none";
     adTime = adMax = ads[currentBoost].getLength();
-    console.log(adTime + "==" + adMax)
+    //console.log(adTime + "==" + adMax)
 
     if (currentBoost == "strongerClicks" || currentBoost == "fasterShgabb") {
         ui.clickButton.classList.add("buffedProgress");

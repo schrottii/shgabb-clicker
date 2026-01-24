@@ -3,7 +3,7 @@
 // sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper - bananas
 // sel 2: gems - artifacts - shgic
 // sel 3: cheats - stats - achievements - other (social, patch notes)
-// sel 4: shbook: lore - currencies - features - events
+// sel 4: shbook: lore - missions - currencies - features - upgcalc - events
 
 var selectedSelection = 1;
 
@@ -40,6 +40,7 @@ var sections = {
     shbook3: document.getElementById("shbookSection"),
     shbook4: document.getElementById("shbookSection"),
     shbook5: document.getElementById("shbookSection"),
+    shbook6: document.getElementById("shbookSection"),
 
     // sels
     selection1: document.getElementById("selection1"),
@@ -48,12 +49,12 @@ var sections = {
     selection4: document.getElementById("selection4"),
 }
 
-var selections = ["shgabb", "none", "social", "shbook2"];
+var selections = ["shgabb", "none", "social", "shbook3"];
 var selectionTypes = [
     ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper", "bananas"],
     ["gems", "artifacts", "challenges", "generators", "minigames", "events"],
     ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
-    ["shbook1", "shbook2", "shbook3", "shbook4", "shbook5"]
+    ["shbook1", "shbook2", "shbook3", "shbook4", "shbook5", "shbook6"]
     ];
 
 function renderSelection(sel) {
@@ -72,7 +73,7 @@ function renderSelection(sel) {
         selsDisplay = ["Cheats", '<img class="currency" src="images/playerprofile/icon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
     }
     if (sel == 4) {
-        selsDisplay = ["Lore", "Currenciary", "Featuriary", "Upgrade Calculator", "Events"];
+        selsDisplay = ["Lore", "Missions", "Currenciary", "Featuriary", "Upgrade Calculator", "Events"];
     }
 
     // render le area
@@ -147,12 +148,14 @@ function isSelectionUnlocked(name, name2 = "") {
         case "shbook1":
             return game.stats.hms >= 4000;
         case "shbook2":
-            return game.stats.hms >= 25;
+            return game.stats.hms >= 1000;
         case "shbook3":
             return game.stats.hms >= 25;
         case "shbook4":
             return game.stats.hms >= 25;
         case "shbook5":
+            return game.stats.hms >= 25;
+        case "shbook6":
             return game.stats.hms >= 2000;
 
         case "none":

@@ -1,7 +1,7 @@
 // Game made by Schrottii - editing or stealing is prohibited!
 
 ///////////////////////////////////
-// EVENT CLASS & LIST
+// EVENT CLASS & LIST   #6576656E7473
 ///////////////////////////////////
 
 class LimitedEvent {
@@ -101,7 +101,7 @@ const events = {
 };
 
 ///////////////////////////////////
-// ESSENTIAL FUNCTIONS
+// ESSENTIAL FUNCTIONS   #6576656E7473
 ///////////////////////////////////
 
 function isEvent(eventName) {
@@ -261,7 +261,7 @@ function awardEventReward(event, type = "all", gemCompensation = 0) {
         if (gemCompensation > 0) {
             game.gems += gemCompensation;
             statIncrease("tgems", gemCompensation);
-            createNotification("+" + gemCompensation + " Gems");
+            createNotification("+AMOUNT Gems", [["AMOUNT", gemCompensation]]);
         }
         return false;
     }
@@ -281,14 +281,14 @@ function awardEventReward(event, type = "all", gemCompensation = 0) {
 ///////////////////////////////////
 
 ////////////////////////////////////////////////////////////// event functions below
-// Christmas Event
+// Christmas Event   #6576656E7473
 ///////////////////////////////////
 var previousGiftText = "";
 
 function renderChristmas() {
     let collectedPages = calcCollectedPages(3);
 
-    let render = "<h3>Christmas Event (Year 2)</h3><br /><b>December 15th - December 28th</b>";
+    let render = "<h3>Christmas Event</h3><br /><b>December 15th - December 28th</b>";
     render = render + "<br />" + events.christmas.description;
 
 
@@ -321,7 +321,7 @@ function openGifts(amount) {
         if (random < 0.08) {
             let reward = awardEventReward("christmas", "all");
             if (reward != false) {
-                createNotification("Received " + reward);
+                createNotification("Received REWARD", [["REWARD", reward]]);
                 giftContents[3] += 1;
             }
         }
@@ -357,7 +357,7 @@ function openGifts(amount) {
 }
 
 ////////////////////////////////////////////////////////////// event functions below
-// Anniversary Event
+// Anniversary Event   #6576656E7473
 ///////////////////////////////////
 var cakeDuration = 0;
 
@@ -372,7 +372,7 @@ function renderAnniversary() {
     }
 
     // HEADER AND DESCRIPTION
-    let render = "<h3>Anniversary Event (Year 2)</h3><b>January 6th - January 19th</b>";
+    let render = "<h3>Anniversary Event</h3><b>January 6th - January 19th</b>";
     render = render + "<br />" + events.anniversary.description;
     render = render + "<br />" + cImg("birthdayCandle") + (getLoreByID(game.loreSel).source == 4 ? game.loreP : 0) + " Birthday Candles (" + collectedPages + "/5 Pages)";
 
@@ -413,7 +413,7 @@ function cakeValue(trueValue, falseValue) {
 }
 
 ////////////////////////////////////////////////////////////// event functions below
-// Lunar New Year Event
+// Lunar New Year Event   #6576656E7473
 ///////////////////////////////////
 var lunarAntiCooldown = 0;
 var luck = 0;
@@ -421,7 +421,7 @@ var luck = 0;
 function renderLunar() {
     let collectedPages = calcCollectedPages(5);
 
-    let render = "<h3>Lunar New Year Event (Year 2)</h3><br /><b>February 4th - February 17th</b>";
+    let render = "<h3>Lunar New Year Event</h3><br /><b>February 4th - February 17th</b>";
     render = render + "<br />" + events.lunar.description;
     render = render + "<br />" + cImg("qian") + game.qian + " Qian";
     render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)<br /><br />";
@@ -574,7 +574,7 @@ function applyLuck(div) {
 }
 
 ////////////////////////////////////////////////////////////// event functions below
-// Egg Hunt Event
+// Egg Hunt Event   #6576656E7473
 ///////////////////////////////////
 var eggUpgrade = "";
 var eggNumber = 1;
@@ -583,7 +583,7 @@ var eggTime = 10;
 function renderEgg() {
     let collectedPages = calcCollectedPages(6);
 
-    let render = "<h3>Egg Hunt Event (Year 2)</h3><br /><b>April 2nd - April 15th</b>";
+    let render = "<h3>Egg Hunt Event</h3><br /><b>April 2nd - April 15th</b>";
     render = render + "<br />" + events.egg.description;
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
@@ -711,13 +711,13 @@ function useEggs(offerNR) {
 }
 
 ////////////////////////////////////////////////////////////// event functions below
-// Pride Event
+// Pride Event   #6576656E7473
 ///////////////////////////////////
 var shgaybbMode = false;
 var shgaybbFound = "";
 
 function renderPride() {
-    let render = "<h3>Pride Event (Year 2)</h3><br /><b>June 1st - June 14th</b>";
+    let render = "<h3>Pride Event</h3><br /><b>June 1st - June 14th</b>";
     render = render + "<br />" + events.pride.description;
     render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Banners can also be found. Getting Pan Shgabb second counts as a joker, it works with anyone. Every couple found gives 20 Gems.";
     render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
@@ -787,11 +787,11 @@ function findShgaybb() {
         if (shgaybbFound == "") {
             // first of the couple
             shgaybbFound = shgaybbList[seed];
-            createNotification("Found: " + shgaybbFound + " Shgabb");
+            createNotification("Found: GAY Shgabb", [["GAY", shgaybbFound]]);
         }
         else if (shgaybbFound == shgaybbList[seed] || shgaybbList[seed] == "Pan") {
             // second -> couple found
-            createNotification("Couple found! " + shgaybbFound + " Shgabb");
+            createNotification("Couple found! GAY Shgabb", [["GAY", shgaybbFound]]);
             statIncrease("couples", 1);
 
             game.gems += 20;
@@ -822,7 +822,7 @@ function findShgaybb() {
         }
         else {
             // second, but not fitting
-            createNotification("Found: " + shgaybbList[seed] + " Shgabb. Not a couple... forever alone...");
+            createNotification("Found: GAY Shgabb. Not a couple... forever alone...", [["GAY", shgaybbList[seed]]]);
             shgaybbFound = "";
             //shgaybbMode = false;
         }
@@ -830,13 +830,13 @@ function findShgaybb() {
 }
 
 ////////////////////////////////////////////////////////////// event functions below
-// Hot Hot Summer Event
+// Hot Hot Summer Event   #6576656E7473
 ///////////////////////////////////
 var summerClicks = 0;
 var heatMode = false;
 
 function renderSummer() {
-    let render = "<h3>Hot Hot Summer (Year 2)</h3><br /><b>July 28th - August 10th</b>";
+    let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 10th</b>";
     render = render + "<br />" + events.summer.description;
     render = render + "<br />" + cImg("shorts") + game.shorts + " Shorts";
 
@@ -957,32 +957,14 @@ function useShorts(offerNR) {
         case 6:
             if (game.shorts < 200) return false;
 
-            if (!game.a.includes(313)) {
-                game.a.push(313)
-                createNotification("New Artifact: " + getArtifact(313).name);
-            }
-            else {
-                artifactDuplicate(313);
-            }
-
+            awardArtifact(313);
             game.shorts -= 200;
-
-            updateArtifacts();
             break;
         case 7:
             if (game.shorts < 100) return false;
 
-            if (!game.a.includes(200)) {
-                game.a.push(200)
-                createNotification("New Artifact: " + getArtifact(200).name);
-            }
-            else {
-                artifactDuplicate(200);
-            }
-
+            awardArtifact(200);
             game.shorts -= 100;
-
-            updateArtifacts();
             break;
     }
 
@@ -990,7 +972,7 @@ function useShorts(offerNR) {
 }
 
 ////////////////////////////////////////////////////////////// event functions below
-// Shgabb The Witch Event
+// Shgabb The Witch Event   #6576656E7473
 ///////////////////////////////////
 var witchesSpent = [0, 0, 0, 0]; // total (up to 10), virtue, herbs, odor
 var cursedArtifacts = [0, 0, 0, 0, 0, 0]; // six
@@ -1015,7 +997,7 @@ function STWButton(id, img, name, desc) {
 function renderShgabbTheWitch() {
     let collectedPages = calcCollectedPages(2);
 
-    let render = "<h3>Shgabb The Witch (Year 2)</h3><br /><b>October 24th - November 6th</b>";
+    let render = "<h3>Shgabb The Witch</h3><br /><b>October 24th - November 6th</b>";
     render = render + "<br />" + events.shgabbthewitch.description;
 
     render = render + "<br />" + cImg("witchshgabb") + game.witchshgabb + " Witch Shgabb";
@@ -1081,7 +1063,7 @@ function castSpell() {
             //statIncrease("shgabb", shgabbAmount); DO NOT!!!
 
             recentSpellText = recentSpellText + "+" + fn(shgabbAmount) + " Shgabb" + "<br />";
-            createNotification("+" + fn(shgabbAmount) + " Shgabb");
+            createNotification("+AMOUNT Shgabb", [["AMOUNT", fn(shgabbAmount)]]);
         }
         if (Math.random() <= 0.05) {
             effectAmount++;
@@ -1184,7 +1166,7 @@ function castSpell() {
             //statIncrease("shgabb", shgabbAmount); DO NOT!!!
 
             recentSpellText = recentSpellText + "+" + fn(shgabbAmount) + " Shgabb" + "<br />";
-            createNotification("+" + fn(shgabbAmount) + " Shgabb");
+            createNotification("+AMOUNT Shgabb", [["AMOUNT", fn(shgabbAmount)]]);
         }
         if (Math.random() <= 0.05) {
             effectAmount++;

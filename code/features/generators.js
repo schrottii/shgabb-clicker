@@ -26,15 +26,19 @@ class Generator {
 
     tick(t) {
         if (!isValid(game.generators[this.ID])) game.generators[this.ID] = [0, new Decimal(0), 0];
-        if (this.getLevel() == 0) return false;
+        if (this.getLevel() == 0) return 0;
         game.generators[this.ID][1] = game.generators[this.ID][1].add(this.currentEffect().mul(t));
         game.genpoints = game.genpoints.add(this.currentProd().mul(t));
+        return this.currentProd().mul(t);
     }
 
     upgrade() {
-        if (game.gs.gte(this.currentPrice())) {
-            game.gs = game.gs.sub(this.currentPrice());
+        let price = this.currentPrice();
+        if (game.gs.gte(price)) {
+            game.gs = game.gs.sub(price);
             game.generators[this.ID][0] += 1;
+
+            createNotification("Upgraded GENERATORNAME to LLEVEL for PRICE GS", [["GENERATORNAME", this.name], ["LEVEL", game.generators[this.ID][0]], ["PRICE", fn(price)]]);
             renderGenerators();
         }
     }
@@ -76,9 +80,12 @@ function calcGenPointsProd() {
 
 function updateGenerators(tick) {
     // tick
+    let GenpointsBefore = game.genpoints;
+    let tickedGenpoints = 0;
     for (let g in generators) {
-        generators[g].tick(Math.min(tick * 60, 6));
+        tickedGenpoints += generators[g].tick(Math.min(tick * 60, 6));
     }
+    createNotification("Generated Genpoints: VALUE (+PCT%)", [["VALUE", fn(tickedGenpoints)], ["PCT", ((game.genpoints / GenpointsBefore - 1) * 100).toFixed(2)]]);
 
     // render
     renderGenerators();

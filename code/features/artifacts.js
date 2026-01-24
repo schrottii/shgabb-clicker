@@ -9,8 +9,8 @@
  */
 
 // toc_arti_class
-// Artifact class, the heart of the arti
-//
+// Artifact class, the heart of the arti   #61727469736563
+///////////////////////////////////
 
 class Artifact {
     constructor(ID, rarity, tier, name, image, config) {
@@ -42,6 +42,7 @@ class Artifact {
                 this.boost = config.simpleBoost[0];
                 this.amount = config.simpleBoost[1];
                 this.simpleTrigger = config.simpleBoost[2] != undefined ? config.simpleBoost[2] : () => true;
+                this.hasSimpleTrigger = config.simpleBoost[2] != undefined;
             }
 
             // value
@@ -105,6 +106,8 @@ class Artifact {
                 return 5000;
             case 4:
                 return 8000;
+            default:
+                return 1e12;
         }
     }
 
@@ -247,6 +250,12 @@ class Artifact {
         }
     }
 
+    isActive() {
+        // returns undefined / true / false
+        if (this.hasSimpleTrigger != true) return undefined;
+        return this.simpleTrigger(this.getLevel());
+    }
+
     // render methods - pretty much exclusively used by the arti list
     renderBG() {
         // bg color of the arti, depending on the mode
@@ -269,6 +278,7 @@ class Artifact {
         let color = ["black", "black", "green", "purple", "yellow"][this.rarity];
 
         return "<span style='color: " + color + "'>" + this.getRarity() + "</span>";
+        //return "<image style='height: 20px;' src='images/arti/arti_rarity_" + this.getRarity().toLowerCase() + ".png'>";
     }
 
     renderDescription() {
@@ -308,11 +318,12 @@ class Artifact {
     render(clickable = true, clg = false, width = 50) {
         // what you see is what you get.
         return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: " + width + "%;" + (width < 50 ? " display: inline-block;" : "")) + "'>"
+            + (this.isActive() === undefined ? "" : "<div style='position: absolute; top: 0%; width: 100%; height: 18px; background-color: " + (this.isActive() ? "rgb(80, 240, 80, 0.3)" : "rgb(200, 80, 80, 0.2)") + ";'></div>")
             + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px' style='float: left; top: 0px; left: 0px; position: absolute; top: 0;'>" : "")
             + "<span style='float: right; position: absolute; top: 0; right: 0; text-align: right;'>"
             + (this.isEquipped() && !this.isUpgradable() ? "<b>[EQUIPPED]</b><br>" : "")
             + (cursedArtifacts.includes(this.ID) ? "<b>[CURSED]</b><br>" : "")
-            + (!this.isUpgradable() ? (this.renderRarityText() + " L" + this.getLevel()) : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
+            + (!this.isUpgradable() ? (this.renderRarityText() + " <b>L" + this.getLevel() + "</b>") : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
             + "</span>"
             + "<br style='clear: both;' /><br /><span style='font-size: 14px'><b>" + this.name + "</b></span><br />"
             + this.renderSimpleEffect() + this.renderDescription()
@@ -323,8 +334,8 @@ class Artifact {
 }
 
 // toc_arti_var
-// Various Artifact variables
-//
+// Various Artifact variables   #61727469736563
+///////////////////////////////////
 
 var artifactMode = "select";
 var artifactPage = 1;
@@ -394,8 +405,8 @@ function setBoostFilter(num) {
 }
 
 // toc_arti_global
-// Global Artifact functions, used anywhere
-//
+// Global Artifact functions, used anywhere   #61727469736563
+///////////////////////////////////
 
 // the 3 MVPs
 function getArtifact(id) {
@@ -514,8 +525,8 @@ function getScrapCost(level, rarity) {
 }
 
 // toc_arti_fun
-// Artifact functions really only needed for the Artifact section itself
-//
+// Artifact functions really only needed for the Artifact section itself   #61727469736563
+///////////////////////////////////
 
 function getArtifactsPerPage() {
     return window.innerWidth < 780 ? 15 : 50;
@@ -740,7 +751,8 @@ function artifactLoadout(l, source = "key") {
         }
         else {
             // equip this loadout
-            createNotification("Selected loadout: " + (game.alnames[l] == undefined || game.alnames[l] == "" ? "Loadout " + (l + 1) : game.alnames[l]));
+            let notifLoadoutName = (game.alnames[l] == undefined || game.alnames[l] == "" ? "Loadout " + (l + 1) : game.alnames[l]);
+            createNotification("Selected loadout: NAME", [["NAME", notifLoadoutName]]);
             selectedLoadout = l;
         }
     }
@@ -817,7 +829,7 @@ function setNextArtifact(r) {
         }
     }
     if (possibleArtifacts.length == 0) return 0;
-    return gainedID = possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
+    return possibleArtifacts[Math.floor(Math.random() * possibleArtifacts.length)];
 }
 
 function checkForZeroNext() {
@@ -831,12 +843,30 @@ function gambleArtifact(r) {
     r -= 1;
     // New artifact!
     game.a.push(game.nexgai[r]);
+    statIncrease("artisFound", 1);
 
-    createNotification("New Artifact: " + getArtifact(game.nexgai[r]).name);
+    createNotification("New Artifact: NAME", [["NAME", getArtifact(game.nexgai[r]).name]]);
     createPopup("New Artifact:", getArtifact(game.nexgai[r]).name + " (" + getArtifact(game.nexgai[r]).getRarity() + ")", "arti/" + getArtifact(game.nexgai[r]).image);
     updateArtifacts();
 
     game.nexgai[r] = setNextArtifact(r);
+}
+
+function awardArtifact(id) {
+    if (!game.a.includes(id)) {
+        game.a.push(id);
+        statIncrease("artisFound", 1);
+        createNotification("New Artifact: NAME", [["NAME", getArtifact(id).name]]);
+        createPopup("New Artifact:", getArtifact(id).name + " (" + getArtifact(id).getRarity() + ")", "arti/" + getArtifact(id).image);
+        updateArtifacts();
+
+        for (let r in game.nexgai) {
+            if (game.nexgai[r] == id) game.nexgai[r] = setNextArtifact(r);
+        }
+    }
+    else {
+        artifactDuplicate(id);
+    }
 }
 
 function artifactDuplicate(rarity) {
@@ -861,8 +891,9 @@ function artifactDuplicate(rarity) {
     let amount = (allArtifactsOfRarity(rarity) ? 2 : 1) * (getScrapCost(1, rarity) / 10);
     game.artifactScrap += amount;
     statIncrease("artifactScrap", amount);
+    statIncrease("artiDupesFound", 1);
 
-    createNotification("+" + amount + " Artifact Scrap for a duplicate " + getArtifact(gainedID).name);
+    createNotification("+AMOUNT Artifact Scrap for a duplicate NAME", [["AMOUNT", amount], ["NAME", getArtifact(gainedID).name]]);
     createPopup("Duplicate:", getArtifact(gainedID).name + " (" + getArtifact(gainedID).getRarity() + ")", "currencies/artifactscrap.png");
 }
 
@@ -903,7 +934,10 @@ function switchArtifact(id) {
     if (isChallenge(999)) return false;
 
     if (getArtifact(id).isEquipped()) game.aeqi.splice(game.aeqi.indexOf(id), 1);
-    else if (game.aeqi.length < getMaxArtifactAmount()) game.aeqi.push(id);
+    else {
+        statIncrease("artisEquipped", 1);
+        if (game.aeqi.length < getMaxArtifactAmount()) game.aeqi.push(id);
+    }
     if (selectedLoadout != -1) game.alo[selectedLoadout] = game.aeqi;
 
     // value and timer
@@ -920,6 +954,7 @@ function upgradeArtifact(id) {
     if (game.alvl[id] < getArtifact(id).getMaxLevel() && game.artifactScrap >= getScrapCost(game.alvl[id], getArtifact(id).rarity) && (!settings.confirm || confirm("Use " + getScrapCost(game.alvl[id], getArtifact(id).rarity) + " Artifact Scrap to upgrade this?"))) {
         game.artifactScrap -= getScrapCost(game.alvl[id], getArtifact(id).rarity);
         game.alvl[id] += 1;
+        statIncrease("artisUpgraded", 1);
     }
 }
 
@@ -947,11 +982,13 @@ function destroyArtifact(id, doConfirm = true) {
         artifactEvent("onDestroy");
 
         game.artifactScrap += amount;
+
+        statIncrease("artisDestroyed", 1);
         statIncrease("artifactScrap", amount);
 
         checkForZeroNext();
 
-        createNotification("Received +" + amount + " Artifact Scrap for destroying " + getArtifact(id).name);
+        createNotification("+AMOUNT Artifact Scrap for destroying NAME", [["AMOUNT", amount], ["NAME", getArtifact(id).name]]);
         return true;
     }
 
@@ -964,8 +1001,8 @@ function destroyArtifact(id, doConfirm = true) {
 
 
 // toc_arti_artis
-// List of all Artifacts, the dictionairy, my bible
-//
+// List of all Artifacts, the dictionary, my bible   #61727469736563
+///////////////////////////////////
 
 var artifacts = [
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1071,7 +1108,7 @@ var artifacts = [
                         let gemAmount = (Math.floor(game.a.length / 10) + 3);
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
-                        createNotification("Gem Gift: +" + gemAmount + " Gems");
+                        createNotification("Gem Gift: +AMOUNT Gems", [["AMOUNT", gemAmount]]);
                     }
                 }
             },
@@ -1334,7 +1371,7 @@ var artifacts = [
     new Artifact(223, 2, 1, "Amulet of Gem Mines", "amulet.png",
         {
             desc: "If owning less than 300 Gems", 
-            simpleBoost: ["gemchance", level => 1.5 + 0.5 * level, () => game.gems < 300]
+            simpleBoost: ["gemchance", level => 2.5 + 0.5 * level, () => game.gems < 300]
         }),
 
     new Artifact(224, 2, 4, "Amulet of Molten Bags", "amulet.png",
@@ -1448,7 +1485,7 @@ var artifacts = [
                         let gemAmount = (Math.floor(game.a.length / 3) + 5);
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
-                        createNotification("Gem Gift: +" + gemAmount + " Gems");
+                        createNotification("Gem Gift: +AMOUNT Gems", [["AMOUNT", gemAmount]]);
                     }
                 }
             },
@@ -1492,7 +1529,7 @@ var artifacts = [
     new Artifact(303, 3, 1, "P2W", "p2w.png",
         {
             desc: "While an ad is active",
-            simpleBoost: ["gems", level => 2.5 + level * 0.5, () => currentBoost != "none"]
+            simpleBoost: ["gems", level => 2 + level * 0.5, () => currentBoost != "none"]
         }),
 
     new Artifact(304, 3, 2, "Silicone implants", "implants.png",
@@ -1584,7 +1621,7 @@ var artifacts = [
                 // gain
                 if (Math.random() < level / 10 && v.amount > hoodGoo) {
                     hoodGoo = v.amount;
-                    createNotification("Goo: " + fn(v.amount));
+                    createNotification("Goo: AMOUNT", [["AMOUNT", fn(v.amount)]]);
                 }
             },
             onAuto: (level, v) => {
@@ -1675,7 +1712,7 @@ var artifacts = [
                         let gemAmount = (Math.floor(game.a.length / 1.5) + 10);
                         game.gems += gemAmount;
                         statIncrease("tgems", gemAmount);
-                        createNotification("Gem Gift: +" + gemAmount + " Gems");
+                        createNotification("Gem Gift: +AMOUNT Gems", [["AMOUNT", gemAmount]]);
                     }
                 }
             },
@@ -1764,6 +1801,10 @@ var artifacts = [
         {
             desc: level => "Buy my amazing products for only " + (level * 2) + " Gems/offer! (20% chance/second)",
             simpleBoost: ["shgabb", 1],
+            onEquipped: (level) => {
+                getArtifact(404).boost = "shgabb";
+                getArtifact(404).amount = 1;
+            },
             onAuto: (level) => {
                 if (currentGems() < level * 2) {
                     getArtifact(404).boost = "shgabb";

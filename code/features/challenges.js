@@ -210,11 +210,10 @@ function completedDaily(hms) {
     if (selectedLoadout == -1) selectedLoadout = 0;
 
     let gemAmount = Math.floor(hms / 150);
-    game.gems += gemAmount;
-    statIncrease("tgems", gemAmount);
+    awardGems(gemAmount);
 
     renderChallenges();
-    createNotification("Daily Challenge complete: +" + hms + " points, +" + gemAmount + " Gems");
+    createNotification("Daily Challenge complete: +HMS points, +GEMAMOUNT Gems", [["HMS", hms], ["GEMAMOUNT", gemAmount]]);
 }
 
 function getTotalTiers() {
@@ -238,7 +237,7 @@ var challenges = [
     new Challenge(2, 6000, t => 1500 + 500 * t, "Blue Cuts", tier => "Shgabb production is reduced MASSIVELY (^" + (1 / (2 + 0.5 * tier)).toFixed(3) + ")", t =>  Math.floor(6 * Math.pow(6, t)), "Shgabb"),
     new Challenge(3, 8000, t => 6000 + 2000 * t, "Manual Grind", "Click cooldown is fixed at 20s and auto is disabled", t =>  Math.floor(5 * Math.pow(2.2, t)), "Click Shgabb"),
     new Challenge(4, 10000, t => 6000 + 2000 * t, "Dementia", tier => "Shgabb Upgrades lose levels every second (" + (4 * (tier + 1)) + " for MS, " + (tier + 1) + " for others)", t =>  Math.floor(5 * Math.pow(2.2, t)), "Auto Shgabb"),
-    new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.25 * t, "Artifact drop rate"),
+    new Challenge(5, 12000, t => 8000 + 2000 * t, "Ill-lit Dwn-upg", "Upgrade costs and levels are invisible. Buy one that's too expensive and its level gets reset!", t => 1 + 0.2 * t, "Artifact drop rate"),
     new Challenge(6, 12000, t => 400 + 100 * t, "Inflation", tier => "Upgrades are far more expensive (" + (1.1 + tier / 10) + "^level for MS, " + (4 + tier / 10) + "^level for others)", t => 2 * Math.pow(1.25, t), "cheaper Shgabb upgrades"),
 ];
 

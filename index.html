@@ -27,6 +27,8 @@
         <div id="SIDEBAR" class="sectionBG" style="display: none; position: fixed; width: 19%; height: 97.5%">
             <!-- 19% -->
             <!-- <h2>Sidebar</h2> -->
+            <button class="sectionBG" style="position: absolute; left: 102%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = 'so-so'; toggleSidebar();"><b>X</b></button>
+
             <div style="width: 100%; white-space: nowrap;">
                 <button class="clickButton" style="display: inline-block; width: 75%" onclick="clickButton()" id="clickButton2">+1 Shgabb</button>
                 <span class='clickButton' id="idleModeRender2" style="width: 2%"></span>
@@ -69,9 +71,11 @@
 
 
     <UBERDIV id="GAMECONTENT" style="float: right; width: 100%">
-    <!-- 80% -->
+        <!-- 80% -->
+        <button id="sosobar" class="sectionBG" style="position: fixed; left: 0.2%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = true; toggleSidebar();"><b>&gt;</b></button>
+
         <!-- Top, Quote, Click Button, Notifs -->
-        <h2 class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
+        <h2 id="gameName" class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
         <span id="quoteText" class="quoteClass"></span>
         <br />
 
@@ -130,6 +134,7 @@
             /////////////////////////////////////////////
         -->
         <div class="sectionBG">
+            <button id="helpButton" class="sectionBG" style="position: relative; left: 0%; height: 32px; width: 32px; color: #01f8fd;" onclick="helpSection1();"><b>?</b></button>
             <span id="selection1"></span>
 
             <!-- Shgabb -->
@@ -221,12 +226,19 @@
             <!-- Gems -->
             <div id="gemSection" style="display: none">
                 <h3>Gems</h3>
-                <span id="gemAmount"></span><br /><br />
+                <span id="gemAmount"></span><br />
+                <h3>Gems offers</h3>
                 <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
                 <button class="upgrade" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
+                <br />
                 <button class="upgrade" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
-                <button class="upgrade" onclick="gemOffer(4)"><span id="gemOffer4"></span></button><br />
+                <button class="upgrade" onclick="gemOffer(4)"><span id="gemOffer4"></span></button>
+                <br />
                 <button class="upgrade" onclick="gemOffer(5)"><span id="gemOffer5"></span></button>
+                <button class="upgrade" onclick="gemOffer(6)"><span id="gemOffer6"></span></button>
+                <button class="upgrade" onclick="gemOffer(7)"><span id="gemOffer7"></span></button>
+                <br />
+                <!--<button onclick="tester();" style="height: 80px;">jfaoiwskfvjnisfgvjnhseuifjhiu</button>-->
 
                 <br />
                 <div id="gemStorageContainer" style="display: none">
@@ -234,6 +246,10 @@
                     <span id="gemStorageDisplay"></span><input type="number" id="gemStorageAmount" onblur="gemStorage()" onchange="gemStorage()" /><br />
                     Gems in the Gem Storage still count towards boosts, Achievements, etc. but can't be accidentally spent!
                 </div>
+
+                <br />
+                <h3>Reward Codes</h3>
+                <button class="chineseOffer" onclick="redeemRewardCode();">Redeem a Reward Code</button>
             </div>
 
             <!-- Artifacts -->
@@ -330,10 +346,10 @@
                 <h3>Player Profile</h3>
                 <canvas id="profileCanvas" class="playerProfile"></canvas><br />
 
-                <button id="playerProfileButton1" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(1)">PFPs</button>
-                <button id="playerProfileButton2" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(2)">Banners</button>
-                <button id="playerProfileButton3" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(3)">Frames</button>
-                <button id="playerProfileButton4" class="grayButton" style="background-color: white" onclick="setPlayerProfileSelection(4)">All</button> <br />
+                <button id="playerProfileButton1" class="grayButton" style="width: 15%; background-color: white" onclick="setPlayerProfileSelection(1)">PFPs</button>
+                <button id="playerProfileButton2" class="grayButton" style="width: 15%; background-color: white" onclick="setPlayerProfileSelection(2)">Banners</button>
+                <button id="playerProfileButton3" class="grayButton" style="width: 15%; background-color: white" onclick="setPlayerProfileSelection(3)">Frames</button>
+                <button id="playerProfileButton4" class="grayButton" style="width: 15%; background-color: white" onclick="setPlayerProfileSelection(4)">All</button> <br />
                 <span id="playerProfileRender"></span>
 
                 <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
@@ -342,9 +358,9 @@
             <!-- Stats -->
             <div id="statsSection" style="display: none">
                 <h3>Stats</h3>
-                <button id="statsTime1" class="grayButton" style="background-color: yellow" onclick="statsSet(1)">All time</button>
-                <button id="statsTime2" class="grayButton" style="background-color: white" onclick="statsSet(2)">This prestige</button>
-                <button id="statsTime3" class="grayButton" style="background-color: white" onclick="statsSet(3)">Today</button> <br />
+                <button id="statsTime1" class="grayButton" style="width: 25%; background-color: yellow" onclick="statsSet(1)">All time</button>
+                <button id="statsTime2" class="grayButton" style="width: 25%; background-color: white" onclick="statsSet(2)">This prestige</button>
+                <button id="statsTime3" class="grayButton" style="width: 25%; background-color: white" onclick="statsSet(3)">Today</button> <br />
                 <span id="stats"></span>
             </div>
 
@@ -369,13 +385,12 @@
                 <br style="clear:both" />
                 <div class="socialContainerSquare">
                     <!-- Notifications -->
-                    <h3>Notifications</h3>
                     <span id="notifications"></span>
                     <hr class="socialHr" style="clear:both" />
 
                     <!-- Info -->
-                    <h3>Info</h3>
-                    Shgabb Clicker - developed by Schrottii ©2023-2025<br />
+                    <h3 style="text-align: center;">Info</h3>
+                    Shgabb Clicker - developed by Schrottii ©2023-2026<br />
                     <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
                     This game uses WGGJ v1.5 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
                     <br />
@@ -384,7 +399,7 @@
                     Special thanks to the beta testers and most dedicated players, DaGame and elmenda452!<br />
                     <hr class="socialHr" style="clear:both" />
 
-                    <h3>Donate</h3>
+                    <h3 style="text-align: center;">Donate</h3>
                     If you enjoy the game and have money, consider donating some! It is my only income source and supports me a lot: <br />
                     <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
                     <script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#2e269a', 'Y8Y2XMZX1'); kofiwidget2.draw();</script>
@@ -392,16 +407,16 @@
                     <hr class="socialHr" style="clear:both" />
 
                     <!-- Social -->
-                    <h3>Social</h3>
-                    <div class="grayButton" style="float: left; width: 46%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
-                    <div class="grayButton" style="float: right; width: 46%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
+                    <h3 style="text-align: center;">Social</h3>
+                    <div class="sectionBG" style="text-align: center; font-size: 24px; float: left; width: 46%; min-width: 100px; min-height: 140px"><img src="images/social/discord.png" /><br /><a href="https://discord.gg/CbBeJXKUrk">My Games Discord Server</a></div>
+                    <div class="sectionBG" style="text-align: center; font-size: 24px; float: right; width: 46%; min-width: 100px; min-height: 140px "><img src="images/social/wiki.png" /><br /><a href="https://shgabb-clicker.fandom.com/wiki/Shgabb_Clicker_Wiki">Shgabb Clicker Wiki</a></div>
 
-                    <div class="grayButton" style="float: left; width: 46%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a id="frWeb" href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a><a id="frGalaxy" href="https://galaxy.click/play/474">Play one of my other games on galaxy!</a></div>
-                    <div class="grayButton" style="float: right; width: 46%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
+                    <div class="sectionBG" style="text-align: center; font-size: 24px; float: left; width: 46%; min-width: 100px; min-height: 140px "><img src="images/social/othergames.png" /><br /><a id="frWeb" href="https://schrottii.github.io/sc2fmfr/">Play one of my other games!</a><a id="frGalaxy" href="https://galaxy.click/play/474">Play one of my other games on galaxy!</a></div>
+                    <div class="sectionBG" style="text-align: center; font-size: 24px; float: right; width: 46%; min-width: 100px; min-height: 140px "><img src="images/social/schrottii.png" /><br /><a href="https://schrottii.github.io/">My Website / Games</a></div>
                 </div>
                 <div class="patchNotesContainerSquare">
                     <!-- Patch Notes -->
-                    <h3>Patch Notes</h3>
+                    <h3 style="text-align: center;">Patch Notes</h3>
                     <span id="patchNotes">...</span>
 
                     <br />

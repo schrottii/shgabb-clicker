@@ -308,6 +308,13 @@ progress {
     margin-top: -8px;
 }
 
+.inlineCurrency {
+    width: 1em;
+    height: 1em;
+    position: relative;
+    bottom: -0.25em;
+}
+
 /* ===================================================== */
 /* UPGRADES */
 /* ===================================================== */
@@ -681,3 +688,9 @@ progress {
         filter: brightness(80%) contrast(120%);
         transition: 0.3s;
     }
+
+.missionStep {
+    border-bottom: 2px solid gray;
+    border-right: 2px solid gray;
+    margin: 0px 3px 4px 3px;
+}

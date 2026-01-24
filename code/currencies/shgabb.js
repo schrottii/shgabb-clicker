@@ -92,13 +92,178 @@ function calcShgabbAuto(sosnog2 = false, returnType = "all") {
     return prod;
 }
 
+function clickButton(source = "click") {
+    // Click button handler (the button that gives you shgabb)
+    if (source == "click" && game.idleMode) {
+        // clicking when idle mode is on -> refreeze fridge, but don't actually click
+        freezeTime();
+        return false;
+    }
+
+    if (game.clickCooldown <= 0) {
+        let clickButtonMulti = 1;
+
+        if (getArtifact(402).isEquipped()) {
+            if (techCollection < getArtifact(402).getLevel() * 10) {
+                techCollection += 1;
+
+                if (!game.idleMode) statIncrease("clicks", 1);
+                else statIncrease("idleClicks", 1);
+
+                game.clickCooldown = getCooldown();
+                if (game.idleMode) game.idleModeTime = 0;
+            }
+            else {
+                clickButtonMulti = techCollection;
+                techCollection = 0;
+            }
+        }
+
+        if (techCollection == 0) {
+            // no tech c. active, let's do the click thing
+            let critMulti = criticalHit();
+            let amount = calcShgabbClick().mul(critMulti).mul(clickButtonMulti).floor();
+
+            artifactEvent("onClickBefore", { "multi": clickButtonMulti });
+
+            if (isEvent("summer")) {
+                if (heatMode) {
+                    if (game.clickCooldown > -0.33) summerClicks += clickButtonMulti;
+                    else if (summerClicks > 0) {
+                        heatMode = false;
+                        summerClicks = 0;
+                    }
+                    renderCurrentEvent();
+                }
+
+                if (Math.random() * 100 < calcShortsChance()) {
+                    game.shorts += 1;
+                    statIncrease("shorts", 1);
+                }
+            }
+
+            if (getArtifact(314).isEquipped() && hoodGoo > amount) amount = hoodGoo; // apply the goo
+
+            game.shgabb = game.shgabb.add(amount);
+            statIncrease("shgabb", amount);
+
+            game.clickCooldown = getCooldown();
+            if (game.idleMode) game.idleModeTime = 0;
+
+            if (!game.idleMode) statIncrease("clicks", 1);
+            else statIncrease("idleClicks", 1);
+
+            artifactEvent("onClick", { "multi": clickButtonMulti, "amount": amount });
+
+            gatherMineProgress();
+
+            // EVENTS
+            if (isEvent("christmas")) {
+                if (Math.random() < 1 / (180 / getCooldown())) {
+                    game.gifts += clickButtonMulti;
+                    statIncrease("gifts", clickButtonMulti);
+                    createNotification("+AMOUNT Gift", [["AMOUNT", clickButtonMulti]]);
+                }
+            }
+
+            if (isEvent("anniversary")) game.cakeProgress = Math.min(15000, game.cakeProgress + clickButtonMulti);
+
+            if (lunarAntiCooldown > 0) lunarAntiCooldown -= clickButtonMulti;
+            if (luck > 0) luck -= clickButtonMulti; // reduce luck
+
+            clickLunar(clickButtonMulti);
+            increaseBananas(clickButtonMulti);
+
+            if (Math.random() * 100 < siliconeShgabbUpgrades.siliconeFromClicks.currentEffect()) {
+                let amount = getSiliconeProduction(true).mul(3).mul(getArtifactsSimpleBoost("clicksi")).mul(clickButtonMulti);
+                game.si = game.si.add(amount);
+                statIncrease("si", amount);
+                if (getArtifact(312).isEquipped() && Math.random() > 0.9 && currentGems() > 0) game.gems -= 1;
+            }
+
+            if (Math.random() * 100 < shgabbUpgrades.swChance.currentEffect() * (ads.moreSandwiches.getCurrentBoost()) * applyLuck(100)) {
+                amount = calcSandwiches(critMulti).mul(clickButtonMulti);
+                game.sw = game.sw.add(amount);
+                statIncrease("sw", amount);
+                createNotification("+AMOUNT Sandwiches", [["AMOUNT", fn(amount)], ["es", (amount > 1 ? "es" : "")]]);
+            }
+
+            findShgaybb();
+            if (unlockedGems()) getGem(clickButtonMulti);
+            if (unlockedArtifacts()) getNewArtifact(clickButtonMulti);
+            if (unlockedCopper()) getCopper(clickButtonMulti);
+
+            getLorePage(clickButtonMulti);
+            if (game.loreSel != 0) getWisp(clickButtonMulti);
+        }
+
+        updateArtifacts();
+        updateGems();
+        updateUpgrades();
+        renderCurrentEvent();
+
+        if (source != "idlemode") freezeTime();
+        return true;
+    }
+    else {
+        createNotification("Cooldown: TIMEs", [["TIME", (game.clickCooldown < 0.1 ? game.clickCooldown.toFixed(2) : game.clickCooldown.toFixed(1))]]);
+
+        if (isEvent("summer") && heatMode) {
+            heatMode = false;
+            summerClicks = 0;
+            game.clickCooldown = 60;
+        }
+
+        if (source != "idlemode") freezeTime();
+        return false;
+    }
+}
+
+var clickCooldown = 5;
+function getCooldown(idleMode = "auto") {
+    if (idleMode == "auto") idleMode = game.autoMode;
+
+    // click cooldown
+    if (lunarAntiCooldown > 0) return 0;
+    let CD = Math.max(0.1, (5 - shgabbUpgrades.shorterCD.currentEffect() - goldenShgabbUpgrades.shortCD.currentEffect())
+        / (ads.fasterShgabb.getCurrentBoost())
+        / getArtifactsSimpleBoost("clickspeed")
+        / cakeValue(5, 1)
+        * (getArtifact(156).isEquipped() ? getArtifact(156).getEffect() : 1)
+        * (getArtifact(203).isEquipped() ? 5 : 1)
+        * (getArtifact(225).isEquipped() ? 5 : 1)
+        / (currentlyMining == true ? ironUpgrades.ironPickaxes.currentEffect() : 1)
+        / (heatMode ? Math.max(1, Math.min(3, Math.log(summerClicks / 22.5))) : 1))
+    if (isChallenge(3)) CD = 20;
+    if (shgaybbMode) CD = Math.max(2, CD);
+
+    // idle mode
+    if (idleMode == true) {
+        CD = CD * 2;
+        CD = Math.max(1, CD);
+    }
+
+    clickCooldown = CD; // Why T_T
+
+    return CD;
+}
+
+function criticalHit() {
+    // Critical hit handler, returns multi (default 3)
+    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (ads.moreCrits.getCurrentBoost()[0]) * applyLuck(100)) {
+        createNotification("Critical Hit!");
+        return shgabbUpgrades.critBoost.currentEffect() * (ads.moreCrits.getCurrentBoost()[1]);
+    }
+    return 1;
+}
+
 function produceAutoShgabb() {
     let amount = calcShgabbAuto();
 
     if (amount > 0) {
         game.shgabb = game.shgabb.add(amount);
         statIncrease("shgabb", amount);
-        //createNotification("+" + amount + " shgabb");
+        createNotification("+AMOUNT Shgabb", [["AMOUNT", fn(amount)]]);
 
         gatherMineProgress();
     }

@@ -185,7 +185,7 @@ scenes["mine"] = new Scene(
             if (mineProgress >= mineDir[tiles[minePosition[0]][minePosition[1]]][1]) {
                 // mining is done
                 let amount = mineDir[tiles[minePosition[0]][minePosition[1]]][2]();
-                createNotification("Mined " + fn(amount) + " " + mineDir[tiles[minePosition[0]][minePosition[1]]][0]);
+                createNotification("Mined AMOUNT TILE", [["AMOUNT", fn(amount)], ["TILE", mineDir[tiles[minePosition[0]][minePosition[1]]][0]]]);
                 mineDir[tiles[minePosition[0]][minePosition[1]]][3](amount);
 
                 for (let i = 0; i < 10; i++) {

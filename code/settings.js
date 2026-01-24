@@ -28,7 +28,7 @@ class Setting {
     }
 
     render(count) {
-        return `<button id="set` + count + `" onclick="onSettingClick('` + this.getVariable() + `'); ` + this.clickFunction + `(); renderSettings();" class="settingButton">` +
+        return `<button id="set` + count + `" onclick="onSettingClick('` + count + `'); ` + (this.clickFunction != false ? (this.clickFunction + `();`) : ``) + `renderSettings();" class="settingButton">` +
             `<b><u style="color: white; text-underline-offset: 4px;">` + this.title + `</u></b><br />`
             + (settings.settingDesc ? (`<span style="font-size: 16px;">` + this.getDescription() + `</span><hr />`) : ``)
             + this.renderSlider()
@@ -92,9 +92,9 @@ var settingButtons = [
     new Setting("gameplay", "toggleLeastAd", "Least watched ad setting", "This setting can be used to make the least used joke ad boost appear more often than others, or less often, or to keep the chances equal/unchanged.", () => "Current: " + ["Appears less often", "Unchanged", "Appears more often"][typeof (settings.leastAdLess) != "boolean" ? settings.leastAdLess : (settings.leastAdLess == true ? 1 : 0)]),
     new ToggleSetting("gameplay", "toggleNoUpgrading", "noUpgrading", "Disable Upgrading", "When enabled, no upgrades can be bought."),
     new ToggleSetting("gameplay", "toggleNoAds", "noAds", "Disable Ads", "When enabled, no joke ads appear - meaning their boosts are unavailable too."),
-    new ToggleSetting("gameplay", "toggleConfirm", "confirm", "Confirmation Dialogs", "If this setting is disabled, most confirmation dialogs stop appearing, including Prestige and destroying Artifacts."),
-    new ToggleSetting("gameplay", "toggleThreeBars", "threeBars", "Three Bars", "If this setting is disabled, the three bars at the top are hidden. Ineffective before unlocking Sandwiches."),
-    new ToggleSetting("gameplay", "togglePreferMS", "preferMS", "Prefer More Shgabb", "When enabled, and trying to buy a Shgabb Upgrade, the game will buy More Shgabb instead if it's cheaper. Works with buy max too."),
+    new ToggleSetting("gameplay", false, "confirm", "Confirmation Dialogs", "If this setting is disabled, most confirmation dialogs stop appearing, including Prestige and destroying Artifacts."),
+    new ToggleSetting("gameplay", false, "threeBars", "Three Bars", "If this setting is disabled, the three bars at the top are hidden. Ineffective before unlocking Sandwiches."),
+    new ToggleSetting("gameplay", false, "preferMS", "Prefer More Shgabb", "When enabled, and trying to buy a Shgabb Upgrade, the game will buy More Shgabb instead if it's cheaper. Works with buy max too."),
     new ToggleSetting("gameplay", "toggleBoostFilters", "boostFilters", "Show Artifact Boost Filters", "When enabled, Artifact Boost Filters are visible. They can be used to quickly filter the Artifact inventory for certain types of Artifacts."),
     new ToggleSetting("gameplay", "toggleSidebar", "sidebar", "Sidebar", "The left side gets replaced with the Sidebar, offering a constant click button, currency overview and more"),
     new Setting("gameplay", "adjustSidebarWidth", "Sidebar Width", "Change size of the sidebar", () => "Current: " + settings.sidebarWidth),
@@ -105,13 +105,13 @@ var settingButtons = [
     new ToggleSetting("design", "allowEventBG", "eventBG", "Allow custom BG in events", "When enabled, the background image is different during events. When disabled, the background image is always the normal one."),
     new Setting("design", "toggleCurrenciesDisplay", "Currencies Display", "Change the Top/Currencies display. Compact mode removes their names and productions.", () => "Current: " + ["Visible", "Hidden", "Compact"][typeof (settings.topSquare) != "boolean" ? settings.topSquare : (settings.topSquare == true ? 1 : 0)]),
     new Setting("design", "topNotifs", "Top Notification Amount", "Adjust how many of the most recent notifications are shown at the top.", () => "Current: " + settings.topNotifs),
-    new ToggleSetting("design", "hideMaxed", "hideMaxed", "Hide Maxed Upgrades", "When enabled, upgrades that are at max. level are hidden. When disabled, they simply appear in a different color."),
+    new ToggleSetting("design", "toggleHideMaxed", "hideMaxed", "Hide Maxed Upgrades", "When enabled, upgrades that are at max. level are hidden. When disabled, they simply appear in a different color."),
     new ToggleSetting("design", "toggleCurrent", "displayCurrent", "Current Effect Display", "When enabled, a few upgrades show more details about their boost"),
     new ToggleSetting("design", "toggleArtifactImages", "artifactImages", "Show Artifact Images", "If this is disabled, the images of Artifacts are hidden. Can make the Artifact inventory more clear."),
     new ToggleSetting("design", "toggleSettingDescriptions", "settingDesc", "Show Setting Descriptions", "When enabled, descriptions for settings are shown. Disable to achieve more compact settings."),
-    new Setting("design", "toggleUpgradeColors", "Upgrade Colors", "Adjust the colors of the three types of upgrades (can afford, too expensive, maxed)!", () => "Current: " + settings.upgradeColors),
+    new Setting("design", "changeUpgradeColors", "Upgrade Colors", "Adjust the colors of the three types of upgrades (can afford, too expensive, maxed)!", () => "Current: " + settings.upgradeColors),
     new Setting("design", "updateEVERYTHING", "Refresh page", "Updates everything UI-related", () => "Last full update: " + timeSinceFullUIUpdate),
-    new ToggleSetting("design", "togglePopups", "popups", "Toggle Popups", "The large notifications that appear when you get an Artifact or Achievement"),
+    new ToggleSetting("design", false, "popups", "Toggle Popups", "The large notifications that appear when you get an Artifact or Achievement"),
 
     // audio
     new ToggleSetting("audio", "toggleMusic", "music", "Music", "Turn ALL music on or off."),
@@ -131,14 +131,20 @@ var settingButtons = [
     new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)!", ""),
     new Setting("save", "exportToFile", "Export to file", "[EXPORT - FILE] Save to a .txt file", ""),
     new Setting("save", "importFromFile", "Import from file", `[IMPORT - FILE] Load the .txt file. Select the .txt file with the button below, then click this to load it.`, () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
-    new Setting("save", "redeemCode", "Redeem Code", "Use this to import a special gift from Schrottii. They are given out extremely rarely.", ""),
+    new Setting("save", "redeemRewardCode", "Redeem a Reward Code", "Use this to import a special gift from Schrottii. Each can be used only once and has an expiry date.", ""),
     new Setting("save", "exportSettings", "Export Settings", "[EXPORT - SETTINGS CODE] Copy the a code for settings to the clipboard. Store it somewhere and use it to load this set of settings later.", ""),
     new Setting("save", "importSettings", "Import Settings", "[IMPORT - SETTINGS CODE] Import a settings code, obtained from the Export Settings setting.", ""),
 ]
 
 // GENERAL SETTING FUNCTIONS
-function onSettingClick(toggle) {
-    if (toggle != "false") settings[toggle] = !settings[toggle];
+function onSettingClick(count) {
+    let setting = settingButtons[count];
+    if (setting.getVariable() != false) {
+        settings[setting.getVariable()] = !settings[setting.getVariable()];
+        if (settings[setting.getVariable()] === true || settings[setting.getVariable()] === false) {
+            createNotification("SETTINGNAME is now TOGGLESTATE", [["SETTINGNAME", setting.title], ["TOGGLESTATE", settings[setting.getVariable()] === true ? "ENABLED" : "DISABLED"]]);
+        }
+    }
     //renderSettings(); no!!
 }
 
@@ -152,7 +158,7 @@ function renderSettings() {
     let counter = 0;
 
     for (let r in settingSections) {
-        render = render + `<button class="grayButton" style="background-color: ` + (currentSettingSection == r ? "yellow" : "white") + `" onclick="settingsSet(` + r + `)">` + settingSectionsDisplay[r] + `</button>`;
+        render = render + `<button class="grayButton" style="width: 24%; background-color: ` + (currentSettingSection == r ? "yellow" : "white") + `" onclick="settingsSet(` + r + `)">` + settingSectionsDisplay[r] + `</button>`;
     }
 
     render = render + "<br /><h3>" + settingSectionsDisplay[currentSettingSection] + "</h3><div class='upgradesContainer'>";
@@ -197,12 +203,12 @@ function renderSettings() {
 ///////////////////////////////////
 function toggleNotation() {
     settings.notation = (notations[notations.indexOf(settings.notation) + 1] != undefined ? notations[notations.indexOf(settings.notation) + 1] : notations[0]);
-    createNotification("New notation: " + settings.notation);
+
+    createNotification("SETTINGNAME is now SETTINGSTATE", [["SETTINGNAME", "Notation"], ["SETTINGSTATE", settings.notation]]);
     updateUpgrades();
 }
 
 function toggleUnlevel() {
-    createNotification("Unlevel button " + (settings.hideUnlevel ? "ON" : "OFF"));
     updateUpgrades();
 }
 
@@ -227,38 +233,21 @@ function toggleLeastAd() {
 }
 
 function toggleNoUpgrading() {
-    createNotification("No upgrading " + (settings.noUpgrading ? "ON" : "OFF"));
     updateUpgrades();
 }
 
 function toggleNoAds() {
-    createNotification("No ads " + (settings.noAds ? "ON" : "OFF"));
     currentBoost = "none";
     adTime = 15;
 }
 
-function toggleConfirm() {
-    createNotification("Confirmation dialogs " + (settings.confirm ? "ON" : "OFF"));
-}
-
-function toggleThreeBars() {
-    createNotification("Three Bars " + (settings.threeBars ? "ON" : "OFF"));
-}
-
-function togglePreferMS() {
-    createNotification("Prefer More Shgabb " + (settings.preferMS ? "ON" : "OFF"));
-}
-
 function toggleBoostFilters() {
-    createNotification("Artifact Boost Filters " + (settings.boostFilters ? "ON" : "OFF"));
-
     updateArtifacts();
 }
 
 function toggleSidebar() {
-    createNotification("Sidebar " + (settings.sidebar ? "ON" : "OFF"));
-
-    if (settings.sidebar) {
+    ui.sosobar.style.display = "none";
+    if (settings.sidebar == true) {
         ui.SIDEBAR.style.display = "";
         ui.SIDEBAR.style.width = settings.sidebarWidth + "%";
         changeSidebarWidth();
@@ -266,6 +255,10 @@ function toggleSidebar() {
     else {
         ui.SIDEBAR.style.display = "none";
         ui.GAMECONTENT.style.width = "100%";
+
+        if (settings.sidebar == "so-so") {
+            ui.sosobar.style.display = "";
+        }
     }
 }
 
@@ -308,13 +301,10 @@ function changeSidebarWidth() {
 // DESIGN FUNCTIONS
 ///////////////////////////////////
 function toggleBG() {
-    createNotification("Black Background " + (settings.background ? "ON" : "OFF"));
     updateBG();
 }
 
 function allowEventBG() {
-    createNotification("Custom background in events " + (settings.eventBG ? "ON" : "OFF"));
-
     updateBG();
 }
 
@@ -322,17 +312,17 @@ function toggleCurrenciesDisplay() {
     if (settings.topSquare == false || settings.topSquare == 0) {
         // Change to 1 - hide
         settings.topSquare = 1;
-        createNotification("Currencies Display Hidden");
+        createNotification("SETTINGNAME is now SETTINGSTATE", [["SETTINGNAME", "Currencies Display"], ["SETTINGSTATE", "Hidden"]]);
     }
     else if (settings.topSquare == true || settings.topSquare == 1) {
         // Change to 2 - compact
         settings.topSquare = 2;
-        createNotification("Currencies Display Compact");
+        createNotification("SETTINGNAME is now SETTINGSTATE", [["SETTINGNAME", "Currencies Display"], ["SETTINGSTATE", "Compact"]]);
     }
     else if (settings.topSquare == 2) {
         // Change to 0 - show full
         settings.topSquare = 0;
-        createNotification("Currencies Display Visible");
+        createNotification("SETTINGNAME is now SETTINGSTATE", [["SETTINGNAME", "Currencies Display"], ["SETTINGSTATE", "Visible"]]);
     }
 
     ui.topSquare.style.display = ["", "none", ""][settings.topSquare];
@@ -343,42 +333,32 @@ function toggleCurrenciesDisplay() {
 
 function topNotifs() {
     settings.topNotifs = (settings.topNotifs + 1) % 6;
-    createNotification("Amount of notifications shown: " + settings.topNotifs);
+    createNotification("SETTINGNAME is now SETTINGSTATE", [["SETTINGNAME", "Amount of notifications shown"], ["SETTINGSTATE", settings.topNotifs]]);
 }
 
-function hideMaxed() {
-    createNotification("" + (settings.hideMaxed ? "HIDE maxed" : "SHOW maxed"));
+function toggleHideMaxed() {
     updateUpgrades();
 }
 
 function toggleCurrent() {
-    createNotification("Current Effect " + (settings.displayCurrent ? "ON" : "OFF"));
     updateUpgrades();
 }
 
 function toggleArtifactImages() {
-    createNotification("Artifact images " + (settings.artifactImages ? "ON" : "OFF"));
-
     updateArtifacts();
 }
 
 function toggleSettingDescriptions() {
-    createNotification("Setting Descriptions " + (settings.settingDesc ? "ON" : "OFF"));
-
     renderSettings();
 }
 
-function togglePopups() {
-    createNotification("Popups " + (settings.popups ? "ON" : "OFF"));
-}
-
 // these five below are all for the Upgrade Colors setting
-function toggleUpgradeColors() {
+function changeUpgradeColors() {
     settings.upgradeColors = (upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] != undefined ? upgradeColors[upgradeColors.indexOf(settings.upgradeColors) + 1] : upgradeColors[0]);
-    createNotification("Upgrade Colors: " + settings.upgradeColors);
+
+    createNotification("SETTINGNAME is now SETTINGSTATE", [["SETTINGNAME", "Upgrade Colors "], ["SETTINGSTATE", settings.upgradeColors]]);
 
     updateUpgradeColors();
-
     updateUpgrades();
 }
 
@@ -442,7 +422,6 @@ function updateUpgradeColors() {
 // AUDIO FUNCTIONS
 ///////////////////////////////////
 function toggleMusic() {
-    createNotification("Music " + (settings.music ? "ON" : "OFF"));
     wggj.audio.musicMuted = !settings.music;
     wggj.audio.musicPlayer.muted = wggj.audio.musicMuted;
     if (!wggj.audio.musicMuted) {
@@ -451,12 +430,10 @@ function toggleMusic() {
 }
 
 function toggleAdMusic() {
-    createNotification("Ad Music " + (settings.adMusic ? "ON" : "OFF"));
     adHandler.muted = !(settings.music && settings.adMusic);
 }
 
 function toggleSounds() {
-    createNotification("Sounds " + (settings.sounds ? "ON" : "OFF"));
     wggj.audio.soundMuted = !settings.sounds;
 }
 
@@ -467,7 +444,6 @@ function changeSong() {
 
 function toggleAutoplaySongs() {
     wggjAudio.loop = !settings.autoplaySongs;
-    createNotification("Autoplay Songs " + (settings.autoplaySongs ? "ON" : "OFF"));
 }
 
 ///////////////////////////////////
@@ -478,41 +454,63 @@ function manualSave() {
     autoSaveTime = 0.15;
 }
 
-function redeemCode() {
-    let importGame = prompt("Import code...");
+function redeemRewardCode() {
+    let importRewardCode = prompt("Enter a valid Reward Code:");
 
-    importGame = importGame.replace("RED-", "ey");
-    importGame = atob(importGame);
-    importGame = JSON.parse(importGame);
+    //importRewardCode = importRewardCode.replace("RED-", "ey");
+    importRewardCode = atob(importRewardCode);
+    importRewardCode = JSON.parse(importRewardCode);
 
-    if (importGame.for == game.profile.id.substr(0, 6)) {
-        switch (importGame.type) {
-            case "startVer":
-                game.profile.startVer = importGame.data;
-                break;
-            case "startDay":
-                game.profile.startDay = importGame.data;
-                break;
+    let rawExpiryDate = importRewardCode.EXPIRY.split("."); // format ie 07.02.2026
+    let expiryDate = rawExpiryDate[2] + rawExpiryDate[1] + rawExpiryDate[0];
+
+    // expired ?
+    if (today() >= expiryDate) {
+        alert("This code expired on: " + formatDate(expiryDate));
+        return false;
+    }
+
+    // not for you ?
+    if (importRewardCode.for != undefined && importRewardCode.for != ""
+        && importRewardCode.for != game.profile.id.substr(0, importRewardCode.for.length)) {
+        alert("This code is not for you!");
+        return false;
+    }
+
+    // already used ?
+    for (let rr of game.red_rew) {
+        if (rr[0] == importRewardCode.ID) {
+            alert("This code has already been redeemed!");
+            return false;
         }
-        createNotification("Redeemed successfully");
     }
-    else {
-        createNotification("This is not for you!");
+
+
+
+    // take care of startVer and startDate
+    let protectedRews = ["ID", "EXPIRY", "DISPLAYTEXT",
+        "for", "startVer", "startDate"];
+
+    if (importRewardCode.starVer != "") game.profile.startVer = importRewardCode.startVer;
+    if (importRewardCode.starDate != "") game.profile.startVer = importRewardCode.startDate;
+
+    // take care of other rewards
+    for (rew in importRewardCode) {
+        console.log(rew, importRewardCode[rew])
+        if (rew == "") continue;
+        if (protectedRews.includes(rew)) continue;
+        if (typeof (game[rew]) == "object") game[rew] = game[rew].add(parseInt(importRewardCode[rew]));
+        else game[rew] = game[rew] + parseInt(importRewardCode[rew]);
     }
-}
 
-function createRedeemCode() {
-    // please do not use this if you are not schrottii
-    // you dirty cheater :'(
-    var redeemCode = {};
-    redeemCode.for = prompt("123456");
-    redeemCode.type = prompt("type");
-    redeemCode.data = prompt("data 20230106");
-    redeemCode = JSON.stringify(redeemCode);
-    redeemCode = btoa(redeemCode);
-    redeemCode = redeemCode.replace("ey", "RED-");
+    // display text
+    if (importRewardCode.DISPLAYTEXT != "") alert(importRewardCode.DISPLAYTEXT);
+    createNotification("Redeemed Reward Code successfully");
 
-    return redeemCode;
+    // register as redeemed
+    if (game.red_rew == undefined) game.red_rew == [];
+    game.red_rew.push([importRewardCode.ID, importRewardCode.EXPIRY]);
+    return true;
 }
 
 function exportSettings() {

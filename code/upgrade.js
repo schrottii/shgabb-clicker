@@ -65,7 +65,7 @@ class Upgrade {
                 return true;
             }
             else {
-                if (!isChallenge(5)) !this.isMax() ? createNotification("Not enough " + currencyFullName(this.currency, true) + "!") : createNotification("Upgrade is maxed!");
+                if (!isChallenge(5)) !this.isMax() ? createNotification("Not enough CURRENCY!", [["CURRENCY", currencyFullName(this.currency, true)]]) : createNotification("Upgrade is maxed!");
                 else if (!isBuyingMax) this.unlevel(true);
                 return false;
             }
@@ -204,14 +204,19 @@ class Upgrade {
 
         // actual render
         if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>"
-            + (hasButtons ? "<div style='height: 100%;display: flex; flex-direction: column; '>" : "")
+            + (hasButtons ? "<div style='height: 100%; display: flex; flex-direction: column;'>" : "")
             + "<div class='upgradeButtons'>" + maxButton + unlevelButton + "</div>" + (hasButtons ? "<div style='display: grid; place-items: center; flex: 1; align-items: center;'>" : "")
             + "<div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>"
             + ameExtraText
             + (typeof (this.description) == "function" ? this.description() : this.description)
-            + (isChallenge(5) ? "?" : (this.isMax() ? "" : "<br /><div style='display: inline-block;'>Cost: " + fn(this.currentPrice()) + " " + cImg(currencyFullName(this.currency), 24)) + "</div>")
+            + (hasButtons ? "</div>" : "") 
+
+            + "<div style='vertical-align: bottom; text-align: left; '>"
+            + (isChallenge(5) ? "?" : (this.isMax() ? "" : "Cost: " + fn(this.currentPrice()) + " " + cImg(currencyFullName(this.currency), true)))
             + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "")
-            + (hasButtons ? "</div></div>" : "") + "</button>";
+            + "</div>"
+            + (hasButtons ? "</div>" : "") 
+            + "</button>";
         // locked ame upgs (visible)
         else if (this.type == "ameliorerUpgrades") return "<button class='upgrade' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>" + ameExtraText + "<br />" + getTotalAme() + "/" + this.ameAmount + "</button>";
         // locked upgs (invisible)
@@ -519,7 +524,7 @@ var ameliorerUpgrades = {
 
     ameBagBoost: new AmeliorerUpgrade("ameBagBoost", "Bag Boost", "Get more Bags", level => 5, level => 1 + (level * 0.02), { maxLevel: () => 30 + getAmeCame(), prefix: "x", ameSet: 9, ameAmount: 400 }),
     efficientDestruction: new AmeliorerUpgrade("efficientDestruction", "Efficient Destruction", "Get more Artifact Scrap from destroying Artifacts", level => Math.ceil((level + 1) / 50) * 2, level => 1 + level * 0.01, { prefix: "x", maxLevel: 400, ameSet: 9, ameAmount: 400 }),
-    challenger: new AmeliorerUpgrade("challenger", "Challenger", "Reduce goals for Challenges based on Daily Challenge Points", level => Math.ceil(Math.pow(level + 1, 1.25)) * 3, level => level > 0 ? Math.pow(game.dclp / 20000, 0.09 + 0.01 * level) : 1, { prefix: "/", maxLevel: 10, ameSet: 9, ameAmount: 400 }),
+    challenger: new AmeliorerUpgrade("challenger", "Challenger", "Reduce goals for Challenges based on Daily Challenge Points", level => Math.ceil(Math.pow(level + 1, 1.25)) * 3, level => level > 0 ? Math.pow(game.dclp / 20000, 0.05 + 0.005 * level) : 1, { prefix: "/", maxLevel: 10, ameSet: 9, ameAmount: 400 }),
     unstableAMESS: new AmeliorerUpgrade("unstableAMESS", "Unstable AMESS", "Get +1 Amé for every 15min+ Prestige or new day. They are lost when you reset Amé Upgrades.", level => 0, level => level, { maxLevel: 1, ameSet: 9, ameAmount: 420 })
 
     // insert upgrade that gives boost based on time since last amé reset
