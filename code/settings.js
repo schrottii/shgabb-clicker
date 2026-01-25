@@ -140,6 +140,7 @@ var settingButtons = [
 function onSettingClick(count) {
     let setting = settingButtons[count];
     if (setting.getVariable() != false) {
+        // if it's a toggle setting
         settings[setting.getVariable()] = !settings[setting.getVariable()];
         if (settings[setting.getVariable()] === true || settings[setting.getVariable()] === false) {
             createNotification("SETTINGNAME is now TOGGLESTATE", [["SETTINGNAME", setting.title], ["TOGGLESTATE", settings[setting.getVariable()] === true ? "ENABLED" : "DISABLED"]]);
@@ -166,10 +167,10 @@ function renderSettings() {
     for (let s in settingButtons) {
         if (settingButtons[s].category == settingSections[currentSettingSection]) {
             render = render + settingButtons[s].render(counter);
-            counter++;
 
             if (settingButtons[s].title == "Import from file") render = render + `<br style='clear: both' /><input id="myFile" type="file"><br style='clear: both' />`;
         }
+        counter++;
     }
     if (settingSections[currentSettingSection] == "design") render = render + "<br style='clear: both' />" + upgradeColorsRender;
 
