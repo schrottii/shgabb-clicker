@@ -463,7 +463,7 @@ function useQian(offerNR) {
             }
 
             // bought one of them
-            game.qian -= 888;
+            game.qian -= 188;
             createNotification("Bought Cosmetic for 888 Qian");
 
             break;
