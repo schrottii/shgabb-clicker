@@ -309,6 +309,7 @@ progress {
 }
 
 .inlineCurrency {
+    pointer-events: none;
     width: 1em;
     height: 1em;
     position: relative;

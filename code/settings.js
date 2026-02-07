@@ -520,11 +520,11 @@ function exportSettings() {
     exporter = "shgabbSettings3x0vb" + exporter;
 
     navigator.clipboard.writeText(exporter);
-    createNotification("Custom colors exported to clipboard!");
+    createNotification("Custom settings exported to clipboard!");
 }
 
 function importSettings() {
-    let importGame = prompt("Import custom colors...");
+    let importGame = prompt("Import settings...");
 
     importGame = importGame.replace("shgabbSettings3x0vb", "");
     importGame = atob(importGame);

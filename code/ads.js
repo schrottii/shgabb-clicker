@@ -78,7 +78,7 @@ function renderAllAdTexts() {
     let adTextRender = "";
 
     for (let ad in ads) {
-        if (ads[ad].isAvailable()) adTextRender = adTextRender + "- " + ads[ad].title + ": " + ads[ad].description + " [Unlocked]<br />";
+        if (ads[ad].isAvailable()) adTextRender = adTextRender + "- <b>" + ads[ad].title + ":</b> " + ads[ad].description + " [Unlocked]<br />";
         else adTextRender = adTextRender + "- Locked<br />";
     }
 
@@ -131,7 +131,7 @@ function adButtonHandler() {
 
             setRandomAd();
 
-            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + ads[availableBoost].title + ": " + ads[availableBoost].description;
+            ui.adStartButton.innerHTML = "Watch a joke ad to get: <b>" + ads[availableBoost].title + ":</b> " + ads[availableBoost].description;
             ui.adButton.innerHTML = cImg("chenga");
 
             break;
@@ -163,7 +163,7 @@ function adSwitcher() {
             ui.adBar.style.display = "none";
 
             adStatus = "possible";
-            ui.adStartButton.innerHTML = "Watch a joke ad to get: " + ads[availableBoost].title + ": " + ads[availableBoost].description;
+            ui.adStartButton.innerHTML = "Watch a joke ad to get: <b>" + ads[availableBoost].title + ":</b> " + ads[availableBoost].description;
             if (unlockedChengas()) ui.adButton.innerHTML = cImg("chenga") + game.chenga;
             else ui.adButton.innerHTML = "HMS 7000";
         }

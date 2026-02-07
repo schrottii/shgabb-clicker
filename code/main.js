@@ -933,6 +933,7 @@ function updateUI() {
     }
     if (game.profile.startVer == "") game.profile.startVer = gameVersion;
     if (game.profile.startDay == "") game.profile.startDay = today();
+    if (game.profile.startDay == undefined) game.profile.startDay = today();
     if (game.profile.startDay == "20240100") game.profile.startDay = "20241101";
 
     // Click Button
@@ -951,7 +952,7 @@ function updateUI() {
 
         CBRender = diceRender + gooRender + "+"
             + (hoodGoo != 0 ? fn(hoodGoo) : fn(calcShgabbClick()))
-            + cImg("shgabb") + diceRender;
+            + cImg("shgabb", true) + diceRender;
 
         ui.clickButton.style["background-color"] = "#2e269a";
         ui.clickButton.style.backgroundSize = "0% 100%";
@@ -967,11 +968,12 @@ function updateUI() {
 
     // Sandwiches
     if (selection("sandwich")) {
-        ui.autoInfo.innerHTML = "<b>Auto info:</b>"
-            + "<br />Fridge Time: " + sandwichFreezeTime.toFixed(1) + "s/" + getFreezeTime().toFixed(0) + "s"
-            + "<br />Normal Auto Prod.: " + fn(calcShgabbAuto(false, "auto")) + (calcShgabbAuto(false, "auto") > 0 ? " (" + (100 * calcShgabbAuto(false, "auto") / calcShgabbAuto()).toFixed(1) + "%)" : "")
-            + "<br />Cheese Prod.: " + fn(calcShgabbAuto(false, "cheese")) + (calcShgabbAuto(false, "cheese") > 0 ? " (" + (100 * calcShgabbAuto(false, "cheese") / calcShgabbAuto()).toFixed(1) + "%)" : "")
-            + "<br />Total Prod.: " + fn(calcShgabbAuto());
+        ui.autoInfo.innerHTML = "<b>Auto info:</b><table align='center' style='text-align: left;'>"
+            + "<tr><td>Fridge Time: </td><td>" + Math.max(0, sandwichFreezeTime).toFixed(1) + "s/" + getFreezeTime().toFixed(0) + "s</tr>"
+            + "<tr><td>Normal Auto Prod.: </td><td>" + fn(calcShgabbAuto(false, "auto")) + (calcShgabbAuto(false, "auto") > 0 ? " (" + (100 * calcShgabbAuto(false, "auto") / calcShgabbAuto()).toFixed(1) + "%)" : "") + "</tr>"
+            + "<tr><td>Cheese Prod.: </td><td>" + fn(calcShgabbAuto(false, "cheese")) + (calcShgabbAuto(false, "cheese") > 0 ? " (" + (100 * calcShgabbAuto(false, "cheese") / calcShgabbAuto()).toFixed(1) + "%)" : "") + "</tr>"
+            + "<tr><td>Total Prod.: </td><td>" + fn(calcShgabbAuto()) + "</tr>"
+            + "</table>";
     }
 
     ui.sandwichBar.value = sandwichFreezeTime;
@@ -1516,6 +1518,9 @@ wggjAudio.onended = () => {
 
 document.addEventListener("mousedown", () => {
     if (firstClick) {
+        wggj.audio.musicMuted = !settings.music;
+        wggj.audio.soundMuted = !settings.sounds;
+
         audioChangeVolume("music", settings.musicVolume);
         audioChangeVolume("sound", settings.soundVolume);
 
@@ -1544,6 +1549,7 @@ function shgabbClickerLoop(tick) {
     quoteTime += time;
     sandwichTime -= time;
     sandwichFreezeTime -= time;
+    if (sandwichFreezeTime > getFreezeTime()) sandwichFreezeTime = getFreezeTime();
     cakeDuration -= time;
     if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
     statIncrease("playTime", time);

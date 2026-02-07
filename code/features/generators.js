@@ -79,6 +79,8 @@ function calcGenPointsProd() {
 }
 
 function updateGenerators(tick) {
+    if (!unlockedGenerators()) return false;
+
     // tick
     let GenpointsBefore = game.genpoints;
     let tickedGenpoints = 0;

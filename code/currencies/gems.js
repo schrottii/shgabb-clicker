@@ -122,7 +122,7 @@ function gemOffer(i) {
 
 function renderGemOffers() {
     ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately";
-    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 25% more Shgabb!<br>Current: +" + fn((game.gemboost - 1) * 25) + "%";
+    ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 25% more Shgabb!<br>Current: +" + fn(game.gemboost * 25) + "%";
 
     ui.gemOffer3.innerHTML = "Unlocked at 1500 More Shgabb or 300 total Gems";
     ui.gemOffer4.innerHTML = "Unlocked at 1500 More Shgabb or 300 total Gems";

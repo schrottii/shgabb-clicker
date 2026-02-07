@@ -288,12 +288,18 @@ var previousGiftText = "";
 function renderChristmas() {
     let collectedPages = calcCollectedPages(3);
 
+    let render = renderEventHeader("christmas", "rgb(160, 160, 160, 0.5)",
+        cImg("gift") + game.gifts + " Gifts"
+        + "<br />" + cImg("memorySnowflake") + (getLoreByID(game.loreSel).source == 3 ? game.loreP : 0) + " Memory Snowflakes (" + collectedPages + "/5 Pages)"
+    );
+
+    /*
     let render = "<h3>Christmas Event</h3><br /><b>December 15th - December 28th</b>";
     render = render + "<br />" + events.christmas.description;
 
-
     render = render + "<br />" + cImg("gift") + game.gifts + " Gifts";
     render = render + "<br />" + cImg("memorySnowflake") + (getLoreByID(game.loreSel).source == 3 ? game.loreP : 0) + " Memory Snowflakes (" + collectedPages + "/5 Pages)";
+    */
 
     render = render + `<br /><br />
         <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
@@ -372,9 +378,8 @@ function renderAnniversary() {
     }
 
     // HEADER AND DESCRIPTION
-    let render = "<h3>Anniversary Event</h3><b>January 6th - January 19th</b>";
-    render = render + "<br />" + events.anniversary.description;
-    render = render + "<br />" + cImg("birthdayCandle") + (getLoreByID(game.loreSel).source == 4 ? game.loreP : 0) + " Birthday Candles (" + collectedPages + "/5 Pages)";
+    let render = renderEventHeader("anniversary", "rgb(120, 120, 30, 0.5)",
+        cImg("birthdayCandle") + (getLoreByID(game.loreSel).source == 4 ? game.loreP : 0) + " Birthday Candles (" + collectedPages + "/5 Pages)");
 
     // CAKE
     render = render + "<br /><h3>Cake</h3>";
@@ -418,13 +423,32 @@ function cakeValue(trueValue, falseValue) {
 var lunarAntiCooldown = 0;
 var luck = 0;
 
+function renderEventHeader(event, rgbcolor, content) {
+    // default color is rgb(160, 160, 220, 0.1);
+    let ev = events[event];
+    return "<div class='sectionBG' style='max-width: 98%; margin-left: auto; margin-right: auto; background-color: " + rgbcolor + "; border: 4px solid " + rgbManipulator(rgbcolor, 0.75) + ";'>"
+        + "<h3>" + ev.displayName + "</h3>"
+        + "<b>" + formatDate(currentYear + "" + (ev.startDate < 999 ? "0" : "") + ev.startDate) + " - " + formatDate(currentYear + "" + (ev.endDate < 999 ? "0" : "") + ev.endDate) + "<br />" + "</b>"
+        + "<span style='display: inline-block; max-width: 900px;'>"
+        + ev.description
+        + (content != undefined ? "<br />" + content : "")
+        + "</span></div><br />";
+}
+
 function renderLunar() {
     let collectedPages = calcCollectedPages(5);
 
-    let render = "<h3>Lunar New Year Event</h3><br /><b>February 4th - February 17th</b>";
+    let render = renderEventHeader("lunar", "rgb(160, 70, 70, 0.5)",
+        cImg("qian") + game.qian + " Qian"
+        + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)" + "<br /><br />"
+    );
+
+    /*
+    let render = "<div class='sectionEvent'> <h3>Lunar New Year Event</h3><br /><b>February 4th - February 17th</b>";
     render = render + "<br />" + events.lunar.description;
     render = render + "<br />" + cImg("qian") + game.qian + " Qian";
-    render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)<br /><br />";
+    render = render + "<br />" + cImg("redEnvelope") + (getLoreByID(game.loreSel).source == 5 ? game.loreP : 0) + " Red Envelopes (" + collectedPages + "/5 Pages)" + "</div><br /><br />";
+    */
 
     if (!hasEventRewards("lunar", "all")) {
         render = render + "<button class='chineseOffer' onclick='useQian(1)'>Buy a Cosmetic!<br/>188 " + cImg("qian") + "</button>";
@@ -583,10 +607,16 @@ var eggTime = 10;
 function renderEgg() {
     let collectedPages = calcCollectedPages(6);
 
+    let render = renderEventHeader("egg", "rgb(160, 240, 160, 0.5)",
+        cImg("egg") + game.eggs + " Eggs"
+        + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />"
+    );
+    /*
     let render = "<h3>Egg Hunt Event</h3><br /><b>April 2nd - April 15th</b>";
     render = render + "<br />" + events.egg.description;
     render = render + "<br />" + cImg("egg") + game.eggs + " Eggs";
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
+    */
 
     if (!hasEventRewards("egg", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP<br/>50 " + cImg("egg") + "</button>";
     if (!hasEventRewards("egg", "bans")) render = render + "<button class='chineseOffer' onclick='useEggs(5)'>Buy an Easter Banner<br/>50 " + cImg("egg") + "</button>";
@@ -717,8 +747,12 @@ var shgaybbMode = false;
 var shgaybbFound = "";
 
 function renderPride() {
+    let render = renderEventHeader("pride", "rgb(160, 40, 180, 0.5)", undefined);
+    /*
     let render = "<h3>Pride Event</h3><br /><b>June 1st - June 14th</b>";
     render = render + "<br />" + events.pride.description;
+    */
+
     render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Banners can also be found. Getting Pan Shgabb second counts as a joker, it works with anyone. Every couple found gives 20 Gems.";
     render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
 
@@ -836,6 +870,14 @@ var summerClicks = 0;
 var heatMode = false;
 
 function renderSummer() {
+    let render = renderEventHeader("summer", "rgb(180, 30, 30, 0.5)",
+        cImg("shorts") + game.shorts + " Shorts"
+        + "<br /><br />Press the button below to activate Heat Mode.<br>Every perfectly timed click reduces the cooldown (up to x3 speed), but clicking too slow resets it, and clicking too fast causes you to overheat.<br>At a high speed, you can find Shorts at a 10x higher rate."
+        + "<br /><button class='grayButton' onclick='toggleHeatMode()'>" + (heatMode ? "Disable Heat Mode" : "Enable Heat Mode") + "</button>"
+        + "<br />" + summerClicks + " clicks<br />" + calcShortsChance().toFixed(2) + "% Shorts chance"
+    );
+
+    /*
     let render = "<h3>Hot Hot Summer</h3><br /><b>July 28th - August 10th</b>";
     render = render + "<br />" + events.summer.description;
     render = render + "<br />" + cImg("shorts") + game.shorts + " Shorts";
@@ -843,6 +885,7 @@ function renderSummer() {
     render = render + "<br /><br />Press the button below to activate Heat Mode.<br>Every perfectly timed click reduces the cooldown (up to x3 speed), but clicking too slow resets it, and clicking too fast causes you to overheat.<br>At a high speed, you can find Shorts at a 10x higher rate.";
     render = render + "<br /><button class='grayButton' onclick='toggleHeatMode()'>" + (heatMode ? "Disable Heat Mode" : "Enable Heat Mode") + "</button>";
     render = render + "<br />" + summerClicks + " clicks<br />" + calcShortsChance().toFixed(2) + "% Shorts chance";
+    */
 
     if (getCooldown() <= 0.5 && !hasEventRewards("summer", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useShorts(1)'>#1 Buy a PFP<br/>80 " + cImg("shorts") + "</button>";
     else if (hasEventRewards("summer", "pfps")) render = render + "<br /><br /><button class='chineseOffer'>#1 Buy a PFP<br/>You own all PFPs of this event</button>";
@@ -997,11 +1040,18 @@ function STWButton(id, img, name, desc) {
 function renderShgabbTheWitch() {
     let collectedPages = calcCollectedPages(2);
 
+    let render = renderEventHeader("shgabbthewitch", "rgb(70, 0, 30, 0.5)",
+        cImg("witchshgabb") + game.witchshgabb + " Witch Shgabb"
+        + "<br />" + cImg("candle") + (getLoreByID(game.loreSel).source == 2 ? game.loreP : 0) + " Candles (" + collectedPages + "/10 Pages)"
+    );
+
+    /*
     let render = "<h3>Shgabb The Witch</h3><br /><b>October 24th - November 6th</b>";
     render = render + "<br />" + events.shgabbthewitch.description;
 
     render = render + "<br />" + cImg("witchshgabb") + game.witchshgabb + " Witch Shgabb";
     render = render + "<br />" + cImg("candle") + (getLoreByID(game.loreSel).source == 2 ? game.loreP : 0) + " Candles (" + collectedPages + "/10 Pages)";
+    */
 
     render = render + "<br /><br /><h3>Witch Spells</h3>";
     render = render + "<br />Every spell needs at least one ingredient, and can have up to 10. Every added ingredient costs 1 Witch Shgabb. Select the ingredient(s) you want, then cast the spell.";

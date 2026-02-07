@@ -103,6 +103,7 @@ October - December 2025:
 4.4
 January - March 2026:
 4.5
+4.5.1
 
 
 
@@ -3001,3 +3002,27 @@ Version v3.6.1:
 - Fixed Sarah's Gems Achievement saying 500 Gems when it is 2000 Gems
 - Fixed excessive Genpoint gains when turning off the phone screen
 - Fixed UTC issue at end of year
+
+
+
+2026-02-07 v4.5.1:
+-> Events:
+- New Event info UI, for all seven Events
+- For consistent design and better readability
+
+-> Auto:
+- Fridge time gets reduced to max. if it's above it (ie opening game while having Thaw equipped)
+- Auto info: aligned its texts to a new type of layout
+- Auto info: Fridge time can no longer go below 0
+
+-> Other:
+- Joke ad names are now bold
+- Shgabb image in click button can now be clicked through
+
+-> Bug fixes:
+- Fixed music and sounds not being properly muted when starting the game
+- Fixed Gem Shgabb Boost visual issue
+- Fixed Genpoints notification before unlock
+- Fixed texts for export/import Settings
+- Fixed issue with Setting sections that aren't Gameplay
+- Fixed Qian offer issue
