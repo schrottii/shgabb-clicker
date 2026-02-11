@@ -95,7 +95,7 @@ function updateGenerators(tick) {
 
 function renderGenerators() {
     let ren = "<h2>Generators</h2>";
-    ren = ren + "<br />Genpoints: " + fn(game.genpoints.toFixed(2)) + "<br />x" + fn(getGenpointBoost()) + " (^" + (getGeneratorsPurchased() * 0.1) + ") " + cImg("shgabb");
+    ren = ren + "<br />Genpoints: " + fn(game.genpoints.toFixed(2)) + "<br />x" + fn(getGenpointBoost()) + " (^" + (getGeneratorsPurchased() * 0.1).toFixed(1) + ") " + cImg("shgabb");
     ren = ren + "<hr style='clear: both;' /><div  class='upgradesContainer'>";
     for (let g in generators) {
         if (generators[g].isVisible()) ren = ren + generators[g].render();

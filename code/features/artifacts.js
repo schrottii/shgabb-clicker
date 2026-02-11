@@ -103,9 +103,11 @@ class Artifact {
             case 2:
                 return 2000;
             case 3:
-                return 5000;
+                return 4000;
             case 4:
                 return 8000;
+            case 5:
+                return 10000;
             default:
                 return 1e12;
         }
@@ -257,6 +259,10 @@ class Artifact {
     }
 
     // render methods - pretty much exclusively used by the arti list
+    renderTier(tier) {
+        return ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][tier];
+    }
+
     renderBG() {
         // bg color of the arti, depending on the mode
         if (artifactMode == "select") return this.isEquipped() ? "rgb(240, 240, 240)" : "rgb(200, 200, 200)";
@@ -289,8 +295,8 @@ class Artifact {
 
     innerRender() {
         // this is used for the search, it removes some keywords like "onclick" or "font-size"
-        return this.ID + " " + this.image + (this.isEquipped() && !this.isUpgradable() ? "[EQUIPPED] " : " ") + (cursedArtifacts.includes(this.ID) ? "[CURSED]" : "") + this.name + " " + this.getRarity() + " Level " + getArtifact(this.ID).getLevel() + " L" + getArtifact(this.ID).getLevel()
-            + " " + this.renderSimpleEffect() + this.renderDescription() + " tier " + this.tier;
+        return this.ID + " " + this.image + (this.isEquipped() && !this.isUpgradable() ? "[EQUIPPED] " : " ") + (cursedArtifacts.includes(this.ID) ? "[CURSED]" : "") + this.name + " " + this.getRarity() + " Level " + getArtifact(this.ID).getLevel() + this.getRarity() + " L" + getArtifact(this.ID).getLevel()
+            + " " + this.renderSimpleEffect() + this.renderDescription() + " tier " + this.tier + " tier " + this.renderTier(this.tier);
     }
 
     obeysSearch() {
@@ -323,7 +329,7 @@ class Artifact {
             + "<span style='float: right; position: absolute; top: 0; right: 0; text-align: right;'>"
             + (this.isEquipped() && !this.isUpgradable() ? "<b>[EQUIPPED]</b><br>" : "")
             + (cursedArtifacts.includes(this.ID) ? "<b>[CURSED]</b><br>" : "")
-            + (!this.isUpgradable() ? (this.renderRarityText() + " <b>L" + this.getLevel() + "</b>") : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
+            + this.renderTier(this.tier) + " " + (!this.isUpgradable() ? (this.renderRarityText() + " <b>L" + this.getLevel() + "</b>") : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
             + "</span>"
             + "<br style='clear: both;' /><br /><span style='font-size: 14px'><b>" + this.name + "</b></span><br />"
             + this.renderSimpleEffect() + this.renderDescription()
@@ -1193,13 +1199,13 @@ var artifacts = [
             simpleBoost: ["bags", level => 1.15 + 0.05 * level]
         }),
 
-    new Artifact(163, 1, 4, "Orange Ring", "ring.png",
+    new Artifact(163, 1, 5, "Orange Ring", "ring.png",
         {
             prefix: "x",
             simpleBoost: ["cop", level => Math.pow(2, level)]
         }),
 
-    new Artifact(164, 1, 4, "Ring of Orange Chances", "ring.png",
+    new Artifact(164, 1, 5, "Ring of Orange Chances", "ring.png",
         {
             prefix: "x",
             simpleBoost: ["copchance", level => 1.25 + 0.25 * level]
@@ -1414,7 +1420,7 @@ var artifacts = [
             filter: ["autoshgabb", "clickshgabb"]
         }),
 
-    new Artifact(229, 2, 4, "Amulet of Ore Rush", "amulet.png",
+    new Artifact(229, 2, 5, "Amulet of Ore Rush", "amulet.png",
         {
             desc: "Active after finding Gems",
             prefix: "x",
@@ -1426,7 +1432,7 @@ var artifacts = [
             filter: ["gems"]
         }),
 
-    new Artifact(230, 2, 4, "Amulet of Ore Vein", "amulet.png",
+    new Artifact(230, 2, 5, "Amulet of Ore Vein", "amulet.png",
         {
             desc: "Finding a Gem can also get Copper",
             simpleBoost: ["cop", level => Math.pow(1.5, level)],
@@ -1436,19 +1442,19 @@ var artifacts = [
             filter: ["gems"]
         }),
 
-    new Artifact(231, 2, 1, "Amulet of Golden Past", "amulet.png",
+    new Artifact(231, 2, 3, "Amulet of Golden Past", "amulet.png",
         {
             desc: "Based on GS last prestige",
             simpleBoost: ["prestigegs", level => game.stats_prestige.gs.gt(0) ? game.stats_prestige.gs.log(10) / 8 * level : 1]
         }),
 
-    new Artifact(232, 2, 1, "Amulet of Golden Day", "amulet.png",
+    new Artifact(232, 2, 3, "Amulet of Golden Day", "amulet.png",
         {
             desc: "Based on GS today",
             simpleBoost: ["gs", level => game.stats_today.gs.gt(0) ? game.stats_today.gs.log(10) / 8 * level : 1]
         }),
 
-    new Artifact(233, 2, 2, "Amulet of Buying Bags", "amulet.png",
+    new Artifact(233, 2, 4, "Amulet of Buying Bags", "amulet.png",
         {
             desc: "Boost turns Bags for 10s after clicking",
             simpleBoost: ["clickshgabb", level => 8 * level],
@@ -1581,8 +1587,8 @@ var artifacts = [
 
     new Artifact(310, 3, 3, "Trash Can", "trashcan.png",
         {
-            desc: level => "+x" + (level + 1) + " per destroy, goes down by clicking<br>" + ((Math.max(1, getArtifact(310).getValue(0)) > level * 4) ? ("Capped for " + Math.round(10 * getArtifact(310).getValue(0) - level * 4) + " clicks") : ("Max: x" + (level * 4))), maxLevel: 3,
-            simpleBoost: ["artifactchance", level => Math.max(1, Math.min(level * 4, getArtifact(310).getValue(0)))],
+            desc: level => "+x" + (level + 1) + " per destroy, goes down by clicking<br>" + ((Math.max(1, getArtifact(310).getValue(0)) > level * 3) ? ("Capped for " + Math.round(10 * getArtifact(310).getValue(0) - level * 3) + " clicks") : ("Max: x" + (level * 3))), maxLevel: 3,
+            simpleBoost: ["artifactchance", level => Math.max(1, Math.min(level * 3, getArtifact(310).getValue(0)))],
             value: [0, 0, 9999],
             onDestroy: level => getArtifact(310).increaseValue(1 + level),
             onClick: (level, v) => getArtifact(310).increaseValue(-0.1)
@@ -1719,6 +1725,21 @@ var artifacts = [
             filter: ["gems"]
         }),
 
+    new Artifact(321, 3, 2, "Root", "root.png",
+        { // has outside GetArtifact
+            desc: level => "Stores click Shgabb after first click." + (getArtifact(321).forceshgabb != undefined ? "<br />Stored: " + fn(getArtifact(321).forceshgabb) : ""),
+            onClick: (level, v) => {
+                if (getArtifact(321).forceshgabb == undefined || getArtifact(321).forceshgabb < 10) {
+                    //console.log(getArtifact(321).forceshgabb, v.amount, level);
+                    getArtifact(321).forceshgabb = new Decimal(v.amount).div(10).mul(level);
+                }
+            },
+            onEquipped: () => {
+                getArtifact(321).forceshgabb = undefined;
+            },
+            filter: ["shgabb"]
+        }),
+
 
 
 
@@ -1727,12 +1748,12 @@ var artifacts = [
     // LEGENDARY ARTIFACTS
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    new Artifact(400, 4, 4, "Obama", "obama.png",
+    new Artifact(400, 4, 5, "Obama", "obama.png",
         { // has outside GetArtifact
             desc: "Increases the levels of your other equipped Artifacts by 1", maxLevel: 1,
         }),
 
-    new Artifact(401, 4, 4, "DaGame", "dagame.png",
+    new Artifact(401, 4, 5, "DaGame", "dagame.png",
         {
             desc: level => 25 * level + "% chance to autoclick every second, consuming " + (10 * level) + " Bags",
             simpleBoost: ["clickshgabb", level => 10 * Math.pow(2, level), level => game.bags >= 10 * level],
@@ -1748,14 +1769,14 @@ var artifacts = [
             }
         }),
 
-    new Artifact(402, 4, 4, "Tech Collection", "techcollection.png",
+    new Artifact(402, 4, 5, "Tech Collection", "techcollection.png",
         { // TAKE A LOOK AT THIS ONE
             prefix: "/",
             simpleBoost: ["clickspeed", level => 1.25 + 0.25 * level],
             desc: level => techCollection + "/" + (10 * level) + " clicks saved. Unleashes their effects when the limit is reached",
         }),
 
-    new Artifact(403, 4, 4, "Power Charger", "powercharger.png",
+    new Artifact(403, 4, 5, "Power Charger", "powercharger.png",
         {
             prefix: "/", desc: "Multi for 50s based on clicks in 10s",
             simpleBoost: ["clickspeed", level => 1.25],
@@ -1797,7 +1818,7 @@ var artifacts = [
             filter: ["shgabb", "clickspeed"]
         }),
 
-    new Artifact(404, 4, 4, "Snake Oil Salesman", "snakeoilsalesman.png",
+    new Artifact(404, 4, 5, "Snake Oil Salesman", "snakeoilsalesman.png",
         {
             desc: level => "Buy my amazing products for only " + (level * 2) + " Gems/offer! (20% chance/second)",
             simpleBoost: ["shgabb", 1],
@@ -1844,7 +1865,7 @@ var artifacts = [
             filter: ["shgabb", "sw", "gemchance", "si", "gems", "cop"]
         }),
 
-    new Artifact(405, 4, 4, "Tower", "tower.png",
+    new Artifact(405, 4, 5, "Tower", "tower.png",
         {
             desc: level => "Builds up auto boost, released after 5s of no clicks",
             simpleBoost: ["autoshgabb", level => 1 + (level * getArtifact(405).getValue(1) / 5), () => getArtifact(405).getTimer() == 0],
@@ -1862,7 +1883,7 @@ var artifacts = [
             }
         }),
 
-    new Artifact(406, 4, 4, "Miner's Pay", "minerspay.png",
+    new Artifact(406, 4, 5, "Miner's Pay", "minerspay.png",
         {
             desc: level => "Consumes " + 50 + " Gems to boost Copper for 60s",
             simpleBoost: ["cop", level => Math.pow(6, level), () => getArtifact(406).getTimer(0) > 0],

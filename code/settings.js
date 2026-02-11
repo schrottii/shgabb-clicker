@@ -399,19 +399,19 @@ function updateUpgradeColors() {
     if (settings.upgradeColors == "custom") {
         let ihText = "";
 
-        ihText = "<div class='settingButton2' style='margin: 0 auto;'> <b>Custom colors: </b><br />";
+        ihText = "<div class='settingButton2' style='margin: 0 auto;'> <b>Custom colors: </b><table align='center'>";
 
         for (i = 0; i < 3; i++) {
-            ihText = ihText + ["Affordable: ", "Too expensive: ", "Maxed: "][i]
+            ihText = ihText + "<tr><td>" + ["Affordable: ", "Too expensive: ", "Maxed: "][i] + "</td>";
             for (j = 0; j < 4; j++) {
-                ihText = ihText + "<button class='grayButton' style='margin-left: 8px' onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button>";
+                ihText = ihText + "<td><button class='grayButton' style='width: 96%; " + ("background-color: rgb(" + settings.customColors[i][0] + "," + settings.customColors[i][1] + "," + settings.customColors[i][2] + ");") + ("color: rgb(" + settings.customColors[i][3] + "," + settings.customColors[i][3] + "," + settings.customColors[i][3] + ");") + + "' onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button></td>";
             }
-            ihText = ihText + "<br />";
+            ihText = ihText + "</tr>";
         }
-        ihText = ihText + "<br /><button class='grayButton' onclick='exportCustomColors()'>Export</button>";
-        ihText = ihText + "<button class='grayButton' onclick='importCustomColors()'>Import</button></div>";
+        ihText = ihText + "<tr><td></td><td></td><td><button class='grayButton' onclick='exportCustomColors()'>Export</button>";
+        ihText = ihText + "</td><td><button class='grayButton' onclick='importCustomColors()'>Import</button></div></td>";
 
-        upgradeColorsRender = ihText;
+        upgradeColorsRender = "</table>" + ihText;
     }
     else {
         upgradeColorsRender = "";

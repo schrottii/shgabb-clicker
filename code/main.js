@@ -950,8 +950,12 @@ function updateUI() {
         let diceRender = (getArtifact(307).isEquipped() ? ("<img src='images/arti/dice-" + getArtifact(307).getValue(0) + ".png' width='32px'>") : "");
         let gooRender = (getArtifact(314).isEquipped() && hoodGoo > 0 ? ("<img src='images/arti/hoodgoo.png' width='32px'>") : "");
 
+        let amount = calcShgabbClick();
+        if (hoodGoo != 0) amount = hoodGoo;
+        if (getArtifact(321).isEquipped() && getArtifact(321).forceshgabb != undefined) amount = getArtifact(321).forceshgabb;
+
         CBRender = diceRender + gooRender + "+"
-            + (hoodGoo != 0 ? fn(hoodGoo) : fn(calcShgabbClick()))
+            + fn(amount)
             + cImg("shgabb", true) + diceRender;
 
         ui.clickButton.style["background-color"] = "#2e269a";
@@ -1468,6 +1472,7 @@ images = {
     swordfish: "minigames/fishgang/fish/swordfish.png",
     tuna: "minigames/fishgang/fish/tuna.png",
     zander: "minigames/fishgang/fish/zander.png",
+    blahaj: "minigames/fishgang/fish/blahaj.png",
     trash: "currencies/artifactscrap.png",
 
     floor: "minigames/mine/floor.png",

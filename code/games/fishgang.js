@@ -21,26 +21,31 @@ const fishDictionary = [
     ["Piranha", 2, 2, "piranha"],
     ["Zander", 1, 3, "zander"],
     ["Swordfish", 4, 6, "swordfish"],
-    ["Leaoodandingzumn", 10, 10, "leaoo"],
+    ["Shark", 4, 1, "blahaj"],
     ["Stupid Tuna", 1, 1, "tuna"],
+    ["Leaoodandingzumn", 10, 10, "leaoo"],
 ];
 
 const trashDictionary = [
     "Cigarette",
-    "Plastic Bottle",
-    "Plastic Straw",
-    "Plastic Net",
+    "Plastic bottle",
+    "Plastic straw",
+    "Plastic net",
     "Plastic Bag",
-    "Your Mom",
-    "Old Boot",
-    "Tin Can",
+    "Your mom",
+    "Old boot",
+    "Tin can",
     "Wood",
-    "Pirate Piss",
+    "Pirate piss",
     "Brick",
-    "Broken Key",
-    "Glass Shard",
-    "Fake Fish",
-    "Wet Dirt",
+    "Broken key",
+    "Glass shard",
+    "Fake fish",
+    "Wet dirt",
+    "Broken vape",
+    "AI slop",
+    "AI trash",
+    "Broken slot machine"
 ];
 
 function unlockedFishing() {
@@ -148,7 +153,7 @@ scenes["fishgang"] = new Scene(
         let img = new Image();
         img.src = getPFPByID(game.profile.pfp).image;
         img.onload = () => {
-            console.log("loaded")
+            //console.log("loaded")
             objects["fishlvl_PFP"].image = "pfp";
         }
         images["pfp"] = img;
@@ -187,6 +192,7 @@ scenes["fishgang"] = new Scene(
             if (objects["bobby"].mode == 0) {
                 objects["bobby"].distance = Math.max(10, objects["slider"].sliderMove);
                 objects["bobby"].mode = 1;
+                createAnimation("bobbyThrow", "bobby", (t, d, a) => { t.y = 0.75 - (0.5 * (objects["bobby"].distance / 100) * a.dur * 4) }, 0.25, true);
             }
             if (objects["bobby"].mode == 2) {
                 // reel it in
@@ -197,6 +203,13 @@ scenes["fishgang"] = new Scene(
                         objects["bobby"].reelCD = 0.1;
                         objects["sliderbg"].color = "rgb(10, 60, 10)";
                         if (luck > 0) luck -= 1; // reduce luck
+
+                        killAnimation("chanceFloat");
+                        objects["catchChanceIncrease"].text = "+" + (5 + objects["bobby"].quality) + "%";
+                        objects["catchChanceIncrease"].color = "green";
+                        objects["catchChanceIncrease"].y = 0.9;
+                        objects["catchChanceIncrease"].alpha = 1;
+                        createAnimation("chanceFloat", "catchChanceIncrease", (t, d) => { t.y -= 0.1 * d; t.alpha -= d; }, 1, true);
                     }
                     else {
                         // Miss
@@ -204,6 +217,13 @@ scenes["fishgang"] = new Scene(
                         objects["bobby"].reelCD = 0.2;
                         objects["sliderbg"].color = "rgb(160, 0, 0)";
                         if (luck > 0) luck -= 5; // reduce luck
+
+                        killAnimation("chanceFloat");
+                        objects["catchChanceIncrease"].text = "-5%";
+                        objects["catchChanceIncrease"].color = "red";
+                        objects["catchChanceIncrease"].y = 0.9;
+                        objects["catchChanceIncrease"].alpha = 1;
+                        createAnimation("chanceFloat", "catchChanceIncrease", (t, d) => { t.y -= 0.1 * d; t.alpha -= d; }, 1, true);
 
                         if (Math.random() * 80 >= (objects["bobby"].chance + 20)) {
                             objects["bobby"].mode = 3;
@@ -220,8 +240,12 @@ scenes["fishgang"] = new Scene(
         })
         createText("slideButtonText", 0.15, 0.85, "", { size: 48 });
 
-        createText("catchQuality", 0.7, 0.775, "", { size: 40, align: "left" });
-        createText("catchChance", 0.7, 0.85, "", { size: 40, align: "left" });
+        createSquare("catchBG", 0.7, 0.75, 0.3, 0.15, "rgb(200, 200, 255, 0.5)");
+        //createText("catchBGText", 0.85, 0.85, "", { size: 48 });
+
+        createText("catchQuality", 0.725, 0.8, "", { size: 40, align: "left" });
+        createText("catchChance", 0.725, 0.9, "", { size: 40, align: "left" });
+        createText("catchChanceIncrease", 0.9, 0.85, "", { size: 32, align: "left" });
 
         ui.pearlSection.style.display = "";
 
@@ -286,7 +310,7 @@ scenes["fishgang"] = new Scene(
         if (objects["bobby"].mode == 2) {
             objects["slideButtonText"].text = "Reel";
 
-            // objects["catchQuality"].text = "Quality: " + objects["bobby"].quality + "/10";
+            objects["catchQuality"].text = "Quality: " + Math.floor(objects["bobby"].quality) + "/10";
             objects["catchChance"].text = "Chance: " + Math.floor(objects["bobby"].chance) + "%";
         }
         else {
@@ -318,12 +342,10 @@ scenes["fishgang"] = new Scene(
 
                 // got a fish!
                 objects["slider"].sliderSize = Math.max(2, (objects["bobby"].distance >= 50 ? 20 : 40) * Math.random());
-                objects["slider"].sliderSpeed = Math.round(Math.max((objects["bobby"].distance >= 75 ? 2 : 1), 4 * Math.random()));
+                objects["slider"].sliderSpeed = Math.round(Math.max((objects["bobby"].distance >= 75 ? 2 : 1), Math.ceil(objects["bobby"].distance / 100 * 4) * Math.random()));
                 objects["bobby"].quality = Math.min(10, Math.ceil(10 * objects["slider"].sliderSpeed / objects["slider"].sliderSize)); // 1 - 20 (capped at 10)
                 if (objects["bobby"].distance < 25) objects["bobby"].quality = Math.min(3, objects["bobby"].quality);
                 objects["bobby"].chance = 30 - (objects["bobby"].distance / 2) + applyLuck(60);
-
-                createAnimation("bobbyThrow", "bobby", (t, d, a) => { t.y = 0.75 - (0.5 * (objects["bobby"].distance / 100) * a.dur * 4) }, 0.25, true);
             }
         }
 
@@ -356,7 +378,7 @@ scenes["fishgang"] = new Scene(
                         let caughtFish = -1;
 
                         while (caughtFish == -1) {
-                            caughtFish = Math.floor(Math.random() * (fishDictionary.length - 1));
+                            caughtFish = Math.floor(Math.random() * fishDictionary.length);
                             if (fishDictionary[caughtFish][1] > objects["bobby"].quality) caughtFish = -1;
                         }
 
@@ -393,7 +415,7 @@ scenes["fishgang"] = new Scene(
                     }
                     else {
                         // got a trash
-                        let caughtTrash = trashDictionary[Math.floor(Math.random() * (trashDictionary.length - 1))];
+                        let caughtTrash = trashDictionary[Math.floor(Math.random() * trashDictionary.length)];
 
                         game.fishxp += 3;
                         game.trash += 1;

@@ -123,6 +123,7 @@ function clickButton(source = "click") {
             // no tech c. active, let's do the click thing
             let critMulti = criticalHit();
             let amount = calcShgabbClick().mul(critMulti).mul(clickButtonMulti).floor();
+            if (getArtifact(321).isEquipped() && getArtifact(321).forceshgabb != undefined) amount = getArtifact(321).forceshgabb;
 
             artifactEvent("onClickBefore", { "multi": clickButtonMulti });
 
@@ -248,9 +249,14 @@ function getCooldown(idleMode = "auto") {
     return CD;
 }
 
+function getCritChance() {
+    // returns in %
+    return shgabbUpgrades.critChance.currentEffect() * (ads.moreCrits.getCurrentBoost()[0]) * applyLuck(100);
+}
+
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
-    if (Math.random() * 100 < shgabbUpgrades.critChance.currentEffect() * (ads.moreCrits.getCurrentBoost()[0]) * applyLuck(100)) {
+    if (Math.random() * 100 < getCritChance()) {
         createNotification("Critical Hit!");
         return shgabbUpgrades.critBoost.currentEffect() * (ads.moreCrits.getCurrentBoost()[1]);
     }
