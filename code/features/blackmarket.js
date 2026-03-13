@@ -113,11 +113,11 @@ class BlackMarketOffer {
         switch (this.type) {
             case "arti":
                 return "<div style='color: black; text-align: center; width: 600px; margin: auto;'>" + getArtifact(this.typeID).render(false) 
-                + "<br /> <button onclick=blackMarketOffers[" + this.ID + "].buy()>Buy for 1" + cImg("blackticket") + "</button>"
+                + "<br /> <button onclick=blackMarketOffers[" + this.ID + "].buy()>Buy for " + this.cost + cImg("blackticket") + "</button>"
                 + "</div>";
             case "pfp":
                 return "<div style='color: black; text-align: center; min-width: 600px;'>" + getPFPByID(this.typeID).render(false)
-                + "<br /> <button onclick=blackMarketOffers[" + this.ID + "].buy()>Buy for 1" + cImg("blackticket") + "</button>"
+                + "<br /> <button onclick=blackMarketOffers[" + this.ID + "].buy()>Buy for " + this.cost + cImg("blackticket") + "</button>"
                 + "</div>";
         }
     }
@@ -146,6 +146,6 @@ const blackMarketOffers = {
 
     200: new BlackMarketOffer(200, 1, 2, "pfp", 800),
     201: new BlackMarketOffer(201, 0.5, 3, "pfp", 801),
-    202: new BlackMarketOffer(202, 0.8, 3, "pfp", 802),
-    203: new BlackMarketOffer(203, 0.3, 3, "pfp", 803),
+    202: new BlackMarketOffer(202, 0.8, 2, "pfp", 802),
+    203: new BlackMarketOffer(203, 0.3, 2, "pfp", 803),
 };
