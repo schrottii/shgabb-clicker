@@ -10,6 +10,7 @@ var game = {
         pfp: 100,
         banner: 100,
         frame: 100,
+        bgframe: true
     },
 
     idleMode: false,
@@ -40,11 +41,18 @@ var game = {
     bananaseeds: 0,
     bananatrees: [],
     iron: 0,
+    scrapyardLevel: 0,
+    scrapyardTaps: 0,
+    scrapyardTapsReq: 1,
 
     generators: [
         [],
     ],
     genpoints: new Decimal(0),
+
+    blackTickets: 0,
+    blackMarketContents: [],
+    blackTicketSources: [],
 
     // event currencies / event stuff
     gifts: 0,
@@ -224,7 +232,19 @@ var game = {
         shgabb: 0,
         clicks: 0,
         idleClicks: 0,
+        critClicks: 0,
+        swClicks: 0,
+
+        // play time
         playTime: 0,
+        playTimeClicking: 0,
+        playTimeFridge: 0,
+        playTimeEvent: 0,
+
+        playTimeShgic: 0,
+        playTimeFishgang: 0,
+        playTimeMine: 0,
+
         pr: 0, // prestiges
         hms: 0,
 
@@ -252,7 +272,19 @@ var game = {
         bananaseeds: 0,
         bananatrees: 0,
         iron: 0,
+        dclp: 0,
+        blackTickets: 0,
 
+        treesDead: 0,
+        treesSurvived: 0,
+        treesDays: 0,
+
+        // scrapyard
+        scrapyardLevel: 0,
+        scrapyardTaps: 0,
+        scrapyardSpent: 0,
+
+        // events
         gifts: 0,
         cakes: 0,
         qian: 0,
@@ -261,13 +293,13 @@ var game = {
         shorts: 0,
         witchshgabb: 0,
 
+        // fishgang
         trash: 0,
         fish: 0,
         fishweight: 0,
         fishvalue: 0,
-        playTimeFish: 0,
 
-        playTimeMine: 0,
+        // the mine
         mineTiles: 0,
         mineProgress: 0,
         mineGS: 0,
@@ -275,6 +307,7 @@ var game = {
         mineCOP: 0,
         mineIRON: 0,
 
+        // shgic
         tttpw: 0,
         tttpl: 0,
         tttw: 0,

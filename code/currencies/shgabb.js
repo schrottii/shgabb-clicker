@@ -121,11 +121,11 @@ function clickButton(source = "click") {
 
         if (techCollection == 0) {
             // no tech c. active, let's do the click thing
+            artifactEvent("onClickBefore", { "multi": clickButtonMulti });
+
             let critMulti = criticalHit();
             let amount = calcShgabbClick().mul(critMulti).mul(clickButtonMulti).floor();
             if (getArtifact(321).isEquipped() && getArtifact(321).forceshgabb != undefined) amount = getArtifact(321).forceshgabb;
-
-            artifactEvent("onClickBefore", { "multi": clickButtonMulti });
 
             if (isEvent("summer")) {
                 if (heatMode) {
@@ -147,12 +147,14 @@ function clickButton(source = "click") {
 
             game.shgabb = game.shgabb.add(amount);
             statIncrease("shgabb", amount);
+            createNotification("+AMOUNT Shgabb", [["AMOUNT", fn(amount)]]);
 
             game.clickCooldown = getCooldown();
             if (game.idleMode) game.idleModeTime = 0;
 
             if (!game.idleMode) statIncrease("clicks", 1);
             else statIncrease("idleClicks", 1);
+            if (critMulti > 1) statIncrease("critClicks", 1);
 
             artifactEvent("onClick", { "multi": clickButtonMulti, "amount": amount });
 
@@ -186,6 +188,7 @@ function clickButton(source = "click") {
                 amount = calcSandwiches(critMulti).mul(clickButtonMulti);
                 game.sw = game.sw.add(amount);
                 statIncrease("sw", amount);
+                statIncrease("swClicks", 1);
                 createNotification("+AMOUNT Sandwiches", [["AMOUNT", fn(amount)], ["es", (amount > 1 ? "es" : "")]]);
             }
 
@@ -251,14 +254,23 @@ function getCooldown(idleMode = "auto") {
 
 function getCritChance() {
     // returns in %
-    return shgabbUpgrades.critChance.currentEffect() * (ads.moreCrits.getCurrentBoost()[0]) * applyLuck(100);
+    return shgabbUpgrades.critChance.currentEffect()
+    * (ads.moreCrits.getCurrentBoost()[0])
+    * applyLuck(100)
+    * getArtifactsSimpleBoost("critchance");
+}
+
+function getCritPower() {
+    return shgabbUpgrades.critBoost.currentEffect()
+    * (ads.moreCrits.getCurrentBoost()[1])
+    * getArtifactsSimpleBoost("critpower");
 }
 
 function criticalHit() {
     // Critical hit handler, returns multi (default 3)
     if (Math.random() * 100 < getCritChance()) {
         createNotification("Critical Hit!");
-        return shgabbUpgrades.critBoost.currentEffect() * (ads.moreCrits.getCurrentBoost()[1]);
+        return getCritPower();
     }
     return 1;
 }

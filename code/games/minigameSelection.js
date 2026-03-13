@@ -38,7 +38,7 @@ scenes["mainmenu"] = new Scene(
 
         createButton("gameSel3", 0.05, 0.7, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 3;
-            objects["selgam"].text = unlockedFishing() ? "Selected: The Mine" : "Locked";
+            objects["selgam"].text = unlockedMine() ? "Selected: The Mine" : "Locked";
         }, { quadratic: true, centered: true })
 
         createText("gameText1", 0.08, 0.475 - 0.02, "Shgic", { color: "white", size: 32, align: "left" });

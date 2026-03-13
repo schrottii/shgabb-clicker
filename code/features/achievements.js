@@ -242,7 +242,6 @@ var achievements = [
     new Achievement(105, "bags.png", "Playing DaGame I", "Get 100 Bags (total)", () => game.stats.bags >= 100),
     new Achievement(159, "chenga.png", "Collecta I", "Get 25 Chengas (total)", () => game.stats.chenga >= 25),
     new Achievement(34, "hms.png", "Shgabb Conqueror IV", "Reach More Shgabb level 9001", () => game.stats.hms >= 9001),
-    new Achievement(34, "hms.png", "Shgabb Conqueror IV", "Reach More Shgabb level 9001", () => game.stats.hms >= 9001),
     new Achievement(106, "bags.png", "Playing DaGame II", () => "Get 1000 Bags (total)", () => game.stats.bags >= 1000),
 
     // 10,000 +
@@ -272,7 +271,6 @@ var achievements = [
     new Achievement(186, "shbook.png", "Librarian II", "Unlock 10 lore pages", () => game.lore.length >= 10),
 
     // 15,000 +
-    new Achievement(51, "hms.png", "Shgabb Conqueror V", "Reach More Shgabb level 16000", () => game.stats.hms >= 16000),
     new Achievement(191, "unlock.png", "The Republic", "Unlock Bananas (15 000 HMS)", () => unlockedBananas()),
     new Achievement(198, "bananatree.png", "Bananensamen", "Find your first Banana Seed", () => game.stats.bananaseeds > 0),
     new Achievement(199, "bananatree.png", "Beautiful Palms", "Get your first Banana Tree", () => game.stats.bananatrees > 0),
@@ -282,6 +280,7 @@ var achievements = [
     new Achievement(171, "fishlvl.png", "Cod of Dedication V", "Reach Fish Level 100", () => game.fishlvl >= 100),
     new Achievement(193, "banana.png", "Long Fruit I", "Get 100 Bananas (total)", () => game.stats.bananas >= 100),
     new Achievement(194, "banana.png", "Long Fruit II", "Get 1000 Bananas (total)", () => game.stats.bananas >= 1000),
+    new Achievement(51, "hms.png", "Shgabb Conqueror V", "Reach More Shgabb level 16000", () => game.stats.hms >= 16000),
     new Achievement(208, "shbook.png", "Librarian III", "Unlock 20 lore pages", () => game.lore.length >= 20),
     new Achievement(100, "ttt.png", "Phallic Plays", "Win Shgic Shgac Shgoe with an interesting formation", () => false),
     new Achievement(110, "bags.png", "Beating DaGame", () => "Have " + fn(1000000) + " Bags at the same time", () => game.bags >= 1000000),

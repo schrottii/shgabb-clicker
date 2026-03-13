@@ -31,6 +31,8 @@ class PFP {
     }
 
     getType() {
+        if (this.ID >= 800) return "Market";
+        if (this.ID >= 600) return "Reward";
         if (this.ID >= 400) return "Event";
         if (this.ID >= 300) return "Currency";
         if (this.ID >= 100) return "Normal";
@@ -50,6 +52,7 @@ class PFP {
     }
 
     eventAward() {
+        if (game.evpfps.includes(this.ID)) return false;
         game.evpfps.push(this.ID);
         createNotification("New PFP: #ID NAME", [["ID", this.ID], ["NAME", this.name]]);
     }
@@ -58,6 +61,11 @@ class PFP {
         if (this.isEquipped()) return "border-width: 4px; border-color: green;";
         if (this.isSpecial()) return "border-width: 4px; border-color: yellow;";
         return "";
+    }
+
+    render(clickable = true) {
+        return "<button class='artifact' " + (clickable ? "onclick='setPFP(" + this.ID + ")'" : "") + " style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + this.renderBorder() + "'>"
+        + "<img src='" + this.image + "' style='width: 50%'><br />" + this.name + "<br />(" + this.getType() + ")</button>"
     }
 }
 
@@ -75,6 +83,7 @@ class Banner extends PFP {
     }
 
     eventAward() {
+        if (game.evbans.includes(this.ID)) return false;
         game.evbans.push(this.ID);
         createNotification("New Banner: #ID NAME", [["ID", this.ID], ["NAME", this.name]]);
     }
@@ -98,6 +107,7 @@ class Frame extends PFP {
     }
 
     eventAward() {
+        if (game.evframes.includes(this.ID)) return false;
         game.evframes.push(this.ID);
         createNotification("New FRAME: #ID NAME", [["ID", this.ID], ["NAME", this.name]]);
     }
@@ -116,7 +126,7 @@ function renderPFPsPart() {
     let render = "<h3>PFPs</h3>";
 
     for (p in pfps) {
-        if (pfps[p].unlock()) render = render + "<button class='artifact' onclick='setPFP(" + pfps[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + pfps[p].renderBorder() + "'><img src='" + pfps[p].image + "' style='width: 50%'><br />" + pfps[p].name + "<br />(" + pfps[p].getType() + ")</button>"
+        if (pfps[p].isUnlocked()) render = render + pfps[p].render();
         else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + pfps[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + pfps[p].getType() + "</button>"
     }
 
@@ -131,7 +141,7 @@ function renderBannersPart() {
     let render = "<h3>Banners</h3>";
 
     for (p in banners) {
-        if (banners[p].unlock()) render = render + "<button class='artifact' onclick='setBanner(" + banners[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + banners[p].renderBorder() + "'><img src='" + banners[p].image + "' style='width: 50%'><br />" + banners[p].name + "<br />(" + banners[p].getType() + ")</button>"
+        if (banners[p].isUnlocked()) render = render + "<button class='artifact' onclick='setBanner(" + banners[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + banners[p].renderBorder() + "'><img src='" + banners[p].image + "' style='width: 50%'><br />" + banners[p].name + "<br />(" + banners[p].getType() + ")</button>"
         else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + banners[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + banners[p].getType() + "</button>"
     }
 
@@ -146,7 +156,7 @@ function renderFramesPart() {
     let render = "<h3>Frames</h3>";
 
     for (p in frames) {
-        if (frames[p].unlock()) render = render + "<button class='artifact' onclick='setFrame(" + frames[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + frames[p].renderBorder() + "'><img src='" + frames[p].image + "' style='width: 50%'><br />" + frames[p].name + "<br />(" + frames[p].getType() + ")</button>"
+        if (frames[p].isUnlocked()) render = render + "<button class='artifact' onclick='setFrame(" + frames[p].ID + ")' style='color: black; background-color: rgb(230, 230, 230); font-size: 20px; " + frames[p].renderBorder() + "'><img src='" + frames[p].image + "' style='width: 50%'><br />" + frames[p].name + "<br />(" + frames[p].getType() + ")</button>"
         else render = render + "<button class='artifact' style='color: black; background-color: rgb(130, 130, 130); font-size: 20px'>"/*<img src='" + frames[p].image + "' style='width: 25%; filter: grayscale(100);'><br />*/ + "Locked...<br />" + frames[p].getType() + "</button>"
     }
 
@@ -216,6 +226,8 @@ var pfps = [
     new PFP(101, "Winner", "images/playerprofile/pfps/winner.png", () => game.stats.hms >= 5000),
     new PFP(102, "Mobile", "images/playerprofile/pfps/phone.png", () => game.stats.hms >= 10000),
     new PFP(103, "Lucie", "images/slimegirl.png", () => game.ach.includes(211)),
+    new PFP(104, "Tux", "images/playerprofile/pfps/Tux_by_Larry_Ewing.png", () => userLinux === true),
+    new PFP(105, "Mint", "images/playerprofile/pfps/Linux_Mint_logo.png", () => userLinux === true, { special: true }),
 
     // 300 - 399 | Currency PFPs
     new PFP(300, "Shgabb", "images/currencies/shgabb.png", () => game.ach.includes(21)),
@@ -262,6 +274,18 @@ var pfps = [
     new PFP(423, "Witch Moon", "images/playerprofile/pfps/stw-pfp3.png", () => game.evpfps.includes(423)),
     new PFP(424, "Candle", "images/currencies/candle.png", () => game.evpfps.includes(424)),
     new PFP(425, "Witch Shgabb", "images/currencies/witchshgabb.png", () => game.evpfps.includes(425)),
+
+    // 600 - 799 | Mission Rewards
+    new PFP(600, "bred", "images/playerprofile/pfps/2603-01.png", () => game.evpfps.includes(600)),
+    new PFP(601, "Ingredients", "images/playerprofile/pfps/2603-02.png", () => game.evpfps.includes(601)),
+    new PFP(602, "Grid of Amé", "images/playerprofile/pfps/2604-01.png", () => game.evpfps.includes(602)),
+    new PFP(603, "Shgoe!", "images/playerprofile/pfps/2604-02.png", () => game.evpfps.includes(603)),
+
+    // 800 - 899 | Black Market
+    new PFP(800, "Kritarian Forest", "images/playerprofile/pfps/krabm1.png", () => game.evpfps.includes(800)),
+    new PFP(801, "Ghost Trader", "images/playerprofile/pfps/krabm2.png", () => game.evpfps.includes(801)),
+    new PFP(802, "Black Star", "images/playerprofile/pfps/krabm3.png", () => game.evpfps.includes(802)),
+    new PFP(803, "AAAaA", "images/playerprofile/pfps/krabm4.png", () => game.evpfps.includes(803)),
 ];
 
 var banners = [
@@ -378,10 +402,16 @@ function changePlayerName() {
     }
 }
 
+function toggleBackgroundFrame() {
+    if (game.profile.bgframe === true) game.profile.bgframe = false;
+    else game.profile.bgframe = true;
+    renderPlayerProfile();
+}
+
 function setRandomPFP() {
     let availablePFPs = [];
     for (let pfp in pfps) {
-        if (pfps[pfp].unlock()) availablePFPs.push(pfp);
+        if (pfps[pfp].isUnlocked()) availablePFPs.push(pfp);
     }
     let chosenPFP = Math.ceil(Math.random() * (availablePFPs.length - 1));
     chosenPFP = pfps[availablePFPs[chosenPFP]];
@@ -392,7 +422,7 @@ function setRandomPFP() {
 function setRandomBanner() {
     let availableBanners = [];
     for (let ban in banners) {
-        if (banners[ban].unlock()) availableBanners.push(ban);
+        if (banners[ban].isUnlocked()) availableBanners.push(ban);
     }
     let chosenBanner = Math.ceil(Math.random() * (availableBanners.length - 1));
     chosenBanner = banners[availableBanners[chosenBanner]];
@@ -403,7 +433,7 @@ function setRandomBanner() {
 function setRandomFrame() {
     let availableFrames = [];
     for (let frame in frames) {
-        if (frames[frame].unlock()) availableFrames.push(frame);
+        if (frames[frame].isUnlocked()) availableFrames.push(frame);
     }
     let chosenFrame = Math.ceil(Math.random() * (availableFrames.length - 1));
     chosenFrame = banners[availableFrames[chosenFrame]];
@@ -455,7 +485,7 @@ function renderPlayerProfile() {
     pfp.src = getPFPByID(game.profile.pfp).image;
     pfpframe.src = getFrameByID(game.profile.frame).image;
 
-    pctx.drawImage(pfpbg, w * 0.04, w * 0.125, w * 0.25, w * 0.25);
+    if (game.profile.bgframe === true || game.profile.bgframe === undefined) pctx.drawImage(pfpbg, w * 0.04, w * 0.125, w * 0.25, w * 0.25);
     pctx.drawImage(pfp, w * 0.04, w * 0.125, w * 0.25, w * 0.25);
     pctx.drawImage(pfpframe, w * 0.015, w * 0.1, w * 0.3, w * 0.3);
 

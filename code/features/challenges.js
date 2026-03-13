@@ -206,6 +206,7 @@ function completedDaily(hms) {
     // daily complete, more in gs.js
     game.dclg = [];
     game.dclp += hms;
+    statIncrease("dclp", hms);
 
     if (selectedLoadout == -1) selectedLoadout = 0;
 

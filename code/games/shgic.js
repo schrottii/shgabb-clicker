@@ -114,6 +114,10 @@ function checkNewDay() {
                 game.stats_today[stat] = 0;
             }
         }
+
+        // black market
+        if (isBlackMarket()) generateBlackMarket();
+        else game.blackMarketContents = [];
     }
 }
 

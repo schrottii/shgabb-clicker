@@ -157,6 +157,10 @@ class Artifact {
                 return "Lore page chance";
             case "wispchance":
                 return "Wisp chance";
+            case "critpower":
+                return "Crit power";
+            case "critchance":
+                return "Crit chance";
             default:
                 return "";
         }
@@ -323,7 +327,7 @@ class Artifact {
 
     render(clickable = true, clg = false, width = 50) {
         // what you see is what you get.
-        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: " + width + "%;" + (width < 50 ? " display: inline-block;" : "")) + "'>"
+        return `<` + (clickable ? "button" : "div") + ` class='artifact' ` + (clickable ? `onclick='clickArtifact(` + this.ID + ", " + clg + `)'` : "") + ` style='background-color: ` + this.renderBG() + ";" + (clickable ? "" : " width: " + width + "%; margin: auto;" + (width < 50 ? " display: inline-block;" : "")) + "'>"
             + (this.isActive() === undefined ? "" : "<div style='position: absolute; top: 0%; width: 100%; height: 18px; background-color: " + (this.isActive() ? "rgb(80, 240, 80, 0.3)" : "rgb(200, 80, 80, 0.2)") + ";'></div>")
             + (settings.artifactImages ? "<image src='images/arti/" + this.image + "' width='32px' height='32px' style='float: left; top: 0px; left: 0px; position: absolute; top: 0;'>" : "")
             + "<span style='float: right; position: absolute; top: 0; right: 0; text-align: right;'>"
@@ -1121,6 +1125,16 @@ var artifacts = [
             filter: ["gems"]
         }),
 
+    new Artifact(113, 1, 10, "Ring of Severe Damage", "ring.png",
+        {
+            simpleBoost: ["critpower", level => 1 + 0.5 * level]
+        }),
+
+    new Artifact(114, 1, 10, "Ring of Crits", "ring.png",
+        {
+            simpleBoost: ["critchance", level => 1 + 1 * level]
+        }),
+
     new Artifact(150, 1, 1, "Ring of Productivity", "ring.png",
         {
             simpleBoost: ["clickshgabb", level => 0.8 + 0.5 * level]
@@ -1498,6 +1512,12 @@ var artifacts = [
             filter: ["gems"]
         }),
 
+    new Artifact(237, 2, 10, "Amulet of ChargeCrit", "amulet.png",
+        {
+            prefix: "x", desc: "If the cooldown is 7s+ (not current), OR the last click was 30s+ ago",
+            simpleBoost: ["critpower", level => 1 + 2 * level, () => getCooldown() >= 7 || game.clickCooldown <= -30]
+        }),
+
 
 
 
@@ -1738,6 +1758,27 @@ var artifacts = [
                 getArtifact(321).forceshgabb = undefined;
             },
             filter: ["shgabb"]
+        }),
+
+    new Artifact(322, 3, 10, "Headshot", "headshot.png",
+        {
+            prefix: "x", desc: level => "Also increases crit power by x" + (10 * level) + " if timed well",
+            simpleBoost: ["critchance", level => 0.1],
+            onClickBefore: level => {
+                /*
+                if (game.clickCooldown > -0.33 || lunarAntiCooldown > 0) getArtifact(322).simpleTrigger = () => true;
+                else getArtifact(322).simpleTrigger = () => false;
+                */
+                if (game.clickCooldown > -0.33 || lunarAntiCooldown > 0) {
+                    //console.log(getArtifactsSimpleBoost("critchance"), getArtifactsSimpleBoost("critpower"));
+                    getArtifact(322).boost = "critpower";
+                    getArtifact(322).amount = 10 * level;
+                }
+            },
+            onClick: (level, v) => {
+                getArtifact(322).boost = "critchance";
+                getArtifact(322).amount = 0.1;
+            }
         }),
 
 

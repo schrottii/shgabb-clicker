@@ -76,8 +76,16 @@ function clickBananaTree(thisTree) {
     statIncrease("bananas", amount);
 
     game.bananatrees[thisTree].bananas = 0;
-    if (Math.random() * 100 < calcTreeDeathChance(game.bananatrees[thisTree])) {
+
+    let deathChance = calcTreeDeathChance(game.bananatrees[thisTree]);
+    if (Math.random() * 100 < deathChance) {
+        // death
         game.bananatrees.splice(getTreeByID(game.bananatrees[thisTree].id), 1);
+        statIncrease("treesDead", 1);
+    }
+    else {
+        // survived
+        if (deathChance > 0) statIncrease("treesSurvived", 1);
     }
 
     renderBananaTrees();
@@ -90,6 +98,7 @@ function increaseBananas(multi) {
     for (let tree in game.bananatrees) {
         if (Math.random() < bananaUpgrades.bananaChance.currentEffect() / 100 * multi) {
             game.bananatrees[tree].bananas += game.bananatrees[tree].days + 1;
+            statIncrease("treesDays", 1)
         }
     }
 

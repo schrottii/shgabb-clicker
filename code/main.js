@@ -69,6 +69,7 @@ var ui = {
     gsAmount: document.getElementById("gsAmount"),
     siAmount: document.getElementById("siAmount"),
     gemAmount: document.getElementById("gemAmount"),
+    gemAmountTotal: document.getElementById("gemAmountTotal"),
     ameAmount: document.getElementById("ameAmount"),
     artifactScrapAmount: document.getElementById("artifactScrapAmount"),
     bagAmount: document.getElementById("bagAmount"),
@@ -80,13 +81,6 @@ var ui = {
     topSquare: document.getElementById("topSquare"),
     topSquareDisplay: document.getElementById("topSquareDisplay"),
     topSquareDisplay2: document.getElementById("topSquareDisplay2"),
-
-    // Images of currencies
-    swImage: document.getElementById("swImage"),
-    gsImage: document.getElementById("gsImage"),
-    siImage: document.getElementById("siImage"),
-    gemImage: document.getElementById("gemImage"),
-    ameImage: document.getElementById("ameImage"),
 
     // Upgrades
     upgradesrender: document.getElementById("upgradesrender"),
@@ -161,6 +155,9 @@ var ui = {
 
     // iron man vs captain america who will win
     ironSection: document.getElementById("ironSection"),
+    scrapyardSection: document.getElementById("scrapyardSection"),
+    scrapyardRender: document.getElementById("scrapyardRender"),
+    scrapyardFloatingText: document.getElementById("scrapyardFloatingText"),
 
     // Other
     prestigeButton: document.getElementById("prestigebutton"),
@@ -179,7 +176,8 @@ var ui = {
     currentArtis: document.getElementById("currentArtis"),
     generatorsRender: document.getElementById("generatorsRender"),
     helpButton: document.getElementById("helpButton"),
-    gameName: document.getElementById("gameName")
+    gameName: document.getElementById("gameName"),
+    blackMarketRender: document.getElementById("blackMarketRender")
 }
 
 for (let u in ui.tutorial) {
@@ -324,6 +322,13 @@ const quotes = [
     "LETS MAKE 1 THE ZEROTH PRIME NUMBER - snekrot",
     "blud about to get 1,000,000 gems lel - elmenda452",
     "time to bombard shgabb inc with some good old l e v e l 6 4 p i z z a - elmenda452",
+
+    // 4.6 (+5 -> 110)
+    "Name me 10 times when elmenda was a steam locomotive - slowmerger",
+    "Your release is almost there! It is 0% complete. - music distribution process",
+    "top 1 best game reviewer, never played the game before: good game! - Lizy",
+    "imagine pis upgrade that costs pys to upgrade (pythagoras) - Schrottii",
+    "joy self react is a way of life, three different reactions is a lil too much - shgabb"
 ];
 
 ///////////////////////////////////
@@ -646,7 +651,11 @@ function updateStats() {
         + "<br />Total Clicks: " + (parseInt(statLoader("clicks", false)) + parseInt(statLoader("idleClicks", false)))
         + "<br />Normal Clicks: " + statLoader("clicks")
         + "<br />Idle Clicks: " + statLoader("idleClicks")
+        + "<br />(v4.6) Critical Clicks: " + statLoader("criticalClicks")
+        + "<br />(v4.6) Sandwich Clicks: " + statLoader("swClicks")
         + "<br />Total Time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime"))
+        + "<br />(v4.6) Clicking Time: " + (game.stats.playTimeClicking > 18000 ? (statLoader("playTimeClicking", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeClicking"))
+        + "<br />(v4.6) Fridge Time: " + (game.stats.playTimeFridge > 18000 ? (statLoader("playTimeFridge", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeFridge"))
         + "<br />Total Prestiges: " + statLoader("pr")
         + "<br />Total Ads watched: " + statLoader("ads")
         + (statDisplay == 1 ? "<br />(SC: " + game.stats.wads.sc + "/SA: " + game.stats.wads.sa + "/MSW: " + game.stats.wads.msw + "/FS: " + game.stats.wads.fs + "/MC: " + game.stats.wads.mc + "/MSI: " + game.stats.wads.msi + "/MG: " + game.stats.wads.mg + ")" : "")
@@ -682,11 +691,13 @@ function updateStats() {
         + "<br />Total Witch Shgabb: " + statLoader("witchshgabb")
         + "<br />Total Event currencies: " + (new Decimal(statLoader("gifts")).add(statLoader("cakes")).add(statLoader("qian")).add(statLoader("eggs")).add(statLoader("shorts")).add(statLoader("witchshgabb")))
         + "<br />Total Events Summoned: " + statLoader("events")
+        + "<br />(v4.6) Time during Events: " + (game.stats.playTimeEvent > 18000 ? (statLoader("playTimeEvent", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeEvent"))
         + "<br />"
 
         + "<br /><b>Shgic Shgac Shgoe:</b>"
         + "<br />Total SSS wins: " + statLoader("tttw") + " (Points: " + statLoader("tttpw") + ")"
         + "<br />Total SSS losses: " + statLoader("tttl") + " (Points: " + statLoader("tttpl") + ")"
+        + "<br />(v4.6) Total Time: " + (game.stats.playTimeShgic > 18000 ? (statLoader("playTimeShgic", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeShgic"))
         + "<br />"
 
         + "<br /><b>Fishgang:</b>"
@@ -694,7 +705,7 @@ function updateStats() {
         + "<br />Total Fish: " + statLoader("fish")
         + "<br />Total Fish Weight: " + statLoader("fishweight") + " (Best: " + game.bfishweight + ")"
         + "<br />Total Fish Value: " + statLoader("fishvalue") + " (Best: " + game.bfishvalue + ")"
-        + "<br />Total Time: " + (game.stats.playTimeFish > 18000 ? (statLoader("playTimeFish", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeFish"))
+        + "<br />(v4.6) Total Time: " + (game.stats.playTimeFish > 18000 ? (statLoader("playTimeFish", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeFish"))
         + "<br />"
 
         + "<br /><b>The Mine:</b>"
@@ -704,7 +715,7 @@ function updateStats() {
         + "<br />Mined Silicone: " + statLoader("mineSI")
         + "<br />Mined Copper: " + statLoader("mineCOP")
         + "<br />Mined Iron: " + statLoader("mineIRON")
-        + "<br />Total Time: " + (game.stats.playTimeMine > 18000 ? (statLoader("playTimeMine", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeMine"))
+        + "<br />(v4.6) Total Time: " + (game.stats.playTimeMine > 18000 ? (statLoader("playTimeMine", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeMine"))
         + "<br />"
 
 
@@ -713,7 +724,8 @@ function updateStats() {
         // RIGHT SIDE
         + "<b>Chances:</b>"
         + "<br />Click Cooldown: " + getCooldown().toFixed(2) + "s" + (getCooldown() == 0.1 ? " [MAX]" : "")
-        + "<br />Critical Hit Chance: " + (shgabbUpgrades.critChance.currentEffect() * ads.moreCrits.getCurrentBoost()[0]) + "%"
+        + "<br />Critical Hit Chance: " + (getCritChance()) + "%"
+        + "<br />Critical Hit Power: x" + (getCritPower())
         + "<br />Sandwich Chance: " + (shgabbUpgrades.swChance.currentEffect() * (ads.moreSandwiches.getCurrentBoost())).toFixed(2) + "%"
         + "<br />Gem Chance: " + fn(getGemChance()) + "%" + (getGemChance() == 10 + getArtifact(308).getValue(0) ? " [MAX]" : "") + " (+" + getArtifactsSimpleBoost("gems").toFixed(2) + ")"
         + "<br />Copper Chance: " + getCopperChance().toFixed(1) + "%"
@@ -744,6 +756,7 @@ function updateStats() {
         + "<br />"
 
         + "<br /><b>Artifact effects:</b>"
+        // this can be done better
         + (getArtifactsSimpleBoost("clickspeed") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickspeed")) + " click cooldown") : "")
         + (getArtifactsSimpleBoost("shgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("shgabb")) + " Shgabb") : "")
         + (getArtifactsSimpleBoost("clickshgabb") > 1 ? ("<br />x" + fn(getArtifactsSimpleBoost("clickshgabb")) + " Click Shgabb") : "")
@@ -898,7 +911,7 @@ function updateCurrencies() {
     if (unlockedSilicone()) ui.siAmount.innerHTML = cImg("silicone") + fn(game.si) + " Silicone Shgabb (" + fn(getSiliconeProduction()) + "/s)";
     else ui.siAmount.innerHTML = "";
 
-    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + fn(game.gems) + " Gems";
+    if (unlockedGems()) ui.gemAmount.innerHTML = cImg("gem") + fn(currentGems()) + " Gems";
     else ui.gemAmount.innerHTML = "";
 
     if (unlockedAmeliorer()) ui.ameAmount.innerHTML = cImg("ameliorer") + game.ame + " Améliorer";
@@ -1282,6 +1295,11 @@ function importGame(source) {
         game.stats.tgems += game.stats.gems;
         delete game.stats.gems;
     }
+
+    if (game.stats.dclp == undefined || game.stats.dclp == 0) {
+        game.stats.dclp = game.dclp;
+    }
+
     /*
     if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw.mul(10)) {
         // Auto Shgabb was reworked
@@ -1557,9 +1575,15 @@ function shgabbClickerLoop(tick) {
     if (sandwichFreezeTime > getFreezeTime()) sandwichFreezeTime = getFreezeTime();
     cakeDuration -= time;
     if (game.idleMode == true && sandwichFreezeTime > 0) game.idleModeTime += time;
+
     statIncrease("playTime", time);
+    if (isEvent("any") != false) statIncrease("playTimeEvent", time);
+    if (game.clickCooldown > 0) statIncrease("playTimeClicking", time);
+    if (sandwichFreezeTime > 0) statIncrease("playTimeFridge", time);
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "shgic") statIncrease("playTimeShgic", time);
     if (selections[1] == "minigames" && wggj.canvas.currentScene == "fishgang") statIncrease("playTimeFish", time);
     if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") statIncrease("playTimeMine", time);
+    renderScrapyardFloatingNumber();
 
     for (aqq in game.aeqi) {
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
@@ -1671,6 +1695,8 @@ function shgabbClickerLoop(tick) {
     window.requestAnimationFrame(shgabbClickerLoop);
 }
 
+var userLinux = false;
+
 function shgabbClickerSetup() {
     gameLoadingProgress++;
 
@@ -1731,6 +1757,8 @@ function shgabbClickerSetup() {
     toggleSidebar();
     updateEVERYTHING();
     checkNewDay();
+
+    if (navigator.platform == "Linux x86_64" || navigator.platform == "Linux armv7l" || navigator.platform == "Linux armv8l" || navigator.platform == "Linux aarch64") userLinux = true;
 
     gameLoadingProgress++;
 

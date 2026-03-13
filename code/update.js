@@ -2,67 +2,82 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.5.2";
-const versionTitle = "elshgabb452";
+const gameVersion  = "4.6";
+const versionTitle = "";
 
 const currentPatchNotes = `
+2026-03-13 v4.6:
+-> Black Market:
+- New feature unlocked at 13,000 HMS
+- It always appears on the 13th of a month 
+- Offers are random for every time, and different for every player 
+- 4 exclusive tier X Artifacts 
+- 4 exclusive PFPs 
+- Black Tickets are used for purchase 
+- Daily Challenge Points and Gems can be converted to Black Tickets, two times each
+
+-> Scrapyard:
+- New feature unlocked at 14,000 HMS
+- Found at the Mine minigame
+- Spend Artifact Scrap to get more Iron Shgabb 
+- Every level takes multiple taps (how many is random)
+- With animations
+
+-> Missions:
+- Two new missions:
+- Bread for Breakfast, 1000 HMS, 8 steps, awards two PFPs and some Sandwiches
+- Purple Tree Upgrades, 2000 HMS, 14 steps, awards two PFPs and 50 Gems
+- Artifact Grinder: step 4 can now be auto shgabb or click shgabb, reduced step 6 from 10 Artis to 5, changed step 10 description
+
+-> Stats:
+- Added new stats for:
+- Scrapyard Levels, taps, Scrap spent 
+- Play time during click cooldown, active fridge, active event 
+- Play time in Shgic, Fishgang, Mine 
+- Critical clicks, Sandwich clicks (both not affected by Tech Collection)
+- How many Banana Trees died or survived on a click (>0% death chance), days survived
+- Black Tickets, total Daily Challenge Points
+- All these new stats only started tracking with this update (v4.6)
+
+-> Player Profile:
+- Added 10 new PFPs (2 unlocked by using Linux (one of which is special!), 4 from the Black Market, 4 from the new Missions)
+- Added button to toggle the background frame
+
 -> Artifacts:
-- New Epic Tier II Artifact: Root
-- (Nerf) Trash Can: reduced max. boost from x4/x8/x12 to x3/x6/x9
-- Artifact search now supports "[rarity] L[level]" combination and "tier [roman numerals]"
-- Changes to tiers, see below
+- Added 4 new Artifacts (2 common, 1 rare, 1 epic, 100 total)
+- Added tier X, not obtainable from normal Artifact drops 
+- These new Artifacts are exclusive from the Black Market
+- Artifacts can now boost crit power and crit chance
+- Stats now show crit power alongside crit chance
 
--> Artifact tiers:
-- An Artifact's tier is now displayed next to the rarity and level
-- Changed tier III from 5000 HMS to 4000
-- Added tier V at 10,000 HMS
-- Added list of tiers to Featuriary (1000 / 2000 / 4000 / 8000 / 10,000)
-- Artis per tier: 43 / 16 / 21 / 5 / 11
-- Some Artifacts had their tier changed:
-- Tier III: Golden Past (I), Golden Day (I)
-- Tier IV: Buying Bags (II)
-- Tier V: Orange Ring (IV), Orange Ring (IV), Ore Rush (IV), Ore Vein (IV), all legendaries (IV)
+-> Shbook:
+- Lore: Changed design of buttons in the list, with clear left-middle-right
+- Lore: Overhauled the info area, with better readability, formatting and a list of the pages in inventory
+- Lore: Changed buttons of locked (found) lore
+- Calculator: Upgrade list now uses the same colors from settings
+- Calculator: Added new formatting to the results
+- Calculator: at level 0, effect doesn't show current effect anymore
+- Featuriary: added Gem Storage and Scrapyard to the Unlocks list, added lists of unlockable Gem Offers, Artifact Tiers and Challenges
+- Featuriary: added entries for Scrayard and Black Market
 
--> Achievements:
-- Changed HMS amount in "Challenge Me!", "Wet Gang" and "The Ads Are Changing" (Challenges, Fishgang and Chenga unlocks) and moved them accordingly
-- Moved lots of Achievements, particularly in earlygame
-- Changed Conqueror Achievements: 1500/2500/5000/10,000/15,000/20,000 -> 1500/2500/4444/9001/16,000/21,400 (to avoid conflicts with unlocks)
+-> Notifications:
+- Increased internal storage from 20 to 255 to avoid top/sb only and area only notifications deleting others and thus preventing them from showing up
+- Changed area to go from top to bottom (same as top/sb)
 
--> Fishgang:
-- Adjusted slider speed, slower at less distance (1x, 2x, 3x, 4x multi depending on color, instead of always 4x)
-- Quality is now displayed alongside chance (1-10, decides what fish you can get)
-- Added floating text showing chance increase/decrease after reeling
-- Added background behind chance/quality on the right (for symmetry and better readability)
-- Moved throwing animation to clicking throw, from when the fish appears
-- New fish: Shark (new image), Stupid Tuna
-- New trash: Wet dirt, Broken vape, AI slop, AI trash, Broken slot machine
-- Fixed trash capitalization
+-> Gem Storage:
+- Gems now show the current amount here and in currencies display (so stored Gems not being counted)
+- Added display for total Gems (stored and not stored)
+- Added buttons for: +30, +1000, -30, -1000, +1%, +10%, -1%, -10%
+- Added section background
+- Expanded text
+- Fixed a number display issue
 
 -> Other:
-- Custom colors setting: new formatting and buttons preview the colors
-- Fixed Genpoint boost display issue
-
-v4.5.1
--> Events:
-- New Event info UI, for all seven Events
-- For consistent design and better readability
-
--> Auto:
-- Fridge time gets reduced to max. if it's above it (ie opening game while having Thaw equipped)
-- Auto info: aligned its texts to a new type of layout
-- Auto info: Fridge time can no longer go below 0
-
--> Other:
-- Joke ad names are now bold
-- Shgabb image in click button can now be clicked through
-
--> Bug fixes:
-- Fixed music and sounds not being properly muted when starting the game
-- Fixed Gem Shgabb Boost visual issue
-- Fixed Genpoints notification before unlock
-- Fixed texts for export/import Settings
-- Fixed issue with Setting sections that aren't Gameplay
-- Fixed Qian offer issue
+- Added 5 new Quotes (110 total)
+- Expanded info section with text explaining no AI was used, credits for Tux, Mint logo and Bags, and adding Balnoom brand name
+- Added notification for gained Shgabb on a click (already existed for auto)
+- Fixed Shgabb Conqueror IV Achievement existing twice (visual bug)
+- Moved Shgabb Conqueror V Achievement
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

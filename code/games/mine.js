@@ -42,7 +42,7 @@ const mineDir = {
         (amount) => { game.gs = game.gs.add(amount); statIncrease("gs", amount); statIncrease("mineGS", 1); }],
 
     floorsi: ["Silicone", 20,
-        () => { return getSiliconeProduction(true).mul(40) },
+        () => { return getSiliconeProduction(true).mul(40); },
         (amount) => { game.si = game.si.add(amount); statIncrease("si", amount); statIncrease("mineSI", 1); }],
 
     floorcop: ["Copper", 10,
@@ -50,7 +50,7 @@ const mineDir = {
         (amount) => { game.cop = game.cop.add(amount); statIncrease("cop", amount); statIncrease("mineCOP", 1); }],
 
     flooriron: ["Iron", 100,
-        () => { return 1; },
+        () => { return calcScrapyardCopperBoost(); },
         (amount) => { game.iron += amount; statIncrease("iron", amount); statIncrease("mineIRON", 1); }],
 };
 
@@ -111,6 +111,7 @@ scenes["mine"] = new Scene(
 
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
             ui.ironSection.style.display = "none";
+            ui.scrapyardSection.style.display = "none";
             createAnimation("trans4b", "transition4", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
@@ -142,6 +143,10 @@ scenes["mine"] = new Scene(
         createImage("transition4", 0, 0, 1, 1, "black");
         createAnimation("trans4", "transition4", (t, d) => { t.alpha -= d * 4 }, 0.3, true);
         ui.ironSection.style.display = "";
+        if (unlockedScrapyard()) {
+            ui.scrapyardSection.style.display = "";
+            renderScrapyard();
+        }
     },
     (tick) => {
         // Loop

@@ -57,7 +57,7 @@ function gemOffer(i) {
             if (currentGems() >= 10 && isChallenge(0)) {
                 game.gems -= 10;
                 game.shgabb = game.shgabb.add(firstGemOfferWorth());
-                // do not increase stat yousonofabittthh
+                // do not increase stat
             }
             break;
         case 2:
@@ -121,6 +121,8 @@ function gemOffer(i) {
 }
 
 function renderGemOffers() {
+    ui.gemAmountTotal.innerHTML = cImg("gem") + fn(game.gems) + " Gems (total)";
+
     ui.gemOffer1.innerHTML = "<b>Instant Shgabb</b><br />Spend 10 Gems to get<br>" + fn(firstGemOfferWorth()) + " Shgabb immediately";
     ui.gemOffer2.innerHTML = "<b>Shgabb Boost</b><br />Spend 20 Gems to get 25% more Shgabb!<br>Current: +" + fn(game.gemboost * 25) + "%";
 
@@ -145,7 +147,7 @@ function renderGemOffers() {
 
     if (unlockedBags()) {
         ui.gemStorageContainer.style.display = "";
-        ui.gemStorageDisplay.innerHTML = "Gem Storage: " + cImg("gem") + game.gemb + " (" + Math.floor(game.gemb / game.gems * 100) + "%)   ";
+        ui.gemStorageDisplay.innerHTML = "Gem Storage: " + cImg("gem") + game.gemb + (game.gems > 0 ? " (" + Math.floor(game.gemb / game.gems * 100) + "%)" : "");
     }
     else ui.gemStorageContainer.style.display = "none";
 }
@@ -166,17 +168,26 @@ function newArtifactOffers() {
     updateGems();
 }
 
-function gemStorage() {
-    let newStorage = ui.gemStorageAmount.value;
+function gemStorage(type = "grab", amount = 0) {
+    game.gemb = parseInt(game.gemb);
+    amount = parseInt(amount);
+
+    let newStorage;
+    if (type == "grab") newStorage = ui.gemStorageAmount.value;
+
+    if (type == "add") newStorage = game.gemb + amount;
+    if (type == "sub") newStorage = game.gemb - amount;
+    if (type == "addpct") newStorage = game.gemb + Math.floor(game.gems * amount / 100);
+    if (type == "subpct") newStorage = game.gemb - Math.floor(game.gems * amount / 100);
 
     if (isNaN(newStorage) || newStorage < 0) {
-        ui.gemStorageAmount.value = game.gemb = 0;
+        if (type == "grab") ui.gemStorageAmount.value = game.gemb = 0;
     }
     else if (newStorage < game.gems) {
         game.gemb = newStorage;
     }
     else {
-        ui.gemStorageAmount.value = game.gemb = game.gems;
+        if (type == "grab") ui.gemStorageAmount.value = game.gemb = game.gems;
     }
     renderGemOffers();
 }

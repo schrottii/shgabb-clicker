@@ -227,6 +227,8 @@
             <div id="gemSection" style="display: none">
                 <h3>Gems</h3>
                 <span id="gemAmount"></span><br />
+                <span id="gemAmountTotal"></span><br />
+
                 <h3>Gems offers</h3>
                 <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
                 <button class="upgrade" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
@@ -241,10 +243,24 @@
                 <!--<button onclick="tester();" style="height: 80px;">jfaoiwskfvjnisfgvjnhseuifjhiu</button>-->
 
                 <br />
-                <div id="gemStorageContainer" style="display: none">
+                <div id="gemStorageContainer" class="sectionBG" style="display: none; max-width: 600px; margin: auto;">
                     <h3>Gem Storage</h3>
-                    <span id="gemStorageDisplay"></span><input type="number" id="gemStorageAmount" onblur="gemStorage()" onchange="gemStorage()" /><br />
-                    Gems in the Gem Storage still count towards boosts, Achievements, etc. but can't be accidentally spent!
+                    <span id="gemStorageDisplay"></span> <br />
+                    Set: <input type="number" id="gemStorageAmount" onblur="gemStorage()" onchange="gemStorage()" /><br />
+
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('add', 30)">+30</button>
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('add', 1000)">+1000</button>
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('sub', 30)">-30</button>
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('sub', 1000)">-1000</button>
+                    <br />
+
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('addpct', 1)">+1%</button>
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('addpct', 10)">+10%</button>
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('subpct', 1)">-1%</button>
+                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('subpct', 10)">-10%</button>
+                    <br />
+
+                    Gems in the Gem Storage still count towards boosts, Achievements, etc. but can't be accidentally spent. Gems can be stored or withdrawn at any time without a fee.
                 </div>
 
                 <br />
@@ -299,11 +315,22 @@
                     <span id="ironAmount"></span><br />
                     <span id="ironupgradesrender" class="upgradesContainer"></span>
                 </div>
+
+                <div id="scrapyardSection" style="display: none">
+                    <h3>Scrapyard</h3>
+                    <span id="scrapyardFloatingText"></span>
+                    <span id="scrapyardRender"></span>
+                </div>
             </div>
 
             <!-- Event -->
             <div id="eventsSection" class="square2" style="display: none">
                 <span id="eventRender"></span>
+            </div>
+
+            <!-- Black Market -->
+            <div id="blackmarketSection" class="square2" style="display: none">
+                <span id="blackMarketRender"></span>
             </div>
         </div>
 
@@ -353,6 +380,7 @@
                 <span id="playerProfileRender"></span>
 
                 <button onclick="changePlayerName()" class="settingButton">Change Name</button><br />
+                <button onclick="toggleBackgroundFrame()" class="settingButton">Toggle background frame</button><br />
             </div>
 
             <!-- Stats -->
@@ -390,13 +418,20 @@
 
                     <!-- Info -->
                     <h3 style="text-align: center;">Info</h3>
-                    Shgabb Clicker - developed by Schrottii ©2023-2026<br />
+                    Shgabb Clicker - developed and created by Schrottii / Balnoom ©2023-2026<br />
                     <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
+                    No AI was/is used for creation of code, images, videos or other content in the game. <br />
                     This game uses WGGJ v1.5 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
                     <br />
 
-                    Based on the player and friend known as shgabb<br />
-                    Special thanks to the beta testers and most dedicated players, DaGame and elmenda452!<br />
+                    Tux mascot by Larry Ewing (lewing@isc.tamu.edu), created with GIMP. <br />
+                    Linux Mint logo by The Linux Mint Project (CC BY-SA 3.0) <br />
+                    Bag image created by Barduzzi <br />
+                    other assets are self-made by Schrottii <br />
+                    <br />
+
+                    Based on the player and friend known as shgabb <br />
+                    Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! <br />
                     <hr class="socialHr" style="clear:both" />
 
                     <h3 style="text-align: center;">Donate</h3>
@@ -476,6 +511,8 @@
     <script src="code\features\events.js"></script>
     <script src="code\features\shbook.js"></script>
     <script src="code\features\generators.js"></script>
+    <script src="code\features\scrapyard.js"></script>
+    <script src="code\features\blackmarket.js"></script>
 
     <script src="code\currencies\shgabb.js"></script>
     <script src="code\currencies\sandwiches.js"></script>

@@ -41,19 +41,22 @@ function renderGetShbookLeft(index, title, list, sName) {
 
     render = render + "<div id='shbookList' style='text-align: center; max-height: 640px; width: 100%; overflow-y: scroll; overflow-x: none'>";
 
-    let bgColor;
     for (let s in list) {
-        bgColor = (shbookSelections[index] == (index == "upgcalc" ? s : list[s].ID) ? "rgb(80, 160, 20)" : "rgb(40, 40, 40)");
-        render = render + `<button class="grayButton" 
-        style="width: 95%; margin-bottom: 2px; color: white; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; 
-        background-color: ` + bgColor + `; border-radius: 8px; border-color: ` + rgbManipulator(bgColor, 0.75)
-            + `" onclick="changeShbook('` + index + `', '` + (index == "upgcalc" ? s : list[s].ID) + `')">`
-            + sName(s) + `</button>`
+        render = render + renderShbookListEntry(index, list[s], s, sName);
     }
 
     render = render + "</div>";
     ui.shbookLeft.innerHTML = render;
     document.getElementById("shbookList").scrollTop = scrollBefore;
+}
+
+function renderShbookListEntry(index, entry, s = -1, sName = (s) => { return s; }) {
+    let bgColor = (shbookSelections[index] == (index == "upgcalc" ? s : entry.ID) ? "rgb(80, 160, 20)" : "rgb(40, 40, 40)");
+    return `<button class="grayButton" 
+        style="width: 95%; margin-bottom: 2px; color: white; font-size: ` + (innerWidth >= 768 ? 24 : 16) + `px; 
+        background-color: ` + bgColor + `; border-radius: 8px; border-color: ` + rgbManipulator(bgColor, 0.75)
+            + `" onclick="changeShbook('` + index + `', '` + (index == "upgcalc" ? s : entry.ID) + `')">`
+            + sName(s) + `</button>`;
 }
 
 function theShbookIsDead() {
@@ -149,9 +152,9 @@ class BookEntry{
 
     getName(raw = false) {
         if (this.ID > 99 && this.ID < 1000) {
-            return cImg(getWispImage(this.source))
-                + "[" + this.ID + "] "
-                + this.name;
+            return "<span class='listLeft' style='width: 25%;'>" + cImg(getWispImage(this.source)) + "</span>"
+                + "<span class='listCenter' style='min-width: 50%;'>" + this.name + "</span>"
+                + "<span class='listRight' style='width: 25%;'>" + "[" + this.ID + "]" + "</span>";
         }
         else {
             if (raw) return this.name().split("/>")[1];
@@ -160,13 +163,14 @@ class BookEntry{
     }
 
     getLoreLocked() {
-        return cImg(getWispImage(this.source))  + " Locked [#" + this.ID + ", " + (this.ID == game.loreSel ? game.loreP : "0") + "/" + this.amount + "]";
+        return "<span class='listLeft' style='width: 25%;'>" + cImg(getWispImage(this.source)) + "</span>"
+        + "<span class='listCenter' style='min-width: 50%;'>" + "Locked" + "</span>"
+        + "<span class='listRight' style='width: 25%;'>" + "[#" + this.ID + ", " + (this.ID == game.loreSel ? game.loreP : "0") + "/" + this.amount + "]" + "</span>";
     }
 
     getLockedName() {
         if (this.ID > 99 && this.ID < 1000) {
-            return cImg(getWispImage(this.source))
-                + " Not found";
+            return /*cImg(getWispImage(this.source))*/ "Not found";
         }
         else {
             return "Locked";
@@ -179,7 +183,7 @@ class BookEntry{
 ///////////////////////////////////
 
 const lore = [
-    new BookEntry(0, "Info", 0, 0, "Lore pages can be found by clicking (1/7k base chance). When one is found, it is added to your inventory, which can store up to 5 pages. Found pages can be selected to start collecting progress for them. Depending on the page this can be Memory Wisps or Candles, which are both gained by simply clicking. Once a page is fully collected/researched, it is unlocked, and can be read, and can provide a GS boost. Only one page can be selected at the same time, and when there is no page selected, zero Wisps are earned."),
+    new BookEntry(0, "Info", 0, 0, "Lore pages can be found by clicking (1/7k base chance). When one is found, it is added to your inventory, which can store up to 5 pages. Found pages can be selected to start collecting progress for them. Depending on the page this can be Memory Wisps or something event-related (such as Candles), which are both gained by simply clicking. Once a page is fully collected/researched, it is unlocked, and can be read, and can provide a GS boost. Only one page can be selected at the same time, and when there is no page selected, zero Wisps are earned."),
 
     // 100 - 199: Basic information about the lore, just rough edges
     new BookEntry(100, "Fascinating", 1, 4, `Fascinating. It's simply fascinating. I've seen many things in my life, and discovered more than Joe did - even if he says otherwise - and have seen some things you wouldn't believe... including my wife, hehe. But this thing, it's fascinating. What is this creature? It's fascinating. - Pierre`),
@@ -406,13 +410,21 @@ function getLoreByID(id) {
     }
 }
 
+function getLoreByDict(id) {
+    for (l in lore) {
+        if (lore[l].ID == id) return l;
+    }
+}
+
 function selectLore(id) {
+    if (game.loreSel == id) return false;
     game.loreSel = id;
     game.loreP = 0;
     renderLore();
 }
 
 function unselectLore(id) {
+    if (game.loreSel != id) return false;
     if (confirm("Do you really want to unselect? The progress will be lost!")) {
         game.loreSel = 0;
         game.loreP = 0;
@@ -421,6 +433,7 @@ function unselectLore(id) {
 }
 
 function throwLore(id) {
+    if (!game.lorepg.includes(id)) return false;
     if (confirm("Do you really want to get rid of this page? (Only benefit is getting space for other pages)")) {
         game.lorepg.splice(game.lorepg.indexOf(id), 1);
         if (game.loreSel == id) game.loreSel = 0;
@@ -428,11 +441,13 @@ function throwLore(id) {
     }
 }
 
+let loreRender = (s) => (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName()));
+
 function renderLore() {
     renderGetShbookTitle("Lore");
 
     // left side
-    renderGetShbookLeft("lore", "Lore", lore, (s) => (lore[s].isUnlocked() ? lore[s].getName() : (lore[s].isFound() ? lore[s].getLoreLocked() : lore[s].getLockedName())));
+    renderGetShbookLeft("lore", "Lore", lore, (s) => loreRender(s));
 
     // right side
     let thisLore = "";
@@ -445,18 +460,37 @@ function renderLore() {
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisLore.isUnlocked() ? thisLore.unlockedText.replace(new RegExp('@s', 'g'), `<br>>>"`).replace(new RegExp('@e', 'g'), `"<<`).replace(new RegExp('@p', 'g'), `"<br /><br />`) : (thisLore.isFound() ? "Locked [#" + thisLore.ID + ", " + (thisLore.ID == game.loreSel ? game.loreP : "0") + "/" + thisLore.amount + "]" : "???")) + "</div>";
 
     if (thisLore.ID == 0) {
-        // info page
-        render = render + "<br /><br /><div style='font-size: " + (1.6 * shbookSizeFactor) + "px'>Current page progress:<br />" +
-            cImg(getWispImage(getLoreByID(game.loreSel).name == "Info" ? 1 : getLoreByID(game.loreSel).source)) + game.loreP + (getLoreByID(game.loreSel).name == "Info" ? "" : "/" + getLoreByID(game.loreSel).amount)
-            + (game.loreSel != 0 ? ("<br /><br /> Currently collecting: #" + getLoreByID(game.loreSel).ID + "<br />" + (game.loreP / getLoreByID(game.loreSel).amount * 100)) + "%" : "<br />Currently not collecting progress for any page! Select one to start collecting!")
-            + "<br /><br />Lore pages currently in inventory (" + game.lorepg.length + "/5): " + game.lorepg + "."
-            + "<br /><br />" + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked! Boost: x" + fn(getLoreBoost()) + " GS!</div>";
+        // I N F O   P A G E
+        render = render + "<br /><div style='font-size: " + (1.6 * shbookSizeFactor) + "px'>";
+
+        // current page
+        if (game.loreSel != 0 ) {
+            render = render + "<br /><br /><h3>Current page:</h3>"
+                + "Currently collecting: #" + getLoreByID(game.loreSel).ID
+                + "<br />" + (game.loreP / getLoreByID(game.loreSel).amount * 100).toFixed(0) + "%"
+                + "<br />" + cImg(getWispImage(getLoreByID(game.loreSel).name == "Info" ? 1 : getLoreByID(game.loreSel).source)) + game.loreP + (getLoreByID(game.loreSel).name == "Info" ? "" : "/" + getLoreByID(game.loreSel).amount);
+        }
+        else {
+            render = render + "<br />Currently not collecting progress for any page! Select one to start collecting.";
+        }
+
+        // inventory
+        render = render + "<br /><br /><h3>Inventory:</h3>"
+        + "Lore pages currently in inventory (" + game.lorepg.length + "/5): " + game.lorepg.toString().replaceAll(",", ", ") + ".";
+        for (let cp of game.lorepg) {
+            render = render + renderShbookListEntry("lore", getLoreByID(cp), getLoreByDict(cp), (s) => loreRender(s));
+        }
+
+        // progress
+        render = render + "<br /><br /><h3>Progress:</h3>" 
+        + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked!" 
+        + "Boost: x" + fn(getLoreBoost()) + cImg("gs") + "</div>";
     }
     else if (!thisLore.isUnlocked() && thisLore.isFound()) {
         // found but not unlocked, add buttons
-        if (thisLore.ID != game.loreSel) render = render + "<br />" + "<button class='grayButton' onclick=selectLore(" + thisLore.ID + ") style='font-size: 40px'>Start collecting</button>";
-        else render = render + "<br />" + "<button class='grayButton' onclick=unselectLore(" + thisLore.ID + ") style='font-size: 40px'>Stop collecting (no refund)</button>";
-        render = render + "<br />" + "<button class='grayButton' onclick=throwLore(" + thisLore.ID + ") style='font-size: 40px'>Throw page away</button>";
+        render = render + "<br />" + "<button class='grayButton listLeft' style='font-size: 30px; width: 31%; height: 72px;' onclick=selectLore(" + thisLore.ID + ")>Start<br/>collecting page</button>";
+        render = render + "<button class='grayButton listCenter' style='font-size: 30px; width: 31%; height: 72px;' onclick=unselectLore(" + thisLore.ID + ")>Stop collecting<br />(no refund)</button>";
+        render = render + "<button class='grayButton listRight' style='font-size: 30px; width: 31%; height: 72px;' onclick=throwLore(" + thisLore.ID + ")>Throw<br/>page away</button>";
     }
 
     ui.shbookRight.innerHTML = render;
@@ -649,15 +683,45 @@ const missionary = [
             new MStep(1, 2602, "Own the Paroxysm Artifact, which is a massive progress booster.", () => game.a.includes(200)),
             new MStep(2, 2602, "Find 5 Artifacts<br />Reward: 10 Gems", ["artisFound", 5], () => awardGems(10)),
             new MStep(3, 2602, "Have 3 Artifacts equipped at once", () => game.aeqi.length == 3),
-            new MStep(4, 2602, "Get at least x10 Shgabb from Artifacts", () => getArtifactsSimpleBoost("shgabb") >= 10),
+            new MStep(4, 2602, "Get at least x10 Shgabb from Artifacts", () => getArtifactsSimpleBoost("shgabb") >= 10 || getArtifactsSimpleBoost("clickshgabb") >= 10 || getArtifactsSimpleBoost("autoshgabb") >= 10),
             new MStep(5, 2602, "Find 3 duplicate Artifacts", ["artiDupesFound", 3]),
-            new MStep(6, 2602, "Find 10 Artifacts<br />Reward: 20 Gems", ["artisFound", 10], () => awardGems(20)),
+            new MStep(6, 2602, "Find 5 Artifacts<br />Reward: 20 Gems", ["artisFound", 10], () => awardGems(20)),
             new MStep(7, 2602, "Get at least x3 Gem chance or x3 Artifact chance from Artifacts", () => getArtifactsSimpleBoost("gemchance") >= 3 || getArtifactsSimpleBoost("artifact") >= 3),
             new MStep(8, 2602, "Find 10 Artifacts<br />Reward: 20 Gems", ["artisFound", 10], () => awardGems(20)),
             new MStep(9, 2602, "Get at least x10 Sandwiches from Artifacts", () => getArtifactsSimpleBoost("sw") >= 10),
-            new MStep(10, 2602, "Reach HMS 2000 to be able to find new Artifacts<br />Reward: high chance (6000x) for an Artifact", () => game.stats.hms >= 2000, () => getNewArtifact(6000, true))
+            new MStep(10, 2602, "Reach HMS 2000 to be able to find Tier II Artifacts<br />Reward: high chance (6000x) for an Artifact", () => game.stats.hms >= 2000, () => getNewArtifact(6000, true))
         ]
-    )
+    ),
+    new Mission(2603, "Bread for Breakfast", () => game.stats.hms >= 1000, "HMS 1000",
+        "There are various things in the world that one can eat and digest, but there is no need to look further, and deeper into your wallet - just get some classic bread! Put butter on it, make sure all that bready surface is covered. Get some cheese, some mayo, cut it into two and then remove the bread by inserting it into your mouth. Cheap and delicious. So what are you waiting for, go get some Sandwiches! Maybe a million will do?", [
+            new MStep(1, 2603, "Have 1000 Sandwiches", () => game.sw.gte(1e3)),
+            new MStep(2, 2603, "Get at least x3 Sandwich boost from Artifacts", () => getArtifactsSimpleBoost("sw") >= 3),
+            new MStep(3, 2603, "Have 10,000 Sandwiches", () => game.sw.gte(1e4)),
+            new MStep(4, 2603, "Find Sandwiches 100 times.<br />Reward: 250,000 Sandwiches", ["sw", 100, false], () => { game.sw = game.sw.add(250000); statIncrease("sw", 250000) }),
+            new MStep(5, 2603, "Have 100,000 Sandwiches.<br />Reward: PFP", () => game.sw.gte(1e5), () => getPFPByID(600).eventAward()),
+            new MStep(6, 2603, "Max. the Cheese upgrade", () => sandwichUpgrades.cheese.currentLevel() >= 100),
+            new MStep(7, 2603, "Find a Sandwich while Sandwich Chance is at level 2 or lower", ["sw", 1, false, () => shgabbUpgrades.swChance.currentLevel() <= 2]),
+            new MStep(8, 2603, "Find 1,000,000 Sandwiches<br />Reward: PFP", ["sw", 1e6, true], () => getPFPByID(601).eventAward())
+        ]
+    ),
+    new Mission(2604, "Purple Tree Upgraders", () => game.stats.hms >= 2000, "HMS 2000",
+        "It's not really a tree - but with Améliorer upgrades, it almost feels like it. Having more total levels (of these upgrades) unlocks new sets, with the fourth upgrade of each being set being unlocked later, and usually stronger or special in a way. Getting these upgrades can take a while - and with two Amé every day, by completing Shgic, daily activity is encouraged. It is worth it, as these upgrades offer key boosts, new upgrades and unique effects.", [
+            new MStep(1, 2604, "Get 1 Amé", ["ame", 1]),
+            new MStep(2, 2604, "Win Shgic Shgac Shgoe", ["tttw", 1]),
+            new MStep(3, 2604, "Reach 10 Amé levels to unlock the second set", () => getTotalAme() >= 10),
+            new MStep(4, 2604, "Get 5 Amé<br />Reward: 50 Gems", ["ame", 5, true], () => awardGems(50)),
+            new MStep(5, 2604, "Get Shgabb 200 times", ["shgabb", 200, false]),
+            new MStep(6, 2604, "Get Sandwiches 100 times", ["sw", 100, false]),
+            new MStep(7, 2604, "Get GS 50 times", ["gs", 50, false]),
+            new MStep(8, 2604, "Get Silicone 1000 times", ["si", 1000, false]),
+            new MStep(9, 2604, "Reach 25 Amé levels to unlock the third set<br />Reward: PFP", () => getTotalAme() >= 25, () => getPFPByID(602).eventAward()),
+            new MStep(10, 2604, "Buy GS Boosts Shgabb, a powerful boost from the third set", () => ameliorerUpgrades.gsBoostsShgabb.currentLevel() >= 1),
+            new MStep(11, 2604, "Win Shgic Shgac Shgoe", ["tttw", 1]),
+            new MStep(12, 2604, "Reach 40 Amé levels to unlock the fourth set", () => getTotalAme() >= 40),
+            new MStep(13, 2604, "Buy Unlock More Sandwich Upgrades 2, a powerful unlock from the fourth set", () => ameliorerUpgrades.unlockMSW2.currentLevel() >= 1),
+            new MStep(14, 2604, "Get 10 Amé<br />Reward: PFP", ["ame", 10, true], () => getPFPByID(603).eventAward()),
+        ]
+        )
 ];
 
 ///////////////////////////////////
@@ -707,7 +771,7 @@ function renderCurrenciary() {
 
 const featuriary = [
     new BookEntry(1, "Shbook", () => true, "...", "Welcome to the Shbook! Here you can find basic help for the game and explore the lore. The Shbook consists of three parts: the Currenciary, Featuriary, and the Lore (unlocked at HMS 4000). Navigate between the three parts at the top, and their individual contents with the list on the left side.<br /><br /><div style='text-align: left'>- Lore: Once unlocked, pages can be found and selected, to unlock the lore of the game.<br />- Currenciary: A list of currencies in the game with short descriptions of how to get them and what they do.<br />- Featuriary: A list of features in the game with explanations.</div><br /><br />Content in the Currenciary and Featuriary can only be read after unlocking it, but if you are too curious, the link to the corresponding wiki article at the bottom is always available!"),
-    new BookEntry(2, "Unlocks", () => true, "...", "There are many features, currencies and other things that can be unlocked in this game. Most of them are unlocked by upgrading the first Shgabb Upgrade, called More Shgabb. Its unlocks often refer to it as HMS. Below you can find a list of ALL HMS unlocks, beware of the spoilers. Some things are unlocked in other ways, but they are easy to come across. Hope you enjoy unlocking new content! <br /> <br /><div style='text-align: left'>- HMS 25: Shbook<br />- HMS 100: Player Profile<br />- HMS 500: Gems<br />- HMS 1000: Artifacts, Missions<br />- HMS 2000: Events, Améliorer and Minigames (Shgic Shgac Shgoe)<br />- HMS 3000: Generators<br />- HMS 4000: Lore<br />- HMS 5000: Fishgang and Pearls<br />- HMS 6000: Challenges<br />- HMS 7000: Chengas<br />- HMS 8000: Bags<br />- HMS 10000: Copper Shgabb and Etenvs<br />- HMS 12000: The Mine and Iron Shgabb<br />- HMS 15000: Bananas</div>"),
+    new BookEntry(2, "Unlocks", () => true, "...", "There are many features, currencies and other things that can be unlocked in this game. Most of them are unlocked by upgrading the first Shgabb Upgrade, called More Shgabb. Its unlocks often refer to it as HMS. Below you can find a list of ALL HMS unlocks, beware of the spoilers. Some things are unlocked in other ways, but they are easy to come across. Hope you enjoy unlocking new content! <br /> <br /><div style='text-align: left'>- HMS 25: Shbook<br />- HMS 100: Player Profile<br />- HMS 500: Gems<br />- HMS 1000: Artifacts, Missions<br />- HMS 2000: Events, Améliorer and Minigames (Shgic Shgac Shgoe)<br />- HMS 3000: Generators<br />- HMS 4000: Lore<br />- HMS 5000: Fishgang and Pearls<br />- HMS 6000: Challenges<br />- HMS 7000: Chengas<br />- HMS 8000: Bags and Gem Storage<br />- HMS 10000: Copper Shgabb and Etenvs<br />- HMS 12000: The Mine and Iron Shgabb<br />- HMS 13000: Black Market<br />- HMS 14000: Scrapyard<br />- HMS 15000: Bananas<br /><br />Furthermore, some things have additional unlocks over time:<br />- Gem Offers: 1000, 1100, 1200, 1500<br />- Artifact Tiers: 2000, 4000, 8000, 10000<br />- Challenges: 8000, 10000, 12000</div>"),
     new BookEntry(3, "Hotkeys", () => true, "...", "On PC or with a keyboard, some keys are bound to game mechanics. <br /> <br /><div style='text-align: left'>- 1-8: Artifact loadouts<br />- P: prestige<br />- W, A, S, D, C: navigating through sections<br />- Arrow keys and space: moving in The Mine<br />- space: click button</div>"),
     new BookEntry(4, "Ads", () => unlockedAds(), "10 Sandwiches", () => "In this game, joke ads (not real ads - no money is earned with them) can be watched to get a boost for a few minutes. If you don't accept an offer, a new one will appear after a few seconds. Their audio can be toggled in settings. Here are all ads: <br /><br /><div style='text-align: left'>" + renderAllAdTexts() + "</div>"),
     new BookEntry(5, "Prestige", () => unlockedGS(), "1M Shgabb", "Prestiging is unlocked at 1M Shgabb. Prestiging sacrifices most progress, such as Shgabb, Sandwiches and Upgrades, but gives Golden Shgabb in return."),
@@ -717,6 +781,8 @@ const featuriary = [
     new BookEntry(9, "Fishgang", () => unlockedFishing(), "HMS 5000", "Fishgang (also known as Fishing) is the second minigame, unlocked at HMS 5000. It is rather complex. The player can choose how far to throw the rod, further distances are more difficult, but also more valuable. The player can catch trash or fish, which award XP that contribute to level ups which award Pearls."),
     new BookEntry(10, "Challenges", () => unlockedChallenges(), "HMS 6000", "Challenges are unlocked at HMS 6000 and each offer a change to the gameplay. Starting a Challenge costs Gems and a Prestige. A Challenge can be beaten by reaching the required More Shgabb amount and then performing a Prestige. Each Challenge has a different reward, increasing with every tier: with every completion."),
     new BookEntry(11, "The Mine", () => unlockedMine(), "HMS 12 000", "The Mine is the third minigame, unlocked at HMS 12 000. Walk through randomly generated mines (arrow keys (space to stop moving) or clicking the arrows). You can come across Golden Shgabb, Silicone and Copper. Stand on an ore to mine it. Make progress with the normal click button, or auto. There are walls and water you can't walk through. And webs, which slow you down for 2 seconds."),
+    new BookEntry(12, "Black Market", () => unlockedBlackMarket(), "HMS 13 000", "The Black Market is a mysterious place that is said to only appear once every month. (The 13th of every month.) There you may find exclusive tier X Artifacts, that cannot be obtained normally, as well as excusive cosmetics."),
+    new BookEntry(13, "Scrapyard", () => unlockedScrapyard(), "HMS 14 000", "The Scrapyard can be found near the mine. Spend leftover Artifact Scrap to increase Iron Shgabb gains. Every level takes a random amount of taps between 1 and 10, or 1 and the level, below level 10.")
 ];
 
 function renderFeaturiary() {
@@ -822,7 +888,7 @@ function renderUpgradeCalculator() {
     let render = "<div style='font-size: 40px'>" + selected[0] + " Upgrades" + "</div><hr />";
 
     for (let upg in selected[2]) {
-        if (selected[2][upg].isUnlocked()) render = render + "<button class='grayButton' onclick='selectedCalcUpg = `"+ upg + "`; renderUpgradeCalculator();'>" + selected[2][upg].name + "</button>";
+        if (selected[2][upg].isUnlocked()) render = render + "<button class='grayButton' style='" + selected[2][upg].getColors() + "' onclick='selectedCalcUpg = `"+ upg + "`; renderUpgradeCalculator();'>" + selected[2][upg].name + "</button>";
     }
     render = render + "<hr />";
 
@@ -830,18 +896,18 @@ function renderUpgradeCalculator() {
     render = render + "<h3>Selected upgrade: " + (selectedCalcUpg == "" ? "-" : selUpg.name) + "</h3>"
     if (selectedCalcUpg != "") {
         // basic values
-        render = render + "      Current level:  " + selUpg.currentLevel() + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "");
+        render = render + "<table align='center' style='text-align: left;'><tr><td>Current</td><td>level:</td><td>" + selUpg.currentLevel() + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "") + "</td></tr>";
 
-        render = render + "<br />Current price:  " + fn(selUpg.currentPrice());
-        if (selUpg.getMax() == undefined || selUpg.currentLevel() + 1 < selUpg.getMax()) render = render + "<br />Level+1 price:  " + fn(selUpg.getPrice(selUpg.currentLevel() + 1));
-        if (selUpg.getMax() != undefined) render = render + "<br />Price to max:   " + fn(selUpg.getPriceRange(selUpg.currentLevel(), selUpg.getMax()));
+        render = render + "<tr><td>Current</td><td>price:</td><td>" + fn(selUpg.currentPrice()) + "</td></tr>";
+        if (selUpg.getMax() == undefined || selUpg.currentLevel() + 1 < selUpg.getMax()) render = render + "<tr><td>Level+1</td><td>price:</td><td>" + fn(selUpg.getPrice(selUpg.currentLevel() + 1)) + "</td></tr>";
+        if (selUpg.getMax() != undefined) render = render + "<tr><td>Price</td><td>to max:</td><td>" + fn(selUpg.getPriceRange(selUpg.currentLevel(), selUpg.getMax())) + "</td></tr>";
 
-        render = render + "<br />Current effect: " + selUpg.effectDisplay();
-        if (selUpg.getMax() == undefined || selUpg.currentLevel() + 1 < selUpg.getMax()) render = render + "<br />Level+1 effect: " + selUpg.effectDisplay(selUpg.currentLevel() + 1);
-        if (selUpg.getMax() != undefined) render = render + "<br />Effect at max:   " + selUpg.effectDisplay(selUpg.getMax());
+        render = render + "<tr><td>Current</td><td>effect:</td><td>" + selUpg.effectDisplay() + "</td></tr>";
+        if (selUpg.getMax() == undefined || selUpg.currentLevel() + 1 < selUpg.getMax()) render = render + "<tr><td>Level+1</td><td>effect:</td><td>" + selUpg.effectDisplay(selUpg.currentLevel() + 1) + "</td></tr>";
+        if (selUpg.getMax() != undefined) render = render + "<tr><td>Max.</td><td>effect:</td><td>" + selUpg.effectDisplay(selUpg.getMax()) + "</td></tr>";
 
         // from to
-        render = render + "<hr />";
+        render = render + "</table><hr />";
         render = render + "From: <input id='upgradeCalcFrom' type='number' name='From' onchange='renderCalc();' />  ";
         render = render + "To: <input id='upgradeCalcTo' type='number' name='To' onchange='renderCalc();' />";
         render = render + "<br />OR single level: <input id='upgradeCalcSingleLevel' type='number' name='SingleLevel' onchange='renderCalc();' />";
@@ -853,7 +919,7 @@ function renderUpgradeCalculator() {
 }
 
 function renderCalc() {
-    let render = "";
+    let render = "<table align='center' style='text-align: left;'>";
     let selected = allUpgrades[shbookSelections.upgcalc];
     let selUpg = selected[2][selectedCalcUpg];
 
@@ -864,22 +930,23 @@ function renderCalc() {
     ];
 
     if (isValid(input[2]) && !isNaN(input[2])) {
-        render = render + "<br />Level: " + input[2] + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "");
+        render = render + "<tr><td>Level:</td><td>" + input[2] + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "") + "</td></tr>";
 
-        render = render + "<br />Price to L+1:  " + fn(selUpg.getPrice(input[2]));
-        render = render + "<br />Price to max:  " + fn(selUpg.getPriceRange(input[2], selUpg.getMax()));
+        render = render + "<tr><td>Price</td><td>to L+1:</td><td>" + fn(selUpg.getPrice(input[2])) + "</td></tr>";
+        render = render + "<tr><td>Price</td><td>to max:</td><td>" + fn(selUpg.getPriceRange(input[2], selUpg.getMax())) + "</td></tr>";
 
-        render = render + "<br />Effect: " + selUpg.effectDisplay(input[2]);
-        render = render + "<br />Effect at L+1: " + selUpg.effectDisplay(input[2] + 1);
+        render = render + "<tr><td>Effect:</td><td>" + selUpg.effectDisplay(input[2]) + "</td></tr>";
+        render = render + "<tr><td>Effect</td><td>at L+1:</td><td>" + selUpg.effectDisplay(input[2] + 1) + "</td></tr>";
     }
     else if (isValid(input[0]) && isValid(input[1]) && !isNaN(input[0]) && !isNaN(input[1])) {
-        render = render + "<br />Level: " + input[0] + "->" + input[1] + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "");
+        render = render + "<tr><td>Level:</td><td>" + input[0] + "->" + input[1] + (selUpg.getMax() != undefined ? "/" + selUpg.getMax() : "") + "</td></tr>";
 
-        render = render + "<br />Price:  " + fn(selUpg.getPriceRange(input[0], input[1]));
+        render = render + "<tr><td>Price:</td><td>" + fn(selUpg.getPriceRange(input[0], input[1])) + "</td></tr>";
 
-        render = render + "<br />Effect at " + input[0] + ": " + selUpg.effectDisplay(input[0]);
-        render = render + "<br />Effect at " + input[1] + ": " + selUpg.effectDisplay(input[1]);
+        render = render + "<tr><td>Effect</td><td>at L" + input[0] + ":</td><td>" + selUpg.effectDisplay(input[0]) + "</td></tr>";
+        render = render + "<tr><td>Effect</td><td>at L" + input[1] + ":</td><td>" + selUpg.effectDisplay(input[1]) + "</td></tr>";
     }
 
+    render = render + "</table>";
     document.getElementById("lvlsDisplay").innerHTML = render;
 }

@@ -112,10 +112,9 @@ class Upgrade {
         return this.getPrice(this.currentLevel());
     }
 
-    currentEffect(level = 0) {
-        // 0 == current
+    currentEffect(level = this.currentLevel()) {
         if (!isChallenge(0) && !this.isUnlocked()) return this.effect(0);
-        return this.effect(Math.min(level == 0 ? game.upgradeLevels[this.ID] : level, this.getMax() != undefined ? this.getMax() : 9999999999999999999));
+        return this.effect(Math.min(level, this.getMax() != undefined ? this.getMax() : 9999999999999999999));
     }
 
     currentLevel() {
@@ -129,14 +128,14 @@ class Upgrade {
         return false;
     }
 
-    effectDisplay(level = 0) {
+    effectDisplay(level = this.currentLevel()) {
         if (isChallenge(5)) return "?";
 
         let theEffect = this.currentEffect(level);
         if (this.currentEffect().mantissa != undefined) theEffect = theEffect.mul(this.effectMulti);
         else theEffect *= this.effectMulti;
 
-        let current = (settings.displayCurrent && this.current != undefined) ? " (Current: " + this.current(level == 0 ? this.currentLevel() : level) + ")" : "";
+        let current = (settings.displayCurrent && this.current != undefined) ? " (Current: " + this.current(level) + ")" : "";
         return (this.prefix != undefined ? this.prefix : "") + fn(theEffect) + (this.suffix != undefined ? (typeof(this.suffix) == "function" ? this.suffix(level) : this.suffix) : "") + current;
     }
 
@@ -144,27 +143,7 @@ class Upgrade {
         return this.getMax() == this.currentLevel();
     }
 
-    render() {
-        if (settings.hideMaxed && this.isMax() && !isChallenge(5)) return "";
-
-        // max button
-        let maxButton = "";
-        if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((this.getMax() > 10 && (!this.isMax() || isChallenge(5))) || this.getMax() == undefined)) maxButton = "<div onclick='buyMax(" + this.type + "." + this.ID + ")' class='maxButton'>MAX</div>";
-
-        // unlevel button
-        let unlevelButton = "";
-        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>" + (this.currentLevel() == this.getMax() ? "<div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>" : "");
-
-        // egg hunt
-        let egg = "";
-        if (eggUpgrade == this.ID) {
-            egg = "<img src='images/playerprofile/pfps/egg" + eggNumber + ".png' onclick='clickEgg()' width=32 height=32>";
-        }
-
-        // level
-        let levelDisplay = (this.isMax() ? " MAX." : " Lvl. " + this.currentLevel() + (this.getMax() != undefined ? "/" + this.getMax() : ""));
-        if (isChallenge(5)) levelDisplay = "?";
-
+    getColors() {
         // color
         let myColor = 0;
         if (settings.upgradeColors == "old") {
@@ -196,6 +175,31 @@ class Upgrade {
             else textColor = settings.customColors[1][3];
         }
 
+        return "border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ");";
+    }
+
+    render() {
+        if (settings.hideMaxed && this.isMax() && !isChallenge(5)) return "";
+
+        // max button
+        let maxButton = "";
+        if (goldenShgabbUpgrades.unlockMax.currentEffect() == 1 && ((this.getMax() > 10 && (!this.isMax() || isChallenge(5))) || this.getMax() == undefined)) maxButton = "<div onclick='buyMax(" + this.type + "." + this.ID + ")' class='maxButton'>MAX</div>";
+
+        // unlevel button
+        let unlevelButton = "";
+        if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>" + (this.currentLevel() == this.getMax() ? "<div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>" : "");
+
+        // egg hunt
+        let egg = "";
+        if (eggUpgrade == this.ID) {
+            egg = "<img src='images/playerprofile/pfps/egg" + eggNumber + ".png' onclick='clickEgg()' width=32 height=32>";
+        }
+
+        // level
+        let levelDisplay = (this.isMax() ? " MAX." : " Lvl. " + this.currentLevel() + (this.getMax() != undefined ? "/" + this.getMax() : ""));
+        if (isChallenge(5)) levelDisplay = "?";
+
+
         // for ame upg
         let ameExtraText = "";
         if (this.type == "ameliorerUpgrades") ameExtraText = "[S" + this.ameSet + "/" + (this.ameAmount != undefined ? this.ameAmount : 0) + "] ";
@@ -203,7 +207,7 @@ class Upgrade {
         let hasButtons = maxButton != "" || unlevelButton != "";
 
         // actual render
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='border-color: " + borderColor + "; background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>"
+        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='" + this.getColors() + "'>"
             + (hasButtons ? "<div style='height: 100%; display: flex; flex-direction: column;'>" : "")
             + "<div class='upgradeButtons'>" + maxButton + unlevelButton + "</div>" + (hasButtons ? "<div style='display: grid; place-items: center; flex: 1; align-items: center;'>" : "")
             + "<div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>"
@@ -218,7 +222,7 @@ class Upgrade {
             + (hasButtons ? "</div>" : "") 
             + "</button>";
         // locked ame upgs (visible)
-        else if (this.type == "ameliorerUpgrades") return "<button class='upgrade' style='background-color: " + myColor + "; color: rgb(" + textColor + "," + textColor + "," + textColor + ")'>" + ameExtraText + "<br />" + getTotalAme() + "/" + this.ameAmount + "</button>";
+        else if (this.type == "ameliorerUpgrades") return "<button class='upgrade' style='" + this.getColors() + "'>" + ameExtraText + "<br />" + getTotalAme() + "/" + this.ameAmount + "</button>";
         // locked upgs (invisible)
         else return "";
     }

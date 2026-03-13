@@ -25,6 +25,7 @@ var sections = {
     generators: document.getElementById("generatorsSection"),
     minigames: document.getElementById("minigamesSection"),
     events: document.getElementById("eventsSection"),
+    blackmarket: document.getElementById("blackmarketSection"),
 
     // sel 3
     cheats: document.getElementById("cheatSection"),
@@ -52,7 +53,7 @@ var sections = {
 var selections = ["shgabb", "none", "social", "shbook3"];
 var selectionTypes = [
     ["shgabb", "sandwich", "goldenShgabb", "siliconeShgabb", "ameliorer", "bags", "copper", "bananas"],
-    ["gems", "artifacts", "challenges", "generators", "minigames", "events"],
+    ["gems", "artifacts", "challenges", "generators", "minigames", "events", "blackmarket"],
     ["cheats", "playerprofile", "stats", "achievements", "settings", "social"],
     ["shbook1", "shbook2", "shbook3", "shbook4", "shbook5", "shbook6"]
     ];
@@ -67,7 +68,7 @@ function renderSelection(sel) {
         selsDisplay = [cImg("shgabb"), cImg("sandwich"), cImg("gs"), cImg("silicone"), cImg("ameliorer"), cImg("bag"), cImg("copper"), cImg("banana")];
     }
     if (sel == 2) {
-        selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenges/challenge1.png" />', '<img class="currency" src="images/generators.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />'];
+        selsDisplay = [cImg("gem"), '<img class="currency" src="images/arti/ring.png" />', '<img class="currency" src="images/challenges/challenge1.png" />', '<img class="currency" src="images/generators.png" />', '<img class="currency" src="images/achievements/ttt.png" />', '<img class="currency" src="images/currencies/gift.png" />', '<img class="currency" src="images/currencies/blackticket.png" />'];
     }
     if (sel == 3) {
         selsDisplay = ["Cheats", '<img class="currency" src="images/playerprofile/icon.png" />', '<img class="currency" src="images/stats.png" />', '<img class="currency" src="images/achievements/achievement.png" />', '<img class="currency" src="images/settings.png" />', '<img class="currency" src="images/social/schrottii.png" />'];
@@ -131,6 +132,8 @@ function isSelectionUnlocked(name, name2 = "") {
             return unlockedAmeliorer();
         case "events":
             return isEvent("any");
+        case "blackmarket":
+            return isBlackMarket();
 
         case "cheats":
             return BETA.isBeta;
@@ -173,6 +176,7 @@ function renderAllSelection(auto = false) {
     if (selections[2] == "playerprofile") renderPlayerProfile();
     renderShbook(auto);
     if (selections[0] == "shgabb") renderIdleMode();
+    if (selections[1] == "blackmarket") renderBlackMarket();
     if (selections[2] == "settings" && currentSettingSection != 3) renderSettings();
 
     if (selections[1] == "minigames") {

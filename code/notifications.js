@@ -4,6 +4,8 @@ var popupDisplayTimer = 0;
 const MAX_NOTIFICATIONS = 20;
 
 function createNotification(raw_text, values = []) {
+    if (getNotificationConfig(raw_text) == "none") return false;
+
     let date = new Date();
     let text = raw_text;
     for (let pair of values) {
@@ -18,7 +20,7 @@ function createNotification(raw_text, values = []) {
     });
 
     // remove oldest if full
-    if (currentNotifications.length > MAX_NOTIFICATIONS) {
+    if (currentNotifications.length >= 255) {
         notificationsConfigUpdated = 0;
         currentNotifications.shift();
     }
@@ -106,24 +108,24 @@ function renderNotifications() {
     render += "<h3 style='text-align: center;'>Notifications</h3>";
 
     // notifications area
-    if (!notificationsConfigToggle) {
+    if (!notificationsConfigToggle && currentNotifications.length > 0) {
         // render notifications into the area
         let n2 = MAX_NOTIFICATIONS;
         let bolded = false;
-        for (let n in currentNotifications) {
+        for (let n = currentNotifications.length - 1; n >= 0; n--) {
             if (getNotificationConfig(currentNotifications[n].base) == "all" || getNotificationConfig(currentNotifications[n].base) == "area") {
-                bolded = n == currentNotifications.length - 1;
+                bolded = n2 == MAX_NOTIFICATIONS;
                 render += (bolded ? "<b>" : "") + currentNotifications[n].line + (bolded ? "</b>" : "")
                     + " (" + currentNotifications[n].time + ")<br />";
                 n2 -= 1;
             }
+            if (n2 == 0) break;
         }
         if (n2 > 0) render += "<br />".repeat(n2);
         ui.notifications.innerHTML = render;
     }
     else if (notificationsConfigUniqueList != notificationsConfigUnique.length) {
         // render config into the area
-
         for (let n of notificationsConfigUnique) {
             render += "<span style='display: block; text-align: right;' class='grayButton'><b>" + n + "</b> ~ "
                 + "<button onclick='configureNotification(`" + n + "`, `all`)' " + (getNotificationConfig(n) == "all" ? "style='background-color: yellow;'" : "")
