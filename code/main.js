@@ -126,6 +126,7 @@ var ui = {
     // artifacts stuff
     artifacts: document.getElementById("artifacts"),
     artifactamount: document.getElementById("artifactamount"),
+    artifactEquipped: document.getElementById("artifactEquipped"),
     artifactSearch: document.getElementById("artifactSearch"),
 
     // shbook

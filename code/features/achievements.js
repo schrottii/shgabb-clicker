@@ -261,7 +261,7 @@ var achievements = [
     new Achievement(50, "ttt.png", "Shgiccer IV", "Win Shgic Shgac Shgoe 30 times", () => game.stats.tttw >= 30),
     new Achievement(108, "bags.png", "Playing DaGame IV", () => "Get " + fn(250000) + " Bags (total)", () => game.stats.bags >= 250000),
     new Achievement(30, "artifact.png", "Alexander Cunningham", "Get all Artifacts!", () => getArtifactAmount() == totalAmountOfArtifacts()),
-    new Achievement(221, "gem.png", "I need no triplets", "Already own all 3 Artifact Offers", () => !game.dgo.includes(0) && getArtifact(game.dgo[0]).isUnlocked() && getArtifact(game.dgo[1]).isUnlocked() && getArtifact(game.dgo[2]).isUnlocked()),
+    new Achievement(221, "gem.png", "I need no triplets", "Already own all 3 Artifact Offers", () => (game.dgo[0] == 0 || getArtifact(game.dgo[0]).isUnlocked()) && (game.dgo[1] == 0 || getArtifact(game.dgo[1]).isUnlocked()) && (game.dgo[2] == 0 || getArtifact(game.dgo[2]).isUnlocked())),
     new Achievement(55, "gem.png", "The Red Gems V", "Get your 10000th Gem", () => game.stats.tgems >= 10000),
     new Achievement(131, "challenge.png", "How upgrades disappear completely", "Complete Challenge 5", () => game.clg[5] >= 1),
     new Achievement(132, "challenge.png", "Welcome to Capitalism", "Complete Challenge 6", () => game.clg[6] >= 1),
@@ -309,6 +309,7 @@ var achievements = [
     new Achievement(187, "shbook.png", "Library of Babel", "Unlock all lore pages", () => game.lore.length == lore.length - 1),
     new Achievement(140, "clicks.png", "Clicker VI", "Click 5M times", () => game.stats.clicks >= 5000000),
     new Achievement(89, "hms.png", "Shgabb Conqueror VI", "Reach More Shgabb level 21,400", () => game.stats.hms >= 21400),
+    new Achievement(216, "hms.png", "Shgabb Conqueror VII", "Reach More Shgabb level 32,000", () => game.stats.hms >= 32000),
 
     // Achievements
     new Achievement(101, "achievement.png", "Achiever I", "Get 10 Achievements", () => game.ach.length >= 10),

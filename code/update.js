@@ -2,11 +2,25 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.6";
+const gameVersion  = "4.6.1";
 const versionTitle = "";
 
 const currentPatchNotes = `
-2026-03-13 v4.6:
+-> Black Market:
+- March 20th, 2026 will have an additional Black Market for those who didn't interact with the first
+
+-> Design:
+- Added smooth slide and fade in/out animations for toggling the Sidebar
+- Added smooth fade in/out animations for popups
+- ? and Sidebar toggle buttons now lighten up on hover
+- Artifacts show how many are currently selected (to the left of Scrap amount, while unlocked was moved to the right)
+- New Shbook button design
+
+-> Achievements:
+- Added Shgabb Conqueror VII as compensation for the fake duplicate Shgabb Conqueror IV (240 total)
+- Fixed issue with "I need no triplets"
+
+v4.6:
 -> Black Market:
 - New feature unlocked at 13,000 HMS
 - It always appears on the 13th of a month 

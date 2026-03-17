@@ -106,6 +106,7 @@ January - March 2026:
 4.5.1
 4.5.2
 4.6
+4.6.1
 
 
 
@@ -3142,3 +3143,20 @@ Version v3.6.1:
 - Added notification for gained Shgabb on a click (already existed for auto)
 - Fixed Shgabb Conqueror IV Achievement existing twice (visual bug)
 - Moved Shgabb Conqueror V Achievement
+
+
+
+2026-03-17 v4.6.1:
+-> Black Market:
+- March 20th, 2026 will have an additional Black Market for those who didn't interact with the first
+
+-> Design:
+- Added smooth slide and fade in/out animations for toggling the Sidebar
+- Added smooth fade in/out animations for popups
+- ? and Sidebar toggle buttons now lighten up on hover
+- Artifacts show how many are currently selected (to the left of Scrap amount, while unlocked was moved to the right)
+- New Shbook button design
+
+-> Achievements:
+- Added Shgabb Conqueror VII as compensation for the fake duplicate Shgabb Conqueror IV (240 total)
+- Fixed issue with "I need no triplets"

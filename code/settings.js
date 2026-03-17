@@ -249,17 +249,40 @@ function toggleBoostFilters() {
 function toggleSidebar() {
     ui.sosobar.style.display = "none";
     if (settings.sidebar == true) {
+        // slide in and fade in animation
+        ui.SIDEBAR.style.opacity = 0;
+        let sideBarFadeIn = 0;
+        let sideBarFadeInHandler = setInterval(() => {
+            sideBarFadeIn += 0.02;
+            ui.SIDEBAR.style.opacity = sideBarFadeIn;
+            ui.SIDEBAR.style.transform = "translate(-" + (100 - (sideBarFadeIn * 100)) + "%, 0)";
+            if (sideBarFadeIn >= 1) {
+                clearInterval(sideBarFadeInHandler);
+            }
+        }, 10);
+
         ui.SIDEBAR.style.display = "";
         ui.SIDEBAR.style.width = settings.sidebarWidth + "%";
         changeSidebarWidth();
     }
     else {
-        ui.SIDEBAR.style.display = "none";
-        ui.GAMECONTENT.style.width = "100%";
+        // slide out and fade out animation
+        let sideBarFadeIn = 0;
+        let sideBarFadeInHandler = setInterval(() => {
+            sideBarFadeIn += 0.02;
+            ui.SIDEBAR.style.opacity = 1 - sideBarFadeIn;
+            ui.SIDEBAR.style.transform = "translate(-" + (sideBarFadeIn * 100) + "%, 0)";
+            if (sideBarFadeIn >= 1) {
+                clearInterval(sideBarFadeInHandler);
 
-        if (settings.sidebar == "so-so") {
-            ui.sosobar.style.display = "";
-        }
+                ui.SIDEBAR.style.display = "none";
+                ui.GAMECONTENT.style.width = "100%";
+
+                if (settings.sidebar == "so-so") {
+                    ui.sosobar.style.display = "";
+                }
+            }
+        }, 10);
     }
 }
 

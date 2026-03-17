@@ -6,6 +6,7 @@ function isBlackMarket() {
     if (!unlockedBlackMarket()) return false;
 
     if (("" + game.day).substr(-2) == "13") return true;
+    if (("" + game.day) == "20260320" && game.stats.blackTickets - game.stats_today.blackTickets == 0) return true;
     else return false;
 }
 

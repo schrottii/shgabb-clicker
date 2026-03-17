@@ -29,10 +29,28 @@ function createNotification(raw_text, values = []) {
 function createPopup(title, text, img) {
     if (!settings.popups) return false;
 
+    // determine where to spawn it
     let num = settings.sidebar ? "2" : "";
+    let alreadySpawned = ui["popup" + num].style.display != "none";
+    ui["popup" + num].style.opacity = 0;
     ui.popup.style.display = settings.sidebar ? "none" : "";
     ui.popup2.style.display = settings.sidebar ? "" : "none";
 
+    if (!alreadySpawned) {
+        let popupFadeIn = 0;
+        let popupFadeInHandler = setInterval(() => {
+            popupFadeIn += 0.02;
+            ui["popup" + num].style.opacity = popupFadeIn;
+            if (popupFadeIn >= 1) {
+                clearInterval(popupFadeInHandler);
+            }
+        }, 10);
+    }
+    else {
+        ui["popup" + num].style.opacity = 1;
+    }
+
+    // insert values and timer
     ui["popupText" + num].innerHTML = title;
     ui["popupImage" + num].src = "images/" + img;
     ui["popupName" + num].innerHTML = text;
@@ -44,9 +62,18 @@ function tickPopup(time) {
     if (!settings.popups) popupDisplayTimer = 0;
     else popupDisplayTimer -= time;
 
-    if (popupDisplayTimer <= 0 && (ui.popup.style.display != "none" || ui.popup2.style.display != "none")) {
-        ui.popup.style.display = "none";
-        ui.popup2.style.display = "none";
+    let num = settings.sidebar ? "2" : "";
+    if (popupDisplayTimer <= 0 && ui["popup" + num].style.display != "none" && ui["popup" + num].style.opacity >= 1) {
+        // fade out animation
+        let popupFadeIn = 0;
+        let popupFadeInHandler = setInterval(() => {
+            popupFadeIn += 0.02;
+            ui["popup" + num].style.opacity = Math.max(1 - popupFadeIn, 0);
+            if (popupFadeIn >= 1) {
+                ui["popup" + num].style.display = "none";
+                clearInterval(popupFadeInHandler);
+            }
+        }, 10);
     }
 }
 

@@ -24,10 +24,10 @@
     </div>
 
     <UBERDIV>
-        <div id="SIDEBAR" class="sectionBG" style="display: none; position: fixed; width: 19%; height: 97.5%">
+        <div id="SIDEBAR" class="sectionBG" style="display: none; position: fixed; width: 19%; height: 97.5%; opacity: 1;">
             <!-- 19% -->
             <!-- <h2>Sidebar</h2> -->
-            <button class="sectionBG" style="position: absolute; left: 102%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = 'so-so'; toggleSidebar();"><b>X</b></button>
+            <button class="sectionBG sectionBGLighter" style="position: absolute; left: 102%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = 'so-so'; toggleSidebar();"><b>X</b></button>
 
             <div style="width: 100%; white-space: nowrap;">
                 <button class="clickButton" style="display: inline-block; width: 75%" onclick="clickButton()" id="clickButton2">+1 Shgabb</button>
@@ -72,7 +72,7 @@
 
     <UBERDIV id="GAMECONTENT" style="float: right; width: 100%">
         <!-- 80% -->
-        <button id="sosobar" class="sectionBG" style="position: fixed; left: 0.2%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = true; toggleSidebar();"><b>&gt;</b></button>
+        <button id="sosobar" class="sectionBG sectionBGLighter" style="position: fixed; left: 0.2%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = true; toggleSidebar();"><b>&gt;</b></button>
 
         <!-- Top, Quote, Click Button, Notifs -->
         <h2 id="gameName" class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
@@ -134,7 +134,7 @@
             /////////////////////////////////////////////
         -->
         <div class="sectionBG">
-            <button id="helpButton" class="sectionBG" style="position: relative; left: 0%; height: 32px; width: 32px; color: #01f8fd;" onclick="helpSection1();"><b>?</b></button>
+            <button id="helpButton" class="sectionBG sectionBGLighter" style="position: relative; left: 0%; height: 32px; width: 32px; color: #01f8fd;" onclick="helpSection1();"><b>?</b></button>
             <span id="selection1"></span>
 
             <!-- Shgabb -->
@@ -271,7 +271,10 @@
             <!-- Artifacts -->
             <div id="artifactSection" style="display: none">
                 <h3>Artifacts</h3>
-                <span id="artifactScrapAmount"></span>    <span id="artifactamount"></span> <br />
+                <span id="artifactEquipped" class="lefterText"></span>
+                <span id="artifactScrapAmount"></span>
+                <span id="artifactamount" class="righterText"></span>
+                <br />
 
                 <label for="artifactSearch">Search:</label>
                 <input type="text" id="artifactSearch" name="artifactSearch">

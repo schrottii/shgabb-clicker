@@ -623,10 +623,12 @@ function renderArtifacts() {
 function updateArtifacts() {
     // Artifacts
     if (unlockedArtifacts()) {
+        ui.artifactEquipped.innerHTML = game.aeqi.length + "/" + getMaxArtifactAmount() + " equipped";
         ui.artifacts.innerHTML = renderArtifacts();
-        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + totalAmountOfArtifacts() + " Artifacts unlocked";
+        ui.artifactamount.innerHTML = getArtifactAmount() + "/" + totalAmountOfArtifacts() + " unlocked";
     }
     else {
+        ui.artifactEquipped.innerHTML = "";
         ui.artifacts.innerHTML = "";
         ui.artifactamount.innerHTML = "";
     }
@@ -797,7 +799,7 @@ function getNewArtifact(multi = 1, guaranteed = false) {
     let chance = Math.random() * applyLuck(100);
 
     if (chance < 1 / 1000000 * multi) {
-        if (Math.random() < 0.5 * !allArtifactsOfRarity(4) || !anyArtifactsOfRarity(4)) {
+        if ((Math.random() < 0.5 * !allArtifactsOfRarity(4) || !anyArtifactsOfRarity(4)) && game.nexgai[4] != 0) {
             gambleArtifact(4);
         }
         else if (anyArtifactsOfRarity(4)) {
@@ -805,7 +807,7 @@ function getNewArtifact(multi = 1, guaranteed = false) {
         }
     }
     else if (chance < 1 / 32000 * multi) {
-        if (Math.random() < 0.5 * !allArtifactsOfRarity(3) || !anyArtifactsOfRarity(3)) {
+        if ((Math.random() < 0.5 * !allArtifactsOfRarity(3) || !anyArtifactsOfRarity(3)) && game.nexgai[3] != 0) {
             gambleArtifact(3);
         }
         else if (anyArtifactsOfRarity(3)) {
@@ -813,7 +815,7 @@ function getNewArtifact(multi = 1, guaranteed = false) {
         }
     }
     else if (chance < 1 / 4000 * multi) {
-        if (Math.random() < 0.5 * !allArtifactsOfRarity(2) || !anyArtifactsOfRarity(2)) {
+        if ((Math.random() < 0.5 * !allArtifactsOfRarity(2) || !anyArtifactsOfRarity(2)) && game.nexgai[2] != 0) {
             gambleArtifact(2);
         }
         else if (anyArtifactsOfRarity(2)) {
@@ -821,7 +823,7 @@ function getNewArtifact(multi = 1, guaranteed = false) {
         }
     }
     else if (chance < 1 / 800 * multi) {
-        if (Math.random() < 0.5 * !allArtifactsOfRarity(1) || !anyArtifactsOfRarity(1)) {
+        if ((Math.random() < 0.5 * !allArtifactsOfRarity(1) || !anyArtifactsOfRarity(1)) && game.nexgai[1] != 0) {
             gambleArtifact(1);
         }
         else if (anyArtifactsOfRarity(1)) {
@@ -851,6 +853,12 @@ function checkForZeroNext() {
 function gambleArtifact(r) {
     if (game.nexgai[r - 1] == 0 || (getArtifact(game.nexgai[r - 1]) != undefined && getArtifact(game.nexgai[r - 1]).isUnlocked())) game.nexgai[r - 1] = setNextArtifact(r);
     r -= 1;
+
+    if (game.nexgai[r] == 0) {
+        artifactDuplicate(r);
+        return false;
+    }
+
     // New artifact!
     game.a.push(game.nexgai[r]);
     statIncrease("artisFound", 1);
@@ -860,6 +868,7 @@ function gambleArtifact(r) {
     updateArtifacts();
 
     game.nexgai[r] = setNextArtifact(r);
+    return true;
 }
 
 function awardArtifact(id) {

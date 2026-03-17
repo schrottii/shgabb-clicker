@@ -484,13 +484,13 @@ function renderLore() {
         // progress
         render = render + "<br /><br /><h3>Progress:</h3>" 
         + game.lore.length + "/" + (lore.length - 1) + " lore pages unlocked!" 
-        + "Boost: x" + fn(getLoreBoost()) + cImg("gs") + "</div>";
+        + "<br />Boost: x" + fn(getLoreBoost()) + cImg("gs") + "</div>";
     }
     else if (!thisLore.isUnlocked() && thisLore.isFound()) {
         // found but not unlocked, add buttons
-        render = render + "<br />" + "<button class='grayButton listLeft' style='font-size: 30px; width: 31%; height: 72px;' onclick=selectLore(" + thisLore.ID + ")>Start<br/>collecting page</button>";
-        render = render + "<button class='grayButton listCenter' style='font-size: 30px; width: 31%; height: 72px;' onclick=unselectLore(" + thisLore.ID + ")>Stop collecting<br />(no refund)</button>";
-        render = render + "<button class='grayButton listRight' style='font-size: 30px; width: 31%; height: 72px;' onclick=throwLore(" + thisLore.ID + ")>Throw<br/>page away</button>";
+        render = render + "<br />" + "<button class='shbookButton listLeft' style='font-size: 30px; width: 31%; height: 72px;' onclick=selectLore(" + thisLore.ID + ")>Start<br/>collecting page</button>";
+        render = render + "<button class='shbookButton listCenter' style='font-size: 30px; width: 31%; height: 72px;' onclick=unselectLore(" + thisLore.ID + ")>Stop collecting<br />(no refund)</button>";
+        render = render + "<button class='shbookButton listRight' style='font-size: 30px; width: 31%; height: 72px;' onclick=throwLore(" + thisLore.ID + ")>Throw<br/>page away</button>";
     }
 
     ui.shbookRight.innerHTML = render;
@@ -647,7 +647,7 @@ function renderMissionsRightSide() {
         counter++;
     }
 
-    if (!thisMission.isCurrent() && !thisMission.isCompleted()) render = render + "</div><br /> <button class='grayButton' onclick='selectMission(" + thisMission.ID + ");'>Select this mission</button>";
+    if (!thisMission.isCurrent() && !thisMission.isCompleted()) render = render + "</div><br /> <button class='shbookButton' onclick='selectMission(" + thisMission.ID + ");'>Select this mission</button>";
 
     if (thisMission.isCompleted()) render = render + "</div>";
     ui.shbookRight.innerHTML = render;
@@ -760,7 +760,7 @@ function renderCurrenciary() {
     let render = "<div style='font-size: 40px'>" + (thisCurrency.isUnlocked() ? thisCurrency.getName() : "Locked") + "</div><hr><br />";
 
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisCurrency.isUnlocked() ? thisCurrency.unlockedText : "Locked [" + thisCurrency.lockedText + "]") + "</div>";
-    render = render + "<br /><br /><button class='grayButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + thisCurrency.getName(true) + "'>" + (thisCurrency.isUnlocked() ? "Learn more (Wiki)" : "Wiki (Spoilers)") + "</a></button>";
+    render = render + "<br /><br /><button class='shbookButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + thisCurrency.getName(true) + "'>" + (thisCurrency.isUnlocked() ? "Learn more (Wiki)" : "Wiki (Spoilers)") + "</a></button>";
 
     ui.shbookRight.innerHTML = render;
 }
@@ -802,7 +802,7 @@ function renderFeaturiary() {
     render = render + "<div style='font-size: " + (2 * shbookSizeFactor) + "px'>" + (thisFeature.isUnlocked() ?
         (typeof (thisFeature.unlockedText) == "function" ? thisFeature.unlockedText() : thisFeature.unlockedText)
         : "Locked [" + thisFeature.lockedText + "]") + "</div>";
-    render = render + "<br /><br /><button class='grayButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + thisFeature.getName() + "'>" + (thisFeature.isUnlocked() ? "Learn more (Wiki)" : "Wiki (Spoilers)") + "</a></button>";
+    render = render + "<br /><br /><button class='shbookButton' style='font-size: 40px'><a target='_blank' href='" + "https://shgabb-clicker.fandom.com/wiki/" + thisFeature.getName() + "'>" + (thisFeature.isUnlocked() ? "Learn more (Wiki)" : "Wiki (Spoilers)") + "</a></button>";
 
     ui.shbookRight.innerHTML = render;
 }
@@ -848,7 +848,7 @@ function renderShbookEvent() {
         game.etenvs++;
         statIncrease("etenvs", 1);
     }
-    if (unlockedEtenvs() && game.event == "" && game.etenvs > 0) render = render + "<button class='grayButton' onclick=useEtenv('" + selected.name + "') style='font-size: 40px'>Summon Event (1 " + cImg("etenv") + ", 10k " + cImg("gem") + ")</button>";
+    if (unlockedEtenvs() && game.event == "" && game.etenvs > 0) render = render + "<button class='shbookButton' onclick=useEtenv('" + selected.name + "') style='font-size: 40px'>Summon Event (1 " + cImg("etenv") + ", 10k " + cImg("gem") + ")</button>";
 
     ui.shbookRight.innerHTML = render;
 }
