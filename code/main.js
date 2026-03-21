@@ -520,6 +520,7 @@ window.addEventListener('keydown', function (e) {
 ///////////////////////////////////
 
 function statIncrease(name, number) {
+    //console.log(name, number);
     if (game.stats[name].mantissa != undefined) {
         if (isNaN(game.stats_prestige[name])) game.stats_prestige[name] = new Decimal(0);
         if (isNaN(game.stats_today[name])) game.stats_today[name] = new Decimal(0);
@@ -706,7 +707,7 @@ function updateStats() {
         + "<br />Total Fish: " + statLoader("fish")
         + "<br />Total Fish Weight: " + statLoader("fishweight") + " (Best: " + game.bfishweight + ")"
         + "<br />Total Fish Value: " + statLoader("fishvalue") + " (Best: " + game.bfishvalue + ")"
-        + "<br />(v4.6) Total Time: " + (game.stats.playTimeFish > 18000 ? (statLoader("playTimeFish", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeFish"))
+        + "<br />(v4.6) Total Time: " + (game.stats.playTimeFishgang > 18000 ? (statLoader("playTimeFishgang", false) / 3600).toFixed(1) + " hours" : statLoader("playTimeFishgang"))
         + "<br />"
 
         + "<br /><b>The Mine:</b>"
@@ -1582,7 +1583,7 @@ function shgabbClickerLoop(tick) {
     if (game.clickCooldown > 0) statIncrease("playTimeClicking", time);
     if (sandwichFreezeTime > 0) statIncrease("playTimeFridge", time);
     if (selections[1] == "minigames" && wggj.canvas.currentScene == "shgic") statIncrease("playTimeShgic", time);
-    if (selections[1] == "minigames" && wggj.canvas.currentScene == "fishgang") statIncrease("playTimeFish", time);
+    if (selections[1] == "minigames" && wggj.canvas.currentScene == "fishgang") statIncrease("playTimeFishgang", time);
     if (selections[1] == "minigames" && wggj.canvas.currentScene == "mine") statIncrease("playTimeMine", time);
     renderScrapyardFloatingNumber();
 

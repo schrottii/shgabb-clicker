@@ -117,10 +117,10 @@ function startChallenge(ID) {
         return false;
     }
 
-    game.gems -= getChallenge(ID).getPrice();
-
     enableThisChallenge = ID;
-    prestigeButton();
+    let success = prestigeButton();
+
+    if (success) game.gems -= getChallenge(ID).getPrice();
     enableThisChallenge = 0;
     renderChallenges();
 }
