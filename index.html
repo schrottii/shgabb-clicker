@@ -230,34 +230,24 @@
                 <span id="gemAmountTotal"></span><br />
 
                 <h3>Gems offers</h3>
-                <button class="upgrade" onclick="gemOffer(1)"><span id="gemOffer1"></span></button>
-                <button class="upgrade" onclick="gemOffer(2)"><span id="gemOffer2"></span></button>
+                <span id="gemOffers" class="upgradesContainer" style="max-width: 85%; margin: auto;"></span>
                 <br />
-                <button class="upgrade" onclick="gemOffer(3)"><span id="gemOffer3"></span></button>
-                <button class="upgrade" onclick="gemOffer(4)"><span id="gemOffer4"></span></button>
-                <br />
-                <button class="upgrade" onclick="gemOffer(5)"><span id="gemOffer5"></span></button>
-                <button class="upgrade" onclick="gemOffer(6)"><span id="gemOffer6"></span></button>
-                <button class="upgrade" onclick="gemOffer(7)"><span id="gemOffer7"></span></button>
-                <br />
-                <!--<button onclick="tester();" style="height: 80px;">jfaoiwskfvjnisfgvjnhseuifjhiu</button>-->
 
-                <br />
                 <div id="gemStorageContainer" class="sectionBG" style="display: none; max-width: 600px; margin: auto;">
                     <h3>Gem Storage</h3>
                     <span id="gemStorageDisplay"></span> <br />
                     Set: <input type="number" id="gemStorageAmount" onblur="gemStorage()" onchange="gemStorage()" /><br />
 
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('add', 30)">+30</button>
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('add', 1000)">+1000</button>
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('sub', 30)">-30</button>
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('sub', 1000)">-1000</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('add', 30)">+30</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('add', 1000)">+1000</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('sub', 30)">-30</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('sub', 1000)">-1000</button>
                     <br />
 
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('addpct', 1)">+1%</button>
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('addpct', 10)">+10%</button>
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('subpct', 1)">-1%</button>
-                    <button class="chineseOffer" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('subpct', 10)">-10%</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('addpct', 1)">+1%</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('addpct', 10)">+10%</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('subpct', 1)">-1%</button>
+                    <button class="chineseOffer gemTexture" style="min-width: 20%; min-height: 32px; max-height: 32px;" onclick="gemStorage('subpct', 10)">-10%</button>
                     <br />
 
                     Gems in the Gem Storage still count towards boosts, Achievements, etc. but can't be accidentally spent. Gems can be stored or withdrawn at any time without a fee.
@@ -271,9 +261,11 @@
             <!-- Artifacts -->
             <div id="artifactSection" style="display: none">
                 <h3>Artifacts</h3>
-                <span id="artifactEquipped" class="lefterText"></span>
-                <span id="artifactScrapAmount"></span>
-                <span id="artifactamount" class="righterText"></span>
+                <div style="width: 100%; display: inline-block;">
+                    <span id="artifactEquipped" class="lefterText"></span>
+                    <span id="artifactScrapAmount" class="middleText"></span>
+                    <span id="artifactamount" class="righterText"></span>
+                </div>
                 <br />
 
                 <label for="artifactSearch">Search:</label>
@@ -327,7 +319,7 @@
             </div>
 
             <!-- Event -->
-            <div id="eventsSection" class="square2" style="display: none">
+            <div id="eventsSection" style="display: none">
                 <span id="eventRender"></span>
             </div>
 
@@ -408,7 +400,7 @@
                 <h3>Settings</h3>
                 <span id="settings"></span>
 
-                <hr style="clear:both" />
+                <hr style="clear: both;" />
             </div>
 
             <!-- Other -->
@@ -424,7 +416,7 @@
                     Shgabb Clicker - developed and created by Schrottii / Balnoom ©2023-2026<br />
                     <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
                     No AI was/is used for creation of code, images, videos or other content in the game. <br />
-                    This game uses WGGJ v1.5 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library (with some adjustments)</a><br />
+                    This game uses WGGJ v1.5 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library</a><sup> (with some adjustments)</sup><br />
                     <br />
 
                     Tux mascot by Larry Ewing (lewing@isc.tamu.edu), created with GIMP. <br />

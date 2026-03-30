@@ -33,7 +33,7 @@ class LimitedEvent {
 // Y2 Shgabb The Witch Event | Oct 24 - Nov 16
 // Y2 Christmas Event | Dec 15 - Dec 28
 
-var forceEvent = "none"; // cheat to test an event
+var forceEvent = "none"; // cheat to test an event, default is "none"
 
 const events = {
     anniversary: new LimitedEvent(1, "anniversary", "Anniversary Event",
@@ -56,7 +56,7 @@ const events = {
     
     egg: new LimitedEvent(3, "egg", "Egg Hunt", 
         "The green bunnies are on the run and it's time to find their eggs! Celebrate the beginning of Spring and the joy of the hunt with this event. Find eggs that are hiding in the game, click to collect, and buy prizes! They include 6 PFPs, 2 Banners and 2 Frames.",
-        402, 415, "renderEgg", 
+        402, 415, "renderEggEvent", 
         {
             pfps: [409, 410, 411, 412, 413, 414],
             bans: [427, 428],
@@ -600,16 +600,13 @@ function applyLuck(div) {
 ////////////////////////////////////////////////////////////// event functions below
 // Egg Hunt Event   #6576656E7473
 ///////////////////////////////////
-var eggUpgrade = "";
-var eggNumber = 1;
-var eggTime = 10;
 
-function renderEgg() {
+function renderEggEvent() {
     let collectedPages = calcCollectedPages(6);
 
     let render = renderEventHeader("egg", "rgb(160, 240, 160, 0.5)",
         cImg("egg") + game.eggs + " Eggs"
-        + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />"
+        + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br />"
     );
     /*
     let render = "<h3>Egg Hunt Event</h3><br /><b>April 2nd - April 15th</b>";
@@ -618,37 +615,128 @@ function renderEgg() {
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
     */
 
-    if (!hasEventRewards("egg", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP<br/>50 " + cImg("egg") + "</button>";
-    if (!hasEventRewards("egg", "bans")) render = render + "<button class='chineseOffer' onclick='useEggs(5)'>Buy an Easter Banner<br/>50 " + cImg("egg") + "</button>";
-    if (!hasEventRewards("egg", "frames")) render = render + "<button class='chineseOffer' onclick='useEggs(6)'>Buy an Easter Frame<br/>50 " + cImg("egg") + "</button>";
-    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
+    render += "<div class='upgradesContainer'>";
+    if (!hasEventRewards("egg", "pfps")) render = render + "<br /><button class='easterButton' onclick='useEggs(1)'>Buy an Easter PFP<br />50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "bans")) render = render + "<button class='easterButton' onclick='useEggs(5)'>Buy an Easter Banner<br />50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "frames")) render = render + "<button class='easterButton' onclick='useEggs(6)'>Buy an Easter Frame<br />50 " + cImg("egg") + "</button>";
+    render = render + "<br /><button class='easterButton' onclick='useEggs(2)'>Guaranteed<br />random common Artifact<br />10 " + cImg("egg") + "</button>";
+    render = render + "<button class='easterButton' onclick='useEggs(3)'>Guaranteed<br />random rare Artifact<br />25 " + cImg("egg") + "</button>";
+    render = render + "<button class='easterButton' onclick='useEggs(4)'>Guaranteed<br />random epic Artifact<br />100 " + cImg("egg") + "</button>";
+    render += "</div>"
+    
+    render = render + "<br /><button class='easterButton' style='height: 256px;' onclick='useEggs(7)'>" + getArtifact(323).render(false) + "50 " + cImg("egg") + "</button>";
+    
 
     ui.eventRender.innerHTML = render;
 }
 
-function refreshEgg() {
-    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades, copperShgabbUpgrades, bananaUpgrades);
-    let randomNumber = Math.floor(Math.random() * Object.keys(allUpgrades).length - 1);
-
-    eggUpgrade = Object.keys(allUpgrades)[randomNumber];
-    eggNumber = Math.ceil(Math.random() * 4);
+var egg = {
+    active: false,
+    area: "",
+    location: "",
+    image: 1,
+    timer: 10
 }
 
-function clickEgg() {
-    doesUnlevel = true;
-    eggUpgrade = "";
+function renderEgg(area, location) {
+    if (egg.active == false) return "";
+    if (egg.area == area && egg.location == location) {
+        if (egg.active == "clicked") return "<img id='egg' src='images/event/easter/egg_clicked.png' onclick='event.stopPropagation();' width=32 height=32>";
+        return "<img id='egg' src='images/event/easter/egg" + egg.image + ".png' onclick='clickEgg(event)' width=32 height=32>";
+    }
+    return "";
+}
+
+var allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades, copperShgabbUpgrades, bananaUpgrades);
+var allUpgradesKeys = Object.keys(allUpgrades);
+var possibleEggAreas = ["upgrades", "gemoffers", "settings"];
+
+function refreshEgg() {
+    let randomNumber = Math.floor(Math.random() * allUpgradesKeys.length - 1);
+
+    egg.timer = [10, 20, 30][Math.floor(Math.random() * 3)];
+    egg.image = Math.ceil(Math.random() * 4); // 1 - 4
+    egg.active = true;
+
+    let previousArea = egg.area;
+    egg.area = possibleEggAreas[Math.floor(Math.random() * possibleEggAreas.length)];
+
+    // update based on previous
+    switch (previousArea) {
+        case "gemoffers":
+            renderGemOffers();
+            break;
+        case "settings":
+            renderSettings();
+            break;
+    }
+
+    if (getArtifact(323).isEquipped()) {
+        let level = getArtifact(323).getLevel();
+        switch (egg.area) {
+            case "upgrades":
+                getArtifact(323).boost = "shgabb";
+                getArtifact(323).amount = 1 +  level;
+                break;
+            case "gemoffers":
+                getArtifact(323).boost = "gems";
+                getArtifact(323).amount = 1 + 0.5 * level;
+                break;
+            case "settings":
+                getArtifact(323).boost = "lorechance";
+                getArtifact(323).amount = 1.2 + 0.4 * level;
+                break;
+        }
+        updateArtifacts();
+    }
+
+    switch (egg.area) {
+        case "upgrades":
+            egg.location = "upg_" + allUpgradesKeys[randomNumber];
+            break;
+        case "gemoffers":
+            egg.location = Math.ceil(Math.random() * 7);
+            renderGemOffers();
+            break;
+        case "settings":
+            if (allSettingTitles.length == 0) {
+                for (let set in settingButtons) {
+                    allSettingTitles.push(settingButtons[set].title);
+                }
+            }
+            egg.location = allSettingTitles[Math.floor(Math.random() * (allSettingTitles.length - 1))];
+            renderSettings();
+            break;
+    }
+}
+
+function clickEgg(event) {
+    if (egg.active != true) return false;
+
+    egg.active = "clicked";
+    if (document.getElementById("egg")) document.getElementById("egg").src = "images/event/easter/egg_clicked.png";
+    setTimeout(() => {
+        if (egg.active == "clicked") {
+            egg.active = false;
+            egg.location = "";
+            if (document.getElementById("egg")) document.getElementById("egg").style.display = "none";
+        }
+    }, 200);
+
+    getArtifact(323).amount *= 2;
+    updateArtifacts();
 
     createNotification("Egg found");
     game.eggs += 1;
     statIncrease("eggs", 1);
 
     renderCurrentEvent();
+    event.stopPropagation();
 }
 
 function useEggs(offerNR) {
     let reward;
+
     switch (offerNR) {
         case 1:
             // buy PFP
@@ -732,6 +820,13 @@ function useEggs(offerNR) {
             // bought one of them
             game.eggs -= 50;
             createNotification("Bought Frame for 50 Eggs");
+
+            break;
+        case 7:
+            if (game.eggs < 50) return false;
+
+            game.eggs -= 50;
+            awardArtifact(323);
 
             break;
     }
@@ -1033,7 +1128,7 @@ function STWButton(id, img, name, desc) {
     return "<br /><button onclick='" + (id != -1 ? "spendWitches(" + id : "castSpell(") + ")' class='witchButton'>"
     + "<b>" + name
     + (id != -1 ? " (" + witchesSpent[id] + "/10)" : "") + "</b><br />"
-    + "<div style='float: left; max-width: 20%;'><img src='images/" + img + ".png' /></div>" 
+    + "<div style='float: left; max-width: 20%;'><img src='images/event/shgabbthewitch" + img + ".png' /></div>" 
     + "<div style='float: right; width: 75%;'>" + desc + "</div></button>";
 }
 

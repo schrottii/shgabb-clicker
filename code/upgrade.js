@@ -190,15 +190,11 @@ class Upgrade {
         if (this.type != "siliconeShgabbUpgrades" && !settings.hideUnlevel && this.type != "ameliorerUpgrades" && ameliorerUpgrades.unlockUnlevel.currentEffect() == 1 && ((this.currentLevel() > 0))) unlevelButton = "<div onclick='unlevel(" + this.type + "." + this.ID + ")' class='maxButton'>-1</div>" + (this.currentLevel() == this.getMax() ? "<div onclick='unlevel(" + this.type + "." + this.ID + ", `true`)' class='maxButton'>-MAX</div>" : "");
 
         // egg hunt
-        let egg = "";
-        if (eggUpgrade == this.ID) {
-            egg = "<img src='images/playerprofile/pfps/egg" + eggNumber + ".png' onclick='clickEgg()' width=32 height=32>";
-        }
+        let egg = renderEgg("upgrades", "upg_" + this.ID);
 
         // level
         let levelDisplay = (this.isMax() ? " MAX." : " Lvl. " + this.currentLevel() + (this.getMax() != undefined ? "/" + this.getMax() : ""));
         if (isChallenge(5)) levelDisplay = "?";
-
 
         // for ame upg
         let ameExtraText = "";

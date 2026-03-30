@@ -115,13 +115,7 @@ var ui = {
     newestNotification2: document.getElementById("newestnotif2"),
 
     // Gem offers
-    gemOffer1: document.getElementById("gemOffer1"),
-    gemOffer2: document.getElementById("gemOffer2"),
-    gemOffer3: document.getElementById("gemOffer3"),
-    gemOffer4: document.getElementById("gemOffer4"),
-    gemOffer5: document.getElementById("gemOffer5"),
-    gemOffer6: document.getElementById("gemOffer6"),
-    gemOffer7: document.getElementById("gemOffer7"),
+    gemOffers: document.getElementById("gemOffers"),
 
     // artifacts stuff
     artifacts: document.getElementById("artifacts"),
@@ -468,7 +462,6 @@ document.addEventListener('keydown', function (e) {
     }
 
     if (e.key == ' ') {
-        clickButton();
         e.preventDefault();
     }
     return true;
@@ -480,6 +473,7 @@ document.addEventListener('keydown', function (e) {
 
 document.addEventListener('keyup', function (e) {
     if (e.key == "m") doBuyMax = false;
+    if (e.key == ' ') clickButton();
 }, false);
 
 ui.cheatAmount.oninput = () => {
@@ -567,6 +561,18 @@ function numberLoader(number) {
     return new Decimal("" + number);
 }
 
+function normalNotationAll() {
+    let prefs = "";
+    let num = new Decimal(1e6);
+
+    while (prefs.length < 1950) {
+        prefs += fn(num).split(".00 ")[1] + ", ";
+        num = num.mul(1e3);
+    }
+
+    return prefs;
+}
+
 function fn(number) {
     if (number == undefined) return "?";
 
@@ -592,9 +598,11 @@ function fn(number) {
             if (number.lt(1e12)) {
                 return m + " " + pre.start[Math.floor(number.exponent / 3)];
             }
+            /*
             if (number.gt(1e303)) {
                 return m + " ???";
             }
+            */
 
             let newE = number.exponent - 3;
             let thousand = Math.floor(newE / 3000) < 10 ? pre.thousands[Math.floor(newE / 3000)] : "[" + formatNumber(Math.floor(newE / 3000)) + "]M";
@@ -1056,7 +1064,6 @@ function updateEVERYTHING() {
     updateArtifacts();
     renderChallenges();
     renderCurrentEvent();
-    renderGemOffers();
     renderPlayerProfile();
     if (currentSettingSection != 3) renderSettings();
     renderShbook(true);
@@ -1134,6 +1141,7 @@ function exportGame(destination = "gimme") {
         createNotification("Couldn't export: Cheated");
         return false;
     }
+    
     let exporter = {};
     for (exportit in game) {
         exporter[exportit] = game[exportit];
@@ -1266,7 +1274,7 @@ function importGame(source) {
     shgicPointsPlayer = 0;
     shgicPointsEnemy = 0;
     canPlayTTT = false;
-    shgicResetField();
+    if (shgicResetField != undefined) shgicResetField();
 
     if (currentBoost != "none") {
         currentBoost = "none";
@@ -1619,9 +1627,8 @@ function shgabbClickerLoop(tick) {
 
     // Egg Hunt
     if (isEvent("egg")) {
-        eggTime -= time;
-        if (eggTime <= 0) {
-            eggTime = 10;
+        egg.timer -= time;
+        if (egg.timer <= 0) {
             refreshEgg();
         }
     }
@@ -1698,6 +1705,8 @@ function shgabbClickerLoop(tick) {
 }
 
 var userLinux = false;
+
+document.addEventListener('contextmenu', event => event.preventDefault());
 
 function shgabbClickerSetup() {
     gameLoadingProgress++;
@@ -1788,15 +1797,17 @@ function updateGameLoadingText() {
     ui.gameLoadingText.innerHTML = "Loading game. Progress: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br />";
 }
 
-try {
-    shgabbClickerSetup();
-}
-catch(e){
-    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")";
-    console.log(e);
-    let bob = "" + e;
-    ui.gameLoadingText.innerHTML += "<br /><button onclick='reportCrash(`" + bob + "`)'>Report to dev?</button><br /><br />";
-}
+window.addEventListener('load', function () {
+    try {
+        shgabbClickerSetup();
+    }
+    catch (e) {
+        ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")";
+        console.log(e);
+        let bob = "" + e;
+        ui.gameLoadingText.innerHTML += "<br /><button onclick='reportCrash(`" + bob + "`)'>Report to dev?</button><br /><br />";
+    }
+});
 
 async function reportCrash(text) {
     const webhookUrl = 'https://discord.com/api/webhooks/1461862584880992442/S3rr0kWGDcSriWxUH07lFDFita86p0yqDIpKCdB5GcTW_Zudi9dxV3sEg5qM0R59gJ3X';

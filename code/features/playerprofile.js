@@ -254,16 +254,16 @@ var pfps = [
     new PFP(407, "Chinese 1", "images/playerprofile/pfps/chinese-pfp1.png", () => game.evpfps.includes(407)),
     new PFP(408, "Chinese 2", "images/playerprofile/pfps/chinese-pfp2.png", () => game.evpfps.includes(408)),
 
-    new PFP(409, "Egg 1", "images/playerprofile/pfps/egg1.png", () => game.evpfps.includes(409)),
-    new PFP(410, "Egg 2", "images/playerprofile/pfps/egg2.png", () => game.evpfps.includes(410)),
-    new PFP(411, "Egg 3", "images/playerprofile/pfps/egg3.png", () => game.evpfps.includes(411)),
-    new PFP(412, "Egg 4", "images/playerprofile/pfps/egg4.png", () => game.evpfps.includes(412)),
+    new PFP(409, "Egg 1", "images/event/easter/egg1.png", () => game.evpfps.includes(409)),
+    new PFP(410, "Egg 2", "images/event/easter/egg2.png", () => game.evpfps.includes(410)),
+    new PFP(411, "Egg 3", "images/event/easter/egg3.png", () => game.evpfps.includes(411)),
+    new PFP(412, "Egg 4", "images/event/easter/egg4.png", () => game.evpfps.includes(412)),
     new PFP(413, "Hatched!", "images/playerprofile/pfps/egg5.png", () => game.evpfps.includes(413)),
     new PFP(414, "Holy Cross", "images/playerprofile/pfps/egg6.png", () => game.evpfps.includes(414)),
 
-    new PFP(415, "Pride PFP", "images/pride/shgabb-prideflag.png", () => game.evpfps.includes(415)),
-    new PFP(416, "Trans PFP", "images/pride/shgabb-transflag.png", () => game.evpfps.includes(416)),
-    new PFP(417, "Loveheart", "images/pride/loveheart.png", () => game.evpfps.includes(417)),
+    new PFP(415, "Pride PFP", "images/event/pride/shgabb-prideflag.png", () => game.evpfps.includes(415)),
+    new PFP(416, "Trans PFP", "images/event/pride/shgabb-transflag.png", () => game.evpfps.includes(416)),
+    new PFP(417, "Loveheart", "images/event/pride/loveheart.png", () => game.evpfps.includes(417)),
 
     new PFP(418, "Shorts", "images/currencies/shorts.png", () => game.evpfps.includes(418)),
     new PFP(419, "Smiling Sun", "images/playerprofile/pfps/sun.png", () => game.evpfps.includes(419)),
@@ -298,16 +298,16 @@ var banners = [
     // 300 - 399 | Currency Banners
 
     // 400 - 599 | Event Banners
-    new Banner(400, "Rainbow Flag", "images/pride/pride-normal.png", () => game.evbans.includes(400)),
-    new Banner(401, "Trans Flag",  "images/pride/pride-trans.png", () => game.evbans.includes(401)),
-    new Banner(402, "Non-Binary Flag", "images/pride/pride-nonbinary.png", () => game.evbans.includes(402)),
-    new Banner(403, "Lesbian Flag", "images/pride/pride-lesbian.png", () => game.evbans.includes(403)),
-    new Banner(404, "MLM Flag", "images/pride/pride-gay.png", () => game.evbans.includes(404)),
-    new Banner(405, "Bi Flag", "images/pride/pride-bi.png", () => game.evbans.includes(405)),
-    new Banner(406, "Pan Flag", "images/pride/pride-pan.png", () => game.evbans.includes(406)),
-    new Banner(407, "Asexual Flag", "images/pride/pride-a.png", () => game.evbans.includes(407)),
-    new Banner(408, "Intersex Flag", "images/pride/pride-inter.png", () => game.evbans.includes(408)),
-    new Banner(409, "Shgabbsexual Flag", "images/pride/pride-shgabb.png", () => game.evbans.includes(409)),
+    new Banner(400, "Rainbow Flag", "images/event/pride/event/pride-normal.png", () => game.evbans.includes(400)),
+    new Banner(401, "Trans Flag",  "images/event/pride/event/pride-trans.png", () => game.evbans.includes(401)),
+    new Banner(402, "Non-Binary Flag", "images/event/pride/event/pride-nonbinary.png", () => game.evbans.includes(402)),
+    new Banner(403, "Lesbian Flag", "images/event/pride/event/pride-lesbian.png", () => game.evbans.includes(403)),
+    new Banner(404, "MLM Flag", "images/event/pride/event/pride-gay.png", () => game.evbans.includes(404)),
+    new Banner(405, "Bi Flag", "images/event/pride/event/pride-bi.png", () => game.evbans.includes(405)),
+    new Banner(406, "Pan Flag", "images/event/pride/event/pride-pan.png", () => game.evbans.includes(406)),
+    new Banner(407, "Asexual Flag", "images/event/pride/event/pride-a.png", () => game.evbans.includes(407)),
+    new Banner(408, "Intersex Flag", "images/event/pride/event/pride-inter.png", () => game.evbans.includes(408)),
+    new Banner(409, "Shgabbsexual Flag", "images/event/pride/event/pride-shgabb.png", () => game.evbans.includes(409)),
 
     new Banner(410, "Heat 1", "images/playerprofile/banners/summerbanner1.png", () => game.evbans.includes(410)),
     new Banner(411, "Heat 2", "images/playerprofile/banners/summerbanner2.png", () => game.evbans.includes(411)),
@@ -368,9 +368,9 @@ var frames = [
     new Frame(407, "My Nest", "images/playerprofile/frames/nestframe.png", () => game.evframes.includes(407)),
     new Frame(408, "Egged", "images/playerprofile/frames/eggsframe.png", () => game.evframes.includes(408)),
 
-    new Frame(409, "Proud Frame", "images/playerprofile/frames/prideframe.png", () => game.evframes.includes(409)),
-    new Frame(410, "Gender Frame", "images/playerprofile/frames/prideframe2.png", () => game.evframes.includes(410)),
-    new Frame(411, "Love Frame", "images/playerprofile/frames/prideframe3.png", () => game.evframes.includes(411)),
+    new Frame(409, "Proud Frame", "images/playerprofile/frames/event/prideframe.png", () => game.evframes.includes(409)),
+    new Frame(410, "Gender Frame", "images/playerprofile/frames/event/prideframe2.png", () => game.evframes.includes(410)),
+    new Frame(411, "Love Frame", "images/playerprofile/frames/event/prideframe3.png", () => game.evframes.includes(411)),
 
     new Frame(412, "Hot Frame", "images/playerprofile/frames/hotframe.png", () => game.evframes.includes(412)),
     new Frame(413, "Cool Frame", "images/playerprofile/frames/coolframe.png", () => game.evframes.includes(413)),

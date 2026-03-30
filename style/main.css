@@ -472,10 +472,32 @@ progress {
     color: black;
 }
 
+.generatorButton2 {
+    background-image: url("../images/texture-generators2.png");
+    background-color: rgb(255, 0, 0, 0);
+    padding: 0% 2% 0% 2%;
+    outline: none;
+    border: none;
+    transition: 1s;
+}
+
+.generatorButton2:hover {
+    filter: brightness(150%);
+}
+
+.generatorBG {
+    background-image: url("../images/texture-generatorsb.png");
+    border-radius: 12px;
+    color: white;
+    margin: auto;
+    max-width: 800px;
+}
+
 /* ===================================================== */
 /* GEMS / ARTIFACTS / CHALLENGES / MINIGAMES */
 /* ===================================================== */
 .artifact {
+    color: black;
     text-align: center;
     margin: 1px 1px 1px 1px;
     border: 4px ridge pink;
@@ -483,6 +505,8 @@ progress {
     height: 160px;
     width: 32%;
     vertical-align: top;
+    font-size: 14px;
+    /* line-height: 80%; */
     font-family: Rw;
     position: sticky;
 }
@@ -558,6 +582,31 @@ progress {
 
     .chineseOffer:active {
         filter: brightness(80%);
+    }
+
+.easterButton {
+    background-color: rgb(255, 0, 0, 0);
+    background-image: url('../images/texture-easter-button.png');
+    background-size: 100% 100%;
+    vertical-align: top;
+    font-size: 20px;
+    color: white;
+    outline: none;
+    border: none;
+    padding: 1% 2% 1% 2%;
+    margin: 0px 8px 0px 8px;
+    min-height: 98px;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+    .easterButton:hover {
+        filter: brightness(80%);
+    }
+
+    .easterButton:active {
+        filter: brightness(60%);
     }
 
 /* ===================================================== */
@@ -729,23 +778,25 @@ progress {
 }
 
 .lefterText {
-    position: absolute;
-    left: 3%;
+    margin-left: 6%;
     text-align: right;
 }
 
+.middleText {
+    text-align: center;
+}
+
 .righterText {
-    position: absolute;
-    right: 3%;
+    margin-right: 6%;
     text-align: left;
 }
 
 @media only screen and (min-width: 768px) {
     .lefterText {
-        left: 30%;
+        margin-right: 10%;
     }
     .righterText {
-        right: 30%;
+        margin-left: 10%;
     }
 }
 
@@ -772,3 +823,9 @@ progress {
     .shbookButton:hover {
         filter: brightness(120%);
     }
+
+.gemTexture {
+    background-image: url('../images/texture-gem.png');
+    background-size: 100% 100%;
+    border-color: orangered;
+}

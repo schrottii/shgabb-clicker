@@ -279,9 +279,9 @@ class Artifact {
         // the effect (simple effect only)
         if (this.boost == undefined || this.desconly == true) return "";
 
-        let render = (this.boost == undefined ? "" : "<br />" + this.prefix + fn(this.getEffect()) + " " + this.getBoostType());
-        if (this.isUpgradable()) render = render + " → " + (this.boost == undefined ? "" : "<br />" + this.prefix + fn(this.getEffect(this.getLevel() + 1)) + " " + this.getBoostType());
-        return render + "<br />";
+        let render = (this.boost == undefined ? "" : this.prefix + fn(this.getEffect()) + " " + this.getBoostType());
+        if (this.isUpgradable()) render = render + " → " + (this.boost == undefined ? "" : this.prefix + fn(this.getEffect(this.getLevel() + 1)) + " " + this.getBoostType());
+        return render;
     }
 
     renderRarityText() {
@@ -293,8 +293,8 @@ class Artifact {
 
     renderDescription() {
         // the custom description (not the whole thing)
-        if (this.isUpgradable()) return (this.getDescription(this.getLevel() + 1) ? ("<span style='font-size: " + (this.getDescription(this.getLevel() + 1).length > 40 ? "10" : "12") + "px'>" + this.getDescription(this.getLevel() + 1) + "</span>") : "");
-        else return (this.getDescription() ? ("<span style='font-size: " + (this.getDescription().length > 40 ? "10" : "12") + "px'>" + this.getDescription() + "</span>") : "");
+        if (this.isUpgradable()) return (this.getDescription(this.getLevel() + 1) ? ("<span style='font-size: " + (this.getDescription(this.getLevel() + 1).length > 60 ? "12" : "14") + "px'>" + this.getDescription(this.getLevel() + 1) + "</span>") : "");
+        else return (this.getDescription() ? ("<span style='font-size: " + (this.getDescription().length > 60 ? "12" : "14") + "px'>" + this.getDescription() + "</span>") : "");
     }
 
     innerRender() {
@@ -335,10 +335,11 @@ class Artifact {
             + (cursedArtifacts.includes(this.ID) ? "<b>[CURSED]</b><br>" : "")
             + this.renderTier(this.tier) + " " + (!this.isUpgradable() ? (this.renderRarityText() + " <b>L" + this.getLevel() + "</b>") : getScrapCost(this.getLevel(), this.rarity) + " Artifact Scrap")
             + "</span>"
-            + "<br style='clear: both;' /><br /><span style='font-size: 14px'><b>" + this.name + "</b></span><br />"
-            + this.renderSimpleEffect() + this.renderDescription()
+            + "<br style='clear: both;' />" + (clickable ? "" : "<br />")
+            + "<span style='font-size: 14px;'><b>" + this.name + "</b><br /></span>"
+            + this.renderSimpleEffect() + "<br /><div style='line-height: " + (this.getDescription().length > 60 ? "80" : "90") + "%;'>" + this.renderDescription()
             // + (this.value != undefined ? ("<br />Value: " + this.getValue("?") + "/" + this.getValueMax()) : "")
-            + (this.timer != undefined ? ("<br />Timer: " + this.getTimer(0).toFixed(0) + "/" + this.timerMax) : "")
+            + (this.timer != undefined ? ("<br />Timer: " + this.getTimer(0).toFixed(0) + "/" + this.timerMax) : "") + "</div>"
             + `</` + (clickable ? "button" : "div") + `>`;
     }
 }
@@ -854,8 +855,9 @@ function gambleArtifact(r) {
     if (game.nexgai[r - 1] == 0 || (getArtifact(game.nexgai[r - 1]) != undefined && getArtifact(game.nexgai[r - 1]).isUnlocked())) game.nexgai[r - 1] = setNextArtifact(r);
     r -= 1;
 
+    // r = 0,1,2,3
     if (game.nexgai[r] == 0) {
-        artifactDuplicate(r);
+        artifactDuplicate(r + 1);
         return false;
     }
 
@@ -890,6 +892,7 @@ function awardArtifact(id) {
 
 function artifactDuplicate(rarity) {
     // this is triggered if we *know* that we are getting a duplicate, so let's see which one it is
+    // r = 1,2,3,4
     let possibleArtifacts = [];
     let gainedID = 100;
 
@@ -1789,6 +1792,13 @@ var artifacts = [
                 getArtifact(322).amount = 0.1;
             }
         }),
+
+    new Artifact(323, 3, 10, "Egg Instinct", "egginstinct.png",
+        {
+            prefix: "x", desc: "Boost changes depending on where an Egg is, doubles after finding it",
+            simpleBoost: ["shgabb", level => 1]
+        }
+    ),
 
 
 

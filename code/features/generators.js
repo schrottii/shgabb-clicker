@@ -50,12 +50,12 @@ class Generator {
 
     render() {
         let render = `<div class='generatorButton' style='width: 45%;'>`
-        render = render + "<b>" + '<img class="currency" src="images/generators.png" />' + this.name + '<img class="currency" src="images/generators.png" />' + "</b>";
+        render = render + "<b>" + '<img class="currency" src="images/generators.png" />   ' + this.name + '   <img class="currency" src="images/generators.png" />' + "</b>";
         render = render + "<br />Level: " + this.getLevel();
         render = render + "<br />Effect: +" + fn(this.currentEffect()) + " prod/s";
         render = render + "<br />Prod: x" + fn(this.currentProd()) + " Genpoints/s";
 
-        render = render + "<br /><button class='grayButton' onclick='upgradeGenerator(" + this.ID + ")'>"
+        render = render + "<br /><button class='generatorButton generatorButton2' onclick='upgradeGenerator(" + this.ID + ")'>"
             + "Upgrade: " + fn(this.currentPrice()) + cImg("gs")
             + "</button>";
 
@@ -70,12 +70,12 @@ function unlockedGenerators() {
 
 function calcGenPointsProd() {
     if (!unlockedGenerators()) return new Decimal(0);
-    return new Decimal(1)
-        .mul(generators[0].currentProd())
-        .mul(generators[1].currentProd())
-        .mul(generators[2].currentProd())
-        .mul(generators[3].currentProd())
-        .mul(generators[4].currentProd());
+    return new Decimal(0)
+        .add(generators[0].currentProd())
+        .add(generators[1].currentProd())
+        .add(generators[2].currentProd())
+        .add(generators[3].currentProd())
+        .add(generators[4].currentProd());
 }
 
 function updateGenerators(tick) {
@@ -95,8 +95,12 @@ function updateGenerators(tick) {
 
 function renderGenerators() {
     let ren = "<h2>Generators</h2>";
-    ren = ren + "<br />Genpoints: " + fn(game.genpoints.toFixed(2)) + "<br />x" + fn(getGenpointBoost()) + " (^" + (getGeneratorsPurchased() * 0.1).toFixed(1) + ") " + cImg("shgabb");
-    ren = ren + "<hr style='clear: both;' /><div  class='upgradesContainer'>";
+    ren += "<br /><div class='generatorButton generatorBG'>"
+    ren += "Genpoints: " + fn(game.genpoints.toFixed(2)) + " (" + fn(calcGenPointsProd()) + "/s)"
+    ren += "<br />x" + fn(getGenpointBoost()) + " (^" + (getGeneratorsPurchased() * 0.1).toFixed(1) + ") " + cImg("shgabb") + "</div>";
+    
+    
+    ren += "<hr style='clear: both;' /><div class='upgradesContainer'>";
     for (let g in generators) {
         if (generators[g].isVisible()) ren = ren + generators[g].render();
     }

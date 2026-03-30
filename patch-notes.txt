@@ -3160,3 +3160,35 @@ Version v3.6.1:
 -> Achievements:
 - Added Shgabb Conqueror VII as compensation for the fake duplicate Shgabb Conqueror IV (240 total)
 - Fixed issue with "I need no triplets"
+
+
+
+2026-03-30 v4.6.2:
+-> Egg Hunt Event:
+- Added Offer to buy the new Artifact (Egg Instinct) for 50 Eggs
+- New button design/texture
+- Changed eggs (see below)
+
+-> Eggs:
+- Egg can no longer be clicked through (e.g. to avoid accidental purchases)
+- Egg appears black for a moment after being clicked
+- Egg duration: 10s -> 10s or 20s or 30s (random)
+- Eggs can no longer only appear in upgrades, but also in: Gem Offers, Settings
+
+-> Artifacts:
+- New Tier X Epic Artifact: Egg Instinct (only useful during the event, makes it easier to find Eggs and becomes stronger after finding one)
+- Changed design to be as space efficient as possible and be able to show all text
+
+-> Gems:
+- Updated Gem Offer design
+- Added texture for Gem Offers and storage Buttons
+
+-> Generators:
+- Changed the top bit 
+- Genpoints/s are now shown
+- Added texture for upgrade button
+
+-> Bug fixes:
+- Improved loading (to fix rare random loading crashes)
+- Fixed Chrome specific issues
+- Fixed a spacebar exploit
