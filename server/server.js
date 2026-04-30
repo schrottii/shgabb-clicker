@@ -5,6 +5,7 @@ Server-side server logic code
 // imports
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 app.use(cors({
@@ -15,6 +16,15 @@ app.use(cors({
     ]
 }));
 app.use(express.json());
+
+const limiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 3,
+    message: "Rate limit reached: please try again later, unless you are malicious, then do not"
+});
+
+app.use('/playercount', limiter);
+
 
 // own vars
 let visitors = new Map();

@@ -10,6 +10,13 @@ async function sendTrackerUpdate(id) {
         body: JSON.stringify({ userID: id })
     });
 
+    // deal with the rate limiter
+    if (!response.ok) {
+        let errorText = await response.text();
+        console.warn("Server notice: ", errorText);
+        return;
+    }
+
     // the response
     let data = await response.json();
     console.log("player count: " + data.onlineLast30Days);
