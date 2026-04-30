@@ -13,6 +13,7 @@ async function sendTrackerUpdate(id) {
     // the response
     let data = await response.json();
     console.log("player count: " + data.onlineLast30Days);
+    ui.playercount.innerHTML = "Players in last 30 days: " + data.onlineLast30Days;
 }
 
 /*

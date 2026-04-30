@@ -30,6 +30,11 @@ app.post('/playercount', (req, res) => {
     let { userID } = req.body;
     if (!userID) return res.status(400).send("No ID provided by client");
 
+    // basic verification if the ID can be legit
+    if (userID.length < 8 || userID.length > 16) {
+        return res.status(400).send("Invalid player ID");
+    }
+
     // adds our dear user friend into our list + date
     visitors.set(userID, Date.now());
 

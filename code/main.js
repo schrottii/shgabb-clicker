@@ -26,6 +26,8 @@ var ui = {
     sosobar: document.getElementById("sosobar"),
     GAMECONTENT: document.getElementById("GAMECONTENT"),
 
+    playercount: document.getElementById("playercount"),
+
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
     adBar: document.getElementById("adBar"),
@@ -1775,6 +1777,8 @@ function shgabbClickerSetup() {
     // 7. Game is loaded! Yay
     gameLoadingPhaseName = "Finishing loading process";
     updateGameLoadingText();
+
+    sendTrackerUpdate(game.profile.id);
 
     createNotification("Game loaded");
     GAMELOADED = true;
