@@ -412,7 +412,7 @@ function hotkeyPreviousSelection() {
 let recentKeys = [];
 document.addEventListener('keydown', function (e) {
     recentKeys.push(e.key);
-    if (!BETA.isBeta && (e.key == 'F12' || (recentKeys.includes("Control") && recentKeys.includes("Shift") && (recentKeys.includes("i") || recentKeys.includes("I"))))) {
+    if (!BETA.isIndev && (e.key == 'F12' || (recentKeys.includes("Control") && recentKeys.includes("Shift") && (recentKeys.includes("i") || recentKeys.includes("I"))))) {
         if (e.key == 'F12') report("F12", 1);
         else report("CTRLSHIFTI", 1);
         recentKeys = [];
@@ -1715,7 +1715,7 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "Fairness measures";
     updateGameLoadingText();
 
-    if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+    if (!BETA.isIndev) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
     console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
     gameLoadingProgress++;
 

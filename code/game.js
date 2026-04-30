@@ -377,15 +377,6 @@ var settings = {
     autoplaySongs: false
 }
 
-// BETA (cheating)
-var BETA = {};
-Object.defineProperty(BETA, 'isBeta', {
-    value: false,
-    writable: false,
-    enumerable: true,
-    configurable: false
-});
-
 function report(flagName, susAmount) {
     if (game.flags[flagName] == undefined) {
         game.susq += susAmount;

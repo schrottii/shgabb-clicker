@@ -11,7 +11,7 @@ const currentPatchNotes = `
 currentPatchNotes.splice(0, 1);
 
 function generatePatchNotes() {
-    ui.gameTitle.innerHTML = cImg("shgabb") + "   Shgabb Clicker v" + gameVersion + (BETA.isBeta ? " (BETA)" : "") + "   " + cImg("shgabb");
+    ui.gameTitle.innerHTML = cImg("shgabb") + "   Shgabb Clicker v" + gameVersion + (BETA.isIndev ? "-dev" : "") + "   " + cImg("shgabb");
 
     let patchNotesText = "<b>Version v" + gameVersion + (versionTitle != "" ? " " + versionTitle : "") + ":</b>";
     for (p in currentPatchNotes) {
@@ -24,3 +24,12 @@ function generatePatchNotes() {
 function patchNotesSize() {
     ui.patchNotes.style.fontSize = ui.patchNotesSizeSlider.value + "px";
 }
+
+// BETA - easier debugging
+var BETA = {};
+Object.defineProperty(BETA, 'isIndev', {
+    value: true,
+    writable: false,
+    enumerable: true,
+    configurable: false
+});

@@ -136,7 +136,7 @@ function isSelectionUnlocked(name, name2 = "") {
             return isBlackMarket();
 
         case "cheats":
-            return BETA.isBeta;
+            return BETA.isIndev;
         case "playerprofile":
             return game.stats.hms >= 100;
         case "stats":
