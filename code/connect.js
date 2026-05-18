@@ -4,7 +4,7 @@ client-side code that talks to the server-side
 
 async function sendTrackerUpdate(id) {
     // send async request
-    let response = await fetch('http://localhost:3000/playercount', {
+    let response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userID: id })

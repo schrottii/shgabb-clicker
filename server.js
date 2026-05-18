@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
     origin: [
         'https://schrottii.github.io/shgabb-clicker/', // live
-        'http://localhost:5000', // local
+        'http://localhost:3000', // local
         'http://127.0.0.1:5500' // visual studio
     ]
 }));
