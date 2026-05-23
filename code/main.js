@@ -1552,6 +1552,11 @@ document.addEventListener("mousedown", (e) => {
 
     // start music
     if (firstClick) {
+        firstClick = false;
+    }
+});
+
+function startMusic() {
         wggj.audio.musicMuted = !settings.music;
         wggj.audio.soundMuted = !settings.sounds;
 
@@ -1560,9 +1565,7 @@ document.addEventListener("mousedown", (e) => {
 
         audioPlayMusic(songs[settings.song]);
         wggjAudio.loop = !settings.autoplaySongs;
-        firstClick = false;
-    }
-});
+}
 
 ///////////////////////////////////
 // CORE   #6D61696E736563
@@ -1791,6 +1794,8 @@ function shgabbClickerSetup() {
     // 7. Game is loaded! Yay
     gameLoadingPhaseName = "Finishing loading process";
     updateGameLoadingText();
+
+    toggleModal("welcomeback");
 
     sendTrackerUpdate(game.profile.id);
 

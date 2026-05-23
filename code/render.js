@@ -287,5 +287,18 @@ var modals = {
             if (Math.random() >= 0.99) m.write("modal-text1", ["cheese", "pizza", "casserole"][Math.floor(Math.random() * 3)]);
             m.write("shgabbAmount69", game.shgabb);
         }
-    )
+    ),
+    "welcomeback": new Modal("Welcome back to Shgabb Clicker v" + gameVersion,
+        ` 
+        <h3>Welcome back<span id="modal-playername"></span></h3>
+
+        <br /> <br />
+
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(); toggleModal('welcomeback', 'close');">Start</button>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close');">Start muted</button>
+        `,
+        (m, tick) => {
+            m.write("modal-playername", ", " + game.profile.name);
+        }
+    ),
 };
