@@ -214,10 +214,6 @@ var currentModal = "";
 var modalContainer = document.getElementById("modals");
 var modalContentContainer = document.getElementById("modalsContent");
 
-var modals = {
-    "default": "ee"
-};
-
 function toggleModal(name, forcemode = "") {
     if (modals[name] == undefined && name != "") return false;
 
@@ -230,9 +226,66 @@ function toggleModal(name, forcemode = "") {
     else {
         // OPEN
         // open it and set as current
-        modalContentContainer.innerHTML = `<span class="modal-close" onclick="toggleModal('', 'close');">&times;</span><h2>Modal header </h2><hr />heaheuhweawjdn`;
+        modalContentContainer.innerHTML = `<span class="modal-close" onclick="toggleModal('', 'close');">&times;</span>
+        <h2>${modals[name].title}</h2>
+        <hr />
+        ${modals[name].content}`;
+
+        modals[name].open();
 
         currentModal = name;
+        modalContainer.style.opacity = "0%";
         modalContainer.style.display = "block";
     }
 }
+
+class Modal {
+    constructor(title, content, tickFunction) {
+        this.title = title;
+        this.content = content;
+        this.tickFunction = tickFunction != undefined ? tickFunction : "() => {}";
+
+        let uiElements = content.split("id=");
+        for (let e = 0; e < uiElements.length; e++) {
+            if (uiElements[e][0] !== "'" && uiElements[e][0] !== '"') {
+                uiElements.splice(e, 1);
+                e--;
+            }
+            else {
+                if (uiElements[e][0] === '"') console.log(uiElements[e].split('"')[1]);
+                if (uiElements[e][0] === "'") uiElements[e] = uiElements[e].split("'")[1];
+                if (uiElements[e][0] === '"') uiElements[e] = uiElements[e].split('"')[1];
+            }
+        }
+        this.uiElementsNames = uiElements;
+    }
+
+    open() {
+        let uiElements = {};
+
+        for (let e of this.uiElementsNames) {
+            uiElements[e] = document.getElementById(e);
+        }
+        this.uiElements = uiElements;
+    }
+
+    write(element, text) {
+        if (this.uiElements[element] == undefined || this.uiElements[element].innerHTML == undefined) return false;
+        this.uiElements[element].innerHTML = text;
+        return true;
+    }
+}
+
+var modals = {
+    "default": new Modal("This is an example modal",
+        ` 
+        My favorite food is: <span id="modal-text1"></span> <br />
+        Shgabb amount: <span id='shgabbAmount69'>0</span> <br />
+        <img src='images/arti/sosnog.png' style='height: 50%;' />
+        `,
+        (m, tick) => {
+            if (Math.random() >= 0.99) m.write("modal-text1", ["cheese", "pizza", "casserole"][Math.floor(Math.random() * 3)]);
+            m.write("shgabbAmount69", game.shgabb);
+        }
+    )
+};

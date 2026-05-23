@@ -795,8 +795,8 @@ progress {
     margin: 15% auto;
     padding: 20px;
     border: 4px solid blue;
-    border-radius: 4px;
-    min-height: 96px;
+    border-radius: 12px;
+    min-height: 128px;
     width: 77%;
 }
 

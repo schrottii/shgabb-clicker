@@ -1653,6 +1653,13 @@ function shgabbClickerLoop(tick) {
     else ui.quote.style["margin-left"] = "-0%";
     ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
 
+    // modals
+    if (currentModal != "") {
+        if (parseInt(modalContainer.style.opacity) != "100%") modalContainer.style.opacity = "" + Math.min(100, parseFloat(modalContainer.style.opacity * 100) + time * 120) + "%";
+        console.log(modalContainer.style.opacity);
+        modals[currentModal].tickFunction(modals[currentModal], time);
+    }
+
     if (sandwichTime <= 0) {
         if (isChallenge(4)) {
             for (u in shgabbUpgrades) {
