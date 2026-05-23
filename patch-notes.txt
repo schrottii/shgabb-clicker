@@ -107,6 +107,8 @@ January - March 2026:
 4.5.2
 4.6
 4.6.1
+April - June 2026:
+4.7
 
 
 
@@ -3160,3 +3162,16 @@ Version v3.6.1:
 -> Achievements:
 - Added Shgabb Conqueror VII as compensation for the fake duplicate Shgabb Conqueror IV (240 total)
 - Fixed issue with "I need no triplets"
+
+
+
+x v4.7:
+-> ???:
+-
+
+-> Modals:
+- Added modals: a new layer of showing information
+
+-> Other:
+- Another attempt at fixing random crashes during loading 
+- Fixed issue with some cosmetics images

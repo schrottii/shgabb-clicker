@@ -1656,7 +1656,6 @@ function shgabbClickerLoop(tick) {
     // modals
     if (currentModal != "") {
         if (parseInt(modalContainer.style.opacity) != "100%") modalContainer.style.opacity = "" + Math.min(100, parseFloat(modalContainer.style.opacity * 100) + time * 120) + "%";
-        console.log(modalContainer.style.opacity);
         modals[currentModal].tickFunction(modals[currentModal], time);
     }
 
@@ -1807,14 +1806,16 @@ function updateGameLoadingText() {
     ui.gameLoadingText.innerHTML = "Loading game. Progress: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br />";
 }
 
-try {
-    shgabbClickerSetup();
-}
-catch(e){
-    ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")";
-    console.log(e);
-    let bob = "" + e;
-    ui.gameLoadingText.innerHTML += "<br /><button onclick='reportCrash(`" + bob + "`)'>Report to dev?</button><br /><br />";
+function loadShgabbClicker() {
+    try {
+        shgabbClickerSetup();
+    }
+    catch (e) {
+        ui.gameLoadingText.innerHTML = "Looks like the game crashed while loading!<br />Maybe report it to the dev.<br />P: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")";
+        console.log(e);
+        let bob = "" + e;
+        ui.gameLoadingText.innerHTML += "<br /><button onclick='reportCrash(`" + bob + "`)'>Report to dev?</button><br /><br />";
+    }
 }
 
 async function reportCrash(text) {
@@ -1851,3 +1852,5 @@ async function reportCrash(text) {
 
     ui.gameLoadingText.innerHTML = "Thanks for reporting and sorry for the inconvenience...<br /><br />";
 }
+
+window.addEventListener("load",  () => loadShgabbClicker());
