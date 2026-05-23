@@ -1590,6 +1590,7 @@ function shgabbClickerLoop(tick) {
     renderScrapyardFloatingNumber();
 
     for (aqq in game.aeqi) {
+        if (getArtifact(game.aeqi[aqq]) == undefined) continue;
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
     }
 

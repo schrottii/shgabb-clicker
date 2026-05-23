@@ -3,6 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <script>
+        // little script for balnoom.com/shgabb-clicker to fix paths / index
+        if (!window.location.hostname.includes("balnoom.com")) {
+            let base = document.createElement("base");
+            base.href = "/shgabb-clicker/";
+            document.head.appendChild(base);
+        }
+    </script>
+
     <title>Shgabb Clicker</title>
     <link href="style/main.css" rel="stylesheet" type="text/css">
 
