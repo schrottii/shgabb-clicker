@@ -1543,7 +1543,14 @@ wggjAudio.onended = () => {
     }
 }
 
-document.addEventListener("mousedown", () => {
+document.addEventListener("mousedown", (e) => {
+    // modal handler
+    console.log(e.target);
+    if (e.target.id == "modals") {
+        toggleModal("", "close");
+    }
+
+    // start music
     if (firstClick) {
         wggj.audio.musicMuted = !settings.music;
         wggj.audio.soundMuted = !settings.sounds;

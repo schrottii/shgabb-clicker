@@ -206,3 +206,33 @@ function changeSelection(sel, sels) {
     audioPlaySound("click");
     renderAllSelection();
 }
+
+
+
+// MODALS
+var currentModal = "";
+var modalContainer = document.getElementById("modals");
+var modalContentContainer = document.getElementById("modalsContent");
+
+var modals = {
+    "default": "ee"
+};
+
+function toggleModal(name, forcemode = "") {
+    if (modals[name] == undefined && name != "") return false;
+
+    if ((name == currentModal || forcemode == "close") && forcemode != "open") {
+        // CLOSE
+        // is already current
+        currentModal = "";
+        modalContainer.style.display = "none";
+    }
+    else {
+        // OPEN
+        // open it and set as current
+        modalContentContainer.innerHTML = `<span class="modal-close" onclick="toggleModal('', 'close');">&times;</span><h2>Modal header </h2><hr />heaheuhweawjdn`;
+
+        currentModal = name;
+        modalContainer.style.display = "block";
+    }
+}
