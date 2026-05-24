@@ -1,9 +1,17 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 
 // sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper - bananas
-// sel 2: gems - artifacts - shgic
+// sel 2: gems - artifacts - challenges - generators - minigames - event - black market
 // sel 3: cheats - stats - achievements - other (social, patch notes)
 // sel 4: shbook: lore - missions - currencies - features - upgcalc - events
+
+const legalLinks = `
+<a href="LICENSE.md" target="_blank">License</a> - 
+<a href="TOS.md" target="_blank">Terms of Service</a>- 
+<a href="PRIVACY.md" target="_blank">Privacy Policy</a>
+`;
+
+const legalOwner = `©2023-2026 Balnoom / Schrottii`;
 
 var selectedSelection = 1;
 
@@ -173,7 +181,12 @@ function renderAllSelection(auto = false) {
     renderSelection(4);
 
     // custom onclicks
-    if (selections[2] == "playerprofile") renderPlayerProfile();
+    if (selections[2] == "playerprofile") {
+        profileCanvas = document.getElementById("profileCanvas");
+        pctx = profileCanvas.getContext("2d");
+
+        renderPlayerProfile();
+    }
     renderShbook(auto);
     if (selections[0] == "shgabb") renderIdleMode();
     if (selections[1] == "blackmarket") renderBlackMarket();
@@ -291,14 +304,78 @@ var modals = {
     "welcomeback": new Modal("Welcome back to Shgabb Clicker v" + gameVersion,
         ` 
         <h3>Welcome back<span id="modal-playername"></span></h3>
+        <br />
+        
+        <canvas style="display: none;" id="profileCanvas2" class="playerProfile"></canvas><br />
 
         <br /> <br />
 
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenew');">Not you? (import / start new)</button>
+        <br />
+
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(); toggleModal('welcomeback', 'close');">Start</button>
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close');">Start muted</button>
+
+        <br /><br />
+        <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
         `,
         (m, tick) => {
             m.write("modal-playername", ", " + game.profile.name);
+
+            if (game.stats.hms >= 100) {
+                profileCanvas = document.getElementById("profileCanvas2");
+                pctx = profileCanvas.getContext("2d");
+
+                profileCanvas.style.display = "";
+                renderPlayerProfile();
+            }
+        }
+    ),
+    "welcomenew": new Modal("Welcome to Shgabb Clicker",
+        ` 
+        <h3>Returning player?</h3>
+        If you are a returning player: <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import</button>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
+
+        <br /><br />
+
+        <h3>New player?</h3>
+        If you are ready to start your journey: <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenewsave');">Create new save</button>
+
+        <br /><br />
+        <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
+        `,
+        (m, tick) => {
+        }
+    ),
+    "welcomenewsave": new Modal("Welcome: creating new save",
+        ` 
+        <h3>Start settings</h3>
+        All of these are optional and can be changed later. In the game you will have a lot more settings! <br />
+        <br /> <input type="checkbox" id="welcomenewsave-sound">Start with sound
+        <br /> <input type="checkbox" id="welcomenewsave-tutorial">Start tutorial
+        <br /> <input type="text" maxlength="16" size="16" id="welcomenewsave-username">Username
+
+        <h3>Start</h3>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="createNewSave();">Start</button>
+        `,
+        (m, tick) => {
         }
     ),
 };
+
+function createNewSave() {
+    let createSettings = {
+        sound: document.getElementById("welcomenewsave-sound").checked,
+        tutorial: document.getElementById("welcomenewsave-tutorial").checked,
+        username: document.getElementById("welcomenewsave-username").value
+    }
+
+    if (createSettings.sound == true) startMusic();
+    if (createSettings.tutorial == true) startTutorial();
+    if (createSettings.username != "") game.profile.name = createSettings.username.substr(0, 16);
+
+    toggleModal('welcomenewsave', 'close');
+}

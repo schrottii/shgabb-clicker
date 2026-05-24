@@ -180,7 +180,8 @@ var ui = {
     generatorsRender: document.getElementById("generatorsRender"),
     helpButton: document.getElementById("helpButton"),
     gameName: document.getElementById("gameName"),
-    blackMarketRender: document.getElementById("blackMarketRender")
+    blackMarketRender: document.getElementById("blackMarketRender"),
+    infoSectionLegal: document.getElementById("infoSectionLegal")
 }
 
 for (let u in ui.tutorial) {
@@ -1206,7 +1207,7 @@ function importButton() {
         source = source.substr(10);
     }
 
-    importGame(source);
+    return importGame(source); // true or false
 }
 
 function importGame(source) {
@@ -1358,6 +1359,7 @@ function importGame(source) {
     updateEVERYTHING();
 
     createNotification("Save imported successfully");
+    return true;
 }
 
 function deleteGame() {
@@ -1440,6 +1442,9 @@ function endTutorial() {
 ///////////////////////////////////
 
 function getOrigin() {
+    if (document.URL.includes("balnoom")) {
+        return "balnoom";
+    }
     if (document.URL.includes("github")) {
         return "web";
     }
@@ -1451,6 +1456,8 @@ function getOrigin() {
 
 ui.frWeb.style.display = getOrigin() != "galaxy" ? "" : "none";
 ui.frGalaxy.style.display = getOrigin() == "galaxy" ? "" : "none";
+
+ui.infoSectionLegal.innerHTML = legalOwner + "<br /><sub>" + legalLinks + "</sub>";
 
 // minigames setup WGGJ
 images = {
@@ -1557,14 +1564,14 @@ document.addEventListener("mousedown", (e) => {
 });
 
 function startMusic() {
-        wggj.audio.musicMuted = !settings.music;
-        wggj.audio.soundMuted = !settings.sounds;
+    wggj.audio.musicMuted = !settings.music;
+    wggj.audio.soundMuted = !settings.sounds;
 
-        audioChangeVolume("music", settings.musicVolume);
-        audioChangeVolume("sound", settings.soundVolume);
+    audioChangeVolume("music", settings.musicVolume);
+    audioChangeVolume("sound", settings.soundVolume);
 
-        audioPlayMusic(songs[settings.song]);
-        wggjAudio.loop = !settings.autoplaySongs;
+    audioPlayMusic(songs[settings.song]);
+    wggjAudio.loop = !settings.autoplaySongs;
 }
 
 ///////////////////////////////////
@@ -1760,7 +1767,7 @@ function shgabbClickerSetup() {
     if (localStorage.getItem("shgabbSettings") != undefined) {
         settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
 
-        if (!game.ach.includes(211)) startTutorial();
+        //if (!game.ach.includes(211)) startTutorial();
 
         // music n audio
         wggj.audio.musicMuted = !settings.music;
@@ -1795,7 +1802,12 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "Finishing loading process";
     updateGameLoadingText();
 
-    toggleModal("welcomeback");
+    if (game.stats.hms >= 1 || game.shgabb.gte(1)) { 
+        toggleModal("welcomeback");
+    }
+    else {
+        toggleModal("welcomenew");
+    }
 
     sendTrackerUpdate(game.profile.id);
 

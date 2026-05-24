@@ -1,7 +1,7 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 
-const profileCanvas = document.getElementById("profileCanvas");
-const pctx = profileCanvas.getContext("2d");
+var profileCanvas = document.getElementById("profileCanvas");
+var pctx = profileCanvas.getContext("2d");
 
 var profileCanvasWidth = 10;
 var profileCanvasHeight = 10;

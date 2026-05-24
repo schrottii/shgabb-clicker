@@ -3171,6 +3171,9 @@ x v4.7:
 
 -> Modals:
 - Added modals: a new layer of showing information
+- New modal for returning players (showing profile card and giving the options to start, start muted, or change save)
+- New modal for new players (import save, reset save, or create save (*does not override existing save if there is one))
+- New modal for save creation (giving start options: sound, tutorial, player name)
 
 -> Other:
 - Another attempt at fixing random crashes during loading 
