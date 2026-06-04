@@ -314,7 +314,7 @@ var modals = {
         <br />
 
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(); toggleModal('welcomeback', 'close');">Start</button>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close');">Start muted</button>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(true); toggleModal('welcomeback', 'close');">Start muted</button>
 
         <br /><br />
         <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
@@ -373,7 +373,8 @@ function createNewSave() {
         username: document.getElementById("welcomenewsave-username").value
     }
 
-    if (createSettings.sound == true) startMusic();
+    //if (createSettings.sound == true)
+    startMusic(!createSettings.sound);
     if (createSettings.tutorial == true) startTutorial();
     if (createSettings.username != "") game.profile.name = createSettings.username.substr(0, 16);
 

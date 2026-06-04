@@ -1546,7 +1546,7 @@ wggjAudio.onended = () => {
 
 document.addEventListener("mousedown", (e) => {
     // modal handler
-    console.log(e.target);
+    //console.log(e.target);
     if (e.target.id == "modals") {
         toggleModal("", "close");
     }
@@ -1557,14 +1557,14 @@ document.addEventListener("mousedown", (e) => {
     }
 });
 
-function startMusic() {
-    wggj.audio.musicMuted = !settings.music;
-    wggj.audio.soundMuted = !settings.sounds;
+function startMusic(forcemute = false) {
+    wggj.audio.musicMuted = forcemute ? true : !settings.music;
+    wggj.audio.soundMuted = forcemute ? true : !settings.sounds;
 
     audioChangeVolume("music", settings.musicVolume);
     audioChangeVolume("sound", settings.soundVolume);
 
-    audioPlayMusic(songs[settings.song]);
+    if (!forcemute) audioPlayMusic(songs[settings.song]);
     wggjAudio.loop = !settings.autoplaySongs;
 }
 
