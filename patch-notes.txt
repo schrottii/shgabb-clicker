@@ -107,7 +107,9 @@ January - March 2026:
 4.5.2
 4.6
 4.6.1
+4.6.2
 April - June 2026:
+4.6.3
 4.7
 
 
@@ -3162,6 +3164,65 @@ Version v3.6.1:
 -> Achievements:
 - Added Shgabb Conqueror VII as compensation for the fake duplicate Shgabb Conqueror IV (240 total)
 - Fixed issue with "I need no triplets"
+
+
+
+2026-03-30 v4.6.2:
+-> Egg Hunt Event:
+- Added Offer to buy the new Artifact (Egg Instinct) for 50 Eggs
+- New button design/texture
+- Changed eggs (see below)
+
+-> Eggs:
+- Egg can no longer be clicked through (e.g. to avoid accidental purchases)
+- Egg appears black for a moment after being clicked
+- Egg duration: 10s -> 10s or 20s or 30s (random)
+- Eggs can no longer only appear in upgrades, but also in: Gem Offers, Settings
+
+-> Artifacts:
+- New Tier X Epic Artifact: Egg Instinct (only useful during the event, makes it easier to find Eggs and becomes stronger after finding one)
+- Changed design to be as space efficient as possible and be able to show all text
+
+-> Gems:
+- Updated Gem Offer design
+- Added texture for Gem Offers and storage Buttons
+
+-> Generators:
+- Changed the top bit 
+- Genpoints/s are now shown
+- Added texture for upgrade button
+
+-> Bug fixes:
+- Improved loading (to fix rare random loading crashes)
+- Fixed Chrome specific issues
+- Fixed a spacebar exploit
+
+
+
+2026-06-04 v4.6.3:
+-> Pride Event:
+- Shgaybb Mode is now called Dating Mode 
+- It still slows down clicks, but instead of finding text-only "Shgabbs", you have a chance of finding a match (20%)
+- Your own character gets generated after the first click
+- When a possible match has appeared (20%), you can see their info and attempt to match
+- Info: name (irrelevant), age (irrelevant), gender, sexuality, possible cosmetics
+- For it to work, the sexuality needs to be compatible with the other's gender (e. g. straight male + female, pan + anything, lesbian female + bi female)
+- If it works, there is a 33% chance of it ultimately being a match
+- This still awards 20 Gems, but the cosmetics are based on the match (+10 extra Gems for duplicates)
+
+- Sexualities and genders are now differentiated
+- Each Shgabb has a gender, a sexuality, a name and an age
+- Realistic compabilities are considered (like lesbian only being for female characters)
+- Straight and Ally take the opposite gender (male-female)
+- Possible cosmetic rewards are tied to them (for example, the lesbian flag can come from a lesbian)
+- Removed "Supergay" and "Shgabbsexual"
+- Renamed "Gay male" to "Gay" and "Gay female" to "Lesbian"
+- Full list:
+- Sexualities: Asexual, Bi, Gay, Lesbian, Pan, Straight, Ally
+- Genders: Male, Female, Non-binary, Intersex, Transmasc, Transfem
+
+-> Other:
+- Fixed issue with some cosmetics images
 
 
 

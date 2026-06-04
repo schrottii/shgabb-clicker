@@ -117,13 +117,7 @@ var ui = {
     newestNotification2: document.getElementById("newestnotif2"),
 
     // Gem offers
-    gemOffer1: document.getElementById("gemOffer1"),
-    gemOffer2: document.getElementById("gemOffer2"),
-    gemOffer3: document.getElementById("gemOffer3"),
-    gemOffer4: document.getElementById("gemOffer4"),
-    gemOffer5: document.getElementById("gemOffer5"),
-    gemOffer6: document.getElementById("gemOffer6"),
-    gemOffer7: document.getElementById("gemOffer7"),
+    gemOffers: document.getElementById("gemOffers"),
 
     // artifacts stuff
     artifacts: document.getElementById("artifacts"),
@@ -1641,7 +1635,6 @@ function shgabbClickerLoop(tick) {
     if (isEvent("egg")) {
         eggTime -= time;
         if (eggTime <= 0) {
-            eggTime = 10;
             refreshEgg();
         }
     }
