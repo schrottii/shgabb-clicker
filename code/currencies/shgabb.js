@@ -192,7 +192,7 @@ function clickButton(source = "click") {
                 createNotification("+AMOUNT Sandwiches", [["AMOUNT", fn(amount)], ["es", (amount > 1 ? "es" : "")]]);
             }
 
-            findShgaybb();
+            datingModeGain();
             if (unlockedGems()) getGem(clickButtonMulti);
             if (unlockedArtifacts()) getNewArtifact(clickButtonMulti);
             if (unlockedCopper()) getCopper(clickButtonMulti);
@@ -239,7 +239,7 @@ function getCooldown(idleMode = "auto") {
         / (currentlyMining == true ? ironUpgrades.ironPickaxes.currentEffect() : 1)
         / (heatMode ? Math.max(1, Math.min(3, Math.log(summerClicks / 22.5))) : 1))
     if (isChallenge(3)) CD = 20;
-    if (shgaybbMode) CD = Math.max(2, CD);
+    if (prideEvent.datingMode) CD = Math.max(2, CD);
 
     // idle mode
     if (idleMode == true) {

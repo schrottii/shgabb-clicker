@@ -3192,3 +3192,20 @@ Version v3.6.1:
 - Improved loading (to fix rare random loading crashes)
 - Fixed Chrome specific issues
 - Fixed a spacebar exploit
+
+
+x v4.6.3:
+-> Pride Event:
+- Shgaybb Mode is now called Dating Mode 
+
+- Sexualities and genders are now differentiated
+- Each Shgabb has a gender, a sexuality, a name and an age and realistic compabilities are considered 
+- Possible cosmetic rewards are tied to them (for example, the lesbian flag can come from a lesbian)
+- Removed "Supergay" and "Shgabbsexual"
+- Renamed "Gay male" to "Gay" and "Gay female" to "Lesbian"
+- Full list:
+- Sexualities: Asexual, Bi, Gay, Lesbian, Pan, Straight, Ally
+- Genders: Male, Female, Non-binary, Intersex, Transmasc, Transfem
+
+-> Other:
+- Fixed issue with some cosmetics images

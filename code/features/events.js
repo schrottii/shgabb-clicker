@@ -838,79 +838,103 @@ function useEggs(offerNR) {
 ////////////////////////////////////////////////////////////// event functions below
 // Pride Event   #6576656E7473
 ///////////////////////////////////
-var shgaybbMode = false;
-var shgaybbFound = "";
+var prideEvent = {
+    datingMode: false,
+
+    // format: name, gender, sexuality, age
+    currentCharacter: [],
+    currentMatch: [],
+
+    sexualitiesList: [
+        // format: name, [genders that can be], [compatible] [possible cosmetics]
+        ["Asexual", "all", "all", ["b407", "p415", "f409"]],
+        ["Bi", "all", ["m", "f"], ["b405", "p415", "f409"]],
+        ["Gay", ["m"], ["m"], ["b400", "b404", "p415", "f409"]],
+        ["Lesbian", ["f"], ["f"], ["b400", "b403", "p415", "f409"]],
+        ["Pan", "all", "all", ["b406", "p415", "f409"]],
+        ["Straight", ["m", "f"], "opposite", ["b409"]],
+        ["Ally", ["m", "f"], "opposite", ["p417", "f411"]]
+    ],
+    gendersList: [
+        // format: name, identifer [possible bonus cosmetics]
+        ["Male", "m", ["b409"]],
+        ["Female", "f", ["b409"]],
+        ["Non-binary", "n", ["b402"]],
+        ["Intersex", "i", ["b408"]],
+        ["Transmasc", "m", ["p416", "b401", "f410"]],
+        ["Transfem", "f", ["p416", "b401", "f410"]]
+    ]
+}
+
+// replaces: shgaybbList shgaybbID() shgaybbFound
 
 function renderPride() {
-    let render = renderEventHeader("pride", "rgb(160, 40, 180, 0.5)", undefined);
+    let render = renderEventHeader("pride", "rgb(160, 40, 180, 0.5)", 
+        "Press the button below to activate Dating Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Frames can also be found. Every couple found gives 20 Gems."
+    );
     /*
     let render = "<h3>Pride Event</h3><br /><b>June 1st - June 14th</b>";
     render = render + "<br />" + events.pride.description;
     */
 
-    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Banners can also be found. Getting Pan Shgabb second counts as a joker, it works with anyone. Every couple found gives 20 Gems.";
-    render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
+    render = render + "<br /><button class='grayButton' onclick='toggleDatingMode()'>" + (prideEvent.datingMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
 
     ui.eventRender.innerHTML = render;
 }
 
-const shgaybbList = [
-    "Asexual",
-    "Bi",
-    "Gay male",
-    "Intersex",
-    "Gay female",
-    "Non-binary",
-    "Supergay",
-    "Pan",
-    "Shgabbsexual",
-    "Trans",
-    "Ally",
-    "Straight"
-];
-
-function toggleShgaybbMode() {
-    shgaybbMode = !shgaybbMode;
+function toggleDatingMode() {
+    prideEvent.datingMode = !prideEvent.datingMode;
     shgaybbFound = "";
     renderCurrentEvent();
 }
 
-function shgaybbID() {
-    switch (shgaybbFound) {
-        case "Supergay":
-            return 400;
-        case "Trans":
-            return 401;
-        case "Non-binary":
-            return 402;
-        case "Gay female":
-            return 403;
-        case "Gay male":
-            return 404;
-        case "Bi":
-            return 405;
-        case "Pan":
-            return 406;
-        case "Asexual":
-            return 407;
-        case "Intersex":
-            return 408;
-        case "Shgabbsexual":
-            return 409;
-        case "Ally":
-            return 999;
-        case "Straight":
-            return 999;
-        default:
-            return 999;
+function generatePrideCharacter() {
+    // for own character OR potential match
+    let gender = prideEvent.gendersList[Math.floor(Math.random() * prideEvent.gendersList.length)];
+
+    let possibleSexualities = [];
+    for (let sex of prideEvent.sexualitiesList) {
+        console.log(gender[0], gender[1], sex[0], sex[1], sex[1].includes(gender[1]));
+        if (sex[1] == "all" || sex[1].includes(gender[1])) possibleSexualities.push(sex);
     }
-    return 999;
+    let sexuality = possibleSexualities[Math.floor(Math.random() * possibleSexualities.length)];
+
+    let name;
+    switch (gender[1]) {
+        case "m":
+            name = ["Bob", "Mark", "Matthew", "Joregon", "Felix"];
+            break;
+        case "f":
+            name = ["Luna", "Emily", "Sophie", "Jane", "Robin"];
+            break;
+        default:
+            name = ["Robin", "Nico", "S.", "H.", "Jidaho", "Pawleigh", "Blade"];
+            break;
+    }
+    name = name[Math.floor(Math.random() * name.length)];
+
+    // age is just a number... here, not irl
+    let age = 21 + Math.floor(Math.random() * 50);
+
+    return [name, gender, sexuality, age];
 }
 
-function findShgaybb() {
-    if (!shgaybbMode) return false;
+function datingModeGain() {
+    if (!prideEvent.datingMode) return false;
 
+    // give currency
+}
+
+function datingModeMatch() {
+    if (!prideEvent.datingMode) return false;
+
+    // check gender-sexuality match
+    if (prideEvent.currentCharacter.length == 0) return false;
+    if (!prideEvent.currentMatch[2][2].includes(prideEvent.currentCharacter[1][1]) && prideEvent.currentMatch[2][2] != "all") return false;
+
+    // extra 33%
     if (Math.random() < 1 / 3) {
+        // it's a match!
         let seed = Math.ceil(game.stats_today.playTime * getClicks()) % shgaybbList.length;
 
         if (shgaybbFound == "") {
@@ -925,35 +949,12 @@ function findShgaybb() {
 
             game.gems += 20;
             statIncrease("tgems", 20);
-
-            // award the reward
-            let foundID = shgaybbID();
-            if (foundID != 999) {
-                // one of the 10 banners
-                if (!game.evbans.includes(foundID)) game.evbans.push(foundID);
-                else createNotification("You already own this banner...");
-            }
-            else {
-                // give cosmetic reward
-                let reward = awardEventReward("pride", "pfps");
-                if (reward == false) {
-                    reward = awardEventReward("pride", "frames");
-                    /*
-                    if (reward == false) {
-                        createNotification("You already the cosmetics...");
-                    }
-                    */
-                }
-            }
-
-            shgaybbFound = "";
-            //shgaybbMode = false;
+            //prideEvent.datingMode = false;
         }
         else {
             // second, but not fitting
             createNotification("Found: GAY Shgabb. Not a couple... forever alone...", [["GAY", shgaybbList[seed]]]);
-            shgaybbFound = "";
-            //shgaybbMode = false;
+            //prideEvent.datingMode = false;
         }
     }
 }
