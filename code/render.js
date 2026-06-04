@@ -265,7 +265,7 @@ class Modal {
                 e--;
             }
             else {
-                if (uiElements[e][0] === '"') console.log(uiElements[e].split('"')[1]);
+                //if (uiElements[e][0] === '"') console.log(uiElements[e].split('"')[1]);
                 if (uiElements[e][0] === "'") uiElements[e] = uiElements[e].split("'")[1];
                 if (uiElements[e][0] === '"') uiElements[e] = uiElements[e].split('"')[1];
             }

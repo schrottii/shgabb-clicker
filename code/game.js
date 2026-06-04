@@ -366,6 +366,7 @@ var settings = {
     upgradeColors: "normal",
     customColors: [[0, 0, 0, 255], [100, 100, 100, 255], [255, 255, 255, 0]],
     popups: true,
+    quotes: true,
 
     // audio
     music: false,

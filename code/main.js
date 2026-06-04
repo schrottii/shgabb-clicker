@@ -326,7 +326,14 @@ const quotes = [
     "Your release is almost there! It is 0% complete. - music distribution process",
     "top 1 best game reviewer, never played the game before: good game! - Lizy",
     "imagine pis upgrade that costs pys to upgrade (pythagoras) - Schrottii",
-    "joy self react is a way of life, three different reactions is a lil too much - shgabb"
+    "joy self react is a way of life, three different reactions is a lil too much - shgabb",
+
+    // 4.7 (+5 -> 115)
+    "Why two judgment days tho? - DaGame",
+    "unregistered bandicam 2 - elmenda452",
+    "we legit couldn't be further away from the first of the month - shgabb",
+    "Dodo Woooo woooah wooooooah oooo waaaaaaah oooooooh - Barduzzi",
+    "ok stop pinning my messages please - shgabb"
 ];
 
 ///////////////////////////////////
@@ -1648,13 +1655,18 @@ function shgabbClickerLoop(tick) {
     }
 
     // quote
-    if (quoteTime >= 18) {
-        quoteTime = 0;
-        updateQuote();
+    if (settings.quotes) {
+        if (quoteTime >= 18) {
+            quoteTime = 0;
+            updateQuote();
+        }
+
+        ui.quote.style.display = "";
+        if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
+        else ui.quote.style["margin-left"] = "-0%";
+        ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
     }
-    if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
-    else ui.quote.style["margin-left"] = "-0%";
-    ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
+    else ui.quote.style.display = "none";
 
     // modals
     if (currentModal != "") {

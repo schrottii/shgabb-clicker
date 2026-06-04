@@ -114,6 +114,7 @@ var settingButtons = [
     new Setting("design", "changeUpgradeColors", "Upgrade Colors", "Adjust the colors of the three types of upgrades (can afford, too expensive, maxed)!", () => "Current: " + settings.upgradeColors),
     new Setting("design", "updateEVERYTHING", "Refresh page", "Updates everything UI-related", () => "Last full update: " + timeSinceFullUIUpdate),
     new ToggleSetting("design", false, "popups", "Toggle Popups", "The large notifications that appear when you get an Artifact or Achievement"),
+    new ToggleSetting("design", false, "quotes", "Toggle Quotes", "Turn quotes on/off"),
 
     // audio
     new ToggleSetting("audio", "toggleMusic", "music", "Music", "Turn ALL music on or off."),

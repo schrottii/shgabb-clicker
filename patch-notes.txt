@@ -3236,6 +3236,11 @@ x v4.7:
 - New modal for new players (import save, reset save, or create save (*does not override existing save if there is one))
 - New modal for save creation (giving start options: sound, tutorial, player name)
 
+-> Quotes:
+- Added 5 new Quotes (110 -> 115)
+- New Design Setting: Toggle Quotes
+
 -> Other:
+- Improved music loading on start
 - Another attempt at fixing random crashes during loading 
 - Fixed issue with some cosmetics images

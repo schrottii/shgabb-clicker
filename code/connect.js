@@ -3,6 +3,8 @@ client-side code that talks to the server-side
 */
 
 async function sendTrackerUpdate(id) {
+    if (getOrigin() == "private") return;
+
     // send async request
     let response = await fetch('/', {
         method: 'POST',
