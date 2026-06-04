@@ -304,7 +304,7 @@ function getLoreReq(typeID) {
 function getWispReq(typeID) {
     switch (typeID) {
         case 7:
-            return isEvent("pride") ? shgaybbMode == true : getCooldown() >= 3;
+            return isEvent("pride") ? prideEvent.datingMode == true : getCooldown() >= 3;
         case 8:
             return getCooldown() <= 0.5;
         default:

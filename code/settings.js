@@ -11,7 +11,7 @@ class Setting {
     }
 
     getDescription() {
-        return this.description;
+        return renderEgg("settings", this.title) + this.description;
     }
 
     getCurrentEffect() {
@@ -68,6 +68,8 @@ class SliderSetting extends Setting {
         return this.max == 1 ? settings[this.setting] * 100 + "%" : settings[this.setting];
     }
 }
+
+var allSettingTitles = [];
 
 function sliderChange(setting) {
     if (document.getElementById(setting) != undefined) settings[setting] = document.getElementById(setting).value;

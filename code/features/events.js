@@ -33,7 +33,7 @@ class LimitedEvent {
 // Y2 Shgabb The Witch Event | Oct 24 - Nov 16
 // Y2 Christmas Event | Dec 15 - Dec 28
 
-var forceEvent = "none"; // cheat to test an event
+var forceEvent = "none"; // cheat to test an event, default is "none"
 
 const events = {
     anniversary: new LimitedEvent(1, "anniversary", "Anniversary Event",
@@ -56,7 +56,7 @@ const events = {
     
     egg: new LimitedEvent(3, "egg", "Egg Hunt", 
         "The green bunnies are on the run and it's time to find their eggs! Celebrate the beginning of Spring and the joy of the hunt with this event. Find eggs that are hiding in the game, click to collect, and buy prizes! They include 6 PFPs, 2 Banners and 2 Frames.",
-        402, 415, "renderEgg", 
+        402, 415, "renderEggEvent", 
         {
             pfps: [409, 410, 411, 412, 413, 414],
             bans: [427, 428],
@@ -247,8 +247,12 @@ function awardEventReward(event, type = "all", gemCompensation = 0) {
     // before they all had their own functions and it was messy and different for every event
 
     // get the rewards that exist
-    let possibleRewards = getEventRewards(event, type);
     let unownedRewards = [];
+    let possibleRewards;
+
+    let forcedList = typeof (type) != "string"; // true = we do not take the general event reward list, but a custom one
+    if (forcedList) possibleRewards = type;
+    else possibleRewards = getEventRewards(event, type);
 
     for (let r in possibleRewards) {
         if (!getCosmetic(possibleRewards[r]).isUnlocked()) unownedRewards.push(possibleRewards[r]);
@@ -600,16 +604,13 @@ function applyLuck(div) {
 ////////////////////////////////////////////////////////////// event functions below
 // Egg Hunt Event   #6576656E7473
 ///////////////////////////////////
-var eggUpgrade = "";
-var eggNumber = 1;
-var eggTime = 10;
 
-function renderEgg() {
+function renderEggEvent() {
     let collectedPages = calcCollectedPages(6);
 
     let render = renderEventHeader("egg", "rgb(160, 240, 160, 0.5)",
         cImg("egg") + game.eggs + " Eggs"
-        + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />"
+        + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br />"
     );
     /*
     let render = "<h3>Egg Hunt Event</h3><br /><b>April 2nd - April 15th</b>";
@@ -618,37 +619,128 @@ function renderEgg() {
     render = render + "<br />" + cImg("basket") + (getLoreByID(game.loreSel).source == 6 ? game.loreP : 0) + " Baskets (" + collectedPages + "/5 Pages)<br /><br />";
     */
 
-    if (!hasEventRewards("egg", "pfps")) render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(1)'>Buy an Easter PFP<br/>50 " + cImg("egg") + "</button>";
-    if (!hasEventRewards("egg", "bans")) render = render + "<button class='chineseOffer' onclick='useEggs(5)'>Buy an Easter Banner<br/>50 " + cImg("egg") + "</button>";
-    if (!hasEventRewards("egg", "frames")) render = render + "<button class='chineseOffer' onclick='useEggs(6)'>Buy an Easter Frame<br/>50 " + cImg("egg") + "</button>";
-    render = render + "<br /><br /><button class='chineseOffer' onclick='useEggs(2)'>Guaranteed Common Artifact!<br/>10 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(3)'>Guaranteed Rare Artifact!<br/>25 " + cImg("egg") + "</button>";
-    render = render + "<button class='chineseOffer' onclick='useEggs(4)'>Guaranteed Epic Artifact!<br/>100 " + cImg("egg") + "</button>";
+    render += "<div class='upgradesContainer'>";
+    if (!hasEventRewards("egg", "pfps")) render = render + "<br /><button class='easterButton' onclick='useEggs(1)'>Buy an Easter PFP<br />50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "bans")) render = render + "<button class='easterButton' onclick='useEggs(5)'>Buy an Easter Banner<br />50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "frames")) render = render + "<button class='easterButton' onclick='useEggs(6)'>Buy an Easter Frame<br />50 " + cImg("egg") + "</button>";
+    render = render + "<br /><button class='easterButton' onclick='useEggs(2)'>Guaranteed<br />random common Artifact<br />10 " + cImg("egg") + "</button>";
+    render = render + "<button class='easterButton' onclick='useEggs(3)'>Guaranteed<br />random rare Artifact<br />25 " + cImg("egg") + "</button>";
+    render = render + "<button class='easterButton' onclick='useEggs(4)'>Guaranteed<br />random epic Artifact<br />100 " + cImg("egg") + "</button>";
+    render += "</div>"
+    
+    render = render + "<br /><button class='easterButton' style='height: 256px;' onclick='useEggs(7)'>" + getArtifact(323).render(false) + "20 " + cImg("egg") + "</button>";
+    
 
     ui.eventRender.innerHTML = render;
 }
 
-function refreshEgg() {
-    let allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades, copperShgabbUpgrades, bananaUpgrades);
-    let randomNumber = Math.floor(Math.random() * Object.keys(allUpgrades).length - 1);
-
-    eggUpgrade = Object.keys(allUpgrades)[randomNumber];
-    eggNumber = Math.ceil(Math.random() * 4);
+var egg = {
+    active: false,
+    area: "",
+    location: "",
+    image: 1,
+    timer: 10
 }
 
-function clickEgg() {
-    doesUnlevel = true;
-    eggUpgrade = "";
+function renderEgg(area, location) {
+    if (egg.active == false) return "";
+    if (egg.area == area && egg.location == location) {
+        if (egg.active == "clicked") return "<img id='egg' src='images/event/easter/egg_clicked.png' onclick='event.stopPropagation();' width=32 height=32>";
+        return "<img id='egg' src='images/event/easter/egg" + egg.image + ".png' onclick='clickEgg(event)' width=32 height=32>";
+    }
+    return "";
+}
+
+var allUpgrades = Object.assign({}, shgabbUpgrades, sandwichUpgrades, goldenShgabbUpgrades, ameliorerUpgrades, bagUpgrades, copperShgabbUpgrades, bananaUpgrades);
+var allUpgradesKeys = Object.keys(allUpgrades);
+var possibleEggAreas = ["upgrades", "gemoffers", "settings"];
+
+function refreshEgg() {
+    let randomNumber = Math.floor(Math.random() * allUpgradesKeys.length - 1);
+
+    egg.timer = [10, 20, 30][Math.floor(Math.random() * 3)];
+    egg.image = Math.ceil(Math.random() * 4); // 1 - 4
+    egg.active = true;
+
+    let previousArea = egg.area;
+    egg.area = possibleEggAreas[Math.floor(Math.random() * possibleEggAreas.length)];
+
+    // update based on previous
+    switch (previousArea) {
+        case "gemoffers":
+            renderGemOffers();
+            break;
+        case "settings":
+            renderSettings();
+            break;
+    }
+
+    if (getArtifact(323).isEquipped()) {
+        let level = getArtifact(323).getLevel();
+        switch (egg.area) {
+            case "upgrades":
+                getArtifact(323).boost = "shgabb";
+                getArtifact(323).amount = 1 + level;
+                break;
+            case "gemoffers":
+                getArtifact(323).boost = "gems";
+                getArtifact(323).amount = 1 + 0.5 * level;
+                break;
+            case "settings":
+                getArtifact(323).boost = "lorechance";
+                getArtifact(323).amount = 1.2 + 0.4 * level;
+                break;
+        }
+        updateArtifacts();
+    }
+
+    switch (egg.area) {
+        case "upgrades":
+            egg.location = "upg_" + allUpgradesKeys[randomNumber];
+            break;
+        case "gemoffers":
+            egg.location = Math.ceil(Math.random() * 7);
+            renderGemOffers();
+            break;
+        case "settings":
+            if (allSettingTitles.length == 0) {
+                for (let set in settingButtons) {
+                    allSettingTitles.push(settingButtons[set].title);
+                }
+            }
+            egg.location = allSettingTitles[Math.floor(Math.random() * (allSettingTitles.length - 1))];
+            renderSettings();
+            break;
+    }
+}
+
+function clickEgg(event) {
+    if (egg.active != true) return false;
+
+    egg.active = "clicked";
+    if (document.getElementById("egg")) document.getElementById("egg").src = "images/event/easter/egg_clicked.png";
+    setTimeout(() => {
+        if (egg.active == "clicked") {
+            egg.active = false;
+            egg.location = "";
+            if (document.getElementById("egg")) document.getElementById("egg").style.display = "none";
+        }
+    }, 200);
+
+    if (getArtifact(323).isEquipped()) getArtifact(323).amount *= 2;
+    updateArtifacts();
 
     createNotification("Egg found");
     game.eggs += 1;
     statIncrease("eggs", 1);
 
     renderCurrentEvent();
+    event.stopPropagation();
 }
 
 function useEggs(offerNR) {
     let reward;
+
     switch (offerNR) {
         case 1:
             // buy PFP
@@ -734,6 +826,13 @@ function useEggs(offerNR) {
             createNotification("Bought Frame for 50 Eggs");
 
             break;
+        case 7:
+            if (game.eggs < 20) return false;
+
+            game.eggs -= 20;
+            awardArtifact(323);
+
+            break;
     }
 
     checkAchievement(112);
@@ -743,123 +842,169 @@ function useEggs(offerNR) {
 ////////////////////////////////////////////////////////////// event functions below
 // Pride Event   #6576656E7473
 ///////////////////////////////////
-var shgaybbMode = false;
-var shgaybbFound = "";
+var prideEvent = {
+    datingMode: false,
+
+    // format: name, gender, sexuality, age
+    currentCharacter: [],
+    currentMatch: [],
+
+    sexualitiesList: [
+        // format: name, [genders that can be], [compatible] [possible cosmetics]
+        ["Asexual", "all", "all", ["b407", "p415", "f409"]],
+        ["Bi", "all", ["m", "f"], ["b405", "p415", "f409"]],
+        ["Gay", ["m"], ["m"], ["b400", "b404", "p415", "f409"]],
+        ["Lesbian", ["f"], ["f"], ["b400", "b403", "p415", "f409"]],
+        ["Pan", "all", "all", ["b406", "p415", "f409"]],
+        ["Straight", ["m", "f"], "opposite", ["b409"]],
+        ["Ally", ["m", "f"], "opposite", ["p417", "f411"]]
+    ],
+    gendersList: [
+        // format: name, identifer [possible bonus cosmetics]
+        ["Male", "m", ["b409"]],
+        ["Female", "f", ["b409"]],
+        ["Non-binary", "n", ["b402"]],
+        ["Intersex", "i", ["b408"]],
+        ["Transmasc", "m", ["p416", "b401", "f410"]],
+        ["Transfem", "f", ["p416", "b401", "f410"]]
+    ]
+}
+// replaces: shgaybbList shgaybbID() shgaybbFound
 
 function renderPride() {
-    let render = renderEventHeader("pride", "rgb(160, 40, 180, 0.5)", undefined);
+    let render = renderEventHeader("pride", "rgb(160, 40, 180, 0.5)", 
+        "Press the button below to activate Dating Mode. Clicking will take at least 2 seconds, and have a chance of finding a possible match. Take your shot and if it works out, you get: 20 Gems and a cosmetic, based on who you matched with."
+    );
     /*
     let render = "<h3>Pride Event</h3><br /><b>June 1st - June 14th</b>";
     render = render + "<br />" + events.pride.description;
     */
 
-    render = render + "<br />Press the button below to activate Shgaybb Mode. Clicking will take at least 2 seconds, and have a chance of finding semi-random Shgabbs. Find the same pair twice to gain its reward: one of 10 Banners. 3 PFPs and 3 Banners can also be found. Getting Pan Shgabb second counts as a joker, it works with anyone. Every couple found gives 20 Gems.";
-    render = render + "<br /><button class='grayButton' onclick='toggleShgaybbMode()'>" + (shgaybbMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
+    render = render + "<button class='grayButton' onclick='toggleDatingMode()'>" + (prideEvent.datingMode ? "Disable Shgaybb Mode" : "Enable Shgaybb Mode") + "</button>";
+    render += "<br /><br />";
+
+    render += "<div>" + renderPrideCharacter("own");
+    render += renderPrideCharacter("match") + "</div>";
 
     ui.eventRender.innerHTML = render;
 }
 
-const shgaybbList = [
-    "Asexual",
-    "Bi",
-    "Gay male",
-    "Intersex",
-    "Gay female",
-    "Non-binary",
-    "Supergay",
-    "Pan",
-    "Shgabbsexual",
-    "Trans",
-    "Ally",
-    "Straight"
-];
+function renderPrideCharacter(type) {
+    let c;
+    if (type == "own") c = prideEvent.currentCharacter;
+    if (type == "match") c = prideEvent.currentMatch;
+    if (c.length == 0 || c == undefined) return "";
 
-function toggleShgaybbMode() {
-    shgaybbMode = !shgaybbMode;
+    let ren = "<div class='chineseOffer' style='float: left; display: inline; width: 49%; min-height: 200px;'>"
+
+    ren += type == "own" ? "You" : "Possible match";
+    ren += "<br /> " + c[0];
+    ren += "<br /> (Age " + c[3] + ")<br />";
+
+    ren += "<br /> Gender: " + c[1][0] + " (" + c[1][1] + ")";
+    ren += "<br /> Sexuality: " + c[2][0];
+
+    if (type == "match") {
+        ren += "<br /><button onclick='datingModeMatch(); renderPride();'>Attempt match</button>";
+
+        ren += "<br /><br />Possible cosmetics: <br />";
+        let cosmetics = Object.assign([], c[1][2], c[2][3]);
+        
+        for (let i = 0; i < cosmetics.length; i++) {
+            ren += getCosmetic(cosmetics[i]).render();
+        }
+    }
+
+    ren += "</div>";
+    return ren;
+}
+
+function toggleDatingMode() {
+    prideEvent.datingMode = !prideEvent.datingMode;
     shgaybbFound = "";
     renderCurrentEvent();
 }
 
-function shgaybbID() {
-    switch (shgaybbFound) {
-        case "Supergay":
-            return 400;
-        case "Trans":
-            return 401;
-        case "Non-binary":
-            return 402;
-        case "Gay female":
-            return 403;
-        case "Gay male":
-            return 404;
-        case "Bi":
-            return 405;
-        case "Pan":
-            return 406;
-        case "Asexual":
-            return 407;
-        case "Intersex":
-            return 408;
-        case "Shgabbsexual":
-            return 409;
-        case "Ally":
-            return 999;
-        case "Straight":
-            return 999;
-        default:
-            return 999;
+function generatePrideCharacter() {
+    // for own character OR potential match
+    let gender = prideEvent.gendersList[Math.floor(Math.random() * prideEvent.gendersList.length)];
+
+    let possibleSexualities = [];
+    for (let sex of prideEvent.sexualitiesList) {
+        //console.log(gender[0], gender[1], sex[0], sex[1], sex[1].includes(gender[1]));
+        if (sex[1] == "all" || sex[1].includes(gender[1])) possibleSexualities.push(sex);
     }
-    return 999;
+    let sexuality = possibleSexualities[Math.floor(Math.random() * possibleSexualities.length)];
+    if (sexuality[2] == "opposite" && gender[1] == "m") sexuality[2] = "f";
+    if (sexuality[2] == "opposite" && gender[1] == "f") sexuality[2] = "m";
+
+    let name;
+    switch (gender[1]) {
+        case "m":
+            name = ["Bob", "Mark", "Matthew", "Joregon", "Felix"];
+            break;
+        case "f":
+            name = ["Luna", "Emily", "Sophie", "Jane", "Robin"];
+            break;
+        default:
+            name = ["Robin", "Nico", "S.", "H.", "Jidaho", "Pawleigh", "Blade"];
+            break;
+    }
+    name = name[Math.floor(Math.random() * name.length)];
+
+    // age is just a number... here, not irl
+    let age = 21 + Math.floor(Math.random() * 49);
+
+    return [name, gender, sexuality, age];
 }
 
-function findShgaybb() {
-    if (!shgaybbMode) return false;
+function datingModeGain() {
+    if (!prideEvent.datingMode) return false;
 
+    // give currency
+    // nvm, not all events need currency
+    if (prideEvent.currentCharacter.length == 0) prideEvent.currentCharacter = generatePrideCharacter();
+    if (Math.random() < 0.2) {
+        prideEvent.currentMatch = generatePrideCharacter();
+    }
+}
+
+function datingModeMatch() {
+    if (!prideEvent.datingMode) return false;
+
+    // match gets removed no matter how it ends
+    let match = prideEvent.currentMatch;
+    prideEvent.currentMatch = [];
+
+    // check validity
+    if (prideEvent.currentCharacter.length == 0) return false;
+    if (match.length == 0) return false;
+
+    // check gender-sexuality match
+    //console.log(match[2][2], prideEvent.currentCharacter[1][1], prideEvent.currentCharacter[2][2], match[1][1]);
+    if (!match[2][2].includes(prideEvent.currentCharacter[1][1]) && match[2][2] != "all") return false;
+    if (!prideEvent.currentCharacter[2][2].includes(match[1][1]) && prideEvent.currentCharacter[2][2] != "all") return false;
+
+    // extra 33%
+    //console.log("attempt 33%");
     if (Math.random() < 1 / 3) {
-        let seed = Math.ceil(game.stats_today.playTime * getClicks()) % shgaybbList.length;
+        // it's a match!
+        //console.log("it's a match");
+        statIncrease("couples", 1);
+        game.gems += 20;
+        statIncrease("tgems", 20);
 
-        if (shgaybbFound == "") {
-            // first of the couple
-            shgaybbFound = shgaybbList[seed];
-            createNotification("Found: GAY Shgabb", [["GAY", shgaybbFound]]);
-        }
-        else if (shgaybbFound == shgaybbList[seed] || shgaybbList[seed] == "Pan") {
-            // second -> couple found
-            createNotification("Couple found! GAY Shgabb", [["GAY", shgaybbFound]]);
-            statIncrease("couples", 1);
+        // cosmetic?!
+        let c = match;
+        let cosmetics = Object.assign([], c[1][2], c[2][3]);
+        awardEventReward("pride", cosmetics, 10);
 
-            game.gems += 20;
-            statIncrease("tgems", 20);
+        prideEvent.currentCharacter = [];
 
-            // award the reward
-            let foundID = shgaybbID();
-            if (foundID != 999) {
-                // one of the 10 banners
-                if (!game.evbans.includes(foundID)) game.evbans.push(foundID);
-                else createNotification("You already own this banner...");
-            }
-            else {
-                // give cosmetic reward
-                let reward = awardEventReward("pride", "pfps");
-                if (reward == false) {
-                    reward = awardEventReward("pride", "frames");
-                    /*
-                    if (reward == false) {
-                        createNotification("You already the cosmetics...");
-                    }
-                    */
-                }
-            }
-
-            shgaybbFound = "";
-            //shgaybbMode = false;
-        }
-        else {
-            // second, but not fitting
-            createNotification("Found: GAY Shgabb. Not a couple... forever alone...", [["GAY", shgaybbList[seed]]]);
-            shgaybbFound = "";
-            //shgaybbMode = false;
-        }
+        /*
+        createNotification("Couple found! GAY Shgabb", [["GAY", shgaybbFound]]);
+        createNotification("Found: GAY Shgabb. Not a couple... forever alone...", [["GAY", shgaybbList[seed]]]);
+        */
     }
 }
 
@@ -1033,7 +1178,7 @@ function STWButton(id, img, name, desc) {
     return "<br /><button onclick='" + (id != -1 ? "spendWitches(" + id : "castSpell(") + ")' class='witchButton'>"
     + "<b>" + name
     + (id != -1 ? " (" + witchesSpent[id] + "/10)" : "") + "</b><br />"
-    + "<div style='float: left; max-width: 20%;'><img src='images/" + img + ".png' /></div>" 
+    + "<div style='float: left; max-width: 20%;'><img src='images/event/shgabbthewitch" + img + ".png' /></div>" 
     + "<div style='float: right; width: 75%;'>" + desc + "</div></button>";
 }
 
