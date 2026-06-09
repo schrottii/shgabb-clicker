@@ -1814,7 +1814,7 @@ function shgabbClickerSetup() {
         toggleModal("welcomenew");
     }
 
-    sendTrackerUpdate(game.profile.id);
+    client_playercount(game.profile.id);
 
     createNotification("Game loaded");
     GAMELOADED = true;

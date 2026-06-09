@@ -2,7 +2,7 @@
 Server-side server logic code
 */
 
-// imports
+// imports & setup
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -26,8 +26,11 @@ const limiter = rateLimit({
 app.use('/playercount', limiter);
 
 
+
 // own vars
 let visitors = new Map();
+
+
 
 // 1. server function: playercount
 // tracks how many have been online
@@ -61,6 +64,16 @@ app.post('/playercount', (req, res) => {
     */
     res.json({ onlineLast30Days: visitors.size });
 });
+
+// 2. check if player is logged in
+app.post('/account_logincheck', (req, res) => {
+    let { userID } = req.body;
+
+    // uhhh..............
+
+    res.json({ onlineLast30Days: visitors.size });
+});
+
 
 // register server
 app.listen(3000, () => console.log("running on port 3000"));
