@@ -2,33 +2,66 @@
 client-side code that talks to the server-side
 */
 
-async function callServer(body = "") {
-    return await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: body
-    });
+let socket;
+
+async function callServer(command, body = "") {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        const payload = {
+            command: command,
+            body: body
+        };
+        socket.send(JSON.stringify(payload));
+    }
 }
+
+function connectToServer() {
+    socket = new WebSocket(SOCKET_URL);
+
+    socket.onopen = () => {
+        console.log("Server: connection successful");
+    };
+
+    socket.onmessage = (event) => {
+        try {
+            let data = JSON.parse(event.data);
+
+            switch (data.type) {
+                case "playercount":
+                    client_playercount_reply(data);
+                    break;
+                default:
+                    console.error("Server error: " + data.message);
+                    break;
+            }
+        } catch (e) {
+            console.log("Invalid JSON: " + event.data);
+        }
+    };
+
+    socket.onclose = () => {
+        console.log("Disconnected from server. Retrying in 3 seconds...");
+        setTimeout(connectToServer, 3000);
+    };
+
+    socket.onerror = (error) => {
+        console.error("WebSocket Error: " + error);
+    };
+}
+
+
 
 async function client_playercount(id) {
     if (getOrigin() == "private") return;
+    callServer("playercount", { userID: id });
+}
 
-    // send async request
-    let response = await callServer(JSON.stringify({ userID: id }));
-
-    // deal with the rate limiter
-    if (!response.ok) {
-        let errorText = await response.text();
-        console.warn("Server error: ", errorText);
-        return;
-    }
-
-    // the response
-    let data = await response.json();
+function client_playercount_reply(data) {
     console.log("player count: " + data.onlineLast30Days);
     ui.playercount.innerHTML = "Players in last 30 days: " + data.onlineLast30Days;
 }
 
+
+/*
 async function client_account_logincheck() {
     if (getOrigin() == "private") return;
 
@@ -77,7 +110,7 @@ async function client_account_register(id) {
     console.log("player count: " + data.onlineLast30Days);
     ui.playercount.innerHTML = "Players in last 30 days: " + data.onlineLast30Days;
 }
-
+*/
 
 
 // code by d0ktorek
