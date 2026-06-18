@@ -29,7 +29,9 @@ var visitors = new Map();
 
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
-    logincheck: (ws, data) => server_logincheck(ws, data)
+    logincheck: (ws) => server_logincheck(ws),
+    register: (ws, data) => server_register(ws, data)
+    login: (ws, data) => server_login(ws, data)
 };
 
 
@@ -146,6 +148,59 @@ function server_logincheck(ws, data) {
     let isLoggedIn = true; // let's just lie for now
 
     callClient("logincheck", ws, { isLoggedIn: isLoggedIn });
+}
+
+// swear words, slurs, sexual terms, etc.
+// based on the list from Idle Bar, but with some (like "gay") removed
+const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler", "nazi", "trump", "niglet", "scrotum", "penis", "cock", "hentai", "futa", "porn", "sex", "nude", "naked", "NSFW", "boob", "breast", "dick", "anus", "CBT", "retard",
+    "ilf", "ass", "tit",
+    "ahegao", "cunt", "genital", "dick", "prick", "DDOS", "racis", "hack", "swastika", "hentia", "pussy", "kys",
+    "eval", "function"];
+
+// 3. register
+function server_register(ws, data) {
+    let name = data.username;
+    let pw = data.password;
+
+    let nameValid = true;
+    let pwValid = true;
+
+    // existing username validation
+
+    // password validation
+    if (pw.length < 6) pwValid = false;
+
+    // bad word validation for BOTH
+    // username AND password
+    for (let word of forbiddenWords) {
+        if (pw.toLowerCase().includes(word)) {
+            pwValid = false;
+            break;
+        }
+        if (name.toLowerCase().includes(word)) {
+            nameValid = false;
+            break;
+        }
+    }
+
+    let success = nameValid && pwValid;
+    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
+}
+
+// 4. login
+function server_login(ws, data) {
+    let name = data.username;
+    let pw = data.password;
+
+    let nameValid = true;
+    let pwValid = true;
+
+    // existing username validation
+
+    // existing password for that user validation
+
+    let success = nameValid && pwValid;
+    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
 }
 
 server.listen(PORT, () => {

@@ -46,6 +46,12 @@ function connectToServer() {
                 case "logincheck":
                     client_account_logincheck_reply(data);
                     break;
+                case "register":
+                    client_account_register_reply(data);
+                    break;
+                case "login":
+                    client_account_login_reply(data);
+                    break;
                 default:
                     console.error("Server error: " + data.message);
                     break;
@@ -116,15 +122,51 @@ async function client_account_register() {
     // server ID (1, 2, 3) ~ acc_name ~ acc_password ~ extras (including: ingame_name, ingame_id & other relevant things) ~ save
     // so, upon registering (this function), we need the user to enter a name and a password, and add it to the db
 
+    // who do we want to be?
+    // (placeholder)
     let userName = "Alonso";
     let userPassword = "Fernando";
 
     // validation (e.g. username already exists) is done on the server
+    // using the name and password provided by the user
     callServer("register", { username: userName, password: userPassword });
 }
 
 function client_account_register_reply(data) {
+    // data contains: success, nameValid, pwValid
+    let message;
+    if (data.success) message = "Registering successful";
+    else if (!data.nameValid) message = "Username is inappropriate or already exists";
+    else if (!data.pwValid) message = "Password is inappropriate or too short";
+    else message = "Registering not successful, unknown error";
 
+    // put it into the UI, uhh
+}
+
+// 4. /login
+async function client_account_login() {
+
+    //if (getOrigin() == "private") return;
+    console.log("/login");
+
+    // who do we log in as?
+    // (placeholder)
+    let userName = "Alonso";
+    let userPassword = "Fernando";
+
+    // validation is done on the server
+    callServer("login", { username: userName, password: userPassword });
+}
+
+function client_account_login_reply(data) {
+    // data contains: success, nameValid, pwValid
+    let message;
+    if (data.success) message = "Login successful";
+    else if (!data.nameValid) message = "Username is incorrect / does not exist";
+    else if (!data.pwValid) message = "Password is incorrect";
+    else message = "Login not successful, unknown error";
+
+    // put it into the UI, uhh
 }
 
 
