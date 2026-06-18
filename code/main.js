@@ -1814,6 +1814,7 @@ function shgabbClickerSetup() {
         toggleModal("welcomenew");
     }
 
+    connectToServer();
     client_playercount(game.profile.id);
 
     createNotification("Game loaded");

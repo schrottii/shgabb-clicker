@@ -2,20 +2,24 @@
 client-side code that talks to the server-side
 */
 
-let socket;
+var socket;
 
+// generalized functions
 async function callServer(command, body = "") {
     if (socket && socket.readyState === WebSocket.OPEN) {
-        const payload = {
+        let payload = {
             command: command,
             body: body
         };
         socket.send(JSON.stringify(payload));
     }
+    else {
+        console.log("Can't communicate with server: socket not ready");
+    }
 }
 
 function connectToServer() {
-    socket = new WebSocket(SOCKET_URL);
+    socket = new WebSocket('ws://localhost:3000');
 
     socket.onopen = () => {
         console.log("Server: connection successful");
@@ -50,8 +54,12 @@ function connectToServer() {
 
 
 
+// server commands :3
+// 1. /playercount
 async function client_playercount(id) {
-    if (getOrigin() == "private") return;
+    //if (getOrigin() == "private") return;
+    console.log("/playercount: " + id);
+
     callServer("playercount", { userID: id });
 }
 
@@ -60,60 +68,43 @@ function client_playercount_reply(data) {
     ui.playercount.innerHTML = "Players in last 30 days: " + data.onlineLast30Days;
 }
 
+// 2. /logincheck
+async function client_account_logincheck(id) {
+    //if (getOrigin() == "private") return;
+    console.log("/logincheck");
 
-/*
-async function client_account_logincheck() {
-    if (getOrigin() == "private") return;
+    callServer("logincheck");
+}
 
-    let response = await callServer(""); // true for logged in, false for not logged in
-
-    if (!response.ok) {
-        let errorText = await response.text();
-        console.warn("Server error: ", errorText);
-        return;
-    }
-
-    // the response
-    let data = await response.json();
+function client_account_logincheck_reply(data) {
     console.log("player login info: " + (data.loggedin == false ? "not " : "") + "logged in");
 }
 
+// 3. /register
 async function client_account_register(id) {
-    if (getOrigin() == "private") return;
+    //if (getOrigin() == "private") return;
+    console.log("/register");
 
-    // okay, let me be clear: game is already some time old, so in case people shared their acc, 
+    // okay, let me be clear: game is already some time old, so in case people shared their acc,
     // using the pre - existing ID for login might not be the best solution
     // also, it can be edited, so what if 2 people edit their ID to be the same? all kinds of stuff like that
-    // -> local, pre-existing name and ID, are important for this game, and the local save only
+    // -> the local & pre-existing "name" and "ID", are important for this game, and the local save only
     // they are still saved onto the server to quickly find players
 
     // structure of a player looks like:
     // server ID (1, 2, 3) ~ acc_name ~ acc_password ~ extras (including: ingame_name, ingame_id & other relevant things) ~ save
     // so, upon registering (this function), we need the user to enter a name and a password, and add it to the db
 
-    // send async request
-    let response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userID: id })
-    });
-
-    // deal with the rate limiter
-    if (!response.ok) {
-        let errorText = await response.text();
-        console.warn("Server error: ", errorText);
-        return;
-    }
-
-    // the response
-    let data = await response.json();
-    console.log("player count: " + data.onlineLast30Days);
-    ui.playercount.innerHTML = "Players in last 30 days: " + data.onlineLast30Days;
+    callServer("register", { userID: id });
 }
-*/
+
+function client_account_register_reply(data) {
+    console.log("player login info: " + (data.loggedin == false ? "not " : "") + "logged in");
+}
 
 
-// code by d0ktorek
+
+// extra code by d0ktorek
 async function reportAntiCheatViolation(reason = 'console-activity', source = 'client-console') {
     try {
         /*
@@ -143,6 +134,7 @@ async function reportAntiCheatViolation(reason = 'console-activity', source = 'c
     } catch { }
 }
 
+// extra code by d0ktorek
 function initConsoleAntiCheatDetector() {
     try {
         if (window.__SM_AC_INIT) return;
@@ -170,8 +162,13 @@ function initConsoleAntiCheatDetector() {
 }
 initConsoleAntiCheatDetector();
 
+
+
 /*
 what to run: 
 node server.js
 npx serve -l 5000
+
+(possibly) 
+npm install ws
 */

@@ -18,14 +18,14 @@ const server = http.createServer((req, res) => {
 const allowedOrigins = [
     'https://balnoom.com',
     'https://schrottii.github.io',
-    'http://localhost:3000',
+    'http://localhost:5000',
     'http://127.0.0.1:5500'
 ];
 
 
 
 // own vars
-let visitors = new Map();
+var visitors = new Map();
 
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data)
@@ -50,8 +50,6 @@ server.on('upgrade', (request, socket, head) => {
 });
 
 wss.on('connection', (ws, req) => {
-    console.log("New client connected");
-
     // set alive on initial connection
     ws.isAlive = true; 
     ws.on('pong', () => {
@@ -59,12 +57,15 @@ wss.on('connection', (ws, req) => {
     });
 
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
+    console.log("New client connected: " + realPlayerIP);
 
     // Send a welcome message to the client
     //ws.send('Welcome to the WebSocket server!');
 
     // Message event handler
-    ws.on('message', (message) => {
+    ws.on('message', (data) => {
+        let message = data.toString();
+
         ws.isAlive = true;
         console.log(`Received: ${message}`); // shown on server
         //ws.send(`Server received: ${message}`); // shown on client
@@ -77,7 +78,7 @@ wss.on('connection', (ws, req) => {
             }
         }
         catch (e) {
-            console.log("Failed to parse");
+            console.log("Failed to parse command");
         }
     });
 
@@ -136,19 +137,6 @@ function server_playercount(ws, data) {
     ws.send(JSON.stringify(replyPayload));
 }
 
-/*
-// 2. check if player is logged in
-app.post('/account_logincheck', (req, res) => {
-    let { userID } = req.body;
-
-    // uhhh..............
-
-    res.json({ onlineLast30Days: visitors.size });
-});
-
-
-// register server
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-*/

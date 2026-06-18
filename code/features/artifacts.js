@@ -599,7 +599,7 @@ function renderArtifacts() {
     if (renderTheseArtifacts.length < artifactsPerPage) artifactPage = 1;
 
     // Render the Artifacts that were gathered
-    for (ara = 0; ara < Math.min(artifactsPerPage, renderTheseArtifacts.length); ara++) {
+    for (let ara = 0; ara < Math.min(artifactsPerPage, renderTheseArtifacts.length); ara++) {
         if (getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * artifactsPerPage)]) == undefined) break;
         render = render + getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * artifactsPerPage)]).render();
     }
