@@ -26,7 +26,9 @@ var ui = {
     sosobar: document.getElementById("sosobar"),
     GAMECONTENT: document.getElementById("GAMECONTENT"),
 
-    playercount: document.getElementById("playercount"),
+    // server
+    playercount: document.getElementById("server_playercount"),
+    server_isConnected: document.getElementById("server_isConnected"),
 
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
@@ -1721,6 +1723,8 @@ function shgabbClickerLoop(tick) {
         }
     }
 
+    ui.server_isConnected.innerHTML = isConnectedToServer() ? "Connected" : "Disconnected";
+
     checkMissionProgress();
     adSwitcher();
 
@@ -1815,7 +1819,6 @@ function shgabbClickerSetup() {
     }
 
     connectToServer();
-    client_playercount(game.profile.id);
 
     createNotification("Game loaded");
     GAMELOADED = true;

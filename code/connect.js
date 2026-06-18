@@ -5,8 +5,12 @@ client-side code that talks to the server-side
 var socket;
 
 // generalized functions
+function isConnectedToServer() {
+    return socket && socket.readyState === WebSocket.OPEN;
+}
+
 async function callServer(command, body = "") {
-    if (socket && socket.readyState === WebSocket.OPEN) {
+    if (isConnectedToServer()) {
         let payload = {
             command: command,
             body: body
@@ -18,11 +22,16 @@ async function callServer(command, body = "") {
     }
 }
 
+function onServerConnect() {
+    client_playercount(game.profile.id);
+}
+
 function connectToServer() {
     socket = new WebSocket('ws://localhost:3000');
 
     socket.onopen = () => {
         console.log("Server: connection successful");
+        onServerConnect();
     };
 
     socket.onmessage = (event) => {
