@@ -24,6 +24,7 @@ async function callServer(command, body = "") {
 
 function onServerConnect() {
     client_playercount(game.profile.id);
+    client_account_logincheck();
 }
 
 function connectToServer() {
@@ -41,6 +42,9 @@ function connectToServer() {
             switch (data.type) {
                 case "playercount":
                     client_playercount_reply(data);
+                    break;
+                case "logincheck":
+                    client_account_logincheck_reply(data);
                     break;
                 default:
                     console.error("Server error: " + data.message);
@@ -66,6 +70,8 @@ function connectToServer() {
 // server commands :3
 // 1. /playercount
 async function client_playercount(id) {
+    // simply asks for the player count (last 30 days)
+
     //if (getOrigin() == "private") return;
     console.log("/playercount: " + id);
 
@@ -78,7 +84,9 @@ function client_playercount_reply(data) {
 }
 
 // 2. /logincheck
-async function client_account_logincheck(id) {
+async function client_account_logincheck() {
+    // checks if we are logged in
+
     //if (getOrigin() == "private") return;
     console.log("/logincheck");
 
@@ -86,11 +94,15 @@ async function client_account_logincheck(id) {
 }
 
 function client_account_logincheck_reply(data) {
-    console.log("player login info: " + (data.loggedin == false ? "not " : "") + "logged in");
+    let prettyFormat = "Login info: " + (data.isLoggedIn == false ? "not " : "") + "logged in";
+    console.log(prettyFormat);
+    ui.server_loggedin.innerHTML = prettyFormat;
 }
 
 // 3. /register
-async function client_account_register(id) {
+async function client_account_register() {
+    // create new cloud save account
+
     //if (getOrigin() == "private") return;
     console.log("/register");
 
@@ -104,11 +116,15 @@ async function client_account_register(id) {
     // server ID (1, 2, 3) ~ acc_name ~ acc_password ~ extras (including: ingame_name, ingame_id & other relevant things) ~ save
     // so, upon registering (this function), we need the user to enter a name and a password, and add it to the db
 
-    callServer("register", { userID: id });
+    let userName = "Alonso";
+    let userPassword = "Fernando";
+
+    // validation (e.g. username already exists) is done on the server
+    callServer("register", { username: userName, password: userPassword });
 }
 
 function client_account_register_reply(data) {
-    console.log("player login info: " + (data.loggedin == false ? "not " : "") + "logged in");
+
 }
 
 

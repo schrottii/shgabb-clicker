@@ -29,6 +29,7 @@ var ui = {
     // server
     playercount: document.getElementById("server_playercount"),
     server_isConnected: document.getElementById("server_isConnected"),
+    server_loggedin: document.getElementById("server_loggedin"),
 
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),

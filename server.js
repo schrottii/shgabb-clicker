@@ -28,7 +28,8 @@ const allowedOrigins = [
 var visitors = new Map();
 
 const server_commands = {
-    playercount: (ws, data) => server_playercount(ws, data)
+    playercount: (ws, data) => server_playercount(ws, data),
+    logincheck: (ws, data) => server_logincheck(ws, data)
 };
 
 
@@ -100,6 +101,12 @@ const serverLoop = setInterval(() => {
     });
 }, 30000);
 
+function callClient(command, ws, payload) {
+    // payload format: {}, includes stuff like: onlineLast30Days: visitors.size
+    payload.type = command; // adds the command bit to payload
+    ws.send(JSON.stringify(payload)); // sends to client
+}
+
 wss.on('close', () => clearInterval(serverLoop));
 
 
@@ -129,12 +136,16 @@ function server_playercount(ws, data) {
         if (time < thirtyDaysAgo) visitors.delete(id);
     }
 
-    // send data back to the client (re-usable function?)
-    let replyPayload = {
-        type: "playercount",
-        onlineLast30Days: visitors.size
-    };
-    ws.send(JSON.stringify(replyPayload));
+    callClient("playercount", ws, { onlineLast30Days: visitors.size });
+}
+
+// 2. logincheck
+// simply tells the player if they are logged in to their cloud save acc
+// after registering or logging in
+function server_logincheck(ws, data) {
+    let isLoggedIn = true; // let's just lie for now
+
+    callClient("logincheck", ws, { isLoggedIn: isLoggedIn });
 }
 
 server.listen(PORT, () => {
