@@ -238,4 +238,5 @@ npx serve -l 5000
 
 (possibly) 
 npm install ws
+npm install dotenv mysql2
 */

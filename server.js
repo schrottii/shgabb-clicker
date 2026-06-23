@@ -5,6 +5,10 @@ Server-side server logic code
 // imports & setup
 const http = require('http');
 const WebSocket = require('ws');
+
+const mysql = require('mysql2/promise');
+require('dotenv/config'); 
+
 const PORT = 3000;
 
 const wss = new WebSocket.Server({ noServer: true });
@@ -30,7 +34,7 @@ var visitors = new Map();
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
     logincheck: (ws) => server_logincheck(ws),
-    register: (ws, data) => server_register(ws, data)
+    register: (ws, data) => server_register(ws, data),
     login: (ws, data) => server_login(ws, data)
 };
 
@@ -153,7 +157,7 @@ function server_logincheck(ws, data) {
 // swear words, slurs, sexual terms, etc.
 // based on the list from Idle Bar, but with some (like "gay") removed
 const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler", "nazi", "trump", "niglet", "scrotum", "penis", "cock", "hentai", "futa", "porn", "sex", "nude", "naked", "NSFW", "boob", "breast", "dick", "anus", "CBT", "retard",
-    "ilf", "ass", "tit",
+    //"ilf", "ass", "tit",
     "ahegao", "cunt", "genital", "dick", "prick", "DDOS", "racis", "hack", "swastika", "hentia", "pussy", "kys",
     "eval", "function"];
 
@@ -206,3 +210,36 @@ function server_login(ws, data) {
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
+
+// database fun
+const db_connection;
+async function database_connect() {
+    try {
+        db_connection = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME
+        });
+
+        console.log("Connection to DB successful");
+
+    } catch (error) {
+        console.error("Connection to DB failed: " + error.message);
+    }
+}
+
+function database_command() {
+    try {
+        let [results] = await connection.query(
+            'SELECT * FROM `tbl_users` WHERE `name` = ? AND `age` > ?',
+            ['Olaf', 45]
+        );
+
+        console.log(results);
+    } catch (err) {
+        console.log(err);
+    }
+}
