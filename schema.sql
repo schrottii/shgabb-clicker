@@ -3,6 +3,7 @@
 -- general user table (main table)
 CREATE TABLE IF NOT EXISTS `tbl_users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `acc_email` VARCHAR(255) NOT NULL UNIQUE,
   `acc_name` VARCHAR(32) NOT NULL UNIQUE,
   `acc_password` VARCHAR(255) NOT NULL,
 

@@ -28,7 +28,8 @@ function onServerConnect() {
 }
 
 function connectToServer() {
-    socket = new WebSocket('ws://localhost:3000');
+    //socket = new WebSocket('ws://localhost:3000');
+    socket = new WebSocket('wss://api-shgabb-clicker.balnoom.com');
 
     socket.onopen = () => {
         console.log("Server: connection successful");
