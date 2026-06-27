@@ -26,26 +26,6 @@ const allowedOrigins = [
     'http://127.0.0.1:5500'
 ];
 
-require('dotenv').config();
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-});
-
-con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected to " + process.env.DB_DATABASE + " database");
-    let sql = "SELECT CURRENT_TIMESTAMP;"; //"INSERT INTO shg_user_activity (user_id, last_activity) VALUES ('1', CURRENT_TIMESTAMP)";
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("database answer: " + result);
-    });
-});
-
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
     logincheck: (ws) => server_logincheck(ws),
@@ -71,7 +51,7 @@ server.on('upgrade', (request, socket, head) => {
     });
 });
 
-wss.on('connection', (ws, req) => {
+wss.on('connection', async (ws, req) => {
     // set alive on initial connection
     ws.isAlive = true; 
     ws.on('pong', () => {
@@ -79,43 +59,58 @@ wss.on('connection', (ws, req) => {
     });
 
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
-    console.log("New client connected: " + realPlayerIP);
+    console.log("[USR] New client connected: " + realPlayerIP);
 
-    // Send a welcome message to the client
-    //ws.send('Welcome to the WebSocket server!');
+    let loadingPlayerID = await database_command("getID", { name: "Alonso" });
+
+    if (loadingPlayerID) {
+        ws.playerID = loadingPlayerID[0].id;
+    }
+    else {
+        console.log("[USR] WARNING: no player ID found");
+        ws.terminate();
+    }
 
     // Message event handler
     ws.on('message', (data) => {
         let message = data.toString();
 
         ws.isAlive = true;
-        console.log(`Received: ${message}`); // shown on server
+        console.log(`[CMD] Received: ${message} from ${ws.playerID}`); // shown on server
         //ws.send(`Server received: ${message}`); // shown on client
 
         try {
-            let data = JSON.parse(message); // command, body
+            data = JSON.parse(data); // command, body
+            data.playerID = ws.playerID;
             if (data.command !== undefined && server_commands[data.command] !== undefined) {
                 // message contains command and we offer that one
                 server_commands[data.command](ws, data); // provide current ws connection and parsed data (possible here)
+                console.log("[CMD] Executing command: " + data + ", " + data.playerID);
+            }
+            else {
+                if (server_commands[data.command] == undefined) console.log("[CMD] Command does not exist: " + data.command);
+                else console.log("[CMD] Failed to start command: " + data + ", " + data.playerID);
             }
         }
         catch (e) {
-            console.log("Failed to parse command");
+            console.log("[CMD] Failed to parse or execute command: " + data + ", " + data.playerID);
         }
     });
 
     // Close event handler
     ws.on('close', () => {
-        console.log("Client disconnected");
+        console.log("[USR] Client disconnected");
     });
 }); 
 
 const serverLoop = setInterval(() => {
     wss.clients.forEach((ws) => {
         if (ws.isAlive === false) {
-            console.log("inactive or broken connection; terminating...");
+            console.log("[USR] inactive or broken connection; terminating...");
             return ws.terminate();
         }
+
+        database_command("ping", { playerID: ws.playerID });
 
         ws.isAlive = false;
         ws.ping();
@@ -125,7 +120,10 @@ const serverLoop = setInterval(() => {
 function callClient(command, ws, payload) {
     // payload format: {}, includes stuff like: onlineLast30Days: visitors.size
     payload.type = command; // adds the command bit to payload
-    ws.send(JSON.stringify(payload)); // sends to client
+
+    payload = JSON.stringify(payload);
+    console.log("[CMD] Sending to " + ws.playerID + ": " + payload);
+    ws.send(payload); // sends to client
 }
 
 wss.on('close', () => clearInterval(serverLoop));
@@ -135,38 +133,30 @@ wss.on('close', () => clearInterval(serverLoop));
 // 1. server function: playercount
 // tracks how many have been online
 // /playercount is basically the function, the interface, to communicate between client and server. 
-function server_playercount(ws, data) {
-    // ws = connection, 
+async function server_playercount(ws, data) {
+    // ws = connection,
     // data is what the client sends
 
-    // grabs the user ID that the client gives us
-    let userID = data.body.userID;
-    if (!userID) return ws.send(JSON.stringify({ type: "error", message: "No ID provided by client" }));
-
-    // basic verification if the ID can be legit
-    if (userID.length < 8 || userID.length > 16) {
+    if (data.playerID == undefined) {
         return ws.send(JSON.stringify({ type: "error", message: "Invalid ID provided by client" }));
     }
 
-    // adds our dear user friend into our list + date
-    visitors.set(userID, Date.now());
+    database_command("ping", { userID: data.userID });
 
-    // remove old grandpas (does not need to be run every single time - move elsewhere later for scaling)
-    /*
-    let thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
-    for (let [id, time] of visitors) {
-        if (time < thirtyDaysAgo) visitors.delete(id);
+    let playercount = await database_command("playercount");
+    if (playercount) {
+        callClient("playercount", ws, { onlineLast30Days: playercount[0].pcount });
     }
-    */
-
-    callClient("playercount", ws, { onlineLast30Days: visitors.size });
+    else {
+        callClient("playercount", ws, { onlineLast30Days: 0 });
+    }
 }
 
 // 2. logincheck
 // simply tells the player if they are logged in to their cloud save acc
 // after registering or logging in
 function server_logincheck(ws, data) {
-    let isLoggedIn = true; // let's just lie for now
+    let isLoggedIn = data.playerID != undefined;
 
     callClient("logincheck", ws, { isLoggedIn: isLoggedIn });
 }
@@ -179,9 +169,9 @@ const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler"
     "eval", "function"];
 
 // 3. register
-function server_register(ws, data) {
-    let name = data.username;
-    let pw = data.password;
+async function server_register(ws, data) {
+    let name = data.body.username;
+    let pw = data.body.password;
 
     let nameValid = true;
     let pwValid = true;
@@ -204,7 +194,11 @@ function server_register(ws, data) {
         }
     }
 
-    let success = nameValid && pwValid;
+    let success = false;
+    if (nameValid && pwValid) {
+        success = await database_command("register", { name: name, pw: pw });
+    }
+
     callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
 }
 
@@ -231,7 +225,9 @@ server.listen(PORT, () => {
 
 
 // database fun
-const db_connection;
+var db_connection;
+var db_connected = false;
+
 async function database_connect() {
     try {
         db_connection = await mysql.createConnection({
@@ -242,21 +238,68 @@ async function database_connect() {
         });
 
         console.log("Connection to DB successful");
+        db_connected = true;
+
+        database_command("test");
 
     } catch (error) {
         console.error("Connection to DB failed: " + error.message);
+        db_connected = false;
     }
 }
 
-function database_command() {
+async function database_command(cmdname = "", data = {}) {
+    if (db_connected == false) {
+        console.log("command " + cmdname + " cannot be executed: no DB connection");
+    }
+
     try {
-        let [results] = await connection.query(
-            'SELECT * FROM `tbl_users` WHERE `name` = ? AND `age` > ?',
-            ['Olaf', 45]
-        );
+        let results;
+        switch (cmdname) {
+            case "test":
+                [results] = await db_connection.query(
+                    "SELECT CURRENT_TIMESTAMP"
+                    //'SELECT * FROM `tbl_users` WHERE `name` = ? AND `age` > ?',
+                    //['Olaf', 45]
+                );
+                break;
 
-        console.log(results);
+
+
+            case "getID":
+                [results] = await db_connection.query(
+                    "SELECT tbl_users.id FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? LIMIT 1",
+                    ["", data.name]
+                );
+                break;
+            case "register":
+                [results] = await db_connection.query(
+                    "INSERT INTO tbl_users (acc_email, acc_name, acc_password) VALUES (?, ?, ?)",
+                    ["", data.name, data.pw]
+                );
+                break;
+            case "ping":
+                [results] = await db_connection.query(
+                    "INSERT INTO shg_user_activity (user_id) VALUES (?) ON DUPLICATE KEY UPDATE shg_user_activity.last_activity = CURRENT_TIMESTAMP",
+                    [data.playerID]
+                );
+                break;
+            case "playercount":
+                [results] = await db_connection.query(
+                    "SELECT COUNT(shg_user_activity.user_id) AS 'pcount' FROM shg_user_activity",
+                    []
+                );
+                break;
+        }
+
+        if (results.warningStatus === undefined) console.log("[DBC] command " + cmdname + " success: " + results);
+        else console.log("[DBC] command " + cmdname + " is ResultSetHeader");
+        return results;
     } catch (err) {
-        console.log(err);
+        console.log("[DBC] command " + cmdname + " error: " + err);
+        return false;
     }
+    return false;
 }
+
+database_connect();
