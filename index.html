@@ -6,7 +6,12 @@
 
     <script>
         // little script for balnoom.com/shgabb-clicker to fix paths / index
-        if (window.location.hostname.includes("balnoom.com")) {
+        if (window.location.hostname.includes("balnoom.com") && window.location.hostname.includes("indev")) {
+            let base = document.createElement("base");
+            base.href = "/shgabb-clicker-indev/";
+            document.head.appendChild(base);
+        }
+        else if (window.location.hostname.includes("balnoom.com")) {
             let base = document.createElement("base");
             base.href = "/shgabb-clicker/";
             document.head.appendChild(base);

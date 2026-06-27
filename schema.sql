@@ -1,6 +1,4 @@
--- server ID (1, 2, 3) ~ acc_name ~ acc_password ~ extras (including: ingame_name, ingame_id & other relevant things) ~ save
-
--- general user table (main table)
+-- database-wide general user table (main table)
 CREATE TABLE IF NOT EXISTS `tbl_users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `acc_email` VARCHAR(255) NOT NULL UNIQUE,
@@ -11,18 +9,22 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- shgabb clicker tables
+-- prefix: shg_
+-- user_ for everything related to users, not the game's own data
+
 -- cloud save table (actual savefiles saved as standalone files)
-CREATE TABLE IF NOT EXISTS `tbl_user_saves` (
+CREATE TABLE IF NOT EXISTS `shg_user_saves` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT NOT NULL,
-  `save_slot` INT DEFAULT 1,
+--  `save_slot` INT DEFAULT 1,
   `savefile_ref` VARCHAR(64) NOT NULL,
   `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE
 );
 
 -- user activity / playercount table
-CREATE TABLE IF NOT EXISTS `tbl_user_activity` (
+CREATE TABLE IF NOT EXISTS `shg_user_activity` (
   `user_id` INT PRIMARY KEY,
   `last_activity` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE

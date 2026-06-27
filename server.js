@@ -26,10 +26,25 @@ const allowedOrigins = [
     'http://127.0.0.1:5500'
 ];
 
+require('dotenv').config();
+var mysql = require('mysql');
 
+var con = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+});
 
-// own vars
-var visitors = new Map();
+con.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected to " + process.env.DB_DATABASE + " database");
+    let sql = "SELECT CURRENT_TIMESTAMP;"; //"INSERT INTO shg_user_activity (user_id, last_activity) VALUES ('1', CURRENT_TIMESTAMP)";
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("database answer: " + result);
+    });
+});
 
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
@@ -137,10 +152,12 @@ function server_playercount(ws, data) {
     visitors.set(userID, Date.now());
 
     // remove old grandpas (does not need to be run every single time - move elsewhere later for scaling)
+    /*
     let thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
     for (let [id, time] of visitors) {
         if (time < thirtyDaysAgo) visitors.delete(id);
     }
+    */
 
     callClient("playercount", ws, { onlineLast30Days: visitors.size });
 }
