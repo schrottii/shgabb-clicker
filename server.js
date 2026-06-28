@@ -5,6 +5,7 @@ Server-side server logic code
 // imports & setup
 const http = require('http');
 const WebSocket = require('ws');
+const url = require('url');
 
 const mysql = require('mysql2/promise');
 require('dotenv/config'); 
@@ -53,22 +54,36 @@ server.on('upgrade', (request, socket, head) => {
 
 wss.on('connection', async (ws, req) => {
     // set alive on initial connection
-    ws.isAlive = true; 
+    ws.isAlive = true;
     ws.on('pong', () => {
         ws.isAlive = true;
     });
 
+    let queryObject = url.parse(req.url, true).query;
+
+    let clientName = queryObject.name || "";
+    let clientEmail = queryObject.email || "";
+    let clientIngameID = queryObject.id || "";
+    if (clientIngameID === "" || clientIngameID == undefined) clientIngameID = Math.random().toString(16).slice(2);
+    ws.clientIngameID = clientIngameID;
+
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
-    console.log("[USR] New client connected: " + realPlayerIP);
 
-    let loadingPlayerID = await database_command("getID", { name: "Alonso" });
+    let loadingPlayerID = await database_command("getID", { name: clientName, email: clientEmail });
 
-    if (loadingPlayerID) {
+    if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && clientName !== "" && clientEmail !== "") {
         ws.playerID = loadingPlayerID[0].id;
+
+        ws.isGuest = false;
+        ws.refer = ws.playerID + " (ID)";
+        console.log("\x1b[0m[USR] New client connected: " + realPlayerIP + ", " + clientName + ", " + clientEmail);
     }
     else {
-        console.log("[USR] WARNING: no player ID found");
-        ws.terminate();
+        //console.log("[USR] WARNING: no player ID found");
+        //ws.terminate();
+        ws.isGuest = true;
+        ws.refer = ws.clientIngameID + " (Guest)";
+        console.log("\x1b[0m[USR] New guest connected: " + clientIngameID);
     }
 
     // Message event handler
@@ -76,7 +91,7 @@ wss.on('connection', async (ws, req) => {
         let message = data.toString();
 
         ws.isAlive = true;
-        console.log(`[CMD] Received: ${message} from ${ws.playerID}`); // shown on server
+        console.log(`\x1b[0m[CMD] Received: ${message} from ${ws.refer}`); // shown on server
         //ws.send(`Server received: ${message}`); // shown on client
 
         try {
@@ -84,33 +99,34 @@ wss.on('connection', async (ws, req) => {
             data.playerID = ws.playerID;
             if (data.command !== undefined && server_commands[data.command] !== undefined) {
                 // message contains command and we offer that one
+                //if (ws.isGuest === false || data.command === "register")
                 server_commands[data.command](ws, data); // provide current ws connection and parsed data (possible here)
-                console.log("[CMD] Executing command: " + data + ", " + data.playerID);
+                console.log("\x1b[0m  [CMD] Executing command: " + data.command + ", " + ws.refer);
             }
             else {
-                if (server_commands[data.command] == undefined) console.log("[CMD] Command does not exist: " + data.command);
-                else console.log("[CMD] Failed to start command: " + data + ", " + data.playerID);
+                if (server_commands[data.command] == undefined) console.log("  [CMD] Command does not exist: " + data.command);
+                else console.log("\x1b[31m  [CMD] Failed to start command: " + data.command + ", " + ws.refer);
             }
         }
         catch (e) {
-            console.log("[CMD] Failed to parse or execute command: " + data + ", " + data.playerID);
+            console.log("\x1b[31m  [CMD] Failed to parse or execute command: " + data.command + ", " + ws.refer);
         }
     });
 
     // Close event handler
-    ws.on('close', () => {
-        console.log("[USR] Client disconnected");
+    ws.on('close', (ws) => {
+        console.log("\x1b[0m[USR] Client " + ws.refer + " disconnected");
     });
 }); 
 
 const serverLoop = setInterval(() => {
     wss.clients.forEach((ws) => {
         if (ws.isAlive === false) {
-            console.log("[USR] inactive or broken connection; terminating...");
+            console.log("\x1b[31m[USR] inactive or broken connection: " + ws.refer + "; terminating...");
             return ws.terminate();
         }
 
-        database_command("ping", { playerID: ws.playerID });
+        if (!ws.isGuest) database_command("ping", { playerID: ws.playerID });
 
         ws.isAlive = false;
         ws.ping();
@@ -122,7 +138,7 @@ function callClient(command, ws, payload) {
     payload.type = command; // adds the command bit to payload
 
     payload = JSON.stringify(payload);
-    console.log("[CMD] Sending to " + ws.playerID + ": " + payload);
+    console.log("\x1b[0m  [CMD] Returning to client " + ws.refer + ": " + payload);
     ws.send(payload); // sends to client
 }
 
@@ -137,11 +153,13 @@ async function server_playercount(ws, data) {
     // ws = connection,
     // data is what the client sends
 
-    if (data.playerID == undefined) {
+    let ID = ws.isGuest ? ws.clientIngameID : ws.playerID;
+
+    if (ID == undefined) {
         return ws.send(JSON.stringify({ type: "error", message: "Invalid ID provided by client" }));
     }
 
-    database_command("ping", { userID: data.userID });
+    if (!ws.isGuest) database_command("ping", { playerID: ID });
 
     let playercount = await database_command("playercount");
     if (playercount) {
@@ -219,7 +237,7 @@ function server_login(ws, data) {
 }
 
 server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`\x1b[32m[INF] Server running on port ${PORT}`);
 });
 
 
@@ -237,20 +255,20 @@ async function database_connect() {
             database: process.env.DB_NAME
         });
 
-        console.log("Connection to DB successful");
+        console.log("\x1b[32m[INF] Connection to DB successful");
         db_connected = true;
 
-        database_command("test");
+        //database_command("test");
 
     } catch (error) {
-        console.error("Connection to DB failed: " + error.message);
+        console.error("\x1b[31m[INF] Connection to DB failed: " + error.message);
         db_connected = false;
     }
 }
 
 async function database_command(cmdname = "", data = {}) {
     if (db_connected == false) {
-        console.log("command " + cmdname + " cannot be executed: no DB connection");
+        console.log("\x1b[31m  [DBC] command " + cmdname + " cannot be executed: no DB connection");
     }
 
     try {
@@ -269,7 +287,7 @@ async function database_command(cmdname = "", data = {}) {
             case "getID":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.id FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? LIMIT 1",
-                    ["", data.name]
+                    [data.email, data.name]
                 );
                 break;
             case "register":
@@ -292,11 +310,11 @@ async function database_command(cmdname = "", data = {}) {
                 break;
         }
 
-        if (results.warningStatus === undefined) console.log("[DBC] command " + cmdname + " success: " + results);
-        else console.log("[DBC] command " + cmdname + " is ResultSetHeader");
+        if (results.warningStatus === undefined) console.log("\x1b[0m  [DBC] command " + cmdname + " success: " + results);
+        else console.log("\x1b[31m  [DBC] command " + cmdname + " is ResultSetHeader");
         return results;
     } catch (err) {
-        console.log("[DBC] command " + cmdname + " error: " + err);
+        console.log("\x1b[31m  [DBC] command " + cmdname + " error: " + err);
         return false;
     }
     return false;

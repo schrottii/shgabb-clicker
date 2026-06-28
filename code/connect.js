@@ -29,7 +29,13 @@ function onServerConnect() {
 
 function connectToServer() {
     //socket = new WebSocket('ws://localhost:3000');
-    socket = new WebSocket(window.location.href.includes("localhost") ? 'http://localhost:3000' : 'wss://api-shgabb-clicker.balnoom.com');
+    let socketURL = window.location.href.includes("localhost") ? 'ws://localhost:3000' : 'wss://api-shgabb-clicker.balnoom.com';
+
+    let savedName = "Alonso";
+    let savedEmail = "";
+    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&id=${encodeURIComponent(game.profile.id) }`;
+
+    socket = new WebSocket(socketURL);
 
     socket.onopen = () => {
         console.log("Server: connection successful");
