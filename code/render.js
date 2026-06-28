@@ -5,8 +5,8 @@
 // sel 3: cheats - stats - achievements - other (social, patch notes)
 // sel 4: shbook: lore - missions - currencies - features - upgcalc - events
 
-const legalLinks = `
-<a href="LICENSE.md" target="_blank">License</a> - 
+const legalLinks = 
+`<a href="LICENSE.md" target="_blank">License</a> - 
 <a href="TOS.md" target="_blank">Terms of Service</a>- 
 <a href="PRIVACY.md" target="_blank">Privacy Policy</a>
 `;
@@ -317,7 +317,7 @@ var modals = {
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(true); toggleModal('welcomeback', 'close');">Start muted</button>
 
         <br /><br />
-        <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
+        <br /><sub><span style='float: left; margin-top: -48px;'><img src='images/bananatree.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
         `,
         (m, tick) => {
             m.write("modal-playername", game.profile.name + "<br />HMS: " + game.stats.hms + "<br />Play time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime")));
@@ -348,7 +348,7 @@ var modals = {
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="if (game.stats.hms > 0) { deleteGame(); } toggleModal('welcomeback', 'close'); toggleModal('welcomenewsave');">Create new save</button>
 
         <br /><br />
-        <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
+        <br /><sub><span style='float: left; margin-top: -48px;'><img src='images/welcome.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
         `,
         (m, tick) => {
             m.write("modal-newsavetext", game.stats.hms === 0 ? "If you are ready to start your journey:" : "Pressing this will create a new save and DELETE the one you currently have. (" + game.stats.hms + " HMS)")
