@@ -241,7 +241,7 @@ function toggleModal(name, forcemode = "") {
         // open it and set as current
         modalContentContainer.innerHTML = `<span class="modal-close" onclick="toggleModal('', 'close');">&times;</span>
         <h2>${modals[name].title}</h2>
-        <hr />
+        <hr style='clear: both;' />
         ${modals[name].content}`;
 
         modals[name].open();
@@ -303,15 +303,15 @@ var modals = {
     ),
     "welcomeback": new Modal("Welcome back to Shgabb Clicker v" + gameVersion,
         ` 
-        <h3>Welcome back<span id="modal-playername"></span></h3>
+        <h3>Welcome back, <span id="modal-playername"></span></h3>
         <br />
         
         <canvas style="display: none;" id="profileCanvas2" class="playerProfile"></canvas><br />
 
         <br /> <br />
 
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenew');">Not you? (import / start new)</button>
-        <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenew');">Not you? / Wrong savefile?</button>
+        <br /><br />
 
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(); toggleModal('welcomeback', 'close');">Start</button>
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(true); toggleModal('welcomeback', 'close');">Start muted</button>
@@ -320,7 +320,7 @@ var modals = {
         <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
         `,
         (m, tick) => {
-            m.write("modal-playername", ", " + game.profile.name);
+            m.write("modal-playername", game.profile.name + "<br />HMS: " + game.stats.hms + "<br />Play time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime")));
 
             if (game.stats.hms >= 100) {
                 profileCanvas = document.getElementById("profileCanvas2");
@@ -335,19 +335,23 @@ var modals = {
         ` 
         <h3>Returning player?</h3>
         If you are a returning player: <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import</button>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
+        
+        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import</button>
+        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('welcomeback');">Go to "Welcome back" screen</button>
 
+`//<button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
+        + `
         <br /><br />
 
         <h3>New player?</h3>
-        If you are ready to start your journey: <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenewsave');">Create new save</button>
+        <span id="modal-newsavetext" /></span> <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="if (game.stats.hms > 0) { deleteGame(); } toggleModal('welcomeback', 'close'); toggleModal('welcomenewsave');">Create new save</button>
 
         <br /><br />
         <sub><span style='float: right;'>${legalOwner}</span><br />${legalLinks}</sub>
         `,
         (m, tick) => {
+            m.write("modal-newsavetext", game.stats.hms === 0 ? "If you are ready to start your journey:" : "Pressing this will create a new save and DELETE the one you currently have. (" + game.stats.hms + " HMS)")
         }
     ),
     "welcomenewsave": new Modal("Welcome: creating new save",

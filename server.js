@@ -164,6 +164,11 @@ function callClient(command, ws, payload) {
 
 wss.on('close', () => clearInterval(serverLoop));
 
+server.listen(PORT, () => {
+    console.log(`\x1b[32m[INF] Server running on port ${PORT}`);
+    console.log(`\x1b[32m[INF] Server game version: v${serverVersion}`);
+});
+
 
 
 // 1. server function: playercount
@@ -255,10 +260,6 @@ function server_login(ws, data) {
     let success = nameValid && pwValid;
     callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
 }
-
-server.listen(PORT, () => {
-    console.log(`\x1b[32m[INF] Server running on port ${PORT}`);
-});
 
 
 
