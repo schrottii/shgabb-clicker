@@ -33,7 +33,7 @@ function connectToServer() {
 
     let savedName = "Alonso";
     let savedEmail = "";
-    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&id=${encodeURIComponent(game.profile.id) }`;
+    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&id=${encodeURIComponent(game.profile.id)}&gamever= ${gameVersion}`;
 
     socket = new WebSocket(socketURL);
 
@@ -47,6 +47,7 @@ function connectToServer() {
             let data = JSON.parse(event.data);
 
             switch (data.type) {
+                // request + reply
                 case "playercount":
                     client_playercount_reply(data);
                     break;
@@ -59,6 +60,12 @@ function connectToServer() {
                 case "login":
                     client_account_login_reply(data);
                     break;
+
+                // reply only
+                case "old_version":
+                    client_old_version_reply(data);
+                    break;
+
                 default:
                     console.error("Server error: " + data.message);
                     break;
@@ -167,7 +174,7 @@ async function client_account_login() {
 
 function client_account_login_reply(data) {
     // data contains: success, nameValid, pwValid
-    let message;
+    let message = "";
     if (data.success) message = "Login successful";
     else if (!data.nameValid) message = "Username is incorrect / does not exist";
     else if (!data.pwValid) message = "Password is incorrect";
@@ -176,6 +183,17 @@ function client_account_login_reply(data) {
     // put it into the UI, uhh
 }
 
+function client_old_version_reply(data) {
+    // reply only - no request
+    // data contains: clientVer, serverVer
+
+    let conq = confirm("There is an update avaialable! Do you want to refresh?\nYour version: v" + data.clientVer + " - server version: v" + data.serverVer)
+
+    if (conq) {
+        autoSave("manual");
+        window.location.reload();
+    }
+}
 
 
 // extra code by d0ktorek

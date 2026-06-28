@@ -2,6 +2,10 @@
 Server-side server logic code
 */
 
+// server version corresponding to game version -- change on update!!
+// this is also why live client needs a seperate server backend running from local/online indev testing
+const serverVersion = "4.7";
+
 // imports & setup
 const http = require('http');
 const WebSocket = require('ws');
@@ -59,6 +63,8 @@ wss.on('connection', async (ws, req) => {
         ws.isAlive = true;
     });
 
+    // get info from url header: 
+    // username, user email, ingame ID (for guests), client game version
     let queryObject = url.parse(req.url, true).query;
 
     let clientName = queryObject.name || "";
@@ -66,12 +72,22 @@ wss.on('connection', async (ws, req) => {
     let clientIngameID = queryObject.id || "";
     if (clientIngameID === "" || clientIngameID == undefined) clientIngameID = Math.random().toString(16).slice(2);
     ws.clientIngameID = clientIngameID;
+    let clientVer = queryObject.gamever.trim() || ""; // without v, i.e. 4.7 , and we *want* to compare them as strings (i.e. "4.7.1" > "4.7")
 
+    // get IP (just in case) and the in-DB ID
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
+    let loadingPlayerID = await database_command("getID", { name: clientName, email: clientEmail }); // the server MUST handle this, do not give the user the power to check any ID
 
-    let loadingPlayerID = await database_command("getID", { name: clientName, email: clientEmail });
+    if (serverVersion > clientVer) {
+        ws.refer = "(old_version)";
+        callClient("old_version", ws, { clientVer: clientVer, serverVer: serverVersion });
 
-    if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && clientName !== "" && clientEmail !== "") {
+        setTimeout(() => {
+            ws.terminate();
+        }, 100);
+    }
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && clientName !== "" && clientEmail !== "") {
+        // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
         ws.isGuest = false;
@@ -79,24 +95,27 @@ wss.on('connection', async (ws, req) => {
         console.log("\x1b[0m[USR] New client connected: " + realPlayerIP + ", " + clientName + ", " + clientEmail);
     }
     else {
+        // a guest - allowed to partially participate
+
         //console.log("[USR] WARNING: no player ID found");
         //ws.terminate();
+
         ws.isGuest = true;
         ws.refer = ws.clientIngameID + " (Guest)";
         console.log("\x1b[0m[USR] New guest connected: " + clientIngameID);
     }
 
-    // Message event handler
+    // logic when a message is received from the client
     ws.on('message', (data) => {
         let message = data.toString();
 
         ws.isAlive = true;
         console.log(`\x1b[0m[CMD] Received: ${message} from ${ws.refer}`); // shown on server
-        //ws.send(`Server received: ${message}`); // shown on client
 
         try {
             data = JSON.parse(data); // command, body
             data.playerID = ws.playerID;
+
             if (data.command !== undefined && server_commands[data.command] !== undefined) {
                 // message contains command and we offer that one
                 //if (ws.isGuest === false || data.command === "register")
@@ -113,7 +132,7 @@ wss.on('connection', async (ws, req) => {
         }
     });
 
-    // Close event handler
+    // logic when client disconnects
     ws.on('close', (ws) => {
         console.log("\x1b[0m[USR] Client " + ws.refer + " disconnected");
     });
@@ -134,6 +153,7 @@ const serverLoop = setInterval(() => {
 }, 30000);
 
 function callClient(command, ws, payload) {
+    // send a result back to the client
     // payload format: {}, includes stuff like: onlineLast30Days: visitors.size
     payload.type = command; // adds the command bit to payload
 
