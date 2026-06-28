@@ -201,17 +201,18 @@ class Upgrade {
         if (this.type == "ameliorerUpgrades") ameExtraText = "[S" + this.ameSet + "/" + (this.ameAmount != undefined ? this.ameAmount : 0) + "] ";
 
         let hasButtons = maxButton != "" || unlevelButton != "";
+        let hov = "hov-element='" + this.type + "." + this.ID + "'";
 
         // actual render
-        if (this.isUnlocked()) return "<button class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='" + this.getColors() + "'>"
+        if (this.isUnlocked()) return "<button " + hov + " class='upgrade' onclick='buyUpgrade(" + this.type + "." + this.ID + ")' style='" + this.getColors() + "'>"
             + (hasButtons ? "<div style='height: 100%; display: flex; flex-direction: column;'>" : "")
-            + "<div class='upgradeButtons'>" + maxButton + unlevelButton + "</div>" + (hasButtons ? "<div style='display: grid; place-items: center; flex: 1; align-items: center;'>" : "")
-            + "<div class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>"
+            + "<div " + hov + " class='upgradeButtons'>" + maxButton + unlevelButton + "</div>" + (hasButtons ? "<div style='display: grid; place-items: center; flex: 1; align-items: center;'>" : "")
+            + "<div " + hov + " class='upgradeHeader'>" + this.name + levelDisplay + egg + "</div>"
             + ameExtraText
             + (typeof (this.description) == "function" ? this.description() : this.description)
             + (hasButtons ? "</div>" : "") 
 
-            + "<div style='vertical-align: bottom; text-align: left; '>"
+            + "<div " + hov + " style='vertical-align: bottom; text-align: left; '>"
             + (isChallenge(5) ? "?" : (this.isMax() ? "" : "Cost: " + fn(this.currentPrice()) + " " + cImg(currencyFullName(this.currency), true)))
             + "<br />Effect: " + this.effectDisplay(this.currentLevel()) + (this.canBuy() && !isChallenge(5) ? " → " + this.effectDisplay(this.currentLevel() + 1) : "")
             + "</div>"
@@ -344,6 +345,9 @@ function renderUpgrades(object) {
 
 function updateUpgrades() {
     // Update upgrades UI
+
+    //if (hoveredElement.outerHTML != undefined && hoveredElement.outerHTML.includes("hov-element")) return; // experimental anti-refresh-while-hovering-over-it
+
     ui.upgradesrender.innerHTML = renderUpgrades(shgabbUpgrades);
 
     ui.swupgradesrender.innerHTML = renderUpgrades(sandwichUpgrades);

@@ -1567,6 +1567,14 @@ document.addEventListener("mousedown", (e) => {
     }
 });
 
+/*
+var hoveredElement = "";
+document.addEventListener("mousemove", (e) => {
+    hoveredElement = e.target;
+    //console.log(hoveredElement);
+});
+*/
+
 function startMusic(forcemute = false) {
     wggj.audio.musicMuted = forcemute ? true : !settings.music;
     wggj.audio.soundMuted = forcemute ? true : !settings.sounds;
