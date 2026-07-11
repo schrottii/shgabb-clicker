@@ -86,6 +86,12 @@ function connectToServer() {
                 case "login":
                     client_account_login_reply(data);
                     break;
+                case "cloud_upload":
+                    client_cloud_upload_reply(data);
+                    break;
+                case "cloud_download":
+                    client_cloud_download_reply(data);
+                    break;
 
                 // reply only
                 case "old_version":
@@ -237,7 +243,7 @@ function client_account_login_reply(data) {
     }
 }
 
-// 5. old version (reply only)
+// 5. old game version (reply only)
 function client_old_version_reply(data) {
     // reply only - no request
     // data contains: clientVer, serverVer
@@ -248,6 +254,26 @@ function client_old_version_reply(data) {
         autoSave("manual");
         window.location.reload();
     }
+}
+
+// 6. upload cloud save
+function client_cloud_upload() {
+    //console.log("giving data: " + JSON.stringify(game));
+    callServer("cloud_upload", { saveData: JSON.stringify(game) });
+}
+
+function client_cloud_upload_reply(data) {
+    console.log("cloud save success: " + data.success);
+}
+
+// 7. download cloud save
+function client_cloud_download() {
+    callServer("cloud_download");
+}
+
+function client_cloud_download_reply(data) {
+    console.log("cloud save success: " + data.success);
+    console.log(data.savedata);
 }
 
 

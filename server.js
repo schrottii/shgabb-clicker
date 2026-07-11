@@ -10,6 +10,7 @@ const serverVersion = "4.7";
 const http = require('http');
 const WebSocket = require('ws');
 const url = require('url');
+const fs = require('fs');
 
 const mysql = require('mysql2/promise');
 require('dotenv/config'); 
@@ -35,7 +36,9 @@ const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
     logincheck: (ws, data) => server_logincheck(ws, data),
     register: (ws, data) => server_register(ws, data),
-    login: (ws, data) => server_login(ws, data)
+    login: (ws, data) => server_login(ws, data),
+    cloud_upload: (ws, data) => server_cloud_upload(ws, data),
+    cloud_download: (ws, data) => server_cloud_download(ws, data)
 };
 
 
@@ -112,6 +115,7 @@ wss.on('connection', async (ws, req) => {
     // logic when a message is received from the client
     ws.on('message', (data) => {
         let message = data.toString();
+        if (message.length > 250) message = message.substr(0, 50) + "... (Too long)";
 
         ws.isAlive = true;
         console.log(`\x1b[0m[CMD] Received: ${message} from ${ws.refer}`); // shown on server
@@ -162,7 +166,8 @@ function callClient(command, ws, payload) {
     payload.type = command; // adds the command bit to payload
 
     payload = JSON.stringify(payload);
-    console.log("\x1b[0m  [CMD] Returning to client " + ws.refer + ": " + payload);
+    let payloadText = payload.length > 250 ? "(Too long)" : payload;
+    console.log("\x1b[0m  [CMD] Returning to client " + ws.refer + ": " + payloadText);
     ws.send(payload); // sends to client
 }
 
@@ -304,6 +309,65 @@ async function server_login(ws, data) {
     }
 
     callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid, name: name, pw: pw, email: email });
+}
+
+// 6. cloud upload
+async function server_cloud_upload(ws, data) {
+    let success = false;
+    let filename = ws.playerID + ".txt";
+
+    function createFile() {
+        // file only contains the stringified JSON of the savefile
+        console.log("writing into: " + filename);
+        fs.writeFileSync("./savefiles/" + filename, data.body.saveData, "utf8");
+        success = true;
+        end();
+    }
+
+    function end() {
+        callClient("cloud_upload", ws, { success: success });
+    }
+
+    if (!ws.isGuest && ws.playerID != undefined) {
+        // writes into /savefiles/ dir
+        fs.exists("savefiles", (e) => {
+            if (e == false) {
+                console.log("savefiles dir does not exist");
+                fs.mkdir("savefiles", (e) => {
+                    if (e) {
+                        console.log("error creating savefiles dir");
+                        end();
+                    }
+                    else {
+                        console.log("created savefiles dir");
+                        createFile();
+                    }
+                });
+            }
+            else {
+                console.log("savefiles dir exists");
+                createFile();
+            }
+        });
+    }
+}
+
+// 7. cloud download
+async function server_cloud_download(ws, data) {
+    let filename = ws.playerID + ".txt";
+    let savedata = "";
+
+    if (!ws.isGuest && ws.playerID != undefined) {
+        fs.exists("savefiles/" + filename, (e) => {
+            if (e) {
+                // file exists, load it
+                savedata = fs.readFileSync("savefiles/" + filename, "utf-8");
+            }
+
+            callClient("cloud_download", ws, { success: e, savedata: savedata });
+        });
+    }
+
 }
 
 
