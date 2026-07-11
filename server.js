@@ -33,7 +33,7 @@ const allowedOrigins = [
 
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
-    logincheck: (ws) => server_logincheck(ws),
+    logincheck: (ws, data) => server_logincheck(ws, data),
     register: (ws, data) => server_register(ws, data),
     login: (ws, data) => server_login(ws, data)
 };
@@ -62,23 +62,27 @@ wss.on('connection', async (ws, req) => {
     ws.on('pong', () => {
         ws.isAlive = true;
     });
+    ws.refer = "???"; // displaying the user in logs, set below
 
     // get info from url header: 
     // username, user email, ingame ID (for guests), client game version
     let queryObject = url.parse(req.url, true).query;
 
     let clientName = queryObject.name || "";
+    let clientPW = queryObject.pw || "";
     let clientEmail = queryObject.email || "";
     let clientIngameID = queryObject.id || "";
+
     if (clientIngameID === "" || clientIngameID == undefined) clientIngameID = Math.random().toString(16).slice(2);
     ws.clientIngameID = clientIngameID;
     let clientVer = queryObject.gamever.trim() || ""; // without v, i.e. 4.7 , and we *want* to compare them as strings (i.e. "4.7.1" > "4.7")
 
     // get IP (just in case) and the in-DB ID
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
-    let loadingPlayerID = await database_command("getID", { name: clientName, email: clientEmail }); // the server MUST handle this, do not give the user the power to check any ID
+    let loadingPlayerID = await database_command("getID", { name: clientName, password: clientPW, email: clientEmail }); // the server MUST handle this, do not give the user the power to check any ID
 
     if (serverVersion > clientVer) {
+        // client has outdated version
         ws.refer = "(old_version)";
         callClient("old_version", ws, { clientVer: clientVer, serverVer: serverVersion });
 
@@ -86,12 +90,12 @@ wss.on('connection', async (ws, req) => {
             ws.terminate();
         }, 100);
     }
-    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && clientName !== "" && clientEmail !== "") {
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && clientName !== "" && clientPW !== "" && clientEmail !== "") {
         // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
         ws.isGuest = false;
-        ws.refer = ws.playerID + " (ID)";
+        ws.refer = clientName + " (" + ws.playerID + ")";
         console.log("\x1b[0m[USR] New client connected: " + realPlayerIP + ", " + clientName + ", " + clientEmail);
     }
     else {
@@ -199,7 +203,7 @@ async function server_playercount(ws, data) {
 // simply tells the player if they are logged in to their cloud save acc
 // after registering or logging in
 function server_logincheck(ws, data) {
-    let isLoggedIn = data.playerID != undefined;
+    let isLoggedIn = ws.playerID != undefined;
 
     callClient("logincheck", ws, { isLoggedIn: isLoggedIn });
 }
@@ -215,11 +219,20 @@ const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler"
 async function server_register(ws, data) {
     let name = data.body.username;
     let pw = data.body.password;
+    let email = data.body.email;
 
     let nameValid = true;
     let pwValid = true;
+    let emailValid = true;
 
     // existing username validation
+    let nameExists = await database_command("getUserNameExistence", { name: name });
+
+    //console.log(nameExists);
+    if (!nameExists || nameExists.length == 0) {
+        //console.log("name exists");
+        nameValid = false;
+    }
 
     // password validation
     if (pw.length < 6) pwValid = false;
@@ -237,18 +250,25 @@ async function server_register(ws, data) {
         }
     }
 
-    let success = false;
-    if (nameValid && pwValid) {
-        success = await database_command("register", { name: name, pw: pw });
+    // existing email validation
+    let emailExists = await database_command("getEmailExistence", { email: email });
+    if (!emailExists || emailExists.length == 0) {
+        emailValid = false;
     }
 
-    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
+    let success = false;
+    if (nameValid && pwValid && emailValid) {
+        success = await database_command("register", { name: name, pw: pw, email: email });
+    }
+
+    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid });
 }
 
 // 4. login
-function server_login(ws, data) {
+async function server_login(ws, data) {
     let name = data.username;
     let pw = data.password;
+    let email = data.body.email;
 
     let nameValid = true;
     let pwValid = true;
@@ -258,7 +278,14 @@ function server_login(ws, data) {
     // existing password for that user validation
 
     let success = nameValid && pwValid;
-    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
+
+    if (success) {
+        let loadingPlayerID = await database_command("getID", { name: name, pw: pw, email: email });
+        ws.playerID = loadingPlayerID[0].id;
+        server_logincheck(ws);
+
+        callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
+    }
 }
 
 
@@ -307,14 +334,26 @@ async function database_command(cmdname = "", data = {}) {
 
             case "getID":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.id FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? LIMIT 1",
-                    [data.email, data.name]
+                    "SELECT tbl_users.id FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1",
+                    [data.email, data.name, data.password]
                 );
                 break;
             case "register":
                 [results] = await db_connection.query(
                     "INSERT INTO tbl_users (acc_email, acc_name, acc_password) VALUES (?, ?, ?)",
-                    ["", data.name, data.pw]
+                    [data.email, data.name, data.pw]
+                );
+                break;
+            case "getUserNameExistence":
+                [results] = await db_connection.query(
+                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = '?' LIMIT 1;",
+                    [data.name]
+                );
+                break;
+            case "getEmailExistence":
+                [results] = await db_connection.query(
+                    "SELECT tbl_users.acc_email FROM tbl_users WHERE tbl_users.acc_email = '?' LIMIT 1;",
+                    [data.email]
                 );
                 break;
             case "ping":

@@ -137,7 +137,8 @@ var settingButtons = [
     new Setting("save", "redeemRewardCode", "Redeem a Reward Code", "Use this to import a special gift from Schrottii. Each can be used only once and has an expiry date.", ""),
     new Setting("save", "exportSettings", "Export Settings", "[EXPORT - SETTINGS CODE] Copy the a code for settings to the clipboard. Store it somewhere and use it to load this set of settings later.", ""),
     new Setting("save", "importSettings", "Import Settings", "[IMPORT - SETTINGS CODE] Import a settings code, obtained from the Export Settings setting.", ""),
-]
+    new Setting("save", "openCloudSaveModal", "Cloud Save", "Register, login or manage your cloud save", "")
+];
 
 // GENERAL SETTING FUNCTIONS
 function onSettingClick(count) {
@@ -559,4 +560,21 @@ function importSettings() {
 
     updateEVERYTHING();
     createNotification("Custom colors imported");
+}
+
+function openCloudSaveModal() {
+    if (!isConnectedToServer()) {
+        connectToServer();
+        return;
+    }
+
+    //let isLoggedIn = await client_account_logincheck();
+    if (isLoggedIn === true) {
+        // is logged in 
+        console.log("Cloud save setting: Player is logged in");
+    }
+    else if (isLoggedIn === false) {
+        // is not logged in
+        console.log("Cloud save setting: Player is NOT logged in");
+    }
 }

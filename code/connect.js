@@ -3,6 +3,7 @@ client-side code that talks to the server-side
 */
 
 var socket;
+var isLoggedIn = false;
 
 // generalized functions
 function isConnectedToServer() {
@@ -24,16 +25,17 @@ async function callServer(command, body = "") {
 
 function onServerConnect() {
     client_playercount(game.profile.id);
-    client_account_logincheck();
+    //client_account_logincheck();
 }
 
 function connectToServer() {
     //socket = new WebSocket('ws://localhost:3000');
     let socketURL = window.location.href.includes("localhost") ? 'ws://localhost:3000' : 'wss://api-shgabb-clicker.balnoom.com';
 
-    let savedName = "Alonso";
-    let savedEmail = "";
-    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&id=${encodeURIComponent(game.profile.id)}&gamever= ${gameVersion}`;
+    let savedName = "Alonso2";
+    let savedPassword = "Fernando";
+    let savedEmail = "alonso@yahoo.com";
+    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&pw=${encodeURIComponent(savedPassword)}&id=${encodeURIComponent(game.profile.id)}&gamever= ${gameVersion}`;
 
     socket = new WebSocket(socketURL);
 
@@ -106,10 +108,8 @@ function client_playercount_reply(data) {
 // 2. /logincheck
 async function client_account_logincheck() {
     // checks if we are logged in
-
     //if (getOrigin() == "private") return;
     console.log("/logincheck");
-
     callServer("logincheck");
 }
 
@@ -117,10 +117,11 @@ function client_account_logincheck_reply(data) {
     let prettyFormat = "Login info: " + (data.isLoggedIn == false ? "not " : "") + "logged in";
     console.log(prettyFormat);
     ui.server_loggedin.innerHTML = prettyFormat;
+    isLoggedIn = data.isLoggedIn;
 }
 
 // 3. /register
-async function client_account_register() {
+async function client_account_register(userName = "Alonso") {
     // create new cloud save account
 
     //if (getOrigin() == "private") return;
@@ -138,12 +139,13 @@ async function client_account_register() {
 
     // who do we want to be?
     // (placeholder)
-    let userName = "Alonso";
+    //let userName = "Alonso";
     let userPassword = "Fernando";
+    let userEmail = "alonso@yahoo.com";
 
     // validation (e.g. username already exists) is done on the server
     // using the name and password provided by the user
-    callServer("register", { username: userName, password: userPassword });
+    callServer("register", { username: userName, password: userPassword, email: userEmail });
 }
 
 function client_account_register_reply(data) {
@@ -152,14 +154,17 @@ function client_account_register_reply(data) {
     if (data.success) message = "Registering successful";
     else if (!data.nameValid) message = "Username is inappropriate or already exists";
     else if (!data.pwValid) message = "Password is inappropriate or too short";
+    else if (!data.emailValid) message = "Email already exists";
     else message = "Registering not successful, unknown error";
+
+    console.log("register: " + message);
+    if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
 }
 
 // 4. /login
 async function client_account_login() {
-
     //if (getOrigin() == "private") return;
     console.log("/login");
 
@@ -167,9 +172,10 @@ async function client_account_login() {
     // (placeholder)
     let userName = "Alonso";
     let userPassword = "Fernando";
+    let userEmail = "alonso@yahoo.com";
 
     // validation is done on the server
-    callServer("login", { username: userName, password: userPassword });
+    callServer("login", { username: userName, password: userPassword, email: userEmail });
 }
 
 function client_account_login_reply(data) {
@@ -180,9 +186,13 @@ function client_account_login_reply(data) {
     else if (!data.pwValid) message = "Password is incorrect";
     else message = "Login not successful, unknown error";
 
+    console.log("login: " + message);
+    if (data.success) client_account_logincheck();
+
     // put it into the UI, uhh
 }
 
+// 5. old version (reply only)
 function client_old_version_reply(data) {
     // reply only - no request
     // data contains: clientVer, serverVer

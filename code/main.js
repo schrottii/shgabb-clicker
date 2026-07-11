@@ -1820,14 +1820,14 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "Finishing loading process";
     updateGameLoadingText();
 
+    connectToServer();
+
     if (isSaveExisting()) { 
         toggleModal("welcomeback");
     }
     else {
         toggleModal("welcomenew");
     }
-
-    connectToServer();
 
     createNotification("Game loaded");
     GAMELOADED = true;
