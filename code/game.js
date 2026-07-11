@@ -398,3 +398,7 @@ function tester() {
     updateEVERYTHING();
 }
 */
+
+function isSaveExisting() {
+    return game.stats.hms >= 1 || game.shgabb.gte(1);
+}

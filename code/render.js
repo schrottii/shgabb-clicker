@@ -337,9 +337,8 @@ var modals = {
         If you are a returning player: <br />
         
         <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import</button>
-        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('welcomeback');">Go to "Welcome back" screen</button>
-
-`//<button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
+        ` + (isSaveExisting() ? `<button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('welcomeback');">Go to "Welcome back" screen</button>` : "")
+        //<button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
         + `
         <br /><br />
 
@@ -348,21 +347,30 @@ var modals = {
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="if (game.stats.hms > 0) { deleteGame(); } toggleModal('welcomeback', 'close'); toggleModal('welcomenewsave');">Create new save</button>
 
         <br /><br />
-        <br /><sub><span style='float: left; margin-top: -48px;'><img src='images/welcome.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
+        <br /><sub><span style='float: left; margin-top: -48px; position: absolute; left: 12%;'><img src='images/welcome.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
         `,
         (m, tick) => {
-            m.write("modal-newsavetext", game.stats.hms === 0 ? "If you are ready to start your journey:" : "Pressing this will create a new save and DELETE the one you currently have. (" + game.stats.hms + " HMS)")
+            m.write("modal-newsavetext", !isSaveExisting() ? "If you are ready to start your journey:" : "Pressing this will create a new save and DELETE the one you currently have. (" + game.stats.hms + " HMS)")
         }
     ),
     "welcomenewsave": new Modal("Welcome: creating new save",
         ` 
         <h3>Start settings</h3>
         All of these are optional and can be changed later. In the game you will have a lot more settings! <br />
-        <br /> <input type="checkbox" id="welcomenewsave-sound">Start with sound
-        <br /> <input type="checkbox" id="welcomenewsave-tutorial">Start tutorial
-        <br /> <input type="text" maxlength="16" size="16" id="welcomenewsave-username">Username
+        <table align='center' style="background-color: rgb(150, 150, 255);">
+        <tr><td><input style='transform: scaleX(400%) scaleY(150%)' type="checkbox" id="welcomenewsave-sound"></td><td>Start with sound</td></tr>
+        <tr><td><input style='transform: scaleX(400%) scaleY(150%)' type="checkbox" id="welcomenewsave-tutorial"></td><td>Start tutorial</td></tr>
+        <tr><td><input type="text" maxlength="16" size="16" id="welcomenewsave-username"></td><td>Username</td></tr>
+        </table>
 
-        <h3>Start</h3>
+        <h3>Your start data</h3>
+        <ul style="margin-left: 30%; width: 40%; text-align: left;">
+        <li>Game version: v${gameVersion}</li>
+        <li>Start date: ${formatDate(today())}</li>
+        </ul>
+        <br />
+
+        <h3>Create the new save</h3>
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="createNewSave();">Start</button>
         `,
         (m, tick) => {

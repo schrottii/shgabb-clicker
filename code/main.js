@@ -1820,7 +1820,7 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "Finishing loading process";
     updateGameLoadingText();
 
-    if (game.stats.hms >= 1 || game.shgabb.gte(1)) { 
+    if (isSaveExisting()) { 
         toggleModal("welcomeback");
     }
     else {
