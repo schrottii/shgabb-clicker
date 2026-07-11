@@ -26,15 +26,39 @@ async function callServer(command, body = "") {
 function onServerConnect() {
     client_playercount(game.profile.id);
     //client_account_logincheck();
+
+    // get cached login & auto-login with that
+    /*
+    let cachedLogin = localStorage.getItem("balnoomLogin");
+    if (cachedLogin != null) {
+        cachedLogin = JSON.parse(cachedLogin);
+        if (cachedLogin.email != undefined && cachedLogin.email != null && cachedLogin.email != "") {
+            client_account_login(cachedLogin.email, cachedLogin.name, cachedLogin.pw);
+        }
+    }
+    */
 }
 
 function connectToServer() {
     //socket = new WebSocket('ws://localhost:3000');
     let socketURL = window.location.href.includes("localhost") ? 'ws://localhost:3000' : 'wss://api-shgabb-clicker.balnoom.com';
 
-    let savedName = "Alonso2";
-    let savedPassword = "Fernando";
-    let savedEmail = "alonso@yahoo.com";
+    let savedName = "";
+    let savedPassword = "";
+    let savedEmail = "";
+
+    // get cached login & auto-login with that
+    let cachedLogin = localStorage.getItem("balnoomLogin");
+    if (cachedLogin != null) {
+        cachedLogin = JSON.parse(cachedLogin);
+        if (cachedLogin.email != undefined && cachedLogin.email != null && cachedLogin.email != "") {
+            savedName = cachedLogin.name;
+            savedPassword = cachedLogin.pw;
+            savedEmail = cachedLogin.email;
+            console.log("Found cached login, using that");
+        }
+    }
+
     socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&pw=${encodeURIComponent(savedPassword)}&id=${encodeURIComponent(game.profile.id)}&gamever= ${gameVersion}`;
 
     socket = new WebSocket(socketURL);
@@ -163,17 +187,25 @@ function client_account_register_reply(data) {
 
     // put it into the UI, uhh
     if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = message;
+
+    // cache our login!
+    if (data.success) {
+        localStorage.setItem("balnoomLogin", JSON.stringify({ name: data.name, pw: data.pw, email: data.email }));
+
+        socket.close();
+        connectToServer();
+    }
 }
 
 // 4. /login
-async function client_account_login() {
+async function client_account_login(email = "alonso@yahoo.com", name = "Alonso", pw = "Fernando") {
     //if (getOrigin() == "private") return;
     console.log("/login");
 
     // who do we log in as?
-    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : "Alonso";
-    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "Fernando";
-    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "alonso@yahoo.com";
+    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : name;
+    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : pw;
+    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : email;
 
     if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = "Trying to log in...";
 
@@ -195,6 +227,14 @@ function client_account_login_reply(data) {
 
     // put it into the UI, uhh
     if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = message;
+
+    // cache our login!
+    if (data.success) {
+        localStorage.setItem("balnoomLogin", JSON.stringify({ name: data.name, pw: data.pw, email: data.email }));
+
+        socket.close();
+        connectToServer();
+    }
 }
 
 // 5. old version (reply only)

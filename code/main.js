@@ -418,6 +418,8 @@ function hotkeyPreviousSelection() {
 // hotkeys
 let recentKeys = [];
 document.addEventListener('keydown', function (e) {
+    if (currentModal != "") return;
+
     recentKeys.push(e.key);
     if (!BETA.isIndev && (e.key == 'F12' || (recentKeys.includes("Control") && recentKeys.includes("Shift") && (recentKeys.includes("i") || recentKeys.includes("I"))))) {
         if (e.key == 'F12') report("F12", 1);

@@ -258,7 +258,7 @@ async function server_register(ws, data) {
         success = await database_command("register", { name: name, pw: pw, email: email });
     }
 
-    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid });
+    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid, name: name, pw: pw, email: email });
 }
 
 // 4. login
@@ -273,19 +273,21 @@ async function server_login(ws, data) {
 
     // existing email validation
     let emailExists = await database_command("getEmailExistence", { email: email });
-    console.log(emailExists);
     if (!emailExists || emailExists.length == 0) {
         emailValid = false;
     }
 
     // existing username validation
     let nameExists = await database_command("getUserNameExistence", { name: name });
-    console.log(nameExists);
     if (!nameExists || nameExists.length == 0) {
         nameValid = false;
     }
 
     // existing password for that user validation
+    let passwordIsMine = await database_command("getUserPassword", { email: email, password: pw });
+    if (!passwordIsMine || passwordIsMine.length == 0) {
+        pwValid = false;
+    }
 
     let success = nameValid && pwValid && emailValid;
 
@@ -301,7 +303,7 @@ async function server_login(ws, data) {
         }
     }
 
-    callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid });
+    callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid, name: name, pw: pw, email: email });
 }
 
 
@@ -373,6 +375,12 @@ async function database_command(cmdname = "", data = {}) {
                     [data.email]
                 );
                 //console.log(results, results[0]);
+                break;
+            case "getUserPassword":
+                [results] = await db_connection.query(
+                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_password = ? LIMIT 1;",
+                    [data.email, data.password]
+                );
                 break;
             case "ping":
                 [results] = await db_connection.query(
