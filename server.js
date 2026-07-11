@@ -225,12 +225,15 @@ async function server_register(ws, data) {
     let pwValid = true;
     let emailValid = true;
 
+    // existing email validation
+    let emailExists = await database_command("getEmailExistence", { email: email });
+    if (emailExists && emailExists.length > 0) {
+        emailValid = false;
+    }
+
     // existing username validation
     let nameExists = await database_command("getUserNameExistence", { name: name });
-
-    //console.log(nameExists);
-    if (!nameExists || nameExists.length == 0) {
-        //console.log("name exists");
+    if (nameExists && nameExists.length > 0) {
         nameValid = false;
     }
 
@@ -250,12 +253,6 @@ async function server_register(ws, data) {
         }
     }
 
-    // existing email validation
-    let emailExists = await database_command("getEmailExistence", { email: email });
-    if (!emailExists || emailExists.length == 0) {
-        emailValid = false;
-    }
-
     let success = false;
     if (nameValid && pwValid && emailValid) {
         success = await database_command("register", { name: name, pw: pw, email: email });
@@ -266,26 +263,45 @@ async function server_register(ws, data) {
 
 // 4. login
 async function server_login(ws, data) {
-    let name = data.username;
-    let pw = data.password;
+    let name = data.body.username;
+    let pw = data.body.password;
     let email = data.body.email;
 
     let nameValid = true;
     let pwValid = true;
+    let emailValid = true;
+
+    // existing email validation
+    let emailExists = await database_command("getEmailExistence", { email: email });
+    console.log(emailExists);
+    if (!emailExists || emailExists.length == 0) {
+        emailValid = false;
+    }
 
     // existing username validation
+    let nameExists = await database_command("getUserNameExistence", { name: name });
+    console.log(nameExists);
+    if (!nameExists || nameExists.length == 0) {
+        nameValid = false;
+    }
 
     // existing password for that user validation
 
-    let success = nameValid && pwValid;
+    let success = nameValid && pwValid && emailValid;
 
     if (success) {
-        let loadingPlayerID = await database_command("getID", { name: name, pw: pw, email: email });
-        ws.playerID = loadingPlayerID[0].id;
-        server_logincheck(ws);
-
-        callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid });
+        let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
+        console.log("loadingPlayerID: " + loadingPlayerID);
+        if (loadingPlayerID && loadingPlayerID.length > 0) {
+            ws.playerID = loadingPlayerID[0].id;
+            server_logincheck(ws);
+        }
+        else {
+            success = false;
+        }
     }
+
+    callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid });
 }
 
 
@@ -346,15 +362,17 @@ async function database_command(cmdname = "", data = {}) {
                 break;
             case "getUserNameExistence":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = '?' LIMIT 1;",
+                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1;",
                     [data.name]
                 );
                 break;
             case "getEmailExistence":
+                //console.log(data.email, JSON.stringify(data));
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.acc_email FROM tbl_users WHERE tbl_users.acc_email = '?' LIMIT 1;",
+                    "SELECT tbl_users.acc_email FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
                     [data.email]
                 );
+                //console.log(results, results[0]);
                 break;
             case "ping":
                 [results] = await db_connection.query(
@@ -370,7 +388,7 @@ async function database_command(cmdname = "", data = {}) {
                 break;
         }
 
-        if (results.warningStatus === undefined) console.log("\x1b[0m  [DBC] command " + cmdname + " success: " + results);
+        if (results.warningStatus === undefined) console.log("\x1b[0m  [DBC] command " + cmdname + " success: " + JSON.stringify(results));
         else console.log("\x1b[31m  [DBC] command " + cmdname + " is ResultSetHeader");
         return results;
     } catch (err) {

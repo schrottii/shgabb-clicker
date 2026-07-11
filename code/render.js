@@ -376,6 +376,23 @@ var modals = {
         (m, tick) => {
         }
     ),
+    "cloudsave": new Modal("Cloud Save",
+        `
+        <table align='center' style="background-color: rgb(150, 150, 255);">
+        <tr><td><input id="cloudSave-username" type="text" maxlength="32" size="32" id="welcomenewsave-username"></td><td>Username</td></tr>
+        <tr><td><input id="cloudSave-password" type="password" maxlength="64" size="32" id="welcomenewsave-username"></td><td>Password</td></tr>
+        <tr><td><input id="cloudSave-email" type="text" maxlength="64" size="32" id="welcomenewsave-username"></td><td>E-Mail</td></tr>
+        </table>
+
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_register();">Register</button>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_login();">Login</button>
+        <br />
+
+        <span id="cloudSaveResponse">
+        `,
+        (m, tick) => {
+        }
+    )
 };
 
 function createNewSave() {

@@ -568,7 +568,10 @@ function openCloudSaveModal() {
         return;
     }
 
-    //let isLoggedIn = await client_account_logincheck();
+    toggleModal("cloudsave");
+
+    /*
+    let isLoggedIn = await client_account_logincheck();
     if (isLoggedIn === true) {
         // is logged in 
         console.log("Cloud save setting: Player is logged in");
@@ -577,4 +580,5 @@ function openCloudSaveModal() {
         // is not logged in
         console.log("Cloud save setting: Player is NOT logged in");
     }
+    */
 }

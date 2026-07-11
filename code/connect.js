@@ -121,7 +121,7 @@ function client_account_logincheck_reply(data) {
 }
 
 // 3. /register
-async function client_account_register(userName = "Alonso") {
+async function client_account_register() {
     // create new cloud save account
 
     //if (getOrigin() == "private") return;
@@ -138,10 +138,11 @@ async function client_account_register(userName = "Alonso") {
     // so, upon registering (this function), we need the user to enter a name and a password, and add it to the db
 
     // who do we want to be?
-    // (placeholder)
-    //let userName = "Alonso";
-    let userPassword = "Fernando";
-    let userEmail = "alonso@yahoo.com";
+    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : "Alonso";
+    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "Fernando";
+    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "alonso@yahoo.com";
+
+    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = "Trying to register...";
 
     // validation (e.g. username already exists) is done on the server
     // using the name and password provided by the user
@@ -161,6 +162,7 @@ function client_account_register_reply(data) {
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
+    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = message;
 }
 
 // 4. /login
@@ -169,10 +171,11 @@ async function client_account_login() {
     console.log("/login");
 
     // who do we log in as?
-    // (placeholder)
-    let userName = "Alonso";
-    let userPassword = "Fernando";
-    let userEmail = "alonso@yahoo.com";
+    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : "Alonso";
+    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "Fernando";
+    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "alonso@yahoo.com";
+
+    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = "Trying to log in...";
 
     // validation is done on the server
     callServer("login", { username: userName, password: userPassword, email: userEmail });
@@ -184,12 +187,14 @@ function client_account_login_reply(data) {
     if (data.success) message = "Login successful";
     else if (!data.nameValid) message = "Username is incorrect / does not exist";
     else if (!data.pwValid) message = "Password is incorrect";
+    else if (!data.emailValid) message = "Email is invalid";
     else message = "Login not successful, unknown error";
 
     console.log("login: " + message);
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
+    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = message;
 }
 
 // 5. old version (reply only)
