@@ -284,6 +284,7 @@ class Modal {
 
     write(element, text) {
         if (this.uiElements[element] == undefined || this.uiElements[element].innerHTML == undefined) return false;
+        if (this.uiElements[element].innerHTML == text) return true;
         this.uiElements[element].innerHTML = text;
         return true;
     }
@@ -376,7 +377,7 @@ var modals = {
         (m, tick) => {
         }
     ),
-    "cloudsave": new Modal("Cloud Save",
+    "accountmanagement": new Modal("Account management",
         `
         <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
         <tr><td><input id="cloudSave-username" type="text" maxlength="32" size="32" style="font-size: 24px;"></td><td>Username</td></tr>
@@ -388,7 +389,31 @@ var modals = {
         <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_login();">Login</button>
         <br />
 
-        <span id="cloudSaveResponse">
+        <span id="accountLoginStatus"></span>
+        <br />
+
+        <div id="cloudSaveButton"></div>
+        `,
+        (m, tick) => {
+            if (isLoggedIn) {
+                m.write("cloudSaveButton", `
+        <h3>Cloud save</h3>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button>`);
+            }
+            else {
+                m.write("cloudSaveButton", "Log in to access cloud save");
+            }
+        }
+    ),
+    "cloudsave": new Modal("Cloud Save",
+        `
+        <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_cloud_upload();">Upload save</button>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_cloud_download();">Download save</button>
+        </table>
+        <br />
+
+        <span id="cloudSaveStatus"></span>
         `,
         (m, tick) => {
         }

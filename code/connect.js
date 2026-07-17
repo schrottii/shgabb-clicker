@@ -25,18 +25,8 @@ async function callServer(command, body = "") {
 
 function onServerConnect() {
     client_playercount(game.profile.id);
+    client_account_logincheck();
     //client_account_logincheck();
-
-    // get cached login & auto-login with that
-    /*
-    let cachedLogin = localStorage.getItem("balnoomLogin");
-    if (cachedLogin != null) {
-        cachedLogin = JSON.parse(cachedLogin);
-        if (cachedLogin.email != undefined && cachedLogin.email != null && cachedLogin.email != "") {
-            client_account_login(cachedLogin.email, cachedLogin.name, cachedLogin.pw);
-        }
-    }
-    */
 }
 
 function connectToServer() {
@@ -172,7 +162,7 @@ async function client_account_register() {
     let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "Fernando";
     let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "alonso@yahoo.com";
 
-    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = "Trying to register...";
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to register...";
 
     // validation (e.g. username already exists) is done on the server
     // using the name and password provided by the user
@@ -192,7 +182,7 @@ function client_account_register_reply(data) {
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
-    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = message;
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = message;
 
     // cache our login!
     if (data.success) {
@@ -213,7 +203,7 @@ async function client_account_login(email = "alonso@yahoo.com", name = "Alonso",
     let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : pw;
     let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : email;
 
-    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = "Trying to log in...";
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to log in...";
 
     // validation is done on the server
     callServer("login", { username: userName, password: userPassword, email: userEmail });
@@ -232,7 +222,7 @@ function client_account_login_reply(data) {
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
-    if (document.getElementById("cloudSaveResponse")) document.getElementById("cloudSaveResponse").innerHTML = message;
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = message;
 
     // cache our login!
     if (data.success) {
@@ -260,20 +250,34 @@ function client_old_version_reply(data) {
 function client_cloud_upload() {
     //console.log("giving data: " + JSON.stringify(game));
     callServer("cloud_upload", { saveData: JSON.stringify(game) });
+    if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to upload cloud save...";
 }
 
 function client_cloud_upload_reply(data) {
     console.log("cloud save success: " + data.success);
+    if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Uploaded save successfully!";
 }
 
 // 7. download cloud save
 function client_cloud_download() {
     callServer("cloud_download");
+    if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to download your cloud save...";
 }
 
 function client_cloud_download_reply(data) {
     console.log("cloud save success: " + data.success);
-    console.log(data.savedata);
+    if (data.success) {
+        console.log(data.savedata);
+        if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Downloaded your save successfully. Length: " + data.savedata.length;
+
+        if (confirm("Do you want to load that save?")) {
+            importGame(data.savedata);
+        }
+        else {
+            navigator.clipboard.writeText(data.savedata);
+            createNotification("Game exported to clipboard");
+        }
+    }
 }
 
 

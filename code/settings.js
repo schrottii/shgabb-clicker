@@ -568,7 +568,7 @@ function openCloudSaveModal() {
         return;
     }
 
-    toggleModal("cloudsave");
+    toggleModal("accountmanagement");
 
     /*
     let isLoggedIn = await client_account_logincheck();
