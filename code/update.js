@@ -10,6 +10,14 @@ const currentPatchNotes = `
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 
+const legalLinks =
+    `<a href="LICENSE.md" target="_blank">License</a> - 
+<a href="TOS.md" target="_blank">Terms of Service</a>- 
+<a href="PRIVACY.md" target="_blank">Privacy Policy</a>
+`;
+
+const legalOwner = `©2023-2026 Balnoom / Schrottii`;
+
 function generatePatchNotes() {
     ui.gameTitle.innerHTML = cImg("shgabb") + "   Shgabb Clicker v" + gameVersion + (BETA.isIndev ? "-dev" : "") + "   " + cImg("shgabb");
 
