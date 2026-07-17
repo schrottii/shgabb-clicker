@@ -3,6 +3,9 @@ client-side code that talks to the server-side
 */
 
 var socket;
+var timeOutIntervals = [3000, 3000, 5000, 10000, 15000, 30000];
+var timeOutProgress = 0;
+
 var isLoggedIn = false;
 
 // generalized functions
@@ -98,8 +101,11 @@ function connectToServer() {
     };
 
     socket.onclose = () => {
-        console.log("Disconnected from server. Retrying in 3 seconds...");
-        setTimeout(connectToServer, 3000);
+        let timeOutLength = timeOutIntervals[timeOutProgress];
+        if (timeOutProgress < timeOutIntervals.length - 1) timeOutProgress++;
+
+        console.log("Disconnected from server. Retrying in " + Math.round(timeOutLength / 1000) + " seconds...");
+        setTimeout(connectToServer, timeOutLength);
     };
 
     socket.onerror = (error) => {
