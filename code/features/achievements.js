@@ -16,7 +16,7 @@ function renderAchievements() {
     render = render + "<button class='grayButton' onclick='changeAchievementPage(0)' class='artifactLoadoutButton'>Previous Page</button>";
     render = render + "<button class='grayButton' onclick='changeAchievementPage(1)' class='artifactLoadoutButton'>Next Page</button><br />";
 
-    for (a = achievementsPage * 50; a < achievementsPage * 50 + 50; a++) {
+    for (let a = achievementsPage * 50; a < achievementsPage * 50 + 50; a++) {
         if (a > achievements.length - 1) continue;
         render = render + "<button class='artifact' style='color: black; background-color: " + (game.ach.includes(achievements[a].ID) ? "rgb(230, 230, 230)" : "rgb(200, 200, 200)") + "'><img src='images/achievements/" + (game.ach.includes(achievements[a].ID) ? achievements[a].image : "empty.png") + "'><br><b>" + achievements[a].name + "</b><br>" + (typeof (achievements[a].description) == "function" ? achievements[a].description() : achievements[a].description) + "</button>"
     }

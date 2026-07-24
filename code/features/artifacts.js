@@ -434,6 +434,7 @@ function getArtifactsSimpleBoost(currency) {
     let thisArti;
 
     for (let arti in game.aeqi) {
+        if (getArtifact(game.aeqi[arti]) == undefined) continue;
         thisArti = getArtifact(game.aeqi[arti])
         if (thisArti.boost == currency) {
             if (thisArti.isUnlocked() && thisArti.isEquipped() && (thisArti.simpleTrigger == undefined || thisArti.simpleTrigger(game.alvl[game.aeqi[arti]]))) {
@@ -446,6 +447,7 @@ function getArtifactsSimpleBoost(currency) {
 
 function artifactEvent(eventName, v=false) {
     for (let arti in game.aeqi) { // Only the equipped artis
+        if (getArtifact(game.aeqi[arti]) == undefined) continue;
         if (getArtifact(game.aeqi[arti])[eventName] != undefined) {
             if (v != false) getArtifact(game.aeqi[arti])[eventName](getArtifact(game.aeqi[arti]).getLevel(), v);
             else getArtifact(game.aeqi[arti])[eventName](getArtifact(game.aeqi[arti]).getLevel());
@@ -492,7 +494,7 @@ function getArtifactAmount(rarity = 0) {
 
     let amount = 0;
     for (let a in game.a) {
-        if (game.a[a] == 0) continue;
+        if (game.a[a] == 0 || getArtifact(game.a[a]) == undefined) continue;
         if (getArtifact(game.a[a]).rarity == rarity) amount++;
     }
 
@@ -597,7 +599,7 @@ function renderArtifacts() {
     if (renderTheseArtifacts.length < artifactsPerPage) artifactPage = 1;
 
     // Render the Artifacts that were gathered
-    for (ara = 0; ara < Math.min(artifactsPerPage, renderTheseArtifacts.length); ara++) {
+    for (let ara = 0; ara < Math.min(artifactsPerPage, renderTheseArtifacts.length); ara++) {
         if (getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * artifactsPerPage)]) == undefined) break;
         render = render + getArtifact(renderTheseArtifacts[ara + ((artifactPage - 1) * artifactsPerPage)]).render();
     }
@@ -611,6 +613,7 @@ function renderArtifacts() {
     if (settings.sidebar) {
         let sRender = "<div style='color: black'>";
         for (let aq in game.aeqi) {
+            if (getArtifact(game.aeqi[aq]) == undefined) continue;
             if (aq % 2 == 0) sRender = sRender + "<br />";
             sRender = sRender + (getArtifact(game.aeqi[aq]).render(false, false, 45));
         }
@@ -776,6 +779,7 @@ function artifactLoadout(l, source = "key") {
 
 function loadArtifactValues(previous=[0]) {
     for (v in game.aeqi) { // values and timers
+        if (getArtifact(game.aeqi[v]) == undefined) continue;
         if (getArtifact(game.aeqi[v]).value != undefined && !previous.includes(game.aeqi[v])) getArtifact(game.aeqi[v]).resetValue();
         if (getArtifact(game.aeqi[v]).timer != undefined && !previous.includes(game.aeqi[v])) getArtifact(game.aeqi[v]).resetTimer();
     }

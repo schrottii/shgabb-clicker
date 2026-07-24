@@ -3,6 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <script>
+        // little script for balnoom.com/shgabb-clicker to fix paths / index
+        if (window.location.hostname.includes("balnoom.com") && window.location.href.includes("indev")) {
+            let base = document.createElement("base");
+            base.href = "/shgabb-clicker-indev/";
+            document.head.appendChild(base);
+        }
+        else if (window.location.hostname.includes("balnoom.com")) {
+            let base = document.createElement("base");
+            base.href = "/shgabb-clicker/";
+            document.head.appendChild(base);
+        }
+    </script>
+
     <title>Shgabb Clicker</title>
     <link href="style/main.css" rel="stylesheet" type="text/css">
 
@@ -422,8 +437,8 @@
 
                     <!-- Info -->
                     <h3 style="text-align: center;">Info</h3>
-                    Shgabb Clicker - developed and created by Schrottii / Balnoom ©2023-2026<br />
-                    <a href="terms-of-service.html" target="_blank"><sub>Terms of Service</sub></a><br />
+                    Shgabb Clicker - developed and created by <span id="infoSectionLegal"></span><br />
+                    <br />
                     No AI was/is used for creation of code, images, videos or other content in the game. <br />
                     This game uses WGGJ v1.5 and <a href="https://github.com/Patashu/break_infinity.js">Patashu's break infinity library</a><sup> (with some adjustments)</sup><br />
                     <br />
@@ -436,6 +451,14 @@
 
                     Based on the player and friend known as shgabb <br />
                     Special thanks to the beta testers and most dedicated players, DaGame and elmenda452! <br />
+                    <br />
+
+                    <h3 style="text-align: center;">Server info</h3>
+                    Status: <span id="server_isConnected">Trying to connect...</span> <br />
+                    <span id="server_loggedin"></span> <br />
+                    <span id="server_playercount"></span>
+                    <br />
+
                     <hr class="socialHr" style="clear:both" />
 
                     <h3 style="text-align: center;">Donate</h3>
@@ -495,6 +518,10 @@
         </div>
     </UBERDIV>
 
+    <div id="modals" class="modal">
+        <div id="modalsContent" class="modal-content"></div>
+    </div>
+
     <!-- Audio -->
     <audio id="wggjAudio" type="audio/ogg" preload="auto"></audio>
 
@@ -502,12 +529,15 @@
     <script src="code\lib\breakinfinity.js"></script>
     <script src="code\lib\wggj.js"></script>
 
-    <script src="code\ads.js"></script>
+    <script src="code\update.js"></script>
+    <script src="code\online\connect.js"></script>
+    <script src="code\online\servercommands.js"></script>
+
     <script src="code\game.js"></script>
     <script src="code\upgrade.js"></script>
     <script src="code\settings.js"></script>
-    <script src="code\notifications.js"></script>
 
+    <script src="code\features\ads.js"></script>
     <script src="code\features\achievements.js"></script>
     <script src="code\features\artifacts.js"></script>
     <script src="code\features\challenges.js"></script>
@@ -533,8 +563,10 @@
     <script src="code\games\fishgang.js"></script>
     <script src="code\games\mine.js"></script>
 
-    <script src="code\update.js"></script>
-    <script src="code\render.js"></script>
+    <script src="code\gui\notifications.js"></script>
+    <script src="code\gui\modals.js"></script>
+    <script src="code\gui\render.js"></script>
+
     <script src="code\main.js"></script>
 </body>
 </html>

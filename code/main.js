@@ -26,6 +26,11 @@ var ui = {
     sosobar: document.getElementById("sosobar"),
     GAMECONTENT: document.getElementById("GAMECONTENT"),
 
+    // server
+    playercount: document.getElementById("server_playercount"),
+    server_isConnected: document.getElementById("server_isConnected"),
+    server_loggedin: document.getElementById("server_loggedin"),
+
     // Bars
     cooldownBar: document.getElementById("cooldownBar"),
     adBar: document.getElementById("adBar"),
@@ -172,7 +177,8 @@ var ui = {
     generatorsRender: document.getElementById("generatorsRender"),
     helpButton: document.getElementById("helpButton"),
     gameName: document.getElementById("gameName"),
-    blackMarketRender: document.getElementById("blackMarketRender")
+    blackMarketRender: document.getElementById("blackMarketRender"),
+    infoSectionLegal: document.getElementById("infoSectionLegal")
 }
 
 for (let u in ui.tutorial) {
@@ -323,7 +329,14 @@ const quotes = [
     "Your release is almost there! It is 0% complete. - music distribution process",
     "top 1 best game reviewer, never played the game before: good game! - Lizy",
     "imagine pis upgrade that costs pys to upgrade (pythagoras) - Schrottii",
-    "joy self react is a way of life, three different reactions is a lil too much - shgabb"
+    "joy self react is a way of life, three different reactions is a lil too much - shgabb",
+
+    // 4.7 (+5 -> 115)
+    "Why two judgment days tho? - DaGame",
+    "unregistered bandicam 2 - elmenda452",
+    "we legit couldn't be further away from the first of the month - shgabb",
+    "Dodo Woooo woooah wooooooah oooo waaaaaaah oooooooh - Barduzzi",
+    "ok stop pinning my messages please - shgabb"
 ];
 
 ///////////////////////////////////
@@ -405,8 +418,10 @@ function hotkeyPreviousSelection() {
 // hotkeys
 let recentKeys = [];
 document.addEventListener('keydown', function (e) {
+    if (currentModal != "") return;
+
     recentKeys.push(e.key);
-    if (!BETA.isBeta && (e.key == 'F12' || (recentKeys.includes("Control") && recentKeys.includes("Shift") && (recentKeys.includes("i") || recentKeys.includes("I"))))) {
+    if (!BETA.isIndev && (e.key == 'F12' || (recentKeys.includes("Control") && recentKeys.includes("Shift") && (recentKeys.includes("i") || recentKeys.includes("I"))))) {
         if (e.key == 'F12') report("F12", 1);
         else report("CTRLSHIFTI", 1);
         recentKeys = [];
@@ -462,6 +477,7 @@ document.addEventListener('keydown', function (e) {
     }
 
     if (e.key == ' ') {
+        clickButton();
         e.preventDefault();
     }
     return true;
@@ -473,7 +489,6 @@ document.addEventListener('keydown', function (e) {
 
 document.addEventListener('keyup', function (e) {
     if (e.key == "m") doBuyMax = false;
-    if (e.key == ' ') clickButton();
 }, false);
 
 ui.cheatAmount.oninput = () => {
@@ -561,18 +576,6 @@ function numberLoader(number) {
     return new Decimal("" + number);
 }
 
-function normalNotationAll() {
-    let prefs = "";
-    let num = new Decimal(1e6);
-
-    while (prefs.length < 1950) {
-        prefs += fn(num).split(".00 ")[1] + ", ";
-        num = num.mul(1e3);
-    }
-
-    return prefs;
-}
-
 function fn(number) {
     if (number == undefined) return "?";
 
@@ -598,11 +601,9 @@ function fn(number) {
             if (number.lt(1e12)) {
                 return m + " " + pre.start[Math.floor(number.exponent / 3)];
             }
-            /*
             if (number.gt(1e303)) {
                 return m + " ???";
             }
-            */
 
             let newE = number.exponent - 3;
             let thousand = Math.floor(newE / 3000) < 10 ? pre.thousands[Math.floor(newE / 3000)] : "[" + formatNumber(Math.floor(newE / 3000)) + "]M";
@@ -1064,326 +1065,11 @@ function updateEVERYTHING() {
     updateArtifacts();
     renderChallenges();
     renderCurrentEvent();
+    renderGemOffers();
     renderPlayerProfile();
     if (currentSettingSection != 3) renderSettings();
     renderShbook(true);
     renderBananaTrees();
-}
-
-///////////////////////////////////
-// save related   #6D61696E736563
-///////////////////////////////////
-
-function autoSave(manual=true) {
-    autoNotifications += 1;
-
-    artifactEvent("onAutoSave");
-
-    // Le rare renderes
-    renderAmeConvert();
-    renderAllSelection(true);
-    recentKeys = [];
-
-    // Every save, check if a new day has risen
-    checkNewDay()
-
-    // Auto Save
-    exportGame("cache");
-    localStorage.setItem("shgabbSettings", JSON.stringify(settings));
-
-    checkForNewAchievements();
-
-    if (!manual) createNotification("Game saved automatically HEADACHE", [["HEADACHE", autoNotifications]]);
-}
-
-function createBackup() {
-    if (game.cheated == true) return false;
-    if (confirm("Are you sure you want to CREATE a backup?")) exportGame("backup");
-}
-
-function loadBackup() {
-    if (confirm("Are you sure you want to LOAD a backup?")) importGame(localStorage.getItem("shgabbBackup"));
-}
-
-function importFromFile() {
-    if (document.getElementById("myFile").value != "") {
-        if (confirm("Do you really want to import from this file?")) {
-            try {
-                file = document.getElementById("myFile").files[0];
-                reader = new FileReader();
-                let filecontent;
-
-                reader.addEventListener('load', function (e) {
-                    filecontent = e.target.result;
-                    if (filecontent != undefined) importGame(filecontent);
-                });
-
-                reader.readAsText(file);
-            }
-            catch {
-                console.log("Something went wrong while loading the file");
-            }
-        }
-    }
-    // this does not work for some reason. it's meant to trigger the click on the "select file" thing and while the file selection screen does pop up, it does not set the value at all, for some reason
-    //else {
-    //    document.getElementById("myFile").click();
-    //}
-}
-
-function exportToFile() {
-    if (game.cheated != true) exportGame("file");
-}
-
-function exportGame(destination = "gimme") {
-    if (game.cheated == true) {
-        alert("You can't export a cheated save!");
-        createNotification("Couldn't export: Cheated");
-        return false;
-    }
-    
-    let exporter = {};
-    for (exportit in game) {
-        exporter[exportit] = game[exportit];
-    }
-
-    exporter.shgabb = numberSaver(exporter.shgabb);
-    exporter.sw = numberSaver(exporter.sw);
-    exporter.gs = numberSaver(exporter.gs);
-    exporter.si = numberSaver(exporter.si);
-    exporter.fishvalue = numberSaver(exporter.fishvalue);
-    exporter.genpoints = numberSaver(exporter.genpoints);
-    exporter.generators = [];
-    for (let g in game.generators) {
-        exporter.generators[g] = [0, new Decimal(0), 0];
-        exporter.generators[g][0] = game.generators[g][0];
-        exporter.generators[g][1] = numberSaver(game.generators[g][1]);
-        exporter.generators[g][2] = game.generators[g][2];
-    }
-
-    for (let statHandler in statTypes) {
-        exporter[statTypes[statHandler]] = {};
-        for (let allStats in game.stats) {
-            exporter[statTypes[statHandler]][allStats] = game[statTypes[statHandler]][allStats];
-        }
-        for (let currHandler in statCurr) {
-            exporter[statTypes[statHandler]][statCurr[currHandler]] = numberSaver(game[statTypes[statHandler]][statCurr[currHandler]]);
-        }
-    }
-    exporter = JSON.stringify(exporter);
-
-    exporter = btoa(exporter);
-    exporter = exporter.replace(rep7, "shgabb");
-    exporter = exporter.replace("x", "pppp");
-    exporter = exporter.replace("D", "dpjiopjrdopjh");
-
-    if (destination == "gimme") {
-        navigator.clipboard.writeText(exporter);
-        createNotification("Game exported to clipboard");
-    }
-    if (destination == "cache") {
-        localStorage.setItem("shgabbClicker", exporter);
-    }
-    if (destination == "backup") {
-        localStorage.setItem("shgabbBackup", exporter);
-    }
-    if (destination == "file") {
-        var temporaryFile = document.createElement('a');
-        temporaryFile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(exporter));
-        temporaryFile.setAttribute('download', "shgabbSave-" + today() + ".txt");
-
-        temporaryFile.style.display = 'none';
-        document.body.appendChild(temporaryFile);
-
-        temporaryFile.click();
-
-        document.body.removeChild(temporaryFile);
-    }
-}
-
-function importButton() {
-    // handle the import button
-    // normal imports and rescue codes
-    // loading from cache is done elsewhere
-
-    let source = prompt("Code?");
-
-    if (source.substr(0, 6) == "faCoDe") {
-        source = source.substr(10);
-    }
-
-    importGame(source);
-}
-
-function importGame(source) {
-    if (source == null || source == undefined) source = Object.assign({}, emptyGame);
-    else {
-        try {
-            if (source.toString().substr(0, 4) == "shga") {
-                source = source.replace("shgabb", rep7);
-                source = source.replace("dpjiopjrdopjh", "D");
-                source = source.replace("pppp", "x");
-                source = atob(source);
-            }
-            source = JSON.parse(source);
-        }
-        catch (e) {
-            alert("Something went wrong while unpacking the save!");
-            return false;
-        }
-    }
-
-    // Empty the game first. Make it completely empty
-    emptyGame.a = [];
-    game = {};
-
-    // Now import. it's done this way to support old saves
-    game = Object.assign({}, emptyGame, source);
-
-    // Take care of arrays
-    game.upgradeLevels = Object.assign({}, emptyGame.upgradeLevels, source.upgradeLevels);
-    game.ameUp = Object.assign({}, emptyGame.ameUp, source.ameUp);
-    game.profile = Object.assign({}, emptyGame.profile, source.profile);
-
-    game.stats = Object.assign({}, emptyGame.stats, source.stats);
-    game.stats_prestige = Object.assign({}, emptyGame.stats, source.stats_prestige);
-    game.stats_today = Object.assign({}, emptyGame.stats, source.stats_today);
-
-    for (let statHandler in statTypes) {
-        for (let currHandler in statCurr) {
-            game[statTypes[statHandler]][statCurr[currHandler]] = numberLoader(game[statTypes[statHandler]][statCurr[currHandler]]);
-        }
-    }
-
-    // break infinity stuff
-    game.shgabb = numberLoader(game.shgabb);
-    game.sw = numberLoader(game.sw);
-    game.gs = numberLoader(game.gs);
-    game.si = numberLoader(game.si);
-    game.fishvalue = numberLoader(game.fishvalue);
-    game.genpoints = numberLoader(game.genpoints);
-    game.generators = [];
-    for (let g in source.generators) {
-        game.generators[g] = [];
-        game.generators[g][0] = source.generators[g][0];
-        game.generators[g][1] = numberLoader(source.generators[g][1]);
-        game.generators[g][2] = source.generators[g][2];
-    }
-
-    // Some adjustments
-    shgicPointsPlayer = 0;
-    shgicPointsEnemy = 0;
-    canPlayTTT = false;
-    if (shgicResetField != undefined) shgicResetField();
-
-    if (currentBoost != "none") {
-        currentBoost = "none";
-        adStatus = "loaded";
-        adTime = 10;
-        adMax = 10;
-    }
-
-    loadArtifactValues();
-    checkNewDay();
-
-    let allAdsZero = true;
-    for (a in game.stats.wads) {
-        if (game.stats.wads[a] != 0) allAdsZero = false;
-    }
-    if (allAdsZero) {
-        allAdsZero = game.stats.ads;
-        while (allAdsZero > 0) {
-            allAdsZero -= 1;
-            game.stats.wads[Object.keys(game.stats.wads)[Math.floor(Math.random() * Object.keys(game.stats.wads).length)]] += 1;
-        }
-    }
-
-    if (game.stats.shgabb == "-Infinity") game.stats.shgabb = new Decimal(0);
-    if (game.stats_prestige.shgabb == "-Infinity") game.stats_prestige.shgabb = new Decimal(0);
-    if (game.stats_prestige.hms == 0) game.stats_prestige.hms = game.stats.hms;
-    if (game.stats.gems != undefined) {
-        game.stats.tgems += game.stats.gems;
-        delete game.stats.gems;
-    }
-
-    if (game.stats.dclp == undefined || game.stats.dclp == 0) {
-        game.stats.dclp = game.dclp;
-    }
-
-    /*
-    if (sandwichUpgrades.autoShgabb.currentPrice() > game.stats.sw.mul(10)) {
-        // Auto Shgabb was reworked
-        game.sw = game.sw.add(Math.pow(game.upgradeLevels.autoShgabb, 2) / 2);
-        game.upgradeLevels.autoShgabb = 0;
-    } */
-
-    // figure out the last selected loadout
-    if (game.stats.hms >= 10000) selectedLoadout = -1;
-    let allArtifactsSame = false;
-    let loadout;
-    for (let l in game.alo) {
-        loadout = game.alo[l];
-        // loadout is empty
-        if (loadout.length == 0) {
-            if (game.alo.length == 0) {
-                selectedLoadout = l;
-                break;
-            }
-            continue;
-        }
-
-        // go through all artifacts
-        allArtifactsSame = true;
-        for (let a in loadout) {
-            if (a <= loadout.length && a <= game.aeqi.length && loadout[a] != game.aeqi[a]) allArtifactsSame = false;
-        }
-
-        // set if it's the same
-        if (allArtifactsSame) {
-            selectedLoadout = l;
-            break;
-        }
-    }
-
-    let ownedArtisList = [];
-    for (let ownedArtis = 0; ownedArtis < game.a.length; ownedArtis++) {
-        if (ownedArtisList.includes(game.a[ownedArtis])) {
-            // duplicate detected! remove it & refund
-            console.log("Duplicate Artifact detected! Loc: " + ownedArtis + ", ID: " + game.a[ownedArtis]);
-            game.a.splice(ownedArtis, 1);
-            game.gems += 30;
-            ownedArtis -= 1;
-        }
-        else ownedArtisList.push(game.a[ownedArtis]);
-    }
-
-    // Execute some stuff
-    //handleArtifactsFirstTime(); // it's safe to say nobody needs this anymore lol
-    checkForZeroNext();
-
-    updateEVERYTHING();
-
-    createNotification("Save imported successfully");
-}
-
-function deleteGame() {
-    if (confirm("Do you REALLY want to do this? EVERYTHING will be gone, you gain NOTHING")) {
-        if (confirm("Make sure to save your progress before doing this!!! Everything will be lost!")) {
-            if (confirm("If you press Yes again, everything will be gone!")) {
-                for (let currHandler in statCurr) {
-                    emptyGame[statCurr[currHandler]] = new Decimal(0);
-                    emptyGame.stats[statCurr[currHandler]] = new Decimal(0);
-                    emptyGame.stats_prestige[statCurr[currHandler]] = new Decimal(0);
-                    emptyGame.stats_prestige[statCurr[currHandler]] = new Decimal(0);
-                }
-
-                game = emptyGame;
-                createNotification("Game deleted successfully!");
-                autoSave();
-                updateEVERYTHING();
-            }
-        }
-    }
 }
 
 ///////////////////////////////////
@@ -1446,6 +1132,9 @@ function endTutorial() {
 ///////////////////////////////////
 
 function getOrigin() {
+    if (document.URL.includes("balnoom")) {
+        return "balnoom";
+    }
     if (document.URL.includes("github")) {
         return "web";
     }
@@ -1457,6 +1146,8 @@ function getOrigin() {
 
 ui.frWeb.style.display = getOrigin() != "galaxy" ? "" : "none";
 ui.frGalaxy.style.display = getOrigin() == "galaxy" ? "" : "none";
+
+ui.infoSectionLegal.innerHTML = legalOwner + "<br /><sub>" + legalLinks + "</sub>";
 
 // minigames setup WGGJ
 images = {
@@ -1549,19 +1240,37 @@ wggjAudio.onended = () => {
     }
 }
 
-document.addEventListener("mousedown", () => {
+document.addEventListener("mousedown", (e) => {
+    // modal handler
+    //console.log(e.target);
+    if (e.target.id == "modals") {
+        toggleModal("", "close");
+    }
+
+    // start music
     if (firstClick) {
-        wggj.audio.musicMuted = !settings.music;
-        wggj.audio.soundMuted = !settings.sounds;
-
-        audioChangeVolume("music", settings.musicVolume);
-        audioChangeVolume("sound", settings.soundVolume);
-
-        audioPlayMusic(songs[settings.song]);
-        wggjAudio.loop = !settings.autoplaySongs;
         firstClick = false;
     }
 });
+
+/*
+var hoveredElement = "";
+document.addEventListener("mousemove", (e) => {
+    hoveredElement = e.target;
+    //console.log(hoveredElement);
+});
+*/
+
+function startMusic(forcemute = false) {
+    wggj.audio.musicMuted = forcemute ? true : !settings.music;
+    wggj.audio.soundMuted = forcemute ? true : !settings.sounds;
+
+    audioChangeVolume("music", settings.musicVolume);
+    audioChangeVolume("sound", settings.soundVolume);
+
+    if (!forcemute) audioPlayMusic(songs[settings.song]);
+    wggjAudio.loop = !settings.autoplaySongs;
+}
 
 ///////////////////////////////////
 // CORE   #6D61696E736563
@@ -1596,6 +1305,7 @@ function shgabbClickerLoop(tick) {
     renderScrapyardFloatingNumber();
 
     for (aqq in game.aeqi) {
+        if (getArtifact(game.aeqi[aqq]) == undefined) continue;
         if (getArtifact(game.aeqi[aqq]).timer != undefined) getArtifact(game.aeqi[aqq]).tickTimer(time);
     }
 
@@ -1627,8 +1337,8 @@ function shgabbClickerLoop(tick) {
 
     // Egg Hunt
     if (isEvent("egg")) {
-        egg.timer -= time;
-        if (egg.timer <= 0) {
+        eggTime -= time;
+        if (eggTime <= 0) {
             refreshEgg();
         }
     }
@@ -1642,13 +1352,24 @@ function shgabbClickerLoop(tick) {
     }
 
     // quote
-    if (quoteTime >= 18) {
-        quoteTime = 0;
-        updateQuote();
+    if (settings.quotes) {
+        if (quoteTime >= 18) {
+            quoteTime = 0;
+            updateQuote();
+        }
+
+        ui.quote.style.display = "";
+        if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
+        else ui.quote.style["margin-left"] = "-0%";
+        ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
     }
-    if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
-    else ui.quote.style["margin-left"] = "-0%";
-    ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
+    else ui.quote.style.display = "none";
+
+    // modals
+    if (currentModal != "") {
+        if (parseInt(modalContainer.style.opacity) != "100%") modalContainer.style.opacity = "" + Math.min(100, parseFloat(modalContainer.style.opacity * 100) + time * 120) + "%";
+        modals[currentModal].tickFunction(modals[currentModal], time);
+    }
 
     if (sandwichTime <= 0) {
         if (isChallenge(4)) {
@@ -1697,6 +1418,8 @@ function shgabbClickerLoop(tick) {
         }
     }
 
+    ui.server_isConnected.innerHTML = isConnectedToServer() ? "Connected" : "Disconnected";
+
     checkMissionProgress();
     adSwitcher();
 
@@ -1705,8 +1428,6 @@ function shgabbClickerLoop(tick) {
 }
 
 var userLinux = false;
-
-document.addEventListener('contextmenu', event => event.preventDefault());
 
 function shgabbClickerSetup() {
     gameLoadingProgress++;
@@ -1724,7 +1445,7 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "Fairness measures";
     updateGameLoadingText();
 
-    if (!BETA.isBeta) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
+    if (!BETA.isIndev) console.log("%cA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nA\nAAAAAAAAAAAAAAAAAAAAAAA ", 'background: red; color: red');
     console.log("%cYou shouldn't be here.\nExcept if you're Schrottii. ", 'background: #000000; color: red');
     gameLoadingProgress++;
 
@@ -1750,7 +1471,7 @@ function shgabbClickerSetup() {
     if (localStorage.getItem("shgabbSettings") != undefined) {
         settings = Object.assign({}, settings, JSON.parse(localStorage.getItem("shgabbSettings")));
 
-        if (!game.ach.includes(211)) startTutorial();
+        //if (!game.ach.includes(211)) startTutorial();
 
         // music n audio
         wggj.audio.musicMuted = !settings.music;
@@ -1785,6 +1506,15 @@ function shgabbClickerSetup() {
     gameLoadingPhaseName = "Finishing loading process";
     updateGameLoadingText();
 
+    connectToServer();
+
+    if (isSaveExisting()) { 
+        toggleModal("welcomeback");
+    }
+    else {
+        toggleModal("welcomenew");
+    }
+
     createNotification("Game loaded");
     GAMELOADED = true;
     ui.gameLoadingText.style.display = "none";
@@ -1797,7 +1527,7 @@ function updateGameLoadingText() {
     ui.gameLoadingText.innerHTML = "Loading game. Progress: " + gameLoadingProgress + "/7 (" + gameLoadingPhaseName + ")<br />";
 }
 
-window.addEventListener('load', function () {
+function loadShgabbClicker() {
     try {
         shgabbClickerSetup();
     }
@@ -1807,7 +1537,7 @@ window.addEventListener('load', function () {
         let bob = "" + e;
         ui.gameLoadingText.innerHTML += "<br /><button onclick='reportCrash(`" + bob + "`)'>Report to dev?</button><br /><br />";
     }
-});
+}
 
 async function reportCrash(text) {
     const webhookUrl = 'https://discord.com/api/webhooks/1461862584880992442/S3rr0kWGDcSriWxUH07lFDFita86p0yqDIpKCdB5GcTW_Zudi9dxV3sEg5qM0R59gJ3X';
@@ -1843,3 +1573,5 @@ async function reportCrash(text) {
 
     ui.gameLoadingText.innerHTML = "Thanks for reporting and sorry for the inconvenience...<br /><br />";
 }
+
+window.addEventListener("load",  () => loadShgabbClicker());

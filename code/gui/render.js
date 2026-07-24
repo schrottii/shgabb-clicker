@@ -1,7 +1,7 @@
 ﻿// Game made by Schrottii - editing or stealing is prohibited!
 
 // sel 1: shgabb - sandwiches - gs - silicone - amé - bags - copper - bananas
-// sel 2: gems - artifacts - shgic
+// sel 2: gems - artifacts - challenges - generators - minigames - event - black market
 // sel 3: cheats - stats - achievements - other (social, patch notes)
 // sel 4: shbook: lore - missions - currencies - features - upgcalc - events
 
@@ -136,7 +136,7 @@ function isSelectionUnlocked(name, name2 = "") {
             return isBlackMarket();
 
         case "cheats":
-            return BETA.isBeta;
+            return BETA.isIndev;
         case "playerprofile":
             return game.stats.hms >= 100;
         case "stats":
@@ -173,7 +173,12 @@ function renderAllSelection(auto = false) {
     renderSelection(4);
 
     // custom onclicks
-    if (selections[2] == "playerprofile") renderPlayerProfile();
+    if (selections[2] == "playerprofile") {
+        profileCanvas = document.getElementById("profileCanvas");
+        pctx = profileCanvas.getContext("2d");
+
+        renderPlayerProfile();
+    }
     renderShbook(auto);
     if (selections[0] == "shgabb") renderIdleMode();
     if (selections[1] == "blackmarket") renderBlackMarket();
@@ -205,4 +210,19 @@ function changeSelection(sel, sels) {
 
     audioPlaySound("click");
     renderAllSelection();
+}
+
+function createNewSave() {
+    let createSettings = {
+        sound: document.getElementById("welcomenewsave-sound").checked,
+        tutorial: document.getElementById("welcomenewsave-tutorial").checked,
+        username: document.getElementById("welcomenewsave-username").value
+    }
+
+    //if (createSettings.sound == true)
+    startMusic(!createSettings.sound);
+    if (createSettings.tutorial == true) startTutorial();
+    if (createSettings.username != "") game.profile.name = createSettings.username.substr(0, 16);
+
+    toggleModal('welcomenewsave', 'close');
 }
