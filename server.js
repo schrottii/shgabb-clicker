@@ -11,9 +11,9 @@ const http = require('http');
 const WebSocket = require('ws');
 const url = require('url');
 const fs = require('fs');
-
+const path = require('path');
 const mysql = require('mysql2/promise');
-require('dotenv/config'); 
+require('dotenv').config({ path: path.join(__dirname, '.env') }); 
 
 const PORT = 3000;
 
@@ -32,10 +32,49 @@ const allowedOrigins = [
     'http://127.0.0.1:5500'
 ];
 
+async function sendBrevoEmail(toEmail, subject, textContent, htmlContent) {
+    try {
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'api-key': process.env.BREVO_API_KEY,
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: {
+                    name: process.env.SENDER_NAME || "Balnoom",
+                    email: process.env.SENDER_EMAIL || "noreply@balnoom.com"
+                },
+                to: [{ email: toEmail }],
+                subject: subject,
+                textContent: textContent,
+                htmlContent: htmlContent
+            })
+        });
+
+        const resText = await response.text();
+        console.log("\x1b[36m[BREVO] Status: " + response.status + ", Response: " + resText + "\x1b[0m");
+        return response.ok;
+    } catch (e) {
+        console.error("\x1b[31m[BREVO] Request error: " + e.message + "\x1b[0m");
+        return false;
+    }
+}
+
+// for e mail verification
+function generate6DigitCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
 const server_commands = {
     playercount: (ws, data) => server_playercount(ws, data),
     logincheck: (ws, data) => server_logincheck(ws, data),
     register: (ws, data) => server_register(ws, data),
+    verify_email: (ws, data) => server_verify_email(ws, data),
+    resend_verification: (ws, data) => server_resend_verification(ws, data),
+    request_password_reset: (ws, data) => server_request_password_reset(ws, data),
+    confirm_password_reset: (ws, data) => server_confirm_password_reset(ws, data),
     login: (ws, data) => server_login(ws, data),
     cloud_upload: (ws, data) => server_cloud_upload(ws, data),
     cloud_download: (ws, data) => server_cloud_download(ws, data)
@@ -78,7 +117,7 @@ wss.on('connection', async (ws, req) => {
 
     if (clientIngameID === "" || clientIngameID == undefined) clientIngameID = Math.random().toString(16).slice(2);
     ws.clientIngameID = clientIngameID;
-    let clientVer = queryObject.gamever.trim() || ""; // without v, i.e. 4.7 , and we *want* to compare them as strings (i.e. "4.7.1" > "4.7")
+    let clientVer = (queryObject.gamever || "").trim(); // without v, i.e. 4.7 , and we *want* to compare them as strings (i.e. "4.7.1" > "4.7")
 
     // get IP (just in case) and the in-DB ID
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
@@ -93,7 +132,7 @@ wss.on('connection', async (ws, req) => {
             ws.terminate();
         }, 100);
     }
-    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && clientName !== "" && clientPW !== "" && clientEmail !== "") {
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && loadingPlayerID[0].is_verified === 1 && clientName !== "" && clientPW !== "" && clientEmail !== "") {
         // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
@@ -142,7 +181,7 @@ wss.on('connection', async (ws, req) => {
 
     // logic when client disconnects
     ws.on('close', (ws) => {
-        console.log("\x1b[0m[USR] Client " + ws.refer + " disconnected");
+        console.log("\x1b[0m[USR] Client " + (ws.refer ? ws.refer : "") + " disconnected");
     });
 }); 
 
@@ -176,6 +215,7 @@ wss.on('close', () => clearInterval(serverLoop));
 server.listen(PORT, () => {
     console.log(`\x1b[32m[INF] Server running on port ${PORT}`);
     console.log(`\x1b[32m[INF] Server game version: v${serverVersion}`);
+    console.log(`\x1b[35m[INF] Brevo Sender: ${process.env.SENDER_EMAIL || "none"}, API Key set: ${Boolean(process.env.BREVO_API_KEY)}\x1b[0m`);
 });
 
 
@@ -242,31 +282,147 @@ async function server_register(ws, data) {
         nameValid = false;
     }
 
-    // password validation
-    if (pw.length < 6) pwValid = false;
-
-    // bad word validation for BOTH
-    // username AND password
-    for (let word of forbiddenWords) {
-        if (pw.toLowerCase().includes(word)) {
-            pwValid = false;
-            break;
-        }
-        if (name.toLowerCase().includes(word)) {
-            nameValid = false;
-            break;
-        }
-    }
-
     let success = false;
     if (nameValid && pwValid && emailValid) {
-        success = await database_command("register", { name: name, pw: pw, email: email });
+        let code = generate6DigitCode();
+        let expires = new Date(Date.now() + 15 * 60 * 1000);
+
+        success = await database_command("register_pending", {
+            name: name,
+            pw: pw,
+            email: email,
+            code: code,
+            expires: expires
+        });
+
+        if (success) {
+            let subject = "balnoom verification code";
+            let text = `test ${code}`;
+            let html = `<p>test ${code}</p>`;
+            await sendBrevoEmail(email, subject, text, html);
+        }
     }
 
-    callClient("register", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid, name: name, pw: pw, email: email });
+    callClient("register", ws, {
+        success: success,
+        nameValid: nameValid,
+        pwValid: pwValid,
+        emailValid: emailValid,
+        name: name,
+        pw: pw,
+        email: email,
+        requiresVerification: true
+    }); 
 }
 
-// 4. login
+// 4. verify email
+async function server_verify_email(ws, data) {
+    let email = data.body.email;
+    let code = String(data.body.code || "").trim();
+
+    let check = await database_command("getVerificationData", { email: email });
+    let success = false;
+    let message = "";
+
+    if (!check || check.length === 0) {
+        message = "Account not found.";
+    } else if (check[0].is_verified === 1) {
+        success = true;
+        message = "Account is already verified.";
+    } else if (check[0].verify_code !== code) {
+        message = "Invalid verification code.";
+    } else if (new Date(check[0].verify_expires) < new Date()) {
+        message = "Verification code has expired.";
+    } else {
+        await database_command("markUserVerified", { email: email });
+        success = true;
+        message = "Email successfully verified.";
+    }
+
+    callClient("verify_email", ws, { success: success, message: message, email: email });
+}
+
+// 5. resend verification
+async function server_resend_verification(ws, data) {
+    let email = data.body.email;
+    let user = await database_command("getUserByEmail", { email: email });
+
+    let success = false;
+    let message = "";
+
+    if (!user || user.length === 0) {
+        message = "Account with this email does not exist.";
+    } else if (user[0].is_verified === 1) {
+        message = "Account is already verified.";
+    } else {
+        let code = generate6DigitCode();
+        let expires = new Date(Date.now() + 15 * 60 * 1000);
+
+        await database_command("setNewVerificationCode", { email: email, code: code, expires: expires });
+
+        let subject = "balnoom verification code";
+        let text = `test ${code}`;
+        let html = `<p>test ${code}</p>`;
+
+        await sendBrevoEmail(email, subject, text, html);
+        success = true;
+        message = "Verification code resent.";
+    }
+
+    callClient("resend_verification", ws, { success: success, message: message });
+}
+
+// 6. request password reset
+async function server_request_password_reset(ws, data) {
+    let email = data.body.email;
+    let user = await database_command("getUserByEmail", { email: email });
+
+    let success = false;
+    let message = "";
+
+    if (!user || user.length === 0) {
+        message = "No account found with this email.";
+    } else {
+        let code = generate6DigitCode();
+        let expires = new Date(Date.now() + 15 * 60 * 1000);
+
+        await database_command("setPasswordResetCode", { email: email, code: code, expires: expires });
+
+        let subject = "balnoom Password reset code";
+        let text = `test ${code}`;
+        let html = `<p>test ${code}</p>`;
+
+        await sendBrevoEmail(email, subject, text, html);
+        success = true;
+        message = "Password reset code sent.";
+    }
+
+    callClient("request_password_reset", ws, { success: success, message: message });
+}
+
+// 7. confirm password reset
+async function server_confirm_password_reset(ws, data) {
+    let email = data.body.email;
+    let code = String(data.body.code || "").trim();
+    let newPassword = data.body.newPassword || "";
+
+    let user = await database_command("getPasswordResetData", { email: email });
+    let success = false;
+    let message = "";
+
+    if (!user || user.length === 0) message = "Account not found.";
+    else if (user[0].reset_code !== code) message = "Invalid reset code.";
+    else if (new Date(user[0].reset_expires) < new Date()) message = "Reset code has expired.";
+    else {
+        await database_command("updateUserPassword", { email: email, password: newPassword });
+        success = true;
+        message = "Password updated successfully.";
+    }
+
+    callClient("confirm_password_reset", ws, { success: success, message: message });
+}
+
+// 8. login
 async function server_login(ws, data) {
     let name = data.body.username;
     let pw = data.body.password;
@@ -294,7 +450,13 @@ async function server_login(ws, data) {
         pwValid = false;
     }
 
-    let success = nameValid && pwValid && emailValid;
+    let isVerified = false;
+    let userData = await database_command("getUserByEmail", { email: email });
+    if (userData && userData.length > 0 && userData[0].is_verified === 1) {
+        isVerified = true;
+    }
+
+    let success = nameValid && pwValid && emailValid && isVerified;
 
     if (success) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
@@ -308,10 +470,19 @@ async function server_login(ws, data) {
         }
     }
 
-    callClient("login", ws, { success: success, nameValid: nameValid, pwValid: pwValid, emailValid: emailValid, name: name, pw: pw, email: email });
+    callClient("login", ws, {
+        success: success,
+        nameValid: nameValid,
+        pwValid: pwValid,
+        emailValid: emailValid,
+        isVerified: isVerified,
+        name: name,
+        pw: pw,
+        email: email
+    });
 }
 
-// 6. cloud upload
+// 10. cloud upload
 async function server_cloud_upload(ws, data) {
     let success = false;
     let filename = ws.playerID + ".txt";
@@ -352,7 +523,7 @@ async function server_cloud_upload(ws, data) {
     }
 }
 
-// 7. cloud download
+// 11. cloud download
 async function server_cloud_download(ws, data) {
     let filename = ws.playerID + ".txt";
     let savedata = "";
@@ -367,7 +538,6 @@ async function server_cloud_download(ws, data) {
             callClient("cloud_download", ws, { success: e, savedata: savedata });
         });
     }
-
 }
 
 
@@ -416,14 +586,14 @@ async function database_command(cmdname = "", data = {}) {
 
             case "getID":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.id FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1",
+                    "SELECT tbl_users.id, tbl_users.is_verified FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1",
                     [data.email, data.name, data.password]
                 );
                 break;
-            case "register":
+            case "register_pending":
                 [results] = await db_connection.query(
-                    "INSERT INTO tbl_users (acc_email, acc_name, acc_password) VALUES (?, ?, ?)",
-                    [data.email, data.name, data.pw]
+                    "INSERT INTO tbl_users (acc_email, acc_name, acc_password, is_verified, verify_code, verify_expires) VALUES (?, ?, ?, 0, ?, ?)",
+                    [data.email, data.name, data.pw, data.code, data.expires]
                 );
                 break;
             case "getUserNameExistence":
@@ -440,10 +610,52 @@ async function database_command(cmdname = "", data = {}) {
                 );
                 //console.log(results, results[0]);
                 break;
+            case "getUserByEmail":
+                [results] = await db_connection.query(
+                    "SELECT * FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
+                    [data.email]
+                );
+                break;
             case "getUserPassword":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_password = ? LIMIT 1;",
                     [data.email, data.password]
+                );
+                break;
+            case "getVerificationData":
+                [results] = await db_connection.query(
+                    "SELECT tbl_users.is_verified, tbl_users.verify_code, tbl_users.verify_expires FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
+                    [data.email]
+                );
+                break;
+            case "markUserVerified":
+                [results] = await db_connection.query(
+                    "UPDATE tbl_users SET is_verified = 1, verify_code = NULL, verify_expires = NULL WHERE acc_email = ?",
+                    [data.email]
+                );
+                break;
+            case "setNewVerificationCode":
+                [results] = await db_connection.query(
+                    "UPDATE tbl_users SET verify_code = ?, verify_expires = ? WHERE acc_email = ?",
+                    [data.code, data.expires, data.email]
+                );
+                break;
+            case "setPasswordResetCode":
+                [results] = await db_connection.query(
+                    "UPDATE tbl_users SET reset_code = ?, reset_expires = ? WHERE acc_email = ?",
+                    [data.code, data.expires, data.email]
+                );
+                break;
+            case "getPasswordResetData":
+                [results] = await db_connection.query(
+                    "SELECT tbl_users.reset_code, tbl_users.reset_expires FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
+                    [data.email]
+                );
+                break;
+            case "updateUserPassword":
+                [results] = await db_connection.query(
+                    "UPDATE tbl_users SET acc_password = ?, reset_code = NULL, reset_expires = NULL WHERE acc_email = ?",
+                    [data.password, data.email]
                 );
                 break;
             case "ping":
@@ -460,14 +672,13 @@ async function database_command(cmdname = "", data = {}) {
                 break;
         }
 
-        if (results.warningStatus === undefined) console.log("\x1b[0m  [DBC] command " + cmdname + " success: " + JSON.stringify(results));
-        else console.log("\x1b[31m  [DBC] command " + cmdname + " is ResultSetHeader");
+        if (results && results.warningStatus === undefined) console.log("\x1b[0m  [DBC] command " + cmdname + " success: " + JSON.stringify(results));
+        else if (results && results.warningStatus !== undefined) console.log("\x1b[31m  [DBC] command " + cmdname + " is ResultSetHeader");
         return results;
     } catch (err) {
         console.log("\x1b[31m  [DBC] command " + cmdname + " error: " + err);
         return false;
     }
-    return false;
 }
 
 database_connect();

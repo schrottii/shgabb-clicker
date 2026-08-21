@@ -76,6 +76,18 @@ function connectToServer() {
                 case "register":
                     client_account_register_reply(data);
                     break;
+                case "verify_email":
+                    client_verify_email_reply(data);
+                    break;
+                case "resend_verification":
+                    client_resend_verification_reply(data);
+                    break;
+                case "request_password_reset":
+                    client_request_password_reset_reply(data);
+                    break;
+                case "confirm_password_reset":
+                    client_confirm_password_reset_reply(data);
+                    break;
                 case "login":
                     client_account_login_reply(data);
                     break;
@@ -112,10 +124,6 @@ function connectToServer() {
         console.error("WebSocket Error: " + error);
     };
 }
-
-
-
-
 
 // extra code by d0ktorek
 async function reportAntiCheatViolation(reason = 'console-activity', source = 'client-console') {
@@ -174,8 +182,6 @@ function initConsoleAntiCheatDetector() {
     } catch { }
 }
 initConsoleAntiCheatDetector();
-
-
 
 /*
 what to run: 
