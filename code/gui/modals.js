@@ -113,7 +113,8 @@ modals = {
         <h3>Returning player?</h3>
         If you are a returning player: <br />
         
-        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import</button>
+        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import save code</button>
+        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('cloudsave');">Import from cloud save</button>
         ` + (isSaveExisting() ? `<button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('welcomeback');">Go to "Welcome back" screen</button>` : "")
         //<button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
         + `
@@ -121,7 +122,7 @@ modals = {
 
         <h3>New player?</h3>
         <span id="modal-newsavetext" /></span> <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="if (game.stats.hms > 0) { deleteGame(); } toggleModal('welcomeback', 'close'); toggleModal('welcomenewsave');">Create new save</button>
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="createNewSaveFromModal();">Create new save</button>
 
         <br /><br />
         <br /><sub><span style='float: left; margin-top: -48px; position: absolute; left: 12%;'><img src='images/welcome.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
@@ -192,6 +193,24 @@ modals = {
         <span id="cloudSaveStatus"></span>
         `,
         (m, tick) => {
+            if (!isLoggedIn) {
+                toggleModal("cloudsave", "close");
+                toggleModal("accountmanagement");
+            }
         }
     )
 };
+
+function createNewSaveFromModal() {
+    let weAreReallyDoingThis = false;
+
+    if (game.stats.hms > 0) {
+        weAreReallyDoingThis = deleteGame();
+    }
+    else weAreReallyDoingThis = true;
+
+    if (weAreReallyDoingThis) {
+        toggleModal('welcomeback', 'close');
+        toggleModal('welcomenewsave');
+    }
+}

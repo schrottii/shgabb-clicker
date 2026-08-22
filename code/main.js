@@ -1073,61 +1073,6 @@ function updateEVERYTHING() {
 }
 
 ///////////////////////////////////
-// Tutorial   #6D61696E736563
-///////////////////////////////////
-
-// tutorial
-var tutorialProgress = -1;
-var tutorialInterval = -1;
-
-// title, text, req for next button to appear
-const tutorialTexts = [
-    ["Welcome to Shgabb Clicker (Tutorial)", "Welcome, I am Lucie, and here to guide you through the game's basics", () => true],
-    ["Progression", "The goal is to earn Shgabb and other currencies. Most new things are unlocked by the first upgrade.", () => true],
-    ["Let's make progress", "Either click the button to earn some Shgabb, or enable Idle Mode (slower, but less active) and lean back and watch the numbers go up.", () => game.shgabb.gte(shgabbUpgrades.moreShgabb.price(0))],
-    ["Upgrades", "You can afford your first upgrade! Buy it and keep going for a while~", () => shgabbUpgrades.moreShgabb.currentLevel() >= 10],
-    ["New unlocks", "You're making good progress! At HMS 25, you will unlock the Shbook (a guidebook), and an upgrade to get your second currency: Sandwiches.", () => shgabbUpgrades.moreShgabb.currentLevel() >= 25],
-    ["Have fun", "You have completed the tutorial. Keep unlocking new things, and maybe look at the Shbook or Settings if you get a bit bored, cyaa", () => true],
-];
-
-function startTutorial() {
-    tutorialProgress = 0;
-    ui.tutorial.container.style.display = "";
-    audioPlaySound("voice");
-
-    tutorialInterval = setInterval(() => {
-        if (tutorialProgress == -1) {
-            endTutorial();
-            return false;
-        }
-
-        if (ui.tutorial.image.src.includes("images/slimegirl.png")) ui.tutorial.image.src = "images/slimegirl2.png";
-        else ui.tutorial.image.src = "images/slimegirl.png";
-
-        if (tutorialTexts[tutorialProgress][2]() == true) ui.tutorial.next.style.display = "";
-        else ui.tutorial.next.style.display = "none";
-        ui.tutorial.text.innerHTML = "<h2>" + tutorialTexts[tutorialProgress][0] + "</h2><p>" + tutorialTexts[tutorialProgress][1] + "</p>";
-    }, 250);
-}
-
-function continueTutorial() {
-    if (tutorialProgress + 1 > tutorialTexts.length - 1) endTutorial();
-    else {
-        tutorialProgress++;
-        audioPlaySound("voice");
-    }
-}
-
-function endTutorial() {
-    // guys... it's over
-    tutorialProgress = -1;
-    ui.tutorial.container.style.display = "none";
-    clearInterval(tutorialInterval);
-
-    checkAchievement(211);
-}
-
-///////////////////////////////////
 // WGGJ setup   #6D61696E736563
 ///////////////////////////////////
 
@@ -1489,6 +1434,7 @@ function shgabbClickerSetup() {
     toggleSidebar();
     updateEVERYTHING();
     checkNewDay();
+    checkTutorial();
 
     if (navigator.platform == "Linux x86_64" || navigator.platform == "Linux armv7l" || navigator.platform == "Linux armv8l" || navigator.platform == "Linux aarch64") userLinux = true;
 

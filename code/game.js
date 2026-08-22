@@ -716,7 +716,9 @@ function deleteGame() {
                 createNotification("Game deleted successfully!");
                 autoSave();
                 updateEVERYTHING();
+                return true;
             }
         }
     }
+    return false;
 }

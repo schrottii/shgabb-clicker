@@ -29,10 +29,10 @@
 </head>
 <body>
     <!-- TUTORIAL -->
-    <div id="tutorial" style="display: none; position: fixed; z-index: 5; bottom: 0px; right: 0px; max-width: 100%; max-height: 306px; background-color: black;">
-        <button class="grayButton" style="height: 46px; margin-bottom: 4px; width: 30%; margin-left: 8%;" onclick="endTutorial();">Skip</button>
-        <button id="tutorialNext" class="grayButton" style="display: none; height: 46px; margin-bottom: 4px; width: 30%; margin-right: 8%;" onclick="continueTutorial();">Next</button>
-        <div style="float: left; margin-left: 8px; margin-top: 8px; max-width: 60%;">
+    <div id="tutorial" style="display: none; position: fixed; z-index: 5; bottom: 0px; right: 0px; max-width: 100%; max-height: 306px; background-color: rgb(0, 0, 40);">
+        <button class="grayButton tutorialButton" style="margin-left: 8%;" onclick="endTutorial();">Skip tutorial</button>
+        <button id="tutorialNext" class="grayButton tutorialButton" style="display: none; margin-right: 8%;" onclick="continueTutorial();">Next</button>
+        <div style="float: left; margin-left: 8px; margin-top: 8px; max-width: 60%; text-align: left;">
             <span id="tutorialText"></span>
         </div>
         <img id="tutorialImage" src="images/slimegirl.png" style="float: right; bottom: 0px; width: 128px; height: 128px;" />
@@ -528,6 +528,7 @@
     <script src="code\upgrade.js"></script>
     <script src="code\settings.js"></script>
 
+    <script src="code\features\tutorial.js"></script>
     <script src="code\features\ads.js"></script>
     <script src="code\features\achievements.js"></script>
     <script src="code\features\artifacts.js"></script>

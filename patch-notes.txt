@@ -3240,7 +3240,18 @@ x v4.7:
 - Added 5 new Quotes (110 -> 115)
 - New Design Setting: Toggle Quotes
 
+-> Tutorial:
+- If not finished/skipped, the tutorial will appear again when re-opening the game (progress is saved)
+- Added a new step to make the player visit the Settings
+- Changed texts of most steps
+- Added Goal texts (lime if completed, orange if incomplete)
+- Changed background color from black to very dark blue
+- Aligned text to the left
+- Changed "Skip" to "Skip tutorial"
+- Moved things into an own tutorial.js file
+
 -> Other:
 - Improved music loading on start
-- Another attempt at fixing random crashes during loading 
+- Another attempt at fixing random crashes during loading
+- Converted patch_notes.txt to PATCH_NOTES.md
 - Fixed issue with some cosmetics images
