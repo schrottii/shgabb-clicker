@@ -77,7 +77,8 @@ const server_commands = {
     confirm_password_reset: (ws, data) => server_confirm_password_reset(ws, data),
     login: (ws, data) => server_login(ws, data),
     cloud_upload: (ws, data) => server_cloud_upload(ws, data),
-    cloud_download: (ws, data) => server_cloud_download(ws, data)
+    cloud_download: (ws, data) => server_cloud_download(ws, data),
+    logout: (ws, data) => server_account_logout(ws, data)
 };
 
 
@@ -132,7 +133,7 @@ wss.on('connection', async (ws, req) => {
             ws.terminate();
         }, 100);
     }
-    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && loadingPlayerID[0].is_verified === 1 && clientName !== "" && clientPW !== "" && clientEmail !== "") {
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id/* && loadingPlayerID[0].is_verified === 1 */&& clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
         // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
@@ -450,13 +451,14 @@ async function server_login(ws, data) {
         pwValid = false;
     }
 
+    /*
     let isVerified = false;
     let userData = await database_command("getUserByEmail", { email: email });
     if (userData && userData.length > 0 && userData[0].is_verified === 1) {
         isVerified = true;
-    }
+    }*/
 
-    let success = nameValid && pwValid && emailValid && isVerified;
+    let success = nameValid && pwValid && emailValid;
 
     if (success) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
@@ -475,7 +477,7 @@ async function server_login(ws, data) {
         nameValid: nameValid,
         pwValid: pwValid,
         emailValid: emailValid,
-        isVerified: isVerified,
+        //isVerified: isVerified,
         name: name,
         pw: pw,
         email: email
@@ -538,6 +540,12 @@ async function server_cloud_download(ws, data) {
             callClient("cloud_download", ws, { success: e, savedata: savedata });
         });
     }
+}
+
+// 12. logout
+async function server_account_logout(ws, data) {
+    ws.playerID = undefined;
+    callClient("logout", ws, {});
 }
 
 
@@ -616,6 +624,14 @@ async function database_command(cmdname = "", data = {}) {
                     [data.email]
                 );
                 break;
+            /*
+            case "getUserByName":
+                [results] = await db_connection.query(
+                    "SELECT * FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1;",
+                    [data.name]
+                );
+                break;
+                */
             case "getUserPassword":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_password = ? LIMIT 1;",

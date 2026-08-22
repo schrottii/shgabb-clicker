@@ -97,6 +97,9 @@ function connectToServer() {
                 case "cloud_download":
                     client_cloud_download_reply(data);
                     break;
+                case "logout":
+                    client_account_logout_reply(data);
+                    break;
 
                 // reply only
                 case "old_version":
@@ -123,6 +126,12 @@ function connectToServer() {
     socket.onerror = (error) => {
         console.error("WebSocket Error: " + error);
     };
+}
+
+function disconnectFromServer() {
+    //socket.close();
+    isLoggedIn = false;
+    client_account_logout();
 }
 
 // extra code by d0ktorek

@@ -14,6 +14,12 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS is_verified TINYINT(1) DEFAULT 0;
+ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS verify_code VARCHAR(6) DEFAULT NULL;
+ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS verify_expires DATETIME DEFAULT NULL;
+ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS reset_code VARCHAR(6) DEFAULT NULL;
+ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS reset_expires VARCHAR(6) DEFAULT NULL;
+
 -- shgabb clicker tables
 -- prefix: shg_
 -- user_ for everything related to users, not the game's own data

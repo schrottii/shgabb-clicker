@@ -1,12 +1,11 @@
 // server commands :3
 // 1. /playercount
-async function client_playercount(id) {
+async function client_playercount() {
     // simply asks for the player count (last 30 days)
-
     //if (getOrigin() == "private") return;
-    console.log("/playercount: " + id);
+    console.log("/playercount");
 
-    callServer("playercount", { userID: id });
+    callServer("playercount", { });
 }
 
 function client_playercount_reply(data) {
@@ -47,15 +46,20 @@ async function client_account_register() {
     // so, upon registering (this function), we need the user to enter a name and a password, and add it to the db
 
     // who do we want to be?
-    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : "Alonso";
-    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "Fernando";
-    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "alonso@yahoo.com";
+    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : "";
+    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "";
+    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "";
 
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to register...";
 
     // validation (e.g. username already exists) is done on the server
     // using the name and password provided by the user
-    callServer("register", { username: userName, password: userPassword, email: userEmail });
+    if (userName.length > 0 && userPassword.length > 5) {
+        callServer("register", { username: userName, password: userPassword, email: userEmail });
+    }
+    else {
+        if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Username and password can't be empty!";
+    }
 }
 
 function client_account_register_reply(data) {
@@ -74,7 +78,12 @@ function client_account_register_reply(data) {
 }
 
 // 4. verify email
-async function client_verify_email(email, code) {
+async function client_verify_email(email = "", code = "") {
+    if (document.getElementById("verify-code")) {
+        email = document.getElementById("cloudSave-email").value;
+        code = document.getElementById("verify-code").value;
+    }
+    console.log(email, code);
     callServer("verify_email", { email: email, code: code });
 }
 
@@ -117,19 +126,24 @@ function client_confirm_password_reset_reply(data) {
 }
 
 // 8. /login
-async function client_account_login(email = "alonso@yahoo.com", name = "Alonso", pw = "Fernando") {
+async function client_account_login() {
     //if (getOrigin() == "private") return;
     console.log("/login");
 
     // who do we log in as?
-    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : name;
-    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : pw;
-    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : email;
+    let userName = document.getElementById("cloudSave-username") != null ? document.getElementById("cloudSave-username").value : "";
+    let userPassword = document.getElementById("cloudSave-password") != null ? document.getElementById("cloudSave-password").value : "";
+    let userEmail = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "";
 
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to log in...";
 
     // validation is done on the server
-    callServer("login", { username: userName, password: userPassword, email: userEmail });
+    if (userName.length > 0 && userPassword.length > 5) {
+        callServer("login", { username: userName, password: userPassword, email: userEmail });
+    }
+    else {
+        if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Username and password can't be empty!";
+    }
 }
 
 function client_account_login_reply(data) {
@@ -201,4 +215,21 @@ function client_cloud_download_reply(data) {
             createNotification("Game exported to clipboard");
         }
     }
+    else {
+        if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "There is no save or it could not be reached.";
+    }
+}
+
+// 12. /logout
+function client_account_logout() {
+    console.log("/logout");
+
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to log out...";
+
+    callServer("logout", { });
+}
+
+function client_account_logout_reply(data) {
+    client_account_logincheck();
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Logged out";
 }
