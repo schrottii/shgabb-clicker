@@ -47,6 +47,7 @@ class Modal {
             }
         }
         this.uiElementsNames = uiElements;
+        this.writeCache = {};
     }
 
     open() {
@@ -60,8 +61,8 @@ class Modal {
 
     write(element, text) {
         if (this.uiElements[element] == undefined || this.uiElements[element].innerHTML == undefined) return false;
-        if (this.uiElements[element].innerHTML == text) return true;
-        this.uiElements[element].innerHTML = text;
+        if (this.uiElements[element].innerHTML == this.writeCache[element]) return true;
+        this.uiElements[element].innerHTML = this.writeCache[element] = text;
         return true;
     }
 }
@@ -156,26 +157,57 @@ modals = {
     ),
     "accountmanagement": new Modal("Account management",
         `
-        <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
-        <tr><td><input id="cloudSave-username" type="text" maxlength="32" size="32" style="font-size: 24px;"></td><td>Username</td></tr>
-        <tr><td><input id="cloudSave-password" type="password" maxlength="64" size="32" style="font-size: 24px;"></td><td>Password</td></tr>
-        <tr><td><input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"></td><td>E-Mail</td></tr>
-        </table>
+        <span id="accountLoginStatus"></span><br />
 
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_register();">Register</button>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_login();">Login</button>
-        <br />
+        <div id="loginArea" style="display: none;">
+            <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
+            <tr><td><input id="cloudSave-username" type="text" maxlength="32" size="32" style="font-size: 24px;"></td><td>Username</td></tr>
+            <tr><td><input id="cloudSave-password" type="password" maxlength="64" size="32" style="font-size: 24px;"></td><td>Password</td></tr>
+            <tr><td><input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"></td><td>E-Mail</td></tr>
+            </table>
 
-        <span id="accountLoginStatus"></span>
-        <br />
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_register();">Register</button>
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_login();">Login</button>
+            <br /><br />
+        </div>
+
+        <div id="logoutArea" style="display: none;">
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="disconnectFromServer();">Log out</button>
+            <br /><br />
+        </div>
 
         <div id="cloudSaveButton"></div>
+        <div id="verifyCodeArea" style="display: none;">
+            <h3>Verify e-mail</h3>
+            <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"></td><td>6 digit verify code
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_verify_email();">Verify</button>
+            <br />
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_resend_verification();">Resend Verification</button>
+            <br /><br />
+        </div>
+
+        <div id="resetPasswordArea" style="display: none;">
+            <h3>Reset password</h3>
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_request_password_reset();">Request password reset</button>
+            <br />
+            <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"></td><td>
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_confirm_password_reset();">Verify</button>
+            <br /><br />
+            </div>
         `,
         (m, tick) => {
+            document.getElementById("loginArea").style.display = isLoggedIn ? "none" : "";
+            document.getElementById("logoutArea").style.display = !isLoggedIn ? "none" : "";
+
             if (isLoggedIn) {
                 m.write("cloudSaveButton", `
         <h3>Cloud save</h3>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button>`);
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />`);
+
+                //m.write("verifyCodeArea", `
+
+                document.getElementById("verifyCodeArea").style.display = "";
+                document.getElementById("resetPasswordArea").style.display = "";
             }
             else {
                 m.write("cloudSaveButton", "Log in to access cloud save");

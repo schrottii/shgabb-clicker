@@ -36,7 +36,7 @@ function patchNotesSize() {
 // BETA - easier debugging
 var BETA = {};
 Object.defineProperty(BETA, 'isIndev', {
-    value: true,
+    value: window.location.toString().includes("localhost") && true,
     writable: false,
     enumerable: true,
     configurable: false

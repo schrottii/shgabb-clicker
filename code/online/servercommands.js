@@ -1,12 +1,11 @@
 // server commands :3
 // 1. /playercount
-async function client_playercount(id) {
+async function client_playercount() {
     // simply asks for the player count (last 30 days)
-
     //if (getOrigin() == "private") return;
-    console.log("/playercount: " + id);
+    console.log("/playercount");
 
-    callServer("playercount", { userID: id });
+    callServer("playercount", { });
 }
 
 function client_playercount_reply(data) {
@@ -79,7 +78,12 @@ function client_account_register_reply(data) {
 }
 
 // 4. verify email
-async function client_verify_email(email, code) {
+async function client_verify_email(email = "", code = "") {
+    if (document.getElementById("verify-code")) {
+        email = document.getElementById("cloudSave-email").value;
+        code = document.getElementById("verify-code").value;
+    }
+    console.log(email, code);
     callServer("verify_email", { email: email, code: code });
 }
 
@@ -121,8 +125,8 @@ function client_confirm_password_reset_reply(data) {
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
 }
 
-// 4. /login
-async function client_account_login(email = "alonso@yahoo.com", name = "Alonso", pw = "Fernando") {
+// 8. /login
+async function client_account_login() {
     //if (getOrigin() == "private") return;
     console.log("/login");
 
@@ -214,4 +218,18 @@ function client_cloud_download_reply(data) {
     else {
         if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "There is no save or it could not be reached.";
     }
+}
+
+// 12. /logout
+function client_account_logout() {
+    console.log("/logout");
+
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to log out...";
+
+    callServer("logout", { });
+}
+
+function client_account_logout_reply(data) {
+    client_account_logincheck();
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Logged out";
 }
