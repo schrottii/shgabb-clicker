@@ -1,4 +1,3 @@
-
 // server commands :3
 // 1. /playercount
 async function client_playercount(id) {
@@ -67,29 +66,63 @@ async function client_account_register() {
 function client_account_register_reply(data) {
     // data contains: success, nameValid, pwValid
     let message;
-    if (data.success) message = "Registering successful";
-    else if (!data.nameValid) message = "Username is inappropriate or already exists";
-    else if (!data.pwValid) message = "Password is inappropriate or too short";
+    if (data.success) message = "Registering successful. Check your email for verification code."; // i love if or else ^w^
+    else if (!data.nameValid) message = "Username already exists";
+    else if (!data.pwValid) message = "Password is too short";
     else if (!data.emailValid) message = "Email already exists";
     else message = "Registering not successful, unknown error";
 
     console.log("register: " + message);
-    if (data.success) client_account_logincheck();
 
-    // put it into the UI, uhh
+    // put it into the UI
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = message;
+}
 
-    // cache our login!
+// 4. verify email
+async function client_verify_email(email, code) {
+    callServer("verify_email", { email: email, code: code });
+}
+
+function client_verify_email_reply(data) {
+    console.log("verify_email: " + data.message);
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
     if (data.success) {
-        localStorage.setItem("balnoomLogin", JSON.stringify({ name: data.name, pw: data.pw, email: data.email }));
-
-        socket.close();
-        connectToServer();
+        client_account_logincheck();
     }
 }
 
+// 5. resend verification
+async function client_resend_verification(email) {
+    callServer("resend_verification", { email: email });
+}
+
+function client_resend_verification_reply(data) {
+    console.log("resend_verification: " + data.message);
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
+}
+
+// 6. request password reset
+async function client_request_password_reset(email) {
+    callServer("request_password_reset", { email: email });
+}
+
+function client_request_password_reset_reply(data) {
+    console.log("request_password_reset: " + data.message);
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
+}
+
+// 7. confirm password reset
+async function client_confirm_password_reset(email, code, newPassword) {
+    callServer("confirm_password_reset", { email: email, code: code, newPassword: newPassword });
+}
+
+function client_confirm_password_reset_reply(data) {
+    console.log("confirm_password_reset: " + data.message);
+    if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
+}
+
 // 4. /login
-async function client_account_login() {
+async function client_account_login(email = "alonso@yahoo.com", name = "Alonso", pw = "Fernando") {
     //if (getOrigin() == "private") return;
     console.log("/login");
 
@@ -133,7 +166,7 @@ function client_account_login_reply(data) {
     }
 }
 
-// 5. old game version (reply only)
+// 9. old game version (reply only)
 function client_old_version_reply(data) {
     // reply only - no request
     // data contains: clientVer, serverVer
@@ -146,7 +179,7 @@ function client_old_version_reply(data) {
     }
 }
 
-// 6. upload cloud save
+// 10. upload cloud save
 function client_cloud_upload() {
     //console.log("giving data: " + JSON.stringify(game));
     callServer("cloud_upload", { saveData: JSON.stringify(game) });
@@ -158,7 +191,7 @@ function client_cloud_upload_reply(data) {
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Uploaded save successfully!";
 }
 
-// 7. download cloud save
+// 11. download cloud save
 function client_cloud_download() {
     callServer("cloud_download");
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to download your cloud save...";

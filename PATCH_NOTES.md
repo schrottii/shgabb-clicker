@@ -1,121 +1,123 @@
 ﻿Dates in yyyy/mm/dd format. Dates are release dates.
-All versions:
-January - June 2023:
-1.1
-1.2
-1.3
-1.3.1
-1.3.2
-1.4
-July - December 2023:
-1.5
-1.5.1
-1.5.2
-1.6
-1.6.1
-1.6.2
-1.7
-1.7.1
-1.7.2
-1.8
-1.8.1
-1.9
-1.9.1
-2.0
-2.0.1
-2.0.2
-2.1
-2.1.1
-January - March 2024:
-2.2
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.3
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-April - June 2024:
-2.4
-2.4.1
-2.5
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-July - September 2024:
-2.6
-2.6.1
-2.7
-2.7.1
-2.8
-2.8.1
-2.9
-2.9.1
-3.0
-3.0.1
-October - December 2024:
-3.1
-3.1.1
-3.2
-3.2.1
-3.3
-3.3.1
-3.4
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-January - March 2025:
-3.4.6
-3.4.7
-3.4.8
-3.5
-3.5.1
-3.5.2
-April - June 2025:
-3.5.3
-3.6
-3.6.1
-3.6.2
-3.6.3
-3.7
-July - September 2025:
-3.8
-3.8.1
-3.8.2
-3.9
-3.9.1
-4.0
-4.0.1
-4.1
-4.1.1
-4.1.2
-4.2
-October - December 2025:
-4.2.1
-4.2.2
-4.3
-4.4
-January - March 2026:
-4.5
-4.5.1
-4.5.2
-4.6
-4.6.1
-4.6.2
-April - June 2026:
-4.6.3
-July - September 2026:
-4.7
+
+# All versions
+## January - June 2023:
+- v1.1
+- v1.2
+- v1.3
+- v1.3.1
+- v1.3.2
+- v1.4
+## July - December 2023:
+- v1.5
+- v1.5.1
+- v1.5.2
+- v1.6
+- v1.6.1
+- v1.6.2
+- v1.7
+- v1.7.1
+- v1.7.2
+- v1.8
+- v1.8.1
+- v1.9
+- v1.9.1
+- v2.0
+- v2.0.1
+- v2.0.2
+- v2.1
+- v2.1.1
+## January - March 2024:
+- v2.2
+- v2.2.1
+- v2.2.2
+- v2.2.3
+- v2.2.4
+- v2.2.5
+- v2.3
+- v2.3.1
+- v2.3.2
+- v2.3.3
+- v2.3.4
+## April - June 2024:
+- v2.4
+- v2.4.1
+- v2.5
+- v2.5.1
+- v2.5.2
+- v2.5.3
+- v2.5.4
+## July - September 2024:
+- v2.6
+- v2.6.1
+- v2.7
+- v2.7.1
+- v2.8
+- v2.8.1
+- v2.9
+- v2.9.1
+- v3.0
+- v3.0.1
+## October - December 2024:
+- v3.1
+- v3.1.1
+- v3.2
+- v3.2.1
+- v3.3
+- v3.3.1
+- v3.4
+- v3.4.1
+- v3.4.2
+- v3.4.3
+- v3.4.4
+- v3.4.5
+## January - March 2025:
+- v3.4.6
+- v3.4.7
+- v3.4.8
+- v3.5
+- v3.5.1
+- v3.5.2
+## April - June 2025:
+- v3.5.3
+- v3.6
+- v3.6.1
+- v3.6.2
+- v3.6.3
+- v3.7
+## July - September 2025:
+- v3.8
+- v3.8.1
+- v3.8.2
+- v3.9
+- v3.9.1
+- v4.0
+- v4.0.1
+- v4.1
+- v4.1.1
+- v4.1.2
+- v4.2
+## October - December 2025:
+- v4.2.1
+- v4.2.2
+- v4.3
+- v4.4
+## January - March 2026:
+- v4.5
+- v4.5.1
+- v4.5.2
+- v4.6
+- v4.6.1
+- v4.6.2
+## April - June 2026:
+- v4.6.3
+## July - September 2026:
+- v4.7
 
 
 
-2023/01/21 1.1:
+# Updates list
+## v1.1 (2023-01-21)
 Version 1.1 "Reset And Ad" Update:
 -> Added Ads!
 - Watch short fun ads (made by Barduzzi) to receive strong temporary boosts, unlocked at 10 total sandwiches
@@ -138,7 +140,7 @@ Version 1.1 "Reset And Ad" Update:
 
 
 
-2023/02/19 1.2:
+## v1.2 (2023-02-19)
 Version 1.2 Shgbeautiful Update:
 -> New Upgrades:
 - New Golden Shgabb Upgrade: Unlock Buy Max
@@ -170,7 +172,7 @@ Version 1.2 Shgbeautiful Update:
 
 
 
-2023/03/01 1.3:
+## v1.3 (2023-03-01)
 Version 1.3 Silicone Update:
 -> Silicone Shgabb:
 - New currency: Silicone Shgabb!
@@ -199,14 +201,14 @@ Version 1.3 Silicone Update:
 
 
 
-2023/03/02 1.3.1:
+### v1.3.1 (2023-03-02)
 - Cheese is now affected by Stronger Auto ad
 - Fixed -infinite shgabb bug
 - Fixed long decimal number jumpscare bug
 
 
 
-2023/05/21 1.3.2:
+### v1.3.2 (2023-05-21)
 Version 1.3.2:
 -> Important:
 - Changed the way the game updates, improving performance and fixing in-game seconds being slighty faster/slower than in real life
@@ -228,7 +230,7 @@ Version 1.3.2:
 
 
 
-2023/05/24 1.4:
+## v1.4 (2023-05-24)
 Version 1.4:
 -> Design:
 - Finally! Images!
@@ -265,7 +267,7 @@ Version 1.4:
 
 
 
-2023/07/08 1.5:
+## v1.5 (2023-07-08)
 Version 1.5:
 -> Artifacts:
 - New feature: Artifacts!
@@ -299,7 +301,7 @@ Version 1.5:
 
 
 
-2023/07/10 1.5.1:
+### v1.5.1 (2023-07-10)
 Version 1.5.1:
 -> Artifacts:
 - Added 5 new artifacts (3 common, 1 rare, 1 epic)
@@ -328,7 +330,7 @@ Version 1.5.1:
 
 
 
-2023/07/13 1.5.2:
+### v1.5.2 (2023-07-31)
 Version 1.5.2:
 -> Balance:
 - Blue Ring: +20% -> +40%
@@ -342,7 +344,7 @@ Version 1.5.2:
 
 
 
-2023/08/05 1.6:
+## v1.6 (2023-08-05)
 Version 1.6:
 -> Achievements:
 - New feature: Achievements!
@@ -382,7 +384,7 @@ Version 1.6:
 
 
 
-2023/08/06 1.6.1:
+### v1.6.1 (2023-08-06)
 Version 1.6.1:
 - Achievements now boost GS (2% for every achievement)
 - Sandwich amount now uses the notation
@@ -391,7 +393,7 @@ Version 1.6.1:
 
 
 
-2023/08/08 1.6.2:
+### v1.6.1 (2023-08-08)
 Version 1.6.2:
 -> Balance:
 - Increased costs of the 2 new Silicone Upgrades by 1 level (so level 0 is not free anymore)
@@ -419,7 +421,7 @@ Version 1.6.2:
 
 
 
-2023/08/14 1.7:
+## v1.7 (2023-08-14)
 Version 1.7:
 -> Améliorer:
 - New feature/currency: Améliorer!
@@ -473,7 +475,7 @@ Version 1.7:
 
 
 
-2023/08/20 1.7.1:
+### v1.7.1 (2023-08-20)
 Version 1.7.1:
 -> Améliorer:
 - New Améliorer Upgrade: Achievements Become Exponential
@@ -502,7 +504,7 @@ Version 1.7.1:
 
 
 
-2023/09/05 1.7.2:
+### v1.7.2 (2023-09-05)
 Version 1.7.2:
 -> Ads:
 - The least used ad boost is now less likely to appear
@@ -518,7 +520,7 @@ Version 1.7.2:
 
 
 
-2023/09/15 1.8:
+## v1.8 (2023-09-15)
 Version 1.8:
 -> Minigame:
 - Added a minigame: Shgic Shgac Shgoe!
@@ -562,7 +564,7 @@ Version 1.8:
 
 
 
-2023/09/19 1.8.1:
+### v1.8.1 (2023-09-19)
 Version 1.8.1:
 - Improved enemy's decision making in the minigame
 - Fixed Améliorer Upgrades being reset even if the option is not activated
@@ -572,7 +574,7 @@ Version 1.8.1:
 
 
 
-2023/09/25 1.9:
+### v1.9 (2023-09-25)
 Version 1.9:
 -> Artifact Leveling:
 - You can now level and destroy artifacts!
@@ -637,7 +639,7 @@ Version 1.9:
 
 
 
-2023/09/30 1.9.1:
+### v1.9.1 (2023-09-30)
 Version 1.9.1:
 -> Ads:
 - Reduced volume of ads
@@ -663,7 +665,7 @@ Version 1.9.1:
 
 
 
-2023/11/16 2.0:
+### v2.0 (2023-11-16)
 Version 2.0:
 -> Sections:
 - Split the game's UI into many sections!
@@ -767,7 +769,7 @@ Version 2.0:
 
 
 
-2023/11/17 2.0.1:
+### v2.0.1 (2023-11-17)
 Version 2.0.1:
 -> Artifact Loadouts:
 - When opening the game, the correct loadout will now be loaded (instead of the first loadout)
@@ -792,7 +794,7 @@ Version 2.0.1:
 
 
 
-2023/12/10 2.0.2:
+### v2.0.2 (2023-12-10)
 Version 2.0.2:
 -> Technical:
 - Changed host
@@ -814,7 +816,7 @@ Version 2.0.2:
 
 
 
-2023/12/16 2.1:
+## v2.1 (2023-12-16)
 Version 2.1:
 -> Events:
 - New feature: Events!
@@ -899,7 +901,7 @@ Version 2.1:
 
 
 
-2023/12/21 2.1.1:
+### v2.1.1 (2023-12-21)
 Version 2.1.1:
 -> Silicone Shgabb:
 - Boost from playtime is now capped at 3,000,000 seconds (833.3 hours, previously uncapped)
@@ -934,7 +936,7 @@ Version 2.1.1:
 
 
 
-2023/12/23 2.1.2:
+### v2.1.2 (2023-12-23)
 Version 2.1.2:
 -> Balance:
 - Reduced costs of Keep Sandwich Upgrades from 10 to 2 for the first 3 levels (total: 60 -> 36)
@@ -962,7 +964,7 @@ Version 2.1.2:
 
 
 
-2024/01/06 2.2:
+## v2.2 (2024-01-06)
 Version 2.2:
 -> Challenges:
 - New feature: Challenges! Unlocked at More Shgabb 6000
@@ -1026,7 +1028,7 @@ Version 2.2:
 
 
 
-2024/01/07 2.2.1:
+### v2.2.1 (2024-01-07)
 Version 2.2.1:
 -> Achievements:
 - Added 10 new Achievements (90 total)
@@ -1052,7 +1054,7 @@ Version 2.2.1:
 
 
 
-2024/01/09 2.2.2:
+### v2.2.2 (2024-01-09)
 Version 2.2.2:
 -> Stats:
 - Added a dynamic display of boosts from Artifacts (such as Auto Shgabb boost, below the Artifact Chances)
@@ -1071,7 +1073,7 @@ Version 2.2.2:
 
 
 
-2024/01/12 2.2.3:
+### v2.2.3 (2024-01-12)
 Version 2.2.3:
 -> Player Profile:
 - Player ID is now visible on the profile
@@ -1095,7 +1097,7 @@ Version 2.2.3:
 
 
 
-2024/01/26 2.2.4:
+### v2.2.4 (2024-01-26)
 Version 2.2.4:
 -> Notifications:
 - Added a setting to adjust how many notifications are shown at the top (0 - 5, default/current is 1)
@@ -1119,7 +1121,7 @@ Version 2.2.4:
 
 
 
-2024/02/10 2.2.5:
+### v2.2.5 (2024-02-10)
 Version 2.2.5:
 -> Lunar New Year Event:
 - New event: Lunar New Year Event!
@@ -1145,7 +1147,7 @@ Version 2.2.5:
 
 
 
-2024/03/06 2.3:
+## v2.3 (2024-03-06)
 Version 2.3:
 -> Bags:
 - New currency: Bags!
@@ -1170,7 +1172,7 @@ Version 2.3:
 
 
 
-2024/03/08 2.3.1:
+### v2.3.1 (2024-03-08)
 Version 2.3.1:
 -> New content:
 - Added 5 new Quotes (78 total)
@@ -1190,7 +1192,7 @@ Version 2.3.1:
 
 
 
-2024/03/15 2.3.2:
+### v2.3.2 (2024-03-15)
 Version 2.3.2:
 -> Achievements:
 - Added 10 new Achievements (110 total, 6 Bags, 4 meta)
@@ -1204,7 +1206,7 @@ Version 2.3.2:
 
 
 
-2024/03/22 2.3.3:
+### v2.3.3 (2024-03-22)
 Version 2.3.3:
 -> Artifacts:
 - Added 5 new Artifacts (60 total, 1 common, 3 rare, 1 epic)
@@ -1222,7 +1224,7 @@ Version 2.3.3:
 
 
 
-2024/03/28 2.3.4:
+### v2.3.4 (2024-03-28)
 Version 2.3.4:
 -> Egg Hunt Event:
 - New event: Egg Hunt!
@@ -1245,7 +1247,7 @@ Version 2.3.4:
 
 
 
-2024/04/10 2.4:
+## v2.4 (2024-04-10)
 Version 2.4 Artifact Update:
 -> Artifacts:
 - Added legendary rarity! (see section below)
@@ -1297,6 +1299,7 @@ Version 2.4 Artifact Update:
 
 
 
+### v2.4.1 (2024-04-14)
 2024/04/14 2.4.1:
 Version 2.4.1:
 -> Settings:
@@ -1310,7 +1313,7 @@ Version 2.4.1:
 
 
 
-2024/05/14 2.4.2:
+### v2.4.2 (2024-05-14)
 Version 2.4.2:
 -> Design:
 - The game now has a blue/gray/green color palette
@@ -1323,7 +1326,7 @@ Version 2.4.2:
 
 
 
-2024/06/07 2.5:
+## v2.5 (2024-06-07)
 Version 2.5 The Update that Changed the World:
 -> Break Infinity:
 - Added breakinfinity library
@@ -1400,7 +1403,7 @@ Version 2.5 The Update that Changed the World:
 
 
 
-2024/06/10 2.5.1:
+### v2.5.1 (2024-06-10)
 Version 2.5.1:
 -> Saves:
 - Added a backup system (see: settings)
@@ -1419,7 +1422,7 @@ Version 2.5.1:
 
 
 
-2024/06/12 2.5.2:
+### v2.5.2 (2024-06-12)
 Version 2.5.2:
 -> Content:
 - Added Terms of Service (found at the game info, below notifications)
@@ -1451,7 +1454,7 @@ Version 2.5.2:
 
 
 
-2024/06/15 2.5.3:
+### v2.5.3 (2024-06-15)
 Version 2.5.3:
 -> Shbook:
 - Lore: Added 2 new lore pages (5 total)
@@ -1481,7 +1484,7 @@ Version 2.5.3:
 
 
 
-2024/06/26 2.5.4:
+### v2.5.4 (2024-06-26)
 Version 2.5.4 The 254adnemle Update:
 -> Artifacts:
 - Stats now show Artifacts owned of each rarity (common, rare, epic, legendary)
@@ -1508,7 +1511,7 @@ Version 2.5.4 The 254adnemle Update:
 
 
 
-2024/07/06 2.6:
+## v2.6 (2024-07-06)
 Version 2.6 The Artification Update:
 -> Artifacts:
 - Reworked Artifacts / Artifact code, allowing for more complex effects, more possibilities, quality and quantity
@@ -1562,7 +1565,7 @@ Version 2.6 The Artification Update:
 
 
 
-2024/07/06 2.6.1:
+### v2.6.1 (2024-07-06)
 Version 2.6.1:
 -> Shgic Animations:
 - Added experimental Shgic animations
@@ -1593,7 +1596,7 @@ Version 2.6.1:
 
 
 
-2024/07/13 2.7:
+## v2.7 (2024-07-13)
 Version 2.7 Copper Age:
 -> Copper Shgabb:
 - New currency: Copper Shgabb!
@@ -1626,7 +1629,7 @@ Version 2.7 Copper Age:
 
 
 
-2024/07/20 2.7.1:
+### v2.7.1 (2024-07-20)
 Version 2.7.1:
 -> Max Levels and Amé Reset:
 - Resetting Amé Upgrades no longer resets levels of GS and Si Upgrades
@@ -1656,7 +1659,7 @@ Version 2.7.1:
 
 
 
-2024/07/27 2.8:
+## v2.8 (2024-07-27)
 Version 2.8 Hot Change Update:
 -> Ads:
 - Added Chengas (see section below)
@@ -1709,7 +1712,7 @@ Version 2.8 Hot Change Update:
 
 
 
-2024/07/28 2.8.1:
+### v2.8.1 (2024-07-28)
 Version 2.8.1:
 -> Ads:
 - Reduced waiting time after canceling an ad from 20s to 5s
@@ -1730,7 +1733,7 @@ Version 2.8.1:
 
 
 
-2024/08/02 2.9:
+## v2.9 (2024-08-02)
 Version 2.9 Back to Bomblike Update:
 -> Backgrounds:
 - Reworked background images to be less distracting, darker, smaller and more pixelated
@@ -1768,7 +1771,7 @@ Version 2.9 Back to Bomblike Update:
 
 
 
-2024/08/18 2.9.1:
+### v2.9.1 (2024-08-18)
 Back to Making An Update:
 -> Settings:
 - Added Setting to toggle confirmation dialogs
@@ -1791,7 +1794,7 @@ Back to Making An Update:
 
 
 
-2024/09/13 3.0:
+## v3.0 (2024-09-13)
 Version v3.0 Fish Up Gang Date:
 -> Content:
 - New feature / minigame: Fishgang!
@@ -1844,7 +1847,7 @@ Version v3.0 Fish Up Gang Date:
 
 
 
-2024/09/21 3.0.1:
+### v3.0.1 (2024-09-21)
 Version v3.0.1 Fish +2:
 -> Pearls:
 - New side currency, unlocked at 12k HMS alongside Fishgang
@@ -1874,7 +1877,7 @@ Version v3.0.1 Fish +2:
 
 
 
-2024/10/19 3.1:
+## v3.1 (2024-10-19)
 Version v3.1 Grateful Gems:
 -> Gems:
 - New Gems image!
@@ -1911,7 +1914,7 @@ Version v3.1 Grateful Gems:
 
 
 
-2024/10/21 3.1.1:
+### v3.1.1 (2024-10-21)
 Version 3.1.1:
 -> Minigames:
 - Implemented WGGJ
@@ -1943,7 +1946,7 @@ Version 3.1.1:
 
 
 
-2024/10/30 3.2:
+## v3.2 (2024-10-30)
 Version v3.2:
 -> Shgabb The Witch:
 - New event: Shgabb The Witch!
@@ -1977,7 +1980,7 @@ Version v3.2:
 
 
 
-2024/11/08 3.2.1:
+### v3.2.1 (2024-11-08)
 Version v3.2.1:
 -> Shgabb The Witch Event:
 - Extended event by a week -> November 17th
@@ -1998,7 +2001,7 @@ Version v3.2.1:
 
 
 
-2024/11/21 3.3:
+## v3.3 (2024-11-21)
 Version v3.3 Framed Pages:
 -> Player Profile:
 - Added Frames, a new type of decoration!
@@ -2023,7 +2026,7 @@ Version v3.3 Framed Pages:
 
 
 
-2024/12/01 3.3.1:
+### v3.3.1 (2024-12-01)
 Version v3.3.1:
 -> Artifacts:
 - Added 5 new Artifacts (2 common, 3 rare, 85 total)
@@ -2047,7 +2050,7 @@ Version v3.3.1:
 
 
 
-2024/12/09 3.4:
+## v3.4 (2024-12-09)
 Version v3.4 Global Freeze:
 -> Events:
 - Every year, the events return
@@ -2080,7 +2083,7 @@ Version v3.4 Global Freeze:
 
 
 
-2024/12/10 3.4.1:
+### v3.4.1 (2024-12-10)
 Version v3.4.1 Global2:
 -> Shgabb Upgrade Balance:
 - More Shgabb: Reduced base cost from 5/lvl to 2/lvl
@@ -2125,7 +2128,7 @@ Version v3.4.1 Global2:
 
 
 
-2024/12/13 3.4.2:
+### v3.4.2 (2024-12-13)
 Version v3.4.2 Globbbal Frrreeze:
 -> Shbook:
 - Reworked entry for the Shbook itself
@@ -2142,7 +2145,7 @@ Version v3.4.2 Globbbal Frrreeze:
 
 
 
-2024/12/18 3.4.3:
+### v3.4.3 (2024-12-18)
 Version v3.4.3 Earthwide Coldization:
 -> Loading:
 - Changed how the game is loaded
@@ -2167,7 +2170,7 @@ Version v3.4.3 Earthwide Coldization:
 
 
 
-2024/12/26 v3.4.4:
+### v3.4.4 (2024-12-26)
 Version v3.4.4 Set Cold:
 -> Settings:
 - Added descriptions for settings!
@@ -2198,7 +2201,7 @@ Version v3.4.4 Set Cold:
 
 
 
-2024/12/29 v3.4.5:
+### v3.4.5 (2024-12-29)
 Version v3.4.5 The Cold Back:
 -> Backgrounds:
 - Changed four backgrounds from green to blue:
@@ -2225,7 +2228,7 @@ Version v3.4.5 The Cold Back:
 
 
 
-2025/01/04 v3.4.6:
+### v3.4.6 (2025-01-04)
 Version v3.4.6 Secolnd Birthday:
 -> Anniversary Event:
 - The Anniversary Event is back for Year 2
@@ -2250,7 +2253,7 @@ Version v3.4.6 Secolnd Birthday:
 
 
 
-2025/01/24 v3.4.7:
+### v3.4.7 (2025-01-24)
 Version v3.4.7 B-Cold:
 -> Minigames:
 - Minigames now only run if selected, otherwise, absolutely nothing happens (improved performance)
@@ -2283,7 +2286,7 @@ Version v3.4.7 B-Cold:
 
 
 
-2025/02/01 v3.4.8:
+### v3.4.8 (2025-02-01)
 Version v3.4.8 Winter Lunar:
 -> Lunar New Year Event:
 - The Lunar New Year Event is back for Year 2
@@ -2315,7 +2318,7 @@ Version v3.4.8 Winter Lunar:
 
 
 
-2025/03/17 v3.5:
+## v3.5 (2025-03-17)
 Version v3.5 This Update Is Bananas:
 -> Bananas:
 - New main currency! Unlocked at 15k HMS
@@ -2346,7 +2349,7 @@ Version v3.5 This Update Is Bananas:
 
 
 
-2025/03/18 v3.5.1:
+### v3.5.1 (2025-03-18)
 Version v3.5.1:
 -> Ads:
 - Reworked code of ad boosts, making it more organized and allowing for fancier things (like upgrades) in the future
@@ -2362,7 +2365,7 @@ Version v3.5.1:
 
 
 
-2025/03/20 v3.5.2:
+### v3.5.2 (2025-03-20)
 Version v3.5.2:
 -> Bananas:
 - Added a Banana PFP, unlocked at 10k total Bananas (third Achievement)
@@ -2380,7 +2383,7 @@ Version v3.5.2:
 
 
 
-2025/04/03 v3.5.3:
+### v3.5.3 (2025-04-03)
 Version v3.5.3:
 -> Egg Hunt Event:
 - The Egg Hunt Event is back for Year 2
@@ -2399,7 +2402,7 @@ Version v3.5.3:
 
 
 
-2025/05/26 v3.6:
+## v3.6 (2025-05-26)
 Version v3.6:
 -> Daily Challenge:
 - New feature: Daily Challenge (10k HMS)
@@ -2429,7 +2432,7 @@ Version v3.6:
 
 
 
-2025/05/28 v3.6.1:
+### v3.6.1 (2025-05-28)
 Version v3.6.1:
 -> Daily Challenge:
 - Much better RNG for picking Artifacts
@@ -2448,14 +2451,14 @@ Version v3.6.1:
 
 
 
-2025/06/08 v3.6.2:
+### v3.6.2 (2025-06-08)
 - Fixed Shgaybb mode requirement incorrectly applying to lore pages, rather than Sharks
 - Sharks now have that requirement (plus: outside of the event, click cooldown needs to be 3s or slower)
 - Increased lore page chance from 1/25k to 1/7k
 
 
 
-2025/06/15 v3.6.3:
+### v3.6.2 (2025-06-15)
 -> Artifacts:
 - 10 new Artifacts (95 total)
 - Common: Paper Ring, Ghost Ring, Fading Paper Ring, Fading Ghost Ring, Gem Gift
@@ -2469,7 +2472,7 @@ Version v3.6.1:
 
 
 
-2025/06/28 v3.7:
+## v3.7 (2025-06-28)
 -> Events and Etenvs:
 - Added Events section to Shbook, showing all Events, with their descriptions and cosmetics!
 - Added Etenvs, new token currency unlocked at HMS 10 000
@@ -2498,7 +2501,7 @@ Version v3.6.1:
 
 
 
-2025/07/26 v3.8:
+## v3.8 (2025-07-26)
 -> Améliorer:
 - Added the 9th set of Améliorer Upgrades (400 Amé)
 - New Améliorer Upgrade: Bag Boost (Set 9, 400): Get more Bags
@@ -2530,7 +2533,7 @@ Version v3.6.1:
 
 
 
-2025/07/29 v3.8.1:
+### v3.8.1 (2025-07-29)
 -> Boost Filters:
 - Combined some boost filters (like GS and Prestige GS)
 - Added filter for lore/wisps
@@ -2563,7 +2566,7 @@ Version v3.6.1:
 
 
 
-2025/08/01 v3.8.2:
+### v3.8.2 (2025-08-01)
 -> Hot Hot Summer Event:
 - 5 event lore pages can be found, and unlocked with the new lore currency Sunglasses
 - Sunglasses are only found if click cooldown is 0.5s or faster
@@ -2576,6 +2579,7 @@ Version v3.6.1:
 
 
 
+## v3.9 (2025-08-04)
 2025/08/04 v3.9:
 -> Idle Mode:
 - New feature unlocked from the start
@@ -2610,6 +2614,7 @@ Version v3.6.1:
 
 
 
+### v3.9.1 (2025-08-06)
 2025/08/06 v3.9.1:
 -> Achievements:
 - Added 10 new Achievements (210 total)
@@ -2630,6 +2635,7 @@ Version v3.6.1:
 
 
 
+## v4.0 (2025-08-20)
 2025/08/20 v4.0:
 -> The Mine:
 - New minigame/feature, unlocked at HMS 12k
@@ -2678,6 +2684,7 @@ Version v3.6.1:
 
 
 
+### v4.0.1 (2025-08-21)
 2025/08/21 v4.0.1:
 -> Sidebar:
 - Shortened Idle Mode button even more (into just a check/X), put it into same row as click button
@@ -2706,7 +2713,7 @@ Version v3.6.1:
 
 
 
-2025/08/25 v4.1:
+## v4.1 (2025-08-25)
 -> The Mine:
 - Added new currency and tile Iron Shgabb, about as common as GS, takes 100 to finish
 - Added smooth moving
@@ -2747,7 +2754,7 @@ Version v3.6.1:
 
 
 
-2025/08/28 v4.1.1:
+### v4.1.1 (2025-08-28)
 - Reduced costs of Iron upgrades (except CuFe)
 - Total Pearls, Total Iron and Mined Iron stats are now displayed
 - Moved Chengas and Etenvs stats
@@ -2756,7 +2763,7 @@ Version v3.6.1:
 
 
 
-2025/09/06 v4.1.2:
+### v4.1.2 (2025-09-06)
 -> Hotkeys:
 - New hotkey: Space bar triggers the click button (inside and outside of The Mine)
 - Added Shbook entry with all hotkeys (also see: wiki)
@@ -2770,7 +2777,7 @@ Version v3.6.1:
 
 
 
-2025-09-24 v4.2:
+## v4.2 (2025-09-24)
 -> Tutorial:
 - Added a tutorial with 6 parts
 - The first visible character, Lucie, guides you through the beginning
@@ -2811,7 +2818,7 @@ Version v3.6.1:
 
 
 
-2025-10-14 v4.2.1:
+### v4.2.1 (2025-10-14)
 -> Shgabb the Witch:
 - Event is back for Year 2 - all events have been updated now!
 - Duration changed to October 24th - November 6th (21 days -> 14 days)
@@ -2826,7 +2833,7 @@ Version v3.6.1:
 
 
 
-2025-11-21 v4.2.2:
+### v4.2.2 (2025-11-21)
 -> Upgrade design:
 - All upgrades in the same row now have the same height
 - Currency image now is shown next to the cost
@@ -2839,7 +2846,7 @@ Version v3.6.1:
 
 
 
-2025-11-24 v4.3:
+## v4.3 (2025-11-24)
 -> Upgrade Calculator:
 - Found in the Shbook, unlocked with it (25 HMS)
 - Select a group of upgrades, then the desired upgrade
@@ -2866,7 +2873,7 @@ Version v3.6.1:
 
 
 
-2025-11-28 v4.4:
+## v4.4 (2025-11-28)
 -> Generators:
 - New feature, unlocked at 3000 HMS
 - Spend GS to upgrade Generators
@@ -2901,6 +2908,7 @@ Version v3.6.1:
 
 
 
+## v4.5 (2026-01-24)
 2026-01-24 v4.5 "Update with a mission":
 -> Content:
 - New feature Missions
@@ -3013,7 +3021,7 @@ Version v3.6.1:
 
 
 
-2026-02-07 v4.5.1:
+### v4.5.1 (2026-02-07)
 -> Events:
 - New Event info UI, for all seven Events
 - For consistent design and better readability
@@ -3037,6 +3045,7 @@ Version v3.6.1:
 
 
 
+### v4.5.2 (2026-02-11)
 2026-02-11 v4.5.2 "elshgabb452":
 -> Artifacts:
 - New Epic Tier II Artifact: Root
@@ -3076,7 +3085,7 @@ Version v3.6.1:
 
 
 
-2026-03-13 v4.6:
+## v4.6 (2026-03-13)
 -> Black Market:
 - New feature unlocked at 13,000 HMS
 - It always appears on the 13th of a month 
@@ -3151,7 +3160,7 @@ Version v3.6.1:
 
 
 
-2026-03-17 v4.6.1:
+### v4.6.1 (2026-03-17)
 -> Black Market:
 - March 20th, 2026 will have an additional Black Market for those who didn't interact with the first
 
@@ -3168,7 +3177,7 @@ Version v3.6.1:
 
 
 
-2026-03-30 v4.6.2:
+### v4.6.2 (2026-03-30)
 -> Egg Hunt Event:
 - Added Offer to buy the new Artifact (Egg Instinct) for 50 Eggs
 - New button design/texture
@@ -3200,7 +3209,7 @@ Version v3.6.1:
 
 
 
-2026-06-04 v4.6.3:
+### v4.6.3 (2026-06-04)
 -> Pride Event:
 - Shgaybb Mode is now called Dating Mode 
 - It still slows down clicks, but instead of finding text-only "Shgabbs", you have a chance of finding a match (20%)
@@ -3227,7 +3236,8 @@ Version v3.6.1:
 
 
 
-x v4.7:
+## v4.7 (INDEV)
+? v4.7:
 -> ???:
 -
 
@@ -3241,18 +3251,7 @@ x v4.7:
 - Added 5 new Quotes (110 -> 115)
 - New Design Setting: Toggle Quotes
 
--> Tutorial:
-- If not finished/skipped, the tutorial will appear again when re-opening the game (progress is saved)
-- Added a new step to make the player visit the Settings
-- Changed texts of most steps
-- Added Goal texts (lime if completed, orange if incomplete)
-- Changed background color from black to very dark blue
-- Aligned text to the left
-- Changed "Skip" to "Skip tutorial"
-- Moved things into an own tutorial.js file
-
 -> Other:
 - Improved music loading on start
-- Another attempt at fixing random crashes during loading
-- Converted patch_notes.txt to PATCH_NOTES.md
+- Another attempt at fixing random crashes during loading 
 - Fixed issue with some cosmetics images
