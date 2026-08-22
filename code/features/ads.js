@@ -1,5 +1,5 @@
 // Game made by Schrottii - editing or stealing is prohibited!
-// This file contains (almost) everything regarding ads - the funny ingame ones made by Barduzzi (no real ads)
+// This file contains (almost) everything regarding joke ads - the funny ingame ones made by Barduzzi (no real ads)
 // view main.js for AdButton, AdStartButton and AdHandler inside the ui variable
 
 
@@ -314,6 +314,7 @@ function determineLeastUsedBoost() {
 function selectVideo() {
     // Select which video you will see
     let adVideoPicker = Math.ceil(Math.random() * 6)
+
     switch (adVideoPicker) {
         case 1:
             adHandler.src = "videos/elmenda_bad_as_always.mp4";
@@ -335,3 +336,9 @@ function selectVideo() {
             break;
     }
 }
+
+// oncanplay="setTimeout(() => canPlayAds(), 500)" onended="onAdEnded()" ontimeupdate="onAdTimeUpdate()"
+
+adHandler.oncanplay = () => { canPlayAds(); };
+adHandler.onended = () => { onAdEnded(); };
+adHandler.ontimeupdate = () => { onAdTimeUpdate(); };

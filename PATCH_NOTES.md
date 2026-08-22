@@ -1,0 +1,3257 @@
+﻿Dates in yyyy/mm/dd format. Dates are release dates.
+
+# All versions
+## January - June 2023:
+- v1.1
+- v1.2
+- v1.3
+- v1.3.1
+- v1.3.2
+- v1.4
+## July - December 2023:
+- v1.5
+- v1.5.1
+- v1.5.2
+- v1.6
+- v1.6.1
+- v1.6.2
+- v1.7
+- v1.7.1
+- v1.7.2
+- v1.8
+- v1.8.1
+- v1.9
+- v1.9.1
+- v2.0
+- v2.0.1
+- v2.0.2
+- v2.1
+- v2.1.1
+## January - March 2024:
+- v2.2
+- v2.2.1
+- v2.2.2
+- v2.2.3
+- v2.2.4
+- v2.2.5
+- v2.3
+- v2.3.1
+- v2.3.2
+- v2.3.3
+- v2.3.4
+## April - June 2024:
+- v2.4
+- v2.4.1
+- v2.5
+- v2.5.1
+- v2.5.2
+- v2.5.3
+- v2.5.4
+## July - September 2024:
+- v2.6
+- v2.6.1
+- v2.7
+- v2.7.1
+- v2.8
+- v2.8.1
+- v2.9
+- v2.9.1
+- v3.0
+- v3.0.1
+## October - December 2024:
+- v3.1
+- v3.1.1
+- v3.2
+- v3.2.1
+- v3.3
+- v3.3.1
+- v3.4
+- v3.4.1
+- v3.4.2
+- v3.4.3
+- v3.4.4
+- v3.4.5
+## January - March 2025:
+- v3.4.6
+- v3.4.7
+- v3.4.8
+- v3.5
+- v3.5.1
+- v3.5.2
+## April - June 2025:
+- v3.5.3
+- v3.6
+- v3.6.1
+- v3.6.2
+- v3.6.3
+- v3.7
+## July - September 2025:
+- v3.8
+- v3.8.1
+- v3.8.2
+- v3.9
+- v3.9.1
+- v4.0
+- v4.0.1
+- v4.1
+- v4.1.1
+- v4.1.2
+- v4.2
+## October - December 2025:
+- v4.2.1
+- v4.2.2
+- v4.3
+- v4.4
+## January - March 2026:
+- v4.5
+- v4.5.1
+- v4.5.2
+- v4.6
+- v4.6.1
+- v4.6.2
+## April - June 2026:
+- v4.6.3
+## July - September 2026:
+- v4.7
+
+
+
+# Updates list
+## v1.1 (2023-01-21)
+Version 1.1 "Reset And Ad" Update:
+-> Added Ads!
+- Watch short fun ads (made by Barduzzi) to receive strong temporary boosts, unlocked at 10 total sandwiches
+- Added 5 ad boosts
+
+-> Added Prestige!
+- Unlocked at 1000000 shgabb, reset most of your progress to earn...
+- New currency: Golden shgabb! Added 4 golden shgabb upgrades!
+
+-> Balance:
+- Increased costs of "Get More Shgabb" after level 500
+- Reduced costs of "Bomblike" (at all levels)
+- Massively buffed "Get Shgabb Automatically" effect and changed costs of sandwich upgrades
+- Fixed "Sandwich Amount" being called "Sandwich Chance" and increased max. level from 9 to 19
+
+-> Design:
+- Improved design of upgrade buttons and setting buttons
+- Upgrades that can be bought now have a green background color
+- Reworked bar design
+
+
+
+## v1.2 (2023-02-19)
+Version 1.2 Shgbeautiful Update:
+-> New Upgrades:
+- New Golden Shgabb Upgrade: Unlock Buy Max
+- New Golden Shgabb Upgrade: Unlock More Sandwich Upgrades
+- New Sandwich Upgrade: First upgrade boosts clicks
+- New Sandwich Upgrade: Auto Shgabb based on clicks
+
+-> Design:
+- Added a standard notation
+- Current shgabb, some stats and upgrade costs and effects are now displayed in notation at 1M or higher
+- Increased max. notifications from 5 to 15 and notification time from 5s to 15s
+- Added a shgabb/s display to the shgabb amount
+- You can now see the effect after an upgrade, if you can afford it
+- Removed shgabb from sandwiches notifications
+- Moved ads from next to the stats to below the shgabb display / above the upgrades
+
+-> Balance:
+- Golden Shgabb gain is now based on Shgabb and Sandwiches earned in the entire run, instead of current
+- Increased Stronger Auto ad boost from 5x to 10x
+- Increased Stronger Clicks ad boost from 1.5x to 3x
+- Increased More Crits duration from 60 seconds to 120 seconds
+- Massively reduced cost scaling of GS upgrades 1, 3 and 4
+- Increased effect of the Better Fridge upgrade from 2/level (3min) to 4/level (5min)
+- Increased effect of Divine Shgabb from 0.1/level to 0.2/level, 0.3/level after level 50, 0.5/level after level 100
+
+-> Other:
+- Added buy max button (for most upgrades), unlocked with a Golden Shgabb upgrade
+- Added several new quotes
+
+
+
+## v1.3 (2023-03-01)
+Version 1.3 Silicone Update:
+-> Silicone Shgabb:
+- New currency: Silicone Shgabb!
+- Added two Silicone Shgabb uprades
+- Silicone Shgabb is unlocked at 1B Shgabb
+- Silicone Shgabb boosts shgabb income
+- Silicone is kept after a prestige
+
+-> Notations:
+- Unnecessary decimals (e. g. 10.0) are no longer displayed
+- Shgabb on click and shgabb per second are now displayed using the notation
+- Fixed decimals being displayed incorrectly sometimes
+
+-> Balance:
+- Increased effect of Cheese from 0.1%/level to 0.5%/level
+- Massively reduced cost increase of Cheese
+- Increased effect of the More Sandwiches ad boost from x2 to x4 (up to 100% chance)
+
+-> Other:
+- (Most) settings are now saved after leaving the game
+- Added a setting to display the current effect of certain upgrades
+- The 3rd and 4th sandwich upgrade show their current effect
+- Currency amounts are now showed above their respective upgrades as well
+- Reduced space below headers
+- Reduced size of buttons
+
+
+
+### v1.3.1 (2023-03-02)
+- Cheese is now affected by Stronger Auto ad
+- Fixed -infinite shgabb bug
+- Fixed long decimal number jumpscare bug
+
+
+
+### v1.3.2 (2023-05-21)
+Version 1.3.2:
+-> Important:
+- Changed the way the game updates, improving performance and fixing in-game seconds being slighty faster/slower than in real life
+- Added a file with all patch notes (and a button to view it)
+
+- Balance:
+- Massively reduced cost increase of both Silicone Shgabb upgrades (especially at high levels)
+- Reduced cheese upgrade cost increase
+
+-> Design:
+- Maxed upgrades now have a gray background (rather than the same white as upgrades you can't afford)
+- The Buy Max button now has a gray background and bold text
+- Reduced space at the top of the page
+
+-> Other:
+- New ad boost: More Silicone (10x for 3 minutes)
+- Increased duration of notifications from 15s to 30s
+- Added 4 new quotes
+
+
+
+## v1.4 (2023-05-24)
+Version 1.4:
+-> Design:
+- Finally! Images!
+- Added images for all currencies: Shgabb, Sandwiches, Golden Shgabb and Silicone Shgabb
+- Added an image for the prestige button
+- Changed the design of the prestige button (gray to gold) and increased its text size
+- Sandwich, GS and Silicone sections are now completely hidden until unlocked
+- Changed Silicone's /sec to /s for consistency
+- Added a short text explaining how Silicone works
+- Game title now has a black background
+- Shgabb and Sandwich amount are now in the same row, and the currency overview now has a background
+
+-> Balance:
+- Reworked the Silicone boost formula
+- Silicone now affects auto (excluding cheese, which is already affected by it)
+- Increased effect of Stronger Silicone from 0.1%/level to 0.5% and made its description more clear
+- Increased max. level of Sandwich Amount from 19 to 24
+- The More Crits ad boost now also increases their strength by 3x on top of the 5x chance
+
+-> Notifications:
+- Notifications text is now aligned to the right, and patch notes to the left
+- The newest notification is now highlighted in bold
+- The newest notification is now also displayed at the top (excluding auto save)
+
+-> Other:
+- Added setting to hide maxed upgrades
+- Click button now shows x3 if the ad is active
+- Added stats for the individual ads (7 total), when opening the updated game for the first time they are randomly distributed 
+- Added Highest More Shgabb stat
+- Total Silicone Shgabb stat is now visible
+- More things now use the notation
+- Fixed x10 auto shgabb ad not working sometimes
+- Shgabb)
+
+
+
+## v1.5 (2023-07-08)
+Version 1.5:
+-> Artifacts:
+- New feature: Artifacts!
+- Unlocked at More Shgabb level 1000
+- Can be randomly earned from clicking
+- Opening the game for the first time after the update will award artifacts based on past clicks, at a 1:5 ratio (5000 pre-update clicks are worth 1000 post-update clicks)
+- Three rarities: Common, Rare and Epic
+- Up to 3 artifacts can be equipped at the same time
+- Artifacts can have all kinds of effects, simple or complicated
+- Added 7 common, 5 rare and 3 epic artifacts (15 total)
+
+-> Gems:
+- New feature: Gems!
+- There is a 1% chance to get a gem from a click
+- Gems can be spent on three things:
+- Shgabb worth 600 clicks
+- +100% Shgabb for this prestige
+- High chance for a random artifact
+
+-> Golden Shgabb:
+- New Upgrade: Pizza quattro formaggi! Get more Shgabb, Sandwiches, Golden Shgabb AND Silicone Shgabb
+- GS gain now also increases every 1k More Shgabb levels
+- GS gain is now tripled if less than 100 More Shgabb levels away from the highest level reached (at 1000+)
+
+-> Other:
+- Changed the colors of the top / title
+- Added a hint that Silicone Shgabb is not reset at prestige
+- Patch notes list is now a txt file
+- Fixed display issues at very high numbers (1s or more)
+- Fixed some unnecessary lines 
+
+
+
+### v1.5.1 (2023-07-10)
+Version 1.5.1:
+-> Artifacts:
+- Added 5 new artifacts (3 common, 1 rare, 1 epic)
+- Balancing (see below)
+
+-> Balance:
+- Light Blue Ring: 30% -> 50%
+- Amulet of Saving: 10k -> 1M
+- Amulet of Quick Snacks: x5 -> x3 but 3k limit -> 5k
+- Amulet of Golden Bank: x2.5 -> x5 but 2min -> 3min
+
+- Ring of Speed: -50% -> -20%
+- Shgabb Seeds: +0.25% -> +0.1%
+
+- Reduced chance for common artifacts from 1/800 to 1/1200
+- Reduced chance for rare artifacts from 1/4000 to 1/6000
+- Increased chance multiplier from the 3rd gem offer from x2000 to x3000 (still 50% for a rare)
+
+-> Other:
+- x3 GS boost now needs More Shgabb to be at least 100 levels higher than the highest More Shgabb in a previous prestige, rather than up to 100 levels less
+- Example: Highest More Shgabb is 1500, at least 1600 is needed to get the 3x boost
+- Expanded the notation past S (6 new)
+- Added an image for gems
+- Game is now saved after buying the 3rd gem offer
+- Fixed GS gain sometimes staying at very low round numbers
+
+
+
+### v1.5.2 (2023-07-31)
+Version 1.5.2:
+-> Balance:
+- Blue Ring: +20% -> +40%
+- Ring of Productivity: +40% -> +60%
+- Ring of Speed: -20% -> -30%
+- Shiny Red Ring: x1.25 -> x1.5
+
+-> Other:
+- The GS Upgrades "Unlock More Sandwich Upgrades" and "Pizza quattro formaggi" now stay unlocked after purchasing one level
+- Fixed not being able to obtain gems (unlocked at lvl 500) until unlocking artifacts (unlocked at lvl 1000)
+
+
+
+## v1.6 (2023-08-05)
+Version 1.6:
+-> Achievements:
+- New feature: Achievements!
+- Added 30 achievements
+- Added 7 achievement images
+- Added new achievement popup, notification and total achievements display
+
+-> New Upgrades:
+- New Golden Shgabb upgrade: More Silicone 2 (unlocked at More Silicone level 1000)
+- New Silicone Shgabb upgrade: Silicone From Clicks (unlocked at More Silicone level 500)
+- New Silicone Shgabb upgrade: Silicone Affects GS (unlocked at More Silicone level 1000)
+
+-> Artifacts:
+- Added 5 new artifacts (0 common, 4 rare, 1 epic)
+- Added artifact loadouts (3 slots)
+
+-> Gems:
+- All 3 gem offers now have names
+- Changed Instant Shgabb from shgabb worth 600 clicks to 1/10 of current or total shgabb (whichever is lower)
+- Instant Shgabb does not increase total shgabb anymore
+
+-> Design:
+- Made the background image darker
+- Reduced empty space in artifacts and changed the outline
+- Increased text size of settings and the ad button
+- The ad bar now disappears when an ad is available
+- Added headers for the GS and Silicone sections
+- Changed the color of the title's background (at the top)
+
+-> Other:
+- Added cheats for beta testing, but exporting is now disabled in betas
+- Reworked the x3 GS thing, it is now based on current more shgabb level / highest shgabb level (making it possible to get a small multiplier much earlier, but capped at x3)
+- The sandwich, gs and silicone images are no longer visible before unlocking them
+- GS on prestige now uses the notation
+- Fixed enter button cheating
+- Added a secret
+
+
+
+### v1.6.1 (2023-08-06)
+Version 1.6.1:
+- Achievements now boost GS (2% for every achievement)
+- Sandwich amount now uses the notation
+- Fixed some unlocked achievements being displayed as locked
+- Fixed freezing
+
+
+
+### v1.6.1 (2023-08-08)
+Version 1.6.2:
+-> Balance:
+- Increased costs of the 2 new Silicone Upgrades by 1 level (so level 0 is not free anymore)
+- Decreased costs of Silicone Affects GS
+
+- Amulet of Saving: 1M -> 1B
+- Amulet of Passive Silicone: x1.6 -> x2
+- Amulet of Active Silicone: x2.5 -> x3
+- Amulet of Fast Start: x3 -> x10
+- Amulet of Tides: x3 -> x7
+- Silicone implants: x2 -> x3
+
+- Amulet of Golden Bank: 3 minutes -> 5 minutes
+- Shgabb Seeds: 0.01% -> 0.025%
+
+-> Quotes and Patch Notes:
+- Added 7 new quotes
+- Increased time before a quote disappears from 10 to 15 seconds
+- Made it easier for me to update the patch notes
+- Added the current game version to the header
+
+-> Other:
+- Reduced Sandwiches V achievement from 1B to 100M
+- Added a line between Stats and Achievements
+
+
+
+## v1.7 (2023-08-14)
+Version 1.7:
+-> Améliorer:
+- New feature/currency: Améliorer!
+- Unlocked at More Shgabb 2000
+- Convert Shgabb, Sandwiches, GS and Silicone to Améliorer
+- Améliorer can be spent on 12 upgrades
+
+-> Balance:
+- Increased duration of the Stronger Clicks ad from 2 minutes to 5 minutes
+- Reduced cost increase of GS boosts shgabb 1
+- Reduced max. level of Better Fridge from 60 to 30
+- Changed Instant Shgabb from 10% of current or 10% of highest (lower) to 50% of current or 20% of highest (lower)
+
+- Ring of Laziness: 40% -> 60%
+- Furious Knife: 25%/click -> 50%/click, max. 1000% -> max. 2000%, 0.25s -> 0.33s
+- Shgabb Seeds: 0.025% -> 0.5%
+
+- Ring of Productivity: 60% -> 40%
+- Amulet of Paroxysm: 5x -> 4x
+
+-> Stats section:
+- Total Gems and Total Améliorer stats are now visible
+- You can now also see your click cooldown, critical hit chance, sandwich chance, gem chance, artifact chances, achievements, artifacts and améliorer levels
+- Stats are now 2 columns
+- Stats now have 2 big background squares instead of them being around the texts
+- Sandwiches in stats now use the notation
+- Sorted stats a bit
+
+-> Social section:
+- Added a social section with links to the discord server, the new Shgabb Clicker wiki and one of my other games
+- Added a thin border to the notifications and patch notes
+- Moved social and settings into the notifications / patch notes squares
+- Added a header for patch notes and increased the size of the headers in that area
+
+-> Design:
+- Increased size of artifacts and achievements
+- Increased size of the loadout buttons on small devices (phones)
+- Increased size of the buy max button
+
+-> Other:
+- Added 5 new artifacts (25 -> 30, 1 common, 3 rare, 1 epic)
+- Added 10 new achievements (30 -> 40)
+- The sandwich bar now correctly adjusts after upgrading the fridge
+- Knife boost now gets reset on auto save if the click is not well timed
+- Moved some achievements a bit
+
+-> Bug fixes:
+- Fixed Click Shgabb artifacts, Shgabb artifacts, formaggi, Seeds, Knife and Shgabb Boost (gem offer) affecting auto shgabb (from cheese) twice (squared)
+- Fixed a slowgemming bug
+- Fixed some unlocked achievement images being displayed as locked
+
+
+
+### v1.7.1 (2023-08-20)
+Version 1.7.1:
+-> Améliorer:
+- New Améliorer Upgrade: Achievements Become Exponential
+- New Améliorer Upgrade: GS Boosts Shgabb
+- Added the ability to reset Améliorer and Upgrades on prestige (10 minutes)
+- Re-sorted Améliorer upgrades and sets (3 sets -> 4 sets, unlocks 0, 3, 10, 15, 40, 50 -> 0, 3, 10, 15, 25, 30, 40, 50)
+
+-> Balance:
+- Tripled the effect of Silicone From Clicks (3x the passive production now)
+- Reduced cost increase of the shgabb, gs and silicone amé converters, as well as the base costs for silicone converter
+- Massively reduced costs of Bomblike after level 10
+- Massively reduced cost increase of Crit. Boost at level 21+
+- Increased effect of Crit. Boost (AME) from 5/level to 10/level and increased the max. from 10 to 15
+- Increased effect of Shgabb Boost (AME) from +30%/level to +50%/level
+
+- Amulet of Paroxysm: no longer removes the ability to get gems, rather decreases it by /10
+- Amulet of Active Silicone: x3 -> x3.6
+- Shgabb's handcuffs: Increased boost from cooldown to cooldown x3
+- Sosnog: Added a x3 shgabb boost
+
+-> Other:
+- Silicone from clicks now triggers before the click cooldown gets reset
+- Updated Silicone Implants artifact description since it disables silicone gain from clicks as well
+- Updated requirement of the Amé: Part III achievement (40 -> 25)
+- Changed design of the Amé convert buttons
+
+
+
+### v1.7.2 (2023-09-05)
+Version 1.7.2:
+-> Ads:
+- The least used ad boost is now less likely to appear
+- The videos now all have an equal chance of appearing
+- Fixed an ad exploit
+- Fixed repeated ads loaded messages
+
+-> Other:
+- Moved the Silicone V and Golden Shgabb V achievements
+- Removed a double line between stats and achievements
+- Fixed not being able to see half of the page before unlocking Amé
+- Fixed show/hide maxed setting using incorrect notifications
+
+
+
+## v1.8 (2023-09-15)
+Version 1.8:
+-> Minigame:
+- Added a minigame: Shgic Shgac Shgoe!
+- Unlocked together with Améliorer!
+- 1 attempt every day to get to 3 points before shgabb does
+- Get 2 Améliorer for a win
+
+-> New Upgrades:
+- New Sandwich upgrade: 2+2=5: Unlocked with Amé, increases gs gain
+- New Sandwich upgrade: Meaning Of Life: Unlocked with Amé, increases shgabb gain
+- New Améliorer Upgrade: More Sandwich Upgrades 2 (Max. lvl 2, fourth set)
+- New Améliorer Upgrade: Silicone Boost (Max. lvl 50, fourth set)
+
+-> Artifact Loadouts:
+- Loadouts can now be given custom names by clicking on the currently selected loadout
+- Added a fourth gem offer: Artifact Loadout - +1 loadout when bought, max. 8, costs increase
+- Reduced default loadouts from 3 to 2
+- Added support for loadouts 4 - 8
+
+-> Balance:
+- Amulet of Quick Snacks: 5k -> 10k (buff)
+- Amulet of Sluggard now also applies to shgabb from clicks (not just auto)
+
+-> Achievements:
+- Added 10 new achievements (40 -> 50)
+- Added images for artifact and minigame achievements
+- Changed the image of all unlock related achievements to the unlock image
+
+-> Design:
+- Gem Amount is now also displayed at the top (in a third line with Amé)
+- Updated all 3 social images
+- Changed size of social buttons
+- Artifacts and Achievements are now centered
+- Reduced min. width of Artifacts and Achievements (-> 3/row on normal phones)
+
+-> Other:
+- Added a setting to hide the unlevel button
+- Autosave notifications are now counted
+- Fixed weird brown squares near Artifacts and Achievements
+- Fixed extra line breaks in patch notes
+
+
+
+### v1.8.1 (2023-09-19)
+Version 1.8.1:
+- Improved enemy's decision making in the minigame
+- Fixed Améliorer Upgrades being reset even if the option is not activated
+- Fixed the new Améliorer Upgrade More Silicone not requiring 40 Amé to get unlocked
+- Fixed being able to equip more than 3 artifacts by resetting Améliorer Upgrades
+- Fixed auto save notifications appearing at the top again
+
+
+
+### v1.9 (2023-09-25)
+Version 1.9:
+-> Artifact Leveling:
+- You can now level and destroy artifacts!
+- New currency: Artifact Scrap
+- Unlocked once you get your first duplicate
+- Unlocking many artifacts does not increase the chances for duplicates
+- Artifacts can be leveled to level 2 and 3, granting greater effects
+- Added buttons to switch between selecting, upgrading and destroying
+- Full list of artifact level effects and changes can be found in the patch notes file
+
+-> Artifact Scrap
+- New currency earned by getting duplicates or destroying artifacts
+- Can be spent to upgrade artifacts to level 2 and 3
+- Duplicates give 1/10 of the scrap required for an upgrade (1/5 if owning all artifacts of that rarity)
+- Destroying gives 1/5
+
+-> Balance:
+- Increased Stronger Clicks ad boost from 3x to 5x
+- Increased chance for common artifacts from 1/1200 to 1/800
+- Increased chance for rare artifacts from 1/6000 to 1/4000
+
+-> Other:
+- Added 10 new quotes
+- Several changes to the displaying of artifact effects
+- Increased auto save time from 3 to 5 seconds
+- Increased brightness of the background of equipped artifacts
+- Some notation fixes
+
+-> Full list of artifact changes:
+- Blue Ring: x1.4 -> x1.4/x1.8/x2.2
+- Yellow Ring: x1.2 -> x1.2/x1.6/x2
+- White Ring: x1.5 -> x1.5/x1.75/x2
+- Light Blue Ring: x1.5 -> x1.5/x2/x2.5
+- Ring of Productivity: x1.4 -> x1.4/x2/x2.6
+- Ring of Laziness: x1.6 -> x1.2/x1.6/x2
+- Ring of Speed: x1.3 -> x1.2/x1.3/x1.4
+- Shiny Red Ring: x1.5 -> x1.25/x1.5/x1.75
+- Pulsing Red Ring: x1.5 -> x1.25/x1.5/x1.75
+- Ring of Depression: x0.001 -> x0.001/x0.00001/x0.0000001
+- Ring of Slowing: x1.5 -> x1.5/x2/x2.5
+
+- Amulet of Paroxysm: x4 -> x3/x4/x5
+- Amulet of Saving: 1B -> 1B/1T/1q
+- Amulet of Quick Snacks: x3 -> x3/x12/x24
+- Amulet of Sloth: x5 -> x3/x4/x5
+- Amulet of Golden Bank: x5 -> x5/x7.5/x10
+- Amulet of Slowgemming: x5 -> x4/x5/x6
+- Amulet of Passive Silicone: x2 -> x2/x3/x4
+- Amulet of Active Silicone: x3.6 -> x3.6/x5.8/x8
+- Amulet of Fast Start: x10 -> x10/x35/x60
+- Amulet of Tides: x7 -> x7/x10/x13
+- Amulet of Thaw: x10 -> x10/x15/x20
+- Amulet of Condone: x2 -> x2/x4/x6
+- Amulet of Sluggard: x8 -> x8/x16/x24
+
+- Shgabb's handcuffs: x3 -> x2/x4/x6
+- Furious Knife: +50% -> +50%/+100%/+150%
+- Shgabb Seeds: 0.5% -> 0.1%/0.2%/0.3%
+- P2W: x3 -> x2/x3/x4
+- Silicone implants: +200% -> +200%/+300%/+400%
+- Sosnog: x3 -> x3/x14/x25
+
+
+
+### v1.9.1 (2023-09-30)
+Version 1.9.1:
+-> Ads:
+- Reduced volume of ads
+- More Silicone ad is no longer available before unlocking Silicone
+- Fixed click and sandwich bar keeping the boost effect after an ad is over
+- Fixed sandwich bar gaining the boost effect on More Crits ads
+- Fixed an ad issue
+
+-> Balance:
+- GS gain now also increases every 10k More Shgabb levels
+- Amulet of Quick Snacks: Sandwich amount now also changes: 10k -> 10k/50k/100k
+- Increased unlock requirement of GS boosts shgabb 1 from 1k GS to 3k GS
+- Decreased unlock requirement of Unlock Buy Max from 3k GS to 1k GS
+- Reduced costs of Unlock Buy Max from 3k GS to 500 GS
+
+-> Other:
+- Added 10 new quotes
+- Duplicates now appear at the top of the screen (like new artifacts do)
+- Artifact Scrap amount is now visible at the top
+- Changed display of artifact chances (as none of them become 0% anymore due to duplicates)
+- Fixed the Artifact Gift exploit
+- Fixed destroying an artifact causing random artifacts to get unequipped
+
+
+
+### v2.0 (2023-11-16)
+Version 2.0:
+-> Sections:
+- Split the game's UI into many sections!
+- There are three rows of buttons to pick one of several sections to display (currencies / useful / not so useful)
+- Only one of each is shown at the same time, massively reducing the page length (it's incredible)
+- Click on the already shown section to not show any
+- Currencies: Shgabb / Sandwiches / Golden Shgabb / Silicone Shgabb / Améliorer
+- Useful: Gems / Artifacts / Minigames
+- Not so useful: Stats / Achievements / Settings / Social
+
+-> Design:
+- LOTS of design changes
+- Changed the design of the game to be different on small devices (phone) than on big devices (PC) (listed under Device design)
+- New game font!
+
+-> Device design:
+- PC: The background of the currencies (top) is shorter
+- Mobile: The click button is much taller (and easier to click)
+- Mobile: Upgrade names are smaller, upgrades are longer
+- Mobile: Upgrade buttons (like MAX) are closer to each other
+
+-> Upgrade design:
+- Reworked colors of upgrades (from white/green to shades of blue/green/gray)
+- Added a setting to toggle between normal, old and custom colors
+- Custom colors: for all 3 types of upgrades (affordable, too expensive and maxed), RGB values and text color can be set
+- Added buttons to adjust the RGB values and text color of the custom colors
+- Added an export/import system for custom colors
+- Changed border of upgrades from white to black
+- Max. levels are now displayed as /x instead of (Max: x)
+- Upgrade levels are now displayed next to their name
+- Slightly increased height of buttons in upgrades (like max)
+
+-> Settings:
+- Moved settings into their own section
+- Reworked setting button code and all texts and displays
+- Changed setting button design
+- Added more notations: Scientific, Engineering and Alphabet!
+- Expanded normal notation
+- Added a setting to change the notation
+- Added a setting to toggle the currencies display
+- Added a setting to change the upgrade button colors (more info in Upgrade design above)
+- Added a setting to make the least watched ad appear as often as all others
+
+-> Shgic Shgac Shgoe:
+- O is now blue and X yellow (instead of both black)
+- Increased size of O and X
+- Slightly improved hitboxes and positioning
+- Increased header size
+
+-> New content:
+- New gem offer: Artifact Offer! Every day a semi-random artifact can be directly bought for 50 gems!
+- New ad boost: More Gems! 3x gem chance for 8 minutes
+- Added a -MAX button, to unlevel an upgrade to 0, with a confirmation dialog, unlocked with unlevel
+
+-> Artifacts:
+- Added 15 new artifacts (3 common, 6 rare, 6 epic)
+- Moved rarity from name to level
+- Changed text size, name is bigger, description smaller if it is long
+- When upgrading artifacts, the costs and effects of the next level are now displayed
+- Changed seconds to sec in Amulet of Slowgemming description
+- Added a cool clicking animation for one of the new epics; Dice
+
+-> Balance:
+- Capped click cooldown at 0.1s
+- Capped gem chance at 10%
+- Both caps are displayed in the stats once reached
+- Reduced costs of the Shgabb Boost gem offer from 25 to 20
+- Reduced costs of the Artifact Gift gem offer from 50 to 30
+
+- Ring of Productivity: x1.4/x2/x2.6 -> x1.5/x2/x2.5
+- Ring of Laziness: x1.2/x1.6/x2 -> x1.5/x2/x2.5
+- Pulsing Red Ring: x1.25/x1.5/x1.75 -> x1.5/x1.65/x1.75
+- Amulet of Quick Snacks: x3/x12/x24 -> , x4/x8/x12
+- Amulet of Fast Start: x10/x35/x60 -> x10/x30/x100
+- Amulet of Sluggard: x8/x16/x24 -> x12/x24/x36
+- Furious Knife: max. 2000% -> max. 3000%
+- P2W: x2/x3/x4 -> x2/x2.5/x3
+
+-> Achievements:
+- Added 20 new achievements
+- Added two new achievement images
+- Increased Sarah's Gems from 250 to 500 gems
+
+-> Other:
+- Added a link (in social) to my (new!) website!
+- Added 5 new quotes
+- Huge code improvements
+- Reworked rendering, especially for currency amounts and images
+- Several performance improvements
+- Reduced file size of ads
+- The currencies display can now be hidden by double clicking
+- Sandwiches now stay unlocked after prestige / getting them without the sandwich chance upgrade
+- Added text for shgabb, elmenda452 and DaGame in the social section
+
+-> Bug fixes:
+- Added 250 new bugs
+- Fixed duplicates and stats still using the old chances
+- Fixed the 99.9 bug
+- Fixed gem icon being visible before unlocking gems
+- Fixed ad button still being visible when an ad is playing
+
+
+
+### v2.0.1 (2023-11-17)
+Version 2.0.1:
+-> Artifact Loadouts:
+- When opening the game, the correct loadout will now be loaded (instead of the first loadout)
+- Loadout names are now limited to 40 characters
+- Loadout names are now bigger if 25 characters or less
+
+-> Other:
+- Shgic Shgac Shgoe text now changes when either side has won (to not make it look like it froze)
+- The currencies display can no longer be turned off by double clicking it (because apparently people accidentally click it all the time, but the setting still exists)
+- New artifact/duplicate/achievement display's disappear timer (5 seconds) now refreshes when getting another thing
+- Bought actual dice with only 5/4 (level 2/3) sides rather than painting over 1/2 sides
+
+-> Bug fixes:
+- Fixed Shgic Shgac Shgoe board not resetting when importing a save
+- Fixed displayed Artifact Scrap costs being one level too high (when upgrading artifacts)
+- Fixed More Gems ad stat not working
+- Fixed Well Fed Resets artifact not working
+- Fixed a frustration artifact rounding issue
+- Fixed Artifact Scrap amount not always updating
+- Fixed horizontal scrollbar surprise attacks
+- Fixed some missing patch notes
+
+
+
+### v2.0.2 (2023-12-10)
+Version 2.0.2:
+-> Technical:
+- Changed host
+- Updated link to SC2FMFR
+- Added support for rescue codes
+
+-> Other:
+- Changed the way ad videos get loaded, massively reducing traffic
+- The game now checks if a new round of Shgic is available every 50 auto saves
+- If you already have completed the daily Shgic it tells you to come back tomorrow
+- and there's a simple animation of X and O kissing
+- Added 5 new quotes
+
+-> Bug fixes:
+- Fixed Stronger Clicks ad boost being x3 instead of x5
+- Fixed Toggle Currencies Display setting not working
+- Fixed the artifact chances display pretending you own all artifacts of a rarity when you really don't
+- Fixed the other frustration artifact rounding issue
+
+
+
+## v2.1 (2023-12-16)
+Version 2.1:
+-> Events:
+- New feature: Events!
+- The section can be found in the second selection, unlocked at More Shgabb 2000
+- Sometimes an event is active, with various unique features and rewards
+- New event: Christmas Event!
+
+-> Christmas Event:
+- Active from December 16th - December 30th
+- Get Gifts by clicking! Faster click cooldown reduces gift chance
+- Shgic also gives 10 Gifts per day!
+- Open Gifts to get Shgabb, Sandwiches, Gems and 3 event PFPs!
+- 1, 10 or 100 Gifts can be opened at once
+
+-> Player Profile:
+- Added the Player Profile!
+- The section can be found in the third selection, unlocked at More Shgabb 100
+- This practical card shows your hms, artifacts and achievements all in one place
+- Very useful for sharing and bragging!
+- Added player IDs, start version and name
+- Added a button to set/change the player name
+- Added player profile pictures (PFPs)
+
+-> PFPs:
+- Added a default PFP (shgabb), unlocked by default
+- Added 6 more PFPs, of currencies, that can be unlocked by getting the fifth Achievement
+- Another 3 PFPs can be earned in the Christmas event, for a total of 10 PFPs
+- Added UI to change PFP
+
+-> Artifacts:
+- Reworked the mechanism to get artifacts, it was quite off from the intended/promised chances before, special thanks to elmenda452
+- Added the Artifact search!
+- Type the name, effect, rarity, level or anything else, and only those Artifacts will be shown
+- Previously, equipped Artifacts were always highlighted in every mode. Now:
+- Select mode: equipped Artifacts
+- Upgrade mode: level 1 and 2 Artifacts
+- Destroy mode: level 1 Artifacts that are not equipped
+- Artifact Scrap and amount of Artifacts unlocked are now in the same row
+- Added proper support for artifacts that only boost GS from prestiges (Surgeon's Sacrifice)
+
+-> Améliorer:
+- Added the 5th set of Améliorer Upgrades (100 and 120 Amé)
+- Added 4 new Améliorer Upgrades (5th set):
+- New Améliorer Upgrade: Sandwich Boost
+- New Améliorer Upgrade: Crits Affect Sandwiches
+- New Améliorer Upgrade: Gems To Amé (limited by the other 4 convert options)
+- New Améliorer Upgrade: Keep Sandwich Upgrades
+- The amount of times each currency has been converted to Amé is now visible
+
+-> Design:
+- Limited amount of settings per row to 2/4 (mobile/PC) and increased setting height
+- Reworked design of the prestige button: removed the icons at the sides, added an image within the button, text closer to center
+- Removed unnecessary space after the sandwiches section
+
+-> Upgrade design:
+- Reworked upgrade rendering
+- Removed the left/right seperation (which made each upgrade always appear on the left or the right side)
+- On wide screens there can now be up to 4 upgrades per row (instead of 2)
+- Made upgrade buttons longer
+- Some other small changes
+
+-> Capitalization:
+- Capitalized the names of all currencies and features, see affected texts below
+- Shgabb: Prestige Button, Stronger Clicks ad, Stronger Auto ad, Bomblike, Auto Shgabb (Get Shgabb Automatically), Fridge, 1. Upgrade boosts clicks, Meaning Of Life, Divine Shgabb, GS boosts Shgabb 1 & 2 (and their Amé upgrades), Cheese, Shgabb Boost (Amé), Artifact boosts, Paroxysm, Condone, Seeds, Dice
+- Sandwiches: Prestige Button, notification, More Sandwiches ad, Sandwich Chance, Sandwich Amount, Fridge, 1. Upgrade boosts clicks, Unlock More Sandwich Upgrades & 2, Artifact boosts, Quick Snacks, Well Fed Resets, Dice
+- Golden Shgabb: Prestige Button, notification, GS boosts Shgabb 1 & 2, 2+2=5
+- Silicone Shgabb: More Silicone ad, More Silicone, Stronger Silicone, Silicone From Clicks, Artifact boosts, Silicone implants, Surgeon's Sacrifice
+- Améliorer: (none)
+- Gems: All Gem offers, More Gems ad, Shiny, The Red Gems I - V, Sarah's Gems Achievements, Artifact boosts, Bloody Gray Ring, Paroxysm, Gem Frustration
+- Artifact Scrap: Artifact Gift Gem offer, upgrading an Artifact
+- Artifacts: All Artifact related Achievements except Do we have dinosaurs???, destroying an Artifact, Artifact Gift & Loadout & Offer Gem offers, Artifact boosts, Bloody Red Ring, Sarah's Collection, Fourth Artifact Slot (Amé)
+- Achievements: Achievements Become Exponential
+- Changed Shgabb to shgabb (the person) in Shgic
+
+-> Other:
+- Added favicon
+- Added 5 new achievements (75 total)
+- -MAX is now only available for maxed upgrades
+- Renamed the first upgrade, Get More Shgabb to More Shgabb
+- Renamed the first Sandwich upgrade, Get Shgabb Automatically to Auto Shgabb
+- Removed evil warning from the Golden Shgabb II Achievement
+
+
+
+### v2.1.1 (2023-12-21)
+Version 2.1.1:
+-> Silicone Shgabb:
+- Boost from playtime is now capped at 3,000,000 seconds (833.3 hours, previously uncapped)
+- Buffed More Silicone ad and added new Silicone Artifacts (see below)
+- Capitalized Shgabb in Stronger Silicone's current effect display
+
+-> Balance:
+- Increased chance to get PFPs from Gifts by +400% (5x, 0.1% -> 0.5%)
+- Increased More Crits ad boost duration from 2 to 3 minutes
+- Increased More Silicone ad boost duration from 3 to 5 minutes
+
+-> Design:
+- Changed images of the epic Artiacts Sarah's Gems, Furious Knife, Shgabb's handcuffs and Shgabb Seeds (4)
+- Changed images of Gifts, the other 2 Event PFPs and Gift Achievements (4)
+- Changed images of Unlock, Shgic Shgac Shgoe and Highest More Shgabb Achievements (3)
+- Total Clicks stat now uses notations
+- Total Time stat is now displayed in hours if the playtime is 5 hours or more
+- Removed two weird lines behind the social stuff
+
+-> Other:
+- Added 5 new Artifacts (45 -> 50, 2 common, 2 rare, 1 epic)
+- Improved Artifact search, making it possible to search for "Artifact" and "Click"
+- The Gem Offers Artifact Gift, Loadout and Offer are now locked until Artifacts are unlocked
+- Buying Artifact Loadout or Offer now refreshes Artifacts
+
+-> Bug fixes:
+- Fixed the 3 GS artifacts not working
+- Fixed Mr. President achievement not having the correct name and not working
+- Fixed Ring Of Slowing's effect not increasing on level 2 and 3
+- Fixed issues with Sandwiches and notations
+- Fixed a Trash Can exploit
+
+
+
+### v2.1.2 (2023-12-23)
+Version 2.1.2:
+-> Balance:
+- Reduced costs of Keep Sandwich Upgrades from 10 to 2 for the first 3 levels (total: 60 -> 36)
+- Increased time for the first ad after loading from 10s to 20s
+- Reduced time to get another ad after a boost is over from 10s to 5s
+- The time after not accepting a boost is still 5s
+
+- Light Blue Ring: x1.5/x2/x2.5 -> x1.5/x1.75/x2
+- Plastic Ring: x1.2/x1.6/x2 -> x2/x2.5/x3
+- Amulet of Sluggard: 5 clicks -> 10 clicks
+- Amulet of Golden Clicks: 0.01% -> 0.02%
+
+-> Golden Shgabb:
+- GS now stays unlocked after the first Prestige (rather than having to get to 1M Shgabb again, making it possible to get the upgrades immediately)
+- Prestige button still requires 1M Shgabb, and now 15 seconds spent in the run as well
+- GS boosts Shgabb 1 now stays unlocked after unleveling Even Shorter Cooldown
+
+-> Other:
+- New Setting: Allow custom BG in events (enabled by default)
+- On mobile, patch notes are now below notifications and social rather than next to them (and 100% width)
+- Auto Shgabb and Better Fridge now stay unlocked when unleveling Sandwich Chance if at least level 1
+- Fixed Prestiges giving less GS than they should
+- Fixed issues with Sandwiches and notations
+- Fixed favicon issue
+
+
+
+## v2.2 (2024-01-06)
+Version 2.2:
+-> Challenges:
+- New feature: Challenges! Unlocked at More Shgabb 6000
+- Added 4 Challenges, unlocked at 6000, 6000, 8000, 10k
+- Each Challenge have different conditions that make upgrading More Shgabb harder
+- After completing a Challenge, its tier is increased and an Artifact is awarded (8000x)
+- Higher tiers have higher goals and are often more difficult
+- Challenges give boosts for each tier completed
+- Entering and leaving a Challenge causes a Prestige
+- In Challenges, Upgrades that are not unlocked are disabled
+
+-> Anniversary Event:
+- New event: Anniversary Event!
+- Active from January 6th - January 13th
+- During the Event, Shgabb production is tripled and Artifacts from clicks are 50% more common
+- Click to bake a Cake!
+- After 10,000 clicks, the cake is done and can be eaten
+- After eating a Cake, Shgabb production is x10, click speed x5, Gem chance x3 and new Ad offers appear extremely fast!
+- The Cake effects last for 3 minutes
+- 3 new event PFPs and 4 event achievements can be earned
+- Added Cakes eaten stat
+
+-> Balance:
+- Reworked Seeds, new effect: +1%/+2%/+3% Shgabb, resets every 1k clicks
+- Shgabb Boost Gem Offer now permanent (stays after Prestige)
+- Shgabb Boost Gem Offer boost reduced from +100% to +25%
+- Trash Can: reworked code, reduced default boost from x1 to x0, but minimum is x1 (x1 -> x4 instead of x1 -> x5 at lvl 3)
+
+-> Player Profile:
+- 3 new PFPs!
+- Locked PFPs are now displayed (in gray, images not visible)
+- The types of each PFP are now displayed (Normal, Currency, Event)
+- The start date is now saved (on top of the start version)
+- The start version and start date are now visible in the Player Profile
+
+-> Design:
+- Removed the cooldown bar and moved it into the click button instead
+- The cooldown is now visible in the click button
+- Ad Bar now has a gray gradient background
+- PC: Ad Bar now has the same width as the button
+- Patch notes background is no longer a bit transparent, to make it more readable
+- Améliorer Convert Buttons are now a bit more consistent in height
+- Changed how the background image is displayed
+
+-> Other:
+- Added 5 new Artifacts (3 rare, 2 epic)
+- Added 5 new Achievements (80 total)
+- Added 5 new Quotes
+- The current fridge duration, auto prod and cheese prod can now be seen above the Sandwich Upgrades
+- Added support for formatted dates
+- Gift chance is no longer visible outside of the Christmas Event
+- Changed description of the Silicone Boosts GS Upgrade
+- Changed Faster Shgabb description from "You can click 5x more often" to "5x shorter click cooldown"
+- Some other small improvements
+
+-> Bug fixes:
+- Fixed Gems being called rubies in the description of Gems To Amé
+- Fixed missing capitalization in the More Silicone ad description
+- Fixed Gem Offers not appearing after importing
+- Fixed some notation stuff
+
+
+
+### v2.2.1 (2024-01-07)
+Version 2.2.1:
+-> Achievements:
+- Added 10 new Achievements (90 total)
+- Added 2 new Achievement images
+- Moved some Achievements
+
+-> Balance:
+- Increased max. level of the Améliorer Upgrade Sandwich Boost from 20 to 30
+- Amulet of Quickgemming: x1.3/x1.4/x1.5 -> x1.4/x1.6/x1.8
+- Amulet of Slowgemming: x4/x5/x6 -> x6/x7/x8
+- P2W: x2/x2.5/x3 -> x3/x3.5/x4
+
+-> Other:
+- Increased the max. Cake progress from 10k to 15k, making it possible to save a bit for the next Cake
+- Baking a single Cake still takes 10k clicks
+- Artifacts: changed "Shgabb from clicks" to "Click Shgabb", "Shgabb from auto" to "Auto Shgabb" and "Shgabb after reset" to "Reset Shgabb"
+
+-> Bug fixes:
+- Fixed Trash Can boost not increasing after clicking for too long at x1
+- Fixed Make Some Cake Achievements not working (-> the PFPs as well)
+- Fixed missing capitalizations in the Silicone Shgabb text and Semicone description
+- Fixed the boosts of Amulet of Quickgemming and Amulet of Gem Mines being displayed as a percentage
+
+
+
+### v2.2.2 (2024-01-09)
+Version 2.2.2:
+-> Stats:
+- Added a dynamic display of boosts from Artifacts (such as Auto Shgabb boost, below the Artifact Chances)
+- Moved Artifacts from below to above Achievements
+- Moved Total Ads watched from below Total Sandwiches to below Total Time and split it into two rows
+- Moved Total Artifact Scrap from below Total Cakes eaten to below Total Silicone Shgabb
+- Moved Total Gems from below Total Améliorer to below Total Prestiges
+
+-> Other:
+- Extended Anniversary Event duration from 1 week to 2 weeks (6th-13th -> 6th-20th)
+- The auto production display now has a background to make it easier to read
+- Capitalized descriptions: Shgabb in Auto Shgabb (sw) and Upgrades in Unlock More Sandwich Upgrades 2 (Amé)
+- Fixed Meaning Of Life not affecting auto Shgabb production
+- Fixed French quality Achievement also being unlocked at level 0
+- Fixed missing French quality Achievement image
+
+
+
+### v2.2.3 (2024-01-12)
+Version 2.2.3:
+-> Player Profile:
+- Player ID is now visible on the profile
+- Added redeem codes, and a button in settings to import them
+- They can be created by Schrottii and be used to adjust your start day and version
+
+-> Stats:
+- Formatted the Artifact boosts displays
+- The Artifact chances are now displayed as 1/x rather than x/y (e. g. 20/800 -> 1/40)
+- Moved Améliorer Levels to below Total Améliorer
+
+-> Balance:
+- Amulet of Baked Silica: x3/x4/x5 -> x4/x5/x6
+- Amulet of Molten Food: x6/x8/x10 -> x8/x10/x12
+- Amulet of Quickgemming: Gem chance -> Gem amount (x1.8)
+
+-> Other:
+- Reset Shgabb Artifacts are now disabled in Challenge 2
+- Fixed Shgabb VIII Achievement having the Challenges image
+- Fixed Amulet of Some Patience being Common
+
+
+
+### v2.2.4 (2024-01-26)
+Version 2.2.4:
+-> Notifications:
+- Added a setting to adjust how many notifications are shown at the top (0 - 5, default/current is 1)
+- Notifications no longer automatically disappear after 15 seconds, only when the limit is reached
+- Increased limit from 15 to 20
+- Improved notifications performance
+
+-> Auto Shgabb rework:
+- Reworked Auto Shgabb Upgrade cost formula (no more sinuses, and it's now exponential, level closer to More Shgabb's)
+- Players with a high level have this Upgrade reset (to prevent insane numbers), with refunds (l ^ 2 / 2)
+- Increased its base effect from 5 to 10, and buffed the increase after level 100 from +5 to +75 (+25 -> +100)
+- Reworked Cheese to be truly 50% of Clicks, it is no longer affected by temporary auto boosts (Ad, Artifacts)
+- Bomblike and Good Joke now affect Auto Shgabb
+- Slightly buffed GS boosts Shgabb 2's effect
+- Blue Cuts Challenge: increased Shgabb boost
+
+-> Other:
+- Changed auto production display background (no more outline, easier to read)
+- The current active Challenge is now highlighted
+- Added "Shgabb" at the end of Good Joke's description to make it clear what it affects
+
+
+
+### v2.2.5 (2024-02-10)
+Version 2.2.5:
+-> Lunar New Year Event:
+- New event: Lunar New Year Event!
+- Active from February 10th - February 24th
+- During the Event, get x8 Shgabb and earn Qian!
+- Qian, the event-exclusive currency, can be earned by clicking
+- Qian can be spent on 8 offers!
+- 3 new event PFPs and 4 event achievements can be earned
+- Added Lunar New Year Event background image
+
+-> Qian offers:
+- Offer 1: Buy a Chinese PFP! (888 Qian)
+- Offer 2: Permanent x2 Qian! (96 Qian)
+- Offers 3-5: Instant Faster Shgabb (26), Instant More Crits (8), Instant Stronger Auto (8)
+- Offer 6: Get 3 Gems! (3 Qian)
+- Offer 7: Reset the click cooldown and the next 8 clicks have no cooldown! (6 Qian)
+- Offer 8: Luck! (36 Qian)
+
+-> Other:
+- Added 5 new Achievements (95 total)
+- Added an experimental new luck feature
+- Added total Qian and luck to stats
+
+
+
+## v2.3 (2024-03-06)
+Version 2.3:
+-> Bags:
+- New currency: Bags!
+- Unlocked at HMS 8000
+- Earned by pushing More Shgabb
+- Added 4 Bags Upgrades
+- Bags image & original idea by Barduzzi
+
+-> Améliorer:
+- Added the 6th set of Améliorer Upgrades (150 Amé)
+- Added 2 new Améliorer Upgrades (6th set):
+- New Améliorer Upgrade: Golden Shgabb Boost
+- New Améliorer Upgrade: Tiers Boost Bags
+- Reduced max. level of Silicone Boost from 50 to 30 to be in line with the other boosts
+
+-> Other:
+- Added 5 new Achievements (100 total)
+- Added 5 new Quotes (73 total)
+- Added total Bags stat
+- Added total tiers stat
+- Changed Discord Server link from Toast to the new games server
+
+
+
+### v2.3.1 (2024-03-08)
+Version 2.3.1:
+-> New content:
+- Added 5 new Quotes (78 total)
+- Added a new PFP of a Bag
+- Temporarily unlocked at 10k total Bags, will be moved to an Achievement later
+
+-> Other:
+- Amount of GS gained from a Prestige now uses notations
+- Increased PFP text size
+- Increased space below currency displays to avoid overlapping, and reduced space above to avoid empty spaces
+- Some code improvements
+
+-> Bug fixes:
+- Fixed Phallic Plays Achievement not being awarded when winning
+- Fixed Prestige Gems not increasing total Gems stat, and the lost total Gems are automatically added
+- Fixed Prestige Gems description saying HMS instead of More Shgabb (it is based on current)
+
+
+
+### v2.3.2 (2024-03-15)
+Version 2.3.2:
+-> Achievements:
+- Added 10 new Achievements (110 total, 6 Bags, 4 meta)
+- Moved Event Achievements to the end
+- Added image for the meta/achievement Achievements
+
+-> Other:
+- The Bag PFP is now unlocked with Playing DaGame V instead
+- Added current game version to the Player Profile
+- Moved Player ID a bit to the right
+
+
+
+### v2.3.3 (2024-03-22)
+Version 2.3.3:
+-> Artifacts:
+- Added 5 new Artifacts (60 total, 1 common, 3 rare, 1 epic)
+- Artifacts can now boost Bags (rounded up)
+- Reduced width of Artifacts and Achievements (to fit 3/row on mobile)
+- Reduced text size
+- Changed Level to L
+
+-> Balance:
+- Playing DaGame IV: 1M -> 250k
+- Playing DaGame V: 16M -> 1M
+- Amulet of Dinosaurs: x3/x4/x5 -> x4/x5/x6
+- Amulet of Gem Mines: 200 Gems -> 300 Gems
+- Shgabb Seeds: 1%/2%/3% -> 2%/4%/6%
+
+
+
+### v2.3.4 (2024-03-28)
+Version 2.3.4:
+-> Egg Hunt Event:
+- New event: Egg Hunt!
+- Active from March 29th - April 12th
+- Eggs appear at a random upgrade every 10 seconds!
+- Click the hidden Egg to get an Egg
+- Eggs can be spent on 4 offers (see section below)
+- Added 6 event PFPs (23 total)
+- Added 5 event Achievements (115 total)
+- Added Egg Hunt Event background image
+
+-> Egg offers:
+- Offer 1: Buy an Easter PFP! (100 Eggs)
+- Offer 2: Guaranteed Common Artifact! (10 Eggs)
+- Offer 3: Guaranteed Rare Artifact! (25 Eggs)
+- Offer 4: Guaranteed Epic Artifact! (100 Eggs)
+
+-> Other:
+- Increased time between auto saves from 5s to 10s
+
+
+
+## v2.4 (2024-04-10)
+Version 2.4 Artifact Update:
+-> Artifacts:
+- Added legendary rarity! (see section below)
+- Added Artifact tiers! (see section below)
+- Added Artifact pages, each page shows up to 50 entries
+
+- Artifacts can now go beyond level 3, via an Artifact or an Upgrade
+- Certain Artifacts can now have custom max. levels
+- All Gem, Gem chance and Artifact chance Artifacts are capped at 3 for balance reasons
+
+- Added 5 new Artifacts (65 total, 1 rare, 2 epic, 2 legendary)
+- Added 4 new Artifact images
+- DaGame is now legendary, players who already had it get the new epic as compensation
+- Changed the way Furious Knife works internally, the current effect is now displayed and cap changed from 3000% to 31x
+
+-> Legendary Artifacts:
+- New rarity: Legendary!
+- Base chance is 1/1M (Epic is 1/32k), affected by multis
+- There are 3 legendary Artifacts to collect!
+- The secret Artifact is now a normal legendary Artifact, and the Achievement can no longer be obtained
+- The secret Artifact now has an effect
+
+-> Artifact tiers:
+- A new feature to prevent unlocking lategame Artifacts early on
+- There are 4 tiers for Artifacts, deciding at which More Shgabb the Artifact is unlocked
+- Tier 1 is HMS 1000 (default), tier 2 is HMS 2000, tier 3 is HMS 5000 and tier 4 is HMS 8000
+- You can search for tiers in the Artifact search (e. g. "tier 1")
+- Most Artifacts are tier 1, here are the exceptions:
+- Tier 2: Light Blue Ring, Gray Ring, Bloody Gray Ring, Amulet of Passive Silicone, Amulet of Active Silicone, Amulet of Condone, Amulet of Plastic Start, Amulet of Baked Silica, Silicone implants
+- Tier 3: Plastic Ring, Bloody Plastic Ring, Amulet of Golden Clicks/Idle/Upgrades, Amulet of Dinosaurs, Sarah's Collection, Trash Can, Surgeon's Sacrifice, Semicone, Hood Goo
+- Tier 4: Purple Ring, Amulet of Molten Bags, Amulet of Lazy Bags, Amulet of Bag Bank and all 3 legendaries
+- There are 65 total Artifacts, 37 tier 1, 9 tier 2, 12 tier 3, 7 tier 4
+
+-> Egg Hunt Event:
+- Expanded Event for another week to make up for the delayed update
+- Egg spawns are now independent from auto save
+- Fixed Christmas Event's duration being shown
+
+-> Améliorer:
+- New Améliorer Upgrade (6th set, 175 Amé): Fourth Artifact Level
+- All Amé Upgrades now display their set, and at how many Amé levels they are unlocked (e. g. [S1/1])
+- Amé Upgrades that are not unlocked yet (due to lack of total Amé levels) now also display their set, and the Amé levels needed (e. g. [S3/25] 14/25)
+
+-> Settings:
+- Added setting to hide Artifact images
+- Added setting to save
+- Added setting to disable upgrading
+- Changed setting button color (lighter)
+
+
+
+### v2.4.1 (2024-04-14)
+2024/04/14 2.4.1:
+Version 2.4.1:
+-> Settings:
+- Added a setting to delete the current savefile (Delete Game)
+- Added a setting to refresh the UI (Refresh Page)
+- Slightly adjusted rendering of setting rows
+
+-> Other:
+- Changed minimum click cooldown from 0.1s to 0.2s
+- Fixed Shgabb image not being displayed before unlocking Sandwiches
+
+
+
+### v2.4.2 (2024-05-14)
+Version 2.4.2:
+-> Design:
+- The game now has a blue/gray/green color palette
+- Made the game name's background much shorter and round
+- Game name is now blue & light blue instead of green & blue
+- Currencies display is now blue & light blue
+- Gray buttons (like Ads) are now light blue & blue
+- Previous and next page buttons (Artifacts) are now light blue & blue
+- Adjusted blue shades of setting buttons
+
+
+
+## v2.5 (2024-06-07)
+Version 2.5 The Update that Changed the World:
+-> Break Infinity:
+- Added breakinfinity library
+- Expanded it to take less space in savecodes
+- Supports Shgabb, Sandwiches, GS, Silicone and several of their upgrades
+- Reworked number formatter
+- Capped buy max at 50k (just in case)
+
+-> Shbook:
+- New feature/selection: The Shbook!
+- Unlocked at HMS 25
+- Here you can access the lore, the currenciary and the featuriary
+- Added pretty Shbook background and design
+
+-> Lore:
+- New feature: Lore! (Part of the Shbook)
+- New content: lore pages and Memory Wisps!
+- Unlocked at HMS 4000
+- Added 3 lore pages, more coming soon
+- Find lore pages and Memory Wisps by clicking (1/25k and 1/5k chance, respectively)
+- Up to 5 lore pages can be stored at the same time
+- Select a lore page and collect Memory Wisps to unlock it
+- Learn more about the story and lore of the game by reading the unlocked pages!
+
+-> Currenciary & Featuriary:
+- New features: Currenciary & Featuriary! (Part of the Shbook)
+- This is a list of currencies/features, with short descriptions and links to the wiki
+- New entries are unlocked whenever a currency/feature is unlocked
+- Primarily meant to help out beginners
+
+-> Stats:
+- Added prestige and daily stats (on top of all time)
+- Added buttons to switch between the three types
+- Huge changes to the stats code
+- Left side: added labels for the sections progress, currencies and events, and other
+- Right side: added labels for the sections chances and progress
+- Added spacing between sections
+- Added legendary Artifact chances
+- Moved total Amé levels to the right side
+- Moved total prestiges up
+- Changed total cakes eaten to total cakes
+
+-> Banners / Player Profile:
+- Added banners
+- Added 3 normal banners (unlocked at 0, 2000, 4000 HMS) and 10 event banners (13 total)
+- Added banner selection
+- Added the no banner banner
+- The banner is displayed at the top
+- Moved PFP, name, version and stats down to make space for the banner
+- Improved quality of PFPs
+- Added 3 new event PFPs (26 total)
+- Changed started in to started
+
+-> Pride Event:
+- New event: Pride Event!
+- Active from June 8th - June 22nd
+- x10 Shgabb production during the event
+- 3 new event PFPs, 10 Banners and 5 Achievements can be earned
+- Click the button to enter Shgaybb Mode and find identical Shgabbs
+- Added Pride Event background image
+
+-> Artifacts:
+- Artifacts now always award a new Artifact if none of this rarity are owned (thanks elmenda452)
+- Improved Artifact pages (when using search)
+
+-> Other:
+- Section buttons now use images instead of text
+- Added 10 new Achievements (5 lore, 5 event)
+- Added 5 new Quotes
+- Fixed Améliorer sets 5 and 6 being labeled incorrectly
+- Split social section into two: info and social
+- The social links are now split into 2 rows (2-2) to work better on various device sizes
+- Some small bug fixes
+
+
+
+### v2.5.1 (2024-06-10)
+Version 2.5.1:
+-> Saves:
+- Added a backup system (see: settings)
+- Improved save related code
+- Fixed a critical stats bug
+
+-> Settings:
+- Setting titles are now bold
+- New Setting: Create Backup, creates a backup in the cache seperate from normal saving
+- New Setting: Load Backup, can be used to restore the backup when something went wrong
+- New Setting: No Ads, disables and hides ads and their boosts
+
+-> Other:
+- Pride Event: Getting an Event PFP is now guaranteed until all 3 are obtained
+- The Achievement "Mr. President" can be obtained again (same requirement, get Obama)
+
+
+
+### v2.5.2 (2024-06-12)
+Version 2.5.2:
+-> Content:
+- Added Terms of Service (found at the game info, below notifications)
+- Added the long awaited infinite Gems to Amé and 7 new upgrades
+
+-> Améliorer:
+- New Améliorer Upgrade: Nothing (Set 2, 10): Does nothing
+- New Améliorer Upgrade: Lore Boost (Set 6, 150): Adds a boost per lore page
+- Added the 7th set of Améliorer Upgrades (225 Amé)
+- New Améliorer Upgrade: Unlock More Bag Upgrades (Set 7, 225): Unlocks 2 new Bag Upgrades
+- New Améliorer Upgrade: Infinite Gems To Amé (Set 7, 225): Gems can be converted to Amé past the limit, for an increased cost
+- New Améliorer Upgrade: Amé Came (Set 7, 250): Increases the levels of currency boosting Améliorer Upgrades
+- Moved Sandwich Amount Lvl. from Set 2, 10 to Set 7, 225
+- Moved Shgabb Boost and Silicone Boost to be the first of their set
+
+-> Bags:
+- New Bags Upgrade: Ads Watched Boost Shgabb: Get more Shgabb based on how often each ad boost was gained, costs are reduced by total ads watched
+- New Bags Upgrade: Clicks Boost GS: Get more GS based on all time clicks, clicks this prestige and daily clicks, costs are reduced by total prestiges
+
+-> Settings:
+- New Setting: Export to file
+- New Setting: Import from file
+
+-> Other:
+- Added 5 new Achievements (130 total)
+- Prestige Button now also shows Gems gained on Prestige (if unlocked) and Bags gained in that Prestige
+- Fixed small numbers showing unnecessary .00s
+- Added Terms of Service and a link to them
+
+
+
+### v2.5.3 (2024-06-15)
+Version 2.5.3:
+-> Shbook:
+- Lore: Added 2 new lore pages (5 total)
+- Mobile: Reduced feature name size (top left corner)
+- Mobile: Reduced entries size (left)
+
+-> Time:
+- Reworked time related code
+- Daily things (new Artifact Offer, SSS, daily stats) are now triggered every auto save, rather than every 50th
+- Seperated SSS from other daily things
+- Fixed daily stats getting reset way too often
+
+-> Settings:
+- Renamed "No Background" to "Black Background" to avoid confusion
+- Renamed "Toggle Currencies Display" to "Currencies Display" and changed it, see section below
+
+-> Currencies Display:
+- Reworked top currencies display
+- Made its display more smooth, taking less space
+- Instead of being toggled on/off, it now has 3 modes: visible/hidden/compact
+- The new mode, compact, hides currency names
+- Improved performance
+
+-> Other:
+- Added 5 new Quotes (88 total)
+- Capitalized Gem / Gems when getting them from clicking
+
+
+
+### v2.5.4 (2024-06-26)
+Version 2.5.4 The 254adnemle Update:
+-> Artifacts:
+- Stats now show Artifacts owned of each rarity (common, rare, epic, legendary)
+- Balancing, see below
+- Code improvements regarding Artifact amount
+
+-> Balance:
+- Amulet of Quickgemming: 0.1s -> 0.2s
+- Amulet of Gem Mines: x1.4/x1.5/x1.6 -> x1.4/x1.6/x1.8
+- Amulet of Molten Bags: x1.2/x1.4/x1.6 -> x1.5/x2/x2.5
+- Amulet of Bag Bank: x3/x3.5/x4 -> x4/x5/x6
+- Shgabb's sleeves: x2/x4/x6 -> x6/x12/x18
+- Sarah's Collection: Removed legendary Artifacts from the requirement
+
+-> Other:
+- Improved background stuff & Black Background setting
+- Improved full UI updates
+- PC: Reduced size of ads with boosts
+- Prestige button no longer scales weirdly when zoomed
+- Shgic now displays the day it was completed on after completing it
+- Fixed Shgic issues
+- Fixed hard reset issues
+- Fixed certain texts moving down when using Chrome
+
+
+
+## v2.6 (2024-07-06)
+Version 2.6 The Artification Update:
+-> Artifacts:
+- Reworked Artifacts / Artifact code, allowing for more complex effects, more possibilities, quality and quantity
+- Added 10 new Artifacts (75 total, 4 common, 1 rare, 3 epic, 2 legendary)
+
+- Every Artifact can now have an own value (Example: Furious Fork)
+- This value is reset after unequipping
+- Every Artifact can now have an own timer (Example: Fading Blue Ring)
+- This timer is also reset after unequipping
+
+- Removed percentage displays entirely
+- Amulet of Golden Idle and DaGame no longer require an auto production above 0
+- Changed Furious Knife cap from 31x to 30x
+- Small adjustments to some Artifacts
+
+-> Hotkeys:
+- Added hotkeys on PC (/devices with a keyboard)
+- Hold M: Buy max
+- P: Prestige button
+- WASD: Selections stuff
+- C: Hide selection
+
+-> Bars:
+- Added a row of bars below the click button
+- This row includes: auto bar, fridge bar and prestige bar
+- Auto bar: Time to next Sandwiches/Silicone (1 second)
+- Prestige bar: Time since prestige to 15s/3min/5min/15min
+- Moved fridge bar from Sandwiches section to the new row
+
+-> Challenges:
+- New Challenge: Ill-lit Dwn-upg, HMS 12k, upgrades are hidden, increases Artifact gain
+- New Challenge: Inflation, HMS 12k, upgrades are more expensive, reduces upgrade costs
+- Challenges now also have their images as backgrounds
+- Challenges can no longer be started before the 15s Prestige cooldown
+
+-> Player Profile:
+- Added 2 new PFPs (5k HMS & 10k HMS)
+- Added 7 new Banners
+- One of them is unlocked by getting any Challenge to tier 3
+- The other 6 are the Challenge images and unlocked by getting them to tier 3
+- Added a v to the version number
+
+-> Other:
+- Added 2 new quotes (90 total)
+- The last selected selection is now orange-ish
+- The selected stats type is now yellow
+- Moved auto info from above to below Sandwich upgrades
+- Buy max no longer creates a notification for every single level bought
+- Fixed Shgic being outdated after loading the game
+- Fixed Bags/Fridge bug
+
+
+
+### v2.6.1 (2024-07-06)
+Version 2.6.1:
+-> Shgic Animations:
+- Added experimental Shgic animations
+- After placing down an X or O, it's thin at first but returns to its usual obesity
+- The border now cycles through various shades of blue (rather than always being light blue)
+- After placing down anything, it becomes light blue for a short moment
+
+-> Design:
+- Added text to the row of bars, displaying the seconds remaining
+- Sections: Added images for Stats and Settings
+
+-> Achievements:
+- Added 10 new Achievements (140 total)
+- Moved some Achievements
+
+-> Balance:
+- Changed minimum click cooldown from 0.2s to 0.1s
+- Ill-lit Dwn-upg (Challenge 5): 10%/tier -> 25%/tier
+- Amulet of Quickgemming: exactly 0.2s (or 0.1s) -> 0.25s or faster
+
+-> Other:
+- Artifact search now also supports L1 instead of level 1
+- Artifact search now redirects to page 1 if the others are empty & hides page buttons
+- Amulet of Slowgemming, Dinosaurs, Baked Silica: Made it more clear that 3 seconds counts too
+- Background now updates after a prestige
+- Fixed fridge bar only moving when looking at Sandwiches
+- Fixed free upgrades bug
+
+
+
+## v2.7 (2024-07-13)
+Version 2.7 Copper Age:
+-> Copper Shgabb:
+- New currency: Copper Shgabb!
+- Unlocked at HMS 10k
+- Earned from clicking, with a 1% chance
+- Value increases by +1 every time its earned
+- Spent on 4 upgrades: More Copper, Copper Click Chance, Shgabb Boost, GS Boost
+
+-> More Copper Content:
+- Added 5 new Artifacts (2 common, 2 rare, 1 legendary, 80 total)
+- Added 10 new Achievements (150 total)
+- Added Currenciary entry
+- Added PFP
+- Added stats for Copper and Copper clicks
+
+-> Quotes and title:
+- Added scrolling quotes
+- Quotes now always take one row on mobile
+- Added 2 Shgabb currency images to title
+- Added v to the version number in the title
+
+-> Other:
+- Shortened ad descriptions
+- Slightly reduced height of the click button
+- Changed images of Obama and Snakes Oil Salesman
+- Changed Social section a bit
+- Improved organization of files
+- Fixed Social overlapping with Shbook
+- Fixed Achievement 134 calling rare Artifacts "uncommon"
+
+
+
+### v2.7.1 (2024-07-20)
+Version 2.7.1:
+-> Max Levels and Amé Reset:
+- Resetting Amé Upgrades no longer resets levels of GS and Si Upgrades
+- It also no longer removes the fourth Artifact from loadouts
+- Instead, those loadouts do nothing until the fourth Artifact is removed or the Upgrade bought again
+- Upgrades above their max. level now have their boost capped at that
+
+-> Balance:
+- Lore Boost: Increased boost per page from 2% to 10%
+- Amé Came: Increased max. level from 10 to 85 (30 -> 50 -> 200)
+- Amé Came: Reduced costs from 10/lvl to 2/lvl
+- Miner's Pay: Reduced costs from 50 x level to 50
+
+-> Stats:
+- Added Copper clicks and Copper chance
+- Moved Artifact stuff together, and below Progress
+- Added header for Artifact effects
+- Artifact effects: added Bags and Copper, moved some others
+- Split Currencies and Events
+- Renamed Other to Shgic Shgac Shgoe
+- Moved Total Tiers to Progress
+
+-> Other:
+- Added 5 new Quotes (95 total)
+- Game is now saved immediately after finishing Shgic
+- Removed auto save notification from buying Artifact Gift (third Gem offer)
+
+
+
+## v2.8 (2024-07-27)
+Version 2.8 Hot Change Update:
+-> Ads:
+- Added Chengas (see section below)
+- Reworked / adjusted lots of ad code and the appearance of the bar and button(s)
+- Ads can now be cancelled
+- Changed the least watched ad setting to have a third option: it appears more often
+- More Gems and More Silicone no longer have any chance to appear before being unlocked
+
+-> Chengas:
+- New side currency: Chengas! Unlocked at HMS 5000
+- Can be used to change the ad boost that's being offered
+- It changes to a random offer, but changing again doesn't cost another Chenga
+- The offer does not disappear automatically after using a Chenga
+- Every time an ad is watched there is an 1% chance to obtain one
+- Added Currenciary entry
+
+-> Hot Hot Summer Event:
+- New event: Hot Hot Summer!
+- Active from July 28th - August 18th
+- x10 Sandwiches and x10 GS production during the event
+- 3 new event PFPs, 4 Banners and 5 Achievements can be earned
+- Added Hot Hot Summer background image
+- The event currency Shorts can be earned by clicking (0.1% chance)
+- Shorts can be spent on 6 offers
+- Hot Mode can be enabled or disabled at any time
+
+-> Hot Mode:
+- Every well timed click increases the heat
+- Click cooldown becomes faster, up to x3
+- At 200 clicks or more, Shorts are 100x more common (10% chance)
+- Clicking too fast causes a lengthy cooldown
+- Clicking too slow resets the click streak
+
+-> Shorts offers:
+- Offer 1: Buy a PFP (80 Shorts)
+- Offer 2: Buy a Banner (100 Shorts)
+- Offer 3: Instant Faster Shgabb boost! (1 minute) (60 Shorts)
+- Offer 4: Reset the click cooldown and the next 10 clicks have no cooldown! (40 Shorts)
+- Offer 5: Furious Fork Artifact (200 Shorts)
+- Offer 6: Amulet of Paroxysm Artifact (100 Shorts)
+
+-> Améliorer:
+- Added the 8th set of Améliorer Upgrades (300 Amé)
+- New Améliorer Upgrade: Copper Boost (Set 8, 300): Every level boosts Copper gains by 2x, affected by Amé Came
+- New Améliorer Upgrade: Tiers Boost Copper (Set 8, 300): Two levels, first is 2x, second is 4x
+
+-> Other:
+- Added 10 new Achievements (5 Event + 5 Chengas, 160 total)
+- The M hotkey can now also be used to buy max the Shgabb Boost Gem offer
+
+
+
+### v2.8.1 (2024-07-28)
+Version 2.8.1:
+-> Ads:
+- Reduced waiting time after canceling an ad from 20s to 5s
+- Fixed ads not loading sometimes
+- Fixed no ad loop bug
+
+-> Chengas:
+- Increased chance to get a Chenga from 1% to 10%
+- Expanded Currenciary entry for Chengas
+
+-> Other:
+- Notifications at the top now stay empty rather than disappearing
+- Trying to upgrade a maxed upgrade now says that rather than pretending you can't afford it
+- Moved Silicone text from its section to the Currenciary
+- Sped up Shgic animations
+- Fixed GS boosts Shgabb 2 going crazy at high numbers
+- Fixed the 3 bars being a bit shorter on the right side
+
+
+
+## v2.9 (2024-08-02)
+Version 2.9 Back to Bomblike Update:
+-> Backgrounds:
+- Reworked background images to be less distracting, darker, smaller and more pixelated
+- New main background + new backgrounds for all events (7 total)
+
+-> Upgrades:
+- New Shgabb Upgrade (12k HMS): Deep Miner - Get more Copper and GS
+- New Shgabb Upgrade (12k HMS): Bomblike 2 - Get more Shgabb
+
+-> Export and Import:
+- Added export and import buttons for Artifact loadouts
+- This import button automatically imports without asking
+- Unlocked after getting all loadouts
+- Added confirmation for loading or creating a backup
+- Added confirmation for importing from a file
+
+-> Notations and Display:
+- Reworked normal notation, re-using the system from SC2FMFR
+- Gems, Bags and Shgabb Boost (2nd offer) can now use notations
+- Changed Achievement & Lore boost displays from % to x
+- Added + prefix to 11 Améliorer Upgrades
+- Added x prefix to 7 Améliorer Upgrades
+- Made Amé reset button prettier
+
+-> Other:
+- Added 5 new Achievements (165 total)
+- Improved image quality
+- The cancel ad button now shows which ad is currently running
+- Individual ad watched amounts are no longer visible for prestige and daily stats
+- Current Ad is now reset when importing a save
+- Back and Forth now changes its boost after applying it
+- Fixed Power Charger and Surgeon bugs
+- Fixed Sandwich bar still being displayed as boosted after canceling an ad
+- Fixed right side of the 3 bars being cut off when zooming in
+
+
+
+### v2.9.1 (2024-08-18)
+Back to Making An Update:
+-> Settings:
+- Added Setting to toggle confirmation dialogs
+- This affects destroying and upgrading Artifacts, unlevel and prestige
+
+-> Stats:
+- The background is now always equally long on both sides
+- Headers are now bold
+- Added Shorts
+- Added total event currencies
+
+-> Ads:
+- Faster Shgabb and More Crits now give the click button the buff effect
+- Buffed bars (Sandwich bar during More Sandwiches Ad) no longer get a darker background
+
+-> Other:
+- Duplicate Artifacts in save are now removed when a save is loaded (30 Gem refund)
+- Amé reset button: clicking the button now toggles reset too
+- Save message after completing Shgic is now visible
+
+
+
+## v3.0 (2024-09-13)
+Version v3.0 Fish Up Gang Date:
+-> Content:
+- New feature / minigame: Fishgang!
+- Reworked minigames section/display
+- Internal improvements
+
+-> Minigames
+- Integrated Shgic into the new minigames selection
+- New minigame: Fishgang
+- Reworked the entire appearance
+- Minigame display now scales, and is generally bigger
+- Added the selection screen with cool 90s CDs and a chessgabb
+
+-> Fishgang:
+- New feature and minigame: Fishgang
+- Unlocked at HMS 12k
+- Throw a rod and reel the fish in!
+- Longer distance = better fish
+- Hit at the right time to increase the chance of success
+- Missing can make the fish flee
+- Fish and trash can be caught
+- Catching fish gives XP, Gems and +1 fish
+- Catching trash gives XP and +1 trash
+- Added fishing level and XP, no effect yet
+- Added fishing stats and Achievements
+
+-> Achievements:
+- Added 10 new Fishgang Achievements (175 total)
+- Added Achievement pages, 50 per page
+
+-> Patch notes:
+- Added a slider to adjust size of patch notes
+- Range: 10 - 16 (default) - 40
+- Update title is now displayed after the number rather than below
+- Update version/title is now also bold
+- Added v to the version number
+
+-> Shbook:
+- Added a slider to adjust size of Shbook text
+- Range: 2 - 10 (default) - 30
+- Smoother background
+
+-> Internal improvements:
+- Various code and file sorting improvements
+- Reworked minigames rendering code (see: QuoteQuiz), including scaling
+- Added seperate files for: update.js and all currencies except Gems (already existed)
+- Added sub-folders for currencies, features and games code files
+- Fixed locked Ad boosts appearing (maybe)
+- Happy Friday the 13th everyone
+
+
+
+### v3.0.1 (2024-09-21)
+Version v3.0.1 Fish +2:
+-> Pearls:
+- New side currency, unlocked at 12k HMS alongside Fishgang
+- Gained from level ups in Fishgang (gain = level)
+- Can be spent for a Shgabb or GS boost
+- Can be refunded every new level up
+- Shgabb Boost: Spend Pearls to get more Shgabb (x1.1 every level)
+- GS Boost: Spend Pearls to get more GS (x1.05 every level)
+
+-> Fishgang Gameplay:
+- Added Pearls: side currency gained from level ups
+- Reduced base XP needed for level up from 400 to 100
+- Doubled XP from fish
+- Valuable attempts can no longer end up being trash
+
+-> Fishgang Design:
+- Moved and increased size of the throw/reel button
+- Increased size of catch chance text
+- Made the successful click green more visible
+- Gave Bobby some ADHD meds
+
+-> Other:
+- Improved Achievements rendering and obtaining
+- Added Featuriary entry for Fishgang
+- Added Currenciary entry for Pearls
+- Fixed a minigame Hz issue
+
+
+
+## v3.1 (2024-10-19)
+Version v3.1 Grateful Gems:
+-> Gems:
+- New Gems image!
+- Added the Gem Storage (see section below)
+- Gem amount/chance Artifacts can now go beyond level 3 and were re-balanced (see section below)
+- "Artifact Loadout" max. level can now be increased from 8 to 12 with Améliorer
+
+-> Gem Storage:
+- Unlocked at HMS 8000
+- Some Gems can be stored, locking them from being spent
+- The amount of Gems stored can be changed at any time without a fee
+
+-> Gem Artifacts:
+- Removed level 3 limitation from Gem amount and Gem chance Artifacts
+- Shiny Red Ring: x1.25/x1.5/x1.75 -> x1.2/x1.4/x1.6/x1.8/x2.0 chance (+0.2/lvl)
+- Pulsing Red Ring: x1.5/x1.65/x1.75 -> x1.6/x1.7/x1.8/x1.9/x2.0 amount (+0.1/lvl)
+- Bloody Red Ring: (unchanged) x1.5/x1.75/x2/x2.25/x2.5 chance (+0.25/lvl)
+- Amulet of Slowgemming: x6/x7/x8 -> x8/x8.5/x9/x9.5/x10 chance (+0.5/lvl)
+- Amulet of Quickgemming: (unchanged) x1.4/x1.6/x1.8/x2/x2.2 amount (+0.2/lvl)
+- Amulet of Gem Mines: x1.4/x1.6/x1.8 -> x1.5/x1.75/x2/x2.25/x2.5 chance (+0.25/lvl)
+- P2W: x3/x3.5/x4 -> x3/x3.3/x3.6/x3.9/x4.2 amount (+0.3/lvl)
+- Gem Frustration: (unchanged) +0.5%/+1%/+1.5%/2%/2.5% (0.5/lvl)
+- Sarah's Collection: (unchanged) x2/x2.5/x3/x3.5/x4 chance (+0.5/lvl)
+- Overluck: cap removed but idk how it works
+
+-> Fishgang:
+- Added 18 beautiful fish images
+- When a fish is caught, its image appears for a brief moment
+- Similarly, catching trash shows Artifact Scrap
+
+-> Other:
+- New Améliorer Upgrade: More Loadouts (Set 8, 320)
+- Added Donate button (between Info and Social)
+
+
+
+### v3.1.1 (2024-10-21)
+Version 3.1.1:
+-> Minigames:
+- Implemented WGGJ
+- Fishgang: Added info texts for: line broke, not caught
+- Gained XP is now shown
+
+-> Balance:
+- Reduced chance needed for "Overluck (water element version)" Achievement from 300% to 200%
+- DaGame: Added Click Shgabb boost as a secondary effect (x20/x40/x80) but Bag costs increase: 10 -> 10/20/30
+- Tech Collection: Added faster click speed as a secondary effect (x1.5/x1.75/x2)
+- Tech Collection now also affects Gems, Shorts, Power Charger (amount) and Artifacts, Copper, Wisps, Lore Pages (chance)
+- Tech Collection now also increases click stat every click
+- Power Charger: Changed boost from clicks * level to clicks^(1.1/1.2/1.3) * level * 3
+- Tower: Increased boost per click from 10% * level to 20% * level, but reduced cap from 99999 to 9999
+- Miner's Pay: x4^level -> x6^level
+
+-> Snake Oil Salesman:
+- Having an useless meme artifact is funny, but as a legendary it can be disappointing, so now Snake Oil Salesman was reworked to become useful, but still be suspicious!
+- Every auto second, there is a 20% chance of a new offer being bought
+- Offers cost 2/4/6 Gems (level * 2)
+- The offer you currently have can be re-bought, scamming you of some Gems!
+- There are 6 possible offers, each less common than the previous:
+- x20/x40/x80 Shgabb
+- x4/x8/x12 Sandwiches
+- x6/x12/x18 Gem chance
+- x20/x40/x80 Silicone
+- x2/x4/x6 Gems
+- x8/x64/x512 Copper amount
+
+
+
+## v3.2 (2024-10-30)
+Version v3.2:
+-> Shgabb The Witch:
+- New event: Shgabb The Witch!
+- Active from October 28th - November 10th
+- x6 lore pages, x6 page progress and x6 Bags during the event
+- 10 new event lore pages, 5 event PFPs, 4 Banners and 5 Achievements can be earned
+- Two event currencies: Witch Shgabb and Candles
+- Added Shgabb The Witch background image
+
+-> Lore / Candles
+- Candles can be randomly earned from clicking, just like Memory Wisps
+- 1/666 chance (including the x6 event boost)
+- Added 10 new event lore pages, unlocked with Candles
+- Discover the story of Shgabb The Witch!
+
+-> Witch Shgabb:
+- Every 10 seconds, 3 random Artifacts can get cursed
+- Cursed Artifacts have their level increased by one, and using them can award Witch Shgabb
+- Witch Shgabb can be used to cast a witch spell
+- Up to 10 Witch Shgabb can be allocated for: Push Virtue, Defensive Herbs, Hair Odor
+- Push Virtue: Increases chance of receiving a more positive effect
+- Defensive Herbs: Decreases chance of negative effect
+- Hair Odor: Increases chance of getting cosmetics
+- Spells can give the new PFPs, Banners, boosts
+
+-> Other:
+- Shbook can now render conversations
+- Shgabb's sleeves now give a fixed x1000 boost if the cooldown is exactly 0
+- "Prestige!" in the prestige button is now bold
+- Happy Halloween!
+
+
+
+### v3.2.1 (2024-11-08)
+Version v3.2.1:
+-> Shgabb The Witch Event:
+- Extended event by a week -> November 17th
+- Added an event description (lol?)
+- Added an extra description for how spells work
+- The most recent spell's effects are now also shown below the buttons (rather than notifications only)
+- Added a notification for gaining Witch Shgabb
+
+-> Shgabb The Witch Balance:
+- Increased max. amount of cursed Artifacts from 3 to 6
+- Cursing and gaining witches now happen every second, instead of every auto save (x10 essentially, but needs fridge)
+- Reduced curse chance from 20% to 0.3%
+- Reduced witch gain chance from 20% to 3%
+- Using at least one Defensive Herb now decreases the chance for a negative effect by 20%
+- Doubled chance to get cosmetics
+- Added a new spell effect: instant lore page progress
+- Changed chances of certain spell effects appearing
+
+
+
+## v3.3 (2024-11-21)
+Version v3.3 Framed Pages:
+-> Player Profile:
+- Added Frames, a new type of decoration!
+- Added 3 normal Frames (unlocked at 0, 6000, 8000 HMS) + No Frame
+- Added a selection: PFPs, Banners, Frames or All
+- Added names for ALL PFPs, Banners and Frames
+- Added new buttons: Random PFP, Random Banner and Random Frame
+- Moved PFP a bit more to the left
+
+-> Lore:
+- Lore pages are now found randomly, rather than in order
+- Increased page storage from 4 to 5
+- Re-wrote lore info text
+- Added more info to the info page
+- Added 3 new lore pages (18 total)
+- Reduced Memory Wisps needed from a flat 10 for every page to: 4, 4, 4, 6, 10 (and 3, 3, 3 for the new ones)
+
+-> Other:
+- Changed images for Ring and Amulet Artifacts
+- Improved minigame performance after switching to a different selection
+- Re-organized some image files
+
+
+
+### v3.3.1 (2024-12-01)
+Version v3.3.1:
+-> Artifacts:
+- Added 5 new Artifacts (2 common, 3 rare, 85 total)
+- Added Boost Filters (see section below)
+- Artifact Search now supports / as an OR-operator
+- Changed names of Artifact loadout export and import buttons from E and I to Exp. and Imp.
+- Fixed Surgeon bug, and its boost is now displayed in the Prestige text
+
+-> Boost Filters:
+- Added Boost Filters to Artifacts / search
+- These allow simple and direct filtering for the 16 simple boost and special Artifacts
+- Shgabb, Click Shgabb, Auto Shgabb, Reset Shgabb, Sandwiches, GS, Prestige GS, Silicone, Cooldown, Gem chance, Gem amount, Artifacts, Click Silicone, Bags, Copper, Copper chance and special Artifacts
+- Special Artifacts include Obama, Hood Goo, Fart and others
+- Added images for them
+- Boost Filters can be combined with the search (AND-operator)
+- Added a setting to hide Boost Filters
+
+-> Other:
+- Added 2 new lore pages (20 total)
+- The GS earned in a Prestige is now added to the GS this Prestige stat
+
+
+
+## v3.4 (2024-12-09)
+Version v3.4 Global Freeze:
+-> Events:
+- Every year, the events return
+- Events may have a different time/duration or new/different content when they return
+- Event code improvements
+
+-> Christmas Event:
+- The Christmas Event is back for Year 2
+- Duration changed to December 14th - December 28th (2 days earlier)
+- Added description
+- Added 1 more PFP (3 -> 4)
+- Added 3 Banners
+- Added 3 Frames (first Event Frames ever)
+- The new PFP, Banners and Frames are unlocked as usual
+- The content of the latest Gift opening is now shown at the bottom (similar to Shgabb The Witch)
+
+-> Upgrades:
+- New Améliorer Upgrade: Chain Gems (Set 8, 300): Increased chance to get Gems (ignoring 10% cap) after the previous click awarded Gems
+- Expanded More Shgabb description to clarify that it unlocks many things
+- Changed descriptions of 2+2=5 and Meaning Of Life for consistency: Increases -> Get more
+- Changed description of More GS (Copper): GS -> Golden Shgabb
+
+-> Other:
+- Artifacts: Added a button to quickly clear the current loadout ("Clear")
+- Changed Auto info (below Sandwich Upgrades): added Auto info mini-header, removed background color, added current fridge time remaining, added normal/cheese percentages
+- The three bars at the top are now hidden until Sandwiches are unlocked
+- When unlocking Ads for the first time, they directly appear, restarting the game is no longer required
+- Improved Player Profile display updating
+- Fixed issue with receiving wrong Achievements
+
+
+
+### v3.4.1 (2024-12-10)
+Version v3.4.1 Global2:
+-> Shgabb Upgrade Balance:
+- More Shgabb: Reduced base cost from 5/lvl to 2/lvl
+- Shorter Cooldown: Effect is 2x, max. level 40 -> 20 (same effect at max.)
+- Sandwich Chance: Effect is 5x, max. level 250 -> 50 (same effect at max.)
+- Reviewed costs of several Shgabb Upgrades to improve earlygame balance:
+- Shorter Cooldown: Reduced base cost from 60 to 5 and base increase from 40 to 10
+- Bomblike: Completely new formula, levels 1-5: 625/6988/78k/873k/9.7M -> 30/300/3000/30k/300k
+- Sandwich Chance: Reduced base cost from 250 to 50
+- Sandwich Amount: New formula, levels 1-5: 4346/16k/65k/262k/1M -> 250/1000/4000/16k/64k
+
+-> Shgabb Upgrade Unlocks:
+- Reviewed the order and unlock requirements for Shgabb Upgrades:
+- More Shgabb: None
+- Crit. Chance: None -> HMS 60
+- Crit. Boost: None -> HMS 70
+- Shorter Cooldown: MS 15 -> None
+- Good Joke: MS 25 -> HMS 15
+- Bomblike: MS 35 -> HMS 10
+- Sandwich Chance: MS 50 -> HMS 25
+- Sandwich Amount: Sandwich Chance level 25 -> Sandwich Chance level 10 OR HMS 50
+- Deep Miner: MS 12k -> HMS 12k
+- Bomblike 2: MS 12k -> HMS 10k
+- Old order: More Shgabb, Crit. Chance, Crit. Boost, Shorter Cooldown, Good Joke, Bomblike, Sandwich Chance, Sandwich Amount, Deep Miner, Bomblike 2
+- New order: More Shgabb, Shorter Cooldown, Bomblike, Good Joke, Sandwich Chance, Sandwich Amount, Crit. Chance, Crit. Boost, Bomblike 2, Deep Miner
+- Changed their unlocks from current More Shgabb level to highest (HMS), this also affects midgame and lategame
+
+-> Buy Max:
+- Changed the Unlock Buy Max Upgrade (GS)
+- Changed unlock from 1000 total GS to 10 total GS
+- Reduced costs from 500 GS to 10 GS
+
+-> Achievements:
+- Added two new Achievements: This is home & Shgannta Claubb (182 total)
+- Achievements for unlocks (such as Nerd or Can I eat this?) now explain how to unlock it
+- Moved some Achievements around a bit, especially the first few
+
+-> Pre-release changes:
+- Uploaded Shgabb Clicker to galaxy!
+- Made it clear that the ads are not real
+- Fixed incorrect Shbook text pre-unlock
+
+
+
+### v3.4.2 (2024-12-13)
+Version v3.4.2 Globbbal Frrreeze:
+-> Shbook:
+- Reworked entry for the Shbook itself
+- Expanded entries for Shgabb and Sandwiches
+- Made the unlocks for Sandwiches and Artifact Scrap more clear
+- Wiki button now has a different text if it's not unlocked yet (but it still works)
+
+-> Minor changes:
+- Removed Upgrade bought successfully notification
+- Added s to Cooldown notification
+- Player Profile updates after upgrading More Shgabb or getting an Achievement
+- Changed effect display for More Shgabb, Sandwich Amount, Auto Shgabb and Better Fridge
+- Auto Info can no longer show NaN
+
+
+
+### v3.4.3 (2024-12-18)
+Version v3.4.3 Earthwide Coldization:
+-> Loading:
+- Changed how the game is loaded
+- A lot more stuff is now hidden while loading, to prevent confusion and spoilers
+- Added text to show the game is loading
+- Added notification when the game is done loading
+- Added error message if loading fails
+- Also tweaked ad loading a bit
+
+-> Améliorer:
+- Reset button now mentions the refund is 100%
+- Time until it's available again is now shown
+
+-> Stats:
+- Headers on the right side are now bold too
+- Moved Fishgang to below Shgic
+
+-> Other:
+- Updated WGGJ from v1.0 to v1.1
+- Social: changed info part a bit
+- Reduced the max size (slider) of patch notes and Shbook, because let's be honest, you are not THAT blind
+
+
+
+### v3.4.4 (2024-12-26)
+Version v3.4.4 Set Cold:
+-> Settings:
+- Added descriptions for settings!
+- Changed design of settings
+- Sorted and re-arranged lots of settings
+- Whether toggle options are currently Enabled or Disabled is now green/red
+- Changed category of Current Effect Display from design to gameplay, and Refresh page from savefile to design
+- Custom Colors: swapped position of export and import
+
+-> New settings:
+- (Gameplay:) Three Bars
+- (Gameplay:) Prefer More Shgabb
+- (Audio:) Sounds
+- (Savefile:) Export Settings
+- (Savefile:) Import Settings
+
+-> Christmas Event:
+- Changed average time per Gift from 250s to 180s
+- Increased cosmetic chance from 0.5% to 2%, reduced Gem chance from 19.5% to 18%
+- This changes the average time to collect all 10 cosmetics from 138 hours to 25 hours, 2000 Gifts to 500 Gifts
+- Latest Gift content now includes cosmetics
+- Event description now mentions Gifts from Shgic (still 10/day)
+- Fixed render issue
+
+-> Other:
+- Gave the loading/crash text a black background for better readability, and gave names to the loading steps
+- Some smaller improvements
+
+
+
+### v3.4.5 (2024-12-29)
+Version v3.4.5 The Cold Back:
+-> Backgrounds:
+- Changed four backgrounds from green to blue:
+- Normal, Christmas, Anniversary, Easter
+- Now all backgrounds are blue-ish or red-ish
+
+-> Design:
+- Changed design of the social and patch notes squares, and they look the same now
+- Added lines between all four social sections and below the patch notes
+- Auto info and link to all patch notes are gray boxes now (better readability)
+- Changed gray button design
+
+-> Settings:
+- New setting (design): Show Setting Descriptions
+- Ad Music (setting) is now affected by the general Music setting, so if either is disabled, ad music won't play
+- Changed border color and hover effect of setting buttons
+- Custom colors selection is now centered
+
+-> Other:
+- Improved breakinfinity loading
+- Small joke ad related changes
+- Fixed not being able to unlock lore pages that had their requirements reduced if you have more than the new requirement
+- Fixed crash when using Sosnog in Challenge 3 (Manual Grind)
+
+
+
+### v3.4.6 (2025-01-04)
+Version v3.4.6 Secolnd Birthday:
+-> Anniversary Event:
+- The Anniversary Event is back for Year 2
+- Same duration: January 6th - January 20th
+- Added description (before it only was a list of boosts)
+- Added a bar to display Cake progress
+- New Achievement: It's A Celebration (Get all 8 Anniversary Event cosmetics) (183 total)
+
+-> Anniversary Event Cosmetics:
+- No new PFPs (still 3)
+- Added 3 Banners
+- Added 2 Frames
+- One of the Banners is special, and is given to everyone who plays the event this year!
+- This event's cosmetics are now gathered by eating Cake
+- PFPs were tied to the Achievements before, those who gained them that way get to keep them
+
+-> Special Cosmetics:
+- Special Cosmetics are PFPs, Banners or Items that have an unusually high resolution, are animated or have some other special thing
+- There are only two of them for now: default Shgabb PFP and Two Years of Shgabb Banner (new)
+- They are marked with a yellow outline
+- Similarly, equipped Cosmetics now have a green outline
+
+
+
+### v3.4.7 (2025-01-24)
+Version v3.4.7 B-Cold:
+-> Minigames:
+- Minigames now only run if selected, otherwise, absolutely nothing happens (improved performance)
+- Shgic: Added a 0.2s cooldown after clicking, to prevent accidental double clicks
+- Shgic: Made the grid prettier
+- Fishgang: Removed Your Mom and Pirate Piss, added Brick, Broken Key, Glass Shard and Fake Fish
+
+-> Minigames Selection:
+- If Fishgang isn't unlocked yet, it now says Locked
+- Added a background behind the list of minigames
+- Increased size of minigame names
+- Split Shgic's full name into two lines
+- Changed "Play Da Game" text to "Play Minigame"
+- Sped up CD animations
+- Fixed CD being slightly too low after being put back (Fishgang locked)
+
+-> Shbook:
+- Added a list of all unlocks to the Featuriary (new Unlocks entry)
+- Changed the Shbook entry to have its list on the left side too
+- Lore page 10% GS boost is now base
+- The upgrade turns it exponential instead
+
+-> Design:
+- Moved the three bars from between the click button and notifications, to between notifications and top currencies display
+- Added black backgrounds behind the quote and recent notifications
+
+-> Other:
+- The cooldown notification now shows a second decimal if the cooldown is less than 0.1s
+- Fixed Anniversary Event lasting too long
+
+
+
+### v3.4.8 (2025-02-01)
+Version v3.4.8 Winter Lunar:
+-> Lunar New Year Event:
+- The Lunar New Year Event is back for Year 2
+- Duration changed to February 4th - February 18th (6 days earlier)
+- This chosen duration is based on an average (since it shifts by up to a month every time)
+- 5 event lore pages can be found, and unlocked with Red Envelopes
+- Added 3 new Banners and 2 new Frames (still 3 PFPs)
+- Reduced cosmetic cost from 888 to 188 (total: 2664 to 1504)
+- Cosmetics are now given out randomly rather than in order
+- Added a new Achievement for getting all 8 cosmetics
+- Extended event description
+
+-> Lore:
+- Added 15 new lore pages (35 total)
+- 5 belated pages for the Christmas Event
+- 5 belated pages for the Anniversary Event
+- 5 pages for the Lunar New Year Event
+- Added 3 new lore currencies: Memory Snowflakes, Birthday Candles & Red Envelopes
+- Their chances: 1/1200, 1/1000 & 1/888
+- Lore currency is now shown next to the name/not found/locked
+- Integrated these new pages and lore currencies into their events
+
+-> Other:
+- Added 5 new Quotes (100 total)
+- Added 7 new Achievements (190 total)
+- Fixed description of Luckily it's in English Achievement
+- Luck now also affects the base Fishgang chance, but also gets reduced every reel (5x if missed)
+- Updated WGGJ from v1.1 to v1.2.1
+
+
+
+## v3.5 (2025-03-17)
+Version v3.5 This Update Is Bananas:
+-> Bananas:
+- New main currency! Unlocked at 15k HMS
+- Added Banana Seeds, Banana Trees (and their UI) and 3 Upgrades
+- Added stats for Bananas, Seeds and Trees
+- Added Bananas Currenciary entry
+- Added 10 Banana Achievements (200 total)
+
+-> How Bananas work:
+- You can get Banana Seeds from Prestige
+- The chance increases up to 18% at 15 minutes since last prestige, nothing gained below 1 minute
+- A seed can be used to create a Banana Tree, of which you can have up to 4
+- Every click there is a chance for every tree to produce Bananas
+- The Bananas need to be claimed from the trees, but it has a chance of destroying the tree
+- Every day where you play the trees age, increasing their production but also their death chance
+
+-> Banana Upgrades:
+- Bananas can be spent on three upgrades:
+- Banana Chance (9 levels) - higher chance to get Bananas
+- More Sandwiches - a simple Sandwich boost
+- Wisdomnana - get more GS for every unclaimed Banana
+
+-> Other:
+- Hovering over the Shbook now increases its contrast rather than just brightness
+- (Experimental) Changed font of Shbook texts
+- The three bars now tell what they are for (Auto, Fridge, Prestige)
+- The link to SC2FMFR now links to the galaxy version if you are playing on galaxy
+
+
+
+### v3.5.1 (2025-03-18)
+Version v3.5.1:
+-> Ads:
+- Reworked code of ad boosts, making it more organized and allowing for fancier things (like upgrades) in the future
+- Changed how locked ad boosts are treated
+- Shbook: Added an entry for Ads, listing all possible ad boosts
+- Specified the More Sandwiches boost affects the chance, not amount
+- Fixed click button showing 3x too much during Stronger Clicks boost
+
+-> Other:
+- Every fish now gives 4XP more (meaning the minimum is 6XP)
+- Fixed an 0 GS issue
+- Fixed being able to get Banana Seeds too early
+
+
+
+### v3.5.2 (2025-03-20)
+Version v3.5.2:
+-> Bananas:
+- Added a Banana PFP, unlocked at 10k total Bananas (third Achievement)
+- Moved Banana Achievements based on progression
+- Fixed Tree ID starting with #0, all new trees are one higher now
+- Tree age is now shown as "Age" instead of "Days" (starting at 1 now)
+
+-> Other:
+- Added 5 new Quotes (105 total)
+- Minigames no longer pause when a different selection is used
+- Fishgang: Re-added Your Mom and Pirate Piss
+- Achievements: Added page buttons to the top as well
+- Challenges: Goal, Price and Boost are now bold, and added a line above them
+- Expanded Featuriary text for Shgic
+
+
+
+### v3.5.3 (2025-04-03)
+Version v3.5.3:
+-> Egg Hunt Event:
+- The Egg Hunt Event is back for Year 2
+- Duration changed to April 2nd - April 15th (4 days later, 22 days -> 14 days)
+- 5 event lore pages can be found, and unlocked with the new lore currency Baskets
+- Added event description
+- Added 2 new Banners and 2 new Frames (still 6 PFPs)
+- Reduced Event Cosmetic price from 100 to 50
+- Added a new offer for banners and frames
+- (The event was active for a few days before this, and egg images weren't working)
+
+-> Other Events:
+- Christmas Event: Changed start date from December 14th to December 15th (15 days -> 14 days)
+- Anniversary Event: Changed end date from January 20th to January 19th (15 days -> 14 days)
+- Lunar New Year Event: Changed end date from February 18th to February 17th (15 days -> 14 days)
+
+
+
+## v3.6 (2025-05-26)
+Version v3.6:
+-> Daily Challenge:
+- New feature: Daily Challenge (10k HMS)
+- Every day, random Artifacts are chosen (same for everyone)
+- Get as far as you can with those Artifacts
+- Artifacts can't be changed at all during the Challenge to prevent exploiting
+- Costs 10 Gems to enter, no HMS requirement
+- Rewards 1 Daily Challenge Point for every HMS
+- Rewards 1 Gem for every 150 HMS
+- Daily Challenge Points serve no use yet, but soon they will
+
+-> Pride Event:
+- The Pride Event is back for Year 2
+- Duration changed to June 1st - June 14th (7 days earlier, 15 days -> 14 days)
+- Added 3 Frames, gathered like the PFPs
+- Finding a couple now gives 20 Gems (previously no gameplay rewards)
+- Added Found couples stat (sorry those who grinded last year!)
+- Increased chance to find someone from 20% to 33.3%
+- Changed "United against loneliness" from 1 PFP to all PFPs
+- Changed "United Love" from all PFPs to all Frames
+- Updated event description
+
+-> Other:
+- Changed setting button colors
+- New image for Player Profile section
+- Changed generation of patch notes
+
+
+
+### v3.6.1 (2025-05-28)
+Version v3.6.1:
+-> Daily Challenge:
+- Much better RNG for picking Artifacts
+- Legenary Artifacts are replaced if you don't have them
+- The shown Artifacts can be individually equipped/unequipped and refresh
+
+-> Pride Event:
+- 5 event lore pages can be found, and unlocked with the new lore currency Sharks
+- Sharks are only found during Shgaybb mode (10% chance per click)
+
+-> Lore:
+- Added 5 new lore pages for the event (45 total)
+- Added button to stop collecting (no refund)
+- Added button to throw a page away (to make space, useful during events)
+- Lore can now contain paragraphs
+
+
+
+### v3.6.2 (2025-06-08)
+- Fixed Shgaybb mode requirement incorrectly applying to lore pages, rather than Sharks
+- Sharks now have that requirement (plus: outside of the event, click cooldown needs to be 3s or slower)
+- Increased lore page chance from 1/25k to 1/7k
+
+
+
+### v3.6.2 (2025-06-15)
+-> Artifacts:
+- 10 new Artifacts (95 total)
+- Common: Paper Ring, Ghost Ring, Fading Paper Ring, Fading Ghost Ring, Gem Gift
+- Uncommon: Amulet of Slowwriting, Amulet of Slowghosting, Super Gem Gift
+- Epic: Flame Ritual, Epic Gem Gift
+
+-> Daily Challenge:
+- Quick Equip is now separate from loadouts, when leaving the first loadout is loaded
+- Prestige Button includes Gems (1 per 150 MS)
+- Fixed related save size issue
+
+
+
+## v3.7 (2025-06-28)
+-> Events and Etenvs:
+- Added Events section to Shbook, showing all Events, with their descriptions and cosmetics!
+- Added Etenvs, new token currency unlocked at HMS 10 000
+- Gain one Etenv during every event
+- Everyone who plays now also gets one Etenv for free, to try it! (if unlocked)
+- Spend one Etenv and 10 000 Gems to summon an Event for 24 hours
+- Summoning is done in the Shbook, on the Event's page
+- Summoned Events are the same as real ones, with their boosts, cosmetics, Achievements and everything else
+- Note: Hot Hot Summer and Shgabb the Witch do not have their Year 2 versions yet
+- Added Shbook entry and stats for Etenvs and Events summoned
+
+-> Fishgang:
+- Now framerate independent
+- Improved design for player level/bar, including your PFP
+- Bar fill is now based on progress to next level, rather than total
+
+-> Design:
+- Cut down exclamation mark usage
+- Removed hearty wording from the info section
+
+-> Other:
+- Sections for Challenges and Minigames get a red background when their daily isn't complete yet
+- Added Setting to disable Popups (new Artifacts, duplicates, Achievements)
+- Finding or unlocking a lore page shows its name
+- Code and file organization improvements
+
+
+
+## v3.8 (2025-07-26)
+-> Améliorer:
+- Added the 9th set of Améliorer Upgrades (400 Amé)
+- New Améliorer Upgrade: Bag Boost (Set 9, 400): Get more Bags
+- New Améliorer Upgrade: Efficient Destruction (Set 9, 400): Get more Artifact Scrap from destroying Artifacts
+- New Améliorer Upgrade: Challenger (Set 9, 400): Reduce goals for Challenges based on Daily Challenge Points
+- New Améliorer Upgrade: Unstable AMESS (Set 9, 420): Get +1 Amé for every 15min+ Prestige or new day. They are lost when you reset Amé Upgrades.
+- Added Amess stat
+
+-> Hot Hot Summer Event:
+- This Event is back for Year 2
+- Duration changed to July 28th - August 10th (22 days -> 14 days)
+- Added 2 Frames, can be bought for 80 Shorts from 3rd Offer, if click speed is 5s
+- Reduced Banner price from 100 to 80 (same as others)
+- Shorts chance now increases every click (base still 0.1%, increase +0.01%/click, 2.1% at 200)
+- Reduced boost at 200 clicks from 100x to 10x (before: 0.1% -> 10%, after: 2.1% -> 21%)
+- Shorts chance is now displayed
+- Implemented v3.7's event cosmetic awarding system, which gives the cosmetics randomly, to replace the own inconsistent (and often going in order) awarding systems of events (the other events will follow)
+
+-> Design:
+- Sections: added rounded transparent backgrounds, covering the whole area, for all 3 sections
+- Selections: increased width and spacing (more on PC than on mobile), round border
+- Upgrade buttons: rounded and colored borders (black -> darker)
+- Upgrade buttons: slightly changed colors (new)
+- Gray buttons: changed colors and border
+- Click button: changed click animation's colors and border
+- Quote: changed font (and bigger on PC), background and round edges
+- Game title: round edges and bigger size on PC
+- Banana Trees: completely changed button design
+
+
+
+### v3.8.1 (2025-07-29)
+-> Boost Filters:
+- Combined some boost filters (like GS and Prestige GS)
+- Added filter for lore/wisps
+- Special Filter (last one) now only has the Artifacts that are not anywhere else
+- Artifacts can now be in multiple filters, for example Sloth and Lazy Bags in click cooldown
+- Filters of locked content get hidden
+- Reworked boost filter code
+
+-> Artifacts:
+- Made Artifacts wider, to occupy most of the screen's width, giving the text enough size
+- 3 or 5 or 10 Artifacts per row depending on size
+- Reduced Artifacts per page from 50 to 15 (mobile, PC is still 50)
+- Ring of Depression: now shows accurate number
+- Amulet of Gem Mines: x1.5/x1.75/x2/x2.25 -> x2/x2.5/x3/x3.5
+- Gem Gift: Artifact scaling 25 -> 10
+- Super Gem Gift: Artifact scaling 10 -> 3
+- Epic Gem Gift: Artifact scaling 5 -> 1.5
+
+-> Other:
+- Challenger: reduced effect slightly
+- Artifacts Gift offer can now give Artifacts while having Bloody Red Ring equipped (it was intended, but unfair)
+- Changed Setting title color to white
+- Shbook's selected section can be re-clicked to hide it, again
+- Player Profile cosmetic buttons can now be clicked again to show nothing
+
+-> Fixes:
+- Fixed All cosmetics button staying yellow
+- Fixed odd gapping in Social section (mobile)
+- Fixed Shbook entry for Lore still saying 1/25k (instead of 1/7k)
+
+
+
+### v3.8.2 (2025-08-01)
+-> Hot Hot Summer Event:
+- 5 event lore pages can be found, and unlocked with the new lore currency Sunglasses
+- Sunglasses are only found if click cooldown is 0.5s or faster
+- Unavailable offers are now shown as locked
+- Updated event description
+
+-> Other:
+- Changed selection colors slightly
+- Note: v3.8.1's wider Artifacts also affects Cosmetics and Achievements
+
+
+
+## v3.9 (2025-08-04)
+2025/08/04 v3.9:
+-> Idle Mode:
+- New feature unlocked from the start
+- Found below Shgabb Upgrades
+- Can be toggled on or off at any time
+- It automatically clicks for you, as long as fridge is active
+- 2x slower than manual clicking, and can't go faster than 1s
+- Manual clicking gets disabled, but still refreshes Fridge
+- Added separate Idle Clicks stat, changed Total Clicks to Normal Clicks, and added Total Clicks which combines both
+- Idle clicks count the same for basically anything (getting Shgabb, Sandwiches, Artifact conditions, etc.)
+- Its purpose is to make the game a lot more accessible for players who do not want to click buttons a lot, and prefer a more passive gameplay
+
+-> Shbook:
+- New background textures (higher resolution)
+- Reworked design of the list buttons, with new colors and borders
+- List is now scrollable when it gets long (Lore)
+- Reduced effect when hovering over Shbook
+- Changed headers for the currency/feature lists from Currenciary/Featuriary to Currencies/Features
+
+-> Balance:
+- Challenger: reduced effect slightly
+- Snake Oil Salesman: boost goes away when you can't afford it anymore
+- Snake Oil Salesman: Gem boost reduced from x2/x4/x6/x8 to x1.5/x3/x4.5/x6
+- Tower: changed tier from 1 to 4 (as other legendaries)
+
+-> Other:
+- Fastest Clicks Achievement: can now be gotten with a cooldown below 0.2s
+- Added lore chance and wisp chance (from Artifacts) to stats
+- Amé converts now support break infinity
+- Fixed hotkey selection not updating some stuff
+- Fixed getting Dragon's Money Achievement from Hot Hot Summer Event
+
+
+
+### v3.9.1 (2025-08-06)
+2025/08/06 v3.9.1:
+-> Achievements:
+- Added 10 new Achievements (210 total)
+- New Achievements: Achiever V, VI, VII, VIII, IX, Amé: Part VIII, IX, Librarian III, Librarian IV, Idle Game
+- Achiever IV: 100 -> 75 Achievements
+- eolm terrible headache: 5000 -> 3000
+- Librarian III (all lore pages): renamed to Library of Babel
+
+-> Idle Mode:
+- Idle Mode now affects Good Joke (Shgabb Upgrade), Qian, Shgaybb, Clicks Boost GS (Bag Upgrade) and Shgabb Seeds
+- Button gets lighter when it's enabled
+- Remaining time can no longer show a negative number xd
+
+-> Other:
+- The Challenges Blue Cuts, Dementia and Inflation now show their exact effects
+- Auto info: changed its design, and it can be clicked to refresh fridge
+- Hood Goo: description now specifies that the loss can be on click AND auto, cleaned up its code a bit
+
+
+
+## v4.0 (2025-08-20)
+2025/08/20 v4.0:
+-> The Mine:
+- New minigame/feature, unlocked at HMS 12k
+- Explore the mine and collect resources
+- Move into the four directions by clicking-hovering
+- There can be walls and water
+- To mine something, walk on it, and then click the click button or get auto prod x times
+- Golden Shgabb: 40, previous Prestige GS / 10
+- Silicone Shgabb: 20, click Silicone * 10
+- Copper Shgabb: 10, Copper worth one click
+- Added stats: time, tiles walked, total progress, GS, Silicone, Copper
+
+-> Minigames:
+- New Minigame (12k): The Mine
+- Graphical improvements for Shgic and Fishgang (see below)
+- Added black fade transitions between the minigames
+
+-> Shgic:
+- Added a fade in animation when placing Xs and Os
+- Added a delay before the enemy plays (no longer instant)
+- Added a delay before board gets cleared
+- Re-added the infamous kiss animation, now auto save independent, much faster and smoother
+- Fixed top and bottom bar color change being inverted (light blue when idle, rather than after clicking)
+
+-> Fishgang:
+- Moved Fishgang unlock from 12k to 5k
+- Added fade in/out animation for fish/trash images
+- Gave Bobby more meds and animations
+- Slider now changes color according to the 4 quarters (yellow, orange, red, blue)
+- Increased size of Throw, Trash, Fish and Value texts
+- Reduced PFP size
+- Level up bar: light blue -> dark blue
+- Level up text: dark blue -> white
+- Added time stat (sadly not retroactive)
+
+-> Sidebar:
+- Experimental new feature (must be enabled by Setting)
+- Takes up the left 20% of the screen, the rest gets reduced to 80%
+- Always on the screen, no scrolling
+- Contains click button, Idle Mode, currencies and notifications
+
+-> Other:
+- Moved Chengas unlock from 5k to 7k
+- New Setting: (Experimental) Sidebar
+- Updated WGGJ from v1.2.1 to v1.4
+
+
+
+### v4.0.1 (2025-08-21)
+2025/08/21 v4.0.1:
+-> Sidebar:
+- Shortened Idle Mode button even more (into just a check/X), put it into same row as click button
+- Changed currencies display (depending on setting: normal, hidden, compact)
+- Added the three bars (hides normal three bars)
+- Added popup notifications
+- Added currently equipped Artifacts
+- Having Sidebar enabled now hides the normal notification area and top currency display
+- It also hides the normal three bars and popups
+- Minigames are now slightly smaller with Sidebar enabled, to avoid going offscreen
+
+-> The Mine:
+- Arrow keys can now be used for moving (space to stop)
+- Hovering the arrows is no longer needed for moving
+- New tile: Web (takes 2s to get out of, rather than 0.4s)
+- Silicone is 2x more common
+- Copper is 5x more common
+- Silicone is worth 4x more
+- Copper is worth 64x more
+- Added notifications when finishing mining
+- Fixed mining progress stat going up when not actively mining
+
+-> Shbook:
+- Featuriary: Added The Mine
+- Currenciary: Moved Pearls
+
+
+
+## v4.1 (2025-08-25)
+-> The Mine:
+- Added new currency and tile Iron Shgabb, about as common as GS, takes 100 to finish
+- Added smooth moving
+- Mine button is now clickable (acts like the click button), with animations
+- Added animation when mining is complete
+
+-> Iron Shgabb:
+- New currency, unlocked along The Mine (like Pearls)
+- Can be found in The Mine (similar to Pearls in Fishgang)
+- Can be spent on four upgrades:
+- Speed Miner: flat reduces time of Deep Miner (max lvl. 500, as after that it would do nothing)
+- CuFe: get more Copper based on how much Iron Shgabb you have
+- Pickaxes: faster cooldown while mining something (max lvl. 5, x1.5 speed)
+- Copper Miner: base Copper gains get multiplied by how many Copper tiles you mined (max lvl. 1)
+- Added Currenciary entry
+
+-> Settings:
+- Added sections (like with stats or player profile)
+- Reworked design of buttons, with new colors (blue -> dark gray/white) and round border
+- All Settings in a row now have the same height
+- New Setting: Sidebar Width (19%, 24%, 29%, 34%, 4%, 9%, 14%)
+- Reworked Setting rendering code
+
+-> Sidebar:
+- It is no longer considered experimental
+- Popups disappear after the usual amount of time
+- Removed "Sidebar" text from the top
+- Its width can be adjusted with the new Setting (default is still 19%)
+- Reduced empty space
+
+-> Artifacts:
+- Stabilized Boost Filters for Artifacts that change what they boost
+- Fixed Snake Oil Salesman issue
+
+-> Other:
+- New colors for Améliorer convert buttons
+- Increased size of Player Profile
+
+
+
+### v4.1.1 (2025-08-28)
+- Reduced costs of Iron upgrades (except CuFe)
+- Total Pearls, Total Iron and Mined Iron stats are now displayed
+- Moved Chengas and Etenvs stats
+- Added Gem Storage section header
+- Updated WGGJ from v1.4 to v1.4.1 (fixing a mobile tap issue)
+
+
+
+### v4.1.2 (2025-09-06)
+-> Hotkeys:
+- New hotkey: Space bar triggers the click button (inside and outside of The Mine)
+- Added Shbook entry with all hotkeys (also see: wiki)
+
+-> Other:
+- Added display below Silicone upgrades to show its boost to Shgabb, and how close its playtime part is to MAX
+- Shbook shows start and end of events
+- Added quote fade in (every time it changes)
+- Click button lights up a bit when hovering over it
+- Improved ad security
+
+
+
+## v4.2 (2025-09-24)
+-> Tutorial:
+- Added a tutorial with 6 parts
+- The first visible character, Lucie, guides you through the beginning
+- Can be freely skipped
+- Ends at Shbook/Sandwich unlock (HMS 25)
+
+-> Audio:
+- Added four new songs: Shgame (Remix), Silicone Business, 0.2s, Kate Blen
+- Removed old Shgame song
+- Music now starts playing on first click
+- Added three new audio settings (see below)
+- Finally added more sounds than just the fart xd:
+- Added upgrade sound
+- Added unlevel sound
+- Added click sound (when changing sections)
+- Added tutorial talking sound
+- Migrated to WGGJ's new audio system
+
+-> Settings:
+- Added a new type of setting; slider settings
+- New Gameplay Setting: Tutorial (repeat tutorial)
+- New Audio Setting: Music Volume
+- New Audio Setting: Selected Song
+- New Audio Setting: Sound Volume
+- Improved height on mobile
+
+-> Artifacts:
+- Overhauled Artifact design, with image, rarity and level at the top
+- Names are bold, reduced empty space
+- Added rarity colors: black, green, purple, yellow
+- Different border
+- Also applies to Achievements and cosmetics
+
+-> Other:
+- Added Achievement for completing the tutorial
+- Added Lucie PFP (unlocked by completing tutorial)
+- Updated WGGJ from v1.4.1 to v1.5
+
+
+
+### v4.2.1 (2025-10-14)
+-> Shgabb the Witch:
+- Event is back for Year 2 - all events have been updated now!
+- Duration changed to October 24th - November 6th (21 days -> 14 days)
+- Added 4 Frames
+- Added images and new buttons for Push Virtue, Defensive Herbs, Hair Odor, and Cast Spell
+- Made their descriptions longer
+- Implemented v3.7's event cosmetic awarding system
+- Buffed Herbs from 5% to 10% (5 are enough to guarantee no negative effect)
+- Buffed Odor from 2% to 3%
+- Reduced +2 Witch Shgabb effect to +1
+- Reduced +5 Chengas effect to +3
+
+
+
+### v4.2.2 (2025-11-21)
+-> Upgrade design:
+- All upgrades in the same row now have the same height
+- Currency image now is shown next to the cost
+- Increased description size based on screen width
+- Changed MAX/-1/-MAX design
+
+-> Other:
+- Added currency images to all currencies in the Shbook
+- Fixed issue with STW event gained cosmetic text
+
+
+
+## v4.3 (2025-11-24)
+-> Upgrade Calculator:
+- Found in the Shbook, unlocked with it (25 HMS)
+- Select a group of upgrades, then the desired upgrade
+- Only unlocked groups and upgrades are shown
+- Selecting an upgrade shows: current level, current price, price one level higher, price to max, current effect, effect one level higherk, effect at max
+- You can select a range from level x to level y:
+- It shows: levels, total price for that range, effect at level x, effect at level y
+- You can select a single level:
+- It shows: level, price to next level, price to max, effect, effect at next level
+
+-> Settings:
+- All settings in the same row now have the same height
+- New Audio Setting: Autoplay Songs
+- Moved "Hide Maxed Upgrades" and "Current Effect Display" from Gameplay to Design
+- Moved "Show Artifact Boost Filters" from Design to Gameplay
+- Moved Ad Music setting next to the other music (not sound) ones
+
+-> Other:
+- Upgrades: moved MAX/-1/-MAX to the top, content below gets spaced out
+- "Not enough ..." text now has proper currency names rather than abbreviations (sw)
+- Good Joke Shgabb Upgrade now shows if it's currently active or inactive
+- Basic anti cheat
+- Code improvements
+
+
+
+## v4.4 (2025-11-28)
+-> Generators:
+- New feature, unlocked at 3000 HMS
+- Spend GS to upgrade Generators
+- The higher the level, the more their Genpoint prod boost increases
+- Every Generator multiplies the Genpoint/s gain
+- Genpoints boost Shgabb (^0.1~^0.5 depending on Generators at level 1+)
+- Added 5 Generators:
+- Cheap: e2^L, x1.20^L
+- Balanced: e4^L, x1.30^L
+- Boost: e10^L, x2^L
+- Weak: e15^L, x1.20^L
+- Powerful: e25^L, x3^L
+- Added Featuriary entry
+
+-> Events:
+- Added new cosmetic reward system to: 
+- Christmas Event (10x2% chance -> 8% chance per Gift)
+- Anniversary Event (7x33% chance -> 60% chance per Cake), no free Banner anymore, first PFP still guaranteed
+- Lunar New Year Event (same as before)
+- Egg Hunt Event (not in order anymore, split Banners/Frames into 2 separate offers)
+- Pride Event (same as before, Banners still tied to couples)
+- Hot Hot Summer and Shgabb the Witch already have this system
+
+-> Notifications:
+- Popups can now be clicked away
+- Auto save notifs no longer mess with the top/sidebar notif display (- or pushing other notifs away)
+
+-> Other:
+- Added Pearls, Etenvs and Iron Shgabb to Unlocks list in Shbook
+- Reduced visibility of section backgrounds for darker appearance
+- Fixed issue that cleared selected file (for loading a save)
+
+
+
+## v4.5 (2026-01-24)
+2026-01-24 v4.5 "Update with a mission":
+-> Content:
+- New feature Missions
+- Gem/Artifact gains rebalanced
+- Notifications topic
+- New Reward Codes system
+- Better loading with crash reporting
+- and more!
+
+-> Missions:
+- New feature unlocked at 1000 HMS
+- Found in the Shbook
+- Every Mission consists of steps and gives rewards, and can have an unlock
+- You can only select one Mission at a time, and have to do the steps in order
+- Selecting a different Mission cancels progress
+- Requirement step: requires something once (having a certain ad boost, being at a certain number, ...)
+- Progress step: based on stats, makes you do something a certain amount of times (can be counted as what you get or only as one, and can have an extra requirement)
+- Any step can give a reward, but usually the last step gives the main reward and completes the mission
+- Every Mission and every step has a description
+- Added the first two Missions:
+- Paroxysm, 1000 HMS, 8 steps, basic Mission to introduce the new feature and not overwhelm new players, awards an Artifact and the powerful Paroxysm
+- Artifact Grinder, 1000 HMS, 10 steps, awards 50 Gems and an Artifact
+
+-> Gems:
+- Gems and Artifacts have been rebalanced to make them more fair in earlygame-midgame, and less broken in lategame
+- (Buff) When you get Gems, they are randomly multiplied by x1, x2 or x3 (~ x2 average)
+- (Buff) Amulet of Gem Mines: x2/x2.5/x3 -> x3/x3.5/x4
+- (Nerf) P2W: x3/x3.5/x4 -> x2.5/x3/x3.5
+- (Nerf) Tech Collection: now multiplies Gem chance, instead of Gem amount
+- (Nerf) Snake Oil Salesman: equipping it resets boost now
+
+-> Gem Offers:
+- There are now 3 Artifact Offers instead of just one:
+- 1. unlocked at 1000 HMS, contains a random Common, costs 10 Gems
+- 2. unlocked at 1100 HMS, contains a random Rare, costs 20 Gems
+- 3. unlocked at 1200 HMS, works same as the old one, costs 50 Gems
+- (Buff) All three are updated daily, this way new players have a lot more to choose from, and get lower rarities cheaper
+- (Buff) Changed unlock for Artifact Gift and Artifact Loadout from 1000 HMS to 1500 HMS OR 300 total Gems
+
+-> Artifacts:
+- Added 5 new stats (sadly not tracked before) for total Artifacts found, duplicates found, Artifacts upgraded, Artifacts destroyed, Artifacts equipped
+- (Nerf) Reduced Challenge 5 boost from +x0.25/lvl to +x0.2/lvl
+- (Nerf) Nerfed Challenger (at 1M points and max. level: /2.10 -> /1.48)
+- Added slight coloring to the top, green if the Artifact is active, red if it's inactive
+- Level is now bold
+
+-> Notifications:
+- Added config button to the notifications area, toggling the area to let you configure notifications instead of showing recent ones
+- Here, the different notifications you received during this session (or configured before) are shown
+- Each one of them can be toggled:
+- "Show all" (default, meaning it is shown everywhere)
+- "Hide" (this type is not shown at all)
+- "Top/SB only" (only shown at the top, or Sidebar, depending on settings, but not in the area)
+- "Area only" (only shows in the big notification area, not at the top/Sidebar - this was previously applied to auto save notifications)
+- Simplified notifications from Settings to not spam the new feature
+- Time is now shown next to a notification, in the area
+- Brought back notification for gaining Shgabb
+- Added new notifications for: Generator upgraded, Genpoints produced, notification configured
+- Fun fact: before this update, there were ~151 notifications
+
+-> Reward Codes:
+- Redeem Codes are now called Reward Codes and more powerful
+- An external tool is now used to create them, and new rewards can be added without a game update (as advanced as it can go without an actual server)
+- They can contain rewards such as Gems
+- Most codes can be redeemed by anyone, some may be for a specific player (as compensation for a bug or progress loss)
+- There can still be codes to fix a player's start version or start date, and those are still player-specific.
+- Codes can show a message after redeeming
+- Each code can be used only once
+- Added a button to the Gems area for faster access, Setting button still exists
+- Here is the first code, available through February 6th, giving 300 Gems: 
+- eyJJRCI6IlRIUllSU1NDIiwiRVhQSVJZIjoiMDcuMDIuMjAyNiIsIkRJU1BMQVlURVhUIjoiSGFwcHkgMyB5ZWFycyBvZiBTaGdhYmIgQ2xpY2tlciEgSG9wZSB5b3UgZW5qb3kgdGhlIG5ldyB1cGRhdGUiLCJnZW1zIjoiMzAwIn0=
+
+-> Loading:
+- If the game crashes while loading, you can now report it with just one button click
+- This sends relevant data to me on Discord (where it crashed, rough account progress, game version)
+- Please do not abuse this
+- Improved game loading
+
+-> Achievements:
+- Added 29 new Achievements (211 -> 240, more than any other update)
+- Missions related (2): I'm on a mission, Not missing on a mission
+- Other v4.5 features related (4): I tell you what to tell me, Free stuffing, Redemption arc, I need no triplets
+- Recent features related (13): Secret Formula, Familiar Sparks, Cheap EV, As all things should be, Boosting the Generators, Weak as ever, Idle Bar, Gen Prix I, II, II, Making a mess I, II, III
+- Artifact related (9): Hyperspeed Cooldown, My medium collection, My big collection, Scrap You I, II, III, IV, V, Destructive Breakdown
+- Other (1): Challenger IV
+- Changed descriptions of "Do we have dinosaurs???" and "Pizza!!!!!"
+- Moved "Finite Stones" and some lategame Achievements
+
+-> Design:
+- Increased width of Setting sections, cosmetic buttons and stat buttons
+- Click button: changed Shgabb text to image
+- Upgrades: Cost and Effect are now on the left
+- Upgrades: Reduced currency image size
+- Social Section: Centered all headers
+- Social: Remade the four images and changed button design
+
+-> Other:
+- Added "?" button to currency sections (Shgabb, Sandwiches, ...) to directly open the Shbook
+- Added "X" button to the right of the Sidebar to hide it, that will show ">" to bring it back
+- Removed (Year 2) texts from Events (Christmas and Anniversary got no changes, and it's not needed for now)
+- Turning off popups now immediately terminates the currently displayed popup
+- Re-organized code files or added HEX-based navigation for: main, events, shbook and artifacts
+
+-> Fixes:
+- Having the daily loadout selected (from quick equip) is now remembered instead of half-loading the first
+- Fixed issue with Gift Artifacts in daily challenge
+- Fixed Sarah's Gems Achievement saying 500 Gems when it is 2000 Gems
+- Fixed excessive Genpoint gains when turning off the phone screen
+- Fixed UTC issue at end of year
+
+
+
+### v4.5.1 (2026-02-07)
+-> Events:
+- New Event info UI, for all seven Events
+- For consistent design and better readability
+
+-> Auto:
+- Fridge time gets reduced to max. if it's above it (ie opening game while having Thaw equipped)
+- Auto info: aligned its texts to a new type of layout
+- Auto info: Fridge time can no longer go below 0
+
+-> Other:
+- Joke ad names are now bold
+- Shgabb image in click button can now be clicked through
+
+-> Bug fixes:
+- Fixed music and sounds not being properly muted when starting the game
+- Fixed Gem Shgabb Boost visual issue
+- Fixed Genpoints notification before unlock
+- Fixed texts for export/import Settings
+- Fixed issue with Setting sections that aren't Gameplay
+- Fixed Qian offer issue
+
+
+
+### v4.5.2 (2026-02-11)
+2026-02-11 v4.5.2 "elshgabb452":
+-> Artifacts:
+- New Epic Tier II Artifact: Root
+- (Nerf) Trash Can: reduced max. boost from x4/x8/x12 to x3/x6/x9
+- Artifact search now supports "[rarity] L[level]" combination and "tier [roman numerals]"
+- Changes to tiers, see below
+
+-> Artifact tiers:
+- An Artifact's tier is now displayed next to the rarity and level
+- Changed tier III from 5000 HMS to 4000
+- Added tier V at 10,000 HMS
+- Added list of tiers to Featuriary (1000 / 2000 / 4000 / 8000 / 10,000)
+- Artis per tier: 43 / 16 / 21 / 5 / 11
+- Some Artifacts had their tier changed:
+- Tier III: Golden Past (I), Golden Day (I)
+- Tier IV: Buying Bags (II)
+- Tier V: Orange Ring (IV), Orange Ring (IV), Ore Rush (IV), Ore Vein (IV), all legendaries (IV)
+
+-> Achievements:
+- Changed HMS amount in "Challenge Me!", "Wet Gang" and "The Ads Are Changing" (Challenges, Fishgang and Chenga unlocks) and moved them accordingly
+- Moved lots of Achievements, particularly in earlygame
+- Changed Conqueror Achievements: 1500/2500/5000/10,000/15,000/20,000 -> 1500/2500/4444/9001/16,000/21,400 (to avoid conflicts with unlocks)
+
+-> Fishgang:
+- Adjusted slider speed, slower at less distance (1x, 2x, 3x, 4x multi depending on color, instead of always 4x)
+- Quality is now displayed alongside chance (1-10, decides what fish you can get)
+- Added floating text showing chance increase/decrease after reeling
+- Added background behind chance/quality on the right (for symmetry and better readability)
+- Moved throwing animation to clicking throw, from when the fish appears
+- New fish: Shark (new image), Stupid Tuna
+- New trash: Wet dirt, Broken vape, AI slop, AI trash, Broken slot machine
+- Fixed trash capitalization
+
+-> Other:
+- Custom colors setting: new formatting and buttons preview the colors
+- Fixed Genpoint boost display issue
+
+
+
+## v4.6 (2026-03-13)
+-> Black Market:
+- New feature unlocked at 13,000 HMS
+- It always appears on the 13th of a month 
+- Offers are random for every time, and different for every player 
+- 4 exclusive tier X Artifacts 
+- 4 exclusive PFPs 
+- Black Tickets are used for purchase 
+- Daily Challenge Points and Gems can be converted to Black Tickets, two times each
+
+-> Scrapyard:
+- New feature unlocked at 14,000 HMS
+- Found at the Mine minigame
+- Spend Artifact Scrap to get more Iron Shgabb 
+- Every level takes multiple taps (how many is random)
+- With animations
+
+-> Missions:
+- Two new missions:
+- Bread for Breakfast, 1000 HMS, 8 steps, awards two PFPs and some Sandwiches
+- Purple Tree Upgrades, 2000 HMS, 14 steps, awards two PFPs and 50 Gems
+- Artifact Grinder: step 4 can now be auto shgabb or click shgabb, reduced step 6 from 10 Artis to 5, changed step 10 description
+
+-> Stats:
+- Added new stats for:
+- Scrapyard Levels, taps, Scrap spent 
+- Play time during click cooldown, active fridge, active event 
+- Play time in Shgic, Fishgang, Mine 
+- Critical clicks, Sandwich clicks (both not affected by Tech Collection)
+- How many Banana Trees died or survived on a click (>0% death chance), days survived
+- Black Tickets, total Daily Challenge Points
+- All these new stats only started tracking with this update (v4.6)
+
+-> Player Profile:
+- Added 10 new PFPs (2 unlocked by using Linux (one of which is special!), 4 from the Black Market, 4 from the new Missions)
+- Added button to toggle the background frame
+
+-> Artifacts:
+- Added 4 new Artifacts (2 common, 1 rare, 1 epic, 100 total)
+- Added tier X, not obtainable from normal Artifact drops 
+- These new Artifacts are exclusive from the Black Market
+- Artifacts can now boost crit power and crit chance
+- Stats now show crit power alongside crit chance
+
+-> Shbook:
+- Lore: Changed design of buttons in the list, with clear left-middle-right
+- Lore: Overhauled the info area, with better readability, formatting and a list of the pages in inventory
+- Lore: Changed buttons of locked (found) lore
+- Calculator: Upgrade list now uses the same colors from settings
+- Calculator: Added new formatting to the results
+- Calculator: at level 0, effect doesn't show current effect anymore
+- Featuriary: added Gem Storage and Scrapyard to the Unlocks list, added lists of unlockable Gem Offers, Artifact Tiers and Challenges
+- Featuriary: added entries for Scrayard and Black Market
+
+-> Notifications:
+- Increased internal storage from 20 to 255 to avoid top/sb only and area only notifications deleting others and thus preventing them from showing up
+- Changed area to go from top to bottom (same as top/sb)
+
+-> Gem Storage:
+- Gems now show the current amount here and in currencies display (so stored Gems not being counted)
+- Added display for total Gems (stored and not stored)
+- Added buttons for: +30, +1000, -30, -1000, +1%, +10%, -1%, -10%
+- Added section background
+- Expanded text
+- Fixed a number display issue
+
+-> Other:
+- Added 5 new Quotes (110 total)
+- Expanded info section with text explaining no AI was used, credits for Tux, Mint logo and Bags, and adding Balnoom brand name
+- Added notification for gained Shgabb on a click (already existed for auto)
+- Fixed Shgabb Conqueror IV Achievement existing twice (visual bug)
+- Moved Shgabb Conqueror V Achievement
+
+
+
+### v4.6.1 (2026-03-17)
+-> Black Market:
+- March 20th, 2026 will have an additional Black Market for those who didn't interact with the first
+
+-> Design:
+- Added smooth slide and fade in/out animations for toggling the Sidebar
+- Added smooth fade in/out animations for popups
+- ? and Sidebar toggle buttons now lighten up on hover
+- Artifacts show how many are currently selected (to the left of Scrap amount, while unlocked was moved to the right)
+- New Shbook button design
+
+-> Achievements:
+- Added Shgabb Conqueror VII as compensation for the fake duplicate Shgabb Conqueror IV (240 total)
+- Fixed issue with "I need no triplets"
+
+
+
+### v4.6.2 (2026-03-30)
+-> Egg Hunt Event:
+- Added Offer to buy the new Artifact (Egg Instinct) for 50 Eggs
+- New button design/texture
+- Changed eggs (see below)
+
+-> Eggs:
+- Egg can no longer be clicked through (e.g. to avoid accidental purchases)
+- Egg appears black for a moment after being clicked
+- Egg duration: 10s -> 10s or 20s or 30s (random)
+- Eggs can no longer only appear in upgrades, but also in: Gem Offers, Settings
+
+-> Artifacts:
+- New Tier X Epic Artifact: Egg Instinct (only useful during the event, makes it easier to find Eggs and becomes stronger after finding one)
+- Changed design to be as space efficient as possible and be able to show all text
+
+-> Gems:
+- Updated Gem Offer design
+- Added texture for Gem Offers and storage Buttons
+
+-> Generators:
+- Changed the top bit 
+- Genpoints/s are now shown
+- Added texture for upgrade button
+
+-> Bug fixes:
+- Improved loading (to fix rare random loading crashes)
+- Fixed Chrome specific issues
+- Fixed a spacebar exploit
+
+
+
+### v4.6.3 (2026-06-04)
+-> Pride Event:
+- Shgaybb Mode is now called Dating Mode 
+- It still slows down clicks, but instead of finding text-only "Shgabbs", you have a chance of finding a match (20%)
+- Your own character gets generated after the first click
+- When a possible match has appeared (20%), you can see their info and attempt to match
+- Info: name (irrelevant), age (irrelevant), gender, sexuality, possible cosmetics
+- For it to work, the sexuality needs to be compatible with the other's gender (e. g. straight male + female, pan + anything, lesbian female + bi female)
+- If it works, there is a 33% chance of it ultimately being a match
+- This still awards 20 Gems, but the cosmetics are based on the match (+10 extra Gems for duplicates)
+
+- Sexualities and genders are now differentiated
+- Each Shgabb has a gender, a sexuality, a name and an age
+- Realistic compabilities are considered (like lesbian only being for female characters)
+- Straight and Ally take the opposite gender (male-female)
+- Possible cosmetic rewards are tied to them (for example, the lesbian flag can come from a lesbian)
+- Removed "Supergay" and "Shgabbsexual"
+- Renamed "Gay male" to "Gay" and "Gay female" to "Lesbian"
+- Full list:
+- Sexualities: Asexual, Bi, Gay, Lesbian, Pan, Straight, Ally
+- Genders: Male, Female, Non-binary, Intersex, Transmasc, Transfem
+
+-> Other:
+- Fixed issue with some cosmetics images
+
+
+
+## v4.7 (INDEV)
+? v4.7:
+-> ???:
+-
+
+-> Modals:
+- Added modals: a new layer of showing information
+- New modal for returning players (showing profile card and giving the options to start, start muted, or change save)
+- New modal for new players (import save, reset save, or create save (*does not override existing save if there is one))
+- New modal for save creation (giving start options: sound, tutorial, player name)
+
+-> Quotes:
+- Added 5 new Quotes (110 -> 115)
+- New Design Setting: Toggle Quotes
+
+-> Other:
+- Improved music loading on start
+- Another attempt at fixing random crashes during loading 
+- Fixed issue with some cosmetics images
