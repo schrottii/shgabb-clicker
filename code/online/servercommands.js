@@ -54,7 +54,7 @@ async function client_account_register() {
 
     // validation (e.g. username already exists) is done on the server
     // using the name and password provided by the user
-    if (userName.length > 0 && userPassword.length > 5) {
+    if (userName.length > 0 && userPassword.length > 5 && userEmail.length > 0) {
         callServer("register", { username: userName, password: userPassword, email: userEmail });
     }
     else {
@@ -65,7 +65,12 @@ async function client_account_register() {
 function client_account_register_reply(data) {
     // data contains: success, nameValid, pwValid
     let message;
-    if (data.success) message = "Registering successful. Check your email for verification code."; // i love if or else ^w^
+    if (data.success) {
+        message = "Registering successful. Check your email for verification code."; // i love if or else ^w^
+        if (document.getElementById("verifyCodeArea")) {
+            document.getElementById("verifyCodeArea").style.display = "";
+        }
+    }
     else if (!data.nameValid) message = "Username already exists";
     else if (!data.pwValid) message = "Password is too short";
     else if (!data.emailValid) message = "Email already exists";
@@ -80,7 +85,7 @@ function client_account_register_reply(data) {
 // 4. verify email
 async function client_verify_email(email = "", code = "") {
     if (document.getElementById("verify-code")) {
-        email = document.getElementById("cloudSave-email").value;
+        email = document.getElementById("cloudSave-email") ? document.getElementById("cloudSave-email").value : "";
         code = document.getElementById("verify-code").value;
     }
     console.log(email, code);
@@ -96,7 +101,10 @@ function client_verify_email_reply(data) {
 }
 
 // 5. resend verification
-async function client_resend_verification(email) {
+async function client_resend_verification(email = "") {
+    if (!email && document.getElementById("cloudSave-email")) {
+        email = document.getElementById("cloudSave-email").value;
+    }
     callServer("resend_verification", { email: email });
 }
 
@@ -231,5 +239,10 @@ function client_account_logout() {
 
 function client_account_logout_reply(data) {
     client_account_logincheck();
+
+    // UI
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Logged out";
+
+    // log out from cache
+    localStorage.setItem("balnoomLogin", JSON.stringify({ name: undefined, pw: undefined, email: undefined }));
 }
