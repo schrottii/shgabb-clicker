@@ -271,16 +271,30 @@ async function server_register(ws, data) {
     let pwValid = true;
     let emailValid = true;
 
-    // existing email validation
-    let emailExists = await database_command("getEmailExistence", { email: email });
-    if (emailExists && emailExists.length > 0) {
+    if (typeof email !== "string" || email.trim().length === 0 || !email.includes("@")) {
         emailValid = false;
     }
+    else {
+        // existing email validation
+        let emailExists = await database_command("getEmailExistence", { email: email });
+        if (emailExists && emailExists.length > 0) {
+            emailValid = false;
+        }
+    }
 
-    // existing username validation
-    let nameExists = await database_command("getUserNameExistence", { name: name });
-    if (nameExists && nameExists.length > 0) {
+    if (typeof name !== "string" || name.trim().length === 0) {
         nameValid = false;
+    }
+    else {
+        // existing username validation
+        let nameExists = await database_command("getUserNameExistence", { name: name });
+        if (nameExists && nameExists.length > 0) {
+            nameValid = false;
+        }
+    }
+
+    if (typeof pw !== "string" || pw.length <= 5) {
+        pwValid = false;
     }
 
     let success = false;

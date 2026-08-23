@@ -176,7 +176,13 @@ modals = {
             <br /><br />
         </div>
 
-        <div id="cloudSaveButton"></div>
+        <div id="cloudsaveArea" style="display: none;">
+            <h3>Cloud save</h3>
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />
+            <br /><br />
+        </div>
+        <span id="cloudsaveloggedout"></span>
+
         <div id="verifyCodeArea" style="display: none;">
             <h3>Verify e-mail</h3>
             <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"></td><td>6 digit verify code
@@ -186,31 +192,28 @@ modals = {
             <br /><br />
         </div>
 
-        <div id="resetPasswordArea" style="display: none;">
+        <div id="resetPasswordArea">
             <h3>Reset password</h3>
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_request_password_reset();">Request password reset</button>
-            <br />
-            <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"></td><td>
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_confirm_password_reset();">Verify</button>
+            Can't access your account? Click here to recover: <br />
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('resetpassword');">Request password reset</button>
             <br /><br />
-            </div>
+        </div>
         `,
         (m, tick) => {
             document.getElementById("loginArea").style.display = isLoggedIn ? "none" : "";
             document.getElementById("logoutArea").style.display = !isLoggedIn ? "none" : "";
 
             if (isLoggedIn) {
-                m.write("cloudSaveButton", `
-        <h3>Cloud save</h3>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />`);
-
                 //m.write("verifyCodeArea", `
 
-                document.getElementById("verifyCodeArea").style.display = "";
+                m.write("cloudsaveloggedout", "");
+                document.getElementById("cloudsaveArea").style.display = "";
+
+                document.getElementById("verifyCodeArea").style.display = "none";
                 document.getElementById("resetPasswordArea").style.display = "";
             }
             else {
-                m.write("cloudSaveButton", "Log in to access cloud save");
+                m.write("cloudsaveloggedout", "Log in to access cloud save<br />");
             }
         }
     ),
@@ -230,6 +233,29 @@ modals = {
                 toggleModal("accountmanagement");
             }
         }
+    ),
+    "resetpassword": new Modal("Reset Password",
+        `
+        <span id="accountLoginStatus"></span><br />
+        <br />
+
+        Enter your address here, then press the button. An E-Mail will be sent to confirm it is your account. <br />
+        <input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"> E-Mail <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="sendPasswordResetEmail();">Send E-Mail</button>
+        <br /><br />
+
+        <div id="verifyCodeArea" style="display: none;">
+            Enter your received six digit code here: <br />
+            <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"> <br />
+            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_confirm_password_reset();">Verify</button>
+        </div>
+        `,
+        (m, tick) => {
+            if (!isLoggedIn) {
+                toggleModal("resetpassword", "close");
+                toggleModal("accountmanagement");
+            }
+        }
     )
 };
 
@@ -245,4 +271,13 @@ function createNewSaveFromModal() {
         toggleModal('welcomeback', 'close');
         toggleModal('welcomenewsave');
     }
+}
+
+function sendPasswordResetEmail() {
+    client_request_password_reset();
+
+    document.getElementById('cloudSave-email').value = '';
+    document.getElementById('verifyCodeArea').style.display = '';
+
+    //if (document.getElementById('accountLoginStatus')) document.getElementById('accountLoginStatus').innerHTML = 
 }
