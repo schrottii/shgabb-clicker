@@ -311,10 +311,7 @@ async function server_register(ws, data) {
         });
 
         if (success) {
-            let subject = "balnoom verification code";
-            let text = `test ${code}`;
-            let html = `<p>test ${code}</p>`;
-            await sendBrevoEmail(email, subject, text, html);
+            server_register_send();
         }
     }
 
@@ -328,6 +325,30 @@ async function server_register(ws, data) {
         email: email,
         requiresVerification: true
     }); 
+}
+
+async function server_register_send() {
+    let subject = "Verification Code | Balnoom Account";
+    let text = `
+Thank you for showing interest in creating a Balnoom-wide account!
+
+Your verification code is: ${code}
+
+If you didn't create an account, you can safely ignore this E-mail.`;
+
+    let html = `
+<div style='background-color: #2B1B26; color: violet; font-size: 14px;'>
+<p style='text-align: center;'>Thank you for showing interest in creating a Balnoom-wide account! Your account can be used across all of the games and sites that support it. <br /> <br />
+
+Your verification code is: <br />
+<span style='font-size: 32px; letter-spacing: 8px;'>${code}</span>
+
+</p><hr />
+<span style='color: gray;'>If you did not request an account, you can safely ignore this E-mail.</span>
+</div>`;
+
+    let success = await sendBrevoEmail(email, subject, text, html);
+    return success; // bool
 }
 
 // 4. verify email
@@ -375,12 +396,7 @@ async function server_resend_verification(ws, data) {
 
         await database_command("setNewVerificationCode", { email: email, code: code, expires: expires });
 
-        let subject = "balnoom verification code";
-        let text = `test ${code}`;
-        let html = `<p>test ${code}</p>`;
-
-        await sendBrevoEmail(email, subject, text, html);
-        success = true;
+        success = await server_register_send();
         message = "Verification code resent.";
     }
 
@@ -403,9 +419,25 @@ async function server_request_password_reset(ws, data) {
 
         await database_command("setPasswordResetCode", { email: email, code: code, expires: expires });
 
-        let subject = "balnoom Password reset code";
-        let text = `test ${code}`;
-        let html = `<p>test ${code}</p>`;
+        let subject = "Reset Password | Balnoom Account";
+
+        let text = `
+A password reset was requested for your account. Use this code to then change it.
+
+Your verification code is: ${code}
+
+If you did not request a password reset, you can safely ignore this E-mail.`;
+
+        let html = `
+<div style='background-color: #2B1B26; color: violet; font-size: 14px;'>
+<p style='text-align: center;'>A password reset was requested for your account. Use this code to then change it. <br /> <br />
+
+Your password reset code is: <br />
+<span style='font-size: 32px; letter-spacing: 8px;'>${code}</span>
+
+</p><hr />
+<span style='color: gray;'>If you did not request a password reset, you can safely ignore this E-mail.</span>
+</div>`;
 
         await sendBrevoEmail(email, subject, text, html);
         success = true;
