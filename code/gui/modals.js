@@ -251,8 +251,25 @@ modals = {
         </div>
         `,
         (m, tick) => {
-            if (!isLoggedIn) {
+            if (isLoggedIn) {
                 toggleModal("resetpassword", "close");
+                toggleModal("accountmanagement");
+            }
+        }
+    ),
+    "resetpassword2": new Modal("Reset Password",
+        `
+        <span id="accountLoginStatus"></span><br />
+        <br />
+
+        Enter your new password here. <br />
+        <input id="newpassword" type="text" maxlength="64" size="32" style="font-size: 24px;"> New password <br />
+        <input id="newpassword2" type="text" maxlength="64" size="32" style="font-size: 24px;"> Repeat new password <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="sendPasswordResetEmail();">Change</button>
+        `,
+        (m, tick) => {
+            if (isLoggedIn) {
+                toggleModal("resetpassword2", "close");
                 toggleModal("accountmanagement");
             }
         }
@@ -274,10 +291,12 @@ function createNewSaveFromModal() {
 }
 
 function sendPasswordResetEmail() {
-    client_request_password_reset();
+    let email = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "";
+    client_request_password_reset(email);
 
-    document.getElementById('cloudSave-email').value = '';
-    document.getElementById('verifyCodeArea').style.display = '';
+    if (document.getElementById("verifyCodeArea") != null) {
+        document.getElementById("verifyCodeArea").style.display = "";
+    }
 
     //if (document.getElementById('accountLoginStatus')) document.getElementById('accountLoginStatus').innerHTML = 
 }

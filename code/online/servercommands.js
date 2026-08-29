@@ -5,7 +5,7 @@ async function client_playercount() {
     //if (getOrigin() == "private") return;
     console.log("/playercount");
 
-    callServer("playercount", { });
+    callServer("playercount", {});
 }
 
 function client_playercount_reply(data) {
@@ -114,7 +114,10 @@ function client_resend_verification_reply(data) {
 }
 
 // 6. request password reset
-async function client_request_password_reset(email) {
+async function client_request_password_reset(email = "") {
+    if (!email && document.getElementById("cloudSave-email") != null) {
+        email = document.getElementById("cloudSave-email").value;
+    }
     callServer("request_password_reset", { email: email });
 }
 
@@ -124,7 +127,16 @@ function client_request_password_reset_reply(data) {
 }
 
 // 7. confirm password reset
-async function client_confirm_password_reset(email, code, newPassword) {
+async function client_confirm_password_reset(email = "", code = "", newPassword = "") {
+    if (!email && document.getElementById("cloudSave-email") != null) {
+        email = document.getElementById("cloudSave-email").value;
+    }
+    if (!code && document.getElementById("verify-code") != null) {
+        code = document.getElementById("verify-code").value;
+    }
+    if (!newPassword && document.getElementById("cloudSave-password") != null) {
+        newPassword = document.getElementById("cloudSave-password").value;
+    }
     callServer("confirm_password_reset", { email: email, code: code, newPassword: newPassword });
 }
 
@@ -161,7 +173,12 @@ function client_account_login_reply(data) {
     else if (!data.nameValid) message = "Username is incorrect / does not exist";
     else if (!data.pwValid) message = "Password is incorrect";
     else if (!data.emailValid) message = "Email is invalid";
+    else if (data.isVerified === false) message = "Please verify your email before logging in";
     else message = "Login not successful, unknown error";
+
+    if (data.isVerified === false && document.getElementById("verifyCodeArea") != null) {
+        document.getElementById("verifyCodeArea").style.display = "";
+    }
 
     console.log("login: " + message);
     if (data.success) client_account_logincheck();
@@ -234,7 +251,7 @@ function client_account_logout() {
 
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Trying to log out...";
 
-    callServer("logout", { });
+    callServer("logout", {});
 }
 
 function client_account_logout_reply(data) {
