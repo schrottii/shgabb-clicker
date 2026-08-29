@@ -33,8 +33,7 @@ function onServerConnect() {
 }
 
 function connectToServer() {
-    //socket = new WebSocket('ws://localhost:3000');
-    let socketURL = window.location.href.includes("localhost") ? 'ws://localhost:3000' : 'wss://api-shgabb-clicker.balnoom.com';
+    let socketURL = (window.location.href.includes("localhost") || window.location.href.includes("127.0.0.1")) ? 'ws://localhost:3000' : 'wss://api-shgabb-clicker.balnoom.com';
 
     let savedName = "";
     let savedPassword = "";

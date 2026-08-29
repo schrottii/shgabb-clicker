@@ -13,7 +13,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
-require('dotenv').config({ path: path.join(__dirname, '.env') }); 
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const PORT = 3000;
 
@@ -133,7 +133,7 @@ wss.on('connection', async (ws, req) => {
             ws.terminate();
         }, 100);
     }
-    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id/* && loadingPlayerID[0].is_verified === 1 */&& clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && loadingPlayerID[0].is_verified === 1 && clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
         // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
@@ -184,7 +184,7 @@ wss.on('connection', async (ws, req) => {
     ws.on('close', (ws) => {
         console.log("\x1b[0m[USR] Client " + (ws.refer ? ws.refer : "") + " disconnected");
     });
-}); 
+});
 
 const serverLoop = setInterval(() => {
     wss.clients.forEach((ws) => {
@@ -311,7 +311,7 @@ async function server_register(ws, data) {
         });
 
         if (success) {
-            server_register_send();
+            await server_register_send(email, code);
         }
     }
 
@@ -324,10 +324,10 @@ async function server_register(ws, data) {
         pw: pw,
         email: email,
         requiresVerification: true
-    }); 
+    });
 }
 
-async function server_register_send() {
+async function server_register_send(email, code) {
     let subject = "Verification Code | Balnoom Account";
     let text = `
 Thank you for showing interest in creating a Balnoom-wide account!
@@ -396,7 +396,7 @@ async function server_resend_verification(ws, data) {
 
         await database_command("setNewVerificationCode", { email: email, code: code, expires: expires });
 
-        success = await server_register_send();
+        success = await server_register_send(email, code);
         message = "Verification code resent.";
     }
 
@@ -504,14 +504,21 @@ async function server_login(ws, data) {
         isVerified = true;
     }*/
 
+    let isVerified = true;
     let success = nameValid && pwValid && emailValid;
 
     if (success) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
         console.log("loadingPlayerID: " + loadingPlayerID);
         if (loadingPlayerID && loadingPlayerID.length > 0) {
-            ws.playerID = loadingPlayerID[0].id;
-            server_logincheck(ws);
+            if (loadingPlayerID[0].is_verified !== 1) {
+                isVerified = false;
+                success = false;
+            }
+            else {
+                ws.playerID = loadingPlayerID[0].id;
+                server_logincheck(ws);
+            }
         }
         else {
             success = false;
@@ -523,7 +530,7 @@ async function server_login(ws, data) {
         nameValid: nameValid,
         pwValid: pwValid,
         emailValid: emailValid,
-        //isVerified: isVerified,
+        isVerified: isVerified,
         name: name,
         pw: pw,
         email: email
