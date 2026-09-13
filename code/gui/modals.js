@@ -163,7 +163,7 @@ modals = {
             <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
             <tr><td><input id="cloudSave-username" type="text" maxlength="32" size="32" style="font-size: 24px;"></td><td>Username</td></tr>
             <tr><td><input id="cloudSave-password" type="password" maxlength="64" size="32" style="font-size: 24px;"></td><td>Password</td></tr>
-            <tr><td><input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"></td><td>E-Mail</td></tr>
+            <tr><td><input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"></td><td>E-Mail (optional)</td></tr>
             </table>
 
             <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_register();">Register</button>
@@ -263,9 +263,9 @@ modals = {
         <br />
 
         Enter your new password here. <br />
-        <input id="newpassword" type="text" maxlength="64" size="32" style="font-size: 24px;"> New password <br />
-        <input id="newpassword2" type="text" maxlength="64" size="32" style="font-size: 24px;"> Repeat new password <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="sendPasswordResetEmail();">Change</button>
+        <input id="newpassword" type="password" maxlength="64" size="32" style="font-size: 24px;"> New password <br />
+        <input id="newpassword2" type="password" maxlength="64" size="32" style="font-size: 24px;"> Repeat new password <br />
+        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_submit_new_password();">Change</button>
         `,
         (m, tick) => {
             if (isLoggedIn) {
@@ -291,7 +291,7 @@ function createNewSaveFromModal() {
 }
 
 function sendPasswordResetEmail() {
-    let email = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value : "";
+    let email = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value.trim() : "";
     client_request_password_reset(email);
 
     if (document.getElementById("verifyCodeArea") != null) {
