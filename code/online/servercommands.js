@@ -54,7 +54,7 @@ async function client_account_register() {
 
     // validation (e.g. username already exists) is done on the server
     // using the name and password provided by the user
-    if (userName.length > 0 && userPassword.length > 5 && userEmail.length > 0) {
+    if (userName.length > 0 && userPassword.length > 5) {
         callServer("register", { username: userName, password: userPassword, email: userEmail });
     }
     else {
@@ -66,11 +66,23 @@ function client_account_register_reply(data) {
     // data contains: success, nameValid, pwValid
     let message;
     if (data.success) {
-        message = "Registering successful. Check your email for verification code."; // i love if or else ^w^
+        if (data.requiresVerification) {
+            message = "Registering successful. Check your email for verification code."; // i love if or else ^w^
+            if (document.getElementById("verifyCodeArea")) {
+                document.getElementById("verifyCodeArea").style.display = "";
+            }
+        }
+        else {
+            message = "Registration successful! You can now log in.";
+        }
+    }
+    else if (data.linkingEmail) {
+        message = "Verification code sent! Enter code below to link email.";
         if (document.getElementById("verifyCodeArea")) {
             document.getElementById("verifyCodeArea").style.display = "";
         }
     }
+    else if (data.message) message = data.message;
     else if (!data.nameValid) message = "Username already exists";
     else if (!data.pwValid) message = "Password is too short";
     else if (!data.emailValid) message = "Email already exists";
@@ -96,6 +108,11 @@ function client_verify_email_reply(data) {
     console.log("verify_email: " + data.message);
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
     if (data.success) {
+        let userName = document.getElementById("cloudSave-username") ? document.getElementById("cloudSave-username").value : "";
+        let userPassword = document.getElementById("cloudSave-password") ? document.getElementById("cloudSave-password").value : "";
+        if (userName && userPassword) {
+            localStorage.setItem("balnoomLogin", JSON.stringify({ name: userName, pw: userPassword, email: data.email || "" }));
+        }
         client_account_logincheck();
     }
 }
@@ -113,11 +130,15 @@ function client_resend_verification_reply(data) {
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
 }
 
+var resetPasswordEmail = "";
+var resetPasswordCode = "";
+
 // 6. request password reset
 async function client_request_password_reset(email = "") {
     if (!email && document.getElementById("cloudSave-email") != null) {
-        email = document.getElementById("cloudSave-email").value;
+        email = document.getElementById("cloudSave-email").value.trim();
     }
+    resetPasswordEmail = email;
     callServer("request_password_reset", { email: email });
 }
 
@@ -128,21 +149,54 @@ function client_request_password_reset_reply(data) {
 
 // 7. confirm password reset
 async function client_confirm_password_reset(email = "", code = "", newPassword = "") {
-    if (!email && document.getElementById("cloudSave-email") != null) {
-        email = document.getElementById("cloudSave-email").value;
+    if (!email) {
+        if (resetPasswordEmail) {
+            email = resetPasswordEmail;
+        } else if (document.getElementById("cloudSave-email") != null) {
+            email = document.getElementById("cloudSave-email").value.trim();
+        }
     }
-    if (!code && document.getElementById("verify-code") != null) {
-        code = document.getElementById("verify-code").value;
+    if (!code) {
+        if (resetPasswordCode) {
+            code = resetPasswordCode;
+        } else if (document.getElementById("verify-code") != null) {
+            code = document.getElementById("verify-code").value.trim();
+        }
     }
     if (!newPassword && document.getElementById("cloudSave-password") != null) {
         newPassword = document.getElementById("cloudSave-password").value;
     }
+    resetPasswordEmail = email;
+    resetPasswordCode = code;
     callServer("confirm_password_reset", { email: email, code: code, newPassword: newPassword });
+}
+
+function client_submit_new_password() {
+    let p1 = document.getElementById("newpassword") ? document.getElementById("newpassword").value : "";
+    let p2 = document.getElementById("newpassword2") ? document.getElementById("newpassword2").value : "";
+    if (p1.length <= 5) {
+        if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Password must be at least 6 characters long.";
+        return;
+    }
+    if (p1 !== p2) {
+        if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = "Passwords do not match!";
+        return;
+    }
+    client_confirm_password_reset(resetPasswordEmail, resetPasswordCode, p1);
 }
 
 function client_confirm_password_reset_reply(data) {
     console.log("confirm_password_reset: " + data.message);
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
+    if (data.success) {
+        if (currentModal === "resetpassword") {
+            toggleModal("resetpassword", "close");
+            toggleModal("resetpassword2");
+        } else if (currentModal === "resetpassword2") {
+            resetPasswordEmail = "";
+            resetPasswordCode = "";
+        }
+    }
 }
 
 // 8. /login
@@ -170,13 +224,15 @@ function client_account_login_reply(data) {
     // data contains: success, nameValid, pwValid
     let message = "";
     if (data.success) message = "Login successful";
+    else if (data.message && !data.linkingEmail) message = data.message;
     else if (!data.nameValid) message = "Username is incorrect / does not exist";
     else if (!data.pwValid) message = "Password is incorrect";
-    else if (!data.emailValid) message = "Email is invalid";
+    else if (!data.emailValid) message = "Email is invalid or already taken";
+    else if (data.linkingEmail) message = data.message || "Verification code sent! Enter code below to link email.";
     else if (data.isVerified === false) message = "Please verify your email before logging in";
     else message = "Login not successful, unknown error";
 
-    if (data.isVerified === false && document.getElementById("verifyCodeArea") != null) {
+    if ((data.isVerified === false || data.linkingEmail) && document.getElementById("verifyCodeArea") != null) {
         document.getElementById("verifyCodeArea").style.display = "";
     }
 

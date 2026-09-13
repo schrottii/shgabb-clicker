@@ -43,10 +43,10 @@ function connectToServer() {
     let cachedLogin = localStorage.getItem("balnoomLogin");
     if (cachedLogin != null) {
         cachedLogin = JSON.parse(cachedLogin);
-        if (cachedLogin.email != undefined && cachedLogin.email != null && cachedLogin.email != "") {
+        if (cachedLogin.name && cachedLogin.pw) {
             savedName = cachedLogin.name;
             savedPassword = cachedLogin.pw;
-            savedEmail = cachedLogin.email;
+            savedEmail = cachedLogin.email || "";
             console.log("Found cached login, using that");
         }
     }

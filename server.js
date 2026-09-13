@@ -28,8 +28,8 @@ const server = http.createServer((req, res) => {
 const allowedOrigins = [
     'https://balnoom.com',
     'https://schrottii.github.io',
-    'http://localhost:5000',
-    'http://127.0.0.1:5500'
+    'http://localhost',
+    'http://127.0.0.1'
 ];
 
 async function sendBrevoEmail(toEmail, subject, textContent, htmlContent) {
@@ -65,6 +65,43 @@ async function sendBrevoEmail(toEmail, subject, textContent, htmlContent) {
 // for e mail verification
 function generate6DigitCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+const emailCooldowns = new Map();
+const clientCooldowns = new Map();
+
+function checkEmailCooldown(email, clientIP) {
+    let now = Date.now();
+    let normalizedEmail = (email || "").toLowerCase().trim();
+
+    if (normalizedEmail && emailCooldowns.has(normalizedEmail)) {
+        let lastSent = emailCooldowns.get(normalizedEmail);
+        if (now - lastSent < 120000) {
+            let secondsLeft = Math.ceil((120000 - (now - lastSent)) / 1000);
+            return { allowed: false, secondsLeft: secondsLeft };
+        }
+    }
+
+    if (clientIP && clientCooldowns.has(clientIP)) {
+        let lastSent = clientCooldowns.get(clientIP);
+        if (now - lastSent < 120000) {
+            let secondsLeft = Math.ceil((120000 - (now - lastSent)) / 1000);
+            return { allowed: false, secondsLeft: secondsLeft };
+        }
+    }
+
+    return { allowed: true, secondsLeft: 0 };
+}
+
+function recordEmailSent(email, clientIP) {
+    let now = Date.now();
+    let normalizedEmail = (email || "").toLowerCase().trim();
+    if (normalizedEmail) {
+        emailCooldowns.set(normalizedEmail, now);
+    }
+    if (clientIP) {
+        clientCooldowns.set(clientIP, now);
+    }
 }
 
 const server_commands = {
@@ -122,6 +159,7 @@ wss.on('connection', async (ws, req) => {
 
     // get IP (just in case) and the in-DB ID
     let realPlayerIP = req.headers["cf-connecting-ip"] || req.socket.remoteAddress;
+    ws.clientIP = realPlayerIP;
     let loadingPlayerID = await database_command("getID", { name: clientName, password: clientPW, email: clientEmail }); // the server MUST handle this, do not give the user the power to check any ID
 
     if (serverVersion > clientVer) {
@@ -187,13 +225,17 @@ wss.on('connection', async (ws, req) => {
 });
 
 const serverLoop = setInterval(() => {
+    if (db_connection) {
+        db_connection.query("SELECT 1").catch(() => {});
+    }
+
     wss.clients.forEach((ws) => {
         if (ws.isAlive === false) {
             console.log("\x1b[31m[USR] inactive or broken connection: " + ws.refer + "; terminating...");
             return ws.terminate();
         }
 
-        if (!ws.isGuest) database_command("ping", { playerID: ws.playerID });
+        if (!ws.isGuest && ws.playerID != undefined) database_command("ping", { playerID: ws.playerID });
 
         ws.isAlive = false;
         ws.ping();
@@ -263,33 +305,25 @@ const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler"
 
 // 3. register
 async function server_register(ws, data) {
-    let name = data.body.username;
-    let pw = data.body.password;
-    let email = data.body.email;
+    let name = typeof data.body.username === "string" ? data.body.username.trim() : "";
+    let pw = typeof data.body.password === "string" ? data.body.password : "";
+    let email = typeof data.body.email === "string" ? data.body.email.trim() : "";
 
     let nameValid = true;
     let pwValid = true;
     let emailValid = true;
+    let hasEmail = email.length > 0;
 
-    if (typeof email !== "string" || email.trim().length === 0 || !email.includes("@")) {
-        emailValid = false;
-    }
-    else {
-        // existing email validation
-        let emailExists = await database_command("getEmailExistence", { email: email });
-        if (emailExists && emailExists.length > 0) {
+    if (hasEmail) {
+        if (!email.includes("@")) {
             emailValid = false;
         }
-    }
-
-    if (typeof name !== "string" || name.trim().length === 0) {
-        nameValid = false;
-    }
-    else {
-        // existing username validation
-        let nameExists = await database_command("getUserNameExistence", { name: name });
-        if (nameExists && nameExists.length > 0) {
-            nameValid = false;
+        else {
+            // existing email validation
+            let emailExists = await database_command("getEmailExistence", { email: email });
+            if (emailExists && emailExists.length > 0) {
+                emailValid = false;
+            }
         }
     }
 
@@ -298,32 +332,110 @@ async function server_register(ws, data) {
     }
 
     let success = false;
-    if (nameValid && pwValid && emailValid) {
-        let code = generate6DigitCode();
-        let expires = new Date(Date.now() + 15 * 60 * 1000);
+    let requiresVerification = false;
+    let linkingEmail = false;
 
-        success = await database_command("register_pending", {
-            name: name,
-            pw: pw,
-            email: email,
-            code: code,
-            expires: expires
-        });
+    if (typeof name !== "string" || name.trim().length === 0) {
+        nameValid = false;
+    }
+    else {
+        // existing username validation
+        let nameExists = await database_command("getUserNameExistence", { name: name });
+        if (nameExists && nameExists.length > 0) {
+            if (hasEmail && emailValid && pwValid) {
+                let passwordIsMine = await database_command("getUserPassword", { name: name, password: pw });
+                let users = await database_command("getUserByName", { name: name });
+                if (passwordIsMine && passwordIsMine.length > 0 && users && users.length > 0 && !users[0].acc_email) {
+                    let cooldown = checkEmailCooldown(email, ws.clientIP);
+                    if (!cooldown.allowed) {
+                        return callClient("register", ws, {
+                            success: false,
+                            linkingEmail: false,
+                            nameValid: true,
+                            pwValid: true,
+                            emailValid: true,
+                            message: "Please wait " + cooldown.secondsLeft + "s before requesting another email.",
+                            name: name,
+                            pw: pw,
+                            email: email,
+                            requiresVerification: false
+                        });
+                    }
+                    let code = generate6DigitCode();
+                    let expires = new Date(Date.now() + 15 * 60 * 1000);
+                    await database_command("setPendingEmail", { id: users[0].id, email: email, code: code, expires: expires });
+                    await server_register_send(email, code);
+                    recordEmailSent(email, ws.clientIP);
+                    linkingEmail = true;
+                    requiresVerification = true;
+                }
+                else {
+                    nameValid = false;
+                }
+            }
+            else {
+                nameValid = false;
+            }
+        }
+    }
 
-        if (success) {
-            await server_register_send(email, code);
+    if (!linkingEmail && nameValid && pwValid && emailValid) {
+        if (hasEmail) {
+            let cooldown = checkEmailCooldown(email, ws.clientIP);
+            if (!cooldown.allowed) {
+                return callClient("register", ws, {
+                    success: false,
+                    linkingEmail: false,
+                    nameValid: true,
+                    pwValid: true,
+                    emailValid: true,
+                    message: "Please wait " + cooldown.secondsLeft + "s before requesting another email.",
+                    name: name,
+                    pw: pw,
+                    email: email,
+                    requiresVerification: false
+                });
+            }
+            let code = generate6DigitCode();
+            let expires = new Date(Date.now() + 15 * 60 * 1000);
+
+            success = await database_command("register_pending", {
+                name: name,
+                pw: pw,
+                email: email,
+                code: code,
+                expires: expires,
+                is_verified: 0
+            });
+
+            if (success) {
+                await server_register_send(email, code);
+                recordEmailSent(email, ws.clientIP);
+                requiresVerification = true;
+            }
+        } else {
+            success = await database_command("register_pending", {
+                name: name,
+                pw: pw,
+                email: null,
+                code: null,
+                expires: null,
+                is_verified: 1
+            });
+            requiresVerification = false;
         }
     }
 
     callClient("register", ws, {
         success: success,
+        linkingEmail: linkingEmail,
         nameValid: nameValid,
         pwValid: pwValid,
         emailValid: emailValid,
         name: name,
         pw: pw,
         email: email,
-        requiresVerification: true
+        requiresVerification: requiresVerification
     });
 }
 
@@ -353,7 +465,7 @@ Your verification code is: <br />
 
 // 4. verify email
 async function server_verify_email(ws, data) {
-    let email = data.body.email;
+    let email = typeof data.body.email === "string" ? data.body.email.trim() : "";
     let code = String(data.body.code || "").trim();
 
     let check = await database_command("getVerificationData", { email: email });
@@ -362,17 +474,26 @@ async function server_verify_email(ws, data) {
 
     if (!check || check.length === 0) {
         message = "Account not found.";
-    } else if (check[0].is_verified === 1) {
+    } else if (check[0].is_verified === 1 && !check[0].pending_email) {
         success = true;
         message = "Account is already verified.";
-    } else if (check[0].verify_code !== code) {
+    } else if (!check[0].verify_code || String(check[0].verify_code).trim() !== code) {
         message = "Invalid verification code.";
-    } else if (new Date(check[0].verify_expires) < new Date()) {
+    } else if (check[0].verify_expires && new Date(check[0].verify_expires).getTime() < Date.now()) {
         message = "Verification code has expired.";
     } else {
-        await database_command("markUserVerified", { email: email });
-        success = true;
-        message = "Email successfully verified.";
+        if (check[0].pending_email) {
+            await database_command("linkUserEmail", { id: check[0].id, email: check[0].pending_email });
+            success = true;
+            message = "Email successfully linked and verified.";
+        } else {
+            await database_command("markUserVerified", { email: email });
+            success = true;
+            message = "Email successfully verified.";
+        }
+        ws.playerID = check[0].id;
+        ws.isGuest = false;
+        ws.refer = check[0].acc_name;
     }
 
     callClient("verify_email", ws, { success: success, message: message, email: email });
@@ -380,7 +501,7 @@ async function server_verify_email(ws, data) {
 
 // 5. resend verification
 async function server_resend_verification(ws, data) {
-    let email = data.body.email;
+    let email = typeof data.body.email === "string" ? data.body.email.trim() : "";
     let user = await database_command("getUserByEmail", { email: email });
 
     let success = false;
@@ -388,15 +509,29 @@ async function server_resend_verification(ws, data) {
 
     if (!user || user.length === 0) {
         message = "Account with this email does not exist.";
-    } else if (user[0].is_verified === 1) {
+    } else if (user[0].is_verified === 1 && !user[0].pending_email) {
         message = "Account is already verified.";
     } else {
+        let cooldown = checkEmailCooldown(email, ws.clientIP);
+        if (!cooldown.allowed) {
+            message = "Please wait " + cooldown.secondsLeft + "s before requesting another email.";
+            return callClient("resend_verification", ws, { success: false, message: message });
+        }
+        if (user[0].verify_expires) {
+            let diff = new Date(user[0].verify_expires).getTime() - Date.now();
+            if (diff > 13 * 60 * 1000) {
+                let secondsLeft = Math.ceil((diff - 13 * 60 * 1000) / 1000);
+                message = "Please wait " + secondsLeft + "s before requesting another email.";
+                return callClient("resend_verification", ws, { success: false, message: message });
+            }
+        }
         let code = generate6DigitCode();
         let expires = new Date(Date.now() + 15 * 60 * 1000);
 
         await database_command("setNewVerificationCode", { email: email, code: code, expires: expires });
 
         success = await server_register_send(email, code);
+        recordEmailSent(email, ws.clientIP);
         message = "Verification code resent.";
     }
 
@@ -405,7 +540,7 @@ async function server_resend_verification(ws, data) {
 
 // 6. request password reset
 async function server_request_password_reset(ws, data) {
-    let email = data.body.email;
+    let email = typeof data.body.email === "string" ? data.body.email.trim() : "";
     let user = await database_command("getUserByEmail", { email: email });
 
     let success = false;
@@ -414,21 +549,43 @@ async function server_request_password_reset(ws, data) {
     if (!user || user.length === 0) {
         message = "No account found with this email.";
     } else {
+        let cooldown = checkEmailCooldown(email, ws.clientIP);
+        if (!cooldown.allowed) {
+            message = "Please wait " + cooldown.secondsLeft + "s before requesting another email.";
+            return callClient("request_password_reset", ws, { success: false, message: message });
+        }
+        if (user[0].reset_expires) {
+            let diff = new Date(user[0].reset_expires).getTime() - Date.now();
+            if (diff > 13 * 60 * 1000) {
+                let secondsLeft = Math.ceil((diff - 13 * 60 * 1000) / 1000);
+                message = "Please wait " + secondsLeft + "s before requesting another email.";
+                return callClient("request_password_reset", ws, { success: false, message: message });
+            }
+        }
         let code = generate6DigitCode();
         let expires = new Date(Date.now() + 15 * 60 * 1000);
 
-        await database_command("setPasswordResetCode", { email: email, code: code, expires: expires });
+        let updateResult = await database_command("setPasswordResetCode", { email: email, code: code, expires: expires });
+        if (!updateResult) {
+            message = "Failed to create reset code. Please try again.";
+        } else {
+            let subject = "Reset Password | Balnoom Account";
 
-        let subject = "Reset Password | Balnoom Account";
+            let text = `
+Thank you for showing interest in creating a Balnoom-wide account!
 
-        let text = `
+Your verification code is: ${code}
+
+If you didn't create an account, you can safely ignore this E-mail.`;
+
+            text = `
 A password reset was requested for your account. Use this code to then change it.
 
 Your verification code is: ${code}
 
 If you did not request a password reset, you can safely ignore this E-mail.`;
 
-        let html = `
+            let html = `
 <div style='background-color: #2B1B26; color: violet; font-size: 14px;'>
 <p style='text-align: center;'>A password reset was requested for your account. Use this code to then change it. <br /> <br />
 
@@ -439,9 +596,11 @@ Your password reset code is: <br />
 <span style='color: gray;'>If you did not request a password reset, you can safely ignore this E-mail.</span>
 </div>`;
 
-        await sendBrevoEmail(email, subject, text, html);
-        success = true;
-        message = "Password reset code sent.";
+            await sendBrevoEmail(email, subject, text, html);
+            recordEmailSent(email, ws.clientIP);
+            success = true;
+            message = "Password reset code sent.";
+        }
     }
 
     callClient("request_password_reset", ws, { success: success, message: message });
@@ -449,21 +608,27 @@ Your password reset code is: <br />
 
 // 7. confirm password reset
 async function server_confirm_password_reset(ws, data) {
-    let email = data.body.email;
+    let email = typeof data.body.email === "string" ? data.body.email.trim() : "";
     let code = String(data.body.code || "").trim();
-    let newPassword = data.body.newPassword || "";
+    let newPassword = (data.body && data.body.newPassword) ? String(data.body.newPassword) : "";
 
     let user = await database_command("getPasswordResetData", { email: email });
     let success = false;
     let message = "";
 
     if (!user || user.length === 0) message = "Account not found.";
-    else if (user[0].reset_code !== code) message = "Invalid reset code.";
-    else if (new Date(user[0].reset_expires) < new Date()) message = "Reset code has expired.";
+    else if (!user[0].reset_code || String(user[0].reset_code).trim() !== code) message = "Invalid reset code.";
+    else if (user[0].reset_expires && new Date(user[0].reset_expires).getTime() < Date.now()) message = "Reset code has expired.";
+    else if (newPassword && newPassword.length <= 5) message = "Password must be at least 6 characters.";
     else {
-        await database_command("updateUserPassword", { email: email, password: newPassword });
-        success = true;
-        message = "Password updated successfully.";
+        if (newPassword) {
+            await database_command("updateUserPassword", { email: email, password: newPassword });
+            success = true;
+            message = "Password updated successfully.";
+        } else {
+            success = true;
+            message = "Reset code verified.";
+        }
     }
 
     callClient("confirm_password_reset", ws, { success: success, message: message });
@@ -471,19 +636,14 @@ async function server_confirm_password_reset(ws, data) {
 
 // 8. login
 async function server_login(ws, data) {
-    let name = data.body.username;
-    let pw = data.body.password;
-    let email = data.body.email;
+    let name = typeof data.body.username === "string" ? data.body.username.trim() : "";
+    let pw = typeof data.body.password === "string" ? data.body.password : "";
+    let email = typeof data.body.email === "string" ? data.body.email.trim() : "";
 
     let nameValid = true;
     let pwValid = true;
     let emailValid = true;
-
-    // existing email validation
-    let emailExists = await database_command("getEmailExistence", { email: email });
-    if (!emailExists || emailExists.length == 0) {
-        emailValid = false;
-    }
+    let linkingEmail = false;
 
     // existing username validation
     let nameExists = await database_command("getUserNameExistence", { name: name });
@@ -492,9 +652,54 @@ async function server_login(ws, data) {
     }
 
     // existing password for that user validation
-    let passwordIsMine = await database_command("getUserPassword", { email: email, password: pw });
+    let passwordIsMine = await database_command("getUserPassword", { email: email, password: pw, name: name });
     if (!passwordIsMine || passwordIsMine.length == 0) {
         pwValid = false;
+    }
+
+    let existingUser = null;
+    if (nameValid && pwValid) {
+        let users = await database_command("getUserByName", { name: name });
+        if (users && users.length > 0) {
+            existingUser = users[0];
+        }
+    }
+
+    if (existingUser && email.length > 0) {
+        if (!existingUser.acc_email) {
+            if (!email.includes("@")) {
+                emailValid = false;
+            } else {
+                let emailExists = await database_command("getEmailExistence", { email: email });
+                if (emailExists && emailExists.length > 0) {
+                    emailValid = false;
+                } else {
+                    let cooldown = checkEmailCooldown(email, ws.clientIP);
+                    if (!cooldown.allowed) {
+                        return callClient("login", ws, {
+                            success: false,
+                            linkingEmail: false,
+                            nameValid: true,
+                            pwValid: true,
+                            emailValid: true,
+                            message: "Please wait " + cooldown.secondsLeft + "s before requesting another email.",
+                            name: name,
+                            pw: pw,
+                            email: email,
+                            isVerified: true
+                        });
+                    }
+                    let code = generate6DigitCode();
+                    let expires = new Date(Date.now() + 15 * 60 * 1000);
+                    await database_command("setPendingEmail", { id: existingUser.id, email: email, code: code, expires: expires });
+                    await server_register_send(email, code);
+                    recordEmailSent(email, ws.clientIP);
+                    linkingEmail = true;
+                }
+            }
+        } else if (existingUser.acc_email.toLowerCase() !== email.toLowerCase()) {
+            emailValid = false;
+        }
     }
 
     /*
@@ -505,7 +710,7 @@ async function server_login(ws, data) {
     }*/
 
     let isVerified = true;
-    let success = nameValid && pwValid && emailValid;
+    let success = nameValid && pwValid && emailValid && !linkingEmail;
 
     if (success) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
@@ -531,6 +736,7 @@ async function server_login(ws, data) {
         pwValid: pwValid,
         emailValid: emailValid,
         isVerified: isVerified,
+        linkingEmail: linkingEmail,
         name: name,
         pw: pw,
         email: email
@@ -598,6 +804,7 @@ async function server_cloud_download(ws, data) {
 // 12. logout
 async function server_account_logout(ws, data) {
     ws.playerID = undefined;
+    ws.isGuest = true;
     callClient("logout", ws, {});
 }
 
@@ -609,12 +816,26 @@ var db_connected = false;
 
 async function database_connect() {
     try {
-        db_connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME
-        });
+        if (!db_connection) {
+            db_connection = mysql.createPool({
+                host: process.env.DB_HOST,
+                user: process.env.DB_USER,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_NAME,
+                waitForConnections: true,
+                connectionLimit: 10,
+                queueLimit: 0,
+                enableKeepAlive: true,
+                keepAliveInitialDelay: 10000
+            });
+        }
+
+        const testConnection = await db_connection.getConnection();
+        testConnection.release();
+
+        await db_connection.query("ALTER TABLE tbl_users MODIFY COLUMN reset_expires DATETIME DEFAULT NULL").catch(() => {});
+        await db_connection.query("ALTER TABLE tbl_users MODIFY COLUMN acc_email VARCHAR(255) NULL DEFAULT NULL").catch(() => {});
+        await db_connection.query("ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS pending_email VARCHAR(255) DEFAULT NULL").catch(() => {});
 
         console.log("\x1b[32m[INF] Connection to DB successful");
         db_connected = true;
@@ -628,6 +849,9 @@ async function database_connect() {
 }
 
 async function database_command(cmdname = "", data = {}) {
+    if (!db_connection) {
+        await database_connect();
+    }
     if (db_connected == false) {
         console.log("\x1b[31m  [DBC] command " + cmdname + " cannot be executed: no DB connection");
     }
@@ -647,14 +871,14 @@ async function database_command(cmdname = "", data = {}) {
 
             case "getID":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.id, tbl_users.is_verified FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1",
-                    [data.email, data.name, data.password]
+                    "SELECT tbl_users.id, tbl_users.is_verified FROM tbl_users WHERE tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1",
+                    [data.name, data.password]
                 );
                 break;
             case "register_pending":
                 [results] = await db_connection.query(
-                    "INSERT INTO tbl_users (acc_email, acc_name, acc_password, is_verified, verify_code, verify_expires) VALUES (?, ?, ?, 0, ?, ?)",
-                    [data.email, data.name, data.pw, data.code, data.expires]
+                    "INSERT INTO tbl_users (acc_email, acc_name, acc_password, is_verified, verify_code, verify_expires) VALUES (?, ?, ?, ?, ?, ?)",
+                    [data.email || null, data.name, data.pw, data.is_verified !== undefined ? data.is_verified : 0, data.code || null, data.expires || null]
                 );
                 break;
             case "getUserNameExistence":
@@ -673,28 +897,26 @@ async function database_command(cmdname = "", data = {}) {
                 break;
             case "getUserByEmail":
                 [results] = await db_connection.query(
-                    "SELECT * FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
-                    [data.email]
+                    "SELECT * FROM tbl_users WHERE tbl_users.acc_email = ? OR tbl_users.pending_email = ? LIMIT 1;",
+                    [data.email, data.email]
                 );
                 break;
-            /*
             case "getUserByName":
                 [results] = await db_connection.query(
                     "SELECT * FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1;",
                     [data.name]
                 );
                 break;
-                */
             case "getUserPassword":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_email = ? AND tbl_users.acc_password = ? LIMIT 1;",
-                    [data.email, data.password]
+                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1;",
+                    [data.name, data.password]
                 );
                 break;
             case "getVerificationData":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.is_verified, tbl_users.verify_code, tbl_users.verify_expires FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
-                    [data.email]
+                    "SELECT tbl_users.id, tbl_users.acc_name, tbl_users.acc_email, tbl_users.pending_email, tbl_users.is_verified, tbl_users.verify_code, tbl_users.verify_expires FROM tbl_users WHERE tbl_users.acc_email = ? OR tbl_users.pending_email = ? LIMIT 1;",
+                    [data.email, data.email]
                 );
                 break;
             case "markUserVerified":
@@ -703,10 +925,22 @@ async function database_command(cmdname = "", data = {}) {
                     [data.email]
                 );
                 break;
+            case "setPendingEmail":
+                [results] = await db_connection.query(
+                    "UPDATE tbl_users SET pending_email = ?, verify_code = ?, verify_expires = ? WHERE id = ?",
+                    [data.email, data.code, data.expires, data.id]
+                );
+                break;
+            case "linkUserEmail":
+                [results] = await db_connection.query(
+                    "UPDATE tbl_users SET acc_email = ?, pending_email = NULL, is_verified = 1, verify_code = NULL, verify_expires = NULL WHERE id = ?",
+                    [data.email, data.id]
+                );
+                break;
             case "setNewVerificationCode":
                 [results] = await db_connection.query(
-                    "UPDATE tbl_users SET verify_code = ?, verify_expires = ? WHERE acc_email = ?",
-                    [data.code, data.expires, data.email]
+                    "UPDATE tbl_users SET verify_code = ?, verify_expires = ? WHERE acc_email = ? OR pending_email = ?",
+                    [data.code, data.expires, data.email, data.email]
                 );
                 break;
             case "setPasswordResetCode":
