@@ -171,7 +171,7 @@ wss.on('connection', async (ws, req) => {
             ws.terminate();
         }, 100);
     }
-    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && loadingPlayerID[0].is_verified === 1 && clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && Number(loadingPlayerID[0].is_verified) === 1 && clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
         // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
@@ -474,7 +474,7 @@ async function server_verify_email(ws, data) {
 
     if (!check || check.length === 0) {
         message = "Account not found.";
-    } else if (check[0].is_verified === 1 && !check[0].pending_email) {
+    } else if (Number(check[0].is_verified) === 1 && !check[0].pending_email) {
         success = true;
         message = "Account is already verified.";
     } else if (!check[0].verify_code || String(check[0].verify_code).trim() !== code) {
@@ -716,7 +716,7 @@ async function server_login(ws, data) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
         console.log("loadingPlayerID: " + loadingPlayerID);
         if (loadingPlayerID && loadingPlayerID.length > 0) {
-            if (loadingPlayerID[0].is_verified !== 1) {
+            if (Number(loadingPlayerID[0].is_verified) !== 1) {
                 isVerified = false;
                 success = false;
             }
@@ -835,7 +835,28 @@ async function database_connect() {
 
         await db_connection.query("ALTER TABLE tbl_users MODIFY COLUMN reset_expires DATETIME DEFAULT NULL").catch(() => {});
         await db_connection.query("ALTER TABLE tbl_users MODIFY COLUMN acc_email VARCHAR(255) NULL DEFAULT NULL").catch(() => {});
-        await db_connection.query("ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS pending_email VARCHAR(255) DEFAULT NULL").catch(() => {});
+        const [userCols] = await db_connection.query(
+            "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbl_users'"
+        ).catch(() => [[]]);
+        const userColSet = new Set((userCols || []).map(c => c.COLUMN_NAME));
+        if (!userColSet.has('pending_email')) {
+            await db_connection.query("ALTER TABLE tbl_users ADD COLUMN pending_email VARCHAR(255) DEFAULT NULL").catch(() => {});
+        }
+        if (!userColSet.has('is_verified')) {
+            await db_connection.query("ALTER TABLE tbl_users ADD COLUMN is_verified TINYINT(1) DEFAULT 0").catch(() => {});
+        }
+        if (!userColSet.has('verify_code')) {
+            await db_connection.query("ALTER TABLE tbl_users ADD COLUMN verify_code VARCHAR(6) DEFAULT NULL").catch(() => {});
+        }
+        if (!userColSet.has('verify_expires')) {
+            await db_connection.query("ALTER TABLE tbl_users ADD COLUMN verify_expires DATETIME DEFAULT NULL").catch(() => {});
+        }
+        if (!userColSet.has('reset_code')) {
+            await db_connection.query("ALTER TABLE tbl_users ADD COLUMN reset_code VARCHAR(6) DEFAULT NULL").catch(() => {});
+        }
+        if (!userColSet.has('reset_expires')) {
+            await db_connection.query("ALTER TABLE tbl_users ADD COLUMN reset_expires DATETIME DEFAULT NULL").catch(() => {});
+        }
 
         console.log("\x1b[32m[INF] Connection to DB successful");
         db_connected = true;
