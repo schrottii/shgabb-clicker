@@ -88,14 +88,16 @@ modals = {
 
         <br /> <br />
 
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenew');">Not you? / Wrong savefile?</button>
+        <button class="shbookButton modalButton" onclick="toggleModal('welcomeback', 'close'); toggleModal('welcomenew');">Not you? / Wrong savefile?</button>
         <br /><br />
 
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(); toggleModal('welcomeback', 'close');">Start</button>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="startMusic(true); toggleModal('welcomeback', 'close');">Start muted</button>
+        <button class="shbookButton modalButton" onclick="startMusic(); toggleModal('welcomeback', 'close');">Start</button>
+        <button class="shbookButton modalButton" onclick="startMusic(true); toggleModal('welcomeback', 'close');">Start muted</button>
 
-        <br /><br />
-        <br /><sub><span style='float: left; margin-top: -48px;'><img src='images/bananatree.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
+        <br /><br /><br style='clear: both;' />
+        <span style='float: right;'><sub>${legalOwner}</sub></span><br style='clear: both;' />
+        <span style='float: center;'><sub>${legalLinks}</sub></span><br style='clear: both; margin-bottom: 48px;' />
+        <span style='float: left; margin-top: -48px;'><img src='images/bananatree.png' /></span>
         `,
         (m, tick) => {
             m.write("modal-playername", game.profile.name + "<br />HMS: " + game.stats.hms + "<br />Play time: " + (game.stats.playTime > 18000 ? (statLoader("playTime", false) / 3600).toFixed(1) + " hours" : statLoader("playTime")));
@@ -114,8 +116,8 @@ modals = {
         <h3>Returning player?</h3>
         If you are a returning player: <br />
         
-        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import save code</button>
-        <button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('cloudsave');">Import from cloud save</button>
+        <button class="shbookButton modalButton" onclick="let result = importButton(); if (result === true) { toggleModal('welcomenew', 'close'); toggleModal('welcomeback'); }">Import save code</button>
+        <button class="shbookButton modalButton" onclick="toggleModal('welcomenew', 'close'); toggleModal('cloudsave');">Import from cloud save</button>
         ` + (isSaveExisting() ? `<button class="shbookButton" style="vertical-align: middle; width: 20%; height: 64px;" onclick="toggleModal('welcomenew', 'close'); toggleModal('welcomeback');">Go to "Welcome back" screen</button>` : "")
         //<button class="shbookButton" style="width: 20%; height: 64px;" onclick="deleteGame();">Delete existing save</button>
         + `
@@ -123,10 +125,12 @@ modals = {
 
         <h3>New player?</h3>
         <span id="modal-newsavetext" /></span> <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="createNewSaveFromModal();">Create new save</button>
+        <button class="shbookButton modalButton" onclick="createNewSaveFromModal();">Create new save</button>
 
-        <br /><br />
-        <br /><sub><span style='float: left; margin-top: -48px; position: absolute; left: 12%;'><img src='images/welcome.png' /></span><span style='float: center; position:absolute;'>${legalLinks}</span><span style='float: right;'>${legalOwner}</span></sub>
+        <br /><br /><br style='clear: both;' />
+        <span style='float: right;'><sub>${legalOwner}</sub></span><br style='clear: both;' />
+        <span style='float: center;'><sub>${legalLinks}</sub></span><br style='clear: both; margin-bottom: 48px;' />
+        <span style='float: left; margin-top: -48px;'><img src='images/welcome.png' /></span>
         `,
         (m, tick) => {
             m.write("modal-newsavetext", !isSaveExisting() ? "If you are ready to start your journey:" : "Pressing this will create a new save and DELETE the one you currently have. (" + game.stats.hms + " HMS)")
@@ -150,7 +154,7 @@ modals = {
         <br />
 
         <h3>Create the new save</h3>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="createNewSave();">Start</button>
+        <button class="shbookButton modalButton" onclick="createNewSave();">Start</button>
         `,
         (m, tick) => {
         }
@@ -166,19 +170,19 @@ modals = {
             <tr><td><input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"></td><td>E-Mail (optional)</td></tr>
             </table>
 
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_register();">Register</button>
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_account_login();">Login</button>
+            <button class="shbookButton modalButton" onclick="client_account_register();">Register</button>
+            <button class="shbookButton modalButton" onclick="client_account_login();">Login</button>
             <br /><br />
         </div>
 
         <div id="logoutArea" style="display: none;">
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="disconnectFromServer();">Log out</button>
+            <button class="shbookButton modalButton" onclick="disconnectFromServer();">Log out</button>
             <br /><br />
         </div>
 
         <div id="cloudsaveArea" style="display: none;">
             <h3>Cloud save</h3>
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />
+            <button class="shbookButton modalButton" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />
             <br /><br />
         </div>
         <span id="cloudsaveloggedout"></span>
@@ -186,16 +190,16 @@ modals = {
         <div id="verifyCodeArea" style="display: none;">
             <h3>Verify e-mail</h3>
             <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"></td><td>6 digit verify code
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_verify_email();">Verify</button>
+            <button class="shbookButton modalButton" onclick="client_verify_email();">Verify</button>
             <br />
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_resend_verification();">Resend Verification</button>
+            <button class="shbookButton modalButton" onclick="client_resend_verification();">Resend Verification</button>
             <br /><br />
         </div>
 
         <div id="resetPasswordArea">
             <h3>Reset password</h3>
             Can't access your account? Click here to recover: <br />
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="toggleModal('accountmanagement', 'close'); toggleModal('resetpassword');">Request password reset</button>
+            <button class="shbookButton modalButton" onclick="toggleModal('accountmanagement', 'close'); toggleModal('resetpassword');">Request password reset</button>
             <br /><br />
         </div>
         `,
@@ -220,8 +224,8 @@ modals = {
     "cloudsave": new Modal("Cloud Save",
         `
         <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_cloud_upload();">Upload save</button>
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_cloud_download();">Download save</button>
+        <button class="shbookButton modalButton" onclick="client_cloud_upload();">Upload save</button>
+        <button class="shbookButton modalButton" onclick="client_cloud_download();">Download save</button>
         </table>
         <br />
 
@@ -241,13 +245,13 @@ modals = {
 
         Enter your address here, then press the button. An E-Mail will be sent to confirm it is your account. <br />
         <input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"> E-Mail <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="sendPasswordResetEmail();">Send E-Mail</button>
+        <button class="shbookButton modalButton" onclick="sendPasswordResetEmail();">Send E-Mail</button>
         <br /><br />
 
         <div id="verifyCodeArea" style="display: none;">
             Enter your received six digit code here: <br />
             <input id="verify-code" type="text" maxlength="6" size="6" style="font-size: 24px;"> <br />
-            <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_confirm_password_reset();">Verify</button>
+            <button class="shbookButton modalButton" onclick="client_confirm_password_reset();">Verify</button>
         </div>
         `,
         (m, tick) => {
@@ -265,7 +269,8 @@ modals = {
         Enter your new password here. <br />
         <input id="newpassword" type="password" maxlength="64" size="32" style="font-size: 24px;"> New password <br />
         <input id="newpassword2" type="password" maxlength="64" size="32" style="font-size: 24px;"> Repeat new password <br />
-        <button class="shbookButton" style="width: 20%; height: 64px;" onclick="client_submit_new_password();">Change</button>
+
+        <button class="shbookButton modalButton" onclick="client_submit_new_password();">Change</button>
         `,
         (m, tick) => {
             if (isLoggedIn) {

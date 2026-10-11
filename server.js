@@ -1,5 +1,6 @@
 /*
 Server-side server logic code
+(c) Schrottii, d0ktorek
 */
 
 // server version corresponding to game version -- change on update!!
@@ -96,6 +97,7 @@ function checkEmailCooldown(email, clientIP) {
 function recordEmailSent(email, clientIP) {
     let now = Date.now();
     let normalizedEmail = (email || "").toLowerCase().trim();
+
     if (normalizedEmail) {
         emailCooldowns.set(normalizedEmail, now);
     }
@@ -171,7 +173,7 @@ wss.on('connection', async (ws, req) => {
             ws.terminate();
         }, 100);
     }
-    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && Number(loadingPlayerID[0].is_verified) === 1 && clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
+    else if (loadingPlayerID && loadingPlayerID[0] && loadingPlayerID[0].id && parseInt(loadingPlayerID[0].is_verified) === 1 && clientName !== "" && clientPW !== ""/* && clientEmail !== ""*/) {
         // registered player with ID in database
         ws.playerID = loadingPlayerID[0].id;
 
@@ -298,9 +300,10 @@ function server_logincheck(ws, data) {
 
 // swear words, slurs, sexual terms, etc.
 // based on the list from Idle Bar, but with some (like "gay") removed
-const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler", "nazi", "trump", "niglet", "scrotum", "penis", "cock", "hentai", "futa", "porn", "sex", "nude", "naked", "NSFW", "boob", "breast", "dick", "anus", "CBT", "retard",
+// checks against these words have to be run on the server, of course
+const forbiddenWords = ["fuck", "shit", "bitch", "nigg", "fag", "nibb", "hitler", "nazi", "trump", "niglet", "scrotum", "penis", "cock", "hentai", "futa", "porn", "sex", "nude", "naked", "NSFW", "boob", "breast", "dick", "anus", "cbt", "retard",
     //"ilf", "ass", "tit",
-    "ahegao", "cunt", "genital", "dick", "prick", "DDOS", "racis", "hack", "swastika", "hentia", "pussy", "kys",
+    "ahegao", "cunt", "genital", "dick", "prick", "ddos", "racis", "hack", "swastika", "hentia", "pussy", "kys",
     "eval", "function"];
 
 // 3. register
@@ -314,12 +317,15 @@ async function server_register(ws, data) {
     let emailValid = true;
     let hasEmail = email.length > 0;
 
+    let success = false;
+
+    // if we are registering with an email, check if it's valid
     if (hasEmail) {
         if (!email.includes("@")) {
             emailValid = false;
         }
         else {
-            // existing email validation
+            // already existing email validation
             let emailExists = await database_command("getEmailExistence", { email: email });
             if (emailExists && emailExists.length > 0) {
                 emailValid = false;
@@ -327,26 +333,45 @@ async function server_register(ws, data) {
         }
     }
 
-    if (typeof pw !== "string" || pw.length <= 5) {
+    // password validation (requirements: 6 length)
+    if (typeof(pw) !== "string" || pw.length <= 5) {
         pwValid = false;
     }
 
-    let success = false;
+    // bad word validation for username only
+    for (let word of forbiddenWords) {
+        /*
+        if (pw.toLowerCase().includes(word)) {
+            pwValid = false;
+            break;
+        }*/
+        if (name.toLowerCase().includes(word)) {
+            nameValid = false;
+            break;
+        }
+    }
+
     let requiresVerification = false;
     let linkingEmail = false;
 
+    // name validation (must have a name)
     if (typeof name !== "string" || name.trim().length === 0) {
         nameValid = false;
     }
     else {
-        // existing username validation
+        // already existing username validation
         let nameExists = await database_command("getUserNameExistence", { name: name });
         if (nameExists && nameExists.length > 0) {
+            // name already exists
             if (hasEmail && emailValid && pwValid) {
                 let passwordIsMine = await database_command("getUserPassword", { name: name, password: pw });
                 let users = await database_command("getUserByName", { name: name });
+
                 if (passwordIsMine && passwordIsMine.length > 0 && users && users.length > 0 && !users[0].acc_email) {
+                    // oh it's you! welcome back
+                    // (if not, jump to else below -> name is invalid. faker!)
                     let cooldown = checkEmailCooldown(email, ws.clientIP);
+
                     if (!cooldown.allowed) {
                         return callClient("register", ws, {
                             success: false,
@@ -361,10 +386,13 @@ async function server_register(ws, data) {
                             requiresVerification: false
                         });
                     }
+
                     let code = generate6DigitCode();
                     let expires = new Date(Date.now() + 15 * 60 * 1000);
+
                     await database_command("setPendingEmail", { id: users[0].id, email: email, code: code, expires: expires });
                     await server_register_send(email, code);
+
                     recordEmailSent(email, ws.clientIP);
                     linkingEmail = true;
                     requiresVerification = true;
@@ -379,6 +407,7 @@ async function server_register(ws, data) {
         }
     }
 
+    // email validation
     if (!linkingEmail && nameValid && pwValid && emailValid) {
         if (hasEmail) {
             let cooldown = checkEmailCooldown(email, ws.clientIP);
@@ -474,7 +503,7 @@ async function server_verify_email(ws, data) {
 
     if (!check || check.length === 0) {
         message = "Account not found.";
-    } else if (Number(check[0].is_verified) === 1 && !check[0].pending_email) {
+    } else if (parseInt(check[0].is_verified) === 1 && !check[0].pending_email) {
         success = true;
         message = "Account is already verified.";
     } else if (!check[0].verify_code || String(check[0].verify_code).trim() !== code) {
@@ -550,6 +579,8 @@ async function server_request_password_reset(ws, data) {
         message = "No account found with this email.";
     } else {
         let cooldown = checkEmailCooldown(email, ws.clientIP);
+
+        // on cooldown?
         if (!cooldown.allowed) {
             message = "Please wait " + cooldown.secondsLeft + "s before requesting another email.";
             return callClient("request_password_reset", ws, { success: false, message: message });
@@ -562,6 +593,8 @@ async function server_request_password_reset(ws, data) {
                 return callClient("request_password_reset", ws, { success: false, message: message });
             }
         }
+
+        // not on cooldown, we can send
         let code = generate6DigitCode();
         let expires = new Date(Date.now() + 15 * 60 * 1000);
 
@@ -572,13 +605,6 @@ async function server_request_password_reset(ws, data) {
             let subject = "Reset Password | Balnoom Account";
 
             let text = `
-Thank you for showing interest in creating a Balnoom-wide account!
-
-Your verification code is: ${code}
-
-If you didn't create an account, you can safely ignore this E-mail.`;
-
-            text = `
 A password reset was requested for your account. Use this code to then change it.
 
 Your verification code is: ${code}
@@ -716,7 +742,7 @@ async function server_login(ws, data) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
         console.log("loadingPlayerID: " + loadingPlayerID);
         if (loadingPlayerID && loadingPlayerID.length > 0) {
-            if (Number(loadingPlayerID[0].is_verified) !== 1) {
+            if (parseInt(loadingPlayerID[0].is_verified) !== 1) {
                 isVerified = false;
                 success = false;
             }
@@ -833,6 +859,7 @@ async function database_connect() {
         const testConnection = await db_connection.getConnection();
         testConnection.release();
 
+        // add missing columns to the database, if needed
         await db_connection.query("ALTER TABLE tbl_users MODIFY COLUMN reset_expires DATETIME DEFAULT NULL").catch(() => {});
         await db_connection.query("ALTER TABLE tbl_users MODIFY COLUMN acc_email VARCHAR(255) NULL DEFAULT NULL").catch(() => {});
         const [userCols] = await db_connection.query(
@@ -896,18 +923,21 @@ async function database_command(cmdname = "", data = {}) {
                     [data.name, data.password]
                 );
                 break;
+
             case "register_pending":
                 [results] = await db_connection.query(
                     "INSERT INTO tbl_users (acc_email, acc_name, acc_password, is_verified, verify_code, verify_expires) VALUES (?, ?, ?, ?, ?, ?)",
                     [data.email || null, data.name, data.pw, data.is_verified !== undefined ? data.is_verified : 0, data.code || null, data.expires || null]
                 );
                 break;
+
             case "getUserNameExistence":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1;",
                     [data.name]
                 );
                 break;
+
             case "getEmailExistence":
                 //console.log(data.email, JSON.stringify(data));
                 [results] = await db_connection.query(
@@ -916,78 +946,91 @@ async function database_command(cmdname = "", data = {}) {
                 );
                 //console.log(results, results[0]);
                 break;
+
             case "getUserByEmail":
                 [results] = await db_connection.query(
                     "SELECT * FROM tbl_users WHERE tbl_users.acc_email = ? OR tbl_users.pending_email = ? LIMIT 1;",
                     [data.email, data.email]
                 );
                 break;
+
             case "getUserByName":
                 [results] = await db_connection.query(
                     "SELECT * FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1;",
                     [data.name]
                 );
                 break;
+
             case "getUserPassword":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1;",
                     [data.name, data.password]
                 );
                 break;
+
             case "getVerificationData":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.id, tbl_users.acc_name, tbl_users.acc_email, tbl_users.pending_email, tbl_users.is_verified, tbl_users.verify_code, tbl_users.verify_expires FROM tbl_users WHERE tbl_users.acc_email = ? OR tbl_users.pending_email = ? LIMIT 1;",
                     [data.email, data.email]
                 );
                 break;
+
             case "markUserVerified":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET is_verified = 1, verify_code = NULL, verify_expires = NULL WHERE acc_email = ?",
                     [data.email]
                 );
                 break;
+
             case "setPendingEmail":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET pending_email = ?, verify_code = ?, verify_expires = ? WHERE id = ?",
                     [data.email, data.code, data.expires, data.id]
                 );
                 break;
+
             case "linkUserEmail":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET acc_email = ?, pending_email = NULL, is_verified = 1, verify_code = NULL, verify_expires = NULL WHERE id = ?",
                     [data.email, data.id]
                 );
                 break;
+
             case "setNewVerificationCode":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET verify_code = ?, verify_expires = ? WHERE acc_email = ? OR pending_email = ?",
                     [data.code, data.expires, data.email, data.email]
                 );
                 break;
+
             case "setPasswordResetCode":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET reset_code = ?, reset_expires = ? WHERE acc_email = ?",
                     [data.code, data.expires, data.email]
                 );
                 break;
+
             case "getPasswordResetData":
                 [results] = await db_connection.query(
                     "SELECT tbl_users.reset_code, tbl_users.reset_expires FROM tbl_users WHERE tbl_users.acc_email = ? LIMIT 1;",
                     [data.email]
                 );
                 break;
+
             case "updateUserPassword":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET acc_password = ?, reset_code = NULL, reset_expires = NULL WHERE acc_email = ?",
                     [data.password, data.email]
                 );
                 break;
+
             case "ping":
                 [results] = await db_connection.query(
                     "INSERT INTO shg_user_activity (user_id) VALUES (?) ON DUPLICATE KEY UPDATE shg_user_activity.last_activity = CURRENT_TIMESTAMP",
                     [data.playerID]
                 );
                 break;
+
             case "playercount":
                 [results] = await db_connection.query(
                     "SELECT COUNT(shg_user_activity.user_id) AS 'pcount' FROM shg_user_activity",

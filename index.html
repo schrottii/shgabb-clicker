@@ -20,7 +20,8 @@
 
     <title>Shgabb Clicker</title>
     <link href="style/main.css" rel="stylesheet" type="text/css">
-
+    <!--
+    ?why double?
     <script>
         // little script for balnoom.com/shgabb-clicker to fix paths / index
         if (window.location.hostname.includes("balnoom.com")) {
@@ -29,6 +30,7 @@
             document.head.appendChild(base);
         }
     </script>
+        -->
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
@@ -47,6 +49,7 @@
         <img id="tutorialImage" src="images/slimegirl.png" style="float: right; bottom: 0px; width: 128px; height: 128px;" />
     </div>
 
+    <!-- SIDEBAR - LEFT SIDE -->
     <UBERDIV>
         <div id="SIDEBAR" class="sectionBG" style="display: none; position: fixed; width: 19%; height: 97.5%; opacity: 1;">
             <!-- 19% -->
@@ -94,13 +97,14 @@
 
 
 
+    <!-- MAIN HTML -->
     <UBERDIV id="GAMECONTENT" style="float: right; width: 100%">
         <!-- 80% -->
         <button id="sosobar" class="sectionBG sectionBGLighter" style="position: fixed; left: 0.2%; height: 64px; color: #01f8fd;" onclick="settings.sidebar = true; toggleSidebar();"><b>&gt;</b></button>
 
-        <!-- Top, Quote, Click Button, Notifs -->
+        <!-- Top (game name), account button, quote -->
         <h2 id="gameName" class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
-        <button onclick="toggleModal('accountmanagement');" style="position: absolute; right: 2%; top: 16px; height: 32px; background-color: #2e269a; width: 100px; border-radius: 12px;"><img src="images/account.png" style="height: 32px;" /></button>
+        <button onclick="toggleModal('accountmanagement');" class="accountButton"><img src="images/account.png" style="height: 32px;" /></button>
         <span id="quoteText" class="quoteClass"></span>
         <br />
 

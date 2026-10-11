@@ -7,6 +7,8 @@ var profileCanvasWidth = 10;
 var profileCanvasHeight = 10;
 var profileTextSizeMulti = 1;
 
+var selectedPlayerProfile = 0;
+
 let pfp = new Image();
 pfp.src = "images/playerprofile/pfps/shgabbicon.png";
 
@@ -228,6 +230,7 @@ var pfps = [
     new PFP(103, "Lucie", "images/slimegirl.png", () => game.ach.includes(211)),
     new PFP(104, "Tux", "images/playerprofile/pfps/Tux_by_Larry_Ewing.png", () => userLinux === true),
     new PFP(105, "Mint", "images/playerprofile/pfps/Linux_Mint_logo.png", () => userLinux === true, { special: true }),
+    new PFP(106, "Verified User", "images/account.png", () => game.ach.includes(241), { special: true }),
 
     // 300 - 399 | Currency PFPs
     new PFP(300, "Shgabb", "images/currencies/shgabb.png", () => game.ach.includes(21)),
@@ -441,7 +444,6 @@ function setRandomFrame() {
     setFrame(chosenFrame.ID);
 }
 
-var selectedPlayerProfile = 0;
 function setPlayerProfileSelection(no) {
     document.getElementById("playerProfileButton1").style.backgroundColor = "white";
     document.getElementById("playerProfileButton2").style.backgroundColor = "white";

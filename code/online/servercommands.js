@@ -113,6 +113,7 @@ function client_verify_email_reply(data) {
         if (userName && userPassword) {
             localStorage.setItem("balnoomLogin", JSON.stringify({ name: userName, pw: userPassword, email: data.email || "" }));
         }
+        awardAchievement(241);
         client_account_logincheck();
     }
 }
@@ -234,6 +235,10 @@ function client_account_login_reply(data) {
 
     if ((data.isVerified === false || data.linkingEmail) && document.getElementById("verifyCodeArea") != null) {
         document.getElementById("verifyCodeArea").style.display = "";
+    }
+    else {
+        // email is verified...?
+        awardAchievement(241);
     }
 
     console.log("login: " + message);

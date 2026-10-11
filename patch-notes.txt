@@ -3256,3 +3256,6 @@ x v4.7:
 - Another attempt at fixing random crashes during loading
 - Converted patch_notes.txt to PATCH_NOTES.md
 - Fixed issue with some cosmetics images
+
+- Added Achievement
+- Added PFP
