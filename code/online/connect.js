@@ -51,7 +51,7 @@ function connectToServer() {
         }
     }
 
-    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&pw=${encodeURIComponent(savedPassword)}&id=${encodeURIComponent(game.profile.id)}&gamever= ${gameVersion}`;
+    socketURL += `?name=${encodeURIComponent(savedName)}&email=${encodeURIComponent(savedEmail)}&pw=${encodeURIComponent(savedPassword)}&id=${encodeURIComponent(game.profile.id)}&gamever=${gameVersion}`;
 
     socket = new WebSocket(socketURL);
 

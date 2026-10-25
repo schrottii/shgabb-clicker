@@ -241,20 +241,19 @@ progress {
 }
 
 .quoteClass {
-    width: 400px;
-    max-width: 400px;
     background-color: #2e269a;
     color: white;
     padding: 0px 8px 0px 8px;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
-    margin-left: -0%;
     font-size: 16px;
     font-family: Rw-title;
     border-radius: 12px;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media only screen and (min-width: 768px) {

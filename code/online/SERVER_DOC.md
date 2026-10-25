@@ -31,15 +31,16 @@ npm install dotenv mysql2
 |:---:|:------------------------------:|:-------------------
 | 1.  | playercount                    | onlineLast30Days
 | 2.  | logincheck                     | isLoggedIn
-| 3.  | register                       | success, nameValid, pwValid, emailValid, name, pw, email, requiresVerification
+| 3.  | register                       | success, linkingEmail, nameValid, pwValid, emailValid, name, pw, email, requiresVerification
 | 4.  | verify_email                   | success, message, email
 | 5.  | resend_verification            | success, message
 | 6.  | request_password_reset         | success, message
 | 7.  | confirm_password_reset         | success, message
-| 8.  | login                          | success, nameValid, pwValid, emailValid, name, pw, email, requiresVerification
+| 8.  | login                          | success, linkingEmail, nameValid, pwValid, emailValid, name, pw, email, requiresVerification
 | 9.  | (CLIENT ONLY) old_version      | clientVer, serverVer
 | 10. | cloud_upload                   | success
-| 11. | cloud_download                 | success, savedata
+| 11. | cloud_download                 | success, savedata, name, hms, updated
+| 12. | logout                         | -
 
 # Database commands
 Communication between the server.js and SQL database
@@ -55,9 +56,13 @@ Communication between the server.js and SQL database
 | getUserPassword                | email, password
 | getVerificationData            | email
 | markUserVerified               | email
+| setPendingEmail                | email, code, expires, id
+| linkUserEmail                  | email, id
 | setNewVerificationCode         | code, expires, email
-| setPasswordResetCode           | email
+| setPasswordResetCode           | code, expires, email
 | getPasswordResetData           | email
 | updateUserPassword             | password, email
 | ping                           | playerID
 | playercount                    | -
+| uploadCloudSave                | id, filename, name, hms, id
+| downloadCloudSave              | id

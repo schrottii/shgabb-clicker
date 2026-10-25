@@ -112,8 +112,8 @@ function client_verify_email_reply(data) {
         let userPassword = document.getElementById("cloudSave-password") ? document.getElementById("cloudSave-password").value : "";
         if (userName && userPassword) {
             localStorage.setItem("balnoomLogin", JSON.stringify({ name: userName, pw: userPassword, email: data.email || "" }));
+            awardAchievement(241);
         }
-        awardAchievement(241);
         client_account_logincheck();
     }
 }
@@ -289,20 +289,25 @@ function client_cloud_download() {
 
 function client_cloud_download_reply(data) {
     console.log("cloud save success: " + data.success);
-    if (data.success) {
-        console.log(data.savedata);
-        if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Downloaded your save successfully. Length: " + data.savedata.length;
 
-        if (confirm("Do you want to load that save?")) {
-            importGame(data.savedata);
-        }
-        else {
-            navigator.clipboard.writeText(data.savedata);
-            createNotification("Game exported to clipboard");
+    if (data.success) {
+        loadedCloudSave = data.savedata;
+        //console.log(loadedCloudSave);
+
+        if (document.getElementById("cloudSaveStatus")) {
+            document.getElementById("cloudSaveStatus").innerHTML = "Downloaded your save successfully.";
+            document.getElementById("cloudSaveStatus2").innerHTML = "Length: " + data.savedata.length
+            + "<br />Name: " + data.name
+            + "<br />HMS: " + data.hms
+            + "<br />Last updated: " + data.updated.substr("T")[0];
+            document.getElementById("loadedcloudsaveArea").style.display = "";
         }
     }
     else {
-        if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "There is no save or it could not be reached.";
+        if (document.getElementById("cloudSaveStatus")) {
+            document.getElementById("cloudSaveStatus").innerHTML = "There is no save or it could not be reached.";
+            document.getElementById("loadedcloudsaveArea").style.display = "none";
+        }
     }
 }
 

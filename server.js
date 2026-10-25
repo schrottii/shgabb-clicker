@@ -758,11 +758,11 @@ async function server_login(ws, data) {
 
     callClient("login", ws, {
         success: success,
+        linkingEmail: linkingEmail,
         nameValid: nameValid,
         pwValid: pwValid,
         emailValid: emailValid,
         isVerified: isVerified,
-        linkingEmail: linkingEmail,
         name: name,
         pw: pw,
         email: email
@@ -772,13 +772,29 @@ async function server_login(ws, data) {
 // 10. cloud upload
 async function server_cloud_upload(ws, data) {
     let success = false;
-    let filename = ws.playerID + ".txt";
+    let filename = ws.playerID + ".txt"; // having this and the ID separate might seem irrelevant but if we have multiple saves later it might not be
 
-    function createFile() {
+    async function createFile() {
         // file only contains the stringified JSON of the savefile
         console.log("writing into: " + filename);
-        fs.writeFileSync("./savefiles/" + filename, data.body.saveData, "utf8");
-        success = true;
+
+        try {
+            fs.writeFileSync("./savefiles/" + filename, data.body.saveData, "utf8");
+
+            let saveData = JSON.parse(data.body.saveData);
+            let hms = saveData.stats.hms;
+            let name = saveData.profile.name;
+
+            let exists = await database_command("downloadCloudSave", { id: ws.playerID });
+
+            database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
+            success = true;
+        }
+        catch (e) {
+            console.log(e);
+            success = false;
+        }
+
         end();
     }
 
@@ -803,7 +819,7 @@ async function server_cloud_upload(ws, data) {
                 });
             }
             else {
-                console.log("savefiles dir exists");
+                //console.log("savefiles dir exists");
                 createFile();
             }
         });
@@ -812,8 +828,18 @@ async function server_cloud_upload(ws, data) {
 
 // 11. cloud download
 async function server_cloud_download(ws, data) {
-    let filename = ws.playerID + ".txt";
     let savedata = "";
+
+    let dbData = await database_command("downloadCloudSave", { id: ws.playerID });
+    if (dbData != undefined) dbData = dbData[0];
+
+    //console.log(ws.playerID, dbData);
+    //console.log(filename);
+
+    let filename = dbData.filename;
+    let name = dbData.save_name;
+    let hms = dbData.save_hms;
+    let updated = dbData.updated;
 
     if (!ws.isGuest && ws.playerID != undefined) {
         fs.exists("savefiles/" + filename, (e) => {
@@ -822,7 +848,7 @@ async function server_cloud_download(ws, data) {
                 savedata = fs.readFileSync("savefiles/" + filename, "utf-8");
             }
 
-            callClient("cloud_download", ws, { success: e, savedata: savedata });
+            callClient("cloud_download", ws, { success: e, savedata: savedata, name: name, hms: hms, updated: updated });
         });
     }
 }
@@ -1037,10 +1063,24 @@ async function database_command(cmdname = "", data = {}) {
                     []
                 );
                 break;
+
+            case "uploadCloudSave":
+                [results] = await db_connection.query(
+                    "INSERT INTO shg_user_saves (user_id, save_slot, file_ref, save_name, save_hms, updated) VALUES (?, 1, ?, ?, ?, CURRENT_TIMESTAMP) ON DUPLICATE KEY UPDATE save_slot = 1, file_ref = ?, save_name = ?, save_hms = ?, updated = CURRENT_TIMESTAMP;",
+                    [data.id, data.filename, data.name, data.hms, data.id, /* dup */ data.filename, data.name, data.hms]
+                );
+                break;
+
+            case "downloadCloudSave":
+                [results] = await db_connection.query(
+                    "SELECT file_ref AS filename, save_name, save_hms, updated FROM shg_user_saves WHERE user_id = ? LIMIT 1;",
+                    [data.id]
+                );
+                break;
         }
 
         if (results && results.warningStatus === undefined) console.log("\x1b[0m  [DBC] command " + cmdname + " success: " + JSON.stringify(results));
-        else if (results && results.warningStatus !== undefined) console.log("\x1b[31m  [DBC] command " + cmdname + " is ResultSetHeader");
+        else if (results && results.warningStatus !== undefined && results.warningStatus !== 0) console.log("\x1b[31m  [DBC] command " + cmdname + " warning: " + results.warningStatus);
         return results;
     } catch (err) {
         console.log("\x1b[31m  [DBC] command " + cmdname + " error: " + err);

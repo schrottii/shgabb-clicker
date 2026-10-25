@@ -3,6 +3,8 @@ var currentModal = "";
 var modalContainer = document.getElementById("modals");
 var modalContentContainer = document.getElementById("modalsContent");
 
+var loadedCloudSave = "";
+
 function toggleModal(name, forcemode = "") {
     if (modals[name] == undefined && name != "") return false;
 
@@ -229,6 +231,14 @@ modals = {
         </table>
         <br />
 
+        <div id="loadedcloudsaveArea" style="display: none;">
+            <span id="cloudSaveStatus2"></span> <br />
+
+            <button class="shbookButton modalButton" onclick="importGame(loadedCloudSave);">Import save</button>
+            <button class="shbookButton modalButton" onclick="copyCloudSave();">Copy to clipboard</button>
+            <br /><br />
+        </div>
+
         <span id="cloudSaveStatus"></span>
         `,
         (m, tick) => {
@@ -304,4 +314,11 @@ function sendPasswordResetEmail() {
     }
 
     //if (document.getElementById('accountLoginStatus')) document.getElementById('accountLoginStatus').innerHTML = 
+}
+
+function copyCloudSave() {
+    navigator.clipboard.writeText(loadedCloudSave);
+
+    createNotification("Game exported to clipboard");
+    document.getElementById("cloudSaveStatus").innerHTML = "Copied save to clipboard";
 }

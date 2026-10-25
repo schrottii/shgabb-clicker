@@ -28,17 +28,21 @@ ALTER TABLE tbl_users ADD COLUMN IF NOT EXISTS pending_email VARCHAR(255) DEFAUL
 -- prefix: shg_
 -- user_ for everything related to users, not the game's own data
 
--- cloud save table (actual savefiles saved as standalone files)
+-- cloud save table (actual savefiles saved as standalone files, this is for storing data about it like age)
+-- id here is not important
 CREATE TABLE IF NOT EXISTS `shg_user_saves` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT NOT NULL,
---  `save_slot` INT DEFAULT 1,
-  `savefile_ref` VARCHAR(64) NOT NULL,
+  `save_slot` INT DEFAULT 1,
+  `file_ref` VARCHAR(16) NOT NULL,
+  `save_name` VARCHAR(32),
+  `save_hms` VARCHAR(32),
   `updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE
 );
 
 -- user activity / playercount table
+-- it is its own thing because we want to know active players for this game, not Balnoom accounts overall
 CREATE TABLE IF NOT EXISTS `shg_user_activity` (
   `user_id` INT PRIMARY KEY,
   `last_activity` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -1304,7 +1304,9 @@ function shgabbClickerLoop(tick) {
         }
 
         ui.quote.style.display = "";
-        if (ui.quote.offsetWidth > window.innerWidth) ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - window.innerWidth) * Math.min(0.25, (quoteTime % 6 - 1) * 0.2)) + "%";
+        if (ui.quote.offsetWidth > Math.min(640, window.innerWidth)) {
+            ui.quote.style["margin-left"] = "-" + (quoteTime % 6 < 1 ? 0 : (ui.quote.offsetWidth - Math.min(640, window.innerWidth)) * Math.min(1, (quoteTime % 6 - 1) * 0.25)) + "px";
+        }
         else ui.quote.style["margin-left"] = "-0%";
         ui.quote.style["opacity"] = Math.min(quoteTime * 50, 100) + "%";
     }
