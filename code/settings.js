@@ -133,7 +133,7 @@ var settingButtons = [
     new Setting("save", "manualSave", "Save", "Saves the game, like auto save (cache). Does not affect the clipboard or anything else.", ""),
     new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)!", ""),
     new Setting("save", "exportToFile", "Export to file", "[EXPORT - FILE] Save to a .txt file", ""),
-    new Setting("save", "importFromFile", "Import from file", `[IMPORT - FILE] Load the .txt file. Select the .txt file with the button below, then click this to load it.`, () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
+    new Setting("save", "importFromFileModal", "Import from file", `[IMPORT - FILE] Opens a modal to load a save from a .txt file.`, () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
     new Setting("save", "redeemRewardCode", "Redeem a Reward Code", "Use this to import a special gift from Schrottii. Each can be used only once and has an expiry date.", ""),
     new Setting("save", "exportSettings", "Export Settings", "[EXPORT - SETTINGS CODE] Copy the a code for settings to the clipboard. Store it somewhere and use it to load this set of settings later.", ""),
     new Setting("save", "importSettings", "Import Settings", "[IMPORT - SETTINGS CODE] Import a settings code, obtained from the Export Settings setting.", ""),
@@ -171,8 +171,6 @@ function renderSettings() {
     for (let s in settingButtons) {
         if (settingButtons[s].category == settingSections[currentSettingSection]) {
             render = render + settingButtons[s].render(counter);
-
-            if (settingButtons[s].title == "Import from file") render = render + `<br style='clear: both' /><input id="myFile" type="file"><br style='clear: both' />`;
         }
         counter++;
     }
@@ -482,6 +480,10 @@ function manualSave() {
     autoSaveTime = 0.15;
 }
 
+function importFromFileModal() {
+    toggleModal("importfromfile");
+}
+
 function redeemRewardCode() {
     let importRewardCode = prompt("Enter a valid Reward Code:");
 
@@ -512,8 +514,6 @@ function redeemRewardCode() {
             return false;
         }
     }
-
-
 
     // take care of startVer and startDate
     let protectedRews = ["ID", "EXPIRY", "DISPLAYTEXT",
@@ -568,7 +568,7 @@ function openCloudSaveModal() {
         return;
     }
 
-    toggleModal("accountmanagement");
+    toggleModal("cloudsave");
 
     /*
     let isLoggedIn = await client_account_logincheck();

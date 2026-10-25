@@ -409,6 +409,14 @@ function isSaveExisting() {
 // save related   #6D61696E736563
 ///////////////////////////////////
 
+var savedTo = {
+    copy: false,
+    localstorage: false,
+    backupstorage: false,
+    file: false,
+    cloudsave: false
+}
+
 function autoSave(manual = true) {
     autoNotifications += 1;
 
@@ -454,6 +462,8 @@ function importFromFile() {
                 });
 
                 reader.readAsText(file);
+
+                toggleModal("importfromfile", "close");
             }
             catch {
                 console.log("Something went wrong while loading the file");
@@ -511,15 +521,19 @@ function exportGame(destination = "gimme") {
     exporter = exporter.replace("x", "pppp");
     exporter = exporter.replace("D", "dpjiopjrdopjh");
 
+    // bring our precious save to where it belongs
     if (destination == "gimme") {
         navigator.clipboard.writeText(exporter);
         createNotification("Game exported to clipboard");
+        savedTo.copy = true;
     }
     if (destination == "cache") {
         localStorage.setItem("shgabbClicker", exporter);
+        savedTo.localstorage = true;
     }
     if (destination == "backup") {
         localStorage.setItem("shgabbBackup", exporter);
+        savedTo.backupstorage = true;
     }
     if (destination == "file") {
         var temporaryFile = document.createElement('a');
@@ -532,6 +546,7 @@ function exportGame(destination = "gimme") {
         temporaryFile.click();
 
         document.body.removeChild(temporaryFile);
+        savedTo.file = true;
     }
 }
 

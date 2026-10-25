@@ -99,6 +99,7 @@ var achievements = [
     new Achievement(211, "shgabb.png", "Teaching you a lesson", "Complete the tutorial", () => false),
     new Achievement(121, "shbook.png", "Nerd", "Unlock the Shbook by reaching HMS 25", () => game.stats.hms >= 25),
     new Achievement(241, "shgabb.png", "New Age", "Verify your Balnoom account email", () => false),
+    new Achievement(242, "shgabb.png", "Paranoid Nixonoid", "In one session, save with all 5 methods", () => savedTo.backupstorage && savedTo.cloudsave && savedTo.copy && savedTo.file && savedTo.localstorage),
     new Achievement(3, "unlock.png", "Can I eat this?", "Unlock Sandwiches by upgrading the Sandwich Chance upgrade (HMS 25)", () => game.upgradeLevels.swChance > 0),
     new Achievement(2, "shgabb.png", "Shgabb II", "Get 1000 Shgabb", () => game.shgabb >= 1000),
     new Achievement(67, "clicks2.png", "Fast Clicks I", "Reduce the click cooldown to 4s or less", () => clickCooldown <= 4),

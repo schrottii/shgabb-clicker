@@ -35,6 +35,8 @@ const currentPatchNotes = `
 - When logged in to your verified account, you can backup your save at any time, and load it on another device
 - When loading a save, it first shows the name and HMS (to avoid loading a wrong/outdated save)
 - Then you can choose to load it or copy its savecode to the clipboard
+- Added a Setting as a shortcut to the cloud save modal
+- Added Import from file modal
 
 -> Player count:
 - How many players were active in the past 30 days is shown in the Info section
@@ -64,7 +66,8 @@ const currentPatchNotes = `
 - New Design Setting: Toggle Quotes
 
 -> Achievements:
-- Added 1 new Achievement (240 -> 241)
+- Added 2 new Achievements (240 -> 242)
+- One for having a verified account, one for using all 5 methods of saving
 
 -> Player Profile:
 - Added 1 new PFP (awarded for creating and email linking an account)

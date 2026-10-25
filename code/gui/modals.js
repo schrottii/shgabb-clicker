@@ -17,10 +17,7 @@ function toggleModal(name, forcemode = "") {
     else {
         // OPEN
         // open it and set as current
-        modalContentContainer.innerHTML = `<span class="modal-close" onclick="toggleModal('', 'close');">&times;</span>
-        <h2>${modals[name].title}</h2>
-        <hr style='clear: both;' />
-        ${modals[name].content}`;
+        modalContentContainer.innerHTML = modals[name].render();
 
         modals[name].open();
 
@@ -50,6 +47,13 @@ class Modal {
         }
         this.uiElementsNames = uiElements;
         this.writeCache = {};
+    }
+
+    render() {
+        return `<span class="modal-close" onclick="toggleModal('', 'close');">&times;</span>
+        <h2 style='margin-left: 60px;'>${this.title}</h2>
+        <hr style='clear: both;' />
+        ${this.content}`;
     }
 
     open() {
@@ -183,7 +187,7 @@ modals = {
         </div>
 
         <div id="cloudsaveArea" style="display: none;">
-            <h3>Cloud save</h3>
+            <h3>Open cloud save</h3>
             <button class="shbookButton modalButton" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />
             <br /><br />
         </div>
@@ -287,6 +291,18 @@ modals = {
                 toggleModal("resetpassword2", "close");
                 toggleModal("accountmanagement");
             }
+        }
+    ),
+    "importfromfile": new Modal("Import from file",
+        `
+        Select your file here and then press the button below. It will load the save that is inside. <br />
+        <input id="myFile" type="file">
+        <br style='clear: both' /><br />
+
+        <button class="shbookButton modalButton" onclick="importFromFile();">Import from this file</button>
+        `,
+        (m, tick) => {
+
         }
     )
 };

@@ -278,6 +278,7 @@ function client_cloud_upload() {
 
 function client_cloud_upload_reply(data) {
     console.log("cloud save success: " + data.success);
+    if (data.success) savedTo.cloudsave = true;
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Uploaded save successfully!";
 }
 

@@ -858,6 +858,7 @@ progress {
     font-size: 64px;
     font-weight: bold;
     cursor: crosshair;
+    width: 60px;
 }
 
 .modalButton {
