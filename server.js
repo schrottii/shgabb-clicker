@@ -832,9 +832,7 @@ async function server_cloud_download(ws, data) {
 
     let dbData = await database_command("downloadCloudSave", { id: ws.playerID });
     if (dbData != undefined) dbData = dbData[0];
-
     //console.log(ws.playerID, dbData);
-    //console.log(filename);
 
     let filename = dbData.filename;
     let name = dbData.save_name;

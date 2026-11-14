@@ -41,6 +41,12 @@ CREATE TABLE IF NOT EXISTS `shg_user_saves` (
   FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE
 );
 
+ALTER TABLE shg_user_saves ADD COLUMN IF NOT EXISTS save_slot INT DEFAULT 1;
+ALTER TABLE shg_user_saves ADD COLUMN IF NOT EXISTS file_ref VARCHAR(16) NOT NULL;
+ALTER TABLE shg_user_saves ADD COLUMN IF NOT EXISTS save_name VARCHAR(32);
+ALTER TABLE shg_user_saves ADD COLUMN IF NOT EXISTS save_hms VARCHAR(32);
+ALTER TABLE shg_user_saves ADD COLUMN IF NOT EXISTS updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
 -- user activity / playercount table
 -- it is its own thing because we want to know active players for this game, not Balnoom accounts overall
 CREATE TABLE IF NOT EXISTS `shg_user_activity` (

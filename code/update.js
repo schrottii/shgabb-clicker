@@ -3,7 +3,7 @@
 // Game version and patch notes
 
 const gameVersion  = "4.7";
-const versionTitle = "";
+const versionTitle = "Servant of the Clouds";
 
 const currentPatchNotes = `
 -> Server:
@@ -11,45 +11,41 @@ const currentPatchNotes = `
 - This means: new features like cloud save, chatting, multiplayer are now possible to add
 - Implemented the new Balnoom Account system (read below)
 - The game remains playable offline, but certain things will require an internet connection
-- The first set of server features are:
-- A player counter 
-- Accounts 
-- Cloud Save 
-
--> Server (technical details): 
-- Server uptime is not guaranteed (but it should be >99%)
-- The server commands, database commands & more are documented (code/online/SERVER_DOC.md)
-- If, for whatever reason, the official server permanently closes, community-run servers become fully permitted, and can be setup with the documentation and some experience. Stop killing games!
+- The first set of server features in v4.7 are:
+- Player counter
+- Accounts
+- Cloud Save
 
 -> Balnoom Accounts:
-- Instead of every game/app with server features requiring you to make a new account, the plan is to have one account for all. 
+- Instead of every game/app with server features requiring you to make a new account, the plan is to have one account for all.
+- Access via button in the top right, it also shows server connection (red = disconnected, green = available)
 - Register with an username and password (min. 6 characters).
-- ?? Email is optional, and can be added later. It is required for verification (and thus some extra features)
-- The login is cached
-- Logout button...
-- To verify an account, a verification code is sent to the provided email.
-- If you are not logged in and forgot the password for your verified account, you can request a reset. A verification code will be sent via email.
+- Email is optional, and you can attach it later. It is required for verification (and thus some extra features)
+- The login is cached locally, we all hate the modern trend of websites not remembering your login :)
+- To verify an account, a verification code is sent to the provided email. For now, it is only needed for password reset
+- Account Management area includes: Logout button, button to open Cloud Save, button to start password reset
+- If you forgot the password for your verified account, you can request a reset. A verification code will be sent via email.
 
 -> Cloud Save:
 - FINALLY! CLOUD SAVE IN A GAME! AFTER SO MANY YEARS!
-- When logged in to your verified account, you can backup your save at any time, and load it on another device
-- When loading a save, it first shows the name and HMS (to avoid loading a wrong/outdated save)
+- When logged in, you can backup the save at any time, and load it on another (or the same) device whenever desired
+- When loading a save, it first shows the name, HMS, size and upload date (to avoid loading a wrong/outdated save)
 - Then you can choose to load it or copy its savecode to the clipboard
 - Added a Setting as a shortcut to the cloud save modal
-- Added Import from file modal
 
 -> Player count:
 - How many players were active in the past 30 days is shown in the Info section
 
 -> Modals:
-- Added modals: a new layer of showing information
+- New feature: Modals - a new layer of showing information
 - X button to close is located at the top right
-- New modal for returning players (showing profile card and giving the options to start, start muted, or change save)
-- New modal for new players (import save, reset save, or create save (*does not override existing save if there is one))
-- New modal for save creation (giving start options: sound, tutorial, player name)
-- New modal for account management (logging in, verifying, etc.)
-- New modal for Cloud Save
-- New modals for resetting password and entering new password
+- Added modal for returning players (showing profile card and giving the options to start, start muted, or change save)
+- Added modal for new players (import save, reset save, or create save (*does not override existing save if there is one))
+- Added modal for save creation (giving start options: sound, tutorial, player name)
+- Added modal for account management (logging in, verifying, etc.)
+- Added modal for Cloud Save
+- Added modals for resetting password and entering new password
+- Added modal for Import from file Setting
 
 -> Tutorial:
 - If not finished/skipped, the tutorial will appear again when re-opening the game (progress is saved)
@@ -70,13 +66,31 @@ const currentPatchNotes = `
 - One for having a verified account, one for using all 5 methods of saving
 
 -> Player Profile:
-- Added 1 new PFP (awarded for creating and email linking an account)
+- Added 1 new PFP
+- Added 1 new Banner (special)
+- Both are awarded for creating and verifying an account
 - Fixed issue with some cosmetics images
 
--> Other:
+-> Settings:
+- New Savefile Setting: Cloud Save
+- Import from file Setting now uses a modal, removed select file button from Settings area
+
+-> Music:
+- New song: Servant of the Clouds
+- Music no longer starts after the first click
+- Instead, it starts when using the welcome modal's Start button (Start muted or clicking the modal away do not start music)
 - Improved music loading on start
+
+-> Server (technical details): 
+- Server uptime is not guaranteed (but it should be >99%)
+- The server commands, database commands & more are documented (code/online/SERVER_DOC.md)
+- If, for whatever reason, the official server permanently closes, community-run servers become fully permitted, and can be setup with the documentation and some experience. Stop killing games!
+- schema.sql and .env.example are available
+
+-> Other:
 - Another attempt at fixing random crashes during loading
 - Converted patch_notes.txt to PATCH_NOTES.md
+- Fixed issue with Currencies help button
 `.split("\n");
 currentPatchNotes.splice(0, 1);
 

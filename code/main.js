@@ -1162,6 +1162,7 @@ audio = {
     "Silicone Business": "music/Silicone_Business.mp3",
     "0.2s": "music/0.2s.mp3",
     "Kate Blen": "music/Kate_Blen.mp3",
+    "Servant of the Clouds": "music/Servant_of_the_Clouds.mp3",
 
     // sounds
     "fart": "sounds/fart.mp3",
@@ -1171,7 +1172,7 @@ audio = {
     "voice": "sounds/female_talking.wav",
 };
 
-var songs = ["Shgame (Remix)", "Silicone Business", "0.2s", "Kate Blen"];
+var songs = ["Shgame (Remix)", "Silicone Business", "0.2s", "Kate Blen", "Servant of the Clouds"];
 var firstClick = true;
 
 wggjAudio.ondurationchange = () => {
@@ -1186,8 +1187,7 @@ wggjAudio.onended = () => {
 }
 
 document.addEventListener("mousedown", (e) => {
-    // modal handler
-    //console.log(e.target);
+    // modal handler - if clicking the gray area, close the current modal
     if (e.target.id == "modals") {
         toggleModal("", "close");
     }

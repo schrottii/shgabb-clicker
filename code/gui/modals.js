@@ -167,7 +167,7 @@ modals = {
     ),
     "accountmanagement": new Modal("Account management",
         `
-        <span id="accountLoginStatus"></span><br />
+        <span id="accountLoginStatus"></span><br /><br />
 
         <div id="loginArea" style="display: none;">
             <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
@@ -178,11 +178,6 @@ modals = {
 
             <button class="shbookButton modalButton" onclick="client_account_register();">Register</button>
             <button class="shbookButton modalButton" onclick="client_account_login();">Login</button>
-            <br /><br />
-        </div>
-
-        <div id="logoutArea" style="display: none;">
-            <button class="shbookButton modalButton" onclick="disconnectFromServer();">Log out</button>
             <br /><br />
         </div>
 
@@ -208,6 +203,11 @@ modals = {
             <button class="shbookButton modalButton" onclick="toggleModal('accountmanagement', 'close'); toggleModal('resetpassword');">Request password reset</button>
             <br /><br />
         </div>
+
+        <div id="logoutArea" style="display: none;">
+            <button class="shbookButton modalButton" onclick="disconnectFromServer();">Log out</button>
+            <br /><br />
+        </div>
         `,
         (m, tick) => {
             document.getElementById("loginArea").style.display = isLoggedIn ? "none" : "";
@@ -223,12 +223,14 @@ modals = {
                 document.getElementById("resetPasswordArea").style.display = "";
             }
             else {
-                m.write("cloudsaveloggedout", "Log in to access cloud save<br />");
+                m.write("cloudsaveloggedout", "Log in to access cloud save<br /><br />");
             }
         }
     ),
     "cloudsave": new Modal("Cloud Save",
         `
+        <span id="cloudSaveStatus"></span><br /><br />
+
         <table align='center' style="background-color: rgb(150, 150, 255); font-size: 24px;">
         <button class="shbookButton modalButton" onclick="client_cloud_upload();">Upload save</button>
         <button class="shbookButton modalButton" onclick="client_cloud_download();">Download save</button>
@@ -238,12 +240,10 @@ modals = {
         <div id="loadedcloudsaveArea" style="display: none;">
             <span id="cloudSaveStatus2"></span> <br />
 
-            <button class="shbookButton modalButton" onclick="importGame(loadedCloudSave);">Import save</button>
+            <button class="shbookButton modalButton" onclick="importGame(loadedCloudSave);">Load this save</button>
             <button class="shbookButton modalButton" onclick="copyCloudSave();">Copy to clipboard</button>
             <br /><br />
         </div>
-
-        <span id="cloudSaveStatus"></span>
         `,
         (m, tick) => {
             if (!isLoggedIn) {
@@ -254,8 +254,7 @@ modals = {
     ),
     "resetpassword": new Modal("Reset Password",
         `
-        <span id="accountLoginStatus"></span><br />
-        <br />
+        <span id="accountLoginStatus"></span><br /><br />
 
         Enter your address here, then press the button. An E-Mail will be sent to confirm it is your account. <br />
         <input id="cloudSave-email" type="text" maxlength="64" size="32" style="font-size: 24px;"> E-Mail <br />
@@ -277,8 +276,7 @@ modals = {
     ),
     "resetpassword2": new Modal("Reset Password",
         `
-        <span id="accountLoginStatus"></span><br />
-        <br />
+        <span id="accountLoginStatus"></span><br /><br />
 
         Enter your new password here. <br />
         <input id="newpassword" type="password" maxlength="64" size="32" style="font-size: 24px;"> New password <br />
@@ -295,7 +293,8 @@ modals = {
     ),
     "importfromfile": new Modal("Import from file",
         `
-        Select your file here and then press the button below. It will load the save that is inside. <br />
+        Select your file here and then press the button below. It will load the save that is inside. <br /> <br />
+
         <input id="myFile" type="file">
         <br style='clear: both' /><br />
 
@@ -333,8 +332,9 @@ function sendPasswordResetEmail() {
 }
 
 function copyCloudSave() {
-    navigator.clipboard.writeText(loadedCloudSave);
+    //navigator.clipboard.writeText(loadedCloudSave);
+    //createNotification("Game exported to clipboard");
 
-    createNotification("Game exported to clipboard");
+    exportGame("gimme", JSON.parse(loadedCloudSave));
     document.getElementById("cloudSaveStatus").innerHTML = "Copied save to clipboard";
 }

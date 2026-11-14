@@ -23,6 +23,7 @@ async function callServer(command, body = "") {
     }
     else {
         console.log("Can't communicate with server: socket not ready");
+        document.getElementById("serverStatusImage").src = "images/done.png";
     }
 }
 
@@ -30,6 +31,8 @@ function onServerConnect() {
     client_playercount(game.profile.id);
     client_account_logincheck();
     //client_account_logincheck();
+
+    document.getElementById("serverStatusImage").src = "images/active.png";
 }
 
 function connectToServer() {
@@ -61,6 +64,8 @@ function connectToServer() {
     };
 
     socket.onmessage = (event) => {
+        document.getElementById("serverStatusImage").src = "images/active.png";
+
         try {
             let data = JSON.parse(event.data);
 
@@ -131,6 +136,7 @@ function disconnectFromServer() {
     //socket.close();
     isLoggedIn = false;
     client_account_logout();
+    document.getElementById("serverStatusImage").src = "images/done.png";
 }
 
 // extra code by d0ktorek

@@ -104,7 +104,7 @@
 
         <!-- Top (game name), account button, quote -->
         <h2 id="gameName" class="gameName"><span id="gametitle">Shgabb Clicker</span></h2>
-        <button onclick="toggleModal('accountmanagement');" class="accountButton"><img src="images/account.png" style="height: 32px;" /></button>
+        <button onclick="toggleModal('accountmanagement');" class="accountButton"><img src="images/account.png" style="height: 32px;" /><img id="serverStatusImage" src="images/done.png" style="height: 16px; margin-bottom: 8px;" /></button>
         <div class="quoteClass"><span id="quoteText"></span></div>
         <br />
 
@@ -115,7 +115,7 @@
         <button class="clickButton" style="min-width: 128px;" onclick="clickButton()" id="clickButton">+1 Shgabb</button> <br />
 
         <!-- Newest notifications -->
-        <div style="background-color: black">
+        <div style="background-color: black; max-width: 800px; margin: auto;">
             <span id="newestnotif"></span>
         </div>
 

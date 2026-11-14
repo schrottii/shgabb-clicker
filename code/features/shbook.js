@@ -112,7 +112,7 @@ function helpSection1() {
         "bananas": 14
     };
     shbookSelections.currenciary = tbl[selections[0]];
-    selections[3] = "shbook2";
+    selections[3] = "shbook3";
 
     location.href = '#shbookArea';
     renderShbook();

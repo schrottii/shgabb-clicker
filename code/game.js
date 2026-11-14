@@ -480,15 +480,16 @@ function exportToFile() {
     if (game.cheated != true) exportGame("file");
 }
 
-function exportGame(destination = "gimme") {
-    if (game.cheated == true) {
+function exportGame(destination = "gimme", saveToExport = undefined) {
+    if (saveToExport == undefined) saveToExport = game;
+    if (saveToExport.cheated == true) {
         alert("You can't export a cheated save!");
         createNotification("Couldn't export: Cheated");
         return false;
     }
     let exporter = {};
-    for (exportit in game) {
-        exporter[exportit] = game[exportit];
+    for (exportit in saveToExport) {
+        exporter[exportit] = saveToExport[exportit];
     }
 
     exporter.shgabb = numberSaver(exporter.shgabb);
@@ -498,20 +499,20 @@ function exportGame(destination = "gimme") {
     exporter.fishvalue = numberSaver(exporter.fishvalue);
     exporter.genpoints = numberSaver(exporter.genpoints);
     exporter.generators = [];
-    for (let g in game.generators) {
+    for (let g in saveToExport.generators) {
         exporter.generators[g] = [0, new Decimal(0), 0];
-        exporter.generators[g][0] = game.generators[g][0];
+        exporter.generators[g][0] = saveToExport.generators[g][0];
         exporter.generators[g][1] = numberSaver(game.generators[g][1]);
-        exporter.generators[g][2] = game.generators[g][2];
+        exporter.generators[g][2] = saveToExport.generators[g][2];
     }
 
     for (let statHandler in statTypes) {
         exporter[statTypes[statHandler]] = {};
-        for (let allStats in game.stats) {
-            exporter[statTypes[statHandler]][allStats] = game[statTypes[statHandler]][allStats];
+        for (let allStats in saveToExport.stats) {
+            exporter[statTypes[statHandler]][allStats] = saveToExport[statTypes[statHandler]][allStats];
         }
         for (let currHandler in statCurr) {
-            exporter[statTypes[statHandler]][statCurr[currHandler]] = numberSaver(game[statTypes[statHandler]][statCurr[currHandler]]);
+            exporter[statTypes[statHandler]][statCurr[currHandler]] = numberSaver(saveToExport[statTypes[statHandler]][statCurr[currHandler]]);
         }
     }
     exporter = JSON.stringify(exporter);

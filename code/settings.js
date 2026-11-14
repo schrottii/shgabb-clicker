@@ -133,7 +133,7 @@ var settingButtons = [
     new Setting("save", "manualSave", "Save", "Saves the game, like auto save (cache). Does not affect the clipboard or anything else.", ""),
     new Setting("save", "deleteGame", "Delete Game", "Delete this save (HARD RESET)!", ""),
     new Setting("save", "exportToFile", "Export to file", "[EXPORT - FILE] Save to a .txt file", ""),
-    new Setting("save", "importFromFileModal", "Import from file", `[IMPORT - FILE] Opens a modal to load a save from a .txt file.`, () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
+    new Setting("save", "importFromFileModal", "Import from file", `[IMPORT - FILE] Opens a modal to load a save from a .txt file.`, ""),// () => document.getElementById("myFile") != null && document.getElementById("myFile").value != "" ? "File selected - click to load" : "Select a file first!"),
     new Setting("save", "redeemRewardCode", "Redeem a Reward Code", "Use this to import a special gift from Schrottii. Each can be used only once and has an expiry date.", ""),
     new Setting("save", "exportSettings", "Export Settings", "[EXPORT - SETTINGS CODE] Copy the a code for settings to the clipboard. Store it somewhere and use it to load this set of settings later.", ""),
     new Setting("save", "importSettings", "Import Settings", "[IMPORT - SETTINGS CODE] Import a settings code, obtained from the Export Settings setting.", ""),

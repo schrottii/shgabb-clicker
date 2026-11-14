@@ -294,13 +294,16 @@ function client_cloud_download_reply(data) {
     if (data.success) {
         loadedCloudSave = data.savedata;
         //console.log(loadedCloudSave);
+        let romantic = new Date(data.updated);
+        romantic = romantic.toLocaleDateString();
+        if (romantic == undefined) romantic = "Unknown";
 
         if (document.getElementById("cloudSaveStatus")) {
             document.getElementById("cloudSaveStatus").innerHTML = "Downloaded your save successfully.";
             document.getElementById("cloudSaveStatus2").innerHTML = "Length: " + data.savedata.length
-            + "<br />Name: " + data.name
-            + "<br />HMS: " + data.hms
-            + "<br />Last updated: " + data.updated.substr("T")[0];
+                + "<br />Name: " + data.name
+                + "<br />HMS: " + data.hms
+                + "<br />Last updated: " + romantic;
             document.getElementById("loadedcloudsaveArea").style.display = "";
         }
     }
