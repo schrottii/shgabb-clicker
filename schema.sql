@@ -54,3 +54,25 @@ CREATE TABLE IF NOT EXISTS `shg_user_activity` (
   `last_activity` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE
 );
+
+-- reward codes, now handled via server + DB
+-- first table is read-only for users, saves which reward codes exist (oh Idle Bar...)
+CREATE TABLE IF NOT EXISTS `shg_reward_codes` (
+  `reward_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `code` VARCHAR(64) NOT NULL UNIQUE,
+  `reward_type` VARCHAR(32) NOT NULL,
+  `reward_value` INT DEFAULT 0,
+  `message` VARCHAR(255) DEFAULT "",
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `expires` DATETIME DEFAULT NULL
+);
+ALTER TABLE shg_reward_codes ADD COLUMN IF NOT EXISTS message VARCHAR(255) DEFAULT "";
+-- INSERT INTO shg_reward_codes (code, reward_type, reward_value, expires, message) VALUES ()
+
+-- second table keeps track of who redeemed what
+CREATE TABLE IF NOT EXISTS `shg_reward_redeemed` (
+  `redeemed_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `reward_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

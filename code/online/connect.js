@@ -104,6 +104,9 @@ function connectToServer() {
                 case "logout":
                     client_account_logout_reply(data);
                     break;
+                case "redeem_reward_code":
+                    client_redeem_reward_code_reply(data);
+                    break;
 
                 // reply only
                 case "old_version":

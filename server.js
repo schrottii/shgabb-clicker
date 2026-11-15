@@ -117,7 +117,8 @@ const server_commands = {
     login: (ws, data) => server_login(ws, data),
     cloud_upload: (ws, data) => server_cloud_upload(ws, data),
     cloud_download: (ws, data) => server_cloud_download(ws, data),
-    logout: (ws, data) => server_account_logout(ws, data)
+    logout: (ws, data) => server_account_logout(ws, data),
+    redeem_reward_code: (ws, data) => server_redeem_reward_code(ws, data)
 };
 
 
@@ -740,7 +741,8 @@ async function server_login(ws, data) {
 
     if (success) {
         let loadingPlayerID = await database_command("getID", { name: name, password: pw, email: email });
-        console.log("loadingPlayerID: " + loadingPlayerID);
+        //console.log("loadingPlayerID: " + loadingPlayerID);
+
         if (loadingPlayerID && loadingPlayerID.length > 0) {
             if (parseInt(loadingPlayerID[0].is_verified) !== 1) {
                 isVerified = false;
@@ -785,7 +787,7 @@ async function server_cloud_upload(ws, data) {
             let hms = saveData.stats.hms;
             let name = saveData.profile.name;
 
-            let exists = await database_command("downloadCloudSave", { id: ws.playerID });
+            //let exists = await database_command("downloadCloudSave", { id: ws.playerID });
 
             database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
             success = true;
@@ -856,6 +858,53 @@ async function server_account_logout(ws, data) {
     ws.playerID = undefined;
     ws.isGuest = true;
     callClient("logout", ws, {});
+}
+
+// 13. redeem reward code
+async function server_redeem_reward_code(ws, data) {
+    let playerID = ws.playerID;
+
+    // is this a real code?
+    let codeExists = await database_command("rewardCodeCheckExistence", { code: data.body.code });
+    if (codeExists.length == 0) {
+        callClient("redeem_reward_code", ws, { message: "This code does not exist", success: false });
+        return;
+    }
+    let codeID = codeExists[0]["reward_id"];
+    let rewardType = codeExists[0]["reward_type"];
+    let rewardValue = codeExists[0]["reward_value"];
+    let valmessage = codeExists[0]["message"];
+    let expires = codeExists[0]["expires"];
+    expires = new Date(expires);
+    //expires = expires.toLowerCase().split("t")[0].replaceAll("-", "");
+    expires = (expires.getUTCFullYear()) + "" + ((expires.getUTCMonth() + 1).toString().length == 1 ? "0" + (expires.getUTCMonth() + 1) : (expires.getUTCMonth() + 1)) + (expires.getUTCDate().toString().length == 1 ? "0" + expires.getUTCDate() : expires.getUTCDate());
+    console.log(expires);
+
+    // expired?
+    let today = new Date();
+    today = (today.getUTCFullYear()) + "" + ((today.getUTCMonth() + 1).toString().length == 1 ? "0" + (today.getUTCMonth() + 1) : (today.getUTCMonth() + 1)) + (today.getUTCDate().toString().length == 1 ? "0" + today.getUTCDate() : today.getUTCDate());
+    if (today >= expires) {
+        callClient("redeem_reward_code", ws, { message: "This code is expired", success: false });
+        return;
+    }
+
+    // have we already used it?
+    let codeUsed = await database_command("rewardCodeCheckUsed", { code: codeID, userID: playerID });
+    console.log(codeUsed);
+    if (codeUsed.length > 0) {
+        callClient("redeem_reward_code", ws, { message: "You already used this code", success: false });
+        return;
+    }
+
+    // seems legit
+    let success = await database_command("rewardCodeRedeem", { code: codeID, userID: playerID });
+    success = success != undefined && success != false;
+    if (success == false) {
+        callClient("redeem_reward_code", ws, { message: "An unknown error occured", success: false });
+        return;
+    }
+
+    callClient("redeem_reward_code", ws, { message: "Reward Code redeemed successfully", success: success, valtype: rewardType, value: rewardValue, code: data.body.code, expires: expires, valmessage: valmessage });
 }
 
 
@@ -1073,6 +1122,27 @@ async function database_command(cmdname = "", data = {}) {
                 [results] = await db_connection.query(
                     "SELECT file_ref AS filename, save_name, save_hms, updated FROM shg_user_saves WHERE user_id = ? LIMIT 1;",
                     [data.id]
+                );
+                break;
+
+            case "rewardCodeCheckExistence":
+                [results] = await db_connection.query(
+                    "SELECT reward_id, reward_type, reward_value, expires, message FROM shg_reward_codes WHERE code = ? LIMIT 1;",
+                    [data.code]
+                );
+                break;
+
+            case "rewardCodeCheckUsed":
+                [results] = await db_connection.query(
+                    "SELECT created FROM shg_reward_redeemed WHERE reward_id = ? AND user_id = ? LIMIT 1;",
+                    [data.code, data.userID]
+                );
+                break;
+
+            case "rewardCodeRedeem":
+                [results] = await db_connection.query(
+                    "INSERT INTO shg_reward_redeemed (reward_id, user_id) VALUES (?, ?);",
+                    [data.code, data.userID]
                 );
                 break;
         }

@@ -257,7 +257,7 @@ function toggleSidebar() {
         let sideBarFadeInHandler = setInterval(() => {
             sideBarFadeIn += 0.02;
             ui.SIDEBAR.style.opacity = sideBarFadeIn;
-            ui.SIDEBAR.style.transform = "translate(-" + (100 - (sideBarFadeIn * 100)) + "%, 0)";
+            ui.SIDEBAR.style.transform = "translate(-" + Math.max(0, 100 - (sideBarFadeIn * 100)) + "%, 0)";
             if (sideBarFadeIn >= 1) {
                 clearInterval(sideBarFadeInHandler);
             }
@@ -273,7 +273,7 @@ function toggleSidebar() {
         let sideBarFadeInHandler = setInterval(() => {
             sideBarFadeIn += 0.02;
             ui.SIDEBAR.style.opacity = 1 - sideBarFadeIn;
-            ui.SIDEBAR.style.transform = "translate(-" + (sideBarFadeIn * 100) + "%, 0)";
+            ui.SIDEBAR.style.transform = "translate(-" + Math.max(0, sideBarFadeIn * 100) + "%, 0)";
             if (sideBarFadeIn >= 1) {
                 clearInterval(sideBarFadeInHandler);
 
@@ -486,6 +486,12 @@ function importFromFileModal() {
 
 function redeemRewardCode() {
     let importRewardCode = prompt("Enter a valid Reward Code:");
+    client_redeem_reward_code({ input: importRewardCode });
+}
+
+/*
+function redeemRewardCode() {
+    let importRewardCode = prompt("Enter a valid Reward Code:");
 
     //importRewardCode = importRewardCode.replace("RED-", "ey");
     importRewardCode = atob(importRewardCode);
@@ -540,6 +546,7 @@ function redeemRewardCode() {
     game.red_rew.push([importRewardCode.ID, importRewardCode.EXPIRY]);
     return true;
 }
+*/
 
 function exportSettings() {
     let exporter = JSON.stringify(settings);

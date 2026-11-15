@@ -41,6 +41,7 @@ npm install dotenv mysql2
 | 10. | cloud_upload                   | success
 | 11. | cloud_download                 | success, savedata, name, hms, updated
 | 12. | logout                         | -
+| 13. | redeem_reward_code             | message, success, valtype, value, code, expires, valmessage
 
 # Database commands
 Communication between the server.js and SQL database
@@ -66,3 +67,6 @@ Communication between the server.js and SQL database
 | playercount                    | -
 | uploadCloudSave                | id, filename, name, hms, id
 | downloadCloudSave              | id
+| rewardCodeCheckExistence       | code
+| rewardCodeCheckUsed            | code, userID
+| rewardCodeRedeem               | code, userID

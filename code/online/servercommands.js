@@ -9,7 +9,7 @@ async function client_playercount() {
 }
 
 function client_playercount_reply(data) {
-    console.log("player count: " + data.onlineLast30Days);
+    //console.log("player count: " + data.onlineLast30Days);
     ui.playercount.innerHTML = "Players in last 30 days: " + data.onlineLast30Days;
 }
 
@@ -31,9 +31,8 @@ function client_account_logincheck_reply(data) {
 // 3. /register
 async function client_account_register() {
     // create new cloud save account
-
-    //if (getOrigin() == "private") return;
     console.log("/register");
+    //if (getOrigin() == "private") return;
 
     // okay, let me be clear: game is already some time old, so in case people shared their acc,
     // using the pre - existing ID for login might not be the best solution
@@ -100,7 +99,7 @@ async function client_verify_email(email = "", code = "") {
         email = document.getElementById("cloudSave-email") ? document.getElementById("cloudSave-email").value : "";
         code = document.getElementById("verify-code").value;
     }
-    console.log(email, code);
+    //console.log(email, code);
     callServer("verify_email", { email: email, code: code });
 }
 
@@ -144,7 +143,7 @@ async function client_request_password_reset(email = "") {
 }
 
 function client_request_password_reset_reply(data) {
-    console.log("request_password_reset: " + data.message);
+    //console.log("request_password_reset: " + data.message);
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
 }
 
@@ -187,7 +186,7 @@ function client_submit_new_password() {
 }
 
 function client_confirm_password_reset_reply(data) {
-    console.log("confirm_password_reset: " + data.message);
+    //console.log("confirm_password_reset: " + data.message);
     if (document.getElementById("accountLoginStatus")) document.getElementById("accountLoginStatus").innerHTML = data.message;
     if (data.success) {
         if (currentModal === "resetpassword") {
@@ -241,7 +240,7 @@ function client_account_login_reply(data) {
         awardAchievement(241);
     }
 
-    console.log("login: " + message);
+    //console.log("login: " + message);
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
@@ -261,7 +260,7 @@ function client_old_version_reply(data) {
     // reply only - no request
     // data contains: clientVer, serverVer
 
-    let conq = confirm("There is an update avaialable! Do you want to refresh?\nYour version: v" + data.clientVer + " - server version: v" + data.serverVer)
+    let conq = confirm("There is an update available! Do you want to refresh?\nYour version: v" + data.clientVer + " - server version: v" + data.serverVer)
 
     if (conq) {
         autoSave("manual");
@@ -272,18 +271,20 @@ function client_old_version_reply(data) {
 // 10. upload cloud save
 function client_cloud_upload() {
     //console.log("giving data: " + JSON.stringify(game));
+    console.log("/cloud_upload");
     callServer("cloud_upload", { saveData: JSON.stringify(game) });
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to upload cloud save...";
 }
 
 function client_cloud_upload_reply(data) {
-    console.log("cloud save success: " + data.success);
+    //console.log("cloud save success: " + data.success);
     if (data.success) savedTo.cloudsave = true;
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Uploaded save successfully!";
 }
 
 // 11. download cloud save
 function client_cloud_download() {
+    console.log("/cloud_download");
     callServer("cloud_download");
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to download your cloud save...";
 }
@@ -332,4 +333,35 @@ function client_account_logout_reply(data) {
 
     // log out from cache
     localStorage.setItem("balnoomLogin", JSON.stringify({ name: undefined, pw: undefined, email: undefined }));
+}
+
+// 13. /redeem_reward_code
+function client_redeem_reward_code(data) {
+    // user tries a code (like FREEGEMSWOW)
+    // we check if the code is real, what it has, and if you already got it
+    console.log("/redeem_reward_code");
+    let code = data.input;
+    if (code == undefined || code == "") return false;
+
+    callServer("redeem_reward_code", { code: code });
+}
+
+function client_redeem_reward_code_reply(data) {
+    // message, success, valtype, value, code, expires, valmessage
+    alert(data.message);
+    if (data.valmessage) alert(data.valmessage);
+    //console.log(data);
+
+    if (data.success) {
+        let value = parseInt(data.value);
+
+        if (data.valtype == "startVer") game.profile.startVer = value;
+        else if (data.valtype == "startDate") game.profile.startDate = value;
+        else {
+            if (typeof (game[data.valtype]) == "object") game[data.valtype] = game[data.valtype].add(value);
+            else game[data.valtype] = game[data.valtype] + value;
+        }
+
+        game.red_rew.push([data.code, data.expires]); // still needed for achievement and such
+    }
 }

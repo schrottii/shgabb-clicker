@@ -33,7 +33,7 @@ function renderScrapyardFloatingNumber() {
     if (selections[1] != "minigames") return false;
     if (scrapyardFloatingNumber > 0) {
             document.getElementById("scrapyardFloatingText").style.display = "";
-        ui.scrapyardFloatingText.innerHTML = `<span style="color: lime; position: absolute; z-index: 10; font-size: 40px; transform: translateY(-`+ ((1 - scrapyardFloatingNumber) * 60) + `px); opacity: ` + scrapyardFloatingNumber + `;">-` + scrapyardFloatingNumberPrice + `</span>`;
+        ui.scrapyardFloatingText.innerHTML = `<span style="color: lime; position: absolute; z-index: 10; font-size: 40px; transform: translateY(-`+ Math.max(0, (1 - scrapyardFloatingNumber) * 60) + `px); opacity: ` + scrapyardFloatingNumber + `;">-` + scrapyardFloatingNumberPrice + `</span>`;
         scrapyardFloatingNumber -= 1 / 60;
         console.log(scrapyardFloatingNumber)
 

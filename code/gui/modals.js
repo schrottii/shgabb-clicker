@@ -224,6 +224,7 @@ modals = {
             }
             else {
                 m.write("cloudsaveloggedout", "Log in to access cloud save<br /><br />");
+                document.getElementById("cloudsaveArea").style.display = "none";
             }
         }
     ),
@@ -268,10 +269,10 @@ modals = {
         </div>
         `,
         (m, tick) => {
-            if (isLoggedIn) {
+            /*if (isLoggedIn) {
                 toggleModal("resetpassword", "close");
                 toggleModal("accountmanagement");
-            }
+            }*/
         }
     ),
     "resetpassword2": new Modal("Reset Password",
@@ -285,10 +286,10 @@ modals = {
         <button class="shbookButton modalButton" onclick="client_submit_new_password();">Change</button>
         `,
         (m, tick) => {
-            if (isLoggedIn) {
+            /*if (isLoggedIn) {
                 toggleModal("resetpassword2", "close");
                 toggleModal("accountmanagement");
-            }
+            }*/
         }
     ),
     "importfromfile": new Modal("Import from file",
@@ -322,6 +323,7 @@ function createNewSaveFromModal() {
 
 function sendPasswordResetEmail() {
     let email = document.getElementById("cloudSave-email") != null ? document.getElementById("cloudSave-email").value.trim() : "";
+    if (email == "") return;
     client_request_password_reset(email);
 
     if (document.getElementById("verifyCodeArea") != null) {

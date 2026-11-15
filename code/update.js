@@ -11,10 +11,12 @@ const currentPatchNotes = `
 - This means: new features like cloud save, chatting, multiplayer are now possible to add
 - Implemented the new Balnoom Account system (read below)
 - The game remains playable offline, but certain things will require an internet connection
+- If your client version is outdated, the server will make aware of the difference and refuse to connect
 - The first set of server features in v4.7 are:
-- Player counter
-- Accounts
-- Cloud Save
+- 1. Player counter
+- 2. Accounts
+- 3. Cloud Save
+- 4. Server-side Reward Codes
 
 -> Balnoom Accounts:
 - Instead of every game/app with server features requiring you to make a new account, the plan is to have one account for all.
@@ -35,6 +37,11 @@ const currentPatchNotes = `
 
 -> Player count:
 - How many players were active in the past 30 days is shown in the Info section
+- Server connection status and login status are also shown there
+
+-> Reward Codes:
+- They are now stored in the database and handled via server
+- From an user's POV, it should be the same as before
 
 -> Modals:
 - New feature: Modals - a new layer of showing information
@@ -59,7 +66,9 @@ const currentPatchNotes = `
 
 -> Quotes:
 - Added 5 new Quotes (110 -> 115)
-- New Design Setting: Toggle Quotes
+- Added Setting to disable Quotes
+- The quote box is now combined with the game name above (same width)
+- Long quotes get the scrolling effect (from mobile), as the width is limited now
 
 -> Achievements:
 - Added 2 new Achievements (240 -> 242)
@@ -72,6 +81,7 @@ const currentPatchNotes = `
 - Fixed issue with some cosmetics images
 
 -> Settings:
+- New Design Setting: Toggle Quotes
 - New Savefile Setting: Cloud Save
 - Import from file Setting now uses a modal, removed select file button from Settings area
 
@@ -120,7 +130,7 @@ function patchNotesSize() {
 // BETA - easier debugging
 var BETA = {};
 Object.defineProperty(BETA, 'isIndev', {
-    value: window.location.toString().includes("localhost") && true,
+    value: window.location.toString().includes("localhost") && false,
     writable: false,
     enumerable: true,
     configurable: false
