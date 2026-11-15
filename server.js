@@ -789,8 +789,8 @@ async function server_cloud_upload(ws, data) {
 
             //let exists = await database_command("downloadCloudSave", { id: ws.playerID });
 
-            database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
-            success = true;
+            let suc = database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
+            if (suc != undefined && suc.warningStatus != undefined && suc.warningStatus == 0) success = true;
         }
         catch (e) {
             console.log(e);
@@ -1106,7 +1106,7 @@ async function database_command(cmdname = "", data = {}) {
 
             case "playercount":
                 [results] = await db_connection.query(
-                    "SELECT COUNT(shg_user_activity.user_id) AS 'pcount' FROM shg_user_activity",
+                    "SELECT COUNT(shg_user_activity.user_id) AS 'pcount' FROM shg_user_activity WHERE last_activity > NOW() - INTERVAL 30 DAY;",
                     []
                 );
                 break;
