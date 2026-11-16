@@ -274,6 +274,7 @@ function client_cloud_upload() {
     console.log("/cloud_upload");
     callServer("cloud_upload", { saveData: JSON.stringify(game) });
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to upload cloud save...";
+    savedTo.cloudsave = true;
 }
 
 function client_cloud_upload_reply(data) {
