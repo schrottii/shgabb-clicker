@@ -14,6 +14,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const PORT = 3000;
@@ -104,6 +105,12 @@ function recordEmailSent(email, clientIP) {
     if (clientIP) {
         clientCooldowns.set(clientIP, now);
     }
+}
+
+async function hashPW(password) {
+    let salt = await bcrypt.genSalt(9);
+    let hash = await bcrypt.hash(password, salt);
+    return hash;
 }
 
 const server_commands = {
@@ -429,6 +436,7 @@ async function server_register(ws, data) {
             let code = generate6DigitCode();
             let expires = new Date(Date.now() + 15 * 60 * 1000);
 
+            pw = await hashPW(pw);
             success = await database_command("register_pending", {
                 name: name,
                 pw: pw,
@@ -444,6 +452,7 @@ async function server_register(ws, data) {
                 requiresVerification = true;
             }
         } else {
+            pw = await hashPW(pw);
             success = await database_command("register_pending", {
                 name: name,
                 pw: pw,
@@ -649,6 +658,7 @@ async function server_confirm_password_reset(ws, data) {
     else if (newPassword && newPassword.length <= 5) message = "Password must be at least 6 characters.";
     else {
         if (newPassword) {
+            newPassword = await hashPW(newPassword);
             await database_command("updateUserPassword", { email: email, password: newPassword });
             success = true;
             message = "Password updated successfully.";
@@ -679,10 +689,15 @@ async function server_login(ws, data) {
     }
 
     // existing password for that user validation
-    let passwordIsMine = await database_command("getUserPassword", { email: email, password: pw, name: name });
-    if (!passwordIsMine || passwordIsMine.length == 0) {
-        pwValid = false;
+    let passwordHash = await database_command("getUserPassword", { email: email, password: pw, name: name });
+    if (passwordHash != undefined && passwordHash.length != 0) {
+        passwordHash = passwordHash[0]["acc_password"];
+        let passwordIsMine = await bcrypt.compare(pw, passwordHash);
+        if (passwordIsMine == false) {
+            pwValid = false;
+        }
     }
+    else pwValid = false;
 
     let existingUser = null;
     if (nameValid && pwValid) {
@@ -992,8 +1007,8 @@ async function database_command(cmdname = "", data = {}) {
 
             case "getID":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.id, tbl_users.is_verified FROM tbl_users WHERE tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1",
-                    [data.name, data.password]
+                    "SELECT tbl_users.id, tbl_users.is_verified FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1",
+                    [data.name]
                 );
                 break;
 
@@ -1036,8 +1051,8 @@ async function database_command(cmdname = "", data = {}) {
 
             case "getUserPassword":
                 [results] = await db_connection.query(
-                    "SELECT tbl_users.acc_name FROM tbl_users WHERE tbl_users.acc_name = ? AND tbl_users.acc_password = ? LIMIT 1;",
-                    [data.name, data.password]
+                    "SELECT tbl_users.acc_password FROM tbl_users WHERE tbl_users.acc_name = ? LIMIT 1;",
+                    [data.name]
                 );
                 break;
 
