@@ -751,7 +751,11 @@ async function server_login(ws, data) {
         isVerified = true;
     }*/
 
-    let isVerified = true;
+    let isVerified = await database_command("getUserVerified", { email: email })
+    console.log(isVerified);
+    if (isVerified == undefined || isVerified.length == 0) isVerified = false;
+    else isVerified = isVerified["is_verified"]; // things to not say at a party
+
     let success = nameValid && pwValid && emailValid && !linkingEmail;
 
     if (success) {
@@ -802,9 +806,28 @@ async function server_cloud_upload(ws, data) {
             let hms = saveData.stats.hms;
             let name = saveData.profile.name;
 
-            //let exists = await database_command("downloadCloudSave", { id: ws.playerID });
+            let exists = await database_command("downloadCloudSave", { id: ws.playerID });
+            let suc = undefined;
 
-            let suc = database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
+            if (exists.length > 0) {
+                // already exists
+                if (exists.length > 1) {
+                    // base v4.7 had a niche SQL error allowing duplicates of the same save slot, sooo here a script to clear
+                    let dumptruck = await database_command("wipeCloudSave", { id: ws.playerID, saveslot: exists[0]["save_slot"] });
+                    console.log(dumptruck);
+                    suc = await database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
+                }
+                else {
+                    // replace existing one
+                    suc = await database_command("updateCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID, saveslot: exists[0]["save_slot"] });
+                }
+            }
+            else {
+                // what is this place?
+                suc = await database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
+            }
+
+            console.log(suc);
             if (suc != undefined && suc.warningStatus != undefined && suc.warningStatus == 0) success = true;
         }
         catch (e) {
@@ -848,7 +871,7 @@ async function server_cloud_download(ws, data) {
     let savedata = "";
 
     let dbData = await database_command("downloadCloudSave", { id: ws.playerID });
-    if (dbData != undefined) dbData = dbData[0];
+    if (dbData != undefined) dbData = dbData[dbData.length - 1];
     //console.log(ws.playerID, dbData);
 
     let filename = dbData.filename;
@@ -1070,6 +1093,13 @@ async function database_command(cmdname = "", data = {}) {
                 );
                 break;
 
+            case "getUserVerified":
+                [results] = await db_connection.query(
+                    "SELECT is_verified FROM tbl_users WHERE acc_email = ?",
+                    [data.email]
+                );
+                break;
+
             case "setPendingEmail":
                 [results] = await db_connection.query(
                     "UPDATE tbl_users SET pending_email = ?, verify_code = ?, verify_expires = ? WHERE id = ?",
@@ -1128,14 +1158,28 @@ async function database_command(cmdname = "", data = {}) {
 
             case "uploadCloudSave":
                 [results] = await db_connection.query(
-                    "INSERT INTO shg_user_saves (user_id, save_slot, file_ref, save_name, save_hms, updated) VALUES (?, 1, ?, ?, ?, CURRENT_TIMESTAMP) ON DUPLICATE KEY UPDATE save_slot = 1, file_ref = ?, save_name = ?, save_hms = ?, updated = CURRENT_TIMESTAMP;",
-                    [data.id, data.filename, data.name, data.hms, data.id, /* dup */ data.filename, data.name, data.hms]
+                    "INSERT INTO shg_user_saves (user_id, save_slot, file_ref, save_name, save_hms, updated) VALUES (?, 1, ?, ?, ?, CURRENT_TIMESTAMP);",
+                    [data.id, data.filename, data.name, data.hms, data.id]
+                );
+                break;
+
+            case "updateCloudSave":
+                [results] = await db_connection.query(
+                    "UPDATE shg_user_saves file_ref = ?, save_name = ?, save_hms = ?, updated = CURRENT_TIMESTAMP WHERE save_slot = ? AND user_id = ?;",
+                    [data.filename, data.name, data.hms, data.saveslot, data.id]
+                );
+                break;
+
+            case "wipeCloudSave":
+                [results] = await db_connection.query(
+                    "DELETE FROM shg_user_saves WHERE save_slot = ? AND user_id = ?;",
+                    [data.saveslot, data.id]
                 );
                 break;
 
             case "downloadCloudSave":
                 [results] = await db_connection.query(
-                    "SELECT file_ref AS filename, save_name, save_hms, updated FROM shg_user_saves WHERE user_id = ? LIMIT 1;",
+                    "SELECT file_ref AS filename, save_name, save_hms, updated, save_slot FROM shg_user_saves WHERE user_id = ?;",
                     [data.id]
                 );
                 break;

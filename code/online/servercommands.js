@@ -221,7 +221,7 @@ async function client_account_login() {
 }
 
 function client_account_login_reply(data) {
-    // data contains: success, nameValid, pwValid
+    // data contains: success, nameValid, pwValid, isVerified
     let message = "";
     if (data.success) message = "Login successful";
     else if (data.message && !data.linkingEmail) message = data.message;
@@ -235,12 +235,11 @@ function client_account_login_reply(data) {
     if ((data.isVerified === false || data.linkingEmail) && document.getElementById("verifyCodeArea") != null) {
         document.getElementById("verifyCodeArea").style.display = "";
     }
-    else {
-        // email is verified...?
+    if (data.success && data.isVerified && data.emailValid) {
+        // email is verified
         awardAchievement(241);
     }
 
-    //console.log("login: " + message);
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh

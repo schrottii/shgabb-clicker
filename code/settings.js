@@ -389,6 +389,7 @@ function changeUpgradeColors() {
 }
 
 function changeCustomColor(i, j) {
+    console.log(i, j);
     let amount = prompt("New RGB value? (0-255)");
     if (parseInt(amount) > -1 && parseInt(amount) < 256) {
         settings.customColors[i][j] = parseInt(amount);
@@ -427,9 +428,9 @@ function updateUpgradeColors() {
         ihText = "<div class='settingButton2' style='margin: 0 auto;'> <b>Custom colors: </b><table align='center'>";
 
         for (i = 0; i < 3; i++) {
-            ihText = ihText + "<tr><td>" + ["Affordable: ", "Too expensive: ", "Maxed: "][i] + "</td>";
+            ihText = ihText + "<tr><td style='text-align: right;'>" + ["Affordable: ", "Too expensive: ", "Maxed: "][i] + "</td>";
             for (j = 0; j < 4; j++) {
-                ihText = ihText + "<td><button class='grayButton' style='width: 96%; " + ("background-color: rgb(" + settings.customColors[i][0] + "," + settings.customColors[i][1] + "," + settings.customColors[i][2] + ");") + ("color: rgb(" + settings.customColors[i][3] + "," + settings.customColors[i][3] + "," + settings.customColors[i][3] + ");") + + "' onclick='changeCustomColor(" + i + "," + j + ")'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button></td>";
+                ihText = ihText + "<td><button class='grayButton' style='width: 96%; " + ("background-color: rgb(" + settings.customColors[i][0] + "," + settings.customColors[i][1] + "," + settings.customColors[i][2] + "); ") + ("color: rgb(" + settings.customColors[i][3] + "," + settings.customColors[i][3] + "," + settings.customColors[i][3] + ");") + "' onclick='changeCustomColor(" + i + "," + j + ");'>" + ["R", "G", "B", "T"][j] + settings.customColors[i][j] + "</button></td>";
             }
             ihText = ihText + "</tr>";
         }

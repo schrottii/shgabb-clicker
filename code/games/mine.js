@@ -58,10 +58,10 @@ var mineProgress = 0;
 var currentlyMining = false;
 var movs = [0, 0, 0];
 
-function gatherMineProgress() {
+function gatherMineProgress(multiplier) {
     if (unlockedMine() && currentlyMining) {
-        mineProgress++;
-        statIncrease("mineProgress", 1);
+        mineProgress += muliplier;
+        statIncrease("mineProgress", multiplier);
     }
 }
 

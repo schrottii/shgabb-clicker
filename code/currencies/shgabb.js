@@ -158,7 +158,7 @@ function clickButton(source = "click") {
 
             artifactEvent("onClick", { "multi": clickButtonMulti, "amount": amount });
 
-            gatherMineProgress();
+            gatherMineProgress(clickButtonMulti);
 
             // EVENTS
             if (isEvent("christmas")) {

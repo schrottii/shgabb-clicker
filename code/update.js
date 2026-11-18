@@ -2,10 +2,21 @@
 
 // Game version and patch notes
 
-const gameVersion  = "4.7";
+const gameVersion  = "4.7.1";
 const versionTitle = "Servant of the Clouds";
 
 const currentPatchNotes = `
+-> Custom Upgrade Colors:
+- Fixed browser-specific(?) issue that could prevent setting colors
+- Aligned texts to the right
+
+-> Other:
+- Tech Collection now affects mining progress
+- Fixed SQL issue where a cloud save doesn't get updated properly (the file does), leading to wrong info display
+- Fixed issue with New Age achievement (working on accounts without any email)
+- Fixed issue with Paranoid Nixonoid Achievement (guess I am the paranoid one)
+
+v4.7:
 -> Server:
 - Shgabb Clicker is the first Balnoom game/app to receive a server connection!
 - This means: new features like cloud save, chatting, multiplayer are now possible to add
