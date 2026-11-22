@@ -6,17 +6,29 @@ const gameVersion  = "4.7.1";
 const versionTitle = "Servant of the Clouds";
 
 const currentPatchNotes = `
+-> Minigames:
+- Added fullscreen support for all Minigames, toggled via button in top right
+- This is especially useful on mobile
+- Tech Collection now affects mining progress
+- "Play Minigame" text is now invisible until a CD is selected, to avoid confusion
+- Fixed selected minigame text being outdated after leaving a minigame
+
 -> Custom Upgrade Colors:
-- Fixed browser-specific(?) issue that could prevent setting colors
+- Buttons for text color now say Text instead of T
 - Aligned texts to the right
+- Fixed browser-specific(?) issue that could prevent setting colors
 
 -> Other:
-- Tech Collection now affects mining progress
+- Added warning when trying to import a cut off save code (short and round length)
+- Added d0ktorek mention to Credits
+
+-> Bug fixes:
 - Fixed SQL issue where a cloud save doesn't get updated properly (the file does), leading to wrong info display
 - Fixed issue with New Age achievement (working on accounts without any email)
 - Fixed issue with Paranoid Nixonoid Achievement (guess I am the paranoid one)
+- Fixed Genpoint Notification being able to show NaN%
 
-v4.7:
+v4.7
 -> Server:
 - Shgabb Clicker is the first Balnoom game/app to receive a server connection!
 - This means: new features like cloud save, chatting, multiplayer are now possible to add

@@ -1106,6 +1106,8 @@ images = {
     cd1: "minigames/selection/cd1.png",
     cd2: "minigames/selection/cd2.png",
     cd3: "minigames/selection/cd3.png",
+    fullscreen: "fullscreen.png",
+    "fullscreen-close": "fullscreen-close.png",
 
     sssx: "minigames/shgic/sss-x.png",
     ssso: "minigames/shgic/sss-o.png",
@@ -1207,6 +1209,8 @@ document.addEventListener("mousemove", (e) => {
 */
 
 function startMusic(forcemute = false) {
+    //wggjAudioInit();
+
     wggj.audio.musicMuted = forcemute ? true : !settings.music;
     wggj.audio.soundMuted = forcemute ? true : !settings.sounds;
 

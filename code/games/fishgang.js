@@ -136,6 +136,9 @@ scenes["fishgang"] = new Scene(
             createAnimation("trans3b", "transition3", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
+        createButton("fullscreenButton", 0.975, 0, 0.1, 0.1, wggj.canvas.quadratic ? "fullscreen" : "fullscreen-close", () => {
+            toggleFullscreen();
+        }, { quadratic: true, centered: true });
 
         // player info
         createImage("fishlvl_FishyPic", 0.3, 0, 0.1, 0.1, "fishlvl", { quadratic: true, centered: true });

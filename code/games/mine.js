@@ -115,6 +115,9 @@ scenes["mine"] = new Scene(
             createAnimation("trans4b", "transition4", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
         }, { quadratic: true, centered: true });
+        createButton("fullscreenButton", 0.975, 0, 0.1, 0.1, wggj.canvas.quadratic ? "fullscreen" : "fullscreen-close", () => {
+            toggleFullscreen();
+        }, { quadratic: true, centered: true });
 
         // mining
         createButton("mineButton", 0.7, 0.8, 0.25, 0.1, "button", (o) => {
