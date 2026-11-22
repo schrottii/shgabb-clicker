@@ -9,9 +9,19 @@ const currentPatchNotes = `
 -> Minigames:
 - Added fullscreen support for all Minigames, toggled via button in top right
 - This is especially useful on mobile
-- Tech Collection now affects mining progress
 - "Play Minigame" text is now invisible until a CD is selected, to avoid confusion
 - Fixed selected minigame text being outdated after leaving a minigame
+
+-> Artifacts:
+- New Tier X Epic Artifact: Gifted Tree (faster click CD after opening a Gift)
+- Tech Collection now affects mining progress
+
+-> Christmas Event:
+- To prepare for its return in December... (or earlier for Etenv users!)
+- Added Offer to buy the new Artifact (Gifted Tree) for 20 Gifts
+- New button design/texture
+- Updated event description to mention the Artifact
+- Gift(s) contents text now uses images for currencies and is split into multiple rows
 
 -> Custom Upgrade Colors:
 - Buttons for text color now say Text instead of T
@@ -19,8 +29,8 @@ const currentPatchNotes = `
 - Fixed browser-specific(?) issue that could prevent setting colors
 
 -> Other:
-- Added warning when trying to import a cut off save code (short and round length)
 - Added d0ktorek mention to Credits
+- Added warning when trying to import a cut off save code (short and round length)
 
 -> Bug fixes:
 - Fixed SQL issue where a cloud save doesn't get updated properly (the file does), leading to wrong info display
