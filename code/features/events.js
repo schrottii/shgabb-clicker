@@ -25,13 +25,13 @@ class LimitedEvent {
     }
 }
 
-// Y2 Anniversary Event | Jan 6 - Jan 19
-// Y2 Lunar New Year Event | Feb 4 - Feb 17
-// Y2 Egg Hunt | April 2 - April 15
-// Y2 Pride Event | Jun 1 - Jun 14
-// Y2 Hot Hot Summer Event | Jul 28 - Aug 10
-// Y2 Shgabb The Witch Event | Oct 24 - Nov 16
-// Y2 Christmas Event | Dec 15 - Dec 28
+// Anniversary Event | Jan 6 - Jan 19
+// Lunar New Year Event | Feb 4 - Feb 17
+// Egg Hunt | April 2 - April 15
+// Pride Event | Jun 1 - Jun 14
+// Hot Hot Summer Event | Jul 28 - Aug 10
+// Shgabb The Witch Event | Oct 24 - Nov 16
+// Christmas Event | Dec 15 - Dec 28
 
 var forceEvent = "none"; // cheat to test an event, default is "none"
 
@@ -91,7 +91,7 @@ const events = {
         }),
     
     christmas: new LimitedEvent(0, "christmas", "Christmas Event", 
-        "The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! Gifts are earned by clicking, regardless of speed (average 180s per Gift), or 10 can be earned per day from Shgic. Merry christmas and happy holidays everyone!",
+        "The festive season is back! Enjoy the experience of opening Gifts again, and find both old and new rewards. Get 4 PFPs, 3 Banners and 3 Frames - very cold stuff! You can also spend 20 Gifts on an exclusive Artifact. Gifts are earned by clicking, regardless of speed (average 180s per Gift), or 10 can be earned per day from Shgic. Merry christmas and happy holidays everyone!",
         1215, 1228, "renderChristmas", 
         {
             pfps: [400, 401, 402, 426],
@@ -188,6 +188,7 @@ function useEtenv(choice) {
 
         updateUI();
         renderShbookEvent();
+        renderCurrentEvent();
         updateBG();
     }
 }
@@ -305,20 +306,31 @@ function renderChristmas() {
     render = render + "<br />" + cImg("memorySnowflake") + (getLoreByID(game.loreSel).source == 3 ? game.loreP : 0) + " Memory Snowflakes (" + collectedPages + "/5 Pages)";
     */
 
-    render = render + `<br /><br />
-        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
-        <button class='grayButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
-        <button class='grayButton' onclick='openGifts(100)'>Open 100 Gifts</button>`;
+    render += `<br /><br />
+        <button class='christmasButton' style='margin-right: 20px' onclick='openGifts(1)'>Open 1 Gift</button>
+        <button class='christmasButton' style='margin-right: 20px' onclick='openGifts(10)'>Open 10 Gifts</button>
+        <button class='christmasButton' onclick='openGifts(100)'>Open 100 Gifts</button>`;
 
-    render = render + "<br /><br />" + previousGiftText;
+    render += "<br /><br />" + previousGiftText;
+
+    render += "<br /><br />";
+    if (!game.a.includes(324)) render += "<br /><button class='christmasButton' style='height: 256px;' onclick='buyChristmasArti()'>" + getArtifact(324).render(false) + "20 " + cImg("gift") + "</button>";
 
     ui.eventRender.innerHTML = render;
 }
 
+function buyChristmasArti() {
+    if (game.gifts < 20) return false;
+    if (game.a.includes(324)) return false;
+
+    game.gifts -= 20;
+    awardArtifact(324);
+
+    renderCurrentEvent();
+}
+
 function openGifts(amount) {
-    if (game.gifts < amount) {
-        return false;
-    }
+    if (game.gifts < amount) return false;
     game.gifts -= amount;
     checkAchievement(72);
 
@@ -359,8 +371,19 @@ function openGifts(amount) {
         game.stats.gems += giftContents[0];
     }
 
-    previousGiftText = "Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content: " + (shgabbAmount != 0 ? fn(shgabbAmount) + " Shgabb" : "") + (sandwichAmount != 0 ? ", " + fn(sandwichAmount) + " Sandwiches" : "") + (giftContents[0] != 0 ? ", " + giftContents[0] + " Gems" : "") + (giftContents[3] != 0 ? ", " + giftContents[3] + " Cosmetics" : "");
-    createNotification(previousGiftText);
+    previousGiftText = "Opened " + amount + (amount == 1 ? " Gift" : " Gifts") + "! Content:"
+    + (shgabbAmount != 0 ? "<br />" + fn(shgabbAmount) + cImg("shgabb") : "")
+    + (sandwichAmount != 0 ? "<br />" + fn(sandwichAmount) + cImg("sandwich") : "")
+    + (giftContents[0] != 0 ? "<br />" + giftContents[0] + cImg("gem") : "")
+    + (giftContents[3] != 0 ? "<br />" + giftContents[3] + " Cosmetics" : "");
+    createNotification("Opened Gift", [["Opened Gift", previousGiftText]]);
+
+    // arti
+    if (getArtifact(324).isEquipped()) {
+        //let level = getArtifact(324).getLevel();
+        //getArtifact(324).amount = 1 + 0.2 * level;
+        getArtifact(324).fillTimer();
+    }
 
     //if (giftContents[3] > 0) renderShbookEvent();
     renderCurrentEvent();
@@ -620,17 +643,16 @@ function renderEggEvent() {
     */
 
     render += "<div class='upgradesContainer'>";
-    if (!hasEventRewards("egg", "pfps")) render = render + "<br /><button class='easterButton' onclick='useEggs(1)'>Buy an Easter PFP<br />50 " + cImg("egg") + "</button>";
-    if (!hasEventRewards("egg", "bans")) render = render + "<button class='easterButton' onclick='useEggs(5)'>Buy an Easter Banner<br />50 " + cImg("egg") + "</button>";
-    if (!hasEventRewards("egg", "frames")) render = render + "<button class='easterButton' onclick='useEggs(6)'>Buy an Easter Frame<br />50 " + cImg("egg") + "</button>";
-    render = render + "<br /><button class='easterButton' onclick='useEggs(2)'>Guaranteed<br />random common Artifact<br />10 " + cImg("egg") + "</button>";
-    render = render + "<button class='easterButton' onclick='useEggs(3)'>Guaranteed<br />random rare Artifact<br />25 " + cImg("egg") + "</button>";
-    render = render + "<button class='easterButton' onclick='useEggs(4)'>Guaranteed<br />random epic Artifact<br />100 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "pfps")) render += "<br /><button class='easterButton' onclick='useEggs(1)'>Buy an Easter PFP<br />50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "bans")) render += "<button class='easterButton' onclick='useEggs(5)'>Buy an Easter Banner<br />50 " + cImg("egg") + "</button>";
+    if (!hasEventRewards("egg", "frames")) render += "<button class='easterButton' onclick='useEggs(6)'>Buy an Easter Frame<br />50 " + cImg("egg") + "</button>";
+    render += "<br /><button class='easterButton' onclick='useEggs(2)'>Guaranteed<br />random common Artifact<br />10 " + cImg("egg") + "</button>";
+    render += "<button class='easterButton' onclick='useEggs(3)'>Guaranteed<br />random rare Artifact<br />25 " + cImg("egg") + "</button>";
+    render += "<button class='easterButton' onclick='useEggs(4)'>Guaranteed<br />random epic Artifact<br />100 " + cImg("egg") + "</button>";
     render += "</div>"
     
-    render = render + "<br /><button class='easterButton' style='height: 256px;' onclick='useEggs(7)'>" + getArtifact(323).render(false) + "20 " + cImg("egg") + "</button>";
+    render += "<br /><button class='easterButton' style='height: 256px;' onclick='useEggs(7)'>" + getArtifact(323).render(false) + "20 " + cImg("egg") + "</button>";
     
-
     ui.eventRender.innerHTML = render;
 }
 

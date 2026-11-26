@@ -114,6 +114,7 @@ July - September 2026:
 -
 October - December 2026:
 4.7
+4.7.1
 
 
 
@@ -3326,3 +3327,50 @@ Version v4.7 Servant of the Clouds:
 - Another attempt at fixing random crashes during loading
 - Converted patch_notes.txt to PATCH_NOTES.md
 - Fixed issue with Currencies help button
+
+
+
+2026-11-26 v4.7.1:
+-> Cloud Save:
+- Settings are now uploaded along with the save
+- When downloading, you can choose to also load the settings (or only the save), using the new button "Load this save + settings"
+- Added Cloud Save icon
+- Fixed SQL issue where a cloud save doesn't get updated properly (the file does), leading to wrong info display
+
+-> Server:
+- If trying to redeem a Reward Code while not logged in, it will now tell you that's not possible
+- Server info: if disconnected, it now shows time until next retry / currently retrying
+- Various server backend improvements
+
+-> Minigames:
+- Added fullscreen support for all Minigames, toggled via button in top right
+- This is especially useful on mobile
+- "Play Minigame" text is now invisible until a CD is selected, to avoid confusion
+- Fixed selected minigame text being outdated after leaving a minigame
+
+-> Artifacts:
+- New Tier X Epic Artifact: Gifted Tree (faster click CD after opening a Gift)
+- Tech Collection now affects mining progress
+
+-> Christmas Event:
+- To prepare for its return in December... (or earlier for Etenv users!)
+- Added Offer to buy the new Artifact (Gifted Tree) for 20 Gifts
+- Updated event description to mention the Artifact
+- New button design/texture
+- Gift(s) contents text now uses images for currencies and is split into multiple rows
+
+-> Custom Upgrade Colors:
+- Buttons for text color now say Text instead of T (to avoid confusion with transparency)
+- Aligned texts to the right
+- Fixed browser-specific(?) issue that could prevent setting colors
+
+-> Other:
+- Added d0ktorek mention to Credits
+- Added warning when trying to import a cut off save code (short and round length)
+- Replaced "My Website / Games" with "Balnoom Website" and updated link
+
+-> Bug fixes:
+- Fixed issue with New Age achievement (working on accounts without any email)
+- Fixed issue with Paranoid Nixonoid Achievement (guess I am the paranoid one)
+- Fixed Import Settings saying "Custom colors imported"
+- Fixed Genpoint Notification being able to show NaN%

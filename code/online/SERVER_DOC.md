@@ -12,9 +12,7 @@ node server.js
 npx serve -l 5000
 
 (possibly) 
-npm install ws
-npm install dotenv mysql2
-npm install bcryptjs
+npm install ws dotenv mysql2 bcryptjs
 
 # Files
 | Name              | Purpose
@@ -67,6 +65,8 @@ Communication between the server.js and SQL database
 | ping                           | playerID
 | playercount                    | -
 | uploadCloudSave                | id, filename, name, hms, id
+| updateCloudSave                | filename, name, hms, saveslot, id
+| wipeCloudSave                  | saveslot, id
 | downloadCloudSave              | id
 | rewardCodeCheckExistence       | code
 | rewardCodeCheckUsed            | code, userID

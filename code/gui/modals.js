@@ -183,7 +183,7 @@ modals = {
 
         <div id="cloudsaveArea" style="display: none;">
             <h3>Open cloud save</h3>
-            <button class="shbookButton modalButton" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');">Cloud Save</button><br />
+            <button class="shbookButton modalButton" onclick="toggleModal('accountmanagement', 'close'); toggleModal('cloudsave');"><img src="images/cloudsave.png" class="currency" /> Cloud Save</button><br />
             <br /><br />
         </div>
         <span id="cloudsaveloggedout"></span>
@@ -228,7 +228,7 @@ modals = {
             }
         }
     ),
-    "cloudsave": new Modal("Cloud Save",
+    "cloudsave": new Modal("<img src='images/cloudsave.png' class='currency' /> Cloud Save",
         `
         <span id="cloudSaveStatus"></span><br /><br />
 
@@ -241,7 +241,8 @@ modals = {
         <div id="loadedcloudsaveArea" style="display: none;">
             <span id="cloudSaveStatus2"></span> <br />
 
-            <button class="shbookButton modalButton" onclick="importGame(loadedCloudSave);">Load this save</button>
+            <button class="shbookButton modalButton" onclick="importGame(loadedCloudSave, false);">Load this save</button>
+            <button class="shbookButton modalButton" onclick="importGame(loadedCloudSave, true);">Load this save + settings</button>
             <button class="shbookButton modalButton" onclick="copyCloudSave();">Copy to clipboard</button>
             <br /><br />
         </div>

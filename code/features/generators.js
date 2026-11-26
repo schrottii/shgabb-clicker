@@ -87,7 +87,9 @@ function updateGenerators(tick) {
     for (let g in generators) {
         tickedGenpoints += generators[g].tick(Math.min(tick * 60, 6));
     }
-    createNotification("Generated Genpoints: VALUE (+PCT%)", [["VALUE", fn(tickedGenpoints)], ["PCT", ((game.genpoints / GenpointsBefore - 1) * 100).toFixed(2)]]);
+    let percentage = ((game.genpoints / GenpointsBefore - 1) * 100);
+    if (isNaN(percentage)) percentage = 0;
+    createNotification("Generated Genpoints: VALUE (+PCT%)", [["VALUE", fn(tickedGenpoints)], ["PCT", percentage.toFixed(2)]]);
 
     // render
     renderGenerators();

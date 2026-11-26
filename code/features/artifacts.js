@@ -1804,6 +1804,14 @@ var artifacts = [
         }
     ),
 
+    new Artifact(324, 3, 10, "Gifted Tree", "giftedtree.png",
+        {
+            prefix: "x", desc: "Increases click speed after opening a Gift",
+            simpleBoost: ["clickspeed", level => 1 + 0.2 * level, () => getArtifact(324).getTimer(0) > 0],
+            timer: [60, 0]
+        }
+    ),
+
 
 
 

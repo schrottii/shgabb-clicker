@@ -336,8 +336,6 @@ var game = {
     red_rew: []
 }
 
-const emptyGame = Object.assign({}, game, {});
-
 // SETTINGS
 var settings = {
     // gameplay
@@ -378,6 +376,9 @@ var settings = {
     autoplaySongs: false
 }
 
+const emptyGame = JSON.parse(JSON.stringify(game));
+const emptySettings = JSON.parse(JSON.stringify(settings));
+
 function report(flagName, susAmount) {
     if (game.flags[flagName] == undefined) {
         game.susq += susAmount;
@@ -399,22 +400,23 @@ function tester() {
 }
 */
 
-function isSaveExisting() {
-    return game.stats.hms >= 1 || game.shgabb.gte(1);
-}
-
 
 
 ///////////////////////////////////
 // save related   #6D61696E736563
 ///////////////////////////////////
 
+// variable for achievement 242
 var savedTo = {
     copy: false,
     localstorage: false,
     backupstorage: false,
     file: false,
     cloudsave: false
+}
+
+function isSaveExisting() {
+    return game.stats.hms >= 1 || game.shgabb.gte(1);
 }
 
 function autoSave(manual = true) {
@@ -459,11 +461,10 @@ function importFromFile() {
                 reader.addEventListener('load', function (e) {
                     filecontent = e.target.result;
                     if (filecontent != undefined) importGame(filecontent);
+                    toggleModal("importfromfile", "close");
                 });
 
                 reader.readAsText(file);
-
-                toggleModal("importfromfile", "close");
             }
             catch {
                 console.log("Something went wrong while loading the file");
@@ -482,7 +483,7 @@ function exportToFile() {
 
 function exportGame(destination = "gimme", saveToExport = undefined) {
     if (saveToExport == undefined) saveToExport = game;
-    if (saveToExport.cheated == true) {
+    if (saveToExport.cheated == true && destination != "cache") {
         alert("You can't export a cheated save!");
         createNotification("Couldn't export: Cheated");
         return false;
@@ -527,6 +528,12 @@ function exportGame(destination = "gimme", saveToExport = undefined) {
         navigator.clipboard.writeText(exporter);
         createNotification("Game exported to clipboard");
         savedTo.copy = true;
+        /*
+        let pasted = navigator.clipboard.read();
+        if (pasted.length < 50000) {
+            console.log(pasted);
+        }
+        */
     }
     if (destination == "cache") {
         localStorage.setItem("shgabbClicker", exporter);
@@ -565,7 +572,11 @@ function importButton() {
     return importGame(source); // true or false
 }
 
-function importGame(source) {
+function importGame(source, extractSettings = false) {
+    let cutoffFlag = source.length < 20001 && source.length % 10 == 0;
+    let ogLength = source.length;
+
+    // unpack our thing and check for errors
     if (source == null || source == undefined) source = Object.assign({}, emptyGame);
     else {
         try {
@@ -578,7 +589,11 @@ function importGame(source) {
             source = JSON.parse(source);
         }
         catch (e) {
-            alert("Something went wrong while unpacking the save!");
+            if (cutoffFlag) {
+                alert("This save code appears to be cut off (copied on mobile?)\nLength: " + ogLength);
+            }
+            else alert("Something went wrong while unpacking the save!");
+
             return false;
         }
     }
@@ -707,6 +722,13 @@ function importGame(source) {
         else ownedArtisList.push(game.a[ownedArtis]);
     }
 
+    // v4.7.1: settings can now be in the savecode, extract them
+    if (game.settings != undefined && extractSettings == true) {
+        let extractedSettings = JSON.parse(JSON.stringify(game.settings));
+        game.settings = undefined;
+        settings = Object.assign({}, emptySettings, extractedSettings); // load defaults for ones we didnt have, dump extracted on top
+    }
+
     // Execute some stuff
     //handleArtifactsFirstTime(); // it's safe to say nobody needs this anymore lol
     checkForZeroNext();
@@ -728,7 +750,7 @@ function deleteGame() {
                     emptyGame.stats_prestige[statCurr[currHandler]] = new Decimal(0);
                 }
 
-                game = emptyGame;
+                game = JSON.parse(JSON.stringify(emptyGame));
                 createNotification("Game deleted successfully!");
                 autoSave();
                 updateEVERYTHING();

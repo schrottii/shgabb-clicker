@@ -323,6 +323,54 @@ function shgicResetField() {
     }
 }
 
+function startupWGGJ(targetCanvas = "wggjCanvas") {
+    wggjCanvas = document.getElementById(targetCanvas);
+    wggjCTX = wggjCanvas.getContext("2d");
+
+    wggjCanvas.style.display = "";
+
+    wggjCanvas.addEventListener("pointerdown", wggjEventsOnClick);
+    wggjCanvas.addEventListener("pointerup", wggjEventsOnPointerUp);
+    wggjCanvas.addEventListener("pointerleave", wggjEventsOnPointerUp);
+    wggjCanvas.addEventListener("pointermove", wggjEventsOnPointerMove);
+
+    //resizeWGGJ();
+
+    //if (wggj.canvas.currentScene != name) loadScene(name);
+    setTimeout(() => {
+        if (objects["startTheGame"] != undefined) objects["startTheGame"].power = false;
+    }, 200);
+}
+
+function toggleFullscreen() {
+    if (wggj.canvas.pcWidthMulti < 1) {
+        // go fullscreen
+        wggjCanvas.style.display = "none";
+        startupWGGJ("wggjCanvasFS");
+        wggj.canvas.pcWidthMulti = 1;
+        wggj.canvas.pcHeightMulti = 1;
+        wggj.canvas.mobileWidthMulti = 1;
+        wggj.canvas.mobileHeightMulti = 1;
+        wggj.canvas.quadratic = false;
+
+        if (objects["fullscreenButton"] != undefined) objects["fullscreenButton"].image = "fullscreen-close";
+    }
+    else {
+        // leave fullscreen
+        wggjCanvas.style.display = "none";
+        startupWGGJ("wggjCanvas");
+
+        let ww = settings.sidebar ? 0.95 : 1;
+        wggj.canvas.mobileWidthMulti = 0.96 * ww;
+        wggj.canvas.mobileHeightMulti = 0.96 * ww / 1.7777777777777777777777777777778;
+        wggj.canvas.pcWidthMulti = 0.8 * ww;
+        wggj.canvas.pcHeightMulti = 0.8 * ww / 1.7777777777777777777777777777778;
+        wggj.canvas.quadratic = true;
+
+        if (objects["fullscreenButton"] != undefined) objects["fullscreenButton"].image = "fullscreen";
+    }
+}
+
 function shgicUpdateText(text) {
     if (objects["scoreText"] != undefined) objects["scoreText"].text = text;
 }
@@ -341,6 +389,9 @@ scenes["shgic"] = new Scene(
         createButton("backButton", 0.025, 0, 0.1, 0.1, "cd2", () => {
             createAnimation("trans2b", "transition2", (t, d, a) => { t.alpha = a.dur * 3.33 }, 0.3, true);
             setTimeout('loadScene("mainmenu")', 300);
+        }, { quadratic: true, centered: true });
+        createButton("fullscreenButton", 0.975, 0, 0.1, 0.1, wggj.canvas.quadratic ? "fullscreen" : "fullscreen-close", () => {
+            toggleFullscreen();
         }, { quadratic: true, centered: true });
 
         let ignoreW = 1 / wggj.canvas.w * wggj.canvas.h;

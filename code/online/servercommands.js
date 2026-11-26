@@ -221,7 +221,7 @@ async function client_account_login() {
 }
 
 function client_account_login_reply(data) {
-    // data contains: success, nameValid, pwValid
+    // data contains: success, nameValid, pwValid, isVerified
     let message = "";
     if (data.success) message = "Login successful";
     else if (data.message && !data.linkingEmail) message = data.message;
@@ -235,12 +235,11 @@ function client_account_login_reply(data) {
     if ((data.isVerified === false || data.linkingEmail) && document.getElementById("verifyCodeArea") != null) {
         document.getElementById("verifyCodeArea").style.display = "";
     }
-    else {
-        // email is verified...?
+    if (data.success && data.isVerified && data.emailValid) {
+        // email is verified
         awardAchievement(241);
     }
 
-    //console.log("login: " + message);
     if (data.success) client_account_logincheck();
 
     // put it into the UI, uhh
@@ -272,7 +271,10 @@ function client_old_version_reply(data) {
 function client_cloud_upload() {
     //console.log("giving data: " + JSON.stringify(game));
     console.log("/cloud_upload");
-    callServer("cloud_upload", { saveData: JSON.stringify(game) });
+    let gameToUpload = JSON.parse(JSON.stringify(game));
+    gameToUpload.settings = JSON.parse(JSON.stringify(settings));
+
+    callServer("cloud_upload", { saveData: JSON.stringify(gameToUpload) });
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to upload cloud save...";
     savedTo.cloudsave = true;
 }
@@ -356,7 +358,7 @@ function client_redeem_reward_code_reply(data) {
     if (data.success) {
         let value = parseInt(data.value);
 
-        if (data.valtype == "startVer") game.profile.startVer = value;
+        if (data.valtype == "startVer") game.profile.startVer = "v" + (value / 10); // it's saved as int soo... 47 = v4.7
         else if (data.valtype == "startDate") game.profile.startDate = value;
         else {
             if (typeof (game[data.valtype]) == "object") game[data.valtype] = game[data.valtype].add(value);

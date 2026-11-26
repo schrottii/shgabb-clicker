@@ -12,6 +12,10 @@ scenes["mainmenu"] = new Scene(
         createText("title", 0.08, 0.1, "Minigames Selection", { color: "white", size: 32, align: "left" });
         createText("selgam", 0.92, 0.975, "Select a game", { color: "white", size: 32, align: "right" });
 
+        createButton("fullscreenButton", 0.975, 0, 0.1, 0.1, wggj.canvas.quadratic ? "fullscreen" : "fullscreen-close", () => {
+            toggleFullscreen();
+        }, { quadratic: true, centered: true });
+        
         createImage("aniImage1", 0.75, 0.5, 0.2, 0.2, "minigames", { quadratic: true, centered: true });
         createImage("aniImage2", 0.72, 0.55, 0.05, 0.05, "minigames2", { quadratic: true, centered: true });
 
@@ -28,17 +32,14 @@ scenes["mainmenu"] = new Scene(
 
         createButton("gameSel1", 0.05, 0.4, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 1;
-            objects["selgam"].text = "Selected: Shgic Shgac Shgoe";
         }, { quadratic: true, centered: true })
 
         createButton("gameSel2", 0.05, 0.55, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 2;
-            objects["selgam"].text = unlockedFishing() ? "Selected: Fishgang" : "Locked";
         }, { quadratic: true, centered: true })
 
         createButton("gameSel3", 0.05, 0.7, 0.1, 0.1, "cd1", () => {
             selectedMinigame = 3;
-            objects["selgam"].text = unlockedMine() ? "Selected: The Mine" : "Locked";
         }, { quadratic: true, centered: true })
 
         createText("gameText1", 0.08, 0.475 - 0.02, "Shgic", { color: "white", size: 32, align: "left" });
@@ -92,6 +93,17 @@ scenes["mainmenu"] = new Scene(
         objects["bg2"].blue -= 0.1;
         if (objects["bg2"].blue < 200) objects["bg2"].blue = 255;
         objects["bg2"].color = "rgb(" + (255 - objects["bg2"].blue) + ", " + (255 - objects["bg2"].blue) + ", " + objects["bg2"].blue + ")";
+
+        if (selectedMinigame == 1) {
+            objects["selgam"].text = "Selected: Shgic Shgac Shgoe";
+        }
+        if (selectedMinigame == 2) {
+            objects["selgam"].text = unlockedFishing() ? "Selected: Fishgang" : "Locked";
+        }
+        if (selectedMinigame == 3) {
+            objects["selgam"].text = unlockedMine() ? "Selected: The Mine" : "Locked";
+        }
+        objects["startText"].alpha = selectedMinigame == 0 ? 0 : 1;
 
         // CD disc stuff
         if (objects["gameCDStart"].status == "none") {
