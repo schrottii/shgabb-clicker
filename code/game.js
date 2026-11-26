@@ -573,8 +573,12 @@ function importButton() {
 }
 
 function importGame(source, extractSettings = false) {
-    let cutoffFlag = source.length < 20001 && source.length % 10 == 0;
-    let ogLength = source.length;
+    let cutoffFlag = false;
+    let ogLength = 0;
+    if (source != null && source != undefined) {
+        cutoffFlag = source.length < 20001 && source.length % 10 == 0;
+        ogLength = source.length;
+    }
 
     // unpack our thing and check for errors
     if (source == null || source == undefined) source = Object.assign({}, emptyGame);
