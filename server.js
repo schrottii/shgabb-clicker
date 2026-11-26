@@ -208,10 +208,14 @@ wss.on('connection', async (ws, req) => {
         if (message.length > 250) message = message.substr(0, 50) + "... (Too long)";
 
         // extra step so nobody can see a password, hashed or not
-        let parsedMessage = JSON.parse(message);
-        if (parsedMessage.body != undefined && (parsedMessage.body["password"] != undefined)) {
-            parsedMessage.body.password = "REDACTED";
-            message = JSON.stringify(parsedMessage); // refresh
+        try {
+            let parsedMessage = JSON.parse(message);
+            if (parsedMessage.body != undefined && (parsedMessage.body["password"] != undefined)) {
+                parsedMessage.body.password = "REDACTED";
+                message = JSON.stringify(parsedMessage); // refresh
+            }
+        }
+        catch(e){
         }
 
         ws.isAlive = true;
