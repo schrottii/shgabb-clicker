@@ -1369,7 +1369,7 @@ function shgabbClickerLoop(tick) {
         }
     }
 
-    ui.server_isConnected.innerHTML = isConnectedToServer() ? "Connected" : "Disconnected";
+    ui.server_isConnected.innerHTML = isConnectedToServer() ? "Connected" : ("Disconnected<br />" + renderServerReconnectText(time));
 
     checkMissionProgress();
     adSwitcher();

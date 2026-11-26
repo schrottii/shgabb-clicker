@@ -567,7 +567,7 @@ function importSettings() {
     settings = importGame;
 
     updateEVERYTHING();
-    createNotification("Custom colors imported");
+    createNotification("Custom settings imported"); // why did this say colors??
 }
 
 function openCloudSaveModal() {

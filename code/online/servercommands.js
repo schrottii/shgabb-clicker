@@ -271,7 +271,10 @@ function client_old_version_reply(data) {
 function client_cloud_upload() {
     //console.log("giving data: " + JSON.stringify(game));
     console.log("/cloud_upload");
-    callServer("cloud_upload", { saveData: JSON.stringify(game) });
+    let gameToUpload = JSON.parse(JSON.stringify(game));
+    gameToUpload.settings = JSON.parse(JSON.stringify(settings));
+
+    callServer("cloud_upload", { saveData: JSON.stringify(gameToUpload) });
     if (document.getElementById("cloudSaveStatus")) document.getElementById("cloudSaveStatus").innerHTML = "Trying to upload cloud save...";
     savedTo.cloudsave = true;
 }
@@ -355,7 +358,7 @@ function client_redeem_reward_code_reply(data) {
     if (data.success) {
         let value = parseInt(data.value);
 
-        if (data.valtype == "startVer") game.profile.startVer = value;
+        if (data.valtype == "startVer") game.profile.startVer = "v" + (value / 10); // it's saved as int soo... 47 = v4.7
         else if (data.valtype == "startDate") game.profile.startDate = value;
         else {
             if (typeof (game[data.valtype]) == "object") game[data.valtype] = game[data.valtype].add(value);

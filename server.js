@@ -5,7 +5,7 @@ Server-side server logic code
 
 // server version corresponding to game version -- change on update!!
 // this is also why live client needs a seperate server backend running from local/online indev testing
-const serverVersion = "4.7";
+const serverVersion = "4.7.1";
 
 // imports & setup
 const http = require('http');
@@ -33,6 +33,8 @@ const allowedOrigins = [
     'http://localhost',
     'http://127.0.0.1'
 ];
+
+const MAX_LENGTH = Math.pow(2, 17); // 131k
 
 async function sendBrevoEmail(toEmail, subject, textContent, htmlContent) {
     try {
@@ -204,6 +206,13 @@ wss.on('connection', async (ws, req) => {
     ws.on('message', (data) => {
         let message = data.toString();
         if (message.length > 250) message = message.substr(0, 50) + "... (Too long)";
+
+        // extra step so nobody can see a password, hashed or not
+        let parsedMessage = JSON.parse(message);
+        if (parsedMessage.body != undefined && (parsedMessage.body["password"] != undefined)) {
+            parsedMessage.body.password = "REDACTED";
+            message = JSON.stringify(parsedMessage); // refresh
+        }
 
         ws.isAlive = true;
         console.log(`\x1b[0m[CMD] Received: ${message} from ${ws.refer}`); // shown on server
@@ -752,7 +761,7 @@ async function server_login(ws, data) {
     }*/
 
     let isVerified = await database_command("getUserVerified", { email: email })
-    console.log(isVerified);
+    //console.log(isVerified);
     if (isVerified == undefined || isVerified.length == 0) isVerified = false;
     else isVerified = isVerified["is_verified"]; // things to not say at a party
 
@@ -793,6 +802,18 @@ async function server_login(ws, data) {
 // 10. cloud upload
 async function server_cloud_upload(ws, data) {
     let success = false;
+
+    if (typeof(data.body.saveData) != "string") {
+        // invalid format, not a string
+        end();
+        return;
+    }
+    if (data.body.saveData.length > MAX_LENGTH) {
+        // too long, likely not a real save
+        end();
+        return;
+    }
+
     let filename = ws.playerID + ".txt"; // having this and the ID separate might seem irrelevant but if we have multiple saves later it might not be
 
     async function createFile() {
@@ -814,7 +835,7 @@ async function server_cloud_upload(ws, data) {
                 if (exists.length > 1) {
                     // base v4.7 had a niche SQL error allowing duplicates of the same save slot, sooo here a script to clear
                     let dumptruck = await database_command("wipeCloudSave", { id: ws.playerID, saveslot: exists[0]["save_slot"] });
-                    console.log(dumptruck);
+                    //console.log(dumptruck);
                     suc = await database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
                 }
                 else {
@@ -827,7 +848,7 @@ async function server_cloud_upload(ws, data) {
                 suc = await database_command("uploadCloudSave", { filename: filename, hms: hms, name: name, id: ws.playerID });
             }
 
-            console.log(suc);
+            //console.log(suc);
             if (suc != undefined && suc.warningStatus != undefined && suc.warningStatus == 0) success = true;
         }
         catch (e) {
@@ -903,6 +924,12 @@ async function server_account_logout(ws, data) {
 async function server_redeem_reward_code(ws, data) {
     let playerID = ws.playerID;
 
+    // guests can not redeem
+    if (ws.isGuest) {
+        callClient("redeem_reward_code", ws, { message: "You need to be logged in to redeem", success: false });
+        return;
+    }
+
     // is this a real code?
     let codeExists = await database_command("rewardCodeCheckExistence", { code: data.body.code });
     if (codeExists.length == 0) {
@@ -917,7 +944,7 @@ async function server_redeem_reward_code(ws, data) {
     expires = new Date(expires);
     //expires = expires.toLowerCase().split("t")[0].replaceAll("-", "");
     expires = (expires.getUTCFullYear()) + "" + ((expires.getUTCMonth() + 1).toString().length == 1 ? "0" + (expires.getUTCMonth() + 1) : (expires.getUTCMonth() + 1)) + (expires.getUTCDate().toString().length == 1 ? "0" + expires.getUTCDate() : expires.getUTCDate());
-    console.log(expires);
+    //console.log(expires);
 
     // expired?
     let today = new Date();
@@ -929,7 +956,7 @@ async function server_redeem_reward_code(ws, data) {
 
     // have we already used it?
     let codeUsed = await database_command("rewardCodeCheckUsed", { code: codeID, userID: playerID });
-    console.log(codeUsed);
+    //console.log(codeUsed);
     if (codeUsed.length > 0) {
         callClient("redeem_reward_code", ws, { message: "You already used this code", success: false });
         return;
@@ -1166,7 +1193,7 @@ async function database_command(cmdname = "", data = {}) {
 
             case "updateCloudSave":
                 [results] = await db_connection.query(
-                    "UPDATE shg_user_saves file_ref = ?, save_name = ?, save_hms = ?, updated = CURRENT_TIMESTAMP WHERE save_slot = ? AND user_id = ?;",
+                    "UPDATE shg_user_saves SET file_ref = ?, save_name = ?, save_hms = ?, updated = CURRENT_TIMESTAMP WHERE save_slot = ? AND user_id = ?;",
                     [data.filename, data.name, data.hms, data.saveslot, data.id]
                 );
                 break;

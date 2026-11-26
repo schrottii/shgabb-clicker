@@ -336,8 +336,6 @@ var game = {
     red_rew: []
 }
 
-const emptyGame = Object.assign({}, game, {});
-
 // SETTINGS
 var settings = {
     // gameplay
@@ -378,6 +376,9 @@ var settings = {
     autoplaySongs: false
 }
 
+const emptyGame = JSON.parse(JSON.stringify(game));
+const emptySettings = JSON.parse(JSON.stringify(settings));
+
 function report(flagName, susAmount) {
     if (game.flags[flagName] == undefined) {
         game.susq += susAmount;
@@ -399,22 +400,23 @@ function tester() {
 }
 */
 
-function isSaveExisting() {
-    return game.stats.hms >= 1 || game.shgabb.gte(1);
-}
-
 
 
 ///////////////////////////////////
 // save related   #6D61696E736563
 ///////////////////////////////////
 
+// variable for achievement 242
 var savedTo = {
     copy: false,
     localstorage: false,
     backupstorage: false,
     file: false,
     cloudsave: false
+}
+
+function isSaveExisting() {
+    return game.stats.hms >= 1 || game.shgabb.gte(1);
 }
 
 function autoSave(manual = true) {
@@ -570,10 +572,11 @@ function importButton() {
     return importGame(source); // true or false
 }
 
-function importGame(source) {
+function importGame(source, extractSettings = false) {
     let cutoffFlag = source.length < 20001 && source.length % 10 == 0;
     let ogLength = source.length;
 
+    // unpack our thing and check for errors
     if (source == null || source == undefined) source = Object.assign({}, emptyGame);
     else {
         try {
@@ -719,6 +722,13 @@ function importGame(source) {
         else ownedArtisList.push(game.a[ownedArtis]);
     }
 
+    // v4.7.1: settings can now be in the savecode, extract them
+    if (game.settings != undefined && extractSettings == true) {
+        let extractedSettings = JSON.parse(JSON.stringify(game.settings));
+        game.settings = undefined;
+        settings = Object.assign({}, emptySettings, extractedSettings); // load defaults for ones we didnt have, dump extracted on top
+    }
+
     // Execute some stuff
     //handleArtifactsFirstTime(); // it's safe to say nobody needs this anymore lol
     checkForZeroNext();
@@ -740,7 +750,7 @@ function deleteGame() {
                     emptyGame.stats_prestige[statCurr[currHandler]] = new Decimal(0);
                 }
 
-                game = emptyGame;
+                game = JSON.parse(JSON.stringify(emptyGame));
                 createNotification("Game deleted successfully!");
                 autoSave();
                 updateEVERYTHING();

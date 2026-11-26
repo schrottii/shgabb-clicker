@@ -5,6 +5,7 @@ client-side code that talks to the server-side
 var socket;
 var timeOutIntervals = [3000, 3000, 5000, 10000, 15000, 30000];
 var timeOutProgress = 0;
+var timeOutSecondsSince = 0;
 
 var isLoggedIn = false;
 
@@ -123,10 +124,14 @@ function connectToServer() {
     };
 
     socket.onclose = () => {
+        // we got disconnected!
+        // figure out timeout length, go to next step
         let timeOutLength = timeOutIntervals[timeOutProgress];
         if (timeOutProgress < timeOutIntervals.length - 1) timeOutProgress++;
+        timeOutSecondsSince = 0;
 
-        console.log("Disconnected from server. Retrying in " + Math.round(timeOutLength / 1000) + " seconds...");
+        // try again then...
+        console.log(renderServerReconnectText());
         setTimeout(connectToServer, timeOutLength);
     };
 
@@ -140,6 +145,16 @@ function disconnectFromServer() {
     isLoggedIn = false;
     client_account_logout();
     document.getElementById("serverStatusImage").src = "images/done.png";
+}
+
+function renderServerReconnectText(time) {
+    if (time) timeOutSecondsSince += time;
+
+    let timeOutLength = timeOutIntervals[timeOutProgress];
+    let retryingIn = Math.max(0, Math.round(timeOutLength / 1000) - timeOutSecondsSince).toFixed(0);
+
+    if (retryingIn == "0") return "Disconnected from server. Retrying right now" + ".".repeat(Math.floor(timeOutSecondsSince) % 4);
+    return "Disconnected from server. Retrying in " + retryingIn + " seconds...";
 }
 
 // extra code by d0ktorek
